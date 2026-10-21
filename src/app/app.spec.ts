@@ -15,12 +15,12 @@ describe('App', () => {
   it('renders the main navigation with every section', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const links = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.main-nav-link')];
-    expect(links.map((l) => l.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
-      'Components',
-      'Prototypes Soon',
-      'Interface Lab Soon',
-      'Icon Lab Soon',
+    const links = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.rail-item')];
+    expect(links.map((l) => [l.querySelector('.rail-label')?.textContent?.trim(), l.classList.contains('is-pending')])).toEqual([
+      ['Components', false],
+      ['Prototypes', true],
+      ['Interface Lab', true],
+      ['Icon Lab', true],
     ]);
   });
 });

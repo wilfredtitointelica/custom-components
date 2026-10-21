@@ -16,3 +16,19 @@ export function toSlug(value: string): string {
 export function toSearchKey(value: string): string {
   return stripDiacritics(value).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
+
+/** Range [start, end) of `text` matched by `term` under toSearchKey rules, or null. */
+export function findMatchRange(text: string, term: string): readonly [number, number] | null {
+  const key = toSearchKey(term);
+  if (!key) return null;
+  let normalized = '';
+  const sourceIndex: number[] = [];
+  for (let i = 0; i < text.length; i++) {
+    for (const char of toSearchKey(text[i])) {
+      normalized += char;
+      sourceIndex.push(i);
+    }
+  }
+  const at = normalized.indexOf(key);
+  return at < 0 ? null : [sourceIndex[at], sourceIndex[at + key.length - 1] + 1];
+}

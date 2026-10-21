@@ -1,109 +1,184 @@
+/*
+ * Window classes (Material 3):
+ *  expanded ≥ 1200px  rail + standard drawer + pane
+ *  medium   840–1199  rail + pane, drawer is modal
+ *  compact  < 840     bottom bar + pane, drawer is modal
+ */
+
 .catalog {
   display: grid;
-  grid-template-columns: var(--nav-w) minmax(0, 1fr);
-  column-gap: 48px;
-  max-width: var(--layout-max);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
+  grid-template-columns: var(--drawer-w) minmax(0, 1fr);
+  column-gap: 16px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--pane-gap) var(--pane-gap) var(--pane-gap) 0;
 }
 
-.catalog-nav {
+/* Navigation drawer */
+.drawer {
   position: sticky;
-  top: var(--header-h);
-  height: calc(100vh - var(--header-h));
-  height: calc(100dvh - var(--header-h));
-  padding: 32px 0 24px;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  margin-top: calc(var(--pane-gap) * -1);
+  padding: 16px 4px 24px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+
+  &:hover {
+    scrollbar-color: var(--c-outline) transparent;
+  }
 }
 
-.catalog-content {
-  min-width: 0;
-  padding: 32px 0 64px;
-  outline: none;
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 4px 0 16px;
 }
 
+.drawer-title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 400;
+}
+
+.drawer-close,
 .drawer-trigger,
-.drawer-head,
+.topbar-brand,
 .scrim {
   display: none;
 }
 
-@media (max-width: 960px) {
+/* Content pane */
+.pane {
+  min-width: 0;
+  border-radius: var(--radius-xl);
+  background: var(--c-surface);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--topbar-h);
+  padding: 0 32px 0 48px;
+  border-bottom: 1px solid var(--c-outline-variant);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.breadcrumb {
+  flex: 1;
+  min-width: 0;
+
+  ol {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .pi {
+    color: var(--c-ink-muted);
+    font-size: 0.625rem;
+  }
+
+  a,
+  span {
+    overflow: hidden;
+    color: var(--c-ink-muted);
+    font-size: 0.875rem;
+    text-decoration: none;
+    text-overflow: ellipsis;
+  }
+
+  a:hover {
+    color: var(--c-ink);
+    text-decoration: underline;
+  }
+
+  [aria-current] {
+    color: var(--c-ink);
+    font-weight: 500;
+  }
+}
+
+.content {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 56px 56px 96px;
+  outline: none;
+}
+
+/* Medium & compact: modal drawer */
+@media (max-width: 1199px) {
   .catalog {
     grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    padding-left: var(--pane-gap);
   }
 
-  .drawer-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-self: start;
-    gap: 8px;
-    margin-top: 16px;
-    padding: 8px 16px;
-    border: 1px solid var(--c-border);
-    border-radius: 999px;
-    background: var(--c-surface);
-    color: var(--c-ink);
-    font: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .catalog-content {
-    padding-top: 20px;
-  }
-
-  .catalog-nav {
+  .drawer {
     position: fixed;
-    inset: 0 auto 0 0;
+    inset: 0 auto 0 var(--rail-w);
     z-index: 70;
-    width: min(320px, 86vw);
-    height: 100%;
-    padding: 0 16px 24px;
+    width: min(var(--drawer-w), 86vw);
+    height: auto;
+    margin: 0;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
     background: var(--c-bg);
-    box-shadow: 0 0 32px rgb(0 0 0 / 0.2);
-    transform: translateX(-105%);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.24);
+    transform: translateX(calc(-100% - var(--rail-w)));
     visibility: hidden;
     transition:
-      transform 0.25s ease,
-      visibility 0s linear 0.25s;
+      transform 0.35s var(--ease-emphasized),
+      visibility 0s linear 0.35s;
 
     &.is-open {
       transform: none;
       visibility: visible;
-      transition: transform 0.25s ease;
+      transition: transform 0.35s var(--ease-emphasized);
     }
   }
 
   .drawer-head {
     position: sticky;
-    top: 0;
+    top: -12px;
     z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 -16px 8px;
-    padding: 12px 8px 12px 16px;
+    margin: -12px -12px 0;
+    padding: 12px 16px 4px 28px;
     background: var(--c-bg);
-    font-weight: 600;
   }
 
-  .drawer-close {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--c-ink);
-    cursor: pointer;
+  .drawer-close,
+  .drawer-trigger {
+    display: inline-grid;
+  }
 
-    &:hover {
-      background: var(--c-hover);
-    }
+  .topbar {
+    padding-left: 16px;
+  }
+
+  .content {
+    padding: 48px 40px 96px;
   }
 
   .scrim {
@@ -111,6 +186,61 @@
     inset: 0;
     z-index: 60;
     display: block;
-    background: rgb(10 20 40 / 0.45);
+    background: rgb(8 18 36 / 0.4);
+    animation: fade-in 0.2s;
+  }
+}
+
+@media (max-width: 839px) {
+  .drawer {
+    bottom: calc(var(--bottombar-h) + env(safe-area-inset-bottom));
+  }
+
+  .pane {
+    border-radius: 0;
+  }
+
+  .topbar {
+    gap: 4px;
+    padding: 0 12px 0 4px;
+    border-radius: 0;
+    background: var(--c-primary);
+    color: var(--c-on-primary);
+    border-bottom: 0;
+
+    .breadcrumb a,
+    .breadcrumb span,
+    .breadcrumb .pi {
+      color: rgb(255 255 255 / 0.75);
+    }
+
+    .breadcrumb [aria-current] {
+      color: #fff;
+    }
+  }
+
+  .topbar-brand {
+    display: inline-flex;
+    margin-right: 8px;
+    --brand-h: 28px;
+  }
+
+  /* Only the last level fits on a phone. */
+  .breadcrumb li:not(:last-child) {
+    display: none;
+  }
+
+  .breadcrumb li:last-child .pi {
+    display: none;
+  }
+
+  .content {
+    padding: 24px 16px 48px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 }

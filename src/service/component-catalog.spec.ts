@@ -1,5 +1,6 @@
 import { DefaultExport, Routes } from '@angular/router';
 
+import { COMPONENT_INVENTORY } from './component-inventory';
 import { CATALOG, ComponentCatalog, findVariantInComponent, resolveInventory } from './component-catalog';
 
 /** Column A of "Listado de componentes a replicar" (rows 2–37), verbatim. */
@@ -46,7 +47,12 @@ describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
 
   it('lists exactly the Excel components, in the Excel order', () => {
-    expect(CATALOG.map((c) => c.name)).toEqual(EXCEL_NAMES);
+    expect(COMPONENT_INVENTORY.map((c) => c.sourceName ?? c.name)).toEqual(EXCEL_NAMES);
+  });
+
+  it('simplifies only names whose variants are listed in the menu', () => {
+    const renamed = COMPONENT_INVENTORY.filter((c) => c.sourceName).map((c) => c.name);
+    expect(renamed).toEqual(['Input', 'Tabs']);
   });
 
   it('builds unique, URL-safe IDs for components and variants', () => {

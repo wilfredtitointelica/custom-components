@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { DocPage } from '../../core/doc-page/doc-page';
 
 /**
- * Documentation page of "Input (InputText, Checkbox, RadioButton, Textarea)".
+ * Documentation page of "Input".
  * Fill each variant inside <app-doc-page> with:
  *   <ng-template docVariant="<variant-id>"> …preview… </ng-template>
  *   <ng-template docCode="<variant-id>" docCodeLang="html|ts"> …code… </ng-template>

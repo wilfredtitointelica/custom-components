@@ -1,21 +1,7 @@
-<app-search
-  class="nav-search"
-  placeholder="Search for a component"
-  label="Search components by name"
-  controls="component-nav-list"
-  [(query)]="query"
-/>
+<p class="nav-status">{{ components.length }} components</p>
 
-<p class="nav-status" role="status">
-  @if (query()) {
-    {{ results().length }} of {{ total }} components
-  } @else {
-    {{ total }} components
-  }
-</p>
-
-<ul id="component-nav-list" class="nav-list" [hidden]="!results().length">
-  @for (component of results(); track component.id) {
+<ul class="nav-list">
+  @for (component of components; track component.id) {
     @let open = isExpanded(component.id);
     @let current = nav.componentId() === component.id;
     <li class="nav-item">
@@ -30,7 +16,7 @@
         </a>
         <button
           type="button"
-          class="nav-toggle"
+          class="icon-button nav-toggle"
           [attr.aria-expanded]="open"
           [attr.aria-controls]="'nav-variants-' + component.id"
           [attr.aria-label]="(open ? 'Collapse ' : 'Expand ') + component.name"
@@ -64,11 +50,3 @@
     </li>
   }
 </ul>
-
-@if (!results().length) {
-  <div class="nav-empty">
-    <i class="pi pi-search" aria-hidden="true"></i>
-    <p>No components match “{{ query() }}”.</p>
-    <button type="button" class="nav-empty-clear" (click)="query.set('')">Clear search</button>
-  </div>
-}

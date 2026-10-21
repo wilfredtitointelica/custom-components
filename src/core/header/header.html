@@ -1,40 +1,35 @@
-<div class="header-inner">
-  <a class="brand" routerLink="/components" aria-label="Intelica Components, go to start">
-    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-      <defs>
-        <clipPath id="brand-clip"><circle cx="16" cy="16" r="15" /></clipPath>
-      </defs>
-      <g clip-path="url(#brand-clip)" fill="currentColor">
-        <rect x="-4" y="5" width="40" height="5" transform="rotate(-35 16 16)" />
-        <rect x="-4" y="13.5" width="40" height="5" transform="rotate(-35 16 16)" />
-        <rect x="-4" y="22" width="40" height="5" transform="rotate(-35 16 16)" />
-      </g>
-    </svg>
-    <span class="brand-text">
-      <span class="brand-name">intelica</span>
-      <span class="brand-sub">Components</span>
-    </span>
-  </a>
+<a class="rail-brand" routerLink="/components" aria-label="Incontrol, go to start">
+  <app-brand-mark negative />
+</a>
 
-  <nav class="main-nav" aria-label="Main">
-    @for (section of sections; track section.id) {
-      <a
-        class="main-nav-link"
-        [routerLink]="section.path"
-        routerLinkActive="is-active"
-        ariaCurrentWhenActive="page"
-      >
-        {{ section.label }}
-        @if (section.status === 'pending') {
-          <span class="soon">Soon</span>
-        }
-      </a>
-    }
-  </nav>
+<button
+  type="button"
+  class="rail-search"
+  [class.is-active]="search.isOpen()"
+  [attr.aria-expanded]="search.isOpen()"
+  aria-haspopup="dialog"
+  (click)="search.toggle()"
+>
+  <span class="rail-search-box"><i class="pi pi-search" aria-hidden="true"></i></span>
+  <span class="rail-search-label">Search</span>
+</button>
 
-  <div class="header-actions">
-    @if (nav.section() === 'components') {
-      <app-toggle-code />
-    }
-  </div>
-</div>
+<nav class="rail-nav" aria-label="Main">
+  @for (section of sections; track section.id) {
+    <a
+      class="rail-item"
+      [class.is-pending]="section.status === 'pending'"
+      [routerLink]="section.path"
+      routerLinkActive="is-active"
+      ariaCurrentWhenActive="page"
+    >
+      <span class="rail-indicator">
+        <i class="pi {{ section.icon }}" aria-hidden="true"></i>
+      </span>
+      <span class="rail-label">{{ section.label }}</span>
+      @if (section.status === 'pending') {
+        <span class="rail-soon">Soon<span class="visually-hidden"> (coming soon)</span></span>
+      }
+    </a>
+  }
+</nav>

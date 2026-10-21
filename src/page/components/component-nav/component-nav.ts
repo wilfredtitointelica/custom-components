@@ -1,14 +1,13 @@
-import { Component, computed, effect, inject, output, signal, untracked } from '@angular/core';
+import { Component, effect, inject, output, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { Search } from '../../../core/search/search';
 import { ComponentCatalog } from '../../../service/component-catalog';
 import { NavigationState } from '../../../service/navigation-state';
 
-/** Side menu: name search + one expandable entry per inventory component. */
+/** Side menu: one expandable entry per inventory component. */
 @Component({
   selector: 'app-component-nav',
-  imports: [RouterLink, Search],
+  imports: [RouterLink],
   templateUrl: './component-nav.html',
   styleUrl: './component-nav.scss',
 })
@@ -16,12 +15,8 @@ export class ComponentNav {
   /** Emitted after following a link (used to close the drawer on small screens). */
   readonly navigated = output<void>();
 
-  private readonly catalog = inject(ComponentCatalog);
+  protected readonly components = inject(ComponentCatalog).components;
   protected readonly nav = inject(NavigationState);
-
-  protected readonly query = signal('');
-  protected readonly results = computed(() => this.catalog.searchByName(this.query()));
-  protected readonly total = this.catalog.components.length;
 
   private readonly expanded = signal<ReadonlySet<string>>(new Set());
 

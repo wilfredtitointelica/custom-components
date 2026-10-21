@@ -1,43 +1,58 @@
+/* Material 3 switch with icon, labelled "Code". */
 .toggle-code {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px;
+  gap: 12px;
+  padding: 4px 4px 4px 12px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: inherit;
   font: inherit;
   font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+
+  &:hover:not(:disabled) .toggle-track {
+    box-shadow: 0 0 0 8px var(--c-state-hover);
+  }
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.45;
   }
 }
 
 .toggle-track {
   position: relative;
-  width: 44px;
-  height: 24px;
+  width: 52px;
+  height: 32px;
+  border: 2px solid var(--c-outline);
   border-radius: 999px;
-  background: rgb(255 255 255 / 0.92);
-  transition: background-color 0.2s;
+  background: var(--c-surface-high);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .toggle-thumb {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 50%;
+  left: 4px;
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--c-header);
-  color: #fff;
-  transition: transform 0.2s;
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  transform: translateY(-50%);
+  transition:
+    transform 0.3s var(--ease-emphasized),
+    width 0.3s var(--ease-emphasized),
+    height 0.3s var(--ease-emphasized),
+    background-color 0.2s;
 
   .pi {
     font-size: 0.625rem;
@@ -46,18 +61,25 @@
 
 .is-on {
   .toggle-track {
+    border-color: var(--c-accent);
     background: var(--c-accent);
   }
 
   .toggle-thumb {
-    transform: translateX(20px);
+    width: 24px;
+    height: 24px;
     background: #fff;
-    color: var(--c-accent-strong);
+    color: var(--c-accent-text);
+    transform: translate(20px, -50%);
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 839px) {
   .toggle-label {
     display: none;
+  }
+
+  .toggle-code {
+    padding-left: 4px;
   }
 }

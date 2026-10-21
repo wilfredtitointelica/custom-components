@@ -1,9 +1,24 @@
 @let current = component();
 
 <header class="doc-header">
+  <p class="doc-eyebrow">Component</p>
   <h1 class="doc-title">{{ current.name }}</h1>
   <!-- Intro content projected by the component page (description, usage notes…). -->
   <div class="doc-intro"><ng-content /></div>
+  <div class="doc-meta">
+    <span class="chip">
+      <i class="pi pi-clone" aria-hidden="true"></i>
+      @switch (current.variants.length) {
+        @case (0) { No variants defined yet }
+        @case (1) { 1 variant }
+        @default { {{ current.variants.length }} variants }
+      }
+    </span>
+    <span class="chip chip-status">
+      <i class="pi pi-clock" aria-hidden="true"></i>
+      Documentation in progress
+    </span>
+  </div>
 </header>
 
 @for (variant of current.variants; track variant.id) {
@@ -14,18 +29,21 @@
     [attr.aria-labelledby]="variant.id + '-title'"
   >
     <h2 class="doc-section-title" [id]="variant.id + '-title'">
-      <a [routerLink]="current.path" [fragment]="variant.id">{{ variant.name }}</a>
+      <a [routerLink]="current.path" [fragment]="variant.id">
+        {{ variant.name }}
+        <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+      </a>
     </h2>
 
     <div class="doc-preview">
       @if (previews().get(variant.id); as preview) {
         <ng-container [ngTemplateOutlet]="preview" />
       } @else {
-        <p class="doc-placeholder">
-          <i class="pi pi-box" aria-hidden="true"></i>
-          Preview pending
+        <div class="doc-placeholder">
+          <span class="placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+          <p>Preview pending</p>
           <code>#{{ variant.id }}</code>
-        </p>
+        </div>
       }
     </div>
 
@@ -36,10 +54,10 @@
 } @empty {
   <section class="doc-section" [id]="current.id">
     <div class="doc-preview">
-      <p class="doc-placeholder">
-        <i class="pi pi-box" aria-hidden="true"></i>
-        No variants defined yet for this component.
-      </p>
+      <div class="doc-placeholder">
+        <span class="placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+        <p>No variants defined yet for this component.</p>
+      </div>
     </div>
   </section>
 }

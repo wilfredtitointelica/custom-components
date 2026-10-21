@@ -1,27 +1,21 @@
-import { Component, ElementRef, inject } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { GlobalSearch } from '../../service/global-search';
 import { MAIN_SECTIONS } from '../../service/main-navigation';
-import { NavigationState } from '../../service/navigation-state';
-import { ToggleCode } from '../toggle-code/toggle-code';
+import { BrandMark } from '../brand-mark/brand-mark';
 
-/** Gap kept between the sticky header and an anchored section. */
-const ANCHOR_GAP = 16;
-
+/**
+ * Main navigation. Material 3 navigation rail on medium/expanded widths,
+ * bottom navigation bar on compact widths. Hosts the entry point of the global search.
+ */
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, ToggleCode],
+  imports: [RouterLink, RouterLinkActive, BrandMark],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   protected readonly sections = MAIN_SECTIONS;
-  protected readonly nav = inject(NavigationState);
-
-  constructor() {
-    // The header is sticky: anchor scrolling must stop below it, whatever its current height.
-    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
-    inject(ViewportScroller).setOffset(() => [0, host.offsetHeight + ANCHOR_GAP]);
-  }
+  protected readonly search = inject(GlobalSearch);
 }

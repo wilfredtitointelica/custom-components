@@ -3,7 +3,8 @@ import { ComponentDefinition } from './catalog.model';
 /**
  * Component inventory — single source for the side menu, the routes and the search.
  *
- * Names and order come verbatim from the Excel "Listado de componentes a replicar".
+ * Names and order come from the Excel "Listado de componentes a replicar". When the Excel name lists
+ * the variants in parentheses, the visible name is simplified and the original kept in `sourceName`.
  * Variants are only declared where a reference defines them:
  *  - Button: sections of the current Intelica Components "Buttons" page (screenshots).
  *  - Input, Tabs: the values listed in parentheses in the Excel.
@@ -20,7 +21,8 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   { id: 'dropdown-select', name: 'Dropdown / Select', loadRoutes: () => import('../components/dropdown-select/routes') },
   {
     id: 'input',
-    name: 'Input (InputText, Checkbox, RadioButton, Textarea)',
+    name: 'Input',
+    sourceName: 'Input (InputText, Checkbox, RadioButton, Textarea)',
     variants: [{ name: 'InputText', slug: 'text' }, 'Checkbox', 'RadioButton', 'Textarea'],
     loadRoutes: () => import('../components/input/routes'),
   },
@@ -30,7 +32,8 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   { id: 'dialog-modal', name: 'Dialog / Modal', loadRoutes: () => import('../components/dialog-modal/routes') },
   {
     id: 'tabs',
-    name: 'Tabs (V1 / V2)',
+    name: 'Tabs',
+    sourceName: 'Tabs (V1 / V2)',
     variants: ['V1', 'V2'],
     loadRoutes: () => import('../components/tabs/routes'),
   },

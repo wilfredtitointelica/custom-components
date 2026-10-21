@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 /**
- * Internal routes of "Input (InputText, Checkbox, RadioButton, Textarea)", mounted at /components/input.
+ * Internal routes of "Input", mounted at /components/input.
  * Add sub-views here (e.g. { path: 'playground', loadComponent: … }) without touching the global router.
  * Variants are not routes: they are #anchors inside the documentation page.
  */

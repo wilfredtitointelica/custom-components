@@ -1,7 +1,8 @@
 .code-panel {
-  margin-top: 20px;
+  margin-top: 16px;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  animation: code-in 0.3s var(--ease-emphasized);
   background: var(--c-code-bg);
   color: var(--c-code-ink);
 }
@@ -64,4 +65,11 @@
   margin: 0;
   color: rgb(255 255 255 / 0.55);
   font-family: var(--font-sans);
+}
+
+@keyframes code-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }

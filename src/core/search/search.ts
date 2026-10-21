@@ -1,8 +1,12 @@
-import { Component, ElementRef, input, model, viewChild } from '@angular/core';
+import { Component, ElementRef, input, model, output, viewChild } from '@angular/core';
 
-/** Generic search field with clear action. Holds no filtering logic: the parent owns the query. */
+/**
+ * Generic search field with clear action. Holds no filtering logic: the parent owns the query.
+ * Escape clears the text; when already empty it emits `escaped`.
+ */
 @Component({
   selector: 'app-search',
+  host: { '[class.is-large]': "appearance() === 'large'" },
   template: `
     <div class="search" role="search">
       <i class="pi pi-search search-icon" aria-hidden="true"></i>
@@ -16,7 +20,8 @@ import { Component, ElementRef, input, model, viewChild } from '@angular/core';
         [attr.aria-label]="label()"
         [attr.aria-controls]="controls()"
         (input)="query.set(field.value)"
-        (keydown.escape)="clear()"
+        (keydown.enter)="submitted.emit()"
+        (keydown.escape)="onEscape()"
       />
       @if (query()) {
         <button type="button" class="search-clear" aria-label="Clear search" (click)="clear()">
@@ -31,13 +36,25 @@ export class Search {
   readonly query = model('');
   readonly placeholder = input('Search');
   readonly label = input('Search');
+  readonly appearance = input<'bar' | 'large'>('bar');
   /** ID of the element whose content the search filters. */
   readonly controls = input<string>();
+  readonly submitted = output<void>();
+  readonly escaped = output<void>();
 
   private readonly field = viewChild.required<ElementRef<HTMLInputElement>>('field');
 
+  focus(): void {
+    this.field().nativeElement.focus();
+  }
+
   clear(): void {
     this.query.set('');
-    this.field().nativeElement.focus();
+    this.focus();
+  }
+
+  protected onEscape(): void {
+    if (this.query()) this.clear();
+    else this.escaped.emit();
   }
 }

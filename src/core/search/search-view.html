@@ -1,0 +1,49 @@
+<div class="search-head">
+  <button type="button" class="icon-button search-back" aria-label="Close search" (click)="search.close()">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+  </button>
+  <app-search
+    class="search-field"
+    appearance="large"
+    placeholder="Search"
+    label="Search the design system"
+    controls="search-results"
+    [(query)]="search.query"
+    (submitted)="openFirst()"
+    (escaped)="search.close()"
+  />
+</div>
+
+<div id="search-results" class="search-results" aria-live="polite">
+  @if (!search.query().trim()) {
+    <p class="search-hint">Search components by name.</p>
+  } @else {
+    @for (group of search.groups(); track group.id) {
+      <section class="search-group" [attr.aria-labelledby]="'search-group-' + group.id">
+        <h2 class="search-group-title" [id]="'search-group-' + group.id">
+          {{ group.label }} <span class="search-count">{{ group.results.length }}</span>
+        </h2>
+        <ul class="search-list">
+          @for (result of group.results; track result.id) {
+            <li>
+              <a class="search-result" [routerLink]="result.path">
+                <span class="dim">{{ result.label.slice(0, result.match[0]) }}</span
+                ><span class="hit">{{ result.label.slice(result.match[0], result.match[1]) }}</span
+                ><span class="dim">{{ result.label.slice(result.match[1]) }}</span>
+                <i class="pi pi-arrow-right search-go" aria-hidden="true"></i>
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+    } @empty {
+      <div class="search-empty">
+        <i class="pi pi-search" aria-hidden="true"></i>
+        <p>No results for “{{ search.query() }}”.</p>
+        <button type="button" class="search-empty-clear" (click)="search.query.set(''); field().focus()">
+          Clear search
+        </button>
+      </div>
+    }
+  }
+</div>

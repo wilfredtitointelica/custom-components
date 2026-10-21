@@ -2,92 +2,188 @@
   display: block;
 }
 
+/* Page header (M3 display / headline scale) */
 .doc-header {
-  margin-bottom: 28px;
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--c-outline-variant);
+}
+
+.doc-eyebrow {
+  margin: 0 0 8px;
+  color: var(--c-accent-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .doc-title {
   margin: 0;
   color: var(--c-ink);
-  font-size: 1.875rem;
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: clamp(2rem, 1.4rem + 2vw, 2.8125rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
 .doc-intro:not(:empty) {
-  margin-top: 10px;
-  color: var(--c-ink);
+  max-width: 72ch;
+  margin-top: 16px;
+  color: var(--c-ink-muted);
+  font-size: 1rem;
 }
 
+.doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--c-outline-variant);
+  border-radius: var(--radius-sm);
+  color: var(--c-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+
+  .pi {
+    color: var(--c-ink-muted);
+    font-size: 0.8125rem;
+  }
+}
+
+.chip-status {
+  border-color: transparent;
+  background: var(--c-accent-container);
+  color: var(--c-on-accent-container);
+
+  .pi {
+    color: inherit;
+  }
+}
+
+/* Variant sections */
 .doc-section {
-  padding: 24px 28px 28px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-lg);
-  background: var(--c-surface);
-  scroll-margin-top: calc(var(--header-h) + 16px);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  position: relative;
+  scroll-margin-top: calc(var(--topbar-h) + 16px);
 
   & + & {
-    margin-top: 24px;
-  }
-
-  &.is-active {
-    border-color: var(--c-accent);
-    box-shadow: 0 0 0 3px var(--c-accent-ring);
+    margin-top: 56px;
   }
 }
 
 .doc-section-title {
   margin: 0 0 16px;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
 
   a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--c-ink);
     text-decoration: none;
+  }
 
-    &:hover {
-      text-decoration: underline;
-    }
+  .anchor-icon {
+    color: var(--c-ink-muted);
+    font-size: 0.875rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  a:hover .anchor-icon,
+  a:focus-visible .anchor-icon {
+    opacity: 1;
   }
 }
 
 .doc-preview {
   display: grid;
   place-items: center;
-  min-height: 72px;
+  min-height: 200px;
+  padding: 32px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-xl);
+  background: var(--c-surface-low);
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.is-active .doc-preview {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 6px var(--c-accent-ring);
+}
+
+.is-active .doc-section-title a::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-accent);
 }
 
 .doc-placeholder {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
   gap: 8px;
-  margin: 0;
-  padding: 18px 24px;
-  border: 1px dashed var(--c-border-strong);
-  border-radius: var(--radius-md);
   color: var(--c-ink-muted);
-  font-size: 0.875rem;
+  text-align: center;
+
+  p {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
 
   code {
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: var(--c-bg);
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--c-surface-high);
     font-family: var(--font-mono);
     font-size: 0.75rem;
   }
 }
 
-@media (max-width: 600px) {
-  .doc-section {
-    padding: 20px 16px;
+.placeholder-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--c-primary-container);
+  color: var(--c-on-primary-container);
+
+  .pi {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 839px) {
+  .doc-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
   }
 
-  .doc-title {
-    font-size: 1.5rem;
+  .doc-section + .doc-section {
+    margin-top: 40px;
+  }
+
+  .doc-preview {
+    min-height: 160px;
+    padding: 24px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .doc-section-title {
+    font-size: 1.25rem;
   }
 }

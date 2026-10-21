@@ -10,8 +10,10 @@ export type VariantDefinition = string | { readonly name: string; readonly slug:
 export interface ComponentDefinition {
   /** Stable kebab-case ID. Used as route segment (/components/<id>) and folder name. Never rename. */
   readonly id: string;
-  /** Visible name, exactly as written in the Excel. */
+  /** Visible name. */
   readonly name: string;
+  /** Original Excel name, only when the visible name was simplified (traceability). */
+  readonly sourceName?: string;
   /** Variants in display order. Omit when they have not been defined yet. */
   readonly variants?: readonly VariantDefinition[];
   /** Lazy reference to the component's own routes file (src/components/<id>/routes.ts). */
