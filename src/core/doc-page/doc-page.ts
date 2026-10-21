@@ -1,13 +1,17 @@
 import {
+  afterNextRender,
   Component,
   computed,
+  effect,
   inject,
+  Injector,
   input,
   reflectComponentType,
   resource,
   Type,
+  untracked,
 } from '@angular/core';
-import { NgComponentOutlet } from '@angular/common';
+import { NgComponentOutlet, ViewportScroller } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { DocExampleCode, DocExampleSource } from '../../service/catalog.model';
@@ -76,4 +80,17 @@ export class DocPage {
       return new Map((chunk?.default ?? []).flatMap(toExample));
     },
   });
+
+  constructor() {
+    // The router scrolls to #<variant> as soon as the page opens, but the previews load afterwards and
+    // push the sections down. Once they are rendered, scroll to the selected variant again (reload,
+    // direct link, version change). Clicking a variant later does not re-run this.
+    const scroller = inject(ViewportScroller);
+    const injector = inject(Injector);
+    effect(() => {
+      if (this.examples.isLoading() || !this.examples.hasValue()) return;
+      const variantId = untracked(() => this.nav.activeVariantId());
+      if (variantId) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+    });
+  }
 }
