@@ -1,14 +1,12 @@
-import { Component, computed, input } from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
- * Incontrol brand (assets in public/brand).
- * `isotype` = symbol only, `logo` = symbol + wordmark.
- * `tone`: `color` = brand colors (default); `negative` = all white.
+ * Incontrol isotype (public/brand/incontrol-isotype.svg).
  * Decorative: the surrounding link provides the accessible name.
  */
 @Component({
   selector: 'app-brand-mark',
-  template: `<img [src]="src()" alt="" [width]="size().width" [height]="size().height" />`,
+  template: `<img src="brand/incontrol-isotype.svg" alt="" width="24" height="25" />`,
   styles: `
     :host {
       display: inline-flex;
@@ -20,15 +18,4 @@ import { Component, computed, input } from '@angular/core';
     }
   `,
 })
-export class BrandMark {
-  readonly variant = input<'isotype' | 'logo'>('isotype');
-  readonly tone = input<'color' | 'negative'>('color');
-
-  protected readonly src = computed(
-    () =>
-      `brand/incontrol-${this.variant()}${this.tone() === 'color' ? '' : `--${this.tone()}`}.svg`,
-  );
-  protected readonly size = computed(() =>
-    this.variant() === 'logo' ? { width: 126, height: 25 } : { width: 24, height: 25 },
-  );
-}
+export class BrandMark {}

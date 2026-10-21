@@ -1,12 +1,12 @@
 ---
 name: crear-componente
-description: Convenciones y pasos para crear (o versionar) un componente int-* en Intelica Components (Angular 20 + SCSS + BEM). Pregunta título y descripción (van en la cabecera del HTML, nunca en TS), crea la estructura base como plantilla y siempre la variante variants/basic/ vacía. Úsalo al maquetar un componente nuevo, crear una version-2 o revisar las convenciones del proyecto. Para agregar solo una variante a un componente existente, usar crear-variante.
+description: Convenciones y pasos para crear (o versionar) un componente int-* en Intelica Components (Angular 20 + SCSS + BEM). Pregunta título y descripción (van en la cabecera del HTML, nunca en TS), crea la estructura base como plantilla y siempre la variante variants/basic/ vacía. Úsalo al maquetar un componente nuevo o revisar las convenciones del proyecto. Para agregar solo una variante a un componente existente, usar crear-variante; para una nueva versión (version-N+1), crear-version.
 ---
 
 # Crear un componente `int-*`
 
 Guía para maquetadores. Resume las convenciones del proyecto y el paso a paso para crear un
-componente nuevo, agregar ejemplos a su documentación o abrir una nueva versión.
+componente nuevo, agregar ejemplos a su documentación o abrir una nueva versión (`/crear-version`).
 Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y estilos).
 
 > 🚫 **Regla principal: la base se entrega SOLO como plantilla.**
@@ -437,11 +437,11 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 
 ## 5. Crear una `version-2`
 
-1. Copiar `version-1/` a `version-2/` (con `base/`, `variants/` y `styles/`) y cambiar lo necesario;
-   `version-1` no se borra mientras se use. Las cabeceras se copian con los archivos: ajustar el
-   título o la descripción de `version-2/base/<id>.html` si cambian (el menú usa la versión más reciente).
-   Si `version-2` arranca sin ejemplos, crear su `basic` con
-   `npm run new:variant -- <id> Basic --description "…" --version 2`.
+1. Generarla con `npm run new:version -- <id> [--title "…"] [--description "…"]` (o con Claude:
+   `/crear-version`, skill `.claude/skills/crear-version/SKILL.md`). Copia la **última** versión
+   completa (`base/`, `variants/` y `styles/`) a `version-N+1/` y regenera la documentación; no se copia
+   a mano. `version-N` no se borra mientras se use. El maquetador cambia lo necesario en la nueva; el
+   título o la descripción de `version-N+1/base/<id>.html` mandan en el menú (versión más reciente).
 2. La carpeta y sus ejemplos se detectan solos: "Version 1" pasa a ser un desplegable que abre por
    defecto la más reciente; cada versión es enlazable con `/components/<id>?version=1#<variante>`.
 3. Las secciones son la unión de las carpetas `variants/<slug>/` de todas las versiones; si la
