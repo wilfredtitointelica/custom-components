@@ -436,7 +436,7 @@ npm start                                          # /components/chip: título, 
 ```
 
 Usar los scripts de `npm` (no `npx ng …` directo): antes de compilar ejecutan
-`scripts/generate-docs.mjs`. Para el servidor, **`npm start`** (http://localhost:5555; otro puerto:
+`scripts/generate-docs.mjs`. Para el servidor, **`npm start`** (http://localhost:4321; otro puerto:
 `npm start -- --port 4300`): además de recargar con cada edición, detecta carpetas nuevas o borradas
 creadas a mano. Con `ng serve` directo las ediciones también se ven al instante, pero una carpeta creada
 a mano (sin `npm run new:variant`) no aparece hasta ejecutar `npm run docs`. Si el IDE marca `src/generated/doc-registry.ts` como inexistente
