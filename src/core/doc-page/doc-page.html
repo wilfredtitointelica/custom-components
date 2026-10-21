@@ -1,0 +1,45 @@
+@let current = component();
+
+<header class="doc-header">
+  <h1 class="doc-title">{{ current.name }}</h1>
+  <!-- Intro content projected by the component page (description, usage notes…). -->
+  <div class="doc-intro"><ng-content /></div>
+</header>
+
+@for (variant of current.variants; track variant.id) {
+  <section
+    class="doc-section"
+    [id]="variant.id"
+    [class.is-active]="nav.activeVariantId() === variant.id"
+    [attr.aria-labelledby]="variant.id + '-title'"
+  >
+    <h2 class="doc-section-title" [id]="variant.id + '-title'">
+      <a [routerLink]="current.path" [fragment]="variant.id">{{ variant.name }}</a>
+    </h2>
+
+    <div class="doc-preview">
+      @if (previews().get(variant.id); as preview) {
+        <ng-container [ngTemplateOutlet]="preview" />
+      } @else {
+        <p class="doc-placeholder">
+          <i class="pi pi-box" aria-hidden="true"></i>
+          Preview pending
+          <code>#{{ variant.id }}</code>
+        </p>
+      }
+    </div>
+
+    @if (code.isVisible(variant.id)) {
+      <app-code-panel [label]="current.name + ' · ' + variant.name" [snippets]="snippets().get(variant.id)" />
+    }
+  </section>
+} @empty {
+  <section class="doc-section" [id]="current.id">
+    <div class="doc-preview">
+      <p class="doc-placeholder">
+        <i class="pi pi-box" aria-hidden="true"></i>
+        No variants defined yet for this component.
+      </p>
+    </div>
+  </section>
+}
