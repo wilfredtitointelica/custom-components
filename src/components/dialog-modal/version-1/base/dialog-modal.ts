@@ -11,6 +11,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class IntDialogModal {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
   static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
-  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 }

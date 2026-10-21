@@ -15,7 +15,7 @@ export type IntDemoVariant = 'basic' | 'outlined';
 export class IntDemo {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
   static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
-  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = '';
 
   readonly variant = input<IntDemoVariant>('basic');

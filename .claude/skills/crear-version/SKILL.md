@@ -44,7 +44,8 @@ Pasa `--title` / `--description` solo si el usuario los cambió. El script:
   reinicia `static readonly status` a `'pending'` (la versión nueva es trabajo sin empezar; la
   anterior conserva su estado). `static readonly designer` se copia tal cual: si el usuario dice que
   la versión nueva la ve otra persona, cambia solo esa línea en `version-N+1/base/<id>.ts` (nombre
-  completo: Yony León, Gabriela Javier o Christian Abanto);
+  completo: Yony León, Gabriela Javier o Christian Abanto). El diseñador de la versión elegida es el
+  que muestra la página del componente;
 - en `base/<id>.html` reescribe la cabecera solo con los campos dados (el resto del archivo intacto);
 - falla sin tocar nada si el componente no existe, no tiene versiones, falta la base o `version-N+1/`
   ya existe;

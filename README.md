@@ -31,8 +31,10 @@ Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).
 
 - Estado de cada versión: `static readonly status: 'pending' | 'in-progress' | 'done'` en la clase de
   `base/<id>.ts` (chip de la página). Se cambia con `npm run set:status -- <id> <estado>`.
-- Diseñador a cargo: `static readonly designer = '<Nombre completo>'` debajo de `status`. El avance
-  por componente y por diseñador se ve en el menú Reference → Status.
+- Diseñador a cargo: `static readonly designer = '<Nombre completo>'` debajo de `status`. Se ve en la
+  página del componente y, con el avance por componente y por diseñador, en Reference → Status.
+  Colores de cada diseñador: `src/service/designers.ts`.
+- `guide` y `status` son ids reservados (páginas de Reference): ningún componente puede usarlos.
 
 Guías con Claude Code: `/crear-componente`, `/crear-variante`, `/crear-version` y `/cambiar-estado`
 (`.claude/skills/`). En la app: menú Reference → Guide.

@@ -43,7 +43,8 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 | Título y descripción | **Siempre en el HTML**, nunca en TS: el componente en la cabecera de `base/<id>.html`, cada variante en la de su `example.html` (ver 3.0). |
 | Ejemplo pendiente | Un `example.html` vacío o **solo con comentarios** (cabecera incluida) se muestra como "Preview pending" con la ruta del archivo. Cualquier contenido fuera de los comentarios (un elemento o texto) hace que se renderice. |
 | Estado | Propiedad de la clase en `base/<id>.ts`: `static readonly status: 'pending' \| 'in-progress' \| 'done' = 'pending';`. Se crea siempre en `'pending'` (chip "Pending"); el maquetador la pasa a `'in-progress'` al empezar y a `'done'` al terminar, con la skill `cambiar-estado` o `npm run set:status -- <id> <estado>`. Es por versión; `new:version` la reinicia a `'pending'`. |
-| Diseñador | `static readonly designer = '<Nombre completo>';` debajo de `status` en `base/<id>.ts` (`''` = sin asignar). Se pregunta al crear; `new:version` lo copia. Se ve en Reference → Status. |
+| Diseñador | `static readonly designer = '<Nombre completo>';` debajo de `status` en `base/<id>.ts` (`''` = sin asignar). Se pregunta al crear; `new:version` lo copia. Se ve en la página del componente (avatar a la derecha de los chips) y en Reference → Status. Su color está en `src/service/designers.ts`. |
+| IDs reservados | `guide` y `status` son páginas de Reference (`/components/guide`, `/components/status`): ningún componente puede usar esos ids. |
 | Versiones | Cada `version-N/` se detecta sola: con una versión la página muestra "Version 1"; con más, un desplegable (`?version=N`; por defecto la más reciente). |
 | Código | Cada sección muestra el código **real** de su ejemplo (pestañas HTML / TS). El switch "Code" de la barra superior abre/cierra todas; el botón "Code" de cada sección, solo la suya. |
 
@@ -109,12 +110,15 @@ Orden de trabajo (cada paso se detalla abajo):
 Antes de escribir cualquier archivo, pregunta en **un solo mensaje** lo que no se haya dado:
 
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
-   kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio.
+   kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio. Nunca `guide` ni `status`
+   (reservados por las páginas de Reference).
 2. **Descripción** del componente: una línea (puede quedar vacía si el usuario no la tiene).
 3. **Descripción de la variante `Basic`**: una línea (opcional). Su título es siempre `Basic`.
 4. **Diseñador** a cargo: nombre completo. Equipo actual: **Yony León**, **Gabriela Javier**,
    **Christian Abanto** (acepta el nombre corto: "Yony", "Gabi", "Abanto"). Puede quedar vacío si aún
    no se asignó. Va en `static readonly designer` de la base (3.3), no en el HTML.
+   Si es una persona **nueva** en el equipo, agrega su nombre completo y un color en `DESIGNER_COLORS`
+   de `src/service/designers.ts` (que contraste con los demás; si no, toma uno de reserva).
 
 El título y la descripción se escriben **en el HTML**, en un comentario al inicio del archivo que
 `scripts/generate-docs.mjs` lee y Angular no renderiza:
@@ -238,15 +242,16 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class IntChip {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
   static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
-  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 }
 ```
 
 - **`ViewEncapsulation.None`** es lo único fijo: el aislamiento lo da el prefijo `int-` + BEM.
 - **`designer`** va siempre, justo debajo de `status`, con el nombre completo respondido en 3.0
-  (`''` si no se asignó). La página **Reference → Status** lo muestra en la tabla y agrupa el avance
-  por diseñador. `scripts/generate-docs.mjs` lo lee del archivo, igual que `status`.
+  (`''` si no se asignó). Se muestra en la **página del componente** (avatar con iniciales y anillo de
+  color, a la derecha de los chips; "Sin asignar" si está vacío) y en **Reference → Status** (tabla,
+  filtro y avance por diseñador). `scripts/generate-docs.mjs` lo lee del archivo, igual que `status`.
 - **`status`** va siempre, como primera línea de la clase y en **`'pending'`**: es el chip de estado
   de la página ("Pending" / "In progress" / "Done"). `scripts/generate-docs.mjs` la lee del archivo
   (no se importa nada). El tipo va escrito en línea (`'pending' | 'in-progress' | 'done'`) para que la
@@ -426,7 +431,8 @@ Se entrega vacío, igual que la base. Cuando el maquetador lo complete:
 ```bash
 npm run build                                      # genera src/generated + compila TS, plantillas y SCSS
 npm test -- --watch=false --browsers=ChromeHeadless
-npm start                                          # /components/chip: título, descripción y "Basic" con "Preview pending"
+npm start                                          # /components/chip: título, descripción, chip "Pending", diseñador y "Basic" con "Preview pending"
+                                                   # /components/status: el componente aparece con su diseñador
 ```
 
 Usar los scripts de `npm` (no `npx ng …` directo): antes de compilar ejecutan
@@ -492,6 +498,7 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 - ❌ `@use 'button.text';` sin `as` (rompe la compilación).
 - ❌ Redefinir `:root` en los módulos de modificador.
 - ❌ Registrar rutas de componentes en `app.routes.ts`.
+- ❌ Usar `guide` o `status` como id de componente (son páginas de Reference).
 - ❌ Nombrar carpetas distinto a `version-<número>` o a kebab-case en `variants/` (no se detectan).
 - ❌ Listar en `variants` del config variantes sin carpeta para "planificarlas": no se muestran. Se crean con `npm run new:variant`.
 

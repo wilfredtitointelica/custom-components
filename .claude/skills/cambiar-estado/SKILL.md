@@ -80,7 +80,7 @@ Responde agrupado por estado (solo la versión más reciente de cada componente,
 Debajo de `status`, cada base tiene el diseñador a cargo de esa versión:
 
 ```ts
-  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 ```
 
@@ -93,7 +93,12 @@ asignar). Si la base no tiene la propiedad, agrégala justo debajo de `status`. 
 grep -rn "static readonly designer" src/components/*/version-*/base/*.ts
 ```
 
-La página **Reference → Status** muestra el avance por diseñador y permite filtrar la tabla por persona.
+El diseñador se ve en la **página del componente** (avatar con iniciales y anillo de color, a la
+derecha de los chips) y en **Reference → Status** (columna, filtro y avance por persona).
+
+Si el nombre es de una persona **nueva** en el equipo, agrega también su nombre completo y un color
+que contraste en `DESIGNER_COLORS` de `src/service/designers.ts` (colores actuales: Christian Abanto
+amarillo cadmio, Yony León azul, Gabriela Javier rosa). Sin eso toma un color de reserva.
 
 ## 5. Verificar
 
