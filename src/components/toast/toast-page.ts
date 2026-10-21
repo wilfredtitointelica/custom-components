@@ -4,10 +4,8 @@ import { DocPage } from '../../core/doc-page/doc-page';
 
 /**
  * Documentation page of "Toast".
- * Fill each variant inside <app-doc-page> with:
- *   <ng-template docVariant="<variant-id>"> …preview… </ng-template>
- *   <ng-template docCode="<variant-id>" docCodeLang="html|ts"> …code… </ng-template>
- * (import DocVariant / DocCode from core/doc-page/doc-slots). Variant IDs come from the inventory.
+ * Sections come from <id>.config.ts + the version-N/variants/<slug>/ folders, which are detected
+ * automatically: nothing is registered here. Optional intro content goes inside <app-doc-page>.
  */
 @Component({
   selector: 'app-toast-page',

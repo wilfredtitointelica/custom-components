@@ -67,7 +67,10 @@
               "buildTarget": "custom-components:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 5555
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

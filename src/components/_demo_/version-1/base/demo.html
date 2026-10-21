@@ -1,0 +1,12 @@
+<!--
+  title: Demo
+  description: Reference implementation of the whole flow: config, base, variants and styles.
+-->
+<article [class]="classes()">
+  <h3 class="int-demo__title">{{ title() }}</h3>
+  <ul class="int-demo__list">
+    @for (item of items(); track item) {
+      <li class="int-demo__item">{{ item }}</li>
+    }
+  </ul>
+</article>

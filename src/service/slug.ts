@@ -14,7 +14,9 @@ export function toSlug(value: string): string {
  * so "file upload" matches "FileUpload" and "dialogo" matches "Diálogo".
  */
 export function toSearchKey(value: string): string {
-  return stripDiacritics(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+  return stripDiacritics(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
 }
 
 /** Range [start, end) of `text` matched by `term` under toSearchKey rules, or null. */

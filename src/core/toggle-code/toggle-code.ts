@@ -1,9 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { CodeVisibility } from '../../service/code-visibility';
-import { NavigationState } from '../../service/navigation-state';
 
-/** Switch that shows/hides the code panel of the selected variant (the one in the URL fragment). */
+/** Global switch: shows/hides the code panels of every variant (each variant also has its own button). */
 @Component({
   selector: 'app-toggle-code',
   template: `
@@ -11,11 +10,10 @@ import { NavigationState } from '../../service/navigation-state';
       type="button"
       role="switch"
       class="toggle-code"
-      [class.is-on]="isOn()"
-      [attr.aria-checked]="isOn()"
-      [disabled]="!target()"
-      [title]="target() ? (isOn() ? 'Hide code' : 'Show code') + ' for the selected variant' : 'Select a variant to view its code'"
-      (click)="toggle()"
+      [class.is-on]="code.allVisible()"
+      [attr.aria-checked]="code.allVisible()"
+      [title]="(code.allVisible() ? 'Hide' : 'Show') + ' code for all variants'"
+      (click)="code.setAll(!code.allVisible())"
     >
       <span class="toggle-label">Code</span>
       <span class="toggle-track" aria-hidden="true">
@@ -26,17 +24,5 @@ import { NavigationState } from '../../service/navigation-state';
   styleUrl: './toggle-code.scss',
 })
 export class ToggleCode {
-  private readonly nav = inject(NavigationState);
-  private readonly code = inject(CodeVisibility);
-
-  protected readonly target = this.nav.activeVariantId;
-  protected readonly isOn = computed(() => {
-    const target = this.target();
-    return !!target && this.code.isVisible(target);
-  });
-
-  protected toggle(): void {
-    const target = this.target();
-    if (target) this.code.toggle(target);
-  }
+  protected readonly code = inject(CodeVisibility);
 }

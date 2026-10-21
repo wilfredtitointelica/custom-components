@@ -40,7 +40,9 @@ export class GlobalSearch {
       path: component.path,
       match: findMatchRange(component.name, term)!,
     }));
-    return components.length ? [{ id: 'components', label: 'Components', results: components }] : [];
+    return components.length
+      ? [{ id: 'components', label: 'Components', results: components }]
+      : [];
   });
 
   constructor() {

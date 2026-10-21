@@ -1,4 +1,5 @@
 import { Component, effect, inject, output, signal, untracked } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { ComponentCatalog } from '../../../service/component-catalog';
@@ -7,7 +8,7 @@ import { NavigationState } from '../../../service/navigation-state';
 /** Side menu: one expandable entry per inventory component. */
 @Component({
   selector: 'app-component-nav',
-  imports: [RouterLink],
+  imports: [NgTemplateOutlet, RouterLink],
   templateUrl: './component-nav.html',
   styleUrl: './component-nav.scss',
 })
@@ -15,7 +16,10 @@ export class ComponentNav {
   /** Emitted after following a link (used to close the drawer on small screens). */
   readonly navigated = output<void>();
 
-  protected readonly components = inject(ComponentCatalog).components;
+  private readonly catalog = inject(ComponentCatalog).components;
+  /** Reference implementations (_demo_), pinned above the divider. */
+  protected readonly references = this.catalog.filter((c) => c.reference);
+  protected readonly components = this.catalog.filter((c) => !c.reference);
   protected readonly nav = inject(NavigationState);
 
   private readonly expanded = signal<ReadonlySet<string>>(new Set());

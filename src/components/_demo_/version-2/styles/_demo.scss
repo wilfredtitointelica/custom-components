@@ -1,0 +1,84 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-DEMO: 'int-demo ( Custom )';
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+.int-demo {
+  width: min(100%, 320px);
+  overflow: hidden;
+  border-top: 4px solid var(--c-accent);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-demo {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--c-surface-low);
+  }
+
+  &__icon {
+    color: var(--c-accent-text);
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__count {
+    min-width: 24px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--c-accent-container);
+    color: var(--c-on-accent-container);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 4px 20px 12px;
+    list-style: none;
+  }
+
+  &__item {
+    padding: 10px 0;
+    font-size: 0.875rem;
+
+    & + & {
+      border-top: 1px dashed var(--c-outline-variant);
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-demo {
+}

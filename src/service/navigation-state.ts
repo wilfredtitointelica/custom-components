@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
-import { ComponentCatalog } from './component-catalog';
+import { ComponentCatalog, findVersion, VERSION_QUERY_PARAM } from './component-catalog';
 
 /** Derives the current selection (section, component, variant) from the URL. The URL is the only source of truth. */
 @Injectable({ providedIn: 'root' })
@@ -31,7 +31,16 @@ export class NavigationState {
   /** ID of the component whose page is open, if any. */
   readonly componentId = computed(() => {
     const [section, componentId] = this.segments();
-    return section === 'components' && componentId && this.catalog.find(componentId) ? componentId : null;
+    return section === 'components' && componentId && this.catalog.find(componentId)
+      ? componentId
+      : null;
+  });
+
+  /** Documented version of the open component: ?version=<N>, or its latest version folder. */
+  readonly activeVersion = computed(() => {
+    const componentId = this.componentId();
+    const component = componentId ? this.catalog.find(componentId) : undefined;
+    return component && findVersion(component, this.urlTree().queryParams[VERSION_QUERY_PARAM]);
   });
 
   /** Selected variant: the fragment, only when it belongs to the open component. */

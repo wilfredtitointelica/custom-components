@@ -136,3 +136,10 @@
   font-style: italic;
 }
 
+
+/* Separates the reference implementations (_demo_) from the component list. */
+.nav-divider {
+  margin: 16px;
+  border: 0;
+  border-top: 1px solid var(--c-outline-variant);
+}

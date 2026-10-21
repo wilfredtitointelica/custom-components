@@ -1,8 +1,9 @@
-import { booleanAttribute, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 /**
  * Incontrol brand (assets in public/brand).
- * `isotype` = symbol only, `logo` = symbol + wordmark; `negative` = white version for dark surfaces.
+ * `isotype` = symbol only, `logo` = symbol + wordmark.
+ * `tone`: `color` = brand colors (default); `negative` = all white.
  * Decorative: the surrounding link provides the accessible name.
  */
 @Component({
@@ -21,10 +22,11 @@ import { booleanAttribute, Component, computed, input } from '@angular/core';
 })
 export class BrandMark {
   readonly variant = input<'isotype' | 'logo'>('isotype');
-  readonly negative = input(false, { transform: booleanAttribute });
+  readonly tone = input<'color' | 'negative'>('color');
 
   protected readonly src = computed(
-    () => `brand/incontrol-${this.variant()}${this.negative() ? '--negative' : ''}.svg`,
+    () =>
+      `brand/incontrol-${this.variant()}${this.tone() === 'color' ? '' : `--${this.tone()}`}.svg`,
   );
   protected readonly size = computed(() =>
     this.variant() === 'logo' ? { width: 126, height: 25 } : { width: 24, height: 25 },

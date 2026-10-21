@@ -1,21 +1,56 @@
-import { Component, computed, contentChildren, effect, inject, input, isDevMode, TemplateRef } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  reflectComponentType,
+  resource,
+  Type,
+} from '@angular/core';
+import { NgComponentOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { CodeLanguage } from '../../service/catalog.model';
+import { DocExampleCode, DocExampleSource } from '../../service/catalog.model';
 import { CodeVisibility } from '../../service/code-visibility';
 import { ComponentCatalog } from '../../service/component-catalog';
+import { parseDocHtml } from '../../service/doc-html';
 import { NavigationState } from '../../service/navigation-state';
 import { CodePanel } from '../toggle-code/code-panel';
-import { DocCode, DocVariant } from './doc-slots';
+import { VersionPicker } from './version-picker';
+
+/** A rendered example: the component exported by variants/<slug>/example.ts and its code. */
+interface DocExample {
+  readonly component: Type<unknown>;
+  readonly sources: DocExampleCode;
+  /** example.html is empty or only has comments: "Preview pending" instead of the preview. */
+  readonly pending: boolean;
+}
+
+/** The Angular component exported by an example module (whatever its class name). */
+function toExample({ slug, module, sources }: DocExampleSource): [string, DocExample][] {
+  const component = Object.values(module).find(
+    (value): value is Type<unknown> =>
+      typeof value === 'function' && reflectComponentType(value as Type<unknown>) !== null,
+  );
+  if (!component) {
+    console.warn(`[doc-page] variants/${slug}/example.ts does not export a component.`);
+    return [];
+  }
+  // The code panel shows example.html without its documentation header.
+  const html = parseDocHtml(sources.html);
+  return [
+    [slug, { component, sources: { ...sources, html: html.body, ts: sources.ts?.trim() }, pending: html.pending }],
+  ];
+}
 
 /**
- * Documentation layout shared by every component page. Renders one anchored section per
- * inventory variant; authors fill sections through DocVariant / DocCode templates.
+ * Documentation layout shared by every component page. Renders one anchored section per visible
+ * variant (<id>.config.ts + detected folders) with the example of the selected version, found by
+ * convention in version-N/variants/<slug>/ (see scripts/generate-docs.mjs). Nothing is registered by hand.
  */
 @Component({
   selector: 'app-doc-page',
-  imports: [NgTemplateOutlet, RouterLink, CodePanel],
+  imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
 })
@@ -26,37 +61,19 @@ export class DocPage {
   protected readonly nav = inject(NavigationState);
   protected readonly code = inject(CodeVisibility);
 
-  private readonly variantSlots = contentChildren(DocVariant);
-  private readonly codeSlots = contentChildren(DocCode);
-
   protected readonly component = computed(() => {
     const component = this.catalog.find(this.componentId());
-    if (!component) throw new Error(`[doc-page] "${this.componentId()}" is not in the component inventory.`);
+    if (!component)
+      throw new Error(`[doc-page] "${this.componentId()}" is not in the component inventory.`);
     return component;
   });
 
-  protected readonly previews = computed(
-    () => new Map(this.variantSlots().map((slot) => [slot.variantId(), slot.template])),
-  );
-
-  protected readonly snippets = computed(() => {
-    const byVariant = new Map<string, Map<CodeLanguage, TemplateRef<unknown>>>();
-    for (const slot of this.codeSlots()) {
-      const languages = byVariant.get(slot.variantId()) ?? new Map();
-      byVariant.set(slot.variantId(), languages.set(slot.language(), slot.template));
-    }
-    return byVariant;
+  /** Examples of the selected version, by slug; its chunk is loaded when the version changes. */
+  protected readonly examples = resource({
+    params: () => this.nav.activeVersion(),
+    loader: async ({ params: version }): Promise<ReadonlyMap<string, DocExample>> => {
+      const chunk = await version.loadExamples?.();
+      return new Map((chunk?.default ?? []).flatMap(toExample));
+    },
   });
-
-  constructor() {
-    if (isDevMode()) {
-      effect(() => {
-        const known = new Set(this.component().variants.map((v) => v.id));
-        const used = [...this.variantSlots(), ...this.codeSlots()].map((slot) => slot.variantId());
-        for (const id of used.filter((id) => !known.has(id))) {
-          console.warn(`[doc-page] Slot "${id}" does not match any variant of "${this.componentId()}".`);
-        }
-      });
-    }
-  }
 }

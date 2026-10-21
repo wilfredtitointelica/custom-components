@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use '@angular/cdk' as cdk;
 @import 'primeicons/primeicons.css';
+
+// Positioning of CDK overlays (e.g. the version dropdown of the documentation page).
+@include cdk.overlay();
 
 /*
  * Design tokens — Material 3 roles mapped onto the Intelica brand

@@ -1,17 +1,36 @@
 @let current = component();
+@let version = nav.activeVersion();
 
 <header class="doc-header">
   <p class="doc-eyebrow">Component</p>
-  <h1 class="doc-title">{{ current.name }}</h1>
+  <!-- Title and description: header comment of version-N/base/<id>.html of the selected version. -->
+  <h1 class="doc-title">{{ version?.title ?? current.name }}</h1>
+  @if (version?.description ?? current.description; as description) {
+    <p class="doc-description">{{ description }}</p>
+  }
   <!-- Intro content projected by the component page (description, usage notes…). -->
   <div class="doc-intro"><ng-content /></div>
   <div class="doc-meta">
+    @if (current.versions.length > 1) {
+      <app-version-picker [versions]="current.versions" [active]="version" />
+    } @else if (current.versions.length === 1) {
+      <span class="chip">
+        <i class="pi pi-tag" aria-hidden="true"></i>
+        Version {{ current.versions[0].number }}
+      </span>
+    }
     <span class="chip">
       <i class="pi pi-clone" aria-hidden="true"></i>
       @switch (current.variants.length) {
-        @case (0) { No variants defined yet }
-        @case (1) { 1 variant }
-        @default { {{ current.variants.length }} variants }
+        @case (0) {
+          No variants defined yet
+        }
+        @case (1) {
+          1 variant
+        }
+        @default {
+          {{ current.variants.length }} variants
+        }
       }
     </span>
     <span class="chip chip-status">
@@ -28,27 +47,54 @@
     [class.is-active]="nav.activeVariantId() === variant.id"
     [attr.aria-labelledby]="variant.id + '-title'"
   >
-    <h2 class="doc-section-title" [id]="variant.id + '-title'">
-      <a [routerLink]="current.path" [fragment]="variant.id">
-        {{ variant.name }}
-        <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
-      </a>
-    </h2>
+    @let codeVisible = code.isVisible(variant.id);
+    <div class="doc-section-head">
+      <h2 class="doc-section-title" [id]="variant.id + '-title'">
+        <a [routerLink]="current.path" [fragment]="variant.id" queryParamsHandling="preserve">
+          {{ variant.name }}
+          <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+        </a>
+      </h2>
+      <!-- Code of this variant only; the top-bar switch shows/hides all of them. -->
+      <button
+        type="button"
+        class="doc-code-button"
+        [class.is-on]="codeVisible"
+        [attr.aria-pressed]="codeVisible"
+        [attr.aria-controls]="variant.id + '-code'"
+        [title]="(codeVisible ? 'Hide' : 'Show') + ' code of ' + variant.name"
+        (click)="code.toggle(variant.id)"
+      >
+        <i class="pi pi-code" aria-hidden="true"></i>
+        Code
+      </button>
+    </div>
 
+    @if (variant.description) {
+      <p class="doc-section-description">{{ variant.description }}</p>
+    }
+
+    <!-- Example of the selected version: version-N/variants/<slug>/example.ts, detected by folder.
+         An example.html that is empty or only has comments is still pending. -->
+    @let example = examples.value()?.get(variant.slug);
     <div class="doc-preview">
-      @if (previews().get(variant.id); as preview) {
-        <ng-container [ngTemplateOutlet]="preview" />
-      } @else {
+      @if (example && !example.pending) {
+        <ng-container *ngComponentOutlet="example.component" />
+      } @else if (!examples.isLoading()) {
         <div class="doc-placeholder">
           <span class="placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
           <p>Preview pending</p>
-          <code>#{{ variant.id }}</code>
+          <code>{{ version?.folder ?? 'version-1' }}/variants/{{ variant.slug }}/{{ example ? 'example.html' : '' }}</code>
         </div>
       }
     </div>
 
-    @if (code.isVisible(variant.id)) {
-      <app-code-panel [label]="current.name + ' · ' + variant.name" [snippets]="snippets().get(variant.id)" />
+    @if (codeVisible) {
+      <app-code-panel
+        [id]="variant.id + '-code'"
+        [label]="current.name + ' · ' + variant.name"
+        [sources]="example?.sources"
+      />
     }
   </section>
 } @empty {

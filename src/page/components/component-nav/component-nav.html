@@ -1,52 +1,67 @@
+@if (references.length) {
+  <p class="nav-status">Reference</p>
+  <ul class="nav-list">
+    @for (component of references; track component.id) {
+      <ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
+    }
+  </ul>
+  <hr class="nav-divider" />
+}
+
 <p class="nav-status">{{ components.length }} components</p>
 
 <ul class="nav-list">
   @for (component of components; track component.id) {
-    @let open = isExpanded(component.id);
-    @let current = nav.componentId() === component.id;
-    <li class="nav-item">
-      <div class="nav-row" [class.is-current]="current">
-        <a
-          class="nav-link"
-          [routerLink]="component.path"
-          [attr.aria-current]="current && !nav.activeVariantId() ? 'page' : null"
-          (click)="navigated.emit()"
-        >
-          {{ component.name }}
-        </a>
-        <button
-          type="button"
-          class="icon-button nav-toggle"
-          [attr.aria-expanded]="open"
-          [attr.aria-controls]="'nav-variants-' + component.id"
-          [attr.aria-label]="(open ? 'Collapse ' : 'Expand ') + component.name"
-          (click)="toggle(component.id)"
-        >
-          <i class="pi pi-chevron-down" [class.is-open]="open" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      @if (open) {
-        <ul class="variant-list" [id]="'nav-variants-' + component.id">
-          @for (variant of component.variants; track variant.id) {
-            @let active = nav.activeVariantId() === variant.id;
-            <li>
-              <a
-                class="variant-link"
-                [class.is-active]="active"
-                [routerLink]="variant.path"
-                [fragment]="variant.id"
-                [attr.aria-current]="active ? 'location' : null"
-                (click)="navigated.emit()"
-              >
-                {{ variant.name }}
-              </a>
-            </li>
-          } @empty {
-            <li class="variant-empty">No variants defined yet</li>
-          }
-        </ul>
-      }
-    </li>
+    <ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
   }
 </ul>
+
+<ng-template #navItem let-component>
+  @let open = isExpanded(component.id);
+  @let current = nav.componentId() === component.id;
+  <li class="nav-item">
+    <div class="nav-row" [class.is-current]="current">
+      <a
+        class="nav-link"
+        [routerLink]="component.path"
+        [attr.aria-current]="current && !nav.activeVariantId() ? 'page' : null"
+        (click)="navigated.emit()"
+      >
+        {{ component.name }}
+      </a>
+      <button
+        type="button"
+        class="icon-button nav-toggle"
+        [attr.aria-expanded]="open"
+        [attr.aria-controls]="'nav-variants-' + component.id"
+        [attr.aria-label]="(open ? 'Collapse ' : 'Expand ') + component.name"
+        (click)="toggle(component.id)"
+      >
+        <i class="pi pi-chevron-down" [class.is-open]="open" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    @if (open) {
+      <ul class="variant-list" [id]="'nav-variants-' + component.id">
+        @for (variant of component.variants; track variant.id) {
+          @let active = nav.activeVariantId() === variant.id;
+          <li>
+            <a
+              class="variant-link"
+              [class.is-active]="active"
+              [routerLink]="variant.path"
+              [fragment]="variant.id"
+              [queryParamsHandling]="current ? 'preserve' : ''"
+              [attr.aria-current]="active ? 'location' : null"
+              (click)="navigated.emit()"
+            >
+              {{ variant.name }}
+            </a>
+          </li>
+        } @empty {
+          <li class="variant-empty">No variants defined yet</li>
+        }
+      </ul>
+    }
+  </li>
+</ng-template>

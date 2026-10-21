@@ -1,15 +1,15 @@
-import { Component, computed, ElementRef, input, signal, TemplateRef, viewChild } from '@angular/core';
-import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
+import { Component, computed, input, signal } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 
-import { CODE_LANGUAGES, CodeLanguage } from '../../service/catalog.model';
+import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/catalog.model';
 
 /**
  * Code viewer shown under a variant when its Code switch is on.
- * Snippets are templates supplied by the component author (see DocCode); none are invented here.
+ * Shows the real source of the example folder (example.html / example.ts); nothing is invented here.
  */
 @Component({
   selector: 'app-code-panel',
-  imports: [NgTemplateOutlet, UpperCasePipe],
+  imports: [UpperCasePipe],
   template: `
     <div class="code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
       <div class="code-toolbar">
@@ -34,16 +34,21 @@ import { CODE_LANGUAGES, CodeLanguage } from '../../service/catalog.model';
           [attr.aria-label]="copied() ? 'Copied' : 'Copy code'"
           (click)="copy()"
         >
-          <i class="pi" [class.pi-copy]="!copied()" [class.pi-check]="copied()" aria-hidden="true"></i>
+          <i
+            class="pi"
+            [class.pi-copy]="!copied()"
+            [class.pi-check]="copied()"
+            aria-hidden="true"
+          ></i>
         </button>
       </div>
-      <div #body class="code-body" role="tabpanel">
-        @if (current(); as template) {
-          <ng-container [ngTemplateOutlet]="template" />
+      <div class="code-body" role="tabpanel">
+        @if (current(); as source) {
+          <pre><code>{{ source }}</code></pre>
         } @else {
           <p class="code-pending">
-            {{ selected() | uppercase }} code not available yet. It will be published once this variant is
-            implemented.
+            {{ selected() | uppercase }} code not available yet. It will be published once this
+            variant has its example folder.
           </p>
         }
       </div>
@@ -53,17 +58,15 @@ import { CODE_LANGUAGES, CodeLanguage } from '../../service/catalog.model';
 })
 export class CodePanel {
   readonly label = input.required<string>();
-  readonly snippets = input<ReadonlyMap<CodeLanguage, TemplateRef<unknown>>>();
+  readonly sources = input<DocExampleCode>();
 
   protected readonly languages = CODE_LANGUAGES;
   protected readonly selected = signal<CodeLanguage>(CODE_LANGUAGES[0]);
-  protected readonly current = computed(() => this.snippets()?.get(this.selected()) ?? null);
+  protected readonly current = computed(() => this.sources()?.[this.selected()] ?? null);
   protected readonly copied = signal(false);
 
-  private readonly body = viewChild.required<ElementRef<HTMLElement>>('body');
-
   protected async copy(): Promise<void> {
-    await navigator.clipboard.writeText(this.body().nativeElement.innerText.trim());
+    await navigator.clipboard.writeText(this.current() ?? '');
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 1500);
   }

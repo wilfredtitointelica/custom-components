@@ -1,0 +1,4 @@
+// int-tabs · entry point. Variant modules need an explicit namespace: Sass derives it from the
+// text before the first dot, so `@use 'tabs.v2'` would collide with `@use 'tabs'`.
+@use 'tabs';
+@use 'tabs.v2' as tabs-v2;

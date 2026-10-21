@@ -95,7 +95,7 @@
 
   /* Pending sections stay quiet until hovered, so the active one stands out. */
   &.is-pending:not(.is-active) {
-    opacity: 0.5;
+    opacity: 0.3;
 
     &:hover,
     &:focus-visible {

@@ -1,0 +1,16 @@
+<!--
+  title: Demo
+  description: Reference implementation of the whole flow: config, base, variants and styles.
+-->
+<article [class]="classes()">
+  <header class="int-demo__header">
+    <i class="int-demo__icon pi {{ icon() }}" aria-hidden="true"></i>
+    <h3 class="int-demo__title">{{ title() }}</h3>
+    <span class="int-demo__count">{{ items().length }}</span>
+  </header>
+  <ul class="int-demo__list">
+    @for (item of items(); track item) {
+      <li class="int-demo__item">{{ item }}</li>
+    }
+  </ul>
+</article>

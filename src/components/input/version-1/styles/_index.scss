@@ -1,0 +1,6 @@
+// int-input · entry point. Variant modules need an explicit namespace: Sass derives it from the
+// text before the first dot, so `@use 'input.checkbox'` would collide with `@use 'input'`.
+@use 'input';
+@use 'input.checkbox' as input-checkbox;
+@use 'input.radio-button' as input-radio-button;
+@use 'input.textarea' as input-textarea;
