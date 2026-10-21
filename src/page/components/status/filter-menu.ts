@@ -23,33 +23,33 @@ export interface FilterOption {
   template: `
     <button
       type="button"
-      class="filter-trigger"
-      [class.is-filtered]="value() !== null"
+      class="doc-filter-trigger"
+      [class.doc-is-filtered]="value() !== null"
       [cdkMenuTriggerFor]="menu"
       [attr.aria-label]="title() + ': ' + selected().label + ', change'"
     >
       <ng-container *ngTemplateOutlet="lead; context: { $implicit: selected() }" />
-      <span class="filter-trigger-label">{{ selected().label }}</span>
-      <i class="pi pi-chevron-down filter-trigger-arrow" aria-hidden="true"></i>
+      <span class="doc-filter-trigger-label">{{ selected().label }}</span>
+      <i class="pi pi-chevron-down doc-filter-trigger-arrow" aria-hidden="true"></i>
     </button>
 
     <ng-template #menu>
-      <div class="filter-menu" cdkMenu>
-        <p class="filter-menu-title" aria-hidden="true">{{ title() }}</p>
+      <div class="doc-filter-menu" cdkMenu>
+        <p class="doc-filter-menu-title" aria-hidden="true">{{ title() }}</p>
         @for (option of options(); track option.value) {
           <button
             type="button"
-            class="filter-option"
+            class="doc-filter-option"
             cdkMenuItemRadio
             [cdkMenuItemChecked]="option.value === value()"
             (cdkMenuItemTriggered)="changed.emit(option.value)"
           >
             <ng-container *ngTemplateOutlet="lead; context: { $implicit: option }" />
-            <span class="filter-option-label">{{ option.label }}</span>
+            <span class="doc-filter-option-label">{{ option.label }}</span>
             @if (option.count !== undefined) {
-              <span class="filter-option-count">{{ option.count }}</span>
+              <span class="doc-filter-option-count">{{ option.count }}</span>
             }
-            <i class="pi pi-check filter-option-check" aria-hidden="true"></i>
+            <i class="pi pi-check doc-filter-option-check" aria-hidden="true"></i>
           </button>
         }
       </div>
@@ -58,9 +58,9 @@ export interface FilterOption {
     <!-- Leading mark: bullet (designer), icon (status) or a generic icon for "all". -->
     <ng-template #lead let-option>
       @if (option.color) {
-        <span class="filter-dot" [style.background]="option.color" aria-hidden="true"></span>
+        <span class="doc-filter-dot" [style.background]="option.color" aria-hidden="true"></span>
       } @else {
-        <i class="pi {{ option.icon ?? allIcon() }} filter-icon" aria-hidden="true"></i>
+        <i class="pi {{ option.icon ?? allIcon() }} doc-filter-icon" aria-hidden="true"></i>
       }
     </ng-template>
   `,

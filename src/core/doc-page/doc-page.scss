@@ -6,12 +6,12 @@
 .doc-header {
   margin-bottom: 48px;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--c-outline-variant);
+  border-bottom: 1px solid var(--doc-outline-variant);
 }
 
 .doc-eyebrow {
   margin: 0 0 8px;
-  color: var(--c-accent-text);
+  color: var(--doc-accent-text);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -20,7 +20,7 @@
 
 .doc-title {
   margin: 0;
-  color: var(--c-ink);
+  color: var(--doc-ink);
   font-size: clamp(2rem, 1.4rem + 2vw, 2.8125rem);
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -30,14 +30,14 @@
 .doc-description {
   max-width: 72ch;
   margin: 16px 0 0;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 1rem;
 }
 
 .doc-intro:not(:empty) {
   max-width: 72ch;
   margin-top: 16px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 1rem;
 }
 
@@ -54,20 +54,20 @@
   margin-left: auto;
 }
 
-.chip {
+.doc-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   height: 32px;
   padding: 0 14px;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-sm);
-  color: var(--c-ink);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
+  color: var(--doc-ink);
   font-size: 0.8125rem;
   font-weight: 500;
 
   .pi {
-    color: var(--c-ink-muted);
+    color: var(--doc-ink-muted);
     font-size: 0.8125rem;
   }
 }
@@ -75,7 +75,7 @@
 /* Variant sections */
 .doc-section {
   position: relative;
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
+  scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
   & + & {
     margin-top: 56px;
@@ -98,10 +98,10 @@
   gap: 8px;
   height: 32px;
   padding: 0 14px;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
   background: transparent;
-  color: var(--c-ink);
+  color: var(--doc-ink);
   font: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -111,23 +111,23 @@
     border-color 0.2s;
 
   .pi {
-    color: var(--c-ink-muted);
+    color: var(--doc-ink-muted);
     font-size: 0.8125rem;
   }
 
   &:hover {
-    background: var(--c-state-hover);
+    background: var(--doc-state-hover);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--c-accent-ring);
+    outline: 2px solid var(--doc-accent-ring);
     outline-offset: 2px;
   }
 
-  &.is-on {
+  &.doc-is-on {
     border-color: transparent;
-    background: var(--c-accent-container);
-    color: var(--c-on-accent-container);
+    background: var(--doc-accent-container);
+    color: var(--doc-on-accent-container);
 
     .pi {
       color: inherit;
@@ -145,19 +145,19 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--c-ink);
+    color: var(--doc-ink);
     text-decoration: none;
   }
 
-  .anchor-icon {
-    color: var(--c-ink-muted);
+  .doc-anchor-icon {
+    color: var(--doc-ink-muted);
     font-size: 0.875rem;
     opacity: 0;
     transition: opacity 0.2s;
   }
 
-  a:hover .anchor-icon,
-  a:focus-visible .anchor-icon {
+  a:hover .doc-anchor-icon,
+  a:focus-visible .doc-anchor-icon {
     opacity: 1;
   }
 }
@@ -165,7 +165,7 @@
 .doc-section-description {
   max-width: 72ch;
   margin: -4px 0 16px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.9375rem;
 }
 
@@ -174,8 +174,8 @@
   place-items: center;
   min-height: 200px;
   padding: 48px 32px;
-  border-radius: var(--radius-xl);
-  background: var(--c-surface-low);
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface-low);
 }
 
 /* Active variant: a thin rail in the left gutter, outside the preview so it never competes with the example */
@@ -187,7 +187,7 @@
   left: -24px;
   width: 3px;
   border-radius: 3px;
-  background: var(--c-accent);
+  background: var(--doc-accent);
   opacity: 0;
   transform: scaleY(0.4);
   transform-origin: top;
@@ -196,24 +196,24 @@
     transform 0.25s;
 }
 
-.doc-section.is-active::before {
+.doc-section.doc-is-active::before {
   opacity: 1;
   transform: scaleY(1);
 }
 
-.is-active .doc-section-title a::before {
+.doc-is-active .doc-section-title a::before {
   content: '';
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--c-accent);
+  background: var(--doc-accent);
 }
 
 .doc-placeholder {
   display: grid;
   justify-items: center;
   gap: 8px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   text-align: center;
 
   p {
@@ -224,20 +224,20 @@
   code {
     padding: 2px 8px;
     border-radius: 6px;
-    background: var(--c-surface-high);
-    font-family: var(--font-mono);
+    background: var(--doc-surface-high);
+    font-family: var(--doc-font-mono);
     font-size: 0.75rem;
   }
 }
 
-.placeholder-icon {
+.doc-placeholder-icon {
   display: grid;
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: var(--radius-lg);
-  background: var(--c-primary-container);
-  color: var(--c-on-primary-container);
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-primary-container);
+  color: var(--doc-on-primary-container);
 
   .pi {
     font-size: 1.25rem;
@@ -261,7 +261,7 @@
   .doc-preview {
     min-height: 160px;
     padding: 24px 16px;
-    border-radius: var(--radius-lg);
+    border-radius: var(--doc-radius-lg);
   }
 
   .doc-section-title {

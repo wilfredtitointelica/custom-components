@@ -1,9 +1,9 @@
 /* Material 3 switch with icon, labelled "Code". */
-.toggle-code {
+.doc-toggle-code {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 4px 4px 4px 12px;
+  padding: 0; // 4px 4px 4px 12px;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -13,8 +13,8 @@
   font-weight: 500;
   cursor: pointer;
 
-  &:hover:not(:disabled) .toggle-track {
-    box-shadow: 0 0 0 8px var(--c-state-hover);
+  &:hover:not(:disabled) .doc-toggle-track {
+    box-shadow: 0 0 0 8px var(--doc-state-hover);
   }
 
   &:disabled {
@@ -23,20 +23,20 @@
   }
 }
 
-.toggle-track {
+.doc-toggle-track {
   position: relative;
   width: 52px;
   height: 32px;
-  border: 2px solid var(--c-outline);
+  border: 2px solid var(--doc-outline);
   border-radius: 999px;
-  background: var(--c-surface-high);
+  background: var(--doc-surface-high);
   transition:
     background-color 0.2s,
     border-color 0.2s,
     box-shadow 0.2s;
 }
 
-.toggle-thumb {
+.doc-toggle-thumb {
   position: absolute;
   top: 50%;
   left: 4px;
@@ -45,13 +45,13 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--c-primary);
-  color: var(--c-on-primary);
+  background: var(--doc-primary);
+  color: var(--doc-on-primary);
   transform: translateY(-50%);
   transition:
-    transform 0.3s var(--ease-emphasized),
-    width 0.3s var(--ease-emphasized),
-    height 0.3s var(--ease-emphasized),
+    transform 0.3s var(--doc-ease-emphasized),
+    width 0.3s var(--doc-ease-emphasized),
+    height 0.3s var(--doc-ease-emphasized),
     background-color 0.2s;
 
   .pi {
@@ -59,27 +59,27 @@
   }
 }
 
-.is-on {
-  .toggle-track {
-    border-color: var(--c-accent);
-    background: var(--c-accent);
+.doc-is-on {
+  .doc-toggle-track {
+    border-color: var(--doc-accent);
+    background: var(--doc-accent);
   }
 
-  .toggle-thumb {
+  .doc-toggle-thumb {
     width: 24px;
     height: 24px;
     background: #fff;
-    color: var(--c-accent-text);
+    color: var(--doc-accent-text);
     transform: translate(20px, -50%);
   }
 }
 
 @media (max-width: 839px) {
-  .toggle-label {
+  .doc-toggle-label {
     display: none;
   }
 
-  .toggle-code {
+  .doc-toggle-code {
     padding-left: 4px;
   }
 }

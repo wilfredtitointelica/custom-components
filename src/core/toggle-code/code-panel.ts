@@ -11,15 +11,15 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
   selector: 'app-code-panel',
   imports: [UpperCasePipe],
   template: `
-    <div class="code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
-      <div class="code-toolbar">
-        <div class="code-tabs" role="tablist" aria-label="Language">
+    <div class="doc-code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
+      <div class="doc-code-toolbar">
+        <div class="doc-code-tabs" role="tablist" aria-label="Language">
           @for (language of languages; track language) {
             <button
               type="button"
               role="tab"
-              class="code-tab"
-              [class.is-selected]="language === selected()"
+              class="doc-code-tab"
+              [class.doc-is-selected]="language === selected()"
               [attr.aria-selected]="language === selected()"
               (click)="selected.set(language)"
             >
@@ -29,7 +29,7 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
         </div>
         <button
           type="button"
-          class="code-copy"
+          class="doc-code-copy"
           [disabled]="!current()"
           [attr.aria-label]="copied() ? 'Copied' : 'Copy code'"
           (click)="copy()"
@@ -42,11 +42,11 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
           ></i>
         </button>
       </div>
-      <div class="code-body" role="tabpanel">
+      <div class="doc-code-body" role="tabpanel">
         @if (current(); as source) {
           <pre><code>{{ source }}</code></pre>
         } @else {
-          <p class="code-pending">
+          <p class="doc-code-pending">
             {{ selected() | uppercase }} code not available yet. It will be published once this
             variant has its example folder.
           </p>

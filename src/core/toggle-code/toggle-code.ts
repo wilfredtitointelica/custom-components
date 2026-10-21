@@ -9,15 +9,15 @@ import { CodeVisibility } from '../../service/code-visibility';
     <button
       type="button"
       role="switch"
-      class="toggle-code"
-      [class.is-on]="code.allVisible()"
+      class="doc-toggle-code"
+      [class.doc-is-on]="code.allVisible()"
       [attr.aria-checked]="code.allVisible()"
       [title]="(code.allVisible() ? 'Hide' : 'Show') + ' code for all variants'"
       (click)="code.setAll(!code.allVisible())"
     >
-      <span class="toggle-label">Code</span>
-      <span class="toggle-track" aria-hidden="true">
-        <span class="toggle-thumb"><i class="pi pi-code"></i></span>
+      <span class="doc-toggle-label">Code</span>
+      <span class="doc-toggle-track" aria-hidden="true">
+        <span class="doc-toggle-thumb"><i class="pi pi-code"></i></span>
       </span>
     </button>
   `,

@@ -1,34 +1,34 @@
-<a class="rail-brand" routerLink="/components" aria-label="Incontrol, go to start">
+<a class="doc-rail-brand" routerLink="/components" aria-label="Incontrol, go to start">
   <app-brand-mark />
 </a>
 
 <button
   type="button"
-  class="rail-search"
-  [class.is-active]="search.isOpen()"
+  class="doc-rail-search"
+  [class.doc-is-active]="search.isOpen()"
   [attr.aria-expanded]="search.isOpen()"
   aria-haspopup="dialog"
   (click)="search.toggle()"
 >
-  <span class="rail-search-box"><i class="pi pi-search" aria-hidden="true"></i></span>
-  <span class="rail-search-label">Search</span>
+  <span class="doc-rail-search-box"><i class="pi pi-search" aria-hidden="true"></i></span>
+  <span class="doc-rail-search-label">Search</span>
 </button>
 
-<nav class="rail-nav" aria-label="Main">
+<nav class="doc-rail-nav" aria-label="Main">
   @for (section of sections; track section.id) {
     <a
-      class="rail-item"
-      [class.is-pending]="section.status === 'pending'"
+      class="doc-rail-item"
+      [class.doc-is-pending]="section.status === 'pending'"
       [routerLink]="section.path"
-      routerLinkActive="is-active"
+      routerLinkActive="doc-is-active"
       ariaCurrentWhenActive="page"
     >
-      <span class="rail-indicator">
+      <span class="doc-rail-indicator">
         <i class="pi {{ section.icon }}" aria-hidden="true"></i>
       </span>
-      <span class="rail-label">{{ section.label }}</span>
+      <span class="doc-rail-label">{{ section.label }}</span>
       @if (section.status === 'pending') {
-        <span class="rail-soon">Soon<span class="visually-hidden"> (coming soon)</span></span>
+        <span class="doc-rail-soon">Soon<span class="doc-visually-hidden"> (coming soon)</span></span>
       }
     </a>
   }

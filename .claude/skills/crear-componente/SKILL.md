@@ -407,8 +407,10 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 - El archivo se entrega **exactamente así**: sin propiedades CSS dentro de los selectores.
 - Respetar secciones, orden y comentarios.
 - El token es **descriptivo** (`--NOTE-<ID-EN-MAYÚSCULAS>`), único por componente. No reemplaza tokens visuales.
-- Cuando el maquetador escriba los estilos: colores, radios y tipografías salen de `src/styles.scss`
-  (`--c-primary`, `--radius-sm`, `--font-sans`…), y los elementos van en ELEMENTS con `&__elemento`.
+- Cuando el maquetador escriba los estilos, los elementos van en ELEMENTS con `&__elemento`.
+- No usar clases `.doc-*` ni tokens `--doc-*` en un componente `int-*`: son exclusivos de la
+  documentación (`src/styles.scss`, `src/app`, `src/core`, `src/page`). Los tokens visuales de los
+  componentes vendrán del design system.
 
 ### 3.8 `version-1/styles/_chip.outlined.scss` (modificador, solo si se pidió)
 

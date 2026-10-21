@@ -1,19 +1,19 @@
-.app-body {
+.doc-app-body {
   min-height: 100vh;
   min-height: 100dvh;
-  padding-left: var(--rail-w);
-  padding-bottom: calc(var(--bottombar-h) + env(safe-area-inset-bottom));
+  padding-left: var(--doc-rail-w);
+  padding-bottom: calc(var(--doc-bottombar-h) + env(safe-area-inset-bottom));
 }
 
-.skip-link {
+.doc-skip-link {
   position: absolute;
   top: -48px;
   left: 16px;
   z-index: 100;
   padding: 8px 16px;
   border-radius: 0 0 8px 8px;
-  background: var(--c-accent);
-  color: var(--c-primary);
+  background: var(--doc-accent);
+  color: var(--doc-primary);
   font-weight: 500;
   text-decoration: none;
 

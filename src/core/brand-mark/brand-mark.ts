@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
     img {
       display: block;
       width: auto;
-      height: var(--brand-h, 32px);
+      height: var(--doc-brand-h, 32px);
     }
   `,
 })

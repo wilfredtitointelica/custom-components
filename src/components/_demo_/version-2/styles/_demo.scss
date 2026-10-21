@@ -13,12 +13,12 @@
 .int-demo {
   width: min(100%, 320px);
   overflow: hidden;
-  border-top: 4px solid var(--c-accent);
-  border-radius: var(--radius-md);
-  background: var(--c-surface);
+  border-top: 4px solid var(--doc-accent);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-surface);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
-  color: var(--c-ink);
-  font-family: var(--font-sans);
+  color: var(--doc-ink);
+  font-family: var(--doc-font-sans);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -31,11 +31,11 @@
     align-items: center;
     gap: 10px;
     padding: 16px 20px;
-    background: var(--c-surface-low);
+    background: var(--doc-surface-low);
   }
 
   &__icon {
-    color: var(--c-accent-text);
+    color: var(--doc-accent-text);
   }
 
   &__title {
@@ -49,8 +49,8 @@
     min-width: 24px;
     padding: 2px 8px;
     border-radius: 999px;
-    background: var(--c-accent-container);
-    color: var(--c-on-accent-container);
+    background: var(--doc-accent-container);
+    color: var(--doc-on-accent-container);
     font-size: 0.75rem;
     font-weight: 600;
     text-align: center;
@@ -67,7 +67,7 @@
     font-size: 0.875rem;
 
     & + & {
-      border-top: 1px dashed var(--c-outline-variant);
+      border-top: 1px dashed var(--doc-outline-variant);
     }
   }
 }

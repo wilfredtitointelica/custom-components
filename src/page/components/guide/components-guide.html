@@ -1,23 +1,23 @@
-<header class="guide-header">
-  <p class="guide-eyebrow">Reference</p>
-  <h1 class="guide-title">Guía de uso</h1>
-  <p class="guide-description">
+<header class="doc-guide-header">
+  <p class="doc-guide-eyebrow">Reference</p>
+  <h1 class="doc-guide-title">Guía de uso</h1>
+  <p class="doc-guide-description">
     Cómo crear un componente, una variante o una versión nueva, y cambiar su estado, con la IA (Claude Code) y las skills
     del proyecto. Las skills generan solo la estructura: los estilos, el marcado y la lógica los
     escribe el maquetador.
   </p>
-  <nav class="guide-toc" aria-label="Contenido de la guía">
+  <nav class="doc-guide-toc" aria-label="Contenido de la guía">
     @for (section of sections; track section.id) {
-      <a class="chip" [routerLink]="path" [fragment]="section.id">{{ section.name }}</a>
+      <a class="doc-chip" [routerLink]="path" [fragment]="section.id">{{ section.name }}</a>
     }
   </nav>
 </header>
 
 <!-- ─────────────────────────── Cómo pedírselo a la IA ─────────────────────────── -->
-<section class="guide-section" id="guide-how-to-ask" aria-labelledby="guide-how-to-ask-title">
-  <h2 class="guide-section-title" id="guide-how-to-ask-title">
+<section class="doc-guide-section" id="guide-how-to-ask" aria-labelledby="guide-how-to-ask-title">
+  <h2 class="doc-guide-section-title" id="guide-how-to-ask-title">
     <a [routerLink]="path" fragment="guide-how-to-ask">
-      Cómo pedírselo a la IA <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+      Cómo pedírselo a la IA <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
     </a>
   </h2>
   <p>
@@ -27,23 +27,23 @@
     componentes salen con la misma estructura.
   </p>
 
-  <div class="guide-grid">
-    <article class="guide-card">
-      <span class="guide-card-icon"><i class="pi pi-slash" aria-hidden="true"></i></span>
+  <div class="doc-guide-grid">
+    <article class="doc-guide-card">
+      <span class="doc-guide-card-icon"><i class="pi pi-slash" aria-hidden="true"></i></span>
       <h3>1. Con el comando</h3>
       <p>Escribe <code>/</code> y el nombre de la skill en el chat de Claude Code. Puedes pasar datos a continuación.</p>
-      <pre class="guide-prompt">/crear-variante accordion Icons + Border</pre>
+      <pre class="doc-guide-prompt">/crear-variante accordion Icons + Border</pre>
     </article>
-    <article class="guide-card">
-      <span class="guide-card-icon"><i class="pi pi-comment" aria-hidden="true"></i></span>
+    <article class="doc-guide-card">
+      <span class="doc-guide-card-icon"><i class="pi pi-comment" aria-hidden="true"></i></span>
       <h3>2. En lenguaje natural</h3>
       <p>Pídelo como se lo pedirías a un compañero; la IA reconoce la skill que corresponde.</p>
-      <pre class="guide-prompt">Crea una nueva versión del componente button</pre>
+      <pre class="doc-guide-prompt">Crea una nueva versión del componente button</pre>
     </article>
   </div>
 
-  <h3 class="guide-subtitle">Buenas prácticas</h3>
-  <ul class="guide-list">
+  <h3 class="doc-guide-subtitle">Buenas prácticas</h3>
+  <ul class="doc-guide-list">
     <li>
       <strong>Da todo en un solo mensaje</strong> (componente, título, descripción). Lo que falte,
       la IA lo pregunta junto, también en un solo mensaje.
@@ -68,24 +68,24 @@
 </section>
 
 <!-- ─────────────────────────── Crear un componente ─────────────────────────── -->
-<section class="guide-section" id="guide-component" aria-labelledby="guide-component-title">
-  <div class="guide-section-head">
-    <h2 class="guide-section-title" id="guide-component-title">
+<section class="doc-guide-section" id="guide-component" aria-labelledby="guide-component-title">
+  <div class="doc-guide-section-head">
+    <h2 class="doc-guide-section-title" id="guide-component-title">
       <a [routerLink]="path" fragment="guide-component">
-        Crear un componente <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+        Crear un componente <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
       </a>
     </h2>
-    <code class="skill-badge">/crear-componente</code>
+    <code class="doc-skill-badge">/crear-componente</code>
   </div>
   <p>
     Crea un componente <code>int-*</code> nuevo con toda su estructura de documentación, listo para
     maquetar. Úsala cuando el componente todavía no existe en el menú.
   </p>
 
-  <div class="guide-grid">
-    <article class="guide-card">
+  <div class="doc-guide-grid">
+    <article class="doc-guide-card">
       <h3>Qué te pregunta</h3>
-      <ol class="guide-list">
+      <ol class="doc-guide-list">
         <li><strong>Título</strong> del componente (<em>Chip</em>). El id se deriva en kebab-case (<code>chip</code>).</li>
         <li><strong>Descripción</strong> del componente (una línea, opcional).</li>
         <li><strong>Descripción de la variante Basic</strong> (opcional).</li>
@@ -93,16 +93,16 @@
       </ol>
       <p>Al final pregunta <em>"¿Deseas crear otra variante?"</em> y, si dices que sí, sigue con <code>/crear-variante</code>.</p>
     </article>
-    <article class="guide-card">
+    <article class="doc-guide-card">
       <h3>Cómo pedirlo</h3>
-      <pre class="guide-prompt">/crear-componente</pre>
-      <pre class="guide-prompt">Crea el componente Chip. Descripción: "Chips represent entities using icons, labels and images."</pre>
-      <pre class="guide-prompt">Crea el componente Tag y después las variantes Severity y Rounded</pre>
+      <pre class="doc-guide-prompt">/crear-componente</pre>
+      <pre class="doc-guide-prompt">Crea el componente Chip. Descripción: "Chips represent entities using icons, labels and images."</pre>
+      <pre class="doc-guide-prompt">Crea el componente Tag y después las variantes Severity y Rounded</pre>
     </article>
   </div>
 
-  <h3 class="guide-subtitle">Qué genera</h3>
-  <pre class="guide-code">src/components/chip/
+  <h3 class="doc-guide-subtitle">Qué genera</h3>
+  <pre class="doc-guide-code">src/components/chip/
 ├── chip.config.ts          id del componente (+ orden u ocultar variantes)
 ├── routes.ts               ruta /components/chip
 ├── chip-page.ts            página de documentación
@@ -114,7 +114,7 @@
     └── styles/
         ├── _index.scss     punto de entrada (&#64;use)
         └── _chip.scss      plantilla TOKENS · BLOCK · ELEMENTS · MODIFIERS · SKELETON, sin CSS</pre>
-  <p class="guide-note">
+  <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
     También lo registra una vez en <code>src/components/inventory.ts</code> (posición en el menú).
     Es el único registro manual: variantes y versiones se detectan solas.
@@ -122,14 +122,14 @@
 </section>
 
 <!-- ─────────────────────────── Crear una variante ─────────────────────────── -->
-<section class="guide-section" id="guide-variant" aria-labelledby="guide-variant-title">
-  <div class="guide-section-head">
-    <h2 class="guide-section-title" id="guide-variant-title">
+<section class="doc-guide-section" id="guide-variant" aria-labelledby="guide-variant-title">
+  <div class="doc-guide-section-head">
+    <h2 class="doc-guide-section-title" id="guide-variant-title">
       <a [routerLink]="path" fragment="guide-variant">
-        Crear una variante <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+        Crear una variante <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
       </a>
     </h2>
-    <code class="skill-badge">/crear-variante</code>
+    <code class="doc-skill-badge">/crear-variante</code>
   </div>
   <p>
     Agrega un ejemplo (una sección de la documentación) a un componente que ya existe. Cada variante
@@ -137,29 +137,29 @@
     registrarla en ningún lado.
   </p>
 
-  <div class="guide-grid">
-    <article class="guide-card">
+  <div class="doc-guide-grid">
+    <article class="doc-guide-card">
       <h3>Qué te pregunta</h3>
-      <ol class="guide-list">
+      <ol class="doc-guide-list">
         <li><strong>Componente</strong>: id o nombre visible (<code>accordion</code>, <em>Dropdown / Select</em>).</li>
         <li><strong>Título</strong> de la variante (<em>Icons + Border</em>, <em>Raised</em>).</li>
         <li><strong>Descripción</strong> (una línea, opcional).</li>
       </ol>
       <p>Se crea en la versión más reciente, salvo que pidas otra.</p>
     </article>
-    <article class="guide-card">
+    <article class="doc-guide-card">
       <h3>Cómo pedirlo</h3>
-      <pre class="guide-prompt">/crear-variante accordion Icons + Border</pre>
-      <pre class="guide-prompt">Agrega la variante Raised a button: "Raised buttons display a shadow to indicate elevation."</pre>
-      <pre class="guide-prompt">Nuevo ejemplo Disabled de input en la versión 1</pre>
+      <pre class="doc-guide-prompt">/crear-variante accordion Icons + Border</pre>
+      <pre class="doc-guide-prompt">Agrega la variante Raised a button: "Raised buttons display a shadow to indicate elevation."</pre>
+      <pre class="doc-guide-prompt">Nuevo ejemplo Disabled de input en la versión 1</pre>
     </article>
   </div>
 
-  <h3 class="guide-subtitle">Qué genera</h3>
-  <pre class="guide-code">src/components/accordion/version-N/variants/icons-border/
+  <h3 class="doc-guide-subtitle">Qué genera</h3>
+  <pre class="doc-guide-code">src/components/accordion/version-N/variants/icons-border/
 ├── example.ts      AccordionIconsBorderExample: importa solo la base
 └── example.html    solo la cabecera (title + description); debajo escribes el ejemplo</pre>
-  <p class="guide-note">
+  <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
     Enlace directo: <code>/components/accordion#accordion-icons-border</code>. El título y la
     descripción se editan en la cabecera de <code>example.html</code>, nunca en un <code>.ts</code>.
@@ -167,14 +167,14 @@
 </section>
 
 <!-- ─────────────────────────── Crear una versión ─────────────────────────── -->
-<section class="guide-section" id="guide-version" aria-labelledby="guide-version-title">
-  <div class="guide-section-head">
-    <h2 class="guide-section-title" id="guide-version-title">
+<section class="doc-guide-section" id="guide-version" aria-labelledby="guide-version-title">
+  <div class="doc-guide-section-head">
+    <h2 class="doc-guide-section-title" id="guide-version-title">
       <a [routerLink]="path" fragment="guide-version">
-        Crear una versión <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+        Crear una versión <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
       </a>
     </h2>
-    <code class="skill-badge">/crear-version</code>
+    <code class="doc-skill-badge">/crear-version</code>
   </div>
   <p>
     Abre <code>version-N+1/</code> como copia exacta de la <strong>última versión</strong> (base,
@@ -182,31 +182,31 @@
     no se toca y la página muestra un desplegable de versiones.
   </p>
 
-  <div class="guide-grid">
-    <article class="guide-card">
+  <div class="doc-guide-grid">
+    <article class="doc-guide-card">
       <h3>Qué te pregunta</h3>
-      <ol class="guide-list">
+      <ol class="doc-guide-list">
         <li><strong>Componente</strong>: te indica cuál es la última versión y cuál va a crear.</li>
         <li><strong>Título</strong> en la versión nueva (por defecto, el mismo).</li>
         <li><strong>Descripción</strong> en la versión nueva (conviene contar qué cambia).</li>
       </ol>
       <p>Al final pregunta si quieres crear otra variante en la versión nueva.</p>
     </article>
-    <article class="guide-card">
+    <article class="doc-guide-card">
       <h3>Cómo pedirlo</h3>
-      <pre class="guide-prompt">/crear-version button</pre>
-      <pre class="guide-prompt">Crea la versión 2 de tabs con la descripción "Header with icon and badge."</pre>
-      <pre class="guide-prompt">Versiona demo, mismo título y descripción</pre>
+      <pre class="doc-guide-prompt">/crear-version button</pre>
+      <pre class="doc-guide-prompt">Crea la versión 2 de tabs con la descripción "Header with icon and badge."</pre>
+      <pre class="doc-guide-prompt">Versiona demo, mismo título y descripción</pre>
     </article>
   </div>
 
-  <h3 class="guide-subtitle">Qué genera</h3>
-  <pre class="guide-code">src/components/button/
+  <h3 class="doc-guide-subtitle">Qué genera</h3>
+  <pre class="doc-guide-code">src/components/button/
 ├── version-1/      intacta, sigue publicada
 └── version-2/      copia de version-1: base/, variants/ y styles/
                     base/button.ts → comentario "version 2" y status = 'pending'
                     base/button.html → cabecera actualizada</pre>
-  <p class="guide-note">
+  <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
     Cada versión es enlazable con <code>/components/button?version=1</code>; por defecto se abre la
     más reciente. No confundir con una variante visual (<em>V1 / V2</em> de Tabs en el Excel), que es
@@ -215,14 +215,14 @@
 </section>
 
 <!-- ─────────────────────────── Cambiar el estado ─────────────────────────── -->
-<section class="guide-section" id="guide-status" aria-labelledby="guide-status-title">
-  <div class="guide-section-head">
-    <h2 class="guide-section-title" id="guide-status-title">
+<section class="doc-guide-section" id="guide-status" aria-labelledby="guide-status-title">
+  <div class="doc-guide-section-head">
+    <h2 class="doc-guide-section-title" id="guide-status-title">
       <a [routerLink]="path" fragment="guide-status">
-        Cambiar el estado <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+        Cambiar el estado <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
       </a>
     </h2>
-    <code class="skill-badge">/cambiar-estado</code>
+    <code class="doc-skill-badge">/cambiar-estado</code>
   </div>
   <p>
     Cada versión de un componente tiene un estado que la página muestra como chip, junto a la
@@ -230,8 +230,8 @@
     maquetar y cuando termines.
   </p>
 
-  <div class="guide-table-wrap">
-    <table class="guide-table">
+  <div class="doc-guide-table-wrap">
+    <table class="doc-guide-table">
       <thead>
         <tr>
           <th scope="col">Estado</th>
@@ -259,27 +259,27 @@
     </table>
   </div>
 
-  <div class="guide-grid">
-    <article class="guide-card">
+  <div class="doc-guide-grid">
+    <article class="doc-guide-card">
       <h3>Qué te pregunta</h3>
-      <ol class="guide-list">
+      <ol class="doc-guide-list">
         <li><strong>Componente</strong>: id o nombre visible.</li>
         <li><strong>Estado</strong>: puedes decirlo con tus palabras (<em>terminado</em>, <em>listo</em>, <em>en progreso</em>, <em>pendiente</em>).</li>
         <li><strong>Versión</strong>: por defecto la más reciente; solo pregunta si hablas de una anterior.</li>
       </ol>
     </article>
-    <article class="guide-card">
+    <article class="doc-guide-card">
       <h3>Cómo pedirlo</h3>
-      <pre class="guide-prompt">/cambiar-estado button in-progress</pre>
-      <pre class="guide-prompt">Ya terminé el accordion, márcalo como done</pre>
-      <pre class="guide-prompt">La versión 1 de tabs está lista</pre>
-      <pre class="guide-prompt">¿Qué componentes están pendientes?</pre>
-      <pre class="guide-prompt">El tooltip ahora lo ve Gabi</pre>
+      <pre class="doc-guide-prompt">/cambiar-estado button in-progress</pre>
+      <pre class="doc-guide-prompt">Ya terminé el accordion, márcalo como done</pre>
+      <pre class="doc-guide-prompt">La versión 1 de tabs está lista</pre>
+      <pre class="doc-guide-prompt">¿Qué componentes están pendientes?</pre>
+      <pre class="doc-guide-prompt">El tooltip ahora lo ve Gabi</pre>
     </article>
   </div>
 
-  <h3 class="guide-subtitle">Qué cambia</h3>
-  <pre class="guide-code">src/components/button/version-1/base/button.ts
+  <h3 class="doc-guide-subtitle">Qué cambia</h3>
+  <pre class="doc-guide-code">src/components/button/version-1/base/button.ts
 
 export class IntButton &#123;
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -288,7 +288,7 @@ export class IntButton &#123;
   static readonly designer = 'Yony León';
   …
 &#125;</pre>
-  <p class="guide-note">
+  <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
     Es la primera línea de la clase, así que también puedes cambiarla a mano: el editor te ofrece los
     tres valores. Es por versión: <code>version-1</code> puede estar <em>Done</em> mientras
@@ -299,16 +299,16 @@ export class IntButton &#123;
 </section>
 
 <!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
-<section class="guide-section" id="guide-cheatsheet" aria-labelledby="guide-cheatsheet-title">
-  <h2 class="guide-section-title" id="guide-cheatsheet-title">
+<section class="doc-guide-section" id="guide-cheatsheet" aria-labelledby="guide-cheatsheet-title">
+  <h2 class="doc-guide-section-title" id="guide-cheatsheet-title">
     <a [routerLink]="path" fragment="guide-cheatsheet">
-      Resumen rápido <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+      Resumen rápido <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
     </a>
   </h2>
   <p>Si prefieres no usar la IA, cada skill tiene un script de <code>npm</code> equivalente (salvo crear el componente).</p>
 
-  <div class="guide-table-wrap">
-    <table class="guide-table">
+  <div class="doc-guide-table-wrap">
+    <table class="doc-guide-table">
       <thead>
         <tr>
           <th scope="col">Quiero…</th>
@@ -349,7 +349,7 @@ export class IntButton &#123;
     </table>
   </div>
 
-  <p class="guide-note">
+  <p class="doc-guide-note">
     <i class="pi pi-book" aria-hidden="true"></i>
     Referencia completa: <a routerLink="/components/demo">Demo</a> y
     <code>.claude/skills/crear-componente/SKILL.md</code>.

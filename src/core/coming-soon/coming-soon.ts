@@ -4,12 +4,12 @@ import { Component, input } from "@angular/core";
 @Component({
 	selector: "app-coming-soon",
 	template: `
-		<main id="main-content" class="pane" tabindex="-1">
-			<section class="coming-soon" aria-labelledby="coming-soon-title">
+		<main id="main-content" class="doc-pane" tabindex="-1">
+			<section class="doc-coming-soon" aria-labelledby="coming-soon-title">
 				@if (icon()) {
-				<span class="icon"><i class="pi {{ icon() }}" aria-hidden="true"></i></span>
+				<span class="doc-icon"><i class="pi {{ icon() }}" aria-hidden="true"></i></span>
 				}
-				<span class="badge">Coming soon</span>
+				<span class="doc-badge">Coming soon</span>
 				<h1 id="coming-soon-title">{{ title() }}</h1>
 				<p>{{ description() }}</p>
 				<ng-content />
@@ -19,41 +19,41 @@ import { Component, input } from "@angular/core";
 	styles: `
     :host {
       display: block;
-      padding: var(--pane-gap);
+      padding: var(--doc-pane-gap);
     }
-    .pane {
+    .doc-pane {
       display: grid;
       place-items: center;
-      min-height: calc(100dvh - var(--pane-gap) * 2 - var(--bottombar-h));
+      min-height: calc(100dvh - var(--doc-pane-gap) * 2 - var(--doc-bottombar-h));
       padding: 48px 24px;
-      border-radius: var(--radius-xl);
-      background: var(--c-surface);
+      border-radius: var(--doc-radius-xl);
+      background: var(--doc-surface);
       outline: none;
     }
-    .coming-soon {
+    .doc-coming-soon {
       display: grid;
       justify-items: center;
       max-width: 600px;
       text-align: center;
     }
-    .icon {
+    .doc-icon {
       display: grid;
       place-items: center;
       width: 96px;
       height: 96px;
       margin-bottom: 24px;
-      border-radius: var(--radius-xl);
-      background: var(--c-primary-container);
-      color: var(--c-on-primary-container);
+      border-radius: var(--doc-radius-xl);
+      background: var(--doc-primary-container);
+      color: var(--doc-on-primary-container);
     }
-    .icon .pi {
+    .doc-icon .pi {
       font-size: 2.25rem;
     }
-    .badge {
+    .doc-badge {
       padding: 4px 12px;
       border-radius: 999px;
-      background: var(--c-accent-container);
-      color: var(--c-on-accent-container);
+      background: var(--doc-accent-container);
+      color: var(--doc-on-accent-container);
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -67,7 +67,7 @@ import { Component, input } from "@angular/core";
     }
     p {
       margin: 0;
-      color: var(--c-ink-muted);
+      color: var(--doc-ink-muted);
       font-size: 1rem;
     }
   `,

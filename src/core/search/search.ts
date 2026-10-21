@@ -6,13 +6,13 @@ import { Component, ElementRef, input, model, output, viewChild } from '@angular
  */
 @Component({
   selector: 'app-search',
-  host: { '[class.is-large]': "appearance() === 'large'" },
+  host: { '[class.doc-is-large]': "appearance() === 'large'" },
   template: `
-    <div class="search" role="search">
-      <i class="pi pi-search search-icon" aria-hidden="true"></i>
+    <div class="doc-search" role="search">
+      <i class="pi pi-search doc-search-icon" aria-hidden="true"></i>
       <input
         #field
-        class="search-input"
+        class="doc-search-input"
         type="search"
         autocomplete="off"
         [value]="query()"
@@ -24,7 +24,7 @@ import { Component, ElementRef, input, model, output, viewChild } from '@angular
         (keydown.escape)="onEscape()"
       />
       @if (query()) {
-        <button type="button" class="search-clear" aria-label="Clear search" (click)="clear()">
+        <button type="button" class="doc-search-clear" aria-label="Clear search" (click)="clear()">
           <i class="pi pi-times" aria-hidden="true"></i>
         </button>
       }

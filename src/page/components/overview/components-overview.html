@@ -1,41 +1,41 @@
-<section class="hero" aria-labelledby="overview-title">
-  <div class="hero-copy">
-    <p class="hero-kicker">Welcome!</p>
-    <h1 id="overview-title" class="hero-title">Design and Development System</h1>
-    <p class="hero-lead">
+<section class="doc-hero" aria-labelledby="overview-title">
+  <div class="doc-hero-copy">
+    <p class="doc-hero-kicker">Welcome!</p>
+    <h1 id="overview-title" class="doc-hero-title">Design and Development System</h1>
+    <p class="doc-hero-lead">
       Discover our design system, components, and technology tools, designed to ensure consistency,
       efficiency, and quality in every project.
     </p>
-    <p class="hero-stat"><strong>{{ total }}</strong> components in the catalog</p>
+    <p class="doc-hero-stat"><strong>{{ total }}</strong> components in the catalog</p>
   </div>
-  <div class="hero-art" aria-hidden="true">
-    <span class="shape shape-1"></span>
-    <span class="shape shape-2"></span>
-    <span class="shape shape-3"></span>
-    <span class="shape shape-4"></span>
+  <div class="doc-hero-art" aria-hidden="true">
+    <span class="doc-shape doc-shape-1"></span>
+    <span class="doc-shape doc-shape-2"></span>
+    <span class="doc-shape doc-shape-3"></span>
+    <span class="doc-shape doc-shape-4"></span>
   </div>
 </section>
 
-<p class="overview-lead">
+<p class="doc-overview-lead">
   Welcome to the Intelica Component Library: a robust, intuitive, and reusable set of UI components
   designed to simplify and accelerate your development workflow. Select a component in the menu to open
   its documentation, or search it by name.
 </p>
 
-<h2 class="overview-heading">Explore</h2>
-<ul class="section-grid">
+<h2 class="doc-overview-heading">Explore</h2>
+<ul class="doc-section-grid">
   @for (section of sections; track section.id) {
     <li>
-      <a class="section-card" [class.is-pending]="section.status === 'pending'" [routerLink]="section.path">
-        <span class="section-icon"><i class="pi {{ section.icon }}" aria-hidden="true"></i></span>
-        <span class="section-name">
+      <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.path">
+        <span class="doc-section-icon"><i class="pi {{ section.icon }}" aria-hidden="true"></i></span>
+        <span class="doc-section-name">
           {{ section.label }}
           @if (section.status === 'pending') {
-            <span class="soon">Soon</span>
+            <span class="doc-soon">Soon</span>
           }
         </span>
-        <span class="section-desc">{{ section.description }}</span>
-        <i class="pi pi-arrow-right section-go" aria-hidden="true"></i>
+        <span class="doc-section-desc">{{ section.description }}</span>
+        <i class="pi pi-arrow-right doc-section-go" aria-hidden="true"></i>
       </a>
     </li>
   }

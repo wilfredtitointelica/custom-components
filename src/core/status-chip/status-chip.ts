@@ -28,12 +28,12 @@ export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress
       gap: 8px;
       height: 32px;
       padding: 0 14px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--doc-radius-sm);
       font-size: 0.8125rem;
       font-weight: 500;
       white-space: nowrap;
     }
-    :host(.is-small) {
+    :host(.doc-is-small) {
       height: 26px;
       padding: 0 10px;
       gap: 6px;
@@ -42,17 +42,17 @@ export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress
     .pi {
       font-size: 0.8125rem;
     }
-    :host(.is-pending) {
-      background: var(--c-surface-high);
-      color: var(--c-ink-muted);
+    :host(.doc-is-pending) {
+      background: var(--doc-surface-high);
+      color: var(--doc-ink-muted);
     }
-    :host(.is-in-progress) {
-      background: var(--c-accent-container);
-      color: var(--c-on-accent-container);
+    :host(.doc-is-in-progress) {
+      background: var(--doc-accent-container);
+      color: var(--doc-on-accent-container);
     }
-    :host(.is-done) {
-      background: var(--c-success-container);
-      color: var(--c-on-success-container);
+    :host(.doc-is-done) {
+      background: var(--doc-success-container);
+      color: var(--doc-on-success-container);
     }
   `,
 })
@@ -64,6 +64,6 @@ export class StatusChip {
   protected readonly current = computed(() => this.status() ?? 'pending');
   protected readonly meta = computed(() => STATUS_META[this.current()]);
   protected readonly classes = computed(
-    () => `is-${this.current()}${this.size() === 'sm' ? ' is-small' : ''}`,
+    () => `doc-is-${this.current()}${this.size() === 'sm' ? ' doc-is-small' : ''}`,
   );
 }

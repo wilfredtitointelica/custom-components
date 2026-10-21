@@ -36,5 +36,13 @@ Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).
   Colores de cada diseñador: `src/service/designers.ts`.
 - `guide` y `status` son ids reservados (páginas de Reference): ningún componente puede usarlos.
 
+## Estilos: documentación vs. componentes
+
+- La documentación (`src/styles.scss`, `src/app`, `src/core`, `src/page`) usa solo clases `.doc-*`
+  (incluidos los estados: `.doc-is-active`, `.doc-is-open`…) y tokens `--doc-*`
+  (`--doc-primary`, `--doc-radius-sm`, `--doc-font-sans`…), definidos en `src/styles.scss`.
+- Los componentes usan clases `.int-*` y no deben usar clases ni tokens `doc`: sus tokens vendrán
+  del design system.
+
 Guías con Claude Code: `/crear-componente`, `/crear-variante`, `/crear-version` y `/cambiar-estado`
 (`.claude/skills/`). En la app: menú Reference → Guide.

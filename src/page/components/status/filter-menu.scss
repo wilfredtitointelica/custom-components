@@ -3,17 +3,17 @@
   display: inline-flex;
 }
 
-.filter-trigger {
+.doc-filter-trigger {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-width: 200px;
   height: 36px;
   padding: 0 12px 0 14px;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-ink);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -23,51 +23,51 @@
     border-color 0.2s;
 
   &:hover {
-    border-color: var(--c-outline);
-    background: var(--c-state-hover);
+    border-color: var(--doc-outline);
+    background: var(--doc-state-hover);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--c-accent-ring);
+    outline: 2px solid var(--doc-accent-ring);
     outline-offset: 2px;
   }
 
   // A value other than "all" is selected.
-  &.is-filtered {
-    border-color: var(--c-outline);
+  &.doc-is-filtered {
+    border-color: var(--doc-outline);
   }
 
   // Open: CDK sets aria-expanded on the trigger.
   &[aria-expanded='true'] {
-    border-color: var(--c-accent);
+    border-color: var(--doc-accent);
 
-    .filter-trigger-arrow {
+    .doc-filter-trigger-arrow {
       transform: rotate(180deg);
     }
   }
 }
 
-.filter-trigger-label {
+.doc-filter-trigger-label {
   flex: 1;
   text-align: left;
 }
 
-.filter-trigger-arrow {
+.doc-filter-trigger-arrow {
   margin-left: 2px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.625rem;
   transition: transform 0.2s;
 }
 
-.filter-icon {
+.doc-filter-icon {
   width: 12px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.8125rem;
   text-align: center;
 }
 
 /* Designer bullet; the inset ring keeps light colors (yellow) visible on white. */
-.filter-dot {
+.doc-filter-dot {
   flex: none;
   width: 10px;
   height: 10px;
@@ -76,39 +76,39 @@
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
 }
 
-.filter-menu {
+.doc-filter-menu {
   display: flex;
   flex-direction: column;
   min-width: 240px;
   margin-top: 6px;
   padding: 6px;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-md);
-  background: var(--c-surface);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-surface);
   box-shadow:
     0 8px 24px rgb(23 55 94 / 0.12),
     0 2px 6px rgb(23 55 94 / 0.08);
 }
 
-.filter-menu-title {
+.doc-filter-menu-title {
   margin: 4px 10px 6px;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.filter-option {
+.doc-filter-option {
   display: flex;
   align-items: center;
   gap: 10px;
   height: 36px;
   padding: 0 10px;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--doc-radius-sm);
   background: transparent;
-  color: var(--c-ink);
+  color: var(--doc-ink);
   font: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -118,39 +118,39 @@
   &:hover,
   &:focus-visible {
     outline: 0;
-    background: var(--c-state-hover);
+    background: var(--doc-state-hover);
   }
 
   &[aria-checked='true'] {
-    background: var(--c-accent-container);
-    color: var(--c-on-accent-container);
+    background: var(--doc-accent-container);
+    color: var(--doc-on-accent-container);
 
-    .filter-icon {
+    .doc-filter-icon {
       color: inherit;
     }
 
-    .filter-option-check {
+    .doc-filter-option-check {
       visibility: visible;
     }
   }
 }
 
-.filter-option-label {
+.doc-filter-option-label {
   flex: 1;
 }
 
-.filter-option-count {
+.doc-filter-option-count {
   min-width: 24px;
   padding: 1px 8px;
   border-radius: 999px;
-  background: var(--c-primary-container);
-  color: var(--c-on-primary-container);
+  background: var(--doc-primary-container);
+  color: var(--doc-on-primary-container);
   font-size: 0.6875rem;
   font-weight: 600;
   text-align: center;
 }
 
-.filter-option-check {
+.doc-filter-option-check {
   visibility: hidden;
   font-size: 0.75rem;
 }

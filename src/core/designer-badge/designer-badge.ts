@@ -9,10 +9,10 @@ import { designerColor, designerInitials, UNASSIGNED_DESIGNER } from '../../serv
 @Component({
   selector: 'app-designer-badge',
   template: `
-    <span class="avatar" [style.--designer-color]="color()" aria-hidden="true">{{ initials() }}</span>
-    <span class="text">
-      <span class="label">Diseñador</span>
-      <span class="name" [class.is-empty]="!designer()">{{ name() }}</span>
+    <span class="doc-avatar" [style.--doc-designer-color]="color()" aria-hidden="true">{{ initials() }}</span>
+    <span class="doc-text">
+      <span class="doc-label">Diseñador</span>
+      <span class="doc-name" [class.doc-is-empty]="!designer()">{{ name() }}</span>
     </span>
   `,
   styles: `
@@ -21,38 +21,38 @@ import { designerColor, designerInitials, UNASSIGNED_DESIGNER } from '../../serv
       align-items: center;
       gap: 10px;
     }
-    .avatar {
+    .doc-avatar {
       display: grid;
       place-items: center;
       width: 32px;
       height: 32px;
       border-radius: 50%;
       box-shadow:
-        0 0 0 2px var(--c-surface),
-        0 0 0 4px var(--designer-color);
-      background: var(--c-primary-container);
-      color: var(--c-on-primary-container);
+        0 0 0 2px var(--doc-surface),
+        0 0 0 4px var(--doc-designer-color);
+      background: var(--doc-primary-container);
+      color: var(--doc-on-primary-container);
       font-size: 0.75rem;
       font-weight: 700;
     }
-    .text {
+    .doc-text {
       display: grid;
       line-height: 1.25;
     }
-    .label {
-      color: var(--c-ink-muted);
+    .doc-label {
+      color: var(--doc-ink-muted);
       font-size: 0.6875rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
-    .name {
-      color: var(--c-ink);
+    .doc-name {
+      color: var(--doc-ink);
       font-size: 0.875rem;
       font-weight: 500;
     }
-    .name.is-empty {
-      color: var(--c-ink-muted);
+    .doc-name.doc-is-empty {
+      color: var(--doc-ink-muted);
       font-style: italic;
     }
   `,

@@ -5,21 +5,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--rail-w);
+  width: var(--doc-rail-w);
   padding: 20px 0;
   overflow-y: auto;
-  background: var(--c-primary);
-  color: var(--c-on-primary);
+  background: var(--doc-primary);
+  color: var(--doc-on-primary);
   scrollbar-width: none;
 }
 
-.rail-brand {
+.doc-rail-brand {
   display: grid;
   place-items: center;
   width: 56px;
   height: 56px;
-  border-radius: var(--radius-lg);
-  --brand-h: 36px;
+  border-radius: var(--doc-radius-lg);
+  --doc-brand-h: 36px;
   transition: background-color 0.2s;
 
   &:hover {
@@ -28,7 +28,7 @@
 }
 
 /* Search entry point (M3 rail FAB-like button) */
-.rail-search {
+.doc-rail-search {
   display: grid;
   justify-items: center;
   margin: 28px 0 32px;
@@ -39,22 +39,22 @@
   font: inherit;
   cursor: pointer;
 
-  &:hover .rail-search-box {
+  &:hover .doc-rail-search-box {
     background: rgb(255 255 255 / 0.2);
   }
 
-  &.is-active .rail-search-box {
-    background: var(--c-accent);
-    color: var(--c-primary);
+  &.doc-is-active .doc-rail-search-box {
+    background: var(--doc-accent);
+    color: var(--doc-primary);
   }
 }
 
-.rail-search-box {
+.doc-rail-search-box {
   display: grid;
   place-items: center;
   width: 56px;
   height: 56px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--doc-radius-lg);
   background: rgb(255 255 255 / 0.12);
   transition: background-color 0.2s;
 
@@ -63,7 +63,7 @@
   }
 }
 
-.rail-search-label {
+.doc-rail-search-label {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -72,14 +72,14 @@
   white-space: nowrap;
 }
 
-.rail-nav {
+.doc-rail-nav {
   display: flex;
   flex-direction: column;
   gap: 24px;
   width: 100%;
 }
 
-.rail-item {
+.doc-rail-item {
   position: relative;
   display: grid;
   justify-items: center;
@@ -89,12 +89,12 @@
   text-decoration: none;
   transition: opacity 0.2s;
 
-  &:hover .rail-indicator {
+  &:hover .doc-rail-indicator {
     background: rgb(255 255 255 / 0.12);
   }
 
   /* Pending sections stay quiet until hovered, so the active one stands out. */
-  &.is-pending:not(.is-active) {
+  &.doc-is-pending:not(.doc-is-active) {
     opacity: 0.3;
 
     &:hover,
@@ -103,19 +103,19 @@
     }
   }
 
-  &.is-active {
-    .rail-indicator {
-      background: var(--c-accent);
-      color: var(--c-primary);
+  &.doc-is-active {
+    .doc-rail-indicator {
+      background: var(--doc-accent);
+      color: var(--doc-primary);
     }
 
-    .rail-label {
+    .doc-rail-label {
       font-weight: 700;
     }
   }
 }
 
-.rail-indicator {
+.doc-rail-indicator {
   display: grid;
   place-items: center;
   width: 56px;
@@ -130,7 +130,7 @@
   }
 }
 
-.rail-label {
+.doc-rail-label {
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -138,7 +138,7 @@
   text-align: center;
 }
 
-.rail-soon {
+.doc-rail-soon {
   margin-top: -2px;
   padding: 0 6px;
   border: 1px solid rgb(255 255 255 / 0.4);
@@ -150,7 +150,7 @@
   text-transform: uppercase;
 }
 
-.visually-hidden {
+.doc-visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -165,17 +165,17 @@
     inset: auto 0 0 0;
     flex-direction: row;
     width: auto;
-    height: calc(var(--bottombar-h) + env(safe-area-inset-bottom));
+    height: calc(var(--doc-bottombar-h) + env(safe-area-inset-bottom));
     padding: 0 0 env(safe-area-inset-bottom);
     overflow: visible;
     box-shadow: 0 -2px 12px rgb(0 0 0 / 0.12);
   }
 
-  .rail-brand {
+  .doc-rail-brand {
     display: none;
   }
 
-  .rail-search {
+  .doc-rail-search {
     flex: 1;
     align-content: center;
     gap: 4px;
@@ -183,14 +183,14 @@
     margin: 0;
   }
 
-  .rail-search-box {
+  .doc-rail-search-box {
     width: 52px;
     height: 32px;
     border-radius: 999px;
     background: transparent;
   }
 
-  .rail-search-label {
+  .doc-rail-search-label {
     position: static;
     width: auto;
     height: auto;
@@ -199,11 +199,11 @@
     font-weight: 500;
   }
 
-  .rail-nav {
+  .doc-rail-nav {
     display: contents;
   }
 
-  .rail-item {
+  .doc-rail-item {
     flex: 1;
     align-content: center;
     gap: 4px;
@@ -211,16 +211,16 @@
     height: 100%;
   }
 
-  .rail-indicator {
+  .doc-rail-indicator {
     width: 52px;
   }
 
-  .rail-label {
+  .doc-rail-label {
     font-size: 0.6875rem;
   }
 
   /* Keep the bar to two lines: mark pending items with a dot on the icon. */
-  .rail-soon {
+  .doc-rail-soon {
     position: absolute;
     top: 12px;
     left: calc(50% + 14px);
@@ -230,7 +230,7 @@
     padding: 0;
     overflow: hidden;
     border: 0;
-    background: var(--c-accent);
+    background: var(--doc-accent);
     color: transparent;
   }
 }

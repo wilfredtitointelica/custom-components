@@ -15,31 +15,31 @@ import { VERSION_QUERY_PARAM } from '../../service/component-catalog';
   template: `
     <button
       type="button"
-      class="version-trigger"
+      class="doc-version-trigger"
       [cdkMenuTriggerFor]="menu"
       [attr.aria-label]="'Version ' + active()?.number + ', change version'"
     >
       <i class="pi pi-tag" aria-hidden="true"></i>
       Version {{ active()?.number }}
-      <i class="pi pi-chevron-down version-trigger-arrow" aria-hidden="true"></i>
+      <i class="pi pi-chevron-down doc-version-trigger-arrow" aria-hidden="true"></i>
     </button>
 
     <ng-template #menu>
-      <div class="version-menu" cdkMenu>
-        <p class="version-menu-title" aria-hidden="true">Versions</p>
+      <div class="doc-version-menu" cdkMenu>
+        <p class="doc-version-menu-title" aria-hidden="true">Versions</p>
         @for (version of versions(); track version.number) {
           <button
             type="button"
-            class="version-option"
+            class="doc-version-option"
             cdkMenuItemRadio
             [cdkMenuItemChecked]="version === active()"
             (cdkMenuItemTriggered)="select(version)"
           >
-            <span class="version-option-label">Version {{ version.number }}</span>
+            <span class="doc-version-option-label">Version {{ version.number }}</span>
             @if (version === latest()) {
-              <span class="version-option-badge">Latest</span>
+              <span class="doc-version-option-badge">Latest</span>
             }
-            <i class="pi pi-check version-option-check" aria-hidden="true"></i>
+            <i class="pi pi-check doc-version-option-check" aria-hidden="true"></i>
           </button>
         }
       </div>

@@ -14,12 +14,12 @@
     @if (current.versions.length > 1) {
       <app-version-picker [versions]="current.versions" [active]="version" />
     } @else if (current.versions.length === 1) {
-      <span class="chip">
+      <span class="doc-chip">
         <i class="pi pi-tag" aria-hidden="true"></i>
         Version {{ current.versions[0].number }}
       </span>
     }
-    <span class="chip">
+    <span class="doc-chip">
       <i class="pi pi-clone" aria-hidden="true"></i>
       @switch (current.variants.length) {
         @case (0) {
@@ -44,7 +44,7 @@
   <section
     class="doc-section"
     [id]="variant.id"
-    [class.is-active]="nav.activeVariantId() === variant.id"
+    [class.doc-is-active]="nav.activeVariantId() === variant.id"
     [attr.aria-labelledby]="variant.id + '-title'"
   >
     @let codeVisible = code.isVisible(variant.id);
@@ -52,14 +52,14 @@
       <h2 class="doc-section-title" [id]="variant.id + '-title'">
         <a [routerLink]="current.path" [fragment]="variant.id" queryParamsHandling="preserve">
           {{ variant.name }}
-          <i class="pi pi-link anchor-icon" aria-hidden="true"></i>
+          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
         </a>
       </h2>
       <!-- Code of this variant only; the top-bar switch shows/hides all of them. -->
       <button
         type="button"
         class="doc-code-button"
-        [class.is-on]="codeVisible"
+        [class.doc-is-on]="codeVisible"
         [attr.aria-pressed]="codeVisible"
         [attr.aria-controls]="variant.id + '-code'"
         [title]="(codeVisible ? 'Hide' : 'Show') + ' code of ' + variant.name"
@@ -82,7 +82,7 @@
         <ng-container *ngComponentOutlet="example.component" />
       } @else if (!examples.isLoading()) {
         <div class="doc-placeholder">
-          <span class="placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+          <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
           <p>Preview pending</p>
           <code>{{ version?.folder ?? 'version-1' }}/variants/{{ variant.slug }}/{{ example ? 'example.html' : '' }}</code>
         </div>
@@ -101,7 +101,7 @@
   <section class="doc-section" [id]="current.id">
     <div class="doc-preview">
       <div class="doc-placeholder">
-        <span class="placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+        <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
         <p>No variants defined yet for this component.</p>
       </div>
     </div>

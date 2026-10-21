@@ -5,24 +5,24 @@
  *  compact  < 840     bottom bar + pane, drawer is modal
  */
 
-.catalog {
+.doc-catalog {
   display: grid;
-  grid-template-columns: var(--drawer-w) minmax(0, 1fr);
+  grid-template-columns: var(--doc-drawer-w) minmax(0, 1fr);
   column-gap: 16px;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: var(--pane-gap) var(--pane-gap) var(--pane-gap) 0;
+  padding: var(--doc-pane-gap) var(--doc-pane-gap) var(--doc-pane-gap) 0;
 }
 
 /* Navigation drawer */
-.drawer {
+.doc-drawer {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100dvh;
-  // Negative margins cancel .catalog's vertical padding: sticky keeps the margin box inside the grid
-  // cell, so without the bottom one the drawer is pushed up by --pane-gap at the end of the page.
-  margin-block: calc(var(--pane-gap) * -1);
+  // Negative margins cancel .doc-catalog's vertical padding: sticky keeps the margin box inside the grid
+  // cell, so without the bottom one the drawer is pushed up by --doc-pane-gap at the end of the page.
+  margin-block: calc(var(--doc-pane-gap) * -1);
   padding: 16px 4px 24px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -30,11 +30,11 @@
   scrollbar-width: thin;
 
   &:hover {
-    scrollbar-color: var(--c-outline) transparent;
+    scrollbar-color: var(--doc-outline) transparent;
   }
 }
 
-.drawer-head {
+.doc-drawer-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -42,42 +42,42 @@
   padding: 0 4px 0 16px;
 }
 
-.drawer-title {
+.doc-drawer-title {
   margin: 0;
   font-size: 1.375rem;
   font-weight: 400;
 }
 
-.drawer-close,
-.drawer-trigger,
-.topbar-brand,
-.scrim {
+.doc-drawer-close,
+.doc-drawer-trigger,
+.doc-topbar-brand,
+.doc-scrim {
   display: none;
 }
 
 /* Content pane */
-.pane {
+.doc-pane {
   min-width: 0;
-  border-radius: var(--radius-xl);
-  background: var(--c-surface);
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface);
 }
 
-.topbar {
+.doc-topbar {
   position: sticky;
   top: 0;
   z-index: 20;
   display: flex;
   align-items: center;
   gap: 8px;
-  height: var(--topbar-h);
-  padding: 0 32px 0 48px;
-  border-bottom: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  height: var(--doc-topbar-h);
+  padding: 0 48px;
+  border-bottom: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-xl) var(--doc-radius-xl) 0 0;
   background: rgb(255 255 255 / 0.92);
   backdrop-filter: blur(8px);
 }
 
-.breadcrumb {
+.doc-breadcrumb {
   flex: 1;
   min-width: 0;
 
@@ -99,91 +99,91 @@
   }
 
   .pi {
-    color: var(--c-ink-muted);
+    color: var(--doc-ink-muted);
     font-size: 0.625rem;
   }
 
   a,
   span {
     overflow: hidden;
-    color: var(--c-ink-muted);
+    color: var(--doc-ink-muted);
     font-size: 0.875rem;
     text-decoration: none;
     text-overflow: ellipsis;
   }
 
   a:hover {
-    color: var(--c-ink);
+    color: var(--doc-ink);
     text-decoration: underline;
   }
 
   [aria-current] {
-    color: var(--c-ink);
+    color: var(--doc-ink);
     font-weight: 500;
   }
 }
 
-.content {
-  max-width: var(--content-max);
+.doc-content {
+  max-width: var(--doc-content-max);
   margin: 0 auto;
-  padding: 56px 56px 96px;
+  padding: 56px 48px 96px;
   outline: none;
 }
 
 /* Medium & compact: modal drawer */
 @media (max-width: 1199px) {
-  .catalog {
+  .doc-catalog {
     grid-template-columns: minmax(0, 1fr);
     column-gap: 0;
-    padding-left: var(--pane-gap);
+    padding-left: var(--doc-pane-gap);
   }
 
-  .drawer {
+  .doc-drawer {
     position: fixed;
-    inset: 0 auto 0 var(--rail-w);
+    inset: 0 auto 0 var(--doc-rail-w);
     z-index: 70;
-    width: min(var(--drawer-w), 86vw);
+    width: min(var(--doc-drawer-w), 86vw);
     height: auto;
     margin: 0;
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-    background: var(--c-bg);
+    border-radius: 0 var(--doc-radius-lg) var(--doc-radius-lg) 0;
+    background: var(--doc-bg);
     box-shadow: 0 8px 32px rgb(0 0 0 / 0.24);
-    transform: translateX(calc(-100% - var(--rail-w)));
+    transform: translateX(calc(-100% - var(--doc-rail-w)));
     visibility: hidden;
     transition:
-      transform 0.35s var(--ease-emphasized),
+      transform 0.35s var(--doc-ease-emphasized),
       visibility 0s linear 0.35s;
 
-    &.is-open {
+    &.doc-is-open {
       transform: none;
       visibility: visible;
-      transition: transform 0.35s var(--ease-emphasized);
+      transition: transform 0.35s var(--doc-ease-emphasized);
     }
   }
 
-  .drawer-head {
+  .doc-drawer-head {
     position: sticky;
     top: -12px;
     z-index: 1;
     margin: -12px -12px 0;
     padding: 12px 16px 4px 28px;
-    background: var(--c-bg);
+    background: var(--doc-bg);
   }
 
-  .drawer-close,
-  .drawer-trigger {
+  .doc-drawer-close,
+  .doc-drawer-trigger {
     display: inline-grid;
   }
 
-  .topbar {
+  .doc-topbar {
     padding-left: 16px;
   }
 
-  .content {
+  .doc-content {
     padding: 48px 40px 96px;
   }
 
-  .scrim {
+  .doc-scrim {
     position: fixed;
     inset: 0;
     z-index: 60;
@@ -194,49 +194,49 @@
 }
 
 @media (max-width: 839px) {
-  .drawer {
-    bottom: calc(var(--bottombar-h) + env(safe-area-inset-bottom));
+  .doc-drawer {
+    bottom: calc(var(--doc-bottombar-h) + env(safe-area-inset-bottom));
   }
 
-  .pane {
+  .doc-pane {
     border-radius: 0;
   }
 
-  .topbar {
+  .doc-topbar {
     gap: 4px;
     padding: 0 12px 0 4px;
     border-radius: 0;
-    background: var(--c-primary);
-    color: var(--c-on-primary);
+    background: var(--doc-primary);
+    color: var(--doc-on-primary);
     border-bottom: 0;
 
-    .breadcrumb a,
-    .breadcrumb span,
-    .breadcrumb .pi {
+    .doc-breadcrumb a,
+    .doc-breadcrumb span,
+    .doc-breadcrumb .pi {
       color: rgb(255 255 255 / 0.75);
     }
 
-    .breadcrumb [aria-current] {
+    .doc-breadcrumb [aria-current] {
       color: #fff;
     }
   }
 
-  .topbar-brand {
+  .doc-topbar-brand {
     display: inline-flex;
     margin-right: 8px;
-    --brand-h: 28px;
+    --doc-brand-h: 28px;
   }
 
   /* Only the last level fits on a phone. */
-  .breadcrumb li:not(:last-child) {
+  .doc-breadcrumb li:not(:last-child) {
     display: none;
   }
 
-  .breadcrumb li:last-child .pi {
+  .doc-breadcrumb li:last-child .pi {
     display: none;
   }
 
-  .content {
+  .doc-content {
     padding: 24px 16px 48px;
   }
 }

@@ -13,10 +13,10 @@
 .int-demo {
   width: min(100%, 320px);
   padding: 20px;
-  border-radius: var(--radius-md);
-  background: var(--c-surface);
-  color: var(--c-ink);
-  font-family: var(--font-sans);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font-family: var(--doc-font-sans);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -38,7 +38,7 @@
 
   &__item {
     padding: 8px 0;
-    border-top: 1px solid var(--c-outline-variant);
+    border-top: 1px solid var(--doc-outline-variant);
     font-size: 0.875rem;
   }
 }

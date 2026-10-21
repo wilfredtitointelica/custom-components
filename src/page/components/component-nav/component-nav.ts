@@ -99,15 +99,15 @@ export class ComponentNav {
    * Does nothing when it is already in view, so clicking in the menu never makes it jump.
    */
   private revealCurrent(): void {
-    const row = this.host.nativeElement.querySelector<HTMLElement>('.nav-row.is-current');
-    const item = row?.closest<HTMLElement>('.nav-item');
+    const row = this.host.nativeElement.querySelector<HTMLElement>('.doc-nav-row.doc-is-current');
+    const item = row?.closest<HTMLElement>('.doc-nav-item');
     const drawer = item && scrollParent(item);
     if (!row || !item || !drawer) return;
 
     const view = drawer.getBoundingClientRect();
     const rowBox = row.getBoundingClientRect();
     // The variant list may still be animating open: use its final height, not the current one.
-    const listHeight = item.querySelector('.variant-list')?.scrollHeight ?? 0;
+    const listHeight = item.querySelector('.doc-variant-list')?.scrollHeight ?? 0;
     if (rowBox.top >= view.top && rowBox.bottom + listHeight <= view.bottom) return;
 
     // Row near the top, leaving room below for its variant list.

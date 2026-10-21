@@ -1,7 +1,7 @@
 /* Same visual language as the documentation page and the guide. */
 :host {
   display: block;
-  color: var(--c-ink);
+  color: var(--doc-ink);
   font-size: 0.9375rem;
   line-height: 1.6;
 }
@@ -9,26 +9,26 @@
 code {
   padding: 1px 6px;
   border-radius: 6px;
-  background: var(--c-surface-high);
-  font-family: var(--font-mono);
+  background: var(--doc-surface-high);
+  font-family: var(--doc-font-mono);
   font-size: 0.8125rem;
 }
 
 /* Header */
-.status-header {
+.doc-status-header {
   margin-bottom: 32px;
 }
 
-.status-eyebrow {
+.doc-status-eyebrow {
   margin: 0 0 8px;
-  color: var(--c-accent-text);
+  color: var(--doc-accent-text);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.status-title {
+.doc-status-title {
   margin: 0;
   font-size: clamp(2rem, 1.4rem + 2vw, 2.8125rem);
   font-weight: 400;
@@ -36,32 +36,32 @@ code {
   line-height: 1.15;
 }
 
-.status-description {
+.doc-status-description {
   max-width: 72ch;
   margin: 16px 0 0;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 1rem;
 
   a {
-    color: var(--c-ink);
+    color: var(--doc-ink);
     font-weight: 500;
   }
 }
 
 /* Summary */
-.status-summary {
+.doc-status-summary {
   display: grid;
   gap: 16px;
   margin-bottom: 40px;
 }
 
-.progress {
+.doc-progress {
   padding: 20px 24px;
-  border-radius: var(--radius-xl);
-  background: var(--c-surface-low);
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface-low);
 }
 
-.progress-head {
+.doc-progress-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -70,55 +70,55 @@ code {
   margin-bottom: 12px;
 }
 
-.progress-value {
-  color: var(--c-ink-muted);
+.doc-progress-value {
+  color: var(--doc-ink-muted);
 
   strong {
     margin-right: 4px;
-    color: var(--c-success);
+    color: var(--doc-success);
     font-size: 1.75rem;
     font-weight: 500;
   }
 }
 
-.progress-total {
-  color: var(--c-ink-muted);
+.doc-progress-total {
+  color: var(--doc-ink-muted);
   font-size: 0.875rem;
 }
 
-.progress-bar {
+.doc-progress-bar {
   display: flex;
   gap: 3px;
   height: 12px;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--c-surface-high);
+  background: var(--doc-surface-high);
 }
 
-.progress-segment {
+.doc-progress-segment {
   flex-basis: 0;
   min-width: 6px;
 
-  &.is-pending {
-    background: var(--c-outline);
+  &.doc-is-pending {
+    background: var(--doc-outline);
   }
 
-  &.is-in-progress {
-    background: var(--c-accent);
+  &.doc-is-in-progress {
+    background: var(--doc-accent);
   }
 
-  &.is-done {
-    background: var(--c-success);
+  &.doc-is-done {
+    background: var(--doc-success);
   }
 }
 
-.summary-cards {
+.doc-summary-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
 }
 
-.summary-card {
+.doc-summary-card {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-areas:
@@ -128,9 +128,9 @@ code {
   column-gap: 16px;
   padding: 16px 20px;
   border: 2px solid transparent;
-  border-radius: var(--radius-lg);
-  background: var(--c-surface-low);
-  color: var(--c-ink);
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface-low);
+  color: var(--doc-ink);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -139,78 +139,78 @@ code {
     border-color 0.2s;
 
   &:hover {
-    background: var(--c-surface-high);
+    background: var(--doc-surface-high);
   }
 
-  &.is-active {
+  &.doc-is-active {
     border-color: currentColor;
   }
 
-  &.is-pending.is-active {
-    color: var(--c-ink-muted);
+  &.doc-is-pending.doc-is-active {
+    color: var(--doc-ink-muted);
   }
 
-  &.is-in-progress.is-active {
-    color: var(--c-accent-text);
+  &.doc-is-in-progress.doc-is-active {
+    color: var(--doc-accent-text);
   }
 
-  &.is-done.is-active {
-    color: var(--c-success);
+  &.doc-is-done.doc-is-active {
+    color: var(--doc-success);
   }
 }
 
-.summary-icon {
+.doc-summary-icon {
   grid-area: icon;
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-md);
+  border-radius: var(--doc-radius-md);
 
-  .is-pending & {
-    background: var(--c-surface-high);
-    color: var(--c-ink-muted);
+  .doc-is-pending & {
+    background: var(--doc-surface-high);
+    color: var(--doc-ink-muted);
   }
 
-  .is-in-progress & {
-    background: var(--c-accent-container);
-    color: var(--c-on-accent-container);
+  .doc-is-in-progress & {
+    background: var(--doc-accent-container);
+    color: var(--doc-on-accent-container);
   }
 
-  .is-done & {
-    background: var(--c-success-container);
-    color: var(--c-on-success-container);
+  .doc-is-done & {
+    background: var(--doc-success-container);
+    color: var(--doc-on-success-container);
   }
 }
 
-.summary-count {
+.doc-summary-count {
   grid-area: count;
-  color: var(--c-ink);
+  color: var(--doc-ink);
   font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.2;
 }
 
-.summary-label {
+.doc-summary-label {
   grid-area: label;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.8125rem;
 }
 
 /* Per designer */
-.summary-title {
+.doc-summary-title {
   margin: 16px 0 0;
   font-size: 1.125rem;
   font-weight: 500;
 }
 
-.designer-cards {
+.doc-designer-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
 }
 
-.designer-card {
+.doc-designer-card {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-areas:
@@ -222,9 +222,9 @@ code {
   row-gap: 2px;
   padding: 16px 20px;
   border: 2px solid transparent;
-  border-radius: var(--radius-lg);
-  background: var(--c-surface-low);
-  color: var(--c-ink);
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface-low);
+  color: var(--doc-ink);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -233,15 +233,15 @@ code {
     border-color 0.2s;
 
   &:hover {
-    background: var(--c-surface-high);
+    background: var(--doc-surface-high);
   }
 
-  &.is-active {
-    border-color: var(--c-primary);
+  &.doc-is-active {
+    border-color: var(--doc-primary);
   }
 }
 
-.designer-avatar {
+.doc-designer-avatar {
   grid-area: avatar;
   display: grid;
   place-items: center;
@@ -250,30 +250,30 @@ code {
   border-radius: 50%;
   // Ring in the designer's color, same as the bullet of the table.
   box-shadow:
-    0 0 0 3px var(--c-surface-low),
-    0 0 0 6px var(--designer-color, transparent);
-  background: var(--c-primary-container);
-  color: var(--c-on-primary-container);
+    0 0 0 3px var(--doc-surface-low),
+    0 0 0 6px var(--doc-designer-color, transparent);
+  background: var(--doc-primary-container);
+  color: var(--doc-on-primary-container);
   font-size: 0.875rem;
   font-weight: 700;
 }
 
-.designer-name {
+.doc-designer-name {
   grid-area: name;
   font-weight: 500;
 }
 
-.designer-stat {
+.doc-designer-stat {
   grid-area: stat;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   font-size: 0.8125rem;
 
   strong {
-    color: var(--c-success);
+    color: var(--doc-success);
   }
 }
 
-.designer-bar {
+.doc-designer-bar {
   grid-area: bar;
   display: flex;
   gap: 2px;
@@ -281,11 +281,11 @@ code {
   margin-top: 12px;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--c-surface-high);
+  background: var(--doc-surface-high);
 }
 
 /* Table */
-.table-head {
+.doc-table-head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -294,7 +294,7 @@ code {
   margin-bottom: 16px;
 }
 
-.table-title {
+.doc-table-title {
   display: flex;
   align-items: baseline;
   gap: 12px;
@@ -303,59 +303,59 @@ code {
   font-weight: 400;
 }
 
-.table-count {
-  color: var(--c-ink-muted);
+.doc-table-count {
+  color: var(--doc-ink-muted);
   font-size: 0.875rem;
 }
 
-/* Designer bullet: --designer-color comes from the template (cadmium yellow for Christian Abanto…).
+/* Designer bullet: --doc-designer-color comes from the template (cadmium yellow for Christian Abanto…).
    The inset ring keeps light colors (yellow) visible on white. */
-.designer-dot {
+.doc-designer-dot {
   flex: none;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--designer-color);
+  background: var(--doc-designer-color);
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
 }
 
-.designer-cell {
+.doc-designer-cell {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
 /* Table filters (designer + status) */
-.table-filters {
+.doc-table-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 12px;
 }
 
-.filter-field {
+.doc-filter-field {
   display: grid;
   gap: 4px;
 }
 
-.filter-label {
-  color: var(--c-ink-muted);
+.doc-filter-label {
+  color: var(--doc-ink-muted);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.clear-filter {
+.doc-clear-filter {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   height: 36px;
   padding: 0 14px;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-ink);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
   font: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -366,17 +366,17 @@ code {
     color 0.2s;
 
   &:hover:not(:disabled) {
-    border-color: var(--c-accent);
-    color: var(--c-accent-text);
+    border-color: var(--doc-accent);
+    color: var(--doc-accent-text);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--c-accent-ring);
+    outline: 2px solid var(--doc-accent-ring);
     outline-offset: 2px;
   }
 
   &:disabled {
-    color: var(--c-ink-muted);
+    color: var(--doc-ink-muted);
     opacity: 0.55;
     cursor: default;
   }
@@ -388,17 +388,17 @@ code {
 
 // `clip` (not `auto`) rounds the corners without creating a scroll container, so the sticky header
 // follows the page scroll. On narrow screens the table needs horizontal scroll and the header is static.
-.table-wrap {
+.doc-table-wrap {
   overflow: clip;
-  border: 1px solid var(--c-outline-variant);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-lg);
 
   @media (max-width: 1199px) {
     overflow-x: auto;
   }
 }
 
-.status-table {
+.doc-status-table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
@@ -410,22 +410,22 @@ code {
   }
 
   // Widths of the <colgroup>, independent of the content; "Componente" takes the rest (~27%).
-  .w-index {
+  .doc-w-index {
     width: 5%;
   }
-  .w-designer {
+  .doc-w-designer {
     width: 17%;
   }
-  .w-version {
+  .doc-w-version {
     width: 8%;
   }
-  .w-status {
+  .doc-w-status {
     width: 13%;
   }
-  .w-variants {
+  .doc-w-variants {
     width: 10%;
   }
-  .w-previous {
+  .doc-w-previous {
     width: 20%;
   }
 
@@ -433,7 +433,7 @@ code {
   td {
     padding: 10px 16px;
     overflow: hidden;
-    border-bottom: 1px solid var(--c-outline-variant);
+    border-bottom: 1px solid var(--doc-outline-variant);
     text-align: left;
     text-overflow: ellipsis;
     vertical-align: middle;
@@ -444,12 +444,12 @@ code {
   // so the bottom line is drawn with a shadow.
   th {
     position: sticky;
-    top: var(--topbar-h);
+    top: var(--doc-topbar-h);
     z-index: 2;
     border-bottom: 0;
-    box-shadow: inset 0 -1px 0 var(--c-outline-variant);
-    background: var(--c-surface-low);
-    color: var(--c-ink-muted);
+    box-shadow: inset 0 -1px 0 var(--doc-outline-variant);
+    background: var(--doc-surface-low);
+    color: var(--doc-ink-muted);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -457,7 +457,7 @@ code {
   }
 
   tbody tr:hover {
-    background: var(--c-surface-low);
+    background: var(--doc-surface-low);
   }
 
   tbody tr:last-child td {
@@ -465,18 +465,18 @@ code {
   }
 }
 
-.col-index {
+.doc-col-index {
   width: 1%;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   text-align: right !important;
 }
 
-.col-number {
+.doc-col-number {
   text-align: right !important;
 }
 
-.component-link {
-  color: var(--c-ink);
+.doc-component-link {
+  color: var(--doc-ink);
   font-weight: 500;
   text-decoration: none;
 
@@ -485,16 +485,16 @@ code {
   }
 }
 
-.component-id {
+.doc-component-id {
   margin-left: 8px;
-  color: var(--c-ink-muted);
-  font-family: var(--font-mono);
+  color: var(--doc-ink-muted);
+  font-family: var(--doc-font-mono);
   font-size: 0.75rem;
 }
 
-.version-link {
-  color: var(--c-ink);
-  font-family: var(--font-mono);
+.doc-version-link {
+  color: var(--doc-ink);
+  font-family: var(--doc-font-mono);
   font-size: 0.8125rem;
   text-decoration: none;
 
@@ -503,27 +503,27 @@ code {
   }
 }
 
-.previous-version {
+.doc-previous-version {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   margin-right: 12px;
-  color: var(--c-ink-muted);
-  font-family: var(--font-mono);
+  color: var(--doc-ink-muted);
+  font-family: var(--doc-font-mono);
   font-size: 0.75rem;
   text-decoration: none;
 
   &:hover {
-    color: var(--c-ink);
+    color: var(--doc-ink);
   }
 }
 
-.muted {
-  color: var(--c-ink-muted);
+.doc-muted {
+  color: var(--doc-ink-muted);
 }
 
-.empty {
+.doc-empty {
   padding: 32px 16px !important;
-  color: var(--c-ink-muted);
+  color: var(--doc-ink-muted);
   text-align: center !important;
 }
