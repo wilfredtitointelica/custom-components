@@ -1,6 +1,6 @@
 ---
 name: crear-componente
-description: Convenciones y pasos para crear (o versionar) un componente int-* en Intelica Components (Angular 20 + SCSS + BEM). Pregunta título y descripción (van en la cabecera del HTML, nunca en TS), crea la estructura base como plantilla y siempre la variante variants/basic/ vacía. Úsalo al maquetar un componente nuevo o revisar las convenciones del proyecto. Para agregar solo una variante a un componente existente, usar crear-variante; para una nueva versión (version-N+1), crear-version.
+description: Convenciones y pasos para crear (o versionar) un componente int-* en Intelica Components (Angular 20 + SCSS + BEM). Pregunta título y descripción (van en la cabecera del HTML, nunca en TS) y el diseñador a cargo (static designer de la base, con status en pending), crea la estructura base como plantilla y siempre la variante variants/basic/ vacía. Úsalo al maquetar un componente nuevo o revisar las convenciones del proyecto. Para agregar solo una variante a un componente existente, usar crear-variante; para una nueva versión (version-N+1), crear-version.
 ---
 
 # Crear un componente `int-*`
@@ -13,7 +13,7 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 > Quien crea la estructura (persona o IA) no escribe código de implementación:
 > - `.scss`: solo las secciones de la plantilla, el token `--NOTE-*` y los selectores vacíos. Sin CSS.
 > - `base/<id>.html`: la cabecera de documentación (título y descripción, en un comentario) y un texto con el nombre del componente (`int-chip`). Sin marcado, bindings ni `<ng-content>`.
-> - `base/<id>.ts`: solo el decorador `@Component` básico y la clase vacía. Sin `input()`, `computed`, tipos de variante ni imports extra.
+> - `base/<id>.ts`: solo el decorador `@Component` básico y la clase con **solo dos** propiedades: `static readonly status` en `'pending'` y `static readonly designer` con el diseñador (ver 3.3). Sin `input()`, `computed`, tipos de variante ni imports extra.
 > - Siempre una variante `basic` (paso 3.5): `example.ts` con lo necesario y `example.html` solo con su cabecera, sin ejemplo (la página muestra "Preview pending").
 >
 > **El maquetador** escribe los estilos, la estructura y la lógica, e importa lo que necesite.
@@ -42,6 +42,8 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 | Config | `<id>.config.ts` es **opcional** y solo sirve para ordenar u ocultar carpetas existentes. Un nombre en `variants` sin carpeta no se muestra. |
 | Título y descripción | **Siempre en el HTML**, nunca en TS: el componente en la cabecera de `base/<id>.html`, cada variante en la de su `example.html` (ver 3.0). |
 | Ejemplo pendiente | Un `example.html` vacío o **solo con comentarios** (cabecera incluida) se muestra como "Preview pending" con la ruta del archivo. Cualquier contenido fuera de los comentarios (un elemento o texto) hace que se renderice. |
+| Estado | Propiedad de la clase en `base/<id>.ts`: `static readonly status: 'pending' \| 'in-progress' \| 'done' = 'pending';`. Se crea siempre en `'pending'` (chip "Pending"); el maquetador la pasa a `'in-progress'` al empezar y a `'done'` al terminar, con la skill `cambiar-estado` o `npm run set:status -- <id> <estado>`. Es por versión; `new:version` la reinicia a `'pending'`. |
+| Diseñador | `static readonly designer = '<Nombre completo>';` debajo de `status` en `base/<id>.ts` (`''` = sin asignar). Se pregunta al crear; `new:version` lo copia. Se ve en Reference → Status. |
 | Versiones | Cada `version-N/` se detecta sola: con una versión la página muestra "Version 1"; con más, un desplegable (`?version=N`; por defecto la más reciente). |
 | Código | Cada sección muestra el código **real** de su ejemplo (pestañas HTML / TS). El switch "Code" de la barra superior abre/cierra todas; el botón "Code" de cada sección, solo la suya. |
 
@@ -93,7 +95,7 @@ La página carga solo los ejemplos de la versión elegida.
 
 Orden de trabajo (cada paso se detalla abajo):
 
-1. **3.0** Preguntar título y descripción del componente y descripción de `Basic`.
+1. **3.0** Preguntar título y descripción del componente, descripción de `Basic` y diseñador.
 2. **3.1–3.2** `chip.config.ts`, registro en `inventory.ts`, `routes.ts` y `chip-page.ts`.
 3. **3.3–3.4** `base/chip.ts` y `base/chip.html` (con la cabecera).
 4. **3.6–3.7** `styles/_index.scss` y `styles/_chip.scss` (plantilla sin CSS).
@@ -110,6 +112,9 @@ Antes de escribir cualquier archivo, pregunta en **un solo mensaje** lo que no s
    kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio.
 2. **Descripción** del componente: una línea (puede quedar vacía si el usuario no la tiene).
 3. **Descripción de la variante `Basic`**: una línea (opcional). Su título es siempre `Basic`.
+4. **Diseñador** a cargo: nombre completo. Equipo actual: **Yony León**, **Gabriela Javier**,
+   **Christian Abanto** (acepta el nombre corto: "Yony", "Gabi", "Abanto"). Puede quedar vacío si aún
+   no se asignó. Va en `static readonly designer` de la base (3.3), no en el HTML.
 
 El título y la descripción se escriben **en el HTML**, en un comentario al inicio del archivo que
 `scripts/generate-docs.mjs` lee y Angular no renderiza:
@@ -230,10 +235,24 @@ import { Component, ViewEncapsulation } from '@angular/core';
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
 })
-export class IntChip {}
+export class IntChip {
+  /** Implementation status, shown on the documentation page: pending → in-progress → done. */
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
+  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  static readonly designer = 'Christian Abanto';
+}
 ```
 
 - **`ViewEncapsulation.None`** es lo único fijo: el aislamiento lo da el prefijo `int-` + BEM.
+- **`designer`** va siempre, justo debajo de `status`, con el nombre completo respondido en 3.0
+  (`''` si no se asignó). La página **Reference → Status** lo muestra en la tabla y agrupa el avance
+  por diseñador. `scripts/generate-docs.mjs` lo lee del archivo, igual que `status`.
+- **`status`** va siempre, como primera línea de la clase y en **`'pending'`**: es el chip de estado
+  de la página ("Pending" / "In progress" / "Done"). `scripts/generate-docs.mjs` la lee del archivo
+  (no se importa nada). El tipo va escrito en línea (`'pending' | 'in-progress' | 'done'`) para que la
+  base no dependa de la documentación y el editor autocomplete los valores. Después la cambia el
+  maquetador (a mano, con `npm run set:status` o con la skill **`cambiar-estado`**): `in-progress` al
+  empezar a maquetar, `done` al terminar esa versión.
 - Sin `input()`, `computed`, tipos de variante, `host` ni imports adicionales.
 
 Guía para el maquetador cuando implemente (patrón completo en `_demo_/version-2/base/demo.ts`):
@@ -458,6 +477,8 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 - ❌ Poner títulos o descripciones en `<id>.config.ts` u otro `.ts`: van en la cabecera del HTML.
 - ❌ Escribir el ejemplo de `basic` al crear el componente: su `example.html` queda solo con la cabecera.
 - ❌ Agregar `input()`, `computed`, tipos de variante, `host` o imports extra en `base/<id>.ts`.
+- ❌ Omitir `static readonly designer` o inventar el diseñador: se pregunta (o queda `''`).
+- ❌ Omitir `static readonly status`, crearla con un valor distinto de `'pending'` o cambiarla sin que el maquetador lo pida.
 - ❌ Crear módulos de estilo o ejemplos que no se pidieron explícitamente (la única variante automática es `basic`).
 - ❌ Preguntar si se quiere `basic`, omitirla o crearla a mano: va siempre y con `npm run new:variant`.
 - ❌ Importar o registrar ejemplos a mano (en la página, en `inventory.ts`, en un mapa…).
@@ -480,6 +501,7 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 - [ ] BEM: bloque, `__elemento`, `--modificador`; skeleton `.sk-<id>`.
 - [ ] `version-N/` solo con `base/`, `variants/` y `styles/`.
 - [ ] `base/` sin dependencias de la documentación; `styleUrl: '../styles/_index.scss'`.
+- [ ] `base/<id>.ts` con `static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';` (la página muestra "Pending") y `static readonly designer = '<Nombre>';`.
 - [ ] Se preguntaron título y descripción; están en la cabecera de `base/<id>.html`.
 - [ ] Variante `basic` creada con `npm run new:variant` (cabecera con título y descripción, sin ejemplo); se preguntó si crear otra.
 - [ ] `styles/_index.scss` solo con `@use` (modificadores con `as <id>-<mod>`, y solo los que existen).

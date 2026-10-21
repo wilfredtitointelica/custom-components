@@ -33,10 +33,10 @@
         }
       }
     </span>
-    <span class="chip chip-status">
-      <i class="pi pi-clock" aria-hidden="true"></i>
-      Documentation in progress
-    </span>
+    <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
+    <app-status-chip [status]="version?.status" />
+    <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
+    <app-designer-badge class="doc-designer" [designer]="version?.designer" />
   </div>
 </header>
 

@@ -32,8 +32,14 @@
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <ol>
           <li>
-            <a routerLink="/components" [attr.aria-current]="component() ? null : 'page'">Components</a>
+            <a routerLink="/components" [attr.aria-current]="component() || referencePage() ? null : 'page'">Components</a>
           </li>
+          @if (referencePage(); as page) {
+            <li class="breadcrumb-leaf">
+              <i class="pi pi-chevron-right" aria-hidden="true"></i>
+              <span aria-current="page">{{ page }}</span>
+            </li>
+          }
           @if (component(); as current) {
             <li>
               <i class="pi pi-chevron-right" aria-hidden="true"></i>

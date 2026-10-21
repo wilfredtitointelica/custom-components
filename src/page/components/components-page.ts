@@ -7,6 +7,11 @@ import { ToggleCode } from '../../core/toggle-code/toggle-code';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { NavigationState } from '../../service/navigation-state';
 import { ComponentNav } from './component-nav/component-nav';
+import { GUIDE_SEGMENT } from './guide/guide-sections';
+import { STATUS_SEGMENT } from './status/status-route';
+
+/** Fixed pages under /components (pinned under "Reference" in the menu): URL segment → breadcrumb label. */
+const REFERENCE_PAGES: Readonly<Record<string, string>> = { [GUIDE_SEGMENT]: 'Guide', [STATUS_SEGMENT]: 'Status' };
 
 /** Gap kept between the sticky top bar and an anchored section. */
 const ANCHOR_GAP = 16;
@@ -30,6 +35,7 @@ export class ComponentsPage {
     const id = this.nav.componentId();
     return id ? this.catalog.find(id) : undefined;
   });
+  protected readonly referencePage = computed(() => REFERENCE_PAGES[this.nav.page() ?? ''] ?? null);
   protected readonly variant = computed(() => {
     const id = this.nav.activeVariantId();
     return id ? this.catalog.findVariant(id) : undefined;

@@ -71,11 +71,25 @@ export interface DocMeta {
   readonly description?: string;
 }
 
+/**
+ * Implementation status of one version, declared as a static property of the class in its base/<id>.ts:
+ *   static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
+ * Read by scripts/generate-docs.mjs; no property = 'pending'. Changed with `npm run set:status`.
+ *   pending      → structure only (new component or new version), nobody working on it yet
+ *   in-progress  → the maquetador is implementing it
+ *   done         → finished
+ */
+export type ComponentStatus = 'pending' | 'in-progress' | 'done';
+
 /** One implementation folder (version-N) of a component, detected by scripts/generate-docs.mjs. */
 export interface ComponentVersion extends DocMeta {
   readonly number: number;
   /** Folder name: version-<number>. */
   readonly folder: string;
+  /** From the static `status` property of base/<id>.ts (absent = pending). */
+  readonly status?: ComponentStatus;
+  /** From the static `designer` property of base/<id>.ts: who designs this version ('' = unassigned). */
+  readonly designer?: string;
   /** Slugs of its variants/<slug>/ example folders. */
   readonly examples: readonly string[];
   /** Header of each example.html, by slug (only the examples that have one). */

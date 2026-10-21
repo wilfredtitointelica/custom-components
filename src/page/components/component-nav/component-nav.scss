@@ -60,6 +60,16 @@
   text-decoration: none;
 }
 
+/* Short clarification next to a pinned entry ("(cómo usar)", "(componente ejemplo)"): plain text, no border. */
+.nav-hint {
+  margin-left: 4px;
+  color: var(--c-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
 .nav-toggle {
   width: 36px;
   height: 36px;
@@ -75,15 +85,43 @@
   }
 }
 
+/*
+ * Expand / collapse of the variant list (Material-like): height animates 0 ↔ auto (the list's real
+ * height, padding included) with the M3 emphasized easing, and the content fades in / out.
+ * `interpolate-size: allow-keywords` is what lets `auto` be animated; browsers without it just
+ * open / close instantly. Closed, the wrapper is exactly 0px tall: no gap between entries.
+ */
+.variant-collapse {
+  interpolate-size: allow-keywords;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    height 0.3s var(--ease-emphasized),
+    opacity 0.2s linear;
+
+  &.is-open {
+    height: auto;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .variant-collapse {
+    transition: none;
+  }
+}
+
+// Vertical spacing is padding (not margin) so it is clipped with the list when collapsed.
 .variant-list {
   position: relative;
-  margin: 4px 0 10px 28px;
-  padding-left: 8px;
+  margin: 0 0 0 28px;
+  padding: 4px 0 10px 8px;
 
   &::before {
     content: '';
     position: absolute;
-    inset: 4px auto 4px 0;
+    inset: 8px auto 14px 0;
     width: 1px;
     background: var(--c-outline);
   }

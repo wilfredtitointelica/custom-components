@@ -20,7 +20,9 @@
   top: 0;
   height: 100vh;
   height: 100dvh;
-  margin-top: calc(var(--pane-gap) * -1);
+  // Negative margins cancel .catalog's vertical padding: sticky keeps the margin box inside the grid
+  // cell, so without the bottom one the drawer is pushed up by --pane-gap at the end of the page.
+  margin-block: calc(var(--pane-gap) * -1);
   padding: 16px 4px 24px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;

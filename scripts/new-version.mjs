@@ -1,6 +1,6 @@
 // Opens a new implementation version of a component: copies the latest
 // src/components/<component>/version-<N>/ (base/, variants/ and styles/) to version-<N+1>/.
-//   base/<id>.ts   → the "· version N" doc comment becomes "· version N+1"
+//   base/<id>.ts   → the "· version N" doc comment becomes "· version N+1"; the static `status` resets to 'pending'
 //   base/<id>.html → header kept as is, unless --title / --description are given
 // The copy is the starting point: the maquetador changes base/ and styles/ in the new version, and
 // version-<N> stays untouched. The folder is registered by scripts/generate-docs.mjs, which this script
@@ -74,13 +74,14 @@ for (const file of [baseTs, baseHtml]) {
 cpSync(sourceDir, targetDir, { recursive: true });
 
 // base/<id>.ts: "/** <int-button> · version 1… */" → "· version 2". Only the doc comment.
+// A new version is work not started yet: the `static readonly status` copied from the previous one
+// goes back to 'pending' (the previous version keeps its own).
 const targetTs = join(targetDir, 'base', `${id}.ts`);
 writeFileSync(
   targetTs,
-  readFileSync(targetTs, 'utf8').replace(
-    new RegExp(`(<int-${id}>\\s*·\\s*version\\s+)${latest}\\b`),
-    `$1${next}`,
-  ),
+  readFileSync(targetTs, 'utf8')
+    .replace(new RegExp(`(<int-${id}>\\s*·\\s*version\\s+)${latest}\\b`), `$1${next}`)
+    .replace(/(static\s+readonly\s+status\b[^=;]*=\s*)(['"])[\w-]+\2/, "$1'pending'"),
 );
 
 // base/<id>.html: rewrite only the header fields that were given.

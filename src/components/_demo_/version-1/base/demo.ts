@@ -13,6 +13,11 @@ export type IntDemoVariant = 'basic' | 'outlined';
   host: { style: 'display: contents' },
 })
 export class IntDemo {
+  /** Implementation status, shown on the documentation page: pending → in-progress → done. */
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
+  /** Designer in charge of this version, shown on the progress page (Reference → Status). */
+  static readonly designer = '';
+
   readonly variant = input<IntDemoVariant>('basic');
   readonly title = input('');
   readonly items = input<readonly string[]>([]);

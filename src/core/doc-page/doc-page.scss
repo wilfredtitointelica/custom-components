@@ -44,8 +44,14 @@
 .doc-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   margin-top: 20px;
+}
+
+// Pushed to the right end of the row (wraps below the chips on narrow screens).
+.doc-designer {
+  margin-left: auto;
 }
 
 .chip {
@@ -63,16 +69,6 @@
   .pi {
     color: var(--c-ink-muted);
     font-size: 0.8125rem;
-  }
-}
-
-.chip-status {
-  border-color: transparent;
-  background: var(--c-accent-container);
-  color: var(--c-on-accent-container);
-
-  .pi {
-    color: inherit;
   }
 }
 

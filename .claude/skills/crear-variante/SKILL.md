@@ -86,6 +86,8 @@ Confirma al usuario la ruta creada y el enlace: `/components/<id>#<id>-<slug>`.
 - ❌ Poner el título o la descripción en `<id>.config.ts` u otro `.ts`.
 - ❌ Crear módulos SCSS de modificador (`_<id>.<mod>.scss`) ni tocar `base/`: una variante de
   documentación no es un modificador. Solo se crean si el usuario los pide explícitamente.
+- ❌ Cambiar el `status` del componente al agregar una variante: lo decide el maquetador con la skill
+  `cambiar-estado`.
 - ❌ Tocar `<id>-page.ts`, `routes.ts`, `inventory.ts` ni `src/generated/`.
 - ❌ Inventar variantes que el usuario no pidió.
 - ❌ Agregar una variante solo en `variants` del config sin crear su carpeta: no se muestra.

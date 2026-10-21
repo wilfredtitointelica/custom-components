@@ -14,6 +14,8 @@ import { RouterLink } from '@angular/router';
 
 import { ComponentCatalog } from '../../../service/component-catalog';
 import { NavigationState } from '../../../service/navigation-state';
+import { GUIDE_PATH, GUIDE_SECTIONS, GUIDE_SEGMENT } from '../guide/guide-sections';
+import { STATUS_PATH, STATUS_SEGMENT } from '../status/status-route';
 
 /** Nearest ancestor that scrolls vertically (the drawer), or null. */
 function scrollParent(element: HTMLElement): HTMLElement | null {
@@ -35,10 +37,19 @@ export class ComponentNav {
   readonly navigated = output<void>();
 
   private readonly catalog = inject(ComponentCatalog).components;
-  /** Reference implementations (_demo_), pinned above the divider. */
+  /** Reference implementations (_demo_), pinned above the divider together with the guide. */
   protected readonly references = this.catalog.filter((c) => c.reference);
   protected readonly components = this.catalog.filter((c) => !c.reference);
   protected readonly nav = inject(NavigationState);
+  /** Usage guide, pinned first under "Reference", before the reference implementations. */
+  protected readonly guide = {
+    key: '__guide__',
+    segment: GUIDE_SEGMENT,
+    path: GUIDE_PATH,
+    sections: GUIDE_SECTIONS,
+  };
+  /** Progress page, pinned last under "Reference". */
+  protected readonly status = { segment: STATUS_SEGMENT, path: STATUS_PATH };
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
@@ -48,7 +59,8 @@ export class ComponentNav {
     // Keep the open component expanded and visible in the drawer (click, direct URL, reload,
     // shared link, search): the drawer scrolls on its own, so it would otherwise start at the top.
     effect(() => {
-      const componentId = this.nav.componentId();
+      const componentId =
+        this.nav.componentId() ?? (this.nav.page() === GUIDE_SEGMENT ? this.guide.key : null);
       if (!componentId) return;
       untracked(() => this.setExpanded(componentId, true));
       afterNextRender(() => this.revealCurrent(), { injector: this.injector });
@@ -57,6 +69,15 @@ export class ComponentNav {
 
   protected isExpanded(componentId: string): boolean {
     return this.expanded().has(componentId);
+  }
+
+  /**
+   * Click on an entry's name: on another entry it navigates (the effect expands it and the drawer
+   * closes); on the open one it collapses / expands it, like the arrow, and keeps the drawer open.
+   */
+  protected itemClicked(componentId: string, current: boolean): void {
+    if (current) this.toggle(componentId);
+    else this.navigated.emit();
   }
 
   protected toggle(componentId: string): void {
@@ -85,8 +106,9 @@ export class ComponentNav {
 
     const view = drawer.getBoundingClientRect();
     const rowBox = row.getBoundingClientRect();
-    const itemBox = item.getBoundingClientRect();
-    if (rowBox.top >= view.top && itemBox.bottom <= view.bottom) return;
+    // The variant list may still be animating open: use its final height, not the current one.
+    const listHeight = item.querySelector('.variant-list')?.scrollHeight ?? 0;
+    if (rowBox.top >= view.top && rowBox.bottom + listHeight <= view.bottom) return;
 
     // Row near the top, leaving room below for its variant list.
     drawer.scrollTop += rowBox.top - view.top - Math.min(view.height / 4, 120);

@@ -1,0 +1,185 @@
+<header class="status-header">
+  <p class="status-eyebrow">Reference</p>
+  <h1 class="status-title">Avance de componentes</h1>
+  <p class="status-description">
+    Estado de implementación de cada componente, según su versión más reciente. Lo actualiza el
+    maquetador con <code>/cambiar-estado</code> (ver <a routerLink="/components/guide" fragment="guide-status">Guide</a>).
+  </p>
+</header>
+
+<!-- Summary: overall progress + one card per status (also the table filter). -->
+<section class="status-summary" aria-label="Resumen">
+  <div class="progress">
+    <div class="progress-head">
+      <span class="progress-value"><strong>{{ donePercent }}%</strong> terminado</span>
+      <span class="progress-total">{{ rows.length }} componentes</span>
+    </div>
+    <div class="progress-bar" role="img" [attr.aria-label]="donePercent + '% de los componentes terminados'">
+      @for (item of summary; track item.status) {
+        @if (item.count) {
+          <span class="progress-segment is-{{ item.status }}" [style.flex-grow]="item.count" [title]="item.label + ': ' + item.count"></span>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="summary-cards" role="group" aria-label="Filtrar por estado">
+    @for (item of summary; track item.status) {
+      <button
+        type="button"
+        class="summary-card is-{{ item.status }}"
+        [class.is-active]="filter() === item.status"
+        [attr.aria-pressed]="filter() === item.status"
+        (click)="toggleFilter(item.status)"
+      >
+        <span class="summary-icon"><i class="pi {{ item.icon }}" aria-hidden="true"></i></span>
+        <span class="summary-count">{{ item.count }}</span>
+        <span class="summary-label">{{ item.label }} · {{ item.percent }}%</span>
+      </button>
+    }
+  </div>
+
+  <!-- Progress per designer (static `designer` of each base class); also a table filter. -->
+  <h2 class="summary-title">Por diseñador</h2>
+  <div class="designer-cards" role="group" aria-label="Filtrar por diseñador">
+    @for (designer of designers; track designer.name) {
+      <button
+        type="button"
+        class="designer-card"
+        [class.is-active]="designerFilter() === designer.name"
+        [attr.aria-pressed]="designerFilter() === designer.name"
+        (click)="toggleDesigner(designer.name)"
+      >
+        <span class="designer-avatar" [style.--designer-color]="designerColor(designer.name)" aria-hidden="true">{{ designer.initials }}</span>
+        <span class="designer-name">{{ designer.name }}</span>
+        <span class="designer-stat">
+          <strong>{{ designer.done }}/{{ designer.total }}</strong> terminados · {{ designer.percent }}%
+        </span>
+        <span class="designer-bar" aria-hidden="true">
+          @for (item of designer.counts; track item.status) {
+            @if (item.count) {
+              <span class="progress-segment is-{{ item.status }}" [style.flex-grow]="item.count"></span>
+            }
+          }
+        </span>
+      </button>
+    }
+  </div>
+</section>
+
+<!-- Table -->
+<section class="status-table-section" aria-labelledby="status-table-title">
+  <div class="table-head">
+    <h2 id="status-table-title" class="table-title">
+      Componentes
+      @if (hasFilter()) {
+        <span class="table-count">{{ visibleRows().length }} de {{ rows.length }}</span>
+      }
+    </h2>
+    <!-- Same signals as the summary cards: both stay in sync. -->
+    <div class="table-filters">
+      <div class="filter-field">
+        <span class="filter-label" aria-hidden="true">Diseñador</span>
+        <app-filter-menu
+          title="Diseñador"
+          allIcon="pi-users"
+          [options]="designerOptions"
+          [value]="designerFilter()"
+          (changed)="designerFilter.set($event)"
+        />
+      </div>
+      <div class="filter-field">
+        <span class="filter-label" aria-hidden="true">Estado</span>
+        <app-filter-menu
+          title="Estado"
+          allIcon="pi-list"
+          [options]="statusOptions"
+          [value]="filter() === 'all' ? null : filter()"
+          (changed)="filter.set($any($event) ?? 'all')"
+        />
+      </div>
+      <!-- Always present (disabled without filters) so the header never shifts. -->
+      <button type="button" class="clear-filter" [disabled]="!hasFilter()" (click)="clearFilters()">
+        <i class="pi pi-filter-slash" aria-hidden="true"></i>
+        Limpiar filtros
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="status-table">
+      <!-- Fixed widths (table-layout: fixed): filtering never moves the columns. -->
+      <colgroup>
+        <col class="w-index" />
+        <col />
+        <col class="w-designer" />
+        <col class="w-version" />
+        <col class="w-status" />
+        <col class="w-variants" />
+        <col class="w-previous" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col" class="col-index">#</th>
+          <th scope="col">Componente</th>
+          <th scope="col">Diseñador</th>
+          <th scope="col">Versión</th>
+          <th scope="col">Estado</th>
+          <th scope="col" class="col-number">Variantes</th>
+          <th scope="col">Versiones anteriores</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of visibleRows(); track row.component.id) {
+          <tr>
+            <td class="col-index">{{ row.index }}</td>
+            <td>
+              <a class="component-link" [routerLink]="row.component.path">{{ row.component.name }}</a>
+              <span class="component-id">{{ row.component.id }}</span>
+            </td>
+            <td [class.muted]="!row.latest?.designer">
+              <span class="designer-cell">
+                <span class="designer-dot" [style.--designer-color]="designerColor(row.designer)" aria-hidden="true"></span>
+                {{ row.designer }}
+              </span>
+            </td>
+            <td>
+              @if (row.latest; as latest) {
+                <a
+                  class="version-link"
+                  [routerLink]="row.component.path"
+                  [queryParams]="versionQuery(latest.number)"
+                >
+                  v{{ latest.number }}
+                </a>
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td><app-status-chip [status]="row.status" size="sm" /></td>
+            <td class="col-number">{{ row.component.variants.length }}</td>
+            <td>
+              @for (version of row.previous; track version.number) {
+                <a
+                  class="previous-version"
+                  [routerLink]="row.component.path"
+                  [queryParams]="versionQuery(version.number)"
+                  [title]="'Version ' + version.number"
+                >
+                  v{{ version.number }}
+                  <app-status-chip [status]="version.status" size="sm" />
+                </a>
+              } @empty {
+                <span class="muted">—</span>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty">No hay componentes con este filtro.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

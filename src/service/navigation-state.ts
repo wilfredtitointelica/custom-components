@@ -28,6 +28,15 @@ export class NavigationState {
   /** First URL segment: 'components', 'prototypes', … */
   readonly section = computed(() => this.segments()[0] ?? null);
 
+  /** Second URL segment under /components (component id or a fixed page such as 'guide'). */
+  readonly page = computed(() => {
+    const [section, page] = this.segments();
+    return section === 'components' ? (page ?? null) : null;
+  });
+
+  /** Current #fragment, if any. */
+  readonly fragment = computed(() => this.urlTree().fragment);
+
   /** ID of the component whose page is open, if any. */
   readonly componentId = computed(() => {
     const [section, componentId] = this.segments();

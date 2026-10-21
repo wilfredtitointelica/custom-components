@@ -1,0 +1,302 @@
+/* Same visual language as the documentation page (doc-page.scss). */
+:host {
+  display: block;
+  color: var(--c-ink);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--c-surface-high);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+/* Header */
+.guide-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--c-outline-variant);
+}
+
+.guide-eyebrow {
+  margin: 0 0 8px;
+  color: var(--c-accent-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.guide-title {
+  margin: 0;
+  font-size: clamp(2rem, 1.4rem + 2vw, 2.8125rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.guide-description {
+  max-width: 72ch;
+  margin: 16px 0 0;
+  color: var(--c-ink-muted);
+  font-size: 1rem;
+}
+
+.guide-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--c-outline-variant);
+  border-radius: var(--radius-sm);
+  color: var(--c-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: var(--c-state-hover);
+  }
+}
+
+/* Sections */
+.guide-section {
+  max-width: 960px;
+  scroll-margin-top: calc(var(--topbar-h) + 16px);
+
+  & + & {
+    margin-top: 56px;
+  }
+
+  > p {
+    max-width: 80ch;
+    margin: 0 0 16px;
+  }
+
+  // Separated from the code block / table above it (overrides the paragraph margin).
+  > .guide-note {
+    margin-top: 20px;
+  }
+}
+
+.guide-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 12px;
+
+  .guide-section-title {
+    margin: 0;
+  }
+}
+
+.guide-section-title {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+
+  .anchor-icon {
+    color: var(--c-ink-muted);
+    font-size: 0.875rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  a:hover .anchor-icon,
+  a:focus-visible .anchor-icon {
+    opacity: 1;
+  }
+}
+
+.skill-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--c-accent-container);
+  color: var(--c-on-accent-container);
+  font-weight: 700;
+}
+
+.guide-subtitle {
+  margin: 28px 0 12px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.guide-list {
+  margin: 0;
+  padding-left: 20px;
+
+  li + li {
+    margin-top: 6px;
+  }
+}
+
+/* Cards */
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.guide-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--c-surface-low);
+
+  h3 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  p {
+    margin: 0;
+    color: var(--c-ink-muted);
+  }
+}
+
+.guide-card-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background: var(--c-accent-container);
+  color: var(--c-on-accent-container);
+}
+
+/* Prompts and code */
+.guide-prompt,
+.guide-code {
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.guide-prompt {
+  position: relative;
+  padding: 10px 14px 10px 36px;
+  border: 1px solid var(--c-outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  white-space: pre-wrap;
+
+  &::before {
+    content: '›';
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    color: var(--c-accent);
+    font-weight: 700;
+  }
+}
+
+.guide-code {
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--c-code-bg);
+  color: var(--c-code-ink);
+}
+
+/* Block (not flex): text and <code> must flow inline; the icon sits in the left padding. */
+.guide-note {
+  position: relative;
+  margin: 16px 0 0;
+  padding: 12px 16px 12px 42px;
+  border-radius: var(--radius-md);
+  background: var(--c-primary-container);
+  color: var(--c-on-primary-container);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+
+  // As tall as the first line box (same padding-top and line-height), centred inside it.
+  .pi {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    height: calc(0.875rem * 1.6);
+    font-size: 0.875rem;
+  }
+
+  code {
+    background: rgb(255 255 255 / 0.6);
+  }
+
+  a {
+    color: inherit;
+    font-weight: 700;
+  }
+}
+
+.guide-table-wrap + .guide-grid {
+  margin-top: 24px;
+}
+
+/* Cheatsheet */
+.guide-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--c-outline-variant);
+  border-radius: var(--radius-lg);
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  th,
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--c-outline-variant);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--c-surface-low);
+    color: var(--c-ink-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  code {
+    white-space: nowrap;
+  }
+}

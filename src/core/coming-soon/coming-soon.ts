@@ -1,22 +1,22 @@
-import { Component, input } from '@angular/core';
+import { Component, input } from "@angular/core";
 
 /** Initial structure for sections that are not available yet. */
 @Component({
-  selector: 'app-coming-soon',
-  template: `
-    <main id="main-content" class="pane" tabindex="-1">
-      <section class="coming-soon" aria-labelledby="coming-soon-title">
-        @if (icon()) {
-          <span class="icon"><i class="pi {{ icon() }}" aria-hidden="true"></i></span>
-        }
-        <span class="badge">Coming soon</span>
-        <h1 id="coming-soon-title">{{ title() }}</h1>
-        <p>{{ description() }}</p>
-        <ng-content />
-      </section>
-    </main>
-  `,
-  styles: `
+	selector: "app-coming-soon",
+	template: `
+		<main id="main-content" class="pane" tabindex="-1">
+			<section class="coming-soon" aria-labelledby="coming-soon-title">
+				@if (icon()) {
+				<span class="icon"><i class="pi {{ icon() }}" aria-hidden="true"></i></span>
+				}
+				<span class="badge">Coming soon</span>
+				<h1 id="coming-soon-title">{{ title() }}</h1>
+				<p>{{ description() }}</p>
+				<ng-content />
+			</section>
+		</main>
+	`,
+	styles: `
     :host {
       display: block;
       padding: var(--pane-gap);
@@ -33,7 +33,7 @@ import { Component, input } from '@angular/core';
     .coming-soon {
       display: grid;
       justify-items: center;
-      max-width: 560px;
+      max-width: 600px;
       text-align: center;
     }
     .icon {
@@ -73,7 +73,7 @@ import { Component, input } from '@angular/core';
   `,
 })
 export class ComingSoon {
-  readonly title = input.required<string>();
-  readonly icon = input<string>();
-  readonly description = input('This section is being prepared and will be available in a future release.');
+	readonly title = input.required<string>();
+	readonly icon = input<string>();
+	readonly description = input("This section is being prepared and will be available in a future release.");
 }

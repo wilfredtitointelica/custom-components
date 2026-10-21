@@ -40,7 +40,11 @@ Pasa `--title` / `--description` solo si el usuario los cambió. El script:
 - busca la carpeta del componente (acepta el id o la carpeta, p. ej. `demo` → `_demo_/`);
 - toma la última `version-N` y la copia completa a `version-N+1/` (base, variantes con su código y
   cabeceras, y estilos);
-- en `base/<id>.ts` actualiza el comentario `/** <int-<id>> · version N… */` → `version N+1`;
+- en `base/<id>.ts` actualiza el comentario `/** <int-<id>> · version N… */` → `version N+1` y
+  reinicia `static readonly status` a `'pending'` (la versión nueva es trabajo sin empezar; la
+  anterior conserva su estado). `static readonly designer` se copia tal cual: si el usuario dice que
+  la versión nueva la ve otra persona, cambia solo esa línea en `version-N+1/base/<id>.ts` (nombre
+  completo: Yony León, Gabriela Javier o Christian Abanto);
 - en `base/<id>.html` reescribe la cabecera solo con los campos dados (el resto del archivo intacto);
 - falla sin tocar nada si el componente no existe, no tiene versiones, falta la base o `version-N+1/`
   ya existe;
@@ -54,6 +58,10 @@ No copies la carpeta a mano ni partas de otra versión: usa el script.
 - Si el comentario de `base/<id>.ts` tenía un resumen de la versión anterior
   (`· version 2: header with icon…`), avisa al usuario de que ese resumen ahora describe la versión
   vieja y debe ajustarlo el maquetador (no lo inventes).
+- Si la base es anterior a la convención y no tiene `static readonly status`, agrégala con
+  `npm run set:status -- <id> pending` (la inserta como primera línea de la clase de la versión nueva).
+- Recuerda al usuario que la versión nueva aparece como **"Pending"** y que puede cambiarla con
+  **`/cambiar-estado`** (`in-progress` al empezar a maquetar, `done` al terminar).
 - Pregunta: **"¿Deseas crear otra variante en la versión nueva?"** (sí / no).
   - **Sí** → seguir la skill **`crear-variante`** (`.claude/skills/crear-variante/SKILL.md`): el
     componente ya se conoce y la versión es la más reciente, solo se preguntan título y descripción.

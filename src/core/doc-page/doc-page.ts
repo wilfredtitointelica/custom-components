@@ -21,6 +21,8 @@ import { parseDocHtml } from '../../service/doc-html';
 import { NavigationState } from '../../service/navigation-state';
 import { CodePanel } from '../toggle-code/code-panel';
 import { VersionPicker } from './version-picker';
+import { DesignerBadge } from '../designer-badge/designer-badge';
+import { StatusChip } from '../status-chip/status-chip';
 
 /** A rendered example: the component exported by variants/<slug>/example.ts and its code. */
 interface DocExample {
@@ -54,7 +56,7 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
  */
 @Component({
   selector: 'app-doc-page',
-  imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker],
+  imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker, StatusChip, DesignerBadge],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
 })
