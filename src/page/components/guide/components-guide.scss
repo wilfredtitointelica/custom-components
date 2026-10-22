@@ -75,8 +75,11 @@ code {
   max-width: 960px;
   scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
+  // Divider between sections (same line as the header's).
   & + & {
-    margin-top: 56px;
+    margin-top: 48px;
+    padding-top: 48px;
+    border-top: 1px solid var(--doc-outline-variant);
   }
 
   > p {
@@ -225,6 +228,11 @@ code {
   border-radius: var(--doc-radius-lg);
   background: var(--doc-code-bg);
   color: var(--doc-code-ink);
+}
+
+/* Files the maquetador does not touch (outside version-N/). */
+.doc-guide-code-muted {
+  opacity: 0.5;
 }
 
 /* Block (not flex): text and <code> must flow inline; the icon sits in the left padding. */

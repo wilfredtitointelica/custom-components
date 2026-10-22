@@ -103,19 +103,24 @@
 
   <h3 class="doc-guide-subtitle">Qué genera</h3>
   <pre class="doc-guide-code">src/components/chip/
-├── chip.config.ts          id del componente (+ orden u ocultar variantes)
-├── routes.ts               ruta /components/chip
-├── chip-page.ts            página de documentación
-└── version-1/
-    ├── base/
-    │   ├── chip.ts         &lt;int-chip&gt; con solo status = 'pending' y designer
-    │   └── chip.html       cabecera con título y descripción
-    ├── variants/basic/     siempre: example.ts + example.html (Preview pending)
-    └── styles/
-        ├── _index.scss     punto de entrada (&#64;use)
-        └── _chip.scss      plantilla TOKENS · BLOCK · ELEMENTS · MODIFIERS · SKELETON, sin CSS</pre>
+├── version-1/
+│   ├── base/
+│   │   ├── chip.html           aquí actualizas el título y la descripción del componente
+│   │   └── chip.ts             &lt;int-chip&gt; con solo status = 'pending' y designer
+│   ├── styles/
+│   │   ├── _chip.scss          plantilla de secciones (TOKENS · BLOCK…), sin CSS
+│   │   └── _index.scss         punto de entrada (&#64;use)
+│   └── variants/
+│       └── basic/              siempre se crea (Preview pending)
+│           ├── example.html    aquí actualizas la cabecera de la variante; debajo va el código del ejemplo
+│           └── example.ts      importa solo la base
+<span class="doc-guide-code-muted">├── chip-page.ts                página de documentación (&lt;app-doc-page&gt;)
+├── chip.config.ts              id del componente (+ orden u ocultar variantes)
+└── routes.ts                   ruta /components/chip</span></pre>
   <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
+    Solo se trabaja dentro de <code>version-N/</code>. <code>chip-page.ts</code>,
+    <code>chip.config.ts</code> y <code>routes.ts</code> (atenuados) los crea la skill y no se tocan.
     También lo registra una vez en <code>src/components/inventory.ts</code> (posición en el menú).
     Es el único registro manual: variantes y versiones se detectan solas.
   </p>
@@ -157,8 +162,8 @@
 
   <h3 class="doc-guide-subtitle">Qué genera</h3>
   <pre class="doc-guide-code">src/components/accordion/version-N/variants/icons-border/
-├── example.ts      AccordionIconsBorderExample: importa solo la base
-└── example.html    solo la cabecera (title + description); debajo escribes el ejemplo</pre>
+├── example.html    solo la cabecera (title + description); debajo escribes el ejemplo
+└── example.ts      AccordionIconsBorderExample: importa solo la base</pre>
   <p class="doc-guide-note">
     <i class="pi pi-info-circle" aria-hidden="true"></i>
     Enlace directo: <code>/components/accordion#accordion-icons-border</code>. El título y la
