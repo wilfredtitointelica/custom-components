@@ -5,7 +5,7 @@
 //   examples/<id>.version-<N>.ts     → lazy, one per version: example components + their HTML/TS as text
 // Contents are never copied here: files are imported with `with { loader: 'text' }`, so `ng serve`
 // itself reloads any edit (title, description, example). Only creating or deleting folders needs a
-// regeneration (npm start / npm run docs / npm run new:variant do it).
+// regeneration (ng serve / npm start via scripts/ng-builders, npm run docs, npm run new:variant do it).
 // That is what lets a maquetador add an example by creating a folder, with no import or registration.
 //
 //   node scripts/generate-docs.mjs                  → generate once

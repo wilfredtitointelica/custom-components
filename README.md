@@ -6,9 +6,9 @@ Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).
 
 | Comando | Qué hace |
 |---|---|
-| `npm start` | Servidor en http://localhost:4321 (otro puerto: `npm start -- --port 4300`). Recarga con cada cambio y detecta carpetas de variantes nuevas o borradas. |
+| `npm start` (o `ng serve`) | Servidor en http://localhost:4321 (otro puerto: `npm start -- --port 4300`). Recarga con cada cambio y detecta carpetas de variantes nuevas o borradas (también las que borra un `git reset --hard`). |
 | `npm run new:variant -- <id> "<Título>" --description "<Descripción>"` | Crea `version-N/variants/<slug>/` (`example.ts` + `example.html` vacío → "Preview pending"). |
-| `npm run docs` | Regenera `src/generated/` (lo hacen solos `npm start`, `npm run build`, `npm test` y `new:variant`). |
+| `npm run docs` | Regenera `src/generated/` (lo hacen solos `npm start` / `ng serve`, `npm run build`, `npm test` y `new:variant`). |
 | `npm run build` | Build de producción en `dist/`. |
 | `npm test -- --watch=false --browsers=ChromeHeadless` | Tests unitarios. |
 

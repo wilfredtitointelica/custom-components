@@ -58,7 +58,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "./scripts/ng-builders:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "custom-components:build:production"

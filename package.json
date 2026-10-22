@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node scripts/generate-docs.mjs --watch -- ng serve",
+    "start": "ng serve",
     "docs": "node scripts/generate-docs.mjs",
     "new:variant": "node scripts/new-variant.mjs",
     "new:version": "node scripts/new-version.mjs",

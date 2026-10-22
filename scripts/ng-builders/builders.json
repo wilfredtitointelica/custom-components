@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "dev-server": {
+      "implementation": "./dev-server.js",
+      "schema": "./schema.json",
+      "description": "@angular/build:dev-server + scripts/generate-docs.mjs --watch."
+    }
+  }
+}

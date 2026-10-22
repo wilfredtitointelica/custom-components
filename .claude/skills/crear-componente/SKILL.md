@@ -84,8 +84,8 @@ escribe `src/generated/`, que **importa** los archivos (`base/<id>.html`, `examp
 `example.ts`) como texto: no copia su contenido. Por eso:
 - **Editar** un `example.html` / `example.ts` o una cabecera se refleja al instante con `npm start` o
   con `ng serve` directo (la página se recarga sola).
-- **Crear o borrar carpetas** sí necesita regenerar: lo hacen `npm start` (vigila `src/components/`),
-  `npm run new:variant` (al terminar) y `npm run docs`.
+- **Crear o borrar carpetas** sí necesita regenerar: lo hacen `npm start` / `ng serve` (vigilan
+  `src/components/`, también lo que crea o borra git), `npm run new:variant` (al terminar) y `npm run docs`.
 La página carga solo los ejemplos de la versión elegida.
 
 ---
@@ -461,11 +461,11 @@ npm start                                          # /components/chip: título, 
                                                    # /components: su cajita en la categoría elegida, con su ícono
 ```
 
-Usar los scripts de `npm` (no `npx ng …` directo): antes de compilar ejecutan
-`scripts/generate-docs.mjs`. Para el servidor, **`npm start`** (http://localhost:4321; otro puerto:
-`npm start -- --port 4300`): además de recargar con cada edición, detecta carpetas nuevas o borradas
-creadas a mano. Con `ng serve` directo las ediciones también se ven al instante, pero una carpeta creada
-a mano (sin `npm run new:variant`) no aparece hasta ejecutar `npm run docs`. Si el IDE marca `src/generated/doc-registry.ts` como inexistente
+Para build y tests usar los scripts de `npm` (no `npx ng build/test` directo): antes de compilar ejecutan
+`scripts/generate-docs.mjs`. Para el servidor, **`npm start`** o `ng serve` (http://localhost:4321; otro
+puerto: `npm start -- --port 4300`): el builder `scripts/ng-builders:dev-server` (angular.json → serve)
+lanza `generate-docs.mjs --watch` junto al dev-server, así que además de recargar con cada edición detecta
+carpetas nuevas o borradas a mano o por git (`reset --hard`, `checkout`). Si el IDE marca `src/generated/doc-registry.ts` como inexistente
 (clon nuevo), ejecutar `npm run docs` una vez.
 
 ---
