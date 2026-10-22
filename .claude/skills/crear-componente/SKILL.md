@@ -199,7 +199,14 @@ export const COMPONENT_INVENTORY = [ /* … */ chip, /* … */ ];
 Si el componente está en el Excel, actualizar también `EXCEL_NAMES` en `component-catalog.spec.ts`.
 El test compara con el `title:` de `base/<id>.html`; si el título visible se simplificó respecto del
 Excel (`Input` ← `Input (InputText, Checkbox, …)`), poner el nombre original en `sourceName` del config.
-Es el único registro manual: ejemplos y versiones se detectan solos.
+
+Agregarlo también al catálogo en cajitas (`/components`), en
+`src/page/components/catalog/catalog-groups.ts`: su id en la categoría que corresponda de
+`CATALOG_GROUPS` (Acciones, Entrada de texto, Selección, Navegación, Contención, Comunicación) y su
+ícono de primeicons en `CATALOG_ICONS`. Si se omite, la cajita sale igual, pero en el grupo "Otros" con
+el ícono genérico `pi-box`. La descripción de la cajita es la de la cabecera de `base/<id>.html`.
+
+Son los únicos registros manuales: ejemplos y versiones se detectan solos.
 
 ### 3.2 `routes.ts` y `chip-page.ts` (carpeta principal)
 
@@ -450,6 +457,7 @@ npm run build                                      # genera src/generated + comp
 npm test -- --watch=false --browsers=ChromeHeadless
 npm start                                          # /components/chip: título, descripción, chip "Pending", diseñador y "Basic" con "Preview pending"
                                                    # /components/status: el componente aparece con su diseñador
+                                                   # /components: su cajita en la categoría elegida, con su ícono
 ```
 
 Usar los scripts de `npm` (no `npx ng …` directo): antes de compilar ejecutan
@@ -532,5 +540,6 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 - [ ] `styles/_index.scss` solo con `@use` (modificadores con `as <id>-<mod>`, y solo los que existen).
 - [ ] Módulo base de estilos con la plantilla completa (TOKENS, BLOCK, ELEMENTS, MODIFIERS, SKELETON) y **sin CSS**.
 - [ ] `<id>.config.ts` sin títulos ni descripciones; importado una vez en `inventory.ts`.
+- [ ] Id en una categoría de `CATALOG_GROUPS` y su ícono en `CATALOG_ICONS` (`catalog-groups.ts`).
 - [ ] Menú y página muestran exactamente las carpetas de `variants/`; anclas `#<id>-<slug>` y pestañas HTML / TS funcionando.
 - [ ] `npm run build` y `npm test` en verde.

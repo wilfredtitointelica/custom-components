@@ -1,67 +1,72 @@
-<p class="doc-nav-status">Reference</p>
-<ul class="doc-nav-list">
-	<!-- Usage guide (/components/guide): how to create components, variants and versions. Goes first. -->
-	@let guideOpen = isExpanded(guide.key); @let guideCurrent = nav.page() === guide.segment;
-	<li class="doc-nav-item">
-		<div class="doc-nav-row" [class.doc-is-current]="guideCurrent">
-			<a class="doc-nav-link" [routerLink]="guide.path" [attr.aria-current]="guideCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(guide.key, guideCurrent)">
-				<span>
-					Skills
-					<span class="doc-nav-hint">( cómo usar )</span>
-				</span>
-			</a>
-			<button
-				type="button"
-				class="doc-icon-button doc-nav-toggle"
-				[attr.aria-expanded]="guideOpen"
-				aria-controls="nav-variants-guide"
-				[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skills'"
-				(click)="toggle(guide.key)"
-			>
-				<i class="pi pi-chevron-down" [class.doc-is-open]="guideOpen" aria-hidden="true"></i>
-			</button>
-		</div>
+<!-- Each group wraps its label and list: the sticky label stays inside its own group. -->
+<div class="doc-nav-group">
+	<p class="doc-nav-status">Reference</p>
+	<ul class="doc-nav-list">
+		<!-- Usage guide (/components/guide): how to create components, variants and versions. Goes first. -->
+		@let guideOpen = isExpanded(guide.key); @let guideCurrent = nav.page() === guide.segment;
+		<li class="doc-nav-item">
+			<div class="doc-nav-row" [class.doc-is-current]="guideCurrent">
+				<a class="doc-nav-link" [routerLink]="guide.path" [attr.aria-current]="guideCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(guide.key, guideCurrent)">
+					<span>
+						Skills
+						<span class="doc-nav-hint">( cómo usar )</span>
+					</span>
+				</a>
+				<button
+					type="button"
+					class="doc-icon-button doc-nav-toggle"
+					[attr.aria-expanded]="guideOpen"
+					aria-controls="nav-variants-guide"
+					[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skills'"
+					(click)="toggle(guide.key)"
+				>
+					<i class="pi pi-chevron-down" [class.doc-is-open]="guideOpen" aria-hidden="true"></i>
+				</button>
+			</div>
 
-		<!-- Always rendered: the wrapper animates its height (grid rows 0fr ↔ 1fr); inert while closed. -->
-		<div class="doc-variant-collapse" [class.doc-is-open]="guideOpen" [attr.inert]="guideOpen ? null : ''">
-			<ul class="doc-variant-list" id="nav-variants-guide">
-				@for (section of guide.sections; track section.id) { @let active = guideCurrent && nav.fragment() === section.id;
-				<li>
-					<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="guide.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
-						{{ section.name }}
-					</a>
-				</li>
-				}
-			</ul>
-		</div>
-	</li>
+			<!-- Always rendered: the wrapper animates its height (grid rows 0fr ↔ 1fr); inert while closed. -->
+			<div class="doc-variant-collapse" [class.doc-is-open]="guideOpen" [attr.inert]="guideOpen ? null : ''">
+				<ul class="doc-variant-list" id="nav-variants-guide">
+					@for (section of guide.sections; track section.id) { @let active = guideCurrent && nav.fragment() === section.id;
+					<li>
+						<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="guide.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
+							{{ section.name }}
+						</a>
+					</li>
+					}
+				</ul>
+			</div>
+		</li>
 
-	@for (component of references; track component.id) {
-	<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
-	}
+		@for (component of references; track component.id) {
+		<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
+		}
 
-	<!-- Progress page (/components/status): status of every component, for the team lead. No sub-items. -->
-	@let statusCurrent = nav.page() === status.segment;
-	<li class="doc-nav-item">
-		<div class="doc-nav-row" [class.doc-is-current]="statusCurrent">
-			<a class="doc-nav-link" [routerLink]="status.path" [attr.aria-current]="statusCurrent ? 'page' : null" (click)="navigated.emit()">
-				<span>
-					Status
-					<span class="doc-nav-hint">( seguimiento )</span>
-				</span>
-			</a>
-		</div>
-	</li>
-</ul>
+		<!-- Progress page (/components/status): status of every component, for the team lead. No sub-items. -->
+		@let statusCurrent = nav.page() === status.segment;
+		<li class="doc-nav-item">
+			<div class="doc-nav-row" [class.doc-is-current]="statusCurrent">
+				<a class="doc-nav-link" [routerLink]="status.path" [attr.aria-current]="statusCurrent ? 'page' : null" (click)="navigated.emit()">
+					<span>
+						Status
+						<span class="doc-nav-hint">( seguimiento )</span>
+					</span>
+				</a>
+			</div>
+		</li>
+	</ul>
+</div>
 <hr class="doc-nav-divider" />
 
-<p class="doc-nav-status">{{ components.length }} components</p>
+<div class="doc-nav-group">
+	<p class="doc-nav-status">{{ components.length }} components</p>
 
-<ul class="doc-nav-list">
-	@for (component of components; track component.id) {
-	<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
-	}
-</ul>
+	<ul class="doc-nav-list">
+		@for (component of components; track component.id) {
+		<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
+		}
+	</ul>
+</div>
 
 <ng-template #navItem let-component>
 	@let open = isExpanded(component.id); @let current = nav.componentId() === component.id;

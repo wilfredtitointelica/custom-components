@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 
 import { NotFound } from '../core/not-found/not-found';
+import { WelcomePage } from '../page/welcome/welcome-page';
 import { APP_TITLE } from '../service/component-routes';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'components' },
+  { path: '', pathMatch: 'full', title: APP_TITLE, component: WelcomePage },
   { path: 'components', loadChildren: () => import('../page/components/components.routes') },
   {
     path: 'prototypes',

@@ -1,3 +1,5 @@
+<main id="main-content" class="doc-welcome" tabindex="-1">
+<div class="doc-welcome-content">
 <section class="doc-hero" aria-labelledby="overview-title">
   <div class="doc-hero-copy">
     <p class="doc-hero-kicker">¡Bienvenido!</p>
@@ -18,15 +20,15 @@
 
 <p class="doc-overview-lead">
   Bienvenido a la Librería de Componentes de Intelica: un conjunto robusto, intuitivo y reutilizable de componentes de UI
-  diseñado para simplificar y acelerar tu flujo de desarrollo. Selecciona un componente en el menú para abrir
-  su documentación, o búscalo por su nombre.
+  diseñado para simplificar y acelerar tu flujo de desarrollo. Entra a Componentes para ver el catálogo
+  completo, o busca un componente por su nombre.
 </p>
 
 <h2 class="doc-overview-heading">Explore</h2>
 <ul class="doc-section-grid">
   @for (section of sections; track section.id) {
     <li>
-      <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.link">
+      <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.path">
         <span class="doc-section-icon"><i class="pi {{ section.icon }}" aria-hidden="true"></i></span>
         <span class="doc-section-name">
           {{ section.label }}
@@ -40,3 +42,5 @@
     </li>
   }
 </ul>
+</div>
+</main>

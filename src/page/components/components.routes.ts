@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 
 import { APP_TITLE, buildComponentRoutes, redirectAnchorAlias, variantPathAlias } from '../../service/component-routes';
-import { CATALOG_SEGMENT } from './catalog/catalog-route';
+import { CatalogPage } from './catalog/catalog-page';
 import { ComponentsPage } from './components-page';
 import { GUIDE_SEGMENT } from './guide/guide-sections';
-import { ComponentsOverview } from './overview/components-overview';
 import { STATUS_SEGMENT } from './status/status-route';
 
 export default [
@@ -16,7 +15,7 @@ export default [
         path: '',
         pathMatch: 'full',
         title: `Components · ${APP_TITLE}`,
-        component: ComponentsOverview,
+        component: CatalogPage,
         canActivate: [redirectAnchorAlias],
         runGuardsAndResolvers: 'always',
       },
@@ -24,11 +23,6 @@ export default [
         path: GUIDE_SEGMENT,
         title: `Guía de uso · ${APP_TITLE}`,
         loadComponent: () => import('./guide/components-guide').then((m) => m.ComponentsGuide),
-      },
-      {
-        path: CATALOG_SEGMENT,
-        title: `Componentes · ${APP_TITLE}`,
-        loadComponent: () => import('./catalog/catalog-page').then((m) => m.CatalogPage),
       },
       {
         path: STATUS_SEGMENT,

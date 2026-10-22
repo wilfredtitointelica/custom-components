@@ -1,3 +1,23 @@
+/* Page: same pane as the components shell, without drawer nor top bar */
+:host {
+  display: block;
+  padding: var(--doc-pane-gap);
+}
+
+.doc-welcome {
+  display: block;
+  min-height: calc(100dvh - var(--doc-pane-gap) * 2 - var(--doc-bottombar-h));
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface);
+  outline: none;
+}
+
+.doc-welcome-content {
+  max-width: var(--doc-content-max);
+  margin: 0 auto;
+  padding: 56px 48px 96px;
+}
+
 /* Hero */
 .doc-hero {
   position: relative;
@@ -236,5 +256,17 @@
 
   .doc-hero-kicker {
     font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .doc-welcome-content {
+    padding: 48px 40px 96px;
+  }
+}
+
+@media (max-width: 839px) {
+  .doc-welcome-content {
+    padding: 24px 16px 48px;
   }
 }
