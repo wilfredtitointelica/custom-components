@@ -132,7 +132,7 @@
   align-items: center;
   gap: 10px;
   min-height: 36px;
-  padding: 6px 16px;
+  padding: 6px 12px;
   border-radius: 999px;
   color: var(--doc-ink-muted);
   font-size: 0.875rem;
@@ -177,7 +177,7 @@
 
 /* Separates the reference implementations (_demo_) from the component list. */
 .doc-nav-divider {
-  margin: 16px;
+  margin: 24px 0;
   border: 0;
   border-top: 1px solid var(--doc-outline-variant);
 }

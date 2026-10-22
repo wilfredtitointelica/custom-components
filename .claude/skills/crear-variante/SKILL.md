@@ -10,6 +10,29 @@ Genera la carpeta `src/components/<componente>/version-<N>/variants/<slug>/` con
 `example.html` mínimos, listos para que el maquetador escriba el ejemplo. Sustituye a copiar y
 renombrar a mano la variante de otro componente.
 
+## 0. Validar antes de preguntar
+
+Con lo que dio el usuario, comprueba **antes de preguntar el resto**:
+
+1. **Que el componente exista**: carpeta `src/components/<id>/` (o `_<id>_/`) o un `title:` que coincida
+   en `src/components/*/version-*/base/*.html`. Si no existe, **no se crea nada** y se responde:
+
+   > No se puede crear la variante: el componente **<nombre>** no existe.
+   > Primero créalo con `/crear-componente`.
+
+   Si el nombre se parece a uno existente (`Buton` → `button`), sugiérelo y pregunta si era ese.
+2. **Que la versión exista** (si pidió una): `version-<N>/` dentro del componente. Si no, avisar con las
+   versiones disponibles.
+3. **Que la variante no exista**: en cuanto se sepa el título, su carpeta
+   `version-<N>/variants/<slug>/` (slug en kebab-case: `Icons + Border` → `icons-border`). Si existe,
+   **no se crea nada** y se responde:
+
+   > No se puede crear **<Título>**: la variante ya existe en `<id>` (`version-<N>/variants/<slug>/`).
+   > Para cambiar su título o descripción, edita la cabecera de su `example.html`.
+
+El script hace las mismas comprobaciones y falla sin tocar nada; si aun así falla, traduce su error
+al usuario con estos mensajes.
+
 ## 1. Datos
 
 Hay que saber tres cosas. Lo que venga en los argumentos (`/crear-variante accordion Icons + Border`)
@@ -90,6 +113,8 @@ Confirma al usuario la ruta creada y el enlace: `/components/<id>#<id>-<slug>`.
   `cambiar-estado`.
 - ❌ Tocar `<id>-page.ts`, `routes.ts`, `inventory.ts` ni `src/generated/`.
 - ❌ Inventar variantes que el usuario no pidió.
+- ❌ Crear el componente por tu cuenta cuando no existe: se avisa y lo crea el usuario con `/crear-componente`.
+- ❌ Sobrescribir, renombrar o "reutilizar" una variante que ya existe.
 - ❌ Agregar una variante solo en `variants` del config sin crear su carpeta: no se muestra.
 
 Convenciones completas: skill `crear-componente` (`.claude/skills/crear-componente/SKILL.md`,

@@ -6,7 +6,7 @@
 		<div class="doc-nav-row" [class.doc-is-current]="guideCurrent">
 			<a class="doc-nav-link" [routerLink]="guide.path" [attr.aria-current]="guideCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(guide.key, guideCurrent)">
 				<span>
-					Guide
+					Skills
 					<span class="doc-nav-hint">( cómo crear )</span>
 				</span>
 			</a>
@@ -15,7 +15,7 @@
 				class="doc-icon-button doc-nav-toggle"
 				[attr.aria-expanded]="guideOpen"
 				aria-controls="nav-variants-guide"
-				[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Guide'"
+				[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skill'"
 				(click)="toggle(guide.key)"
 			>
 				<i class="pi pi-chevron-down" [class.doc-is-open]="guideOpen" aria-hidden="true"></i>
@@ -24,15 +24,15 @@
 
 		<!-- Always rendered: the wrapper animates its height (grid rows 0fr ↔ 1fr); inert while closed. -->
 		<div class="doc-variant-collapse" [class.doc-is-open]="guideOpen" [attr.inert]="guideOpen ? null : ''">
-		<ul class="doc-variant-list" id="nav-variants-guide">
-			@for (section of guide.sections; track section.id) { @let active = guideCurrent && nav.fragment() === section.id;
-			<li>
-				<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="guide.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
-					{{ section.name }}
-				</a>
-			</li>
-			}
-		</ul>
+			<ul class="doc-variant-list" id="nav-variants-guide">
+				@for (section of guide.sections; track section.id) { @let active = guideCurrent && nav.fragment() === section.id;
+				<li>
+					<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="guide.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
+						{{ section.name }}
+					</a>
+				</li>
+				}
+			</ul>
 		</div>
 	</li>
 
@@ -89,25 +89,25 @@
 		</div>
 
 		<div class="doc-variant-collapse" [class.doc-is-open]="open" [attr.inert]="open ? null : ''">
-		<ul class="doc-variant-list" [id]="'nav-variants-' + component.id">
-			@for (variant of component.variants; track variant.id) { @let active = nav.activeVariantId() === variant.id;
-			<li>
-				<a
-					class="doc-variant-link"
-					[class.doc-is-active]="active"
-					[routerLink]="variant.path"
-					[fragment]="variant.id"
-					[queryParamsHandling]="current ? 'preserve' : ''"
-					[attr.aria-current]="active ? 'location' : null"
-					(click)="navigated.emit()"
-				>
-					{{ variant.name }}
-				</a>
-			</li>
-			} @empty {
-			<li class="doc-variant-empty">No variants defined yet</li>
-			}
-		</ul>
+			<ul class="doc-variant-list" [id]="'nav-variants-' + component.id">
+				@for (variant of component.variants; track variant.id) { @let active = nav.activeVariantId() === variant.id;
+				<li>
+					<a
+						class="doc-variant-link"
+						[class.doc-is-active]="active"
+						[routerLink]="variant.path"
+						[fragment]="variant.id"
+						[queryParamsHandling]="current ? 'preserve' : ''"
+						[attr.aria-current]="active ? 'location' : null"
+						(click)="navigated.emit()"
+					>
+						{{ variant.name }}
+					</a>
+				</li>
+				} @empty {
+				<li class="doc-variant-empty">No variants defined yet</li>
+				}
+			</ul>
 		</div>
 	</li>
 </ng-template>

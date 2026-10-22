@@ -96,7 +96,8 @@ La página carga solo los ejemplos de la versión elegida.
 
 Orden de trabajo (cada paso se detalla abajo):
 
-1. **3.0** Preguntar título y descripción del componente, descripción de `Basic` y diseñador.
+1. **3.0** Validar que el componente no exista; si existe, avisar y parar. Luego preguntar título y
+   descripción del componente, descripción de `Basic` y diseñador.
 2. **3.1–3.2** `chip.config.ts`, registro en `inventory.ts`, `routes.ts` y `chip-page.ts`.
 3. **3.3–3.4** `base/chip.ts` y `base/chip.html` (con la cabecera).
 4. **3.6–3.7** `styles/_index.scss` y `styles/_chip.scss` (plantilla sin CSS).
@@ -105,9 +106,23 @@ Orden de trabajo (cada paso se detalla abajo):
 6. Preguntar **"¿Deseas crear otra variante?"** → sí: `crear-variante` (título + descripción); no: seguir.
 7. **3.9** Verificar.
 
-### 3.0 Preguntar antes de crear
+### 3.0 Validar que no exista y preguntar
 
-Antes de escribir cualquier archivo, pregunta en **un solo mensaje** lo que no se haya dado:
+**Primero valida**, antes de preguntar nada más: con el título o id que dio el usuario, comprueba que
+el componente **no exista** ya:
+
+```bash
+ls src/components/                                   # carpetas: <id>/ (y _demo_/)
+grep -rh "title:" src/components/*/version-*/base/*.html   # nombres visibles
+```
+
+Existe si hay una carpeta `src/components/<id>/` (o `_<id>_/`) o si algún `title:` coincide con el
+nombre pedido (sin distinguir mayúsculas). En ese caso **no se crea nada** y se responde:
+
+> No se puede crear **<Título>**: el componente ya existe (`src/components/<id>/`).
+> Si quieres agregarle un ejemplo usa `/crear-variante`; para cambiar su implementación, `/crear-version`.
+
+Si no existe, pregunta en **un solo mensaje** lo que no se haya dado:
 
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
    kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio. Nunca `guide` ni `status`
@@ -481,6 +496,7 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 ## 6. Qué NO hacer
 
 - ❌ Escribir CSS al crear la base (ni "valores de ejemplo" ni skeleton con estilos). Solo plantilla.
+- ❌ Crear (o sobrescribir) un componente que ya existe: se avisa y no se toca nada (3.0).
 - ❌ Escribir marcado, bindings o `<ng-content>` en `base/<id>.html`. Solo la cabecera y el nombre del componente.
 - ❌ Poner títulos o descripciones en `<id>.config.ts` u otro `.ts`: van en la cabecera del HTML.
 - ❌ Escribir el ejemplo de `basic` al crear el componente: su `example.html` queda solo con la cabecera.

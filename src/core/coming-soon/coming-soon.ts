@@ -33,7 +33,7 @@ import { Component, input } from "@angular/core";
     .doc-coming-soon {
       display: grid;
       justify-items: center;
-      max-width: 600px;
+      max-width: 720px;
       text-align: center;
     }
     .doc-icon {

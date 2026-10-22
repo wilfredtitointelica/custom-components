@@ -1,17 +1,36 @@
-import { Component, computed, input, signal } from '@angular/core';
-import { UpperCasePipe } from '@angular/common';
+import { Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
+import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 
 import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/catalog.model';
 
 /**
  * Code viewer shown under a variant when its Code switch is on.
  * Shows the real source of the example folder (example.html / example.ts); nothing is invented here.
+ * The body is limited to 480px (scroll); Expand opens the same viewer in a modal <dialog>
+ * (closes with the X button, Esc or a click on the backdrop).
  */
 @Component({
   selector: 'app-code-panel',
-  imports: [UpperCasePipe],
+  imports: [NgTemplateOutlet, UpperCasePipe],
   template: `
     <div class="doc-code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
+      <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: false }" />
+      <ng-container *ngTemplateOutlet="body" />
+    </div>
+
+    <dialog
+      #dialog
+      class="doc-code-dialog"
+      [attr.aria-label]="'Code: ' + label()"
+      (click)="$event.target === dialog && close()"
+    >
+      <div class="doc-code-panel">
+        <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: true }" />
+        <ng-container *ngTemplateOutlet="body" />
+      </div>
+    </dialog>
+
+    <ng-template #toolbar let-inDialog>
       <div class="doc-code-toolbar">
         <div class="doc-code-tabs" role="tablist" aria-label="Language">
           @for (language of languages; track language) {
@@ -27,21 +46,50 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
             </button>
           }
         </div>
-        <button
-          type="button"
-          class="doc-code-copy"
-          [disabled]="!current()"
-          [attr.aria-label]="copied() ? 'Copied' : 'Copy code'"
-          (click)="copy()"
-        >
-          <i
-            class="pi"
-            [class.pi-copy]="!copied()"
-            [class.pi-check]="copied()"
-            aria-hidden="true"
-          ></i>
-        </button>
+        <div class="doc-code-actions">
+          <button
+            type="button"
+            class="doc-code-action"
+            [disabled]="!current()"
+            [attr.aria-label]="copied() ? 'Copied' : 'Copy code'"
+            [title]="copied() ? 'Copied' : 'Copy code'"
+            (click)="copy()"
+          >
+            <i
+              class="pi"
+              [class.pi-copy]="!copied()"
+              [class.pi-check]="copied()"
+              aria-hidden="true"
+            ></i>
+          </button>
+          @if (inDialog) {
+            <button
+              type="button"
+              class="doc-code-action"
+              aria-label="Close"
+              title="Close"
+              autofocus
+              (click)="close()"
+            >
+              <i class="pi pi-times" aria-hidden="true"></i>
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="doc-code-action"
+              aria-label="Expand code"
+              title="Expand"
+              aria-haspopup="dialog"
+              (click)="expand()"
+            >
+              <i class="pi pi-window-maximize" aria-hidden="true"></i>
+            </button>
+          }
+        </div>
       </div>
+    </ng-template>
+
+    <ng-template #body>
       <div class="doc-code-body" role="tabpanel">
         @if (current(); as source) {
           <pre><code>{{ source }}</code></pre>
@@ -52,7 +100,7 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
           </p>
         }
       </div>
-    </div>
+    </ng-template>
   `,
   styleUrl: './code-panel.scss',
 })
@@ -65,9 +113,19 @@ export class CodePanel {
   protected readonly current = computed(() => this.sources()?.[this.selected()] ?? null);
   protected readonly copied = signal(false);
 
+  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+
   protected async copy(): Promise<void> {
     await navigator.clipboard.writeText(this.current() ?? '');
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 1500);
+  }
+
+  protected expand(): void {
+    this.dialog().nativeElement.showModal();
+  }
+
+  protected close(): void {
+    this.dialog().nativeElement.close();
   }
 }

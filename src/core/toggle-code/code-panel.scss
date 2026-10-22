@@ -5,6 +5,7 @@
   animation: code-in 0.3s var(--doc-ease-emphasized);
   background: var(--doc-code-bg);
   color: var(--doc-code-ink);
+  color-scheme: dark; // native scrollbars match the dark background
 }
 
 .doc-code-toolbar {
@@ -22,7 +23,7 @@
 }
 
 .doc-code-tab,
-.doc-code-copy {
+.doc-code-action {
   min-width: 36px;
   height: 28px;
   padding: 0 10px;
@@ -47,15 +48,23 @@
   color: var(--doc-accent);
 }
 
-.doc-code-copy:disabled {
+.doc-code-action:disabled {
   cursor: not-allowed;
   opacity: 0.35;
 }
 
+.doc-code-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* Long sources scroll inside the panel; Expand shows them in the dialog. */
 .doc-code-body {
   min-height: 96px;
+  max-height: 480px;
   padding: 20px 24px;
-  overflow-x: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
   font-family: var(--doc-font-mono);
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -70,6 +79,41 @@
   margin: 0;
   color: rgb(255 255 255 / 0.55);
   font-family: var(--doc-font-sans);
+}
+
+/* Expanded: modal <dialog> (top layer) almost the size of the window. */
+.doc-code-dialog {
+  width: min(1280px, calc(100vw - 48px));
+  max-width: none;
+  height: calc(100dvh - 48px);
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--doc-radius-lg);
+  background: transparent;
+
+  &::backdrop {
+    background: rgb(7 11 26 / 0.6);
+  }
+
+  .doc-code-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+  }
+
+  .doc-code-body {
+    flex: 1;
+    max-height: none;
+  }
+
+  @media (max-width: 839px) {
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 16px);
+  }
 }
 
 @keyframes code-in {

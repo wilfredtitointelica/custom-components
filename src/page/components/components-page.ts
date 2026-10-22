@@ -11,7 +11,7 @@ import { GUIDE_SEGMENT } from './guide/guide-sections';
 import { STATUS_SEGMENT } from './status/status-route';
 
 /** Fixed pages under /components (pinned under "Reference" in the menu): URL segment → breadcrumb label. */
-const REFERENCE_PAGES: Readonly<Record<string, string>> = { [GUIDE_SEGMENT]: 'Guide', [STATUS_SEGMENT]: 'Status' };
+const REFERENCE_PAGES: Readonly<Record<string, string>> = { [GUIDE_SEGMENT]: 'Skill', [STATUS_SEGMENT]: 'Status' };
 
 /** Gap kept between the sticky top bar and an anchored section. */
 const ANCHOR_GAP = 16;

@@ -50,6 +50,19 @@ preguntar; lo que falte se pregunta en el chat, **todo en un solo mensaje**:
 Se pueden cambiar varios componentes a la vez ("marca button y chip como done"): un comando por
 componente.
 
+**Validar antes de cambiar** (y antes de preguntar lo que falte):
+
+- **El componente existe**: carpeta `src/components/<id>/` (o `_<id>_/`) o un `title:` que coincida en
+  `version-N/base/<id>.html`. Si no:
+  > No se puede cambiar el estado: el componente **<nombre>** no existe.
+- **La versión existe** (si pidió una): si no, avisar con las versiones disponibles.
+- **El estado es distinto del actual**: lee la línea `static readonly status` de esa versión. Si ya
+  tiene el estado pedido, **no se cambia nada** y se responde:
+  > **<nombre>** (version <N>) ya está en **<Estado>**; no hay nada que cambiar.
+
+Con varios componentes, valida cada uno: cambia los válidos y lista aparte los que no se pudieron
+y por qué.
+
 ## 2. Cambiar
 
 ```bash
@@ -113,5 +126,6 @@ No hace falta `npm run build` (solo cambia un literal).
 - ❌ Mover el estado a `<id>.config.ts`, a un comentario (`@status`) o a la cabecera del HTML: va en
   la clase de `base/<id>.ts`.
 - ❌ Cambiar el estado de una versión anterior cuando el usuario no la mencionó.
+- ❌ Ejecutar el script o decir "listo" cuando el componente no existe o ya tenía ese estado: se avisa.
 
 Convenciones completas: skill `crear-componente` (`.claude/skills/crear-componente/SKILL.md`).

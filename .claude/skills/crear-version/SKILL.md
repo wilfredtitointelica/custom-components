@@ -22,6 +22,8 @@ que falte se pregunta en el chat, **todo en un solo mensaje**:
    el `id` de `src/components/*/<id>.config.ts` y el `title:` de la cabecera de su
    `version-N/base/<id>.html`. Conviértelo siempre al `id`. Indica al usuario cuál es la última versión
    (`version-N`) y cuál se va a crear (`version-N+1`).
+   **Valida primero que exista**, antes de preguntar el resto. Si no existe, no se crea nada:
+   > No se puede crear una versión: el componente **<nombre>** no existe. Primero créalo con `/crear-componente`.
 2. **Título** del componente en la versión nueva: por defecto se conserva el de la última versión.
 3. **Descripción** del componente en la versión nueva: por defecto se conserva. Sugiere describir qué
    cambia en esta versión si el usuario lo sabe.

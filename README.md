@@ -50,4 +50,4 @@ Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).
   `.doc-preview` (los ejemplos `int-*`) queda fuera: ahí sí aplican esos resets.
 
 Guías con Claude Code: `/crear-componente`, `/crear-variante`, `/crear-version` y `/cambiar-estado`
-(`.claude/skills/`). En la app: menú Reference → Guide.
+(`.claude/skills/`). En la app: menú Reference → Skill.

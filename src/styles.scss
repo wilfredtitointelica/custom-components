@@ -112,6 +112,11 @@ body.doc-body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* The page does not scroll behind the expanded code viewer (modal dialog of app-code-panel). */
+html.doc-html:has(.doc-code-dialog[open]) {
+  overflow: hidden;
+}
+
 /*
  * Shield: undoes, only in the documentation, what tag resets of other stylesheets add to these tags
  * (text-wrap, img/svg sizing, font/color of controls…), back to the browser default. Specificity (0,1,0):
