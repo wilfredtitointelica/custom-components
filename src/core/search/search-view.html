@@ -5,8 +5,8 @@
   <app-search
     class="doc-search-field"
     appearance="large"
-    placeholder="Search"
-    label="Search the design system"
+    placeholder="Buscar"
+    label="Buscar en el sistema de diseño"
     controls="search-results"
     [(query)]="search.query"
     (submitted)="openFirst()"
@@ -16,7 +16,7 @@
 
 <div id="search-results" class="doc-search-results" aria-live="polite">
   @if (!search.query().trim()) {
-    <p class="doc-search-hint">Search components by name.</p>
+    <p class="doc-search-hint">Busca componentes por su nombre.</p>
   } @else {
     @for (group of search.groups(); track group.id) {
       <section class="doc-search-group" [attr.aria-labelledby]="'search-group-' + group.id">
@@ -39,7 +39,7 @@
     } @empty {
       <div class="doc-search-empty">
         <i class="pi pi-search" aria-hidden="true"></i>
-        <p>No results for “{{ search.query() }}”.</p>
+        <p>Sin resultados para “{{ search.query() }}”.</p>
         <button type="button" class="doc-search-empty-clear" (click)="search.query.set(''); field().focus()">
           Clear search
         </button>

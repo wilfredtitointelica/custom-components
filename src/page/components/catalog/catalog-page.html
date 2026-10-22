@@ -1,0 +1,45 @@
+<section class="doc-catalog-hero" aria-labelledby="catalog-title">
+  <div class="doc-catalog-hero-copy">
+    <h1 id="catalog-title" class="doc-catalog-hero-title">Componentes</h1>
+    <p class="doc-catalog-hero-lead">
+      Los componentes son bloques de construcción interactivos para crear una interfaz de usuario. Están organizados
+      en categorías según su propósito: acciones, entrada de texto, selección, navegación, contención y comunicación.
+    </p>
+    <p class="doc-catalog-hero-stat"><strong>{{ total }}</strong> componentes</p>
+  </div>
+  <div class="doc-catalog-hero-art" aria-hidden="true">
+    <span class="doc-blob doc-blob-1"></span>
+    <span class="doc-blob doc-blob-2"></span>
+    <span class="doc-blob doc-blob-3"></span>
+    <span class="doc-blob doc-blob-4"></span>
+  </div>
+</section>
+
+@for (group of groups; track group.name; let tone = $index) {
+  <section class="doc-catalog-group" [attr.aria-labelledby]="'catalog-group-' + tone">
+    <h2 [id]="'catalog-group-' + tone" class="doc-catalog-group-title">{{ group.name }}</h2>
+    <ul class="doc-catalog-grid">
+      @for (card of group.cards; track card.component.id) {
+        <li>
+          <a class="doc-catalog-card doc-tone-{{ tone % 3 }}" [routerLink]="card.component.path">
+            <span class="doc-catalog-preview" aria-hidden="true">
+              <span class="doc-catalog-preview-icon"><i class="pi {{ card.icon }}"></i></span>
+            </span>
+            <span class="doc-catalog-body">
+              <span class="doc-catalog-name">{{ card.component.name }}</span>
+              <span class="doc-catalog-desc">
+                @if (card.component.description) {
+                  {{ card.component.description }}
+                } @else {
+                  {{ card.component.variants.length }}
+                  {{ card.component.variants.length === 1 ? 'variante' : 'variantes' }}
+                }
+              </span>
+              <span class="doc-catalog-status"><app-status-chip [status]="card.status" size="sm" /></span>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+}

@@ -1,0 +1,217 @@
+/* Hero: copy panel + decorative panel, side by side */
+.doc-catalog-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  min-height: 360px;
+}
+
+.doc-catalog-hero-copy {
+  display: grid;
+  align-content: center;
+  padding: 48px;
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface-low);
+}
+
+.doc-catalog-hero-title {
+  margin: 0 0 16px;
+  font-size: clamp(2.5rem, 1.75rem + 2.8vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.doc-catalog-hero-lead {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.doc-catalog-hero-stat {
+  justify-self: start;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 28px 0 0;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--doc-surface-high);
+  color: var(--doc-ink-muted);
+  font-size: 0.875rem;
+
+  strong {
+    color: var(--doc-accent-text);
+    font-size: 1.125rem;
+  }
+}
+
+.doc-catalog-hero-art {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-accent);
+}
+
+.doc-blob {
+  position: absolute;
+  display: block;
+}
+
+.doc-blob-1 {
+  inset: 12% -10% -30% 8%;
+  border-radius: 46% 54% 40% 60% / 50% 40% 60% 50%;
+  background: #ffb26b;
+}
+
+.doc-blob-2 {
+  top: 26%;
+  left: 2%;
+  width: 34%;
+  height: 32%;
+  border-radius: 50% 50% 44% 56% / 60% 52% 48% 40%;
+  background: var(--doc-primary);
+}
+
+.doc-blob-3 {
+  top: 30%;
+  left: 42%;
+  width: 38%;
+  height: 74%;
+  border-radius: 48%;
+  background: #1d4f9a;
+}
+
+.doc-blob-4 {
+  top: -12%;
+  right: -6%;
+  width: 26%;
+  height: 32%;
+  border-radius: 50%;
+  background: var(--doc-surface);
+}
+
+/* Groups */
+.doc-catalog-group {
+  max-width: 1200px;
+  margin: 72px auto 0;
+}
+
+.doc-catalog-group-title {
+  margin: 0 0 24px;
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+  font-weight: 400;
+}
+
+.doc-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Card: preview on top, name + description + status below */
+.doc-catalog-card {
+  --doc-tone-bg: var(--doc-primary-container);
+  --doc-tone-ink: var(--doc-on-primary-container);
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface-low);
+  color: var(--doc-ink);
+  text-decoration: none;
+  transition:
+    box-shadow 0.2s,
+    transform 0.3s var(--doc-ease-emphasized);
+
+  &:hover {
+    box-shadow: 0 6px 24px rgb(22 50 92 / 0.14);
+    transform: translateY(-2px);
+
+    .doc-catalog-preview-icon {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.doc-tone-1 {
+  --doc-tone-bg: var(--doc-accent-container);
+  --doc-tone-ink: var(--doc-on-accent-container);
+}
+
+.doc-tone-2 {
+  --doc-tone-bg: var(--doc-surface-high);
+  --doc-tone-ink: var(--doc-ink);
+}
+
+.doc-catalog-preview {
+  display: grid;
+  place-items: center;
+  height: 156px;
+  background: var(--doc-tone-bg);
+}
+
+.doc-catalog-preview-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface);
+  box-shadow: 0 2px 8px rgb(22 50 92 / 0.12);
+  color: var(--doc-tone-ink);
+  transition: transform 0.3s var(--doc-ease-emphasized);
+
+  .pi {
+    font-size: 1.75rem;
+  }
+}
+
+.doc-catalog-body {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 20px 20px 24px;
+}
+
+.doc-catalog-name {
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.doc-catalog-desc {
+  color: var(--doc-ink-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.doc-catalog-status {
+  margin-top: 8px;
+}
+
+@media (max-width: 1023px) {
+  .doc-catalog-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .doc-catalog-hero-art {
+    height: 160px;
+  }
+}
+
+@media (max-width: 839px) {
+  .doc-catalog-hero-copy {
+    padding: 32px 24px;
+  }
+
+  .doc-catalog-group {
+    margin-top: 48px;
+  }
+}

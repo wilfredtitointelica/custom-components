@@ -16,7 +16,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     path: '/components',
     icon: 'pi-th-large',
     status: 'available',
-    description: 'Reusable UI components with their variants, usage and code.',
+    description: 'Componentes de UI reutilizables con sus variantes, uso y código.',
   },
   {
     id: 'prototypes',
@@ -24,7 +24,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     path: '/prototypes',
     icon: 'pi-desktop',
     status: 'pending',
-    description: 'Interactive prototypes built with the component library.',
+    description: 'Prototipos interactivos construidos con la librería de componentes.',
   },
   {
     id: 'interface-lab',
@@ -32,7 +32,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     path: '/interface-lab',
     icon: 'pi-sliders-h',
     status: 'pending',
-    description: 'A space to experiment with interface patterns and compositions.',
+    description: 'Un espacio para experimentar con patrones y composiciones de interfaz.',
   },
   {
     id: 'icon-lab',
@@ -40,6 +40,6 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     path: '/icon-lab',
     icon: 'pi-images',
     status: 'pending',
-    description: 'The icon catalog of the design system.',
+    description: 'El catálogo de íconos del sistema de diseño.',
   },
 ];

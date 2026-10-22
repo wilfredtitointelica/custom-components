@@ -1,0 +1,241 @@
+/* Folder diagram (Crear un componente): component › version › base / styles / variants */
+:host {
+  display: block;
+}
+
+// Same inline code as the Skill page (components-guide.scss).
+code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--doc-surface-high);
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+}
+
+.doc-guide-diagram {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--doc-outline);
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface);
+}
+
+.doc-guide-diagram-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--doc-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  .pi {
+    color: var(--doc-ink-muted);
+    font-size: 0.875rem;
+  }
+
+  code {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+.doc-guide-diagram-hint {
+  color: var(--doc-ink-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.doc-guide-diagram-version {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface-low);
+
+  // Next version: a ghost of the current one.
+  &.doc-is-next {
+    border-style: dashed;
+    background: transparent;
+    opacity: 0.6;
+  }
+}
+
+.doc-guide-diagram-folders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+}
+
+.doc-guide-diagram-folder {
+  --doc-folder-bg: var(--doc-surface-high);
+  --doc-folder-ink: var(--doc-ink);
+
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-folder-bg);
+  color: var(--doc-folder-ink);
+
+  &.doc-is-base {
+    --doc-folder-bg: var(--doc-accent-container);
+    --doc-folder-ink: var(--doc-on-accent-container);
+  }
+
+  &.doc-is-styles {
+    --doc-folder-bg: var(--doc-primary-container);
+    --doc-folder-ink: var(--doc-on-primary-container);
+  }
+
+  &.doc-is-variants {
+    --doc-folder-bg: var(--doc-success-container);
+    --doc-folder-ink: var(--doc-on-success-container);
+  }
+}
+
+.doc-guide-diagram-folder-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--doc-font-mono);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.doc-guide-diagram-folder-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.doc-guide-diagram-files {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 0.65);
+    font-family: var(--doc-font-mono);
+    font-size: 0.75rem;
+  }
+
+  // Added later (a new modifier, another variant): "ejemplo" tag and a tooltip.
+  .doc-is-later {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap; // the tag drops below the name instead of overflowing the card
+    align-items: center;
+    gap: 2px 6px;
+    max-width: 100%;
+    border-color: currentColor;
+    border-style: dashed;
+    background: transparent;
+    cursor: help;
+
+    &:hover .doc-guide-diagram-tip,
+    &:focus-visible .doc-guide-diagram-tip {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+.doc-guide-diagram-later-tag {
+  padding: 0 6px;
+  border-radius: 999px;
+  // Inverted pill: the card's ink as background, its background as text.
+  background: var(--doc-folder-ink);
+  color: var(--doc-folder-bg);
+  font-family: var(--doc-font-sans);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.doc-guide-diagram-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 12px;
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-code-bg);
+  color: var(--doc-code-ink);
+  font-family: var(--doc-font-sans);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 0.15s,
+    transform 0.15s var(--doc-ease-emphasized);
+
+  // Arrow.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 6px solid transparent;
+    border-top-color: var(--doc-code-bg);
+    transform: translateX(-50%);
+  }
+
+  code {
+    padding: 0 4px;
+    background: rgb(255 255 255 / 0.12);
+    color: inherit;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+}
+
+.doc-guide-diagram-target {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid currentColor;
+  border-top-color: color-mix(in srgb, currentColor 20%, transparent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  .pi {
+    font-size: 0.75rem;
+  }
+}
+
+.doc-guide-diagram-rest {
+  margin: 0;
+  color: var(--doc-ink-muted);
+  font-family: var(--doc-font-mono);
+  font-size: 0.75rem;
+  opacity: 0.7;
+}

@@ -16,8 +16,8 @@ code {
 
 /* Header */
 .doc-guide-header {
-  margin-bottom: 48px;
-  padding-bottom: 32px;
+  margin-bottom: 72px;
+  padding-bottom: 72px;
   border-bottom: 1px solid var(--doc-outline-variant);
 }
 
@@ -75,13 +75,6 @@ code {
   max-width: 960px;
   scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
-  // Divider between sections (same line as the header's).
-  & + & {
-    margin-top: 48px;
-    padding-top: 48px;
-    border-top: 1px solid var(--doc-outline-variant);
-  }
-
   > p {
     max-width: 80ch;
     margin: 0 0 16px;
@@ -91,6 +84,15 @@ code {
   > .doc-guide-note {
     margin-top: 20px;
   }
+}
+
+/* <hr> between sections (same line as the header's); the sections themselves have no spacing. */
+.doc-guide-divider {
+  max-width: 960px;
+  height: 0;
+  margin: 72px 0;
+  border: 0;
+  border-top: 1px solid var(--doc-outline-variant);
 }
 
 .doc-guide-section-head {
@@ -131,6 +133,14 @@ code {
   a:focus-visible .doc-anchor-icon {
     opacity: 1;
   }
+}
+
+.doc-skill-use {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--doc-ink-muted);
+  font-size: 0.8125rem;
 }
 
 .doc-skill-badge {

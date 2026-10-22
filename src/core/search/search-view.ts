@@ -10,7 +10,7 @@ import { Search } from './search';
   imports: [RouterLink, Search],
   templateUrl: './search-view.html',
   styleUrl: './search-view.scss',
-  host: { role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Search' },
+  host: { role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Buscar' },
 })
 export class SearchView implements OnDestroy {
   protected readonly search = inject(GlobalSearch);

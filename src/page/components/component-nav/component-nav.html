@@ -7,7 +7,7 @@
 			<a class="doc-nav-link" [routerLink]="guide.path" [attr.aria-current]="guideCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(guide.key, guideCurrent)">
 				<span>
 					Skills
-					<span class="doc-nav-hint">( cómo crear )</span>
+					<span class="doc-nav-hint">( cómo usar )</span>
 				</span>
 			</a>
 			<button
@@ -15,7 +15,7 @@
 				class="doc-icon-button doc-nav-toggle"
 				[attr.aria-expanded]="guideOpen"
 				aria-controls="nav-variants-guide"
-				[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skill'"
+				[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skills'"
 				(click)="toggle(guide.key)"
 			>
 				<i class="pi pi-chevron-down" [class.doc-is-open]="guideOpen" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
 			<a class="doc-nav-link" [routerLink]="status.path" [attr.aria-current]="statusCurrent ? 'page' : null" (click)="navigated.emit()">
 				<span>
 					Status
-					<span class="doc-nav-hint">( avance )</span>
+					<span class="doc-nav-hint">( seguimiento )</span>
 				</span>
 			</a>
 		</div>

@@ -1,12 +1,12 @@
 <section class="doc-hero" aria-labelledby="overview-title">
   <div class="doc-hero-copy">
-    <p class="doc-hero-kicker">Welcome!</p>
-    <h1 id="overview-title" class="doc-hero-title">Design and Development System</h1>
+    <p class="doc-hero-kicker">¡Bienvenido!</p>
+    <h1 id="overview-title" class="doc-hero-title">Sistema de Diseño y Desarrollo</h1>
     <p class="doc-hero-lead">
-      Discover our design system, components, and technology tools, designed to ensure consistency,
-      efficiency, and quality in every project.
+      Descubre nuestro sistema de diseño, componentes y herramientas tecnológicas, pensados para asegurar consistencia,
+      eficiencia y calidad en cada proyecto.
     </p>
-    <p class="doc-hero-stat"><strong>{{ total }}</strong> components in the catalog</p>
+    <p class="doc-hero-stat"><strong>{{ total }}</strong> componentes en el catálogo</p>
   </div>
   <div class="doc-hero-art" aria-hidden="true">
     <span class="doc-shape doc-shape-1"></span>
@@ -17,16 +17,16 @@
 </section>
 
 <p class="doc-overview-lead">
-  Welcome to the Intelica Component Library: a robust, intuitive, and reusable set of UI components
-  designed to simplify and accelerate your development workflow. Select a component in the menu to open
-  its documentation, or search it by name.
+  Bienvenido a la Librería de Componentes de Intelica: un conjunto robusto, intuitivo y reutilizable de componentes de UI
+  diseñado para simplificar y acelerar tu flujo de desarrollo. Selecciona un componente en el menú para abrir
+  su documentación, o búscalo por su nombre.
 </p>
 
 <h2 class="doc-overview-heading">Explore</h2>
 <ul class="doc-section-grid">
   @for (section of sections; track section.id) {
     <li>
-      <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.path">
+      <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.link">
         <span class="doc-section-icon"><i class="pi {{ section.icon }}" aria-hidden="true"></i></span>
         <span class="doc-section-name">
           {{ section.label }}
