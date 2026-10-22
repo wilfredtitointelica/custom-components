@@ -15,13 +15,13 @@ code {
 }
 
 /* Header */
-.doc-guide-header {
+.doc-skill-header {
   margin-bottom: 72px;
   padding-bottom: 72px;
   border-bottom: 1px solid var(--doc-outline-variant);
 }
 
-.doc-guide-eyebrow {
+.doc-skill-eyebrow {
   margin: 0 0 8px;
   color: var(--doc-accent-text);
   font-size: 0.75rem;
@@ -30,7 +30,7 @@ code {
   text-transform: uppercase;
 }
 
-.doc-guide-title {
+.doc-skill-title {
   margin: 0;
   font-size: clamp(2rem, 1.4rem + 2vw, 2.8125rem);
   font-weight: 400;
@@ -38,14 +38,14 @@ code {
   line-height: 1.15;
 }
 
-.doc-guide-description {
+.doc-skill-description {
   max-width: 72ch;
   margin: 16px 0 0;
   color: var(--doc-ink-muted);
   font-size: 1rem;
 }
 
-.doc-guide-toc {
+.doc-skill-toc {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -71,7 +71,7 @@ code {
 }
 
 /* Sections */
-.doc-guide-section {
+.doc-skill-section {
   max-width: 960px;
   scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
@@ -81,13 +81,13 @@ code {
   }
 
   // Separated from the code block / table above it (overrides the paragraph margin).
-  > .doc-guide-note {
+  > .doc-skill-note {
     margin-top: 20px;
   }
 }
 
 /* <hr> between sections (same line as the header's); the sections themselves have no spacing. */
-.doc-guide-divider {
+.doc-skill-divider {
   max-width: 960px;
   height: 0;
   margin: 72px 0;
@@ -95,20 +95,32 @@ code {
   border-top: 1px solid var(--doc-outline-variant);
 }
 
-.doc-guide-section-head {
+// The section heading (head block or bare title) sticks right below the top bar (breadcrumb) while
+// its section scrolls, so a long section still shows which one you're in. The 12px margin it had
+// becomes bottom padding, painted with the pane background so the content scrolls under it.
+.doc-skill-section > .doc-skill-section-head,
+.doc-skill-section > .doc-skill-section-title {
+  position: sticky;
+  top: var(--doc-topbar-h);
+  z-index: 10;
+  margin-bottom: 0;
+  padding: 24px 0;
+  background: var(--doc-surface);
+}
+
+.doc-skill-section-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px 16px;
-  margin-bottom: 12px;
 
-  .doc-guide-section-title {
+  .doc-skill-section-title {
     margin: 0;
   }
 }
 
-.doc-guide-section-title {
+.doc-skill-section-title {
   margin: 0 0 12px;
   font-size: 1.5rem;
   font-weight: 400;
@@ -151,13 +163,13 @@ code {
   font-weight: 700;
 }
 
-.doc-guide-subtitle {
+.doc-skill-subtitle {
   margin: 28px 0 12px;
   font-size: 1rem;
   font-weight: 500;
 }
 
-.doc-guide-list {
+.doc-skill-list {
   margin: 0;
   padding-left: 20px;
 
@@ -167,14 +179,14 @@ code {
 }
 
 /* Cards */
-.doc-guide-grid {
+.doc-skill-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
   margin-top: 20px;
 }
 
-.doc-guide-card {
+.doc-skill-card {
   display: grid;
   align-content: start;
   gap: 10px;
@@ -195,7 +207,7 @@ code {
   }
 }
 
-.doc-guide-card-icon {
+.doc-skill-card-icon {
   display: grid;
   place-items: center;
   width: 40px;
@@ -206,8 +218,8 @@ code {
 }
 
 /* Prompts and code */
-.doc-guide-prompt,
-.doc-guide-code {
+.doc-skill-prompt,
+.doc-skill-code {
   margin: 0;
   overflow-x: auto;
   font-family: var(--doc-font-mono);
@@ -215,7 +227,7 @@ code {
   line-height: 1.6;
 }
 
-.doc-guide-prompt {
+.doc-skill-prompt {
   position: relative;
   padding: 10px 14px 10px 36px;
   border: 1px solid var(--doc-outline-variant);
@@ -233,7 +245,7 @@ code {
   }
 }
 
-.doc-guide-code {
+.doc-skill-code {
   padding: 20px 24px;
   border-radius: var(--doc-radius-lg);
   background: var(--doc-code-bg);
@@ -241,12 +253,12 @@ code {
 }
 
 /* Files the maquetador does not touch (outside version-N/). */
-.doc-guide-code-muted {
+.doc-skill-code-muted {
   opacity: 0.5;
 }
 
 /* Block (not flex): text and <code> must flow inline; the icon sits in the left padding. */
-.doc-guide-note {
+.doc-skill-note {
   position: relative;
   margin: 16px 0 0;
   padding: 12px 16px 12px 42px;
@@ -277,18 +289,18 @@ code {
   }
 }
 
-.doc-guide-table-wrap + .doc-guide-grid {
+.doc-skill-table-wrap + .doc-skill-grid {
   margin-top: 24px;
 }
 
 /* Cheatsheet */
-.doc-guide-table-wrap {
+.doc-skill-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--doc-outline-variant);
   border-radius: var(--doc-radius-lg);
 }
 
-.doc-guide-table {
+.doc-skill-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;

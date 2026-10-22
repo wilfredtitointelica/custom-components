@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { APP_TITLE, buildComponentRoutes, redirectAnchorAlias, variantPathAlias } from '../../service/component-routes';
 import { CatalogPage } from './catalog/catalog-page';
 import { ComponentsPage } from './components-page';
-import { GUIDE_SEGMENT } from './guide/guide-sections';
+import { SKILLS_SEGMENT } from './skills/skills-sections';
 import { STATUS_SEGMENT } from './status/status-route';
 
 export default [
@@ -20,10 +20,12 @@ export default [
         runGuardsAndResolvers: 'always',
       },
       {
-        path: GUIDE_SEGMENT,
+        path: SKILLS_SEGMENT,
         title: `Guía de uso · ${APP_TITLE}`,
-        loadComponent: () => import('./guide/components-guide').then((m) => m.ComponentsGuide),
+        loadComponent: () => import('./skills/skills-page').then((m) => m.SkillsPage),
       },
+      // Former URL of the Skills page: old links keep working.
+      { path: 'guide', redirectTo: SKILLS_SEGMENT, pathMatch: 'full' },
       {
         path: STATUS_SEGMENT,
         title: `Avance de componentes · ${APP_TITLE}`,

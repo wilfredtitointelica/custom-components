@@ -90,6 +90,7 @@ export function resolveInventory(
       claim(definition.id, owner);
       const path = `${COMPONENTS_BASE_PATH}/${definition.id}`;
       const versions = [...(registry[definition.id] ?? [])]
+        .filter((v) => !definition.hiddenVersions?.includes(v.number))
         .sort((a, b) => a.number - b.number)
         .map(withHeaders);
       const header = latestMeta(versions);

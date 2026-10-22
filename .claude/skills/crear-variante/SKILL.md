@@ -83,17 +83,21 @@ Angular avisa `NG8113: All imports are unused`; es esperado.
 
 No escribas los archivos a mano ni copies los de otra variante: usa el script.
 
-## 3. Config (solo para el orden)
+## 3. Posición en el menú
 
 El título y la descripción **no van en `<id>.config.ts`** ni en ningún `.ts`: se editan en la cabecera
-de `example.html`. La carpeta nueva aparece sola en el menú y en la página (`basic` primero, el resto en
-orden alfabético): las variantes son exactamente las carpetas que existen. Edita
-`src/components/<id>/<id>.config.ts` **solo** si:
+de `example.html`. La carpeta nueva aparece sola en el menú y en la página: `basic` primero y el resto en
+orden alfabético, o **después** de las listadas si el config ya tiene `variants`.
 
-| Caso | Qué hacer en `variants` |
-|---|---|
-| El componente ya tiene `variants` | Agregar el título en la posición pedida (si no, la carpeta va después de las listadas). No borrar ni reordenar las existentes. |
-| El usuario pidió una posición concreta | Listar las variantes en ese orden. |
+Si el componente queda con **3 o más variantes** (o el usuario pidió una posición), sigue la skill
+`ordenar-variantes`:
+
+1. `npm run order:variants -- <id>` y pega la tabla en el chat, marcando la variante nueva.
+2. Pregunta si la deja en esa posición o en cuál la quiere. Por defecto queda donde está: si el usuario
+   no pide otra, no se toca el config.
+3. Si pide otra: `npm run order:variants -- <id> <slugs en el orden nuevo>` (todas las variantes).
+
+Con 1 o 2 variantes no preguntes, salvo que el usuario mencione una posición.
 
 ## 4. Verificar
 

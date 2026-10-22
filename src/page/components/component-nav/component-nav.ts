@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 
 import { ComponentCatalog } from '../../../service/component-catalog';
 import { NavigationState } from '../../../service/navigation-state';
-import { GUIDE_PATH, GUIDE_SECTIONS, GUIDE_SEGMENT } from '../guide/guide-sections';
+import { SKILLS_PATH, SKILLS_SECTIONS, SKILLS_SEGMENT } from '../skills/skills-sections';
 import { STATUS_PATH, STATUS_SEGMENT } from '../status/status-route';
 
 /** Nearest ancestor that scrolls vertically (the drawer), or null. */
@@ -37,16 +37,16 @@ export class ComponentNav {
   readonly navigated = output<void>();
 
   private readonly catalog = inject(ComponentCatalog).components;
-  /** Reference implementations (_demo_), pinned above the divider together with the guide. */
+  /** Reference implementations (_demo_), pinned above the divider together with the Skills page. */
   protected readonly references = this.catalog.filter((c) => c.reference);
   protected readonly components = this.catalog.filter((c) => !c.reference);
   protected readonly nav = inject(NavigationState);
-  /** Usage guide, pinned first under "Reference", before the reference implementations. */
-  protected readonly guide = {
-    key: '__guide__',
-    segment: GUIDE_SEGMENT,
-    path: GUIDE_PATH,
-    sections: GUIDE_SECTIONS,
+  /** Skills page (usage guide), pinned first under "Reference", before the reference implementations. */
+  protected readonly skills = {
+    key: '__skills__',
+    segment: SKILLS_SEGMENT,
+    path: SKILLS_PATH,
+    sections: SKILLS_SECTIONS,
   };
   /** Progress page, pinned last under "Reference". */
   protected readonly status = { segment: STATUS_SEGMENT, path: STATUS_PATH };
@@ -60,7 +60,7 @@ export class ComponentNav {
     // shared link, search): the drawer scrolls on its own, so it would otherwise start at the top.
     effect(() => {
       const componentId =
-        this.nav.componentId() ?? (this.nav.page() === GUIDE_SEGMENT ? this.guide.key : null);
+        this.nav.componentId() ?? (this.nav.page() === SKILLS_SEGMENT ? this.skills.key : null);
       if (!componentId) return;
       untracked(() => this.setExpanded(componentId, true));
       afterNextRender(() => this.revealCurrent(), { injector: this.injector });

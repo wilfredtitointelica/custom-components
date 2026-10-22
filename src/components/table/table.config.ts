@@ -8,6 +8,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - variants (optional): only to order them or hide one ({ name, hidden: true }); an entry without a
  *   folder is not documented.
  * - hidden: true at the root hides the whole component.
+ * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
 export default {
   id: 'table',

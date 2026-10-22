@@ -44,7 +44,7 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 | Ejemplo pendiente | Un `example.html` vacío o **solo con comentarios** (cabecera incluida) se muestra como "Preview pending" con la ruta del archivo. Cualquier contenido fuera de los comentarios (un elemento o texto) hace que se renderice. |
 | Estado | Propiedad de la clase en `base/<id>.ts`: `static readonly status: 'pending' \| 'in-progress' \| 'done' = 'pending';`. Se crea siempre en `'pending'` (chip "Pending"); el maquetador la pasa a `'in-progress'` al empezar y a `'done'` al terminar, con la skill `cambiar-estado` o `npm run set:status -- <id> <estado>`. Es por versión; `new:version` la reinicia a `'pending'`. |
 | Diseñador | `static readonly designer = '<Nombre completo>';` debajo de `status` en `base/<id>.ts` (`''` = sin asignar). Se pregunta al crear; `new:version` lo copia. Se ve en la página del componente (avatar a la derecha de los chips) y en Reference → Status. Su color está en `src/service/designers.ts`. |
-| IDs reservados | `guide` y `status` son páginas de Reference (`/components/guide`, `/components/status`): ningún componente puede usar esos ids. |
+| IDs reservados | `skills` y `status` son páginas de Reference (`/components/skills`, `/components/status`) y `guide` redirige a `skills`: ningún componente puede usar esos ids. |
 | Versiones | Cada `version-N/` se detecta sola: con una versión la página muestra "Version 1"; con más, un desplegable (`?version=N`; por defecto la más reciente). |
 | Código | Cada sección muestra el código **real** de su ejemplo (pestañas HTML / TS). El switch "Code" de la barra superior abre/cierra todas; el botón "Code" de cada sección, solo la suya. |
 
@@ -164,6 +164,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - variants (optional): only to order them or hide one ({ name, hidden: true }); an entry without a
  *   folder is not documented.
  * - hidden: true at the root hides the whole component.
+ * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
 export default {
   id: 'chip',                         // kebab-case, estable: carpeta, ruta y nombre técnico
@@ -180,7 +181,7 @@ variante, se crea su carpeta con `npm run new:variant`.
 |---|---|
 | Agregar una sección | `npm run new:variant -- chip "<Título>" --description "<Descripción>"` (sección 4). |
 | Cambiar título o descripción | Editar la cabecera de su `example.html`. |
-| Fijar el orden | Listar las carpetas existentes en `variants`, en el orden deseado (`variants: ['Basic', 'Outlined']`). Las no listadas van después. |
+| Fijar el orden | Skill `ordenar-variantes` (`npm run order:variants -- <id> basic outlined`): escribe los slugs en `variants`, en el orden deseado. Las no listadas van después. |
 | Ocultarla (menú + página) | `{ name: 'Outlined', hidden: true }` (la carpeta puede seguir existiendo). |
 | Ocultar el componente completo | `hidden: true` en la raíz (sale del menú, rutas y buscador). |
 

@@ -165,6 +165,19 @@ describe('Component catalog', () => {
     expect(findVersion(chip, '9')?.number).toBe(2);
   });
 
+  it('leaves hidden versions (and the variants that only live there) out of the catalog', () => {
+    const loadRoutes = () => Promise.resolve([]);
+    const [chip] = resolveInventory([{ id: 'chip', name: 'Chip', hiddenVersions: [2], loadRoutes }], {
+      chip: [
+        { number: 1, folder: 'version-1', examples: ['basic'] },
+        { number: 2, folder: 'version-2', examples: ['basic', 'raised'] },
+      ],
+    });
+    expect(chip.versions.map((v) => v.number)).toEqual([1]);
+    expect(chip.variants.map((v) => v.slug)).toEqual(['basic']);
+    expect(findVersion(chip, '2')?.number).toBe(1);
+  });
+
   it('documents example folders not listed in the config, after the listed ones', () => {
     const loadRoutes = () => Promise.resolve([]);
     const [chip] = resolveInventory(
@@ -191,9 +204,11 @@ describe('Component catalog', () => {
     expect(chip.hiddenVariantIds).toEqual(['chip-draft']);
   });
 
-  it('every component has at least its version-1 folder', () => {
+  it('every component has at least its version-1 folder (unless that version is hidden)', () => {
     for (const component of CATALOG) {
-      expect(component.versions[0]?.folder).withContext(component.id).toBe('version-1');
+      const hidden = COMPONENT_INVENTORY.find((d) => d.id === component.id)?.hiddenVersions ?? [];
+      if (hidden.includes(1)) expect(component.versions.length).withContext(component.id).toBeGreaterThan(0);
+      else expect(component.versions[0]?.folder).withContext(component.id).toBe('version-1');
     }
   });
 

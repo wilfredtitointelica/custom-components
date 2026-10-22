@@ -28,7 +28,7 @@ export class NavigationState {
   /** First URL segment: 'components', 'prototypes', … */
   readonly section = computed(() => this.segments()[0] ?? null);
 
-  /** Second URL segment under /components (component id or a fixed page such as 'guide'). */
+  /** Second URL segment under /components (component id or a fixed page such as 'skills'). */
   readonly page = computed(() => {
     const [section, page] = this.segments();
     return section === 'components' ? (page ?? null) : null;

@@ -2,11 +2,11 @@
 <div class="doc-nav-group">
 	<p class="doc-nav-status">Reference</p>
 	<ul class="doc-nav-list">
-		<!-- Usage guide (/components/guide): how to create components, variants and versions. Goes first. -->
-		@let guideOpen = isExpanded(guide.key); @let guideCurrent = nav.page() === guide.segment;
+		<!-- Skills page (/components/skills): how to create components, variants and versions. Goes first. -->
+		@let skillsOpen = isExpanded(skills.key); @let skillsCurrent = nav.page() === skills.segment;
 		<li class="doc-nav-item">
-			<div class="doc-nav-row" [class.doc-is-current]="guideCurrent">
-				<a class="doc-nav-link" [routerLink]="guide.path" [attr.aria-current]="guideCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(guide.key, guideCurrent)">
+			<div class="doc-nav-row" [class.doc-is-current]="skillsCurrent">
+				<a class="doc-nav-link" [routerLink]="skills.path" [attr.aria-current]="skillsCurrent && !nav.fragment() ? 'page' : null" (click)="itemClicked(skills.key, skillsCurrent)">
 					<span>
 						Skills
 						<span class="doc-nav-hint">( cómo usar )</span>
@@ -15,21 +15,21 @@
 				<button
 					type="button"
 					class="doc-icon-button doc-nav-toggle"
-					[attr.aria-expanded]="guideOpen"
-					aria-controls="nav-variants-guide"
-					[attr.aria-label]="(guideOpen ? 'Collapse' : 'Expand') + ' Skills'"
-					(click)="toggle(guide.key)"
+					[attr.aria-expanded]="skillsOpen"
+					aria-controls="nav-variants-skills"
+					[attr.aria-label]="(skillsOpen ? 'Collapse' : 'Expand') + ' Skills'"
+					(click)="toggle(skills.key)"
 				>
-					<i class="pi pi-chevron-down" [class.doc-is-open]="guideOpen" aria-hidden="true"></i>
+					<i class="pi pi-chevron-down" [class.doc-is-open]="skillsOpen" aria-hidden="true"></i>
 				</button>
 			</div>
 
 			<!-- Always rendered: the wrapper animates its height (grid rows 0fr ↔ 1fr); inert while closed. -->
-			<div class="doc-variant-collapse" [class.doc-is-open]="guideOpen" [attr.inert]="guideOpen ? null : ''">
-				<ul class="doc-variant-list" id="nav-variants-guide">
-					@for (section of guide.sections; track section.id) { @let active = guideCurrent && nav.fragment() === section.id;
+			<div class="doc-variant-collapse" [class.doc-is-open]="skillsOpen" [attr.inert]="skillsOpen ? null : ''">
+				<ul class="doc-variant-list" id="nav-variants-skills">
+					@for (section of skills.sections; track section.id) { @let active = skillsCurrent && nav.fragment() === section.id;
 					<li>
-						<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="guide.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
+						<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="skills.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
 							{{ section.name }}
 						</a>
 					</li>

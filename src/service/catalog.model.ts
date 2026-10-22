@@ -21,7 +21,10 @@ export type VariantDefinition =
  * It drives the side menu (component + variant list), the routes, the search and the page sections.
  */
 export interface ComponentDefinition {
-  /** Stable kebab-case ID. Used as route segment (/components/<id>) and folder name. Never rename. */
+  /**
+   * Stable kebab-case ID. Used as route segment (/components/<id>) and folder name. Rename it only with
+   * `npm run rename -- component` (it renames every file, selector and class derived from it).
+   */
   readonly id: string;
   /**
    * Fallback visible name. The title and description are written in the header comment of
@@ -37,6 +40,11 @@ export interface ComponentDefinition {
   readonly variants?: readonly VariantDefinition[];
   /** true = the component is left out of the menu, the routes and the search. */
   readonly hidden?: boolean;
+  /**
+   * Version numbers left out of the version picker (their folders stay; `?version=N` opens the latest
+   * visible one). Variants that only exist in hidden versions are not documented either.
+   */
+  readonly hiddenVersions?: readonly number[];
   /**
    * true = reference implementation for the maquetador (e.g. _demo_): pinned at the top of the menu,
    * above a divider, and not counted as a component.

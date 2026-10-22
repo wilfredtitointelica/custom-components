@@ -7,11 +7,11 @@ import { ToggleCode } from '../../core/toggle-code/toggle-code';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { NavigationState } from '../../service/navigation-state';
 import { ComponentNav } from './component-nav/component-nav';
-import { GUIDE_SEGMENT } from './guide/guide-sections';
+import { SKILLS_SEGMENT } from './skills/skills-sections';
 import { STATUS_SEGMENT } from './status/status-route';
 
 /** Fixed pages under /components (pinned under "Reference" in the menu): URL segment → breadcrumb label. */
-const REFERENCE_PAGES: Readonly<Record<string, string>> = { [GUIDE_SEGMENT]: 'Skills', [STATUS_SEGMENT]: 'Status' };
+const REFERENCE_PAGES: Readonly<Record<string, string>> = { [SKILLS_SEGMENT]: 'Skills', [STATUS_SEGMENT]: 'Status' };
 
 /** Gap kept between the sticky top bar and an anchored section. */
 const ANCHOR_GAP = 16;
