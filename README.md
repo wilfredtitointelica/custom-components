@@ -43,6 +43,11 @@ Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).
   (`--doc-primary`, `--doc-radius-sm`, `--doc-font-sans`…), definidos en `src/styles.scss`.
 - Los componentes usan clases `.int-*` y no deben usar clases ni tokens `doc`: sus tokens vendrán
   del design system.
+- Ninguna regla global de la documentación apunta a una etiqueta sola: `html.doc-html` y
+  `body.doc-body` (clases en `src/index.html`). Además, un "escudo" en `src/styles.scss` deshace,
+  solo dentro de la documentación, los resets de etiquetas de otras hojas (Style Guide: `text-wrap`
+  en títulos, `font`/`color` en controles, `height` en `img`/`svg`…). Lo que se renderiza en
+  `.doc-preview` (los ejemplos `int-*`) queda fuera: ahí sí aplican esos resets.
 
 Guías con Claude Code: `/crear-componente`, `/crear-variante`, `/crear-version` y `/cambiar-estado`
 (`.claude/skills/`). En la app: menú Reference → Guide.

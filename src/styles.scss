@@ -74,27 +74,73 @@
   }
 }
 
-*,
-*::before,
-*::after {
+/*
+ * Scope of the documentation: <html class="doc-html"> / <body class="doc-body"> (src/index.html) and
+ * every element inside, except the int-* examples rendered in .doc-preview. No rule of this file
+ * targets a bare tag, so global resets of other stylesheets (e.g. Intelica Style Guide) and these
+ * rules never cross.
+ */
+$doc-scope: ':where(.doc-body, .doc-body *:not(.doc-preview *))';
+
+#{$doc-scope},
+#{$doc-scope}::before,
+#{$doc-scope}::after {
   box-sizing: border-box;
 }
 
-html {
+/* Class + tag: wins over tag resets (html, body { min-width; height; overflow }) whatever the import order. */
+html.doc-html {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
   -webkit-text-size-adjust: 100%;
 }
 
-body {
+body.doc-body {
+  width: auto;
+  height: auto;
+  min-width: 0;
   margin: 0;
+  padding: 0;
+  overflow: visible;
   background: var(--doc-bg);
   color: var(--doc-ink);
   font-family: var(--doc-font-sans);
   font-size: 0.9375rem;
+  font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-:focus-visible {
+/*
+ * Shield: undoes, only in the documentation, what tag resets of other stylesheets add to these tags
+ * (text-wrap, img/svg sizing, font/color of controls…), back to the browser default. Specificity (0,1,0):
+ * above a bare tag, below the documentation's own rules (.doc-*), which always win.
+ */
+:where(.doc-body) :where(h1, h2, h3, h4, h5, h6, p):not(.doc-preview *) {
+  text-wrap: revert;
+}
+
+:where(.doc-body) :where(img, video, svg):not(.doc-preview *) {
+  height: revert;
+  max-width: revert;
+}
+
+:where(.doc-body) :where(figure):not(.doc-preview *) {
+  margin: revert;
+  padding: revert;
+}
+
+:where(.doc-body) :where(input, button, textarea, select):not(.doc-preview *) {
+  font: revert;
+  color: revert;
+}
+
+:where(.doc-body) :where(hr):not(.doc-preview *) {
+  border: revert;
+}
+
+#{$doc-scope}:focus-visible {
   outline: 2px solid var(--doc-accent);
   outline-offset: 2px;
 }
@@ -127,9 +173,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  #{$doc-scope},
+  #{$doc-scope}::before,
+  #{$doc-scope}::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
