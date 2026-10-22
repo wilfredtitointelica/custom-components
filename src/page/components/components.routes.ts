@@ -24,8 +24,6 @@ export default [
         title: `Guía de uso · ${APP_TITLE}`,
         loadComponent: () => import('./skills/skills-page').then((m) => m.SkillsPage),
       },
-      // Former URL of the Skills page: old links keep working.
-      { path: 'guide', redirectTo: SKILLS_SEGMENT, pathMatch: 'full' },
       {
         path: STATUS_SEGMENT,
         title: `Avance de componentes · ${APP_TITLE}`,

@@ -2,8 +2,8 @@
 	<p class="doc-skill-eyebrow">Reference</p>
 	<h1 class="doc-skill-title">Guía de uso</h1>
 	<p class="doc-skill-description">
-		Cómo crear un componente, una variante o una versión nueva, cambiar su estado, ordenar las variantes, renombrar, ocultar y eliminar, con la IA (Claude Code) y las skills del proyecto. Las skills generan solo la estructura: los estilos, el marcado y
-		la lógica los escribe el maquetador.
+		Cómo crear un componente, una variante o una versión nueva, cambiar su estado, ordenar las variantes, renombrar, ocultar y eliminar, con la IA (Claude Code) y las skills del proyecto. Las skills
+		generan solo la estructura: los estilos, el marcado y la lógica los escribe el maquetador.
 	</p>
 	<nav class="doc-skill-toc" aria-label="Contenido de la guía">
 		@for (section of sections; track section.id) {
@@ -60,7 +60,7 @@
 			<em>Icons + Border</em>
 			,
 			<em>Dropdown / Select</em>
-			. El id y el slug se calculan solos (
+			. El id y slug se calculan solos (
 			<code>icons-border</code>
 			).
 		</li>
@@ -396,9 +396,7 @@ src/components/button/
 		</article>
 		<article class="doc-skill-card">
 			<h3>¿Qué tengo oculto?</h3>
-			<p>
-				Pregúntaselo a la IA: te muestra en el chat una tabla con todo lo oculto (componentes, variantes y versiones) y te pregunta qué volver a mostrar. Tú solo eliges; ella hace el cambio.
-			</p>
+			<p>Pregúntaselo a la IA: te muestra en el chat una tabla con todo lo oculto (componentes, variantes y versiones) y te pregunta qué volver a mostrar. Tú solo eliges; ella hace el cambio.</p>
 			<pre class="doc-skill-prompt">/reactivar</pre>
 			<pre class="doc-skill-prompt">¿Qué tengo oculto en tabs?</pre>
 		</article>
@@ -555,9 +553,7 @@ export default &#123;
 		</article>
 		<article class="doc-skill-card">
 			<h3>Antes de confirmar</h3>
-			<p>
-				Te muestra todo lo que va a cambiar. El enlace viejo deja de funcionar y, en un componente, también cambian el selector y las clases: los proyectos que ya lo usen tendrán que actualizarse.
-			</p>
+			<p>Te muestra todo lo que va a cambiar. El enlace viejo deja de funcionar y, en un componente, también cambian el selector y las clases: los proyectos que ya lo usen tendrán que actualizarse.</p>
 		</article>
 	</div>
 </section>
@@ -862,7 +858,11 @@ export class IntButton &#123;
 				<tr>
 					<td>Volver a mostrar lo oculto</td>
 					<td><code>/reactivar</code></td>
-					<td><code>npm run visibility -- list</code> · <code>show component|variant|version …</code></td>
+					<td>
+						<code>npm run visibility -- list</code>
+						·
+						<code>show component|variant|version …</code>
+					</td>
 				</tr>
 				<tr>
 					<td>Eliminar una variante</td>

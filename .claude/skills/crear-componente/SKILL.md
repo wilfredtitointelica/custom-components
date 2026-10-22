@@ -44,7 +44,7 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 | Ejemplo pendiente | Un `example.html` vacío o **solo con comentarios** (cabecera incluida) se muestra como "Preview pending" con la ruta del archivo. Cualquier contenido fuera de los comentarios (un elemento o texto) hace que se renderice. |
 | Estado | Propiedad de la clase en `base/<id>.ts`: `static readonly status: 'pending' \| 'in-progress' \| 'done' = 'pending';`. Se crea siempre en `'pending'` (chip "Pending"); el maquetador la pasa a `'in-progress'` al empezar y a `'done'` al terminar, con la skill `cambiar-estado` o `npm run set:status -- <id> <estado>`. Es por versión; `new:version` la reinicia a `'pending'`. |
 | Diseñador | `static readonly designer = '<Nombre completo>';` debajo de `status` en `base/<id>.ts` (`''` = sin asignar). Se pregunta al crear; `new:version` lo copia. Se ve en la página del componente (avatar a la derecha de los chips) y en Reference → Status. Su color está en `src/service/designers.ts`. |
-| IDs reservados | `skills` y `status` son páginas de Reference (`/components/skills`, `/components/status`) y `guide` redirige a `skills`: ningún componente puede usar esos ids. |
+| IDs reservados | `skills` y `status` son páginas de Reference (`/components/skills`, `/components/status`): ningún componente puede usar esos ids. |
 | Versiones | Cada `version-N/` se detecta sola: con una versión la página muestra "Version 1"; con más, un desplegable (`?version=N`; por defecto la más reciente). |
 | Código | Cada sección muestra el código **real** de su ejemplo (pestañas HTML / TS). El switch "Code" de la barra superior abre/cierra todas; el botón "Code" de cada sección, solo la suya. |
 
@@ -125,7 +125,7 @@ nombre pedido (sin distinguir mayúsculas). En ese caso **no se crea nada** y se
 Si no existe, pregunta en **un solo mensaje** lo que no se haya dado:
 
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
-   kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio. Nunca `guide` ni `status`
+   kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio. Nunca `skills` ni `status`
    (reservados por las páginas de Reference).
 2. **Descripción** del componente: una línea (puede quedar vacía si el usuario no la tiene).
 3. **Descripción de la variante `Basic`**: una línea (opcional). Su título es siempre `Basic`.
@@ -525,7 +525,7 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 - ❌ `@use 'button.text';` sin `as` (rompe la compilación).
 - ❌ Redefinir `:root` en los módulos de modificador.
 - ❌ Registrar rutas de componentes en `app.routes.ts`.
-- ❌ Usar `guide` o `status` como id de componente (son páginas de Reference).
+- ❌ Usar `skills` o `status` como id de componente (son páginas de Reference).
 - ❌ Nombrar carpetas distinto a `version-<número>` o a kebab-case en `variants/` (no se detectan).
 - ❌ Listar en `variants` del config variantes sin carpeta para "planificarlas": no se muestran. Se crean con `npm run new:variant`.
 
