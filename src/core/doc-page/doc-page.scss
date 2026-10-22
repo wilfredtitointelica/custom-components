@@ -77,17 +77,25 @@
   position: relative;
   scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
+  // 56px between sections, minus the head's 16px top padding.
   & + & {
-    margin-top: 56px;
+    margin-top: 40px;
   }
 }
 
+// The head (title + Code button) sticks right below the top bar (breadcrumb) while its section
+// scrolls, so a long example or code panel still shows which variant you're in. The 16px margin it
+// had becomes bottom padding, painted with the pane background so the content scrolls under it.
 .doc-section-head {
+  position: sticky;
+  top: var(--doc-topbar-h);
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  padding: 20px 0;
+  background: var(--doc-surface);
 }
 
 /* Per-variant code button, at the right end of the section title */
@@ -251,7 +259,7 @@
   }
 
   .doc-section + .doc-section {
-    margin-top: 40px;
+    margin-top: 24px;
   }
 
   .doc-section::before {
