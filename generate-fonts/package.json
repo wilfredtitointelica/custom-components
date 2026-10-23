@@ -1,5 +1,5 @@
 {
-  "name": "incontrol-fonts",
+  "name": "generate-fonts",
   "version": "1.0.0",
   "private": true,
   "description": "Generador de fuentes de iconos a partir de SVG (fantasticon).",
@@ -8,9 +8,11 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "npm run build:incontrol-icons",
-    "build:incontrol-icons": "node scripts/build-icons.mjs incontrol-icons",
-    "postinstall": "patch-package"
+    "build": "node scripts/build-icons.mjs",
+    "postinstall": "patch-package",
+    "export": "node scripts/export-icons.mjs",
+    "new": "node scripts/new-font.mjs",
+    "sync": "node scripts/sync-figma.mjs"
   },
   "devDependencies": {
     "fantasticon": "4.1.0",
