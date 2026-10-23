@@ -12,6 +12,7 @@
     "remove": "node scripts/remove.mjs",
     "rename": "node scripts/rename.mjs",
     "visibility": "node scripts/visibility.mjs",
+    "icons": "npm --prefix src/fonts run build",
     "prebuild": "npm run docs",
     "build": "ng build",
     "watch": "node scripts/generate-docs.mjs --watch -- ng build --watch --configuration development",
