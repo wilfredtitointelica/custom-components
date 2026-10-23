@@ -9,7 +9,7 @@ Herramienta: [fantasticon](https://github.com/tancredi/fantasticon) 4.1.0, con u
 
 ## Comandos
 
-Desde `src/fonts/` (requiere Node ≥ 22):
+Desde `fonts/` (requiere Node ≥ 22):
 
 | Comando | Qué hace |
 |---|---|
@@ -17,12 +17,12 @@ Desde `src/fonts/` (requiere Node ≥ 22):
 | `npm run build` | Genera todas las fuentes (hoy solo `incontrol-icons`). |
 | `npm run build:incontrol-icons` | Genera solo `incontrol-icons`. |
 
-Desde la raíz de este repositorio: `npm run icons` (equivale a `npm --prefix src/fonts run build`).
+Desde la raíz de este repositorio: `npm run icons` (equivale a `npm --prefix fonts run build`).
 
 ## Estructura
 
 ```
-src/fonts/
+fonts/
 ├── package.json · package-lock.json
 ├── patches/fantasticon+4.1.0.patch
 ├── scripts/build-icons.mjs        # generador (uno para todas las fuentes)

@@ -11,8 +11,5 @@
   "include": [
     "src/**/*.d.ts",
     "src/**/*.spec.ts"
-  ],
-  "exclude": [
-    "src/fonts/**"
   ]
 }
