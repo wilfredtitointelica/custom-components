@@ -17,8 +17,8 @@ import {
 const COPIED_MS = 1600;
 
 /**
- * Content of the Icon Lab: hero, sizes, brands and one section per category of icon-categories.json
- * (edit that file to add, move or remove icons). Clicking a card copies its class name.
+ * Content of the Icon Lab: hero, sizes, brands and one section per category of the generated font
+ * (icon-font/incontrol-icons/icons.json; regenerate it with generate-fonts). Clicking a card copies its class name.
  */
 @Component({
   selector: 'app-icon-gallery',

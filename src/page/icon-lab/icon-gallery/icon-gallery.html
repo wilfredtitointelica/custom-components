@@ -6,8 +6,8 @@
   <div class="doc-icon-hero-copy">
     <h1 id="icon-lab-title" class="doc-icon-hero-title">Iconos</h1>
     <p class="doc-icon-hero-lead">
-      Iconos propios de la marca Incontrol, organizados por categoría. Los glifos son referenciales hasta contar con la
-      fuente de iconos definitiva; las categorías y nombres se leen de <code>icon-categories.json</code>.
+      Iconos propios de la marca Incontrol, organizados por categoría. Los glifos son los de la fuente
+      <code>incontrol-icons</code>; las categorías y nombres se leen de su <code>icons.json</code>.
     </p>
     <p class="doc-icon-hero-stat"><strong>{{ total }}</strong> iconos en {{ categoryCount }} categorías</p>
   </div>
@@ -25,6 +25,11 @@
 @let sizes = results().sizes;
 @let brands = results().brands;
 @let categories = results().categories;
+
+<!-- Block labels: same split and wording as the menu (Fundamentos / N categorías). -->
+@if (sizes.length || brands.length) {
+  <p class="doc-icon-block-label">Fundamentos</p>
+}
 
 <!-- Sizes -->
 @if (sizes.length) {
@@ -68,7 +73,7 @@
       @for (brand of brands; track brand.name) {
         <li>
           <button type="button" class="doc-icon-card" [class.doc-is-copied]="copied() === brand.name" (click)="copy(brand.name)">
-            <span class="doc-brand doc-is-{{ brand.name }}" aria-hidden="true">{{ brand.label }}</span>
+            <i class="{{ brand.name }} icon--outlined doc-icon-glyph doc-is-brand" aria-hidden="true"></i>
             <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: brand.name }" /></span>
             <ng-container *ngTemplateOutlet="copiedTip" />
           </button>
@@ -83,7 +88,11 @@
   <hr class="doc-icon-divider" />
 }
 
-<!-- One section per category of icon-categories.json -->
+@if (categories.length) {
+  <p class="doc-icon-block-label">{{ categories.length }} {{ categories.length === 1 ? 'categoría' : 'categorías' }}</p>
+}
+
+<!-- One section per category of icon-font/incontrol-icons/icons.json -->
 @for (category of categories; track category.slug) {
   <section [id]="category.slug" class="doc-icon-group" [class.doc-is-active]="active() === category.slug" [attr.aria-labelledby]="category.slug + '-title'">
     <header class="doc-icon-group-head">
@@ -99,7 +108,7 @@
       @for (icon of category.icons; track icon.name) {
         <li>
           <button type="button" class="doc-icon-card" [class.doc-is-copied]="copied() === icon.name" (click)="copy(icon.name)">
-            <i class="pi {{ icon.glyph }} doc-icon-glyph" aria-hidden="true"></i>
+            <i class="{{ icon.name }} doc-icon-glyph" aria-hidden="true"></i>
             <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: icon.name }" /></span>
             <ng-container *ngTemplateOutlet="copiedTip" />
           </button>

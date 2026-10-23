@@ -1,12 +1,12 @@
-import CATEGORIES from './icon-categories.json';
-import { placeholderIcon } from './icon-placeholders';
+import FONT from './icon-font/incontrol-icons/icons.json';
 
 export const ICON_LAB_PATH = '/icon-lab';
 
 export interface IconItem {
+  /** Class of the glyph in incontrol-icons.css (e.g. `icon-arrow-left`). */
   readonly name: string;
-  /** primeicons class used as placeholder (see icon-placeholders.ts). */
-  readonly glyph: string;
+  /** Code point of the glyph in the font, as hex (e.g. `f194`). */
+  readonly unicode: string;
 }
 
 export interface IconSection {
@@ -25,9 +25,8 @@ export interface IconSize {
 }
 
 export interface IconBrand {
+  /** Class of the colored mark in icon-brand/icon-brand.scss (not a glyph of the font). */
   readonly name: string;
-  /** Text of the referential brand mark. */
-  readonly label: string;
 }
 
 /** Fixed sections shown before the categories (the slugs never clash with the JSON ones). */
@@ -42,18 +41,18 @@ export const ICON_SIZES: readonly IconSize[] = (['xs', 'sm', 'md', 'lg', 'xl'] a
 }));
 
 export const ICON_BRANDS: readonly IconBrand[] = [
-  { name: 'icon-visa', label: 'VISA' },
-  { name: 'icon-mastercard', label: '' },
-  { name: 'icon-amex', label: 'AMEX' },
+  { name: 'icon-visa' },
+  { name: 'icon-mastercard' },
+  { name: 'icon-amex' },
 ];
 
-/** Categories of icon-categories.json, in file order; repeated names inside a category are shown once. */
+/** Categories of the generated font (icon-font/incontrol-icons/icons.json), in file order; repeated names inside a category are shown once. */
 export const ICON_CATEGORIES: readonly IconCategory[] = (
-  CATEGORIES as readonly { category: string; slug: string; icons: readonly string[] }[]
+  FONT.categories as readonly { category: string; slug: string; icons: readonly IconItem[] }[]
 ).map((category) => ({
   slug: category.slug,
   name: category.category,
-  icons: [...new Set(category.icons)].map((name) => ({ name, glyph: placeholderIcon(name) })),
+  icons: [...new Map(category.icons.map(({ name, unicode }) => [name, { name, unicode }] as const)).values()],
 }));
 
 /** Distinct icon names across every category. */

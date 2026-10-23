@@ -222,6 +222,17 @@ code {
   border-top: 1px solid var(--doc-outline-variant);
 }
 
+// Label of each block (Fundamentos / categorías), like .doc-nav-status of the menu.
+.doc-icon-block-label {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .doc-icon-group-head {
   position: sticky;
   top: var(--doc-topbar-h);
@@ -340,8 +351,10 @@ code {
 }
 
 .doc-icon-glyph {
+  display: flex;
   flex: none;
-  width: 36px;
+  width: 1em; 
+  height: 1em;
   font-size: 1.875rem;
   text-align: center;
   transition: color 0.2s;
@@ -365,6 +378,11 @@ code {
   &.doc-size-xl {
     font-size: 2.25rem;
   }
+
+  // Brand marks (icon-brand.scss) are 1.5em wide, not square.
+  &.doc-is-brand {
+    width: 1.5em;
+  }
 }
 
 .doc-icon-name {
@@ -374,37 +392,6 @@ code {
 
   .doc-is-stacked & {
     font-size: 0.9375rem;
-  }
-}
-
-/* Referential brand marks */
-.doc-brand {
-  display: inline-grid;
-  flex: none;
-  place-items: center;
-  width: 44px;
-  height: 30px;
-  border: 1px solid var(--doc-outline-variant);
-  border-radius: 4px;
-  font-size: 0.6875rem;
-  font-style: italic;
-  font-weight: 900;
-
-  &.doc-is-icon-visa {
-    color: #1a1f71;
-  }
-
-  &.doc-is-icon-amex {
-    background: #2e77bc;
-    color: #fff;
-    font-size: 0.5625rem;
-    font-style: normal;
-  }
-
-  &.doc-is-icon-mastercard {
-    background:
-      radial-gradient(circle at 38% 50%, #eb001b 0 7px, transparent 7.5px),
-      radial-gradient(circle at 62% 50%, #f79e1b 0 7px, transparent 7.5px);
   }
 }
 
