@@ -13,7 +13,7 @@
 </header>
 
 <!-- ─────────────────────────── Cómo pedírselo a la IA ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-how-to-ask" aria-labelledby="skill-how-to-ask-title">
+<section class="doc-skill-section" id="skill-how-to-ask" [class.doc-is-active]="nav.fragment() === 'skill-how-to-ask'" aria-labelledby="skill-how-to-ask-title">
 	<h2 class="doc-skill-section-title" id="skill-how-to-ask-title">
 		<a [routerLink]="path" fragment="skill-how-to-ask">
 			Cómo pedírselo a la IA
@@ -87,7 +87,7 @@
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Crear un componente ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-component" aria-labelledby="skill-component-title">
+<section class="doc-skill-section" id="skill-component" [class.doc-is-active]="nav.fragment() === 'skill-component'" aria-labelledby="skill-component-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-component-title">
 			<a [routerLink]="path" fragment="skill-component">
@@ -185,7 +185,7 @@
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Crear una variante ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-variant" aria-labelledby="skill-variant-title">
+<section class="doc-skill-section" id="skill-variant" [class.doc-is-active]="nav.fragment() === 'skill-variant'" aria-labelledby="skill-variant-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-variant-title">
 			<a [routerLink]="path" fragment="skill-variant">
@@ -260,7 +260,7 @@ src/components/accordion/version-N/variants/icons-border/
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Crear una versión ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-version" aria-labelledby="skill-version-title">
+<section class="doc-skill-section" id="skill-version" [class.doc-is-active]="nav.fragment() === 'skill-version'" aria-labelledby="skill-version-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-version-title">
 			<a [routerLink]="path" fragment="skill-version">
@@ -331,7 +331,7 @@ src/components/button/
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Ocultar y reactivar ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-visibility" aria-labelledby="skill-visibility-title">
+<section class="doc-skill-section" id="skill-visibility" [class.doc-is-active]="nav.fragment() === 'skill-visibility'" aria-labelledby="skill-visibility-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-visibility-title">
 			<a [routerLink]="path" fragment="skill-visibility">
@@ -406,7 +406,7 @@ src/components/button/
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Ordenar variantes ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-order" aria-labelledby="skill-order-title">
+<section class="doc-skill-section" id="skill-order" [class.doc-is-active]="nav.fragment() === 'skill-order'" aria-labelledby="skill-order-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-order-title">
 			<a [routerLink]="path" fragment="skill-order">
@@ -477,7 +477,7 @@ export default &#123;
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Renombrar ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-rename" aria-labelledby="skill-rename-title">
+<section class="doc-skill-section" id="skill-rename" [class.doc-is-active]="nav.fragment() === 'skill-rename'" aria-labelledby="skill-rename-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-rename-title">
 			<a [routerLink]="path" fragment="skill-rename">
@@ -561,7 +561,7 @@ export default &#123;
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Eliminar ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-remove" aria-labelledby="skill-remove-title">
+<section class="doc-skill-section" id="skill-remove" [class.doc-is-active]="nav.fragment() === 'skill-remove'" aria-labelledby="skill-remove-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-remove-title">
 			<a [routerLink]="path" fragment="skill-remove">
@@ -664,7 +664,7 @@ export default &#123;
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Cambiar el estado ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-status" aria-labelledby="skill-status-title">
+<section class="doc-skill-section" id="skill-status" [class.doc-is-active]="nav.fragment() === 'skill-status'" aria-labelledby="skill-status-title">
 	<div class="doc-skill-section-head">
 		<h2 class="doc-skill-section-title" id="skill-status-title">
 			<a [routerLink]="path" fragment="skill-status">
@@ -782,7 +782,7 @@ export class IntButton &#123;
 <hr class="doc-skill-divider" />
 
 <!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-cheatsheet" aria-labelledby="skill-cheatsheet-title">
+<section class="doc-skill-section" id="skill-cheatsheet" [class.doc-is-active]="nav.fragment() === 'skill-cheatsheet'" aria-labelledby="skill-cheatsheet-title">
 	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
 		<a [routerLink]="path" fragment="skill-cheatsheet">
 			Resumen rápido

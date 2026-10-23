@@ -1,0 +1,434 @@
+/* Hero and section titles follow the components catalog (catalog-page.scss). */
+:host {
+  display: block;
+  color: var(--doc-ink);
+}
+
+code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--doc-surface-high);
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+}
+
+/*
+ * Slide up / down of the hero while searching (as the variant list of component-nav.scss): height
+ * animates auto ↔ 0 thanks to `interpolate-size`; browsers without it hide / show it instantly.
+ * Hidden, the wrapper is exactly 0px tall, padding included.
+ */
+.doc-icon-hero-collapse {
+  interpolate-size: allow-keywords;
+  height: auto;
+  overflow: hidden;
+  opacity: 1;
+  transition:
+    height 0.4s var(--doc-ease-emphasized),
+    opacity 0.3s linear;
+
+  &.doc-is-hidden {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+// The gap below the hero is padding inside the wrapper: it closes with the hero, so the first
+// section then starts right below the top bar.
+.doc-icon-hero-clip {
+  padding-bottom: 56px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-icon-hero-collapse {
+    transition: none;
+  }
+}
+
+/* Hero: copy panel + decorative panel, side by side */
+.doc-icon-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  min-height: 360px;
+}
+
+.doc-icon-hero-copy {
+  display: grid;
+  align-content: center;
+  padding: 48px;
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-surface-low);
+}
+
+.doc-icon-hero-title {
+  margin: 0 0 16px;
+  font-size: clamp(2.5rem, 1.75rem + 2.8vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.doc-icon-hero-lead {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.doc-icon-hero-stat {
+  justify-self: start;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 28px 0 0;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--doc-surface-high);
+  color: var(--doc-ink-muted);
+  font-size: 0.875rem;
+
+  strong {
+    color: var(--doc-accent-text);
+    font-size: 1.125rem;
+  }
+}
+
+.doc-icon-hero-art {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--doc-radius-xl);
+  background: var(--doc-primary);
+}
+
+.doc-blob {
+  position: absolute;
+  display: block;
+}
+
+.doc-blob-1 {
+  inset: -20% 6% 18% -12%;
+  border-radius: 46% 54% 40% 60% / 50% 40% 60% 50%;
+  background: #1d4f9a;
+}
+
+.doc-blob-2 {
+  top: 18%;
+  right: 6%;
+  width: 30%;
+  height: 34%;
+  border-radius: 50%;
+  background: var(--doc-accent);
+}
+
+.doc-blob-3 {
+  bottom: -18%;
+  left: 30%;
+  width: 34%;
+  height: 52%;
+  border-radius: 42% 58% 50% 50% / 50% 50% 50% 50%;
+  background: #ffb26b;
+}
+
+.doc-blob-4 {
+  top: 10%;
+  left: 12%;
+  width: 14%;
+  height: 18%;
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface);
+}
+
+/*
+ * Sections: the head sticks right below the top bar while its section scrolls. Spacing goes below
+ * each block (never above), so nothing is left on top when the hero is hidden.
+ */
+.doc-icon-group {
+  max-width: 1200px;
+  margin: 0 auto 56px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+/*
+ * "Copiado" tip in the top right corner of the copied card, clear of the centered name. Outside the
+ * card it would slide under the sticky section head on the first row.
+ */
+.doc-icon-copied {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--doc-success);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: copied-in 0.2s var(--doc-ease-emphasized);
+
+  .pi {
+    font-size: 0.6875rem;
+  }
+
+  .doc-is-copied & {
+    display: inline-flex;
+  }
+}
+
+@keyframes copied-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+.doc-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Search: highlighted match and no-results message */
+.doc-mark {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: #fff1a8;
+  color: inherit;
+}
+
+.doc-icon-empty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 24px 28px;
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface-low);
+  color: var(--doc-ink-muted);
+}
+
+// 84px above (56px of the section before + 28px) and 56px below, as before.
+.doc-icon-divider {
+  margin: 28px 0 56px;
+  border: 0;
+  border-top: 1px solid var(--doc-outline-variant);
+}
+
+.doc-icon-group-head {
+  position: sticky;
+  top: var(--doc-topbar-h);
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 16px 0;
+  background: var(--doc-surface);
+}
+
+.doc-icon-group-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+  font-weight: 400;
+
+  // Same anchor as the variant titles of the documentation (doc-page.scss).
+  a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--doc-ink);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    .doc-is-active & {
+      color: var(--doc-accent);
+    }
+  }
+
+  .doc-anchor-icon {
+    color: var(--doc-ink-muted);
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  a:hover .doc-anchor-icon,
+  a:focus-visible .doc-anchor-icon {
+    opacity: 1;
+  }
+}
+
+.doc-icon-group-meta {
+  color: var(--doc-ink-muted);
+  font-size: 0.875rem;
+}
+
+/* Cards */
+.doc-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+
+  &.doc-is-sizes {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+// A button: clicking it copies the icon's class name.
+.doc-icon-card {
+  --doc-card-ring: var(--doc-accent);
+  --doc-card-ring-soft: var(--doc-accent-ring);
+  --doc-card-glyph: var(--doc-accent-text);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 98px;
+  padding: 16px 32px;
+  border: 2px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-md);
+  background: transparent;
+  color: var(--doc-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  // Accent focus ring, as the focused fields of the documentation.
+  &:hover,
+  &:focus-visible,
+  &.doc-is-copied {
+    border-color: var(--doc-card-ring);
+    box-shadow: 0 0 0 4px var(--doc-card-ring-soft);
+    outline: none;
+
+    .doc-icon-glyph {
+      color: var(--doc-card-glyph);
+    }
+  }
+
+  // Just copied: the ring turns green for a moment.
+  &.doc-is-copied {
+    --doc-card-ring: var(--doc-success);
+    --doc-card-ring-soft: rgb(30 142 78 / 0.22);
+    --doc-card-glyph: var(--doc-success);
+  }
+
+  &.doc-is-stacked {
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    aspect-ratio: 1;
+    min-height: 0;
+  }
+}
+
+.doc-icon-glyph {
+  flex: none;
+  width: 36px;
+  font-size: 1.875rem;
+  text-align: center;
+  transition: color 0.2s;
+
+  &.doc-size-xs {
+    font-size: 0.625rem;
+  }
+
+  &.doc-size-sm {
+    font-size: 0.875rem;
+  }
+
+  &.doc-size-md {
+    font-size: 1.25rem;
+  }
+
+  &.doc-size-lg {
+    font-size: 1.75rem;
+  }
+
+  &.doc-size-xl {
+    font-size: 2.25rem;
+  }
+}
+
+.doc-icon-name {
+  min-width: 0;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+
+  .doc-is-stacked & {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Referential brand marks */
+.doc-brand {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 30px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-style: italic;
+  font-weight: 900;
+
+  &.doc-is-icon-visa {
+    color: #1a1f71;
+  }
+
+  &.doc-is-icon-amex {
+    background: #2e77bc;
+    color: #fff;
+    font-size: 0.5625rem;
+    font-style: normal;
+  }
+
+  &.doc-is-icon-mastercard {
+    background:
+      radial-gradient(circle at 38% 50%, #eb001b 0 7px, transparent 7.5px),
+      radial-gradient(circle at 62% 50%, #f79e1b 0 7px, transparent 7.5px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .doc-icon-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .doc-icon-hero-art {
+    height: 160px;
+  }
+}
+
+@media (max-width: 839px) {
+  .doc-icon-hero-copy {
+    padding: 32px 24px;
+  }
+
+  .doc-icon-hero-clip {
+    padding-bottom: 40px;
+  }
+
+  .doc-icon-group:not(:last-of-type) {
+    margin-bottom: 40px;
+  }
+}

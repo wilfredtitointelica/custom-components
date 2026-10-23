@@ -20,7 +20,7 @@ describe('App', () => {
       ['Components', false],
       ['Prototypes', true],
       ['Interface Lab', true],
-      ['Icon Lab', true],
+      ['Icon Lab', false],
     ]);
   });
 });

@@ -39,7 +39,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     label: 'Icon Lab',
     path: '/icon-lab',
     icon: 'pi-images',
-    status: 'pending',
+    status: 'available',
     description: 'El catálogo de íconos del sistema de diseño.',
   },
 ];

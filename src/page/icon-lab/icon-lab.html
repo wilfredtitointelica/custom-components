@@ -1,0 +1,47 @@
+<div class="doc-icon-shell">
+  <aside id="icon-nav" class="doc-drawer" [class.doc-is-open]="drawerOpen()" aria-label="Icon categories">
+    <div class="doc-drawer-head">
+      <h2 class="doc-drawer-title">Icon Lab</h2>
+      <button type="button" class="doc-icon-button doc-drawer-close" aria-label="Close menu" (click)="drawerOpen.set(false)">
+        <i class="pi pi-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <app-icon-nav [active]="active()" [results]="results()" (navigated)="drawerOpen.set(false)" />
+  </aside>
+
+  @if (drawerOpen()) {
+    <div class="doc-scrim" aria-hidden="true" (click)="drawerOpen.set(false)"></div>
+  }
+
+  <div class="doc-pane">
+    <header #topbar class="doc-topbar">
+      <button
+        type="button"
+        class="doc-icon-button doc-drawer-trigger"
+        aria-controls="icon-nav"
+        aria-label="Open icon categories menu"
+        [attr.aria-expanded]="drawerOpen()"
+        (click)="drawerOpen.set(true)"
+      >
+        <i class="pi pi-bars" aria-hidden="true"></i>
+      </button>
+      <a class="doc-topbar-brand" routerLink="/" aria-label="Incontrol, go to start">
+        <app-brand-mark />
+      </a>
+
+      <nav class="doc-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li>
+            <a [routerLink]="path" aria-current="page">Icon Lab</a>
+          </li>
+        </ol>
+      </nav>
+
+      <app-icon-search [(query)]="query" />
+    </header>
+
+    <main id="main-content" class="doc-content" tabindex="-1">
+      <app-icon-gallery [active]="active()" [results]="results()" [query]="query()" />
+    </main>
+  </div>
+</div>

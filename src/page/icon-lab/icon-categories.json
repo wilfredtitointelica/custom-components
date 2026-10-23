@@ -1,0 +1,344 @@
+[
+	{
+		"category": "Navigation",
+		"slug": "navigation",
+		"icons": [
+			"icon-arrow-left",
+			"icon-arrow-right",
+			"icon-arrow-up",
+			"icon-arrow-down",
+			"icon-arrow-left-double",
+			"icon-arrow-right-double",
+			"icon-arrow-up-double",
+			"icon-arrow-down-double",
+			"icon-nav-left",
+			"icon-nav-right",
+			"icon-nav-down",
+			"icon-nav-up",
+			"icon-nav-diagonal"
+		]
+	},
+	{
+		"category": "Actions",
+		"slug": "actions",
+		"icons": [
+			"icon-check",
+			"icon-cancel",
+			"icon-remove",
+			"icon-add",
+			"icon-unavailable",
+			"icon-delete",
+			"icon-loading",
+			"icon-drag",
+			"icon-collapse",
+			"icon-external-link"
+		]
+	},
+	{
+		"category": "Business & finance",
+		"slug": "business-and-finance",
+		"icons": [
+			"icon-credit-card",
+			"icon-atm",
+			"icon-bank",
+			"icon-coins",
+			"icon-cash",
+			"icon-invoice",
+			"icon-chart",
+			"icon-pie-chart",
+			"icon-presentation",
+			"icon-target",
+			"icon-calculator",
+			"icon-qr-code",
+			"icon-star-up",
+			"icon-economic-growth",
+			"icon-economic-decrease",
+			"icon-business",
+			"icon-opportunities"
+		]
+	},
+	{
+		"category": "Devices",
+		"slug": "devices",
+		"icons": [
+			"icon-computer",
+			"icon-beta-server",
+			"icon-mirroring-screen",
+			"icon-laptop",
+			"icon-modern-tv",
+			"icon-3d-view"
+		]
+	},
+	{
+		"category": "Alert notification",
+		"slug": "alert-notification",
+		"icons": [
+			"icon-alert",
+			"icon-warning",
+			"icon-success",
+			"icon-info",
+			"icon-help",
+			"icon-notification",
+			"icon-notification-off",
+			"icon-input-success",
+			"icon-input-error",
+			"icon-overlay-success",
+			"icon-overlay-error"
+		]
+	},
+	{
+		"category": "Security",
+		"slug": "security",
+		"icons": [
+			"icon-access",
+			"icon-locked",
+			"icon-lock",
+			"icon-unlock",
+			"icon-lock-password",
+			"icon-security",
+			"icon-security-lock",
+			"icon-security-password-lock"
+		]
+	},
+	{
+		"category": "Edit formating",
+		"slug": "edit-formating",
+		"icons": [
+			"icon-edit",
+			"icon-text",
+			"icon-reload",
+			"icon-view",
+			"icon-view-off",
+			"icon-maximize-screen",
+			"icon-minimize-screen",
+			"icon-detail"
+		]
+	},
+	{
+		"category": "Files folders",
+		"slug": "files-folders",
+		"icons": [
+			"icon-archive",
+			"icon-file-copy",
+			"icon-file",
+			"icon-no-data",
+			"icon-no-data-card",
+			"icon-folder",
+			"icon-cloud",
+			"icon-link",
+			"icon-attachment",
+			"icon-shared",
+			"icon-csv",
+			"icon-gif",
+			"icon-doc",
+			"icon-xsl",
+			"icon-pdf",
+			"icon-gif",
+			"icon-xml",
+			"icon-ppt",
+			"icon-jpg",
+			"icon-png",
+			"icon-raw",
+			"icon-zip",
+			"icon-hdr",
+			"icon-txt",
+			"icon-zip"
+		]
+	},
+	{
+		"category": "Icon Services",
+		"slug": "icon-services",
+		"icons": [
+			"icon-opt-out",
+			"icon-favorites-off",
+			"icon-favorites-on",
+			"icon-custom"
+		]
+	},
+	{
+		"category": "Icon Fee Manager",
+		"slug": "icon-fee-services",
+		"icons": [
+			"icon-incontrol-panel",
+			"icon-fee-library",
+			"icon-fee-update",
+			"icon-analytics-reports",
+			"icon-saving-opportunities",
+			"icon-fee-validation",
+			"icon-resources"
+		]
+	},
+	{
+		"category": "Icon Merchant Profitability",
+		"slug": "icon-merchant-profitability",
+		"icons": [
+			"icon-profitability-summary",
+			"icon-profitability-reports",
+			"icon-merchant-not-reported",
+			"icon-merchant-acquisition-forecaster"
+		]
+	},
+	{
+		"category": "Icon Business Intelligence",
+		"slug": "icon-business-intelligence",
+		"icons": [
+			"icon-acquirer-dashboard-rbc",
+			"icon-dashboards",
+			"icon-scheme-fees"
+		]
+	},
+	{
+		"category": "Icon Portfolio Management",
+		"slug": "icon-portfolio-management",
+		"icons": [
+			"icon-rbc-reports"
+		]
+	},
+	{
+		"category": "User",
+		"slug": "user",
+		"icons": [
+			"icon-user",
+			"icon-user-multiple",
+			"icon-user-group",
+			"icon-user-status"
+		]
+	},
+	{
+		"category": "Bookmark favorite",
+		"slug": "bookmark-favorite",
+		"icons": [
+			"icon-bookmark",
+			"icon-favorite"
+		]
+	},
+	{
+		"category": "Communications",
+		"slug": "comunications",
+		"icons": [
+			"icon-comment",
+			"icon-sent",
+			"icon-call",
+			"icon-mobile-sms",
+			"icon-megaphone",
+			"icon-mail"
+		]
+	},
+	{
+		"category": "Settings",
+		"slug": "settings",
+		"icons": [
+			"icon-settings",
+			"icon-settings-error",
+			"icon-unsubscribe",
+			"icon-sign-out",
+			"icon-search",
+			"icon-no-results",
+			"icon-zoom-max",
+			"icon-zoom-min",
+			"icon-cookies",
+			"icon-privacy-policy"
+		]
+	},
+	{
+		"category": "Download & Upload",
+		"slug": "download-and-upload",
+		"icons": [
+			"icon-upload",
+			"icon-download"
+		]
+	},
+	{
+		"category": "Programming",
+		"slug": "programming",
+		"icons": [
+			"icon-database",
+			"icon-pin-code",
+			"icon-website"
+		]
+	},
+	{
+		"category": "Location",
+		"slug": "location",
+		"icons": [
+			"icon-location",
+			"icon-home"
+		]
+	},
+	{
+		"category": "Filter Sorting",
+		"slug": "filter-sorting",
+		"icons": [
+			"icon-filter",
+			"icon-sort-table"
+		]
+	},
+	{
+		"category": "Image",
+		"slug": "image",
+		"icons": [
+			"icon-image"
+		]
+	},
+	{
+		"category": "Menu",
+		"slug": "menu",
+		"icons": [
+			"icon-menu",
+			"icon-more-vertical",
+			"icon-list"
+		]
+	},
+	{
+		"category": "E-Commerce",
+		"slug": "e-Commerce",
+		"icons": [
+			"icon-discount"
+		]
+	},
+	{
+		"category": "Dashboard",
+		"slug": "dashboard",
+		"icons": [
+			"icon-dashboard-01",
+			"icon-dashboard-02"
+		]
+	},
+	{
+		"category": "Note task",
+		"slug": "note-task",
+		"icons": [
+			"icon-note",
+			"icon-task",
+			"icon-task-daily"
+		]
+	},
+	{
+		"category": "Icon Products",
+		"slug": "icon-products",
+		"icons": [
+			"icon-fee-manager",
+			"icon-interchange-hub",
+			"icon-budget-tool",
+			"icon-merchant-profitability",
+			"icon-business-intelligence",
+			"icon-portfolio-management",
+			"icon-list-of-opportunities"
+		]
+	},
+	{
+		"category": "Date & Time",
+		"slug": "date-and-time",
+		"icons": [
+			"icon-calendar",
+			"icon-clock"
+		]
+	},
+	{
+		"category": "Technology",
+		"slug": "technology",
+		"icons": [
+			"icon-no-connection"
+		]
+	}
+]

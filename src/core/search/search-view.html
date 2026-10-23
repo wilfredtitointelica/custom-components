@@ -16,7 +16,7 @@
 
 <div id="search-results" class="doc-search-results" aria-live="polite">
   @if (!search.query().trim()) {
-    <p class="doc-search-hint">Busca componentes por su nombre.</p>
+    <p class="doc-search-hint">Busca componentes e iconos por su nombre.</p>
   } @else {
     @for (group of search.groups(); track group.id) {
       <section class="doc-search-group" [attr.aria-labelledby]="'search-group-' + group.id">
@@ -26,10 +26,13 @@
         <ul class="doc-search-list">
           @for (result of group.results; track result.id) {
             <li>
-              <a class="doc-search-result" [routerLink]="result.path">
+              <a class="doc-search-result" [routerLink]="result.path" [fragment]="result.fragment" (click)="result.select?.()">
                 <span class="doc-dim">{{ result.label.slice(0, result.match[0]) }}</span
                 ><span class="doc-hit">{{ result.label.slice(result.match[0], result.match[1]) }}</span
                 ><span class="doc-dim">{{ result.label.slice(result.match[1]) }}</span>
+                @if (result.hint) {
+                  <span class="doc-search-result-hint">{{ result.hint }}</span>
+                }
                 <i class="pi pi-arrow-right doc-search-go" aria-hidden="true"></i>
               </a>
             </li>

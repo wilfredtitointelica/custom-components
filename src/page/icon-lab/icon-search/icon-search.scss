@@ -1,0 +1,87 @@
+:host {
+  display: block;
+  flex: none;
+}
+
+.doc-icon-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 280px;
+  height: 40px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: 999px;
+  background: var(--doc-surface-low);
+  color: var(--doc-ink);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+
+  &:focus-within {
+    border-color: var(--doc-accent);
+    background: var(--doc-surface);
+    box-shadow: 0 0 0 4px var(--doc-accent-ring);
+  }
+}
+
+.doc-icon-search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--doc-ink-muted);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+.doc-icon-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px 0 38px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  outline: none;
+
+  &::placeholder {
+    color: var(--doc-ink-muted);
+  }
+
+  // The clear button of the component replaces the native one.
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+.doc-icon-search-clear {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--doc-ink-muted);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--doc-state-hover);
+    color: var(--doc-ink);
+  }
+
+  .pi {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 839px) {
+  .doc-icon-search {
+    width: min(200px, 46vw);
+    height: 36px;
+    border-color: transparent;
+  }
+}

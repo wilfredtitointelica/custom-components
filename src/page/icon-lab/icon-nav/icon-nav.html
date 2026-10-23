@@ -1,0 +1,42 @@
+<!-- Only the sections left by the search (results); each group wraps its label and list so the sticky label stays inside it. -->
+@if (foundations().length) {
+<div class="doc-nav-group">
+	<p class="doc-nav-status">Fundamentos</p>
+	<ul class="doc-nav-list">
+		@for (section of foundations(); track section.slug) {
+		<ng-container *ngTemplateOutlet="link; context: { $implicit: section, count: null }" />
+		}
+	</ul>
+</div>
+<hr class="doc-nav-divider" />
+}
+
+<div class="doc-nav-group">
+	<p class="doc-nav-status">{{ results().categories.length }} categorías</p>
+	<ul class="doc-nav-list">
+		@for (category of results().categories; track category.slug) {
+		<ng-container *ngTemplateOutlet="link; context: { $implicit: category, count: category.icons.length }" />
+		} @empty {
+		<li class="doc-nav-empty">Sin coincidencias</li>
+		}
+	</ul>
+</div>
+
+<ng-template #link let-section let-count="count">
+	@let current = active() === section.slug;
+	<li class="doc-nav-item">
+		<a
+			class="doc-nav-link"
+			[class.doc-is-current]="current"
+			[routerLink]="path"
+			[fragment]="section.slug"
+			[attr.aria-current]="current ? 'location' : null"
+			(click)="navigated.emit()"
+		>
+			<span class="doc-nav-name">{{ section.name }}</span>
+			@if (count !== null) {
+			<span class="doc-nav-count">{{ count }}</span>
+			}
+		</a>
+	</li>
+</ng-template>

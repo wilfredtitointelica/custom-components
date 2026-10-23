@@ -32,6 +32,8 @@ export class SearchView implements OnDestroy {
 
   protected openFirst(): void {
     const first = this.search.groups()[0]?.results[0];
-    if (first) this.router.navigateByUrl(first.path);
+    if (!first) return;
+    first.select?.();
+    this.router.navigate([first.path], { fragment: first.fragment });
   }
 }

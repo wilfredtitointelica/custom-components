@@ -1,0 +1,126 @@
+<!-- The hero slides up while searching (results come first) and back down when the search is cleared. -->
+@let searching = !!query().trim();
+<div class="doc-icon-hero-collapse" [class.doc-is-hidden]="searching" [attr.inert]="searching ? '' : null">
+<div class="doc-icon-hero-clip">
+<section class="doc-icon-hero" aria-labelledby="icon-lab-title">
+  <div class="doc-icon-hero-copy">
+    <h1 id="icon-lab-title" class="doc-icon-hero-title">Iconos</h1>
+    <p class="doc-icon-hero-lead">
+      Iconos propios de la marca Incontrol, organizados por categoría. Los glifos son referenciales hasta contar con la
+      fuente de iconos definitiva; las categorías y nombres se leen de <code>icon-categories.json</code>.
+    </p>
+    <p class="doc-icon-hero-stat"><strong>{{ total }}</strong> iconos en {{ categoryCount }} categorías</p>
+  </div>
+  <div class="doc-icon-hero-art" aria-hidden="true">
+    <span class="doc-blob doc-blob-1"></span>
+    <span class="doc-blob doc-blob-2"></span>
+    <span class="doc-blob doc-blob-3"></span>
+    <span class="doc-blob doc-blob-4"></span>
+  </div>
+</section>
+</div>
+</div>
+
+<!-- Only the sections and icons left by the search of the top bar (results); the match is highlighted. -->
+@let sizes = results().sizes;
+@let brands = results().brands;
+@let categories = results().categories;
+
+<!-- Sizes -->
+@if (sizes.length) {
+  <section [id]="foundations.sizes.slug" class="doc-icon-group" [class.doc-is-active]="active() === foundations.sizes.slug" aria-labelledby="icon-size-title">
+    <header class="doc-icon-group-head">
+      <h2 id="icon-size-title" class="doc-icon-group-title">
+        <a [routerLink]="path" [fragment]="foundations.sizes.slug">
+          <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: foundations.sizes.name }" /></span>
+          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+        </a>
+      </h2>
+      <code class="doc-icon-group-meta">class="icon icon--size"</code>
+    </header>
+    <ul class="doc-icon-grid doc-is-sizes">
+      @for (item of sizes; track item.name) {
+        <li>
+          <button type="button" class="doc-icon-card doc-is-stacked" [class.doc-is-copied]="copied() === item.name" (click)="copy(item.name)">
+            <i class="pi pi-database doc-icon-glyph doc-size-{{ item.size }}" aria-hidden="true"></i>
+            <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: item.name }" /></span>
+            <ng-container *ngTemplateOutlet="copiedTip" />
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
+}
+
+<!-- Brands -->
+@if (brands.length) {
+  <section [id]="foundations.brands.slug" class="doc-icon-group" [class.doc-is-active]="active() === foundations.brands.slug" aria-labelledby="icon-brand-title">
+    <header class="doc-icon-group-head">
+      <h2 id="icon-brand-title" class="doc-icon-group-title">
+        <a [routerLink]="path" [fragment]="foundations.brands.slug">
+          <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: foundations.brands.name }" /></span>
+          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+        </a>
+      </h2>
+      <code class="doc-icon-group-meta">class="icon icon-brand"</code>
+    </header>
+    <ul class="doc-icon-grid">
+      @for (brand of brands; track brand.name) {
+        <li>
+          <button type="button" class="doc-icon-card" [class.doc-is-copied]="copied() === brand.name" (click)="copy(brand.name)">
+            <span class="doc-brand doc-is-{{ brand.name }}" aria-hidden="true">{{ brand.label }}</span>
+            <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: brand.name }" /></span>
+            <ng-container *ngTemplateOutlet="copiedTip" />
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
+}
+
+<!-- Foundations (sizes, brands) above, categories below: same split as the menu. -->
+@if ((sizes.length || brands.length) && categories.length) {
+  <hr class="doc-icon-divider" />
+}
+
+<!-- One section per category of icon-categories.json -->
+@for (category of categories; track category.slug) {
+  <section [id]="category.slug" class="doc-icon-group" [class.doc-is-active]="active() === category.slug" [attr.aria-labelledby]="category.slug + '-title'">
+    <header class="doc-icon-group-head">
+      <h2 [id]="category.slug + '-title'" class="doc-icon-group-title">
+        <a [routerLink]="path" [fragment]="category.slug">
+          <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: category.name }" /></span>
+          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+        </a>
+      </h2>
+      <span class="doc-icon-group-meta">{{ category.icons.length }} {{ category.icons.length === 1 ? 'icono' : 'iconos' }}</span>
+    </header>
+    <ul class="doc-icon-grid">
+      @for (icon of category.icons; track icon.name) {
+        <li>
+          <button type="button" class="doc-icon-card" [class.doc-is-copied]="copied() === icon.name" (click)="copy(icon.name)">
+            <i class="pi {{ icon.glyph }} doc-icon-glyph" aria-hidden="true"></i>
+            <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: icon.name }" /></span>
+            <ng-container *ngTemplateOutlet="copiedTip" />
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
+}
+
+@if (!sizes.length && !brands.length && !categories.length) {
+  <p class="doc-icon-empty">
+    <i class="pi pi-search" aria-hidden="true"></i>
+    Ningún icono ni categoría coincide con «{{ query().trim() }}».
+  </p>
+}
+
+<!-- Text with the parts that match the search wrapped in <mark>. -->
+<ng-template #marked let-text>@for (part of parts(text); track $index) {@if (part.match) {<mark class="doc-mark">{{ part.text }}</mark>} @else {<ng-container>{{ part.text }}</ng-container>}}</ng-template>
+
+<!-- Visual confirmation inside the copied card; screen readers get the live region below. -->
+<ng-template #copiedTip>
+  <span class="doc-icon-copied" aria-hidden="true"><i class="pi pi-check"></i> Copiado</span>
+</ng-template>
+<span class="doc-visually-hidden" aria-live="polite">{{ copied() ? copied() + ' copiado' : '' }}</span>

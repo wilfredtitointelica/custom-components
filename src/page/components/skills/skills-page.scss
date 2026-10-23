@@ -72,11 +72,11 @@ code {
 
 /* Sections */
 .doc-skill-section {
-  max-width: 960px;
+  max-width: 1200px;
   scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
 
   > p {
-    max-width: 80ch;
+    max-width: 1200px;
     margin: 0 0 16px;
   }
 
@@ -88,7 +88,7 @@ code {
 
 /* <hr> between sections (same line as the header's); the sections themselves have no spacing. */
 .doc-skill-divider {
-  max-width: 960px;
+  max-width: 1200px;
   height: 0;
   margin: 72px 0;
   border: 0;
@@ -145,6 +145,11 @@ code {
   a:focus-visible .doc-anchor-icon {
     opacity: 1;
   }
+}
+
+// Active section (its link is highlighted in the menu): the title takes the accent color.
+.doc-skill-section.doc-is-active .doc-skill-section-title a {
+  color: var(--doc-accent);
 }
 
 .doc-skill-use {
