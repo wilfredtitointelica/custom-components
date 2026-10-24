@@ -3,6 +3,7 @@ import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core'
 import {
   importStyleGuide,
   pingStyleGuide,
+  removeStyleGuide,
   setIconLabFallback,
   STYLE_GUIDE_BASE_URL,
 } from '../core/style-guide/style-guide';
@@ -60,7 +61,7 @@ export class ExternalResources {
   private readonly state = signal<ResourceState>({ resource: STYLE_GUIDE, status: 'checking', checkedAt: null });
   private readonly noticeList = signal<readonly ConnectionNotice[]>([]);
   private nextNoticeId = 0;
-  /** The bundle ran once: its <style> stays in the page even if the server goes down. */
+  /** The bundle's CSS is in the page (taken out as soon as the connection is lost). */
   private readonly styleGuideInPage = signal(false);
   private started = false;
 
@@ -98,9 +99,18 @@ export class ExternalResources {
 
   /** Checks the connection now (Connections dialog, poll, tab focus). */
   check(): Promise<void> {
-    return pingStyleGuide().then((up) =>
-      up && !this.styleGuideInPage() ? this.load(false) : this.setStatus(up ? 'connected' : 'disconnected'),
-    );
+    return pingStyleGuide().then((up) => {
+      if (up) {
+        return this.styleGuideInPage() ? this.setStatus('connected') : this.load(false);
+      }
+      // Lost: the page shows what a reload would (local icons, int-* without tokens), not a stale copy.
+      if (this.styleGuideInPage()) {
+        removeStyleGuide();
+        this.styleGuideInPage.set(false);
+        setIconLabFallback(true);
+      }
+      this.setStatus('disconnected');
+    });
   }
 
   dismiss(id: number): void {
@@ -137,7 +147,7 @@ export class ExternalResources {
     } else if (first) {
       this.notify({ tone: 'danger', title: `${name} no disponible`, message: 'Se usa el respaldo local de iconos. No responde', url, suffix: '.' });
     } else {
-      this.notify({ tone: 'danger', title: `Se perdió la conexión con ${name}`, message: 'Los estilos ya cargados se mantienen hasta recargar la página.' });
+      this.notify({ tone: 'danger', title: `Se perdió la conexión con ${name}`, message: 'Se quitaron sus estilos; Icon Lab usa el respaldo local de iconos hasta que vuelva.' });
     }
   }
 

@@ -40,11 +40,18 @@
       <app-icon-search [(query)]="query" />
 
       @if (iconSource(); as source) {
-        <span
-          class="doc-icon-source"
-          [title]="source === 'styleguide' ? 'Fuente y marcas de ' + styleGuideUrl : 'Copia local: icon-lab-fallback.css'"
-        >
-          Iconos desde <strong>{{ source === 'styleguide' ? 'STYLEGUIDES' : 'LOCAL' }}</strong>
+        <span class="doc-icon-source">
+          Iconos desde repo
+          <span class="doc-icon-source-repo" tabindex="0" aria-describedby="doc-icon-source-tip">
+            <strong>{{ source === 'styleguide' ? 'STYLEGUIDES' : 'ACTUAL' }}</strong>
+            <span id="doc-icon-source-tip" class="doc-icon-source-tip" role="tooltip">
+              @if (source === 'styleguide') {
+                Repo <code>Intelica.Style.Guide.New</code>: la fuente y las marcas vienen de su bundle publicado.
+              } @else {
+                Repo <code>custom-components</code> (este proyecto): copia local de la fuente y las marcas.
+              }
+            </span>
+          </span>
         </span>
       }
     </header>

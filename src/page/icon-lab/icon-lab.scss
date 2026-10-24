@@ -80,17 +80,88 @@
 .doc-icon-source {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
   font-size: 0.75rem;
   letter-spacing: 0.02em;
   text-align: right;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  opacity: 0.5;
+  /* Faded with the color, not opacity, so the tooltip inside stays solid. */
+  color: color-mix(in srgb, var(--doc-ink) 50%, transparent);
+}
+
+/* The word carries the real repo name as a tooltip (same look as the skills folder diagram). */
+.doc-icon-source-repo {
+  position: relative;
+  cursor: help;
 
   strong {
     font-weight: 700;
     letter-spacing: 0.06em;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+
+  // Arrow, under the word.
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    border: 6px solid transparent;
+    border-bottom-color: var(--doc-code-bg);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -4px);
+    transition:
+      opacity 0.15s,
+      transform 0.15s var(--doc-ease-emphasized);
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::after {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .doc-icon-source-tip {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+.doc-icon-source-tip {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: -8px;
+  z-index: 2;
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 12px;
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-code-bg);
+  color: var(--doc-code-ink);
+  font-family: var(--doc-font-sans);
+  font-size: 0.75rem;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.15s,
+    transform 0.15s var(--doc-ease-emphasized);
+
+  code {
+    padding: 0 4px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 0.12);
+    color: inherit;
+    font-family: var(--doc-font-mono);
+    font-size: 0.6875rem;
+    white-space: nowrap;
   }
 }
 
