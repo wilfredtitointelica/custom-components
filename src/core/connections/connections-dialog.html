@@ -37,7 +37,11 @@
           <dd>{{ item.resource.fallback }}</dd>
           <dt>Verificado</dt>
           <dd>
-            <span class="doc-connection-time" [class.doc-is-fresh]="phase() === 'done'">
+            <span
+              class="doc-connection-time"
+              [class.doc-is-fresh-ok]="phase() === 'connected'"
+              [class.doc-is-fresh-error]="phase() === 'disconnected'"
+            >
               {{ item.checkedAt ? (item.checkedAt | date: 'HH:mm:ss') : '—' }}
             </span>
           </dd>
@@ -51,7 +55,8 @@
     <button
       type="button"
       class="doc-connections-check"
-      [class.doc-is-done]="phase() === 'done'"
+      [class.doc-is-ok]="phase() === 'connected'"
+      [class.doc-is-error]="phase() === 'disconnected'"
       [disabled]="phase() === 'checking'"
       aria-live="polite"
       (click)="check()"
@@ -61,9 +66,13 @@
           <i class="pi pi-refresh pi-spin" aria-hidden="true"></i>
           Verificando…
         }
-        @case ('done') {
+        @case ('connected') {
           <i class="pi pi-check" aria-hidden="true"></i>
-          Verificado
+          Conectado
+        }
+        @case ('disconnected') {
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          Sin conexión
         }
         @default {
           <i class="pi pi-refresh" aria-hidden="true"></i>

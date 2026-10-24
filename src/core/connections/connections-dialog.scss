@@ -165,7 +165,7 @@
     box-shadow 0.2s,
     transform 0.1s;
 
-  &:hover:not(:disabled, .doc-is-done) {
+  &:hover:not(:disabled, .doc-is-ok, .doc-is-error) {
     background: var(--doc-on-primary-container);
     box-shadow: 0 4px 12px rgb(23 55 94 / 0.3);
   }
@@ -180,27 +180,44 @@
   }
 
   /* Result of the last check, for a moment. */
-  &.doc-is-done {
+  &.doc-is-ok {
     background: var(--doc-success);
+  }
+
+  &.doc-is-error {
+    background: var(--doc-danger);
   }
 }
 
-/* The time of the last check flashes when it is updated from the button. */
+/* The time of the last check flashes in the color of its result when it is updated from the button. */
 .doc-connection-time {
   margin: -2px -6px;
   padding: 2px 6px;
   border-radius: 6px;
 
-  &.doc-is-fresh {
-    animation: doc-connection-fresh 1.6s ease-out;
+  &.doc-is-fresh-ok {
+    animation: doc-connection-fresh-ok 1.6s ease-out;
+  }
+
+  &.doc-is-fresh-error {
+    animation: doc-connection-fresh-error 1.6s ease-out;
   }
 }
 
-@keyframes doc-connection-fresh {
+@keyframes doc-connection-fresh-ok {
   from,
   30% {
     background: var(--doc-success-container);
     color: var(--doc-on-success-container);
+    font-weight: 600;
+  }
+}
+
+@keyframes doc-connection-fresh-error {
+  from,
+  30% {
+    background: var(--doc-danger-container);
+    color: var(--doc-on-danger-container);
     font-weight: 600;
   }
 }

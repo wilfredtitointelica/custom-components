@@ -25,8 +25,11 @@ const DONE_MS = 2_000;
 export class ConnectionsDialog {
   protected readonly connections = inject(ExternalResources);
   protected readonly labels = STATUS_LABELS;
-  /** Feedback of "Verificar ahora": spinning while checking, then "Verificado" and the time flashes. */
-  protected readonly phase = signal<'idle' | 'checking' | 'done'>('idle');
+  /**
+   * Feedback of "Verificar ahora": spinning while checking, then the result for a moment (green if every
+   * resource answered, red if not) while the time of the check flashes in the same color.
+   */
+  protected readonly phase = signal<'idle' | 'checking' | 'connected' | 'disconnected'>('idle');
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private doneTimer?: ReturnType<typeof setTimeout>;
 
@@ -44,7 +47,7 @@ export class ConnectionsDialog {
     // A local check takes a few ms: keep the spinner long enough to be seen.
     const minimum = new Promise((resolve) => setTimeout(resolve, CHECKING_MIN_MS));
     Promise.all([this.connections.check(), minimum]).finally(() => {
-      this.phase.set('done');
+      this.phase.set(this.connections.overall() === 'connected' ? 'connected' : 'disconnected');
       this.doneTimer = setTimeout(() => this.phase.set('idle'), DONE_MS);
     });
   }
