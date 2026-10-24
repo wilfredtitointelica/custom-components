@@ -8,8 +8,11 @@ const ICON_LAB_FALLBACK_HREF = 'icon-lab-fallback.css';
 const ICON_LAB_FALLBACK_ID = 'doc-icon-lab-fallback';
 
 let attempts = 0;
-/** <style> elements the bundle injected (style-loader), removed again when the connection is lost. */
-let injectedStyles: HTMLStyleElement[] = [];
+/**
+ * Token only the style guide defines (tokens of bundle-base.scss): marks the <style> its style-loader injects.
+ * Found by content, not by insertion time: Angular adds component <style> tags in the same moment.
+ */
+const BUNDLE_MARKER = '--i-NOTE-GLOBAL';
 
 /**
  * Runs the bundle (SystemJS); rejects if it cannot be fetched. SystemJS keeps a module in its registry
@@ -21,19 +24,14 @@ export function importStyleGuide(): Promise<void> {
     return Promise.reject(new Error('SystemJS not loaded'));
   }
   const url = attempts++ ? `${STYLE_GUIDE_BASE_URL}?retry=${attempts}` : STYLE_GUIDE_BASE_URL;
-  const before = new Set(document.head.querySelectorAll('style'));
-  return system.import(url).then(() => {
-    // New <style> tags without ng-app-id are the bundle's (Angular marks its component styles).
-    injectedStyles = [...document.head.querySelectorAll('style')].filter(
-      (style) => !before.has(style) && !style.hasAttribute('ng-app-id'),
-    );
-  });
+  return system.import(url).then(() => undefined);
 }
 
 /** Takes the bundle's CSS out of the page, as a reload without the style guide would. */
 export function removeStyleGuide(): void {
-  injectedStyles.forEach((style) => style.remove());
-  injectedStyles = [];
+  document.head
+    .querySelectorAll('style')
+    .forEach((style) => style.textContent?.includes(BUNDLE_MARKER) && style.remove());
 }
 
 /** Whether the style guide server answers (no-cors: any response means it is up). */

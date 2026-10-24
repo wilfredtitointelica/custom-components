@@ -9,6 +9,9 @@ export const STATUS_LABELS: Record<ConnectionStatus, string> = {
   disconnected: 'Sin conexión',
 };
 
+const CHECKING_MIN_MS = 600;
+const DONE_MS = 2_000;
+
 /**
  * Modal <dialog> listing the resources of other repos this project consumes at runtime, with their
  * connection status (opened from the Connections button of the rail). Closes with X, Esc or the backdrop.
@@ -22,8 +25,10 @@ export const STATUS_LABELS: Record<ConnectionStatus, string> = {
 export class ConnectionsDialog {
   protected readonly connections = inject(ExternalResources);
   protected readonly labels = STATUS_LABELS;
-  protected readonly checking = signal(false);
+  /** Feedback of "Verificar ahora": spinning while checking, then "Verificado" and the time flashes. */
+  protected readonly phase = signal<'idle' | 'checking' | 'done'>('idle');
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+  private doneTimer?: ReturnType<typeof setTimeout>;
 
   open(): void {
     this.dialog().nativeElement.showModal();
@@ -34,7 +39,13 @@ export class ConnectionsDialog {
   }
 
   protected check(): void {
-    this.checking.set(true);
-    this.connections.check().finally(() => this.checking.set(false));
+    clearTimeout(this.doneTimer);
+    this.phase.set('checking');
+    // A local check takes a few ms: keep the spinner long enough to be seen.
+    const minimum = new Promise((resolve) => setTimeout(resolve, CHECKING_MIN_MS));
+    Promise.all([this.connections.check(), minimum]).finally(() => {
+      this.phase.set('done');
+      this.doneTimer = setTimeout(() => this.phase.set('idle'), DONE_MS);
+    });
   }
 }

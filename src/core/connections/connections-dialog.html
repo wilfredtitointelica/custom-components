@@ -36,7 +36,11 @@
           <dt>Sin conexión</dt>
           <dd>{{ item.resource.fallback }}</dd>
           <dt>Verificado</dt>
-          <dd>{{ item.checkedAt ? (item.checkedAt | date: 'HH:mm:ss') : '—' }}</dd>
+          <dd>
+            <span class="doc-connection-time" [class.doc-is-fresh]="phase() === 'done'">
+              {{ item.checkedAt ? (item.checkedAt | date: 'HH:mm:ss') : '—' }}
+            </span>
+          </dd>
         </dl>
       </li>
     }
@@ -44,9 +48,28 @@
 
   <footer class="doc-connections-footer">
     <span class="doc-connections-hint">Se verifica cada 15 s y al volver a la pestaña.</span>
-    <button type="button" class="doc-connections-check" [disabled]="checking()" (click)="check()">
-      <i class="pi pi-refresh" [class.pi-spin]="checking()" aria-hidden="true"></i>
-      Verificar ahora
+    <button
+      type="button"
+      class="doc-connections-check"
+      [class.doc-is-done]="phase() === 'done'"
+      [disabled]="phase() === 'checking'"
+      aria-live="polite"
+      (click)="check()"
+    >
+      @switch (phase()) {
+        @case ('checking') {
+          <i class="pi pi-refresh pi-spin" aria-hidden="true"></i>
+          Verificando…
+        }
+        @case ('done') {
+          <i class="pi pi-check" aria-hidden="true"></i>
+          Verificado
+        }
+        @default {
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          Verificar ahora
+        }
+      }
     </button>
   </footer>
 </dialog>

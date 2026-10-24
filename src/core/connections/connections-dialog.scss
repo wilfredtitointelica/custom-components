@@ -160,10 +160,47 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.1s;
+
+  &:hover:not(:disabled, .doc-is-done) {
+    background: var(--doc-on-primary-container);
+    box-shadow: 0 4px 12px rgb(23 55 94 / 0.3);
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: none;
+    transform: scale(0.97);
+  }
 
   &:disabled {
-    opacity: 0.6;
     cursor: progress;
+  }
+
+  /* Result of the last check, for a moment. */
+  &.doc-is-done {
+    background: var(--doc-success);
+  }
+}
+
+/* The time of the last check flashes when it is updated from the button. */
+.doc-connection-time {
+  margin: -2px -6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+
+  &.doc-is-fresh {
+    animation: doc-connection-fresh 1.6s ease-out;
+  }
+}
+
+@keyframes doc-connection-fresh {
+  from,
+  30% {
+    background: var(--doc-success-container);
+    color: var(--doc-on-success-container);
+    font-weight: 600;
   }
 }

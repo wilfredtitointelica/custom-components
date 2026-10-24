@@ -96,7 +96,11 @@ $doc-scope: ':where(.doc-body, .doc-body *:not(.doc-preview *))';
   box-sizing: border-box;
 }
 
-/* A non-auto scrollbar-color makes Chrome ignore the style guide's ::-webkit-scrollbar rules here. */
+/*
+ * A non-auto scrollbar-color makes Chrome ignore the style guide's ::-webkit-scrollbar rules here.
+ * html.doc-html too: the page scrollbar belongs to the root, so it looks the same with or without the style guide.
+ */
+html.doc-html,
 #{$doc-scope} {
   scrollbar-width: auto;
   scrollbar-color: var(--doc-outline) transparent;
