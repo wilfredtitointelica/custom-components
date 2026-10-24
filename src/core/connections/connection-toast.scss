@@ -1,0 +1,121 @@
+.doc-toast-stack {
+  position: fixed;
+  right: 24px;
+  bottom: calc(24px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+  z-index: 110;
+  display: grid;
+  gap: 8px;
+  width: min(520px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+@media (max-width: 539px) {
+  .doc-toast-stack {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    bottom: calc(16px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+  }
+}
+
+.doc-toast {
+  --doc-toast-color: var(--doc-success-on-dark);
+
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 8px 14px 16px;
+  border-left: 4px solid var(--doc-toast-color);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-ink);
+  color: #fff;
+  box-shadow: 0 8px 24px rgb(7 11 26 / 0.28);
+  pointer-events: auto;
+
+  /* Fades in and out moving slightly up. */
+  &.doc-toast-enter {
+    animation: doc-toast-in 0.35s var(--doc-ease-emphasized);
+  }
+
+  &.doc-toast-leave {
+    animation: doc-toast-out 0.3s ease-in forwards;
+  }
+
+  &.doc-is-danger {
+    --doc-toast-color: var(--doc-danger-on-dark);
+  }
+
+  > .pi {
+    margin-top: 2px;
+    color: var(--doc-toast-color);
+    font-size: 1.125rem;
+  }
+}
+
+.doc-toast-text {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  min-width: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.doc-toast-title {
+  font-weight: 600;
+}
+
+.doc-toast-message {
+  color: rgb(255 255 255 / 0.78);
+}
+
+/* The URL moves to its own line as a whole instead of breaking (scrolls only on very narrow screens). */
+.doc-toast-url {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  vertical-align: bottom;
+  scrollbar-width: none;
+
+  strong {
+    color: #fff;
+    font-weight: 700;
+  }
+}
+
+.doc-toast-close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .pi {
+    font-size: 0.75rem;
+  }
+}
+
+@keyframes doc-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes doc-toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}

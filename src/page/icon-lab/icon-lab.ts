@@ -3,6 +3,8 @@ import { ViewportScroller } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { BrandMark } from '../../core/brand-mark/brand-mark';
+import { STYLE_GUIDE_BASE_URL } from '../../core/style-guide/style-guide';
+import { ExternalResources } from '../../service/external-resources';
 import { IconLabQuery } from '../../service/icon-lab-query';
 import { NavigationState } from '../../service/navigation-state';
 import { IconGallery } from './icon-gallery/icon-gallery';
@@ -34,6 +36,9 @@ export class IconLabPage {
   /** Search of the top bar: menu and gallery show only what matches. */
   protected readonly query = inject(IconLabQuery).query;
   protected readonly results = computed(() => filterIcons(this.query()));
+  /** Shown at the right of the top bar: the glyphs come from the style guide bundle or the local copy. */
+  protected readonly iconSource = inject(ExternalResources).iconSource;
+  protected readonly styleGuideUrl = STYLE_GUIDE_BASE_URL;
 
   constructor() {
     // The top bar is sticky: anchor scrolling must stop below it, whatever its current height.

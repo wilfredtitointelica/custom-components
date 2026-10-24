@@ -47,7 +47,7 @@
       @for (item of sizes; track item.name) {
         <li>
           <button type="button" class="doc-icon-card doc-is-stacked" [class.doc-is-copied]="copied() === item.name" (click)="copy(item.name)">
-            <i class="pi pi-database doc-icon-glyph doc-size-{{ item.size }}" aria-hidden="true"></i>
+            <i class="icon-database doc-icon-glyph doc-size-{{ item.size }}" aria-hidden="true"></i>
             <span class="doc-icon-name"><ng-container *ngTemplateOutlet="marked; context: { $implicit: item.name }" /></span>
             <ng-container *ngTemplateOutlet="copiedTip" />
           </button>

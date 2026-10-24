@@ -76,6 +76,24 @@
   backdrop-filter: blur(8px);
 }
 
+/* Breadcrumb and icon source share the free space equally, so the search stays centered. */
+.doc-icon-source {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.5;
+
+  strong {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+}
+
 .doc-breadcrumb {
   flex: 1;
   min-width: 0;
@@ -218,6 +236,11 @@
     .doc-breadcrumb [aria-current] {
       color: #fff;
     }
+  }
+
+  /* No room next to the search on a phone. */
+  .doc-icon-source {
+    display: none;
   }
 
   .doc-topbar-brand {

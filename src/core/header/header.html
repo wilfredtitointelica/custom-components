@@ -33,3 +33,20 @@
     </a>
   }
 </nav>
+
+<button
+  type="button"
+  class="doc-rail-item doc-rail-connections"
+  [class]="'doc-is-' + connections.overall()"
+  aria-haspopup="dialog"
+  [attr.aria-label]="'Conexiones externas: ' + connectionLabels[connections.overall()]"
+  [title]="'Conexiones externas: ' + connectionLabels[connections.overall()]"
+  (click)="connectionsDialog.open()"
+>
+  <span class="doc-rail-indicator">
+    <i class="pi pi-link" aria-hidden="true"></i>
+    <span class="doc-rail-connections-dot" aria-hidden="true"></span>
+  </span>
+  <span class="doc-rail-label">Connections</span>
+</button>
+<app-connections-dialog #connectionsDialog />

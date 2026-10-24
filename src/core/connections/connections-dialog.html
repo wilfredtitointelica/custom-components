@@ -1,0 +1,52 @@
+<dialog
+  #dialog
+  class="doc-connections-dialog"
+  aria-labelledby="doc-connections-title"
+  (click)="$event.target === dialog && close()"
+>
+  <header class="doc-connections-header">
+    <div>
+      <h2 id="doc-connections-title" class="doc-connections-title">Conexiones externas</h2>
+      <p class="doc-connections-summary">
+        {{ connections.connectedCount() }} de {{ connections.resources().length }} conectadas · recursos de otros
+        repos que este proyecto consume
+      </p>
+    </div>
+    <button type="button" class="doc-icon-button" aria-label="Cerrar" title="Cerrar" autofocus (click)="close()">
+      <i class="pi pi-times" aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <ul class="doc-connections-list">
+    @for (item of connections.resources(); track item.resource.id) {
+      <li class="doc-connection" [class]="'doc-is-' + item.status">
+        <div class="doc-connection-head">
+          <span class="doc-connection-dot" aria-hidden="true"></span>
+          <h3 class="doc-connection-name">{{ item.resource.name }}</h3>
+          <span class="doc-connection-chip">{{ labels[item.status] }}</span>
+        </div>
+
+        <dl class="doc-connection-details">
+          <dt>URL</dt>
+          <dd><code>{{ item.resource.url }}</code></dd>
+          <dt>Origen</dt>
+          <dd>{{ item.resource.source }}</dd>
+          <dt>Aporta</dt>
+          <dd>{{ item.resource.provides.join(' · ') }}</dd>
+          <dt>Sin conexión</dt>
+          <dd>{{ item.resource.fallback }}</dd>
+          <dt>Verificado</dt>
+          <dd>{{ item.checkedAt ? (item.checkedAt | date: 'HH:mm:ss') : '—' }}</dd>
+        </dl>
+      </li>
+    }
+  </ul>
+
+  <footer class="doc-connections-footer">
+    <span class="doc-connections-hint">Se verifica cada 15 s y al volver a la pestaña.</span>
+    <button type="button" class="doc-connections-check" [disabled]="checking()" (click)="check()">
+      <i class="pi pi-refresh" [class.pi-spin]="checking()" aria-hidden="true"></i>
+      Verificar ahora
+    </button>
+  </footer>
+</dialog>

@@ -38,6 +38,15 @@
       </nav>
 
       <app-icon-search [(query)]="query" />
+
+      @if (iconSource(); as source) {
+        <span
+          class="doc-icon-source"
+          [title]="source === 'styleguide' ? 'Fuente y marcas de ' + styleGuideUrl : 'Copia local: icon-lab-fallback.css'"
+        >
+          Iconos desde <strong>{{ source === 'styleguide' ? 'STYLEGUIDES' : 'LOCAL' }}</strong>
+        </span>
+      }
     </header>
 
     <main id="main-content" class="doc-content" tabindex="-1">

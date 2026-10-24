@@ -2,10 +2,8 @@
 
 @use '@angular/cdk' as cdk;
 @import 'primeicons/primeicons.css';
-// Incontrol icon font (generated in the generate.icons repo), shown in /icon-lab.
-@import 'page/icon-lab/icon-font/incontrol-icons/incontrol-icons';
-// Brand marks (colored, so CSS classes instead of font glyphs).
-@import 'page/icon-lab/icon-brand/icon-brand';
+// Incontrol icon font and brand marks of /icon-lab come from the Intelica Style Guide bundle
+// (fallback: page/icon-lab/icon-lab-fallback.scss).
 
 // Positioning of CDK overlays (e.g. the version dropdown of the documentation page).
 @include cdk.overlay();
@@ -31,6 +29,12 @@
   --doc-success: #1e8e4e;
   --doc-success-container: #d6f2e1;
   --doc-on-success-container: #0b3d21;
+  --doc-success-on-dark: #5fd08f;
+  /* "Sin conexión" of the external connections (rail button, dialog and toasts) */
+  --doc-danger: #c62828;
+  --doc-danger-container: #fbdcdc;
+  --doc-on-danger-container: #5c0b0b;
+  --doc-danger-on-dark: #ff8a80;
 
   /* Surfaces (tonal, cool tint of the primary) */
   --doc-bg: #edf0f5;
@@ -90,6 +94,12 @@ $doc-scope: ':where(.doc-body, .doc-body *:not(.doc-preview *))';
 #{$doc-scope}::before,
 #{$doc-scope}::after {
   box-sizing: border-box;
+}
+
+/* A non-auto scrollbar-color makes Chrome ignore the style guide's ::-webkit-scrollbar rules here. */
+#{$doc-scope} {
+  scrollbar-width: auto;
+  scrollbar-color: var(--doc-outline) transparent;
 }
 
 /* Class + tag: wins over tag resets (html, body { min-width; height; overflow }) whatever the import order. */

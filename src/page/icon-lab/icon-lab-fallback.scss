@@ -1,0 +1,5 @@
+// Fallback of /icon-lab when the Intelica Style Guide is not running: it already ships the incontrol-icons
+// font and the brand marks. Built as icon-lab-fallback.css (angular.json, inject: false) and linked only
+// then by core/style-guide/style-guide.ts. icons.json (the lab's sections) is read in icon-sections.ts.
+@import 'icon-font/incontrol-icons/incontrol-icons';
+@import 'icon-brand/icon-brand';

@@ -150,6 +150,43 @@
   text-transform: uppercase;
 }
 
+/* External connections (dialog): pinned to the bottom of the rail, with a status dot on the icon. */
+.doc-rail-connections {
+  flex: none;
+  margin-top: auto;
+  padding-top: 24px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+
+  --doc-connections-dot: var(--doc-accent);
+
+  &.doc-is-connected {
+    --doc-connections-dot: var(--doc-success-on-dark);
+  }
+
+  &.doc-is-disconnected {
+    --doc-connections-dot: var(--doc-danger-on-dark);
+  }
+
+  .doc-rail-indicator {
+    position: relative;
+  }
+}
+
+.doc-rail-connections-dot {
+  position: absolute;
+  top: 3px;
+  right: 13px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--doc-primary);
+  border-radius: 50%;
+  background: var(--doc-connections-dot);
+  box-sizing: content-box;
+}
+
 .doc-visually-hidden {
   position: absolute;
   width: 1px;
@@ -213,6 +250,12 @@
 
   .doc-rail-indicator {
     width: 52px;
+  }
+
+  .doc-rail-connections {
+    flex: 1;
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .doc-rail-label {
