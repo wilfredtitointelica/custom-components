@@ -31,6 +31,9 @@
 					<li>
 						<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="skills.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
 							{{ section.name }}
+							@if (section.badge) {
+							<span class="doc-nav-badge">{{ section.badge }}</span>
+							}
 						</a>
 					</li>
 					}

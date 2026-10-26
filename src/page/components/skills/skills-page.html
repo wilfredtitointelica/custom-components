@@ -3,7 +3,7 @@
 	<h1 class="doc-skill-title">Guía de uso</h1>
 	<p class="doc-skill-description">
 		Cómo crear un componente, una variante o una versión nueva, cambiar su estado, ordenar las variantes, renombrar, ocultar y eliminar, con la IA (Claude Code) y las skills del proyecto. Las skills
-		generan solo la estructura: los estilos, el marcado y la lógica los escribe el maquetador.
+		generan solo la estructura: los estilos, el marcado y la lógica los escribe el maquetador. La excepción es Replicar de PrimeNG, que implementa el componente completo.
 	</p>
 	<nav class="doc-skill-toc" aria-label="Contenido de la guía">
 		@for (section of sections; track section.id) {
@@ -781,6 +781,97 @@ export class IntButton &#123;
 
 <hr class="doc-skill-divider" />
 
+<!-- ─────────────────────────── Replicar de PrimeNG ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-replicate" [class.doc-is-active]="nav.fragment() === 'skill-replicate'" aria-labelledby="skill-replicate-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-replicate-title">
+			<a [routerLink]="path" fragment="skill-replicate">
+				Replicar de PrimeNG
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/replicar-primeng</code>
+		</span>
+	</div>
+	<p>
+		Copia un componente de
+		<strong>PrimeNG v20</strong>
+		(estructura, estilos, API, teclado y ARIA) como un
+		<code>int-*</code>
+		propio que no importa nada de PrimeNG. Es la única skill que
+		<strong>sí escribe</strong>
+		estilos, marcado y lógica: lee el código real en
+		<code>node_modules</code>
+		, traduce sus tokens a los
+		<code>--i-*</code>
+		del repo Style Guide y crea una variante por cada característica de la API.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Siempre, en qué componente</strong>
+					replicar (sugiere uno, p. ej. p-chip → Pill). Si no existe, te pide crearlo antes con
+					<code>/crear-componente</code>
+					.
+				</li>
+				<li>
+					Si el componente ya tiene algo
+					<strong>customizado</strong>
+					: completar solo lo que está en plantilla,
+					<strong>forzar</strong>
+					(sobrescribir) o cancelar.
+				</li>
+			</ol>
+			<p>Sin forzar, nunca altera lo que ya escribiste. Cabecera, estado y diseñador se conservan siempre.</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/replicar-primeng p-chip</pre>
+			<pre class="doc-skill-prompt">Replica p-select de PrimeNG v20</pre>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Qué genera</h3>
+	<pre class="doc-skill-code">
+src/components/chip/version-1/
+├── base/chip.ts      inputs/outputs con los nombres de PrimeNG, signals, OnPush
+├── base/chip.html    misma estructura que p-chip con clases BEM .int-chip__*
+├── styles/           _index.scss + _chip.scss (tokens --int-chip-* → --i-*)
+└── variants/         basic, icon, image, removable, template, disabled</pre
+	>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		Al final informa qué se implementó, qué quedó fuera (PassThrough,
+		<code>unstyled</code>
+		…), las diferencias con PrimeNG y el resultado de
+		<code>npm run build</code>
+		y
+		<code>npm test</code>
+		. El estado queda en
+		<em>Pending</em>
+		hasta que lo cambies.
+	</p>
+
+	<h3 class="doc-skill-subtitle">De dónde salen los tokens</h3>
+	<p>
+		Los tokens primitivos (color, spacing, sizing, radios, tipografía, opacidad, motion) se consumen
+		<strong>siempre del repo Style Guide</strong>
+		(
+		<code>Intelica.Style.Guide.New</code>
+		). El componente solo declara alias
+		<code>--int-chip-*: var(--i-*)</code>
+		y sus reglas leen esos alias. Si un valor de PrimeNG no tiene token equivalente, la skill usa el más cercano y lo informa, o te pregunta; nunca escribe un valor fijo.
+	</p>
+	<app-token-diagram />
+</section>
+
+<hr class="doc-skill-divider" />
+
 <!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
 <section class="doc-skill-section" id="skill-cheatsheet" [class.doc-is-active]="nav.fragment() === 'skill-cheatsheet'" aria-labelledby="skill-cheatsheet-title">
 	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
@@ -821,36 +912,6 @@ export class IntButton &#123;
 					<td><code>npm run new:version -- &lt;id&gt; [--title "…"] [--description "…"]</code></td>
 				</tr>
 				<tr>
-					<td>Cambiar título o descripción</td>
-					<td colspan="2">
-						Editar la cabecera del HTML (
-						<code>base/&lt;id&gt;.html</code>
-						o
-						<code>example.html</code>
-						)
-					</td>
-				</tr>
-				<tr>
-					<td>Cambiar el estado (pending · in-progress · done)</td>
-					<td><code>/cambiar-estado</code></td>
-					<td><code>npm run set:status -- &lt;id&gt; &lt;estado&gt; [--version &lt;N&gt;]</code></td>
-				</tr>
-				<tr>
-					<td>Cambiar el orden de las variantes</td>
-					<td><code>/ordenar-variantes</code></td>
-					<td><code>npm run order:variants -- &lt;id&gt; [&lt;slug&gt; …]</code></td>
-				</tr>
-				<tr>
-					<td>Renombrar un componente (cambia la URL)</td>
-					<td><code>/renombrar-componente</code></td>
-					<td><code>npm run rename -- component &lt;id&gt; &lt;nuevo-id&gt; [--title "…"] --yes</code></td>
-				</tr>
-				<tr>
-					<td>Renombrar una variante (cambia la URL)</td>
-					<td><code>/renombrar-variante</code></td>
-					<td><code>npm run rename -- variant &lt;id&gt; &lt;slug&gt; "&lt;Nuevo título&gt;" --yes</code></td>
-				</tr>
-				<tr>
 					<td>Ocultar sin borrar (componente, variante o versión)</td>
 					<td><code>/ocultar</code></td>
 					<td><code>npm run visibility -- hide component|variant|version &lt;id&gt; [&lt;slug&gt;|&lt;N&gt;]</code></td>
@@ -863,6 +924,31 @@ export class IntButton &#123;
 						·
 						<code>show component|variant|version …</code>
 					</td>
+				</tr>
+				<tr>
+					<td>Cambiar el orden de las variantes</td>
+					<td><code>/ordenar-variantes</code></td>
+					<td><code>npm run order:variants -- &lt;id&gt; [&lt;slug&gt; …]</code></td>
+				</tr>
+				<tr>
+					<td>Cambiar título o descripción</td>
+					<td colspan="2">
+						Editar la cabecera del HTML (
+						<code>base/&lt;id&gt;.html</code>
+						o
+						<code>example.html</code>
+						)
+					</td>
+				</tr>
+				<tr>
+					<td>Renombrar un componente (cambia la URL)</td>
+					<td><code>/renombrar-componente</code></td>
+					<td><code>npm run rename -- component &lt;id&gt; &lt;nuevo-id&gt; [--title "…"] --yes</code></td>
+				</tr>
+				<tr>
+					<td>Renombrar una variante (cambia la URL)</td>
+					<td><code>/renombrar-variante</code></td>
+					<td><code>npm run rename -- variant &lt;id&gt; &lt;slug&gt; "&lt;Nuevo título&gt;" --yes</code></td>
 				</tr>
 				<tr>
 					<td>Eliminar una variante</td>
@@ -878,6 +964,16 @@ export class IntButton &#123;
 					<td>Eliminar un componente</td>
 					<td><code>/eliminar-componente</code></td>
 					<td><code>npm run remove -- component &lt;id&gt; --yes</code></td>
+				</tr>
+				<tr>
+					<td>Cambiar el estado (pending · in-progress · done)</td>
+					<td><code>/cambiar-estado</code></td>
+					<td><code>npm run set:status -- &lt;id&gt; &lt;estado&gt; [--version &lt;N&gt;]</code></td>
+				</tr>
+				<tr>
+					<td>Un componente igual a uno de PrimeNG v20</td>
+					<td><code>/replicar-primeng</code></td>
+					<td>—</td>
 				</tr>
 				<tr>
 					<td>Verificar</td>

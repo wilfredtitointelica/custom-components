@@ -172,6 +172,20 @@
   }
 }
 
+// Highlight chip of a featured menu entry ("New"); accent-text keeps white text at AA contrast.
+.doc-nav-badge {
+  margin-inline-start: auto;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--doc-accent-text);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
 .doc-variant-empty {
   padding: 8px 16px;
   color: var(--doc-ink-muted);

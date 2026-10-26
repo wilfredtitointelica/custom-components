@@ -1,0 +1,90 @@
+<figure class="doc-skill-diagram" aria-label="Diagrama de cómo un componente consume los tokens del Style Guide">
+	<p class="doc-skill-diagram-label">
+		<i class="pi pi-palette" aria-hidden="true"></i>
+		Tokens
+		<code>Intelica.Style.Guide.New</code>
+		<i class="pi pi-arrow-right" aria-hidden="true"></i>
+		<code>src/components/chip/</code>
+	</p>
+
+	<div class="doc-skill-diagram-version">
+		<p class="doc-skill-diagram-label">
+			<i class="pi pi-sitemap" aria-hidden="true"></i>
+			<code>--i-*</code>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+			<code>--int-chip-*</code>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+			<code>.int-chip</code>
+			<span class="doc-skill-diagram-hint">cada nivel solo lee del anterior</span>
+		</p>
+
+		<div class="doc-skill-diagram-folders">
+			<!-- 1. Source: primitive tokens, owned by the Style Guide repo. -->
+			<div class="doc-skill-diagram-folder doc-is-styles">
+				<p class="doc-skill-diagram-folder-name">
+					<i class="pi pi-database" aria-hidden="true"></i>
+					Repo Style Guide
+				</p>
+				<p class="doc-skill-diagram-folder-text">
+					Tokens primitivos: color, spacing, sizing, radios, tipografía, opacidad y motion. Son la única fuente de valores.
+				</p>
+				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de tokens">
+					<li>--i-spacing-150: 12px</li>
+					<li>--i-color-grey-100</li>
+				</ul>
+				<p class="doc-skill-diagram-target">
+					<i class="pi pi-arrow-right" aria-hidden="true"></i>
+					_tokens.*.scss
+				</p>
+			</div>
+
+			<!-- 2. Component aliases: the adjustment point, always var(--i-*). -->
+			<div class="doc-skill-diagram-folder doc-is-base">
+				<p class="doc-skill-diagram-folder-name">
+					<i class="pi pi-sliders-h" aria-hidden="true"></i>
+					styles/_chip.scss
+				</p>
+				<p class="doc-skill-diagram-folder-text">
+					Sección TOKENS: un alias por cada valor del componente. Siempre apunta a un
+					<code>--i-*</code>
+					, nunca a un valor fijo.
+				</p>
+				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de alias">
+					<li>--int-chip-padding-x: var(--i-spacing-150)</li>
+					<li>--int-chip-background: var(--i-color-grey-100)</li>
+				</ul>
+				<p class="doc-skill-diagram-target">Punto de ajuste del componente</p>
+			</div>
+
+			<!-- 3. Consumption: BEM rules only read the component aliases. -->
+			<div class="doc-skill-diagram-folder">
+				<p class="doc-skill-diagram-folder-name">
+					<i class="pi pi-code" aria-hidden="true"></i>
+					Reglas BEM
+				</p>
+				<p class="doc-skill-diagram-folder-text">
+					Bloque, elementos y modificadores usan solo los alias
+					<code>--int-chip-*</code>
+					.
+				</p>
+				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de reglas">
+					<li>.int-chip {{ '{' }} padding-inline: var(--int-chip-padding-x) {{ '}' }}</li>
+				</ul>
+				<p class="doc-skill-diagram-target">Lo que se ve en pantalla</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- PrimeNG is only read during the analysis: its value stays as a comment. -->
+	<div class="doc-skill-diagram-version doc-is-next">
+		<p class="doc-skill-diagram-label">
+			<i class="pi pi-book" aria-hidden="true"></i>
+			<code>PrimeNG Aura</code>
+			<span class="doc-skill-diagram-hint">
+				solo referencia: <code>dt('chip.padding.x')</code> = 0.75rem queda como comentario <code>// Aura: 0.75rem</code>, nunca como valor
+			</span>
+		</p>
+	</div>
+
+	<p class="doc-skill-diagram-rest">los --i-* llegan en runtime con el bundle del Style Guide (localhost:8080); sin él, los int-* quedan sin tokens</p>
+</figure>
