@@ -113,7 +113,6 @@ const COPIED_MS = 1500;
         [attr.aria-expanded]="open()"
         [attr.aria-label]="'Últimos copiados (' + history.count() + ')'"
       >
-        <span class="doc-clip-tip" aria-hidden="true">Últimos copiados</span>
         <!-- Re-created on every copy, so the drop / receive animation runs again. -->
         @for (pulse of [history.pulse()]; track pulse) {
           <span class="doc-clip-fab-icon" [class.doc-is-bumped]="pulse > 0">

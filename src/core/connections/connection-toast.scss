@@ -6,6 +6,15 @@
    */
   --doc-toast-right: calc(var(--doc-pane-gap) + 48px + 56px + 16px);
 
+  /* Top layer (popover="manual", see connection-toast.ts): reset the UA popover box (centered, bordered). */
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: inherit;
+
   right: var(--doc-toast-right);
   bottom: calc(36px + var(--doc-bottombar-h) + env(safe-area-inset-bottom)); // = --doc-clip-gap of the button
   z-index: 110;

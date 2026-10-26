@@ -476,14 +476,9 @@
     transform 0.15s var(--doc-ease-emphasized);
 }
 
-.doc-clip-icon-btn:is(:hover, :focus-visible) > .doc-clip-tip,
-.doc-clip-fab:not(.doc-is-open):is(:hover, :focus-visible) > .doc-clip-tip {
+.doc-clip-icon-btn:is(:hover, :focus-visible) > .doc-clip-tip {
   opacity: 1;
   transform: translate(0, -50%);
-}
-
-.doc-clip-fab > .doc-clip-tip {
-  right: calc(100% + 12px);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, ElementRef, afterNextRender, inject, viewChild } from '@angular/core';
 
 import { ExternalResources } from '../../service/external-resources';
 
@@ -9,7 +9,7 @@ import { ExternalResources } from '../../service/external-resources';
 @Component({
   selector: 'app-connection-toast',
   template: `
-    <div class="doc-toast-stack" role="status" aria-live="polite">
+    <div #stack class="doc-toast-stack" popover="manual" role="status" aria-live="polite">
       @for (notice of connections.notices(); track notice.id) {
         <div
           class="doc-toast"
@@ -43,4 +43,27 @@ import { ExternalResources } from '../../service/external-resources';
 })
 export class ConnectionToast {
   protected readonly connections = inject(ExternalResources);
+  private readonly stack = viewChild.required<ElementRef<HTMLElement>>('stack');
+
+  /**
+   * The stack is a manual popover, always shown, so it lives in the top layer: above any z-index and above
+   * popovers / modal dialogs (last-copies panel, Style Guide). Whatever opens later in the top layer would
+   * cover it, so it is shown again right after, back on top.
+   */
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const stack = this.stack().nativeElement;
+      stack.showPopover();
+      const raise = (event: Event) => {
+        if (event.target !== stack && (event as ToggleEvent).newState === 'open') {
+          stack.hidePopover();
+          stack.showPopover();
+        }
+      };
+      // toggle does not bubble: listened in the capture phase.
+      document.addEventListener('toggle', raise, true);
+      destroyRef.onDestroy(() => document.removeEventListener('toggle', raise, true));
+    });
+  }
 }
