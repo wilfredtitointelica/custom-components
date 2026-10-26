@@ -101,6 +101,7 @@
         [id]="variant.id + '-code'"
         [label]="current.name + ' · ' + variant.name"
         [sources]="example?.sources"
+        [source]="{ path: current.path, variantId: variant.id, version: current.versions.length > 1 ? version?.number : undefined }"
       />
     }
   </section>

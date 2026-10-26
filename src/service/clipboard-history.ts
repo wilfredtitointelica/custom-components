@@ -1,7 +1,17 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { CodeLanguage } from './catalog.model';
+
 /** What was copied: example code, an icon class, a style token or a helper class. */
 export type ClipKind = 'code' | 'icon' | 'token' | 'class';
+
+/** Where a copied code comes from: page and variant (#fragment), version (only if it has several) and tab. */
+export interface ClipCodeSource {
+  readonly path: string;
+  readonly variantId: string;
+  readonly version?: number;
+  readonly language: CodeLanguage;
+}
 
 export interface ClipEntry {
   readonly id: string;
@@ -11,6 +21,8 @@ export interface ClipEntry {
   /** What the list shows (the code shows its language and variant, not the source). */
   readonly label: string;
   readonly at: number;
+  /** Code only: the variant it was copied from, so the history can link back to it. */
+  readonly source?: ClipCodeSource;
 }
 
 export const CLIP_KINDS: readonly ClipKind[] = ['code', 'icon', 'token', 'class'];
@@ -37,13 +49,13 @@ export class ClipboardHistory {
   readonly pulse = this.pulses.asReadonly();
 
   /** Writes `text` to the clipboard and records it. False when the browser blocks the clipboard. */
-  async copy(kind: ClipKind, text: string, label = text): Promise<boolean> {
+  async copy(kind: ClipKind, text: string, label = text, source?: ClipCodeSource): Promise<boolean> {
     try {
       await navigator.clipboard.writeText(text);
     } catch {
       return false;
     }
-    this.record(kind, text, label);
+    this.record(kind, text, label, source);
     return true;
   }
 
@@ -65,14 +77,14 @@ export class ClipboardHistory {
     this.save([]);
   }
 
-  private record(kind: ClipKind, text: string, label: string): void {
+  private record(kind: ClipKind, text: string, label: string, source?: ClipCodeSource): void {
     const now = Date.now();
     const current = this.items();
     const same = current.find((entry) => entry.kind === kind && entry.text === text);
     if (same && now - same.at < REPEAT_MS) {
       return;
     }
-    const entry: ClipEntry = { id: `${now}-${Math.random().toString(36).slice(2, 7)}`, kind, text, label, at: now };
+    const entry: ClipEntry = { id: `${now}-${Math.random().toString(36).slice(2, 7)}`, kind, text, label, at: now, ...(source && { source }) };
     const rest = current.filter((item) => item !== same);
     const sameKind = rest.filter((item) => item.kind === kind).slice(0, MAX_PER_KIND - 1);
     this.save([entry, ...rest.filter((item) => item.kind !== kind || sameKind.includes(item))]);
