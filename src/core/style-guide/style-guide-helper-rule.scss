@@ -5,7 +5,7 @@
 /* The whole block copies its class: hover lightens the background, like the token rows. */
 .doc-sg-rule {
   position: relative;
-  padding: 12px 16px;
+  padding: 16px 16px;
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: var(--doc-radius-md);
   font-family: var(--doc-font-mono);
@@ -17,7 +17,7 @@
     border-color 0.15s;
 
   &:hover {
-    background: rgb(255 255 255 / 0.04);
+    background: rgb(255 255 255 / 0.075);
   }
 
   &.doc-is-copied {

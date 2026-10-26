@@ -1,14 +1,13 @@
 .doc-toast-stack {
   position: fixed;
   /*
-   * To the left of the floating button of the last copies, tops aligned (they grow downwards), so neither
-   * moves the other. Its right edge: pane gap + 48px; its bottom: 56px; its size: 56px; plus 16px of gap
-   * (see clipboard-history-button.scss).
+   * To the left of the floating button of the last copies, bottoms aligned (the button then rises to their top):
+   * its right edge (pane gap + 48px, see clipboard-history-button.scss) + its 56px + 16px of gap.
    */
   --doc-toast-right: calc(var(--doc-pane-gap) + 48px + 56px + 16px);
 
-  top: calc(100dvh - 56px - 56px - var(--doc-bottombar-h) - env(safe-area-inset-bottom));
   right: var(--doc-toast-right);
+  bottom: calc(36px + var(--doc-bottombar-h) + env(safe-area-inset-bottom)); // = --doc-clip-gap of the button
   z-index: 110;
   display: grid;
   gap: 8px;
@@ -25,7 +24,6 @@
 /* Too narrow to sit beside the button: full width, above it. */
 @media (max-width: 539px) {
   .doc-toast-stack {
-    top: auto;
     left: 16px;
     right: 16px;
     width: auto;
@@ -113,6 +111,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
+  transform: translateY(-6px);
 
   &:hover {
     background: color-mix(in srgb, var(--doc-toast-color) 12%, transparent);

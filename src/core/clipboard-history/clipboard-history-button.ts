@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, afterNextRender, computed, inject, signal } from '@angular/core';
 
 import { CLIP_KINDS, ClipEntry, ClipKind, ClipboardHistory } from '../../service/clipboard-history';
 import { ExternalResources } from '../../service/external-resources';
@@ -128,6 +128,7 @@ const COPIED_MS = 1500;
     </div>
   `,
   styleUrl: './clipboard-history-button.scss',
+  host: { '[style.--doc-clip-toast-h]': "toastHeight() + 'px'" },
 })
 export class ClipboardHistoryButton {
   protected readonly history = inject(ClipboardHistory);
@@ -149,8 +150,22 @@ export class ClipboardHistoryButton {
     })).filter((group) => group.entries.length),
   );
 
+  /** Height of the connection toast stack (app-connection-toast), which sits to the left of the button. */
+  protected readonly toastHeight = signal(0);
+
   constructor() {
-    inject(DestroyRef).onDestroy(() => clearTimeout(this.timer));
+    const destroyRef = inject(DestroyRef);
+    destroyRef.onDestroy(() => clearTimeout(this.timer));
+
+    afterNextRender(() => {
+      const stack = document.querySelector('.doc-toast-stack');
+      if (!stack) {
+        return;
+      }
+      const observer = new ResizeObserver(([entry]) => this.toastHeight.set(Math.round(entry.borderBoxSize[0].blockSize)));
+      observer.observe(stack);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
   }
 
   protected async copy(entry: ClipEntry): Promise<void> {

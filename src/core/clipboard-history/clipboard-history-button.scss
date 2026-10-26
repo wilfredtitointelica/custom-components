@@ -1,13 +1,17 @@
 :host {
   --doc-clip-fab: 56px;
-  --doc-clip-gap: 24px;
+  --doc-clip-gap: 36px;
   /* Right edge aligned with the end of the top bar content (pane gap + its 48px padding), e.g. "STYLEGUIDES". */
   --doc-clip-right: calc(var(--doc-pane-gap) + 48px);
   /*
-   * Fixed, raised a little: the connection toasts open to its left with their top aligned to its top
-   * (connection-toast.scss), so neither the button nor its panel moves or covers them.
+   * While connection toasts are shown to its left (bottoms aligned), the button rises until its top meets
+   * theirs, so the panel (opened above it) never covers them; it goes back down when they close.
+   * --doc-clip-toast-h: height of the toast stack, set from the TS.
    */
-  --doc-clip-bottom: calc(56px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+  --doc-clip-lift: max(0px, var(--doc-clip-toast-h, 0px) - var(--doc-clip-fab));
+  --doc-clip-bottom: calc(
+    var(--doc-clip-gap) + var(--doc-bottombar-h) + env(safe-area-inset-bottom) + var(--doc-clip-lift)
+  );
 }
 
 @media (max-width: 839px) {
@@ -16,12 +20,12 @@
   }
 }
 
-/* The toasts go full width above the button here, so it can sit lower. */
+/* The toasts go full width above the button here, so it stays down. */
 @media (max-width: 539px) {
   :host {
     --doc-clip-fab: 48px;
     --doc-clip-gap: 16px;
-    --doc-clip-bottom: calc(16px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+    --doc-clip-lift: 0px;
   }
 }
 
@@ -45,7 +49,8 @@
   transition:
     background 0.2s,
     border-color 0.2s,
-    color 0.2s;
+    color 0.2s,
+    bottom 0.35s var(--doc-ease-emphasized);
 
   &:hover {
     border-color: var(--doc-outline);
@@ -178,6 +183,11 @@
   font-family: var(--doc-font-sans);
   box-shadow: 0 16px 40px rgb(22 50 92 / 0.2);
   transform-origin: bottom right;
+  user-select: none;
+  /* Follows the button smoothly when it rises or goes back down with the toasts (same timing). */
+  transition:
+    bottom 0.35s var(--doc-ease-emphasized),
+    max-height 0.35s var(--doc-ease-emphasized);
 
   &:popover-open {
     display: flex;
@@ -214,6 +224,7 @@
 .doc-clip-head-text {
   flex: 1;
   min-width: 0;
+  line-height: 1.2;
 }
 
 .doc-clip-title {
