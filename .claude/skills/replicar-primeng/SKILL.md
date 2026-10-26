@@ -159,8 +159,9 @@ Procedimiento completo en [references/figma.md](references/figma.md). En resumen
    está disponible o pide autorización, avisar y seguir sin Figma.
 3. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
    token `--i-*` del Style Guide → `--int-<id>-*`.
-4. **Guarda el link** en la cabecera de `version-N/base/<id>.html`, en una línea `figma:` debajo de
-   `description:` (si ya había uno distinto, se pregunta antes de reemplazarlo). Es el único cambio
+4. **Guarda el link** en la cabecera de `version-N/base/<id>.html`, en la línea `figma:` (vacía por
+   defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta antes de
+   reemplazarlo). Es el único cambio
    permitido en la cabecera. La página muestra un chip "Figma" que abre el diseño, y
    `/actualizar-replica` lo usa para comparar después:
    ```html

@@ -15,7 +15,7 @@ export interface DocHtml {
 /**
  * Reads the documentation header of base/<id>.html or variants/<slug>/example.html: a leading comment
  * with `title:` / `description:` lines (a description may continue on the next lines) and, in
- * base/<id>.html, an optional `figma:` link to the design. Angular drops comments, so the header never renders.
+ * base/<id>.html only, a `figma:` line (empty until there is a Figma link to the design). Angular drops comments, so the header never renders.
  *   <!--
  *     title: Raised
  *     description: Raised buttons display a shadow to indicate elevation.

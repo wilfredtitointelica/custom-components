@@ -77,7 +77,7 @@ export interface DocExampleSource {
 export interface DocMeta {
   readonly title?: string;
   readonly description?: string;
-  /** Figma "Link to selection" of the design (base/<id>.html only): visual reference of the version. */
+  /** Figma "Link to selection" of the version's design (base/<id>.html only; empty = none yet). */
   readonly figma?: string;
 }
 

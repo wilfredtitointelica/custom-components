@@ -97,7 +97,7 @@ if (title !== undefined || description !== undefined) {
   const figma = /^\s*figma:(.*)$/m.exec(current)?.[1].trim();
   const header =
     `<!--\n  title: ${newTitle}\n  description:${newDescription && ` ${newDescription}`}\n` +
-    `${figma ? `  figma: ${figma}\n` : ''}-->`;
+    `  figma:${figma ? ` ${figma}` : ''}\n-->`;
   writeFileSync(targetHtml, HEADER.test(html) ? html.replace(HEADER, header) : `${header}\n${html}`);
 }
 
