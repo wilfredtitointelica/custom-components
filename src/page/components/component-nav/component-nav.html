@@ -28,6 +28,14 @@
 			<div class="doc-variant-collapse" [class.doc-is-open]="skillsOpen" [attr.inert]="skillsOpen ? null : ''">
 				<ul class="doc-variant-list" id="nav-variants-skills">
 					@for (section of skills.sections; track section.id) { @let active = skillsCurrent && nav.fragment() === section.id;
+					<!-- Dotted separator that opens each group of skills (Estructura, Seguimiento, Implementación…). -->
+					@if (section.separator !== null) {
+					<li class="doc-nav-separator" role="presentation">
+						@if (section.separator) {
+						<span>{{ section.separator }}</span>
+						}
+					</li>
+					}
 					<li>
 						<a class="doc-variant-link" [class.doc-is-active]="active" [routerLink]="skills.path" [fragment]="section.id" [attr.aria-current]="active ? 'location' : null" (click)="navigated.emit()">
 							{{ section.name }}

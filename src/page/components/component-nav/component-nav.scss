@@ -172,6 +172,26 @@
   }
 }
 
+// Opens a group of the Skills menu: small uppercase label (like "Reference") + dotted line to the end.
+.doc-nav-separator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 12px;
+  color: var(--doc-ink-muted);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: .5;
+
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dotted var(--doc-outline);
+  }
+}
+
 // Highlight chip of a featured menu entry ("New"): same orange as the active item of the main rail.
 .doc-nav-badge {
   margin-inline-start: auto;
