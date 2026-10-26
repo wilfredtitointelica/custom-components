@@ -12,6 +12,7 @@ import {
   splitMatches,
   TextPart,
 } from '../icon-sections';
+import { ClipboardHistory } from '../../../service/clipboard-history';
 
 /** Time the copied card stays green with its "Copiado" tip. */
 const COPIED_MS = 1600;
@@ -46,15 +47,14 @@ export class IconGallery {
   /** Name copied last, while its confirmation is shown. */
   protected readonly copied = signal<string | null>(null);
   private timer?: ReturnType<typeof setTimeout>;
+  private readonly clipboard = inject(ClipboardHistory);
 
   constructor() {
     inject(DestroyRef).onDestroy(() => clearTimeout(this.timer));
   }
 
   protected async copy(name: string): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(name);
-    } catch {
+    if (!(await this.clipboard.copy('icon', name))) {
       return; // Clipboard blocked (insecure context or denied permission): no confirmation.
     }
     clearTimeout(this.timer);

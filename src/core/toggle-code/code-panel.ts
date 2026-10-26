@@ -1,7 +1,8 @@
-import { Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, inject, input, signal, viewChild } from '@angular/core';
 import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 
 import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/catalog.model';
+import { ClipboardHistory } from '../../service/clipboard-history';
 
 /**
  * Code viewer shown under a variant when its Code switch is on.
@@ -114,9 +115,13 @@ export class CodePanel {
   protected readonly copied = signal(false);
 
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+  private readonly clipboard = inject(ClipboardHistory);
 
   protected async copy(): Promise<void> {
-    await navigator.clipboard.writeText(this.current() ?? '');
+    const label = `${this.selected().toUpperCase()} · ${this.label()}`;
+    if (!(await this.clipboard.copy('code', this.current() ?? '', label))) {
+      return;
+    }
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 1500);
   }

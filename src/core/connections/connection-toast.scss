@@ -1,35 +1,52 @@
 .doc-toast-stack {
   position: fixed;
-  right: 24px;
-  bottom: calc(24px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+  /*
+   * To the left of the floating button of the last copies, tops aligned (they grow downwards), so neither
+   * moves the other. Its right edge: pane gap + 48px; its bottom: 56px; its size: 56px; plus 16px of gap
+   * (see clipboard-history-button.scss).
+   */
+  --doc-toast-right: calc(var(--doc-pane-gap) + 48px + 56px + 16px);
+
+  top: calc(100dvh - 56px - 56px - var(--doc-bottombar-h) - env(safe-area-inset-bottom));
+  right: var(--doc-toast-right);
   z-index: 110;
   display: grid;
   gap: 8px;
-  width: min(520px, calc(100vw - 32px));
+  width: min(520px, calc(100vw - var(--doc-toast-right) - 16px));
   pointer-events: none;
 }
 
-@media (max-width: 539px) {
+@media (max-width: 839px) {
   .doc-toast-stack {
-    left: 16px;
-    right: 16px;
-    width: auto;
-    bottom: calc(16px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+    --doc-toast-right: calc(16px + 56px + 16px);
   }
 }
 
+/* Too narrow to sit beside the button: full width, above it. */
+@media (max-width: 539px) {
+  .doc-toast-stack {
+    top: auto;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    bottom: calc(16px + 48px + 12px + var(--doc-bottombar-h) + env(safe-area-inset-bottom));
+  }
+}
+
+/* Soft tone (light tint, thin border, colored text), like PrimeNG's Message severities. */
 .doc-toast {
-  --doc-toast-color: var(--doc-success-on-dark);
+  --doc-toast-color: var(--doc-success);
+  --doc-toast-ink: var(--doc-on-success-container);
 
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 14px 8px 14px 16px;
-  border-left: 4px solid var(--doc-toast-color);
+  border: 1px solid color-mix(in srgb, var(--doc-toast-color) 28%, transparent);
   border-radius: var(--doc-radius-md);
-  background: var(--doc-ink);
-  color: #fff;
-  box-shadow: 0 8px 24px rgb(7 11 26 / 0.28);
+  background: color-mix(in srgb, var(--doc-toast-color) 7%, var(--doc-surface));
+  color: var(--doc-toast-ink);
+  box-shadow: 0 4px 14px rgb(22 50 92 / 0.08);
   pointer-events: auto;
 
   /* Fades in and out moving slightly up. */
@@ -42,7 +59,8 @@
   }
 
   &.doc-is-danger {
-    --doc-toast-color: var(--doc-danger-on-dark);
+    --doc-toast-color: var(--doc-danger);
+    --doc-toast-ink: var(--doc-on-danger-container);
   }
 
   > .pi {
@@ -67,7 +85,7 @@
 }
 
 .doc-toast-message {
-  color: rgb(255 255 255 / 0.78);
+  opacity: 0.85;
 }
 
 /* The URL moves to its own line as a whole instead of breaking (scrolls only on very narrow screens). */
@@ -80,7 +98,6 @@
   scrollbar-width: none;
 
   strong {
-    color: #fff;
     font-weight: 700;
   }
 }
@@ -98,7 +115,7 @@
   cursor: pointer;
 
   &:hover {
-    background: rgb(255 255 255 / 0.12);
+    background: color-mix(in srgb, var(--doc-toast-color) 12%, transparent);
   }
 
   .pi {

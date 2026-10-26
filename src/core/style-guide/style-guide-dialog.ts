@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 
+import { ClipboardHistory, ClipKind } from '../../service/clipboard-history';
 import { HelperCategory, readStyleHelpers } from './style-guide-helpers';
 import { StyleGuideCodeSwitch } from './style-guide-code-switch';
 import { StyleGuideHelperRule } from './style-guide-helper-rule';
@@ -117,6 +118,7 @@ export class StyleGuideDialog {
     helpers: { nav: 0, content: 0 },
   };
   private readonly injector = inject(Injector);
+  private readonly clipboard = inject(ClipboardHistory);
   private copiedTimer?: ReturnType<typeof setTimeout>;
   private refreshTimer?: ReturnType<typeof setTimeout>;
   /**
@@ -206,12 +208,14 @@ export class StyleGuideDialog {
   }
 
   protected copyToken(token: StyleToken): void {
-    this.copy(`var(${token.name})`, token.name);
+    this.copy(`var(${token.name})`, token.name, 'token');
   }
 
   /** Copies `text` and marks `key` (token or class name) as just copied for a moment. */
-  protected async copy(text: string, key = text): Promise<void> {
-    await navigator.clipboard.writeText(text);
+  protected async copy(text: string, key = text, kind: ClipKind = 'class'): Promise<void> {
+    if (!(await this.clipboard.copy(kind, text, key))) {
+      return;
+    }
     clearTimeout(this.copiedTimer);
     this.copied.set(key);
     this.copiedTimer = setTimeout(() => this.copied.set(null), 1500);
