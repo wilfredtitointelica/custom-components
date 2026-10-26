@@ -68,19 +68,19 @@ const COPIED_MS = 1500;
                       type="button"
                       class="doc-clip-icon-btn"
                       [attr.aria-label]="(copied() === entry.id ? 'Copiado: ' : 'Copiar ') + entry.label"
-                      [title]="copied() === entry.id ? 'Copiado' : 'Copiar'"
                       (click)="copy(entry)"
                     >
                       <i class="pi" [class.pi-copy]="copied() !== entry.id" [class.pi-check]="copied() === entry.id" aria-hidden="true"></i>
+                      <span class="doc-clip-tip" aria-hidden="true">{{ copied() === entry.id ? 'Copiado' : 'Copiar' }}</span>
                     </button>
                     <button
                       type="button"
                       class="doc-clip-icon-btn doc-is-danger"
                       [attr.aria-label]="'Quitar ' + entry.label"
-                      title="Quitar"
                       (click)="history.remove(entry.id)"
                     >
                       <i class="pi pi-trash" aria-hidden="true"></i>
+                      <span class="doc-clip-tip" aria-hidden="true">Quitar</span>
                     </button>
                   </li>
                 }
@@ -112,8 +112,8 @@ const COPIED_MS = 1500;
         popovertarget="doc-clip-panel"
         [attr.aria-expanded]="open()"
         [attr.aria-label]="'Últimos copiados (' + history.count() + ')'"
-        title="Últimos copiados"
       >
+        <span class="doc-clip-tip" aria-hidden="true">Últimos copiados</span>
         <!-- Re-created on every copy, so the drop / receive animation runs again. -->
         @for (pulse of [history.pulse()]; track pulse) {
           <span class="doc-clip-fab-icon" [class.doc-is-bumped]="pulse > 0">
