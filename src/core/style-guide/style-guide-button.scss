@@ -1,0 +1,106 @@
+:host {
+  position: relative;
+  margin-left: 16px;
+}
+
+/* Same outlined button as the Code button of each variant (doc-page.scss .doc-code-button). */
+.doc-sg-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
+  background: transparent;
+  color: var(--doc-ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+
+  .pi {
+    font-size: 0.8125rem; // same size as the pi-code of the variants' Code button, color of the label
+  }
+
+  &:hover:not([aria-disabled]) {
+    border-color: var(--doc-outline);
+    background: var(--doc-state-hover);
+  }
+
+  &[aria-disabled] {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+}
+
+.doc-sg-trigger-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+/* Why it is disabled: shown on hover or keyboard focus. Same look as the Icon Lab source tip (icon-lab.scss). */
+.doc-sg-tooltip {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 12px;
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-code-bg);
+  color: var(--doc-code-ink);
+  font-family: var(--doc-font-sans);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.15s,
+    transform 0.15s var(--doc-ease-emphasized);
+
+  strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--doc-danger-on-dark);
+    font-weight: 500;
+  }
+
+  code {
+    padding: 0 4px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 0.12);
+    color: inherit;
+    font-family: var(--doc-font-mono);
+    font-size: 0.6875rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+.doc-sg-trigger:hover + .doc-sg-tooltip,
+.doc-sg-trigger:focus-visible + .doc-sg-tooltip {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 839px) {
+  :host {
+    margin-left: 8px;
+  }
+
+  .doc-sg-trigger-label {
+    display: none;
+  }
+
+  .doc-sg-trigger {
+    padding: 0 10px;
+    border-color: rgb(255 255 255 / 0.3);
+    color: inherit;
+  }
+}

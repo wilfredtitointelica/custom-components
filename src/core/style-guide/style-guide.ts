@@ -27,11 +27,14 @@ export function importStyleGuide(): Promise<void> {
   return system.import(url).then(() => undefined);
 }
 
+/** <style> tags injected by the bundle (it carries its own source map, read by style-guide-tokens.ts). */
+export function findStyleGuideStyles(): HTMLStyleElement[] {
+  return [...document.head.querySelectorAll('style')].filter((style) => style.textContent?.includes(BUNDLE_MARKER));
+}
+
 /** Takes the bundle's CSS out of the page, as a reload without the style guide would. */
 export function removeStyleGuide(): void {
-  document.head
-    .querySelectorAll('style')
-    .forEach((style) => style.textContent?.includes(BUNDLE_MARKER) && style.remove());
+  findStyleGuideStyles().forEach((style) => style.remove());
 }
 
 /** Whether the style guide server answers (no-cors: any response means it is up). */

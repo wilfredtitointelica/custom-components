@@ -46,7 +46,7 @@
 		@let statusCurrent = nav.page() === status.segment;
 		<li class="doc-nav-item">
 			<div class="doc-nav-row" [class.doc-is-current]="statusCurrent">
-				<a class="doc-nav-link" [routerLink]="status.path" [attr.aria-current]="statusCurrent ? 'page' : null" (click)="navigated.emit()">
+				<a class="doc-nav-link" [routerLink]="status.path" [attr.aria-current]="statusCurrent ? 'page' : null" (click)="leafClicked()">
 					<span>
 						Status
 						<span class="doc-nav-hint">( seguimiento )</span>

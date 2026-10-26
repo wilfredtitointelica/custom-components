@@ -130,8 +130,8 @@ body.doc-body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* The page does not scroll behind the expanded code viewer (modal dialog of app-code-panel). */
-html.doc-html:has(.doc-code-dialog[open]) {
+/* The page does not scroll behind the expanded code viewer (modal dialog of app-code-panel) or the Style Guide one. */
+html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
   overflow: hidden;
 }
 

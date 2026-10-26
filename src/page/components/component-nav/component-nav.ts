@@ -72,12 +72,23 @@ export class ComponentNav {
   }
 
   /**
-   * Click on an entry's name: on another entry it navigates (the effect expands it and the drawer
-   * closes); on the open one it collapses / expands it, like the arrow, and keeps the drawer open.
+   * Click on an entry's name: on another entry it navigates, leaving only that entry expanded, and
+   * the drawer closes; on the open one it collapses / expands it, like the arrow, and keeps the
+   * drawer open. The arrow and the variant links never collapse the other entries.
    */
   protected itemClicked(componentId: string, current: boolean): void {
-    if (current) this.toggle(componentId);
-    else this.navigated.emit();
+    if (current) {
+      this.toggle(componentId);
+      return;
+    }
+    this.expanded.set(new Set([componentId]));
+    this.navigated.emit();
+  }
+
+  /** Click on an entry without sub-items (Status): collapses every other entry. */
+  protected leafClicked(): void {
+    this.expanded.set(new Set());
+    this.navigated.emit();
   }
 
   protected toggle(componentId: string): void {

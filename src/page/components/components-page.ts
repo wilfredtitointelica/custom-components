@@ -3,6 +3,7 @@ import { ViewportScroller } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 import { BrandMark } from '../../core/brand-mark/brand-mark';
+import { StyleGuideButton } from '../../core/style-guide/style-guide-button';
 import { ToggleCode } from '../../core/toggle-code/toggle-code';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { NavigationState } from '../../service/navigation-state';
@@ -19,7 +20,7 @@ const ANCHOR_GAP = 16;
 /** Catalog shell: navigation drawer + content pane with a sticky top app bar. */
 @Component({
   selector: 'app-components-page',
-  imports: [RouterOutlet, RouterLink, ComponentNav, ToggleCode, BrandMark],
+  imports: [RouterOutlet, RouterLink, ComponentNav, StyleGuideButton, ToggleCode, BrandMark],
   templateUrl: './components-page.html',
   styleUrl: './components-page.scss',
   host: { '(document:keydown.escape)': 'drawerOpen.set(false)' },

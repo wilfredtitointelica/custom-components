@@ -1,0 +1,514 @@
+/* Same look as the expanded code viewer (code-panel.scss): dark modal almost the size of the window. */
+.doc-sg-dialog {
+  width: min(1280px, calc(100vw - 48px));
+  max-width: none;
+  height: calc(100dvh - 48px);
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--doc-radius-lg);
+  background: transparent;
+
+  &::backdrop {
+    background: rgb(7 11 26 / 0.6);
+  }
+
+  @media (max-width: 839px) {
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 16px);
+  }
+}
+
+.doc-sg-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--doc-code-bg);
+  color: var(--doc-code-ink);
+  color-scheme: dark; // native scrollbars and search field match the dark background
+  --doc-sg-search-h: 76px; // height of the sticky search (padding + field)
+}
+
+/*
+ * Dark scrollbars with a light thumb (the global one, --doc-outline, is meant for light surfaces).
+ * Chromium: ::-webkit-scrollbar, only applied while scrollbar-color is auto; it allows a minimum thumb
+ * length (671 Figma tokens would leave a tiny one). Firefox: scrollbar-color, no minimum available.
+ */
+.doc-sg-files,
+.doc-sg-content {
+  scrollbar-color: auto;
+  scrollbar-gutter: stable; // the space of the scrollbar is kept: content does not shift when it appears/disappears
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    min-height: 128px;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.28) padding-box;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(255 255 255 / 0.4);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: rgb(255 255 255 / 0.55);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: rgb(255 255 255 / 0.28) transparent;
+
+    &:hover {
+      scrollbar-color: rgb(255 255 255 / 0.45) transparent;
+    }
+  }
+}
+
+.doc-sg-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 8px 8px 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.doc-sg-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.doc-sg-tab,
+.doc-sg-action {
+  min-width: 36px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: rgb(255 255 255 / 0.7);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+}
+
+.doc-sg-tab.doc-is-selected {
+  border-color: var(--doc-accent);
+  color: var(--doc-accent);
+}
+
+/* Tokens: file list on the left, sections on the right. */
+.doc-sg-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 300px minmax(0, 1fr); // fits _tokens.control.draft.scss + count on one line
+  min-height: 0;
+
+  @media (max-width: 839px) {
+    grid-template-columns: minmax(0, 1fr);
+
+    .doc-sg-files {
+      display: none;
+    }
+  }
+}
+
+.doc-sg-files {
+  padding: 16px 12px;
+  overflow-y: auto;
+  border-right: 1px solid rgb(255 255 255 / 0.08);
+
+  ul {
+    margin: 0 0 12px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    list-style: none;
+  }
+
+  ul:last-child {
+    border-bottom: 0;
+  }
+}
+
+.doc-sg-group {
+  margin: 8px 12px;
+  color: rgb(255 255 255 / 0.45);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.doc-sg-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap; // a file name never breaks at its hyphens; a longer one ends in an ellipsis
+
+  span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .doc-sg-count {
+    flex: none;
+  }
+
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--doc-radius-sm);
+  background: transparent;
+  color: var(--doc-code-ink);
+  opacity: .5;
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: rgb(255 255 255 / 0.06);
+    color: #fff;
+    opacity: 1;
+  }
+
+  &.doc-is-active {
+    background: rgb(255 255 255 / 0.1);
+    color: #fff;
+    opacity: 1;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.35;
+  }
+}
+
+.doc-sg-count {
+  color: rgb(255 255 255 / 0.45);
+  font-size: 0.6875rem;
+}
+
+.doc-sg-content {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 64px 32px;
+}
+
+/* Search stays on top while the sections scroll under it. */
+.doc-sg-search {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 0 16px;
+  background: var(--doc-code-bg);
+}
+
+/* Same layout as the Icon Lab search (icon-search.scss): icon on the left, own clear button on the right. */
+.doc-sg-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: min(420px, 100%);
+  height: 40px;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.04);
+  color: #fff;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: var(--doc-accent);
+    box-shadow: 0 0 0 4px var(--doc-accent-ring);
+  }
+}
+
+.doc-sg-search-icon {
+  position: absolute;
+  left: 14px;
+  color: rgb(255 255 255 / 0.55);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+.doc-sg-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px 0 38px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: var(--doc-font-sans);
+  font-size: 0.875rem;
+  outline: none;
+
+  &::placeholder {
+    color: rgb(255 255 255 / 0.5);
+  }
+
+  // The clear button replaces the native one.
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+.doc-sg-search-clear {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgb(255 255 255 / 0.55);
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.1);
+    color: #fff;
+  }
+
+  .pi {
+    font-size: 0.75rem;
+  }
+}
+
+/* Out of the flow, next to the field: appearing does not move the centered search. */
+.doc-sg-matches {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 12px);
+  transform: translateY(-50%);
+  color: rgb(255 255 255 / 0.55);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.doc-sg-section {
+  scroll-margin-top: var(--doc-sg-search-h);
+
+  & ~ & {
+    margin-top: 48px;
+  }
+}
+
+/* Title of the current file stays under the search until the next section pushes it out. */
+.doc-sg-section-title {
+  position: sticky;
+  top: var(--doc-sg-search-h);
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 0;
+  background: var(--doc-code-bg);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &.doc-is-draft {
+    // color: rgb(255 255 255 / 0.55);
+  }
+
+  small {
+    color: rgb(255 255 255 / 0.4);
+    font-family: var(--doc-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+.doc-sg-table {
+  width: 100%;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--doc-radius-md);
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+  table-layout: fixed;
+
+  td {
+    padding: 8px 16px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  tr:hover td {
+    background: rgb(255 255 255 / 0.075);
+  }
+
+  /*
+   * Texts rest faded and the row under the cursor lights up (color swatches always keep their color).
+   * A just-copied name stays at full opacity: its "Copiado" feedback must stay visible.
+   */
+  .doc-sg-copy,
+  .doc-sg-value > span:not(.doc-sg-swatch) {
+    opacity: 0.5;
+    transition: opacity 0.15s;
+  }
+
+  // Keyboard focus only: after a mouse click the copy button keeps focus and the row would stay lit.
+  tr:hover,
+  tr:has(:focus-visible) {
+    .doc-sg-copy,
+    .doc-sg-value > span:not(.doc-sg-swatch) {
+      opacity: 1;
+    }
+  }
+
+  .doc-sg-copy.doc-is-copied {
+    opacity: 1;
+  }
+}
+
+.doc-sg-table td.doc-sg-name {
+  width: 45%;
+  // The copy button fills the whole cell, also when a long value makes the row taller: a table cell
+  // with a definite (tiny) height lets its child resolve height: 100% to the real row height.
+  height: 1px;
+  padding: 0;
+  border-right: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.doc-sg-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 36px;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--doc-code-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .pi-copy {
+    font-size: 0.75rem;
+    opacity: 0;
+  }
+
+  &:hover .pi-copy,
+  &:focus-visible .pi-copy {
+    opacity: 0.7;
+  }
+
+  /* Just copied (1.5 s): name in green plus a "Copiado" pill. */
+  &.doc-is-copied {
+    color: var(--doc-success-on-dark);
+  }
+}
+
+.doc-sg-copied {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgb(95 208 143 / 0.15); // --doc-success-on-dark at 15%
+  color: var(--doc-success-on-dark);
+  font-family: var(--doc-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: doc-sg-copied-in 0.2s var(--doc-ease-emphasized);
+
+  .pi {
+    font-size: 0.625rem;
+  }
+}
+
+@keyframes doc-sg-copied-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+.doc-sg-value {
+  span + span {
+    margin-left: 8px;
+  }
+}
+
+.doc-sg-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 4px;
+  vertical-align: -3px;
+}
+
+.doc-sg-resolved {
+  color: rgb(255 255 255 / 0.5);
+}
+
+.doc-sg-note {
+  color: rgb(255 255 255 / 0.35);
+  font-style: italic;
+}
+
+.doc-sg-empty {
+  margin: 24px 0;
+  color: rgb(255 255 255 / 0.55);
+  font-family: var(--doc-font-sans);
+  text-align: center;
+}
+
+.doc-sg-pad {
+  padding: 0 24px;
+}
+
+.doc-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -71,6 +71,8 @@ export class ExternalResources {
   );
 
   readonly resources = computed<readonly ResourceState[]>(() => [this.state()]);
+  /** Style guide alone (Styleguides button of the top bar: its tokens can only be read while connected). */
+  readonly styleGuide = this.state.asReadonly();
   readonly notices = this.noticeList.asReadonly();
   readonly connectedCount = computed(() => this.resources().filter((r) => r.status === 'connected').length);
   /** Worst status of all resources, for the dot of the rail button. */
