@@ -1,0 +1,124 @@
+:host {
+  display: block;
+}
+
+/* The whole block copies its class: hover lightens the background, like the token rows. */
+.doc-sg-rule {
+  position: relative;
+  padding: 12px 16px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: var(--doc-radius-md);
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  &.doc-is-copied {
+    border-color: rgb(95 208 143 / 0.5); // --doc-success-on-dark
+  }
+}
+
+/* One statement per line, indented by its nesting depth. */
+.doc-sg-rule-line {
+  padding-left: calc(var(--doc-sg-depth, 0) * 2ch);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/*
+ * The content of the braces stays faded, like the token rows at rest (hover does not change it).
+ * Color swatches keep their color; a just-copied nested class is shown at full opacity.
+ */
+.doc-sg-rule-inner > :not(.doc-sg-rule-swatch, .doc-is-copied) {
+  opacity: 0.5;
+}
+
+.doc-sg-rule-class {
+  color: var(--doc-code-ink);
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &.doc-is-copied {
+    color: var(--doc-success-on-dark);
+  }
+}
+
+.doc-sg-rule-important {
+  color: var(--doc-danger-on-dark);
+}
+
+.doc-sg-rule-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 4px;
+  vertical-align: -2px;
+}
+
+/* With properties: copy icon / "Copiado" in the top right corner of the block. */
+.doc-sg-rule-corner {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+}
+
+/* Names only: copy icon / "Copiado" next to each class name, like the token rows. */
+.doc-sg-rule-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Copy icon of the token table: hidden until the block (or, names only, its line) is under the cursor. */
+.doc-sg-rule-copy {
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.doc-sg-rule:hover .doc-sg-rule-corner .doc-sg-rule-copy,
+.doc-sg-rule-name:hover .doc-sg-rule-copy,
+.doc-sg-rule:focus-visible .doc-sg-rule-copy {
+  opacity: 0.7;
+}
+
+.doc-sg-rule-copied {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgb(95 208 143 / 0.15); // --doc-success-on-dark at 15%
+  color: var(--doc-success-on-dark);
+  font-family: var(--doc-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: doc-sg-rule-copied-in 0.2s var(--doc-ease-emphasized);
+
+  .pi {
+    font-size: 0.625rem;
+  }
+}
+
+@keyframes doc-sg-rule-copied-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}

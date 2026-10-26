@@ -1,4 +1,4 @@
-import { findStyleGuideStyles } from './style-guide';
+import { isColor, readStyleGuideSources } from './style-guide-source';
 
 /**
  * Where a token file sits in the Style Guide dialog: Figma tokens (main), hand-written ones that complement
@@ -26,35 +26,22 @@ export interface TokenFile {
   readonly tokens: readonly StyleToken[];
 }
 
-interface SourceMap {
-  readonly sources: readonly string[];
-  readonly sourcesContent?: readonly (string | null)[];
-}
-
-const SOURCE_MAP = /sourceMappingURL=data:application\/json;base64,([A-Za-z0-9+/=]+)/;
 const TOKEN_FILE = /\/(_tokens\.([\w.-]+)\.scss)$/;
 const DECLARATION = /(--i-[\w-]+)\s*:\s*([^;]*);[ \t]*(?:\/\/[ \t]*([^\n]*))?/g;
-const NOT_A_COLOR = /^(inherit|initial|unset|revert|revert-layer|currentcolor)$/i;
 
 /**
- * Tokens --i-* of the style guide, one entry per _tokens.*.scss file, in bundle order. Read from the source
- * map that style-loader appends to the bundle's <style> (sources + sourcesContent), so each token keeps the
- * file it was declared in. Null when the bundle is not in the page or carries no source map.
+ * Tokens --i-* of the style guide, one entry per _tokens.*.scss file, in bundle order, so each token keeps
+ * the file it was declared in. Null when the bundle's sources cannot be read (style-guide-source.ts).
  */
-export function readStyleTokens(): TokenFile[] | null {
-  const map = findStyleGuideStyles()
-    .map((style) => SOURCE_MAP.exec(style.textContent ?? '')?.[1])
-    .find(Boolean);
-  if (!map) {
+export function readStyleTokens(sources = readStyleGuideSources()): TokenFile[] | null {
+  if (!sources) {
     return null;
   }
-  const { sources, sourcesContent } = decode(map);
   const root = getComputedStyle(document.documentElement);
 
-  return sources.flatMap((source, index) => {
-    const match = TOKEN_FILE.exec(source);
-    const content = sourcesContent?.[index];
-    if (!match || !content) {
+  return sources.flatMap(({ path, content }) => {
+    const match = TOKEN_FILE.exec(path);
+    if (!match) {
       return [];
     }
     const [, file, slug] = match;
@@ -70,11 +57,6 @@ export function readStyleTokens(): TokenFile[] | null {
   });
 }
 
-function decode(base64: string): SourceMap {
-  const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
-  return JSON.parse(new TextDecoder().decode(bytes));
-}
-
 function parseTokens(scss: string, root: CSSStyleDeclaration): StyleToken[] {
   // Block comments and whole-line `//` comments go first; a trailing `//` after `;` is kept as the note.
   const code = scss.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
@@ -87,7 +69,7 @@ function parseTokens(scss: string, root: CSSStyleDeclaration): StyleToken[] {
         name,
         value,
         resolved,
-        color: !!resolved && !NOT_A_COLOR.test(resolved) && CSS.supports('color', resolved),
+        color: isColor(resolved),
         note: note.trim(),
       };
     });

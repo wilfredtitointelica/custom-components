@@ -11,7 +11,7 @@
             class="doc-sg-tab"
             [class.doc-is-selected]="item === tab()"
             [attr.aria-selected]="item === tab()"
-            (click)="tab.set(item)"
+            (click)="selectTab(item)"
           >
             {{ item }}
           </button>
@@ -22,120 +22,112 @@
       </button>
     </div>
 
-    @if (tab() === 'tokens') {
-      @if (files(); as list) {
-        <div class="doc-sg-body" role="tabpanel">
-          <nav class="doc-sg-files" aria-label="Token files">
-            @for (group of groups(); track group.id) {
-              <p class="doc-sg-group">{{ group.label }}</p>
-              <ul>
-                @for (file of group.files; track file.id) {
-                  <li>
-                    <button
-                      type="button"
-                      class="doc-sg-file"
-                      [class.doc-is-active]="file.id === activeFile()"
-                      [attr.aria-current]="file.id === activeFile() || null"
-                      [disabled]="!file.tokens.length"
-                      (click)="goTo(file)"
-                    >
-                      <span>{{ file.file }}</span>
-                      <span class="doc-sg-count">{{ file.tokens.length }}</span>
-                    </button>
-                  </li>
-                }
-              </ul>
-            }
-          </nav>
-
-          <div class="doc-sg-content">
-            <div class="doc-sg-search">
-              <div class="doc-sg-search-box">
-                <i class="pi pi-search doc-sg-search-icon" aria-hidden="true"></i>
-                <input
-                  #field
-                  type="search"
-                  class="doc-sg-search-input"
-                  placeholder="Buscar token"
-                  aria-label="Buscar token"
-                  autocomplete="off"
-                  spellcheck="false"
-                  [value]="query()"
-                  (input)="query.set(field.value)"
-                  (keydown.escape)="clearOnEscape($event)"
-                />
-                @if (query()) {
-                  <button type="button" class="doc-sg-search-clear" aria-label="Limpiar búsqueda" (click)="query.set(''); field.focus()">
-                    <i class="pi pi-times" aria-hidden="true"></i>
+    @if (!unreadable()) {
+      <div class="doc-sg-body" role="tabpanel">
+        <nav #nav class="doc-sg-files" [attr.aria-label]="tab() === 'tokens' ? 'Token files' : 'Helper categories'">
+          @for (group of navGroups(); track group.id) {
+            <p class="doc-sg-group">{{ group.label }}</p>
+            <ul>
+              @for (item of group.items; track item.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="doc-sg-file"
+                    [class.doc-is-active]="item.id === active()"
+                    [attr.aria-current]="item.id === active() || null"
+                    [disabled]="!item.count"
+                    (click)="goTo(item.id)"
+                  >
+                    <span>{{ item.label }}</span>
+                    <span class="doc-sg-count">{{ item.count }}</span>
                   </button>
-                }
-                @if (query().trim()) {
-                  <span class="doc-sg-matches" aria-live="polite">{{ matchCount() }} resultados</span>
-                }
-              </div>
-            </div>
+                </li>
+              }
+            </ul>
+          }
+        </nav>
 
+        <div #content class="doc-sg-content">
+          <div class="doc-sg-search">
+            <div class="doc-sg-search-box">
+              <i class="pi pi-search doc-sg-search-icon" aria-hidden="true"></i>
+              <input
+                #field
+                type="search"
+                class="doc-sg-search-input"
+                [placeholder]="tab() === 'tokens' ? 'Buscar token' : 'Buscar helper'"
+                [attr.aria-label]="tab() === 'tokens' ? 'Buscar token' : 'Buscar helper por nombre de clase'"
+                autocomplete="off"
+                spellcheck="false"
+                [value]="query()"
+                (input)="setQuery(field.value)"
+                (keydown.escape)="clearOnEscape($event)"
+              />
+              @if (query()) {
+                <button type="button" class="doc-sg-search-clear" aria-label="Limpiar búsqueda" (click)="setQuery(''); field.focus()">
+                  <i class="pi pi-times" aria-hidden="true"></i>
+                </button>
+              }
+            </div>
+            @if (query().trim()) {
+              <span class="doc-sg-matches" aria-live="polite">{{ matchCount() }} resultados</span>
+            }
+            @if (tab() === 'helpers') {
+              <app-style-guide-code-switch class="doc-sg-search-switch" [(checked)]="showCode" />
+            }
+          </div>
+
+          @if (tab() === 'tokens') {
             @for (file of visibleFiles(); track file.id) {
               @if (file.tokens.length) {
-                <section class="doc-sg-section" [id]="sectionId(file)">
-                  <h3 class="doc-sg-section-title" [class.doc-is-draft]="file.group === 'draft'">
+                <section class="doc-sg-section" [id]="sectionId(file.id)">
+                  <h3
+                    class="doc-sg-section-title"
+                    [class.doc-is-draft]="file.group === 'draft'"
+                    [class.doc-is-active]="file.id === active()"
+                  >
                     {{ file.title }}
                     <small>{{ file.file }}</small>
                   </h3>
-                  <table class="doc-sg-table">
-                    <tbody>
-                      @for (token of file.tokens; track token.name) {
-                        <tr>
-                          <td class="doc-sg-name">
-                            <button
-                              type="button"
-                              class="doc-sg-copy"
-                              [class.doc-is-copied]="copied() === token.name"
-                              [title]="copied() === token.name ? 'Copiado' : 'Copiar var(' + token.name + ')'"
-                              (click)="copy(token)"
-                            >
-                              {{ token.name }}
-                              @if (copied() === token.name) {
-                                <span class="doc-sg-copied" role="status"><i class="pi pi-check" aria-hidden="true"></i>Copiado</span>
-                              } @else {
-                                <i class="pi pi-copy" aria-hidden="true"></i>
-                              }
-                            </button>
-                          </td>
-                          <td class="doc-sg-value">
-                            @if (token.color) {
-                              <span class="doc-sg-swatch" [style.background]="token.resolved" aria-hidden="true"></span>
-                            }
-                            <span>{{ token.value }}</span>
-                            @if (token.resolved && token.resolved.toLowerCase() !== token.value.toLowerCase()) {
-                              <span class="doc-sg-resolved">→ {{ token.resolved }}</span>
-                            }
-                            @if (token.note) {
-                              <span class="doc-sg-note">// {{ token.note }}</span>
-                            }
-                          </td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
+                  <app-style-guide-token-table [tokens]="file.tokens" [copied]="copied()" (copyToken)="copyToken($event)" />
                 </section>
               }
             } @empty {
               <p class="doc-sg-empty">El Style Guide no expone archivos de tokens.</p>
             }
-
-            @if (query().trim() && !matchCount()) {
-              <p class="doc-sg-empty">Ningún token coincide con «{{ query().trim() }}».</p>
+          } @else {
+            @for (category of visibleCategories(); track category.id) {
+              @if (category.rules.length) {
+                <section class="doc-sg-section" [id]="sectionId(category.id)">
+                  <h3 class="doc-sg-section-title" [class.doc-is-active]="category.id === active()">{{ category.title }}</h3>
+                  <div class="doc-sg-rules">
+                    @for (rule of category.rules; track $index) {
+                      <app-style-guide-helper-rule
+                        [rule]="rule"
+                        [copied]="copied()"
+                        [namesOnly]="!showCode()"
+                        (copyClass)="copy($event)"
+                      />
+                    }
+                  </div>
+                </section>
+              }
+            } @empty {
+              <p class="doc-sg-empty">El Style Guide no expone helpers.</p>
             }
-          </div>
+          }
+
+          @if (query().trim() && !matchCount()) {
+            <p class="doc-sg-empty">
+              Ningún {{ tab() === 'tokens' ? 'token' : 'helper' }} coincide con «{{ query().trim() }}».
+            </p>
+          }
         </div>
-      } @else {
-        <p class="doc-sg-empty doc-sg-pad" role="tabpanel">
-          No se pudieron leer los tokens: el bundle del Style Guide no está en la página o no trae su source map.
-        </p>
-      }
+      </div>
     } @else {
-      <p class="doc-sg-empty doc-sg-pad" role="tabpanel">Helpers: próximamente.</p>
+      <p class="doc-sg-empty doc-sg-pad" role="tabpanel">
+        No se pudieron leer los {{ tab() }}: el bundle del Style Guide no está en la página o no trae su source map.
+      </p>
     }
   </div>
 </dialog>

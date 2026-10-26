@@ -1,0 +1,93 @@
+/* toggle-code.scss on the dark surface of the Style Guide dialog. */
+.doc-sg-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(255 255 255 / 0.75);
+  font-family: var(--doc-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover .doc-sg-switch-track {
+    box-shadow: 0 0 0 6px rgb(255 255 255 / 0.06);
+  }
+
+  // The global focus ring (styles.scss) would frame label + track as a rectangle: keyboard focus rings the track.
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:focus-visible .doc-sg-switch-track {
+    outline: 2px solid var(--doc-accent);
+    outline-offset: 2px;
+  }
+}
+
+.doc-sg-switch-track {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border: 2px solid rgb(255 255 255 / 0.3);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.06);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.doc-sg-switch-thumb {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.55);
+  color: var(--doc-code-bg);
+  transform: translateY(-50%);
+  transition:
+    transform 0.3s var(--doc-ease-emphasized),
+    width 0.3s var(--doc-ease-emphasized),
+    height 0.3s var(--doc-ease-emphasized),
+    background-color 0.2s;
+}
+
+/* {} as text, sized to look like the pi-code of the top bar Code switch. */
+.doc-sg-switch-icon {
+  font-family: var(--doc-font-mono);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1.25;
+  user-select: none;
+}
+
+.doc-is-on {
+  color: #fff;
+
+  .doc-sg-switch-track {
+    border-color: var(--doc-accent);
+    background: var(--doc-accent);
+  }
+
+  .doc-sg-switch-thumb {
+    //width: 20px;
+    //height: 20px;
+    background: #fff;
+    color: var(--doc-accent-text);
+    transform: translate(16px, -50%);
+  }
+
+  .doc-sg-switch-icon {
+    // font-size: 0.625rem;
+  }
+}

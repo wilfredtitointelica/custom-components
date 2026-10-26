@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.doc-sg-table {
+  width: 100%;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--doc-radius-md);
+  font-family: var(--doc-font-mono);
+  font-size: 0.8125rem;
+  table-layout: fixed;
+
+  td {
+    padding: 8px 16px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  tr:hover td {
+    background: rgb(255 255 255 / 0.075);
+  }
+
+  /*
+   * Texts rest faded and the row under the cursor lights up (color swatches always keep their color).
+   * A just-copied name stays at full opacity: its "Copiado" feedback must stay visible.
+   */
+  .doc-sg-copy,
+  .doc-sg-value > span:not(.doc-sg-swatch) {
+    opacity: 0.5;
+    transition: opacity 0.15s;
+  }
+
+  // Keyboard focus only: after a mouse click the copy button keeps focus and the row would stay lit.
+  tr:hover,
+  tr:has(:focus-visible) {
+    .doc-sg-copy,
+    .doc-sg-value > span:not(.doc-sg-swatch) {
+      opacity: 1;
+    }
+  }
+
+  .doc-sg-copy.doc-is-copied {
+    opacity: 1;
+  }
+}
+
+.doc-sg-table td.doc-sg-name {
+  width: 45%;
+  // The copy button fills the whole cell, also when a long value makes the row taller: a table cell
+  // with a definite (tiny) height lets its child resolve height: 100% to the real row height.
+  height: 1px;
+  padding: 0;
+  border-right: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.doc-sg-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 36px;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--doc-code-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .pi-copy {
+    font-size: 0.75rem;
+    opacity: 0;
+  }
+
+  &:hover .pi-copy,
+  &:focus-visible .pi-copy {
+    opacity: 0.7;
+  }
+
+  /* Just copied (1.5 s): name in green plus a "Copiado" pill. */
+  &.doc-is-copied {
+    color: var(--doc-success-on-dark);
+  }
+}
+
+.doc-sg-copied {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgb(95 208 143 / 0.15); // --doc-success-on-dark at 15%
+  color: var(--doc-success-on-dark);
+  font-family: var(--doc-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: doc-sg-copied-in 0.2s var(--doc-ease-emphasized);
+
+  .pi {
+    font-size: 0.625rem;
+  }
+}
+
+@keyframes doc-sg-copied-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+.doc-sg-value {
+  span + span {
+    margin-left: 8px;
+  }
+}
+
+.doc-sg-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 4px;
+  vertical-align: -3px;
+}
+
+.doc-sg-resolved {
+  color: rgb(255 255 255 / 0.5);
+}
+
+.doc-sg-note {
+  color: rgb(255 255 255 / 0.35);
+  font-style: italic;
+}
