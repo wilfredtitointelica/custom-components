@@ -50,6 +50,67 @@ export function pingStyleGuide(): Promise<boolean> {
   );
 }
 
+const ICON_FONT_FAMILY = 'incontrol-icons';
+let iconFontFace: FontFace | null = null;
+let iconFontDigest = '';
+
+/**
+ * The style guide emits the icon font at a fixed URL (fonts/incontrol-icons.woff2: its asset filename drops the
+ * ?hash of incontrol-icons.css), so after re-exporting icons the browser keeps drawing its cached copy. Revalidates
+ * the woff2 of the @font-face in the page (no-cache: a 304 while unchanged) and, when its content differs from the
+ * last one seen, registers it as a FontFace, which wins over the CSS rule of the same family.
+ */
+export function refreshIconFont(): Promise<void> {
+  const url = findIconFontUrl();
+  if (!url) {
+    return Promise.resolve();
+  }
+  return fetch(url, { cache: 'no-cache' })
+    .then((response) => (response.ok ? response.arrayBuffer() : Promise.reject(new Error(`${response.status} ${url}`))))
+    .then((buffer) =>
+      crypto.subtle.digest('SHA-1', buffer).then((hash) => {
+        const digest = [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+        if (digest === iconFontDigest) {
+          return;
+        }
+        const face = new FontFace(ICON_FONT_FAMILY, buffer, { display: 'block' });
+        return face.load().then(() => {
+          if (iconFontFace) {
+            document.fonts.delete(iconFontFace);
+          }
+          document.fonts.add(face);
+          iconFontFace = face;
+          iconFontDigest = digest;
+        });
+      }),
+    )
+    .catch((err) => console.warn('[style-guide] Icon font not refreshed.', err));
+}
+
+/** woff2 URL of the last incontrol-icons @font-face in the page (bundle <style> tags or the local fallback). */
+function findIconFontUrl(): string | null {
+  let found: string | null = null;
+  for (const sheet of [...document.styleSheets]) {
+    let rules: CSSRuleList;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue;
+    }
+    for (const rule of [...rules]) {
+      if (!(rule instanceof CSSFontFaceRule) || rule.style.getPropertyValue('font-family').replace(/["']/g, '').trim() !== ICON_FONT_FAMILY) {
+        continue;
+      }
+      const src = rule.style.getPropertyValue('src');
+      const url = /url\(["']?([^"')]+\.woff2[^"')]*)["']?\)/.exec(src)?.[1] ?? /url\(["']?([^"')]+)["']?\)/.exec(src)?.[1];
+      if (url) {
+        found = new URL(url, sheet.href ?? document.baseURI).href;
+      }
+    }
+  }
+  return found;
+}
+
 export function setIconLabFallback(enabled: boolean): void {
   const current = document.getElementById(ICON_LAB_FALLBACK_ID);
   if (!enabled) {
@@ -63,5 +124,6 @@ export function setIconLabFallback(enabled: boolean): void {
   link.id = ICON_LAB_FALLBACK_ID;
   link.rel = 'stylesheet';
   link.href = ICON_LAB_FALLBACK_HREF;
+  link.onload = () => refreshIconFont();
   document.head.append(link);
 }
