@@ -2,75 +2,87 @@
 	<p class="doc-skill-diagram-label">
 		<i class="pi pi-palette" aria-hidden="true"></i>
 		Tokens
-		<code>Intelica.Style.Guide.New</code>
-		<i class="pi pi-arrow-right" aria-hidden="true"></i>
-		<code>src/components/chip/</code>
+		<code>.int-chip</code>
+		<i class="pi pi-arrow-left" aria-hidden="true"></i>
+		<code class="doc-is-base">--int-chip-*</code>
+		<i class="pi pi-arrow-left" aria-hidden="true"></i>
+		<code class="doc-is-source">--i-*</code>
+		<span class="doc-skill-diagram-hint">de izquierda a derecha: cada nivel recibe del siguiente</span>
 	</p>
 
-	<div class="doc-skill-diagram-version">
-		<p class="doc-skill-diagram-label">
-			<i class="pi pi-sitemap" aria-hidden="true"></i>
-			<code>--i-*</code>
-			<i class="pi pi-arrow-right" aria-hidden="true"></i>
-			<code>--int-chip-*</code>
-			<i class="pi pi-arrow-right" aria-hidden="true"></i>
-			<code>.int-chip</code>
-			<span class="doc-skill-diagram-hint">cada nivel solo lee del anterior</span>
+	<div class="doc-token-flow">
+		<!-- Box 1: the component (src/components/chip/). The result first, then where its values come from. -->
+		<div class="doc-skill-diagram-version">
+			<div class="doc-token-head">
+				<p class="doc-skill-diagram-label">
+					<i class="pi pi-box" aria-hidden="true"></i>
+					Componente
+				</p>
+				<code>src/components/chip/</code>
+			</div>
+
+			<div class="doc-token-row">
+				<!-- 1. Result: BEM rules only read the component aliases. -->
+				<div class="doc-skill-diagram-folder">
+					<p class="doc-skill-diagram-folder-name">
+						<i class="pi pi-code" aria-hidden="true"></i>
+						Reglas BEM
+					</p>
+					<p class="doc-skill-diagram-folder-text">Bloque, elementos y modificadores leen solo los alias <code>--int-chip-*</code>.</p>
+<pre class="doc-token-code">.int-chip {{ '{' }}
+  gap: var(--int-chip-gap);
+  padding-inline: var(--int-chip-padding-x);
+{{ '}' }}</pre>
+					<p class="doc-skill-diagram-target">Lo que se ve en pantalla</p>
+				</div>
+
+				<p class="doc-token-arrow">
+					<i class="pi pi-arrow-left" aria-hidden="true"></i>
+					recibe de
+				</p>
+
+				<!-- 2. Component aliases: the adjustment point, always var(--i-*). -->
+				<div class="doc-skill-diagram-folder doc-is-base">
+					<p class="doc-skill-diagram-folder-name">
+						<i class="pi pi-sliders-h" aria-hidden="true"></i>
+						styles/_chip.scss
+					</p>
+					<p class="doc-skill-diagram-folder-text">Un alias por valor, siempre hacia un <code>--i-*</code>; nunca un valor fijo.</p>
+<pre class="doc-token-code">:root {{ '{' }}
+  --int-chip-gap: var(--i-spacing-gap-sm);
+  --int-chip-padding-x: var(--i-spacing-container-lg);
+{{ '}' }}</pre>
+					<p class="doc-skill-diagram-target">Punto de ajuste del componente</p>
+				</div>
+			</div>
+		</div>
+
+		<p class="doc-token-arrow">
+			<i class="pi pi-arrow-left" aria-hidden="true"></i>
+			recibe de
 		</p>
 
-		<div class="doc-skill-diagram-folders">
-			<!-- 1. Source: primitive tokens, owned by the Style Guide repo. -->
-			<div class="doc-skill-diagram-folder doc-is-styles">
-				<p class="doc-skill-diagram-folder-name">
+		<!-- Box 2: the Style Guide repo, the only source of values: its xs/sm/md aliases over the numeric scale. -->
+		<div class="doc-skill-diagram-version">
+			<div class="doc-token-head">
+				<p class="doc-skill-diagram-label">
 					<i class="pi pi-database" aria-hidden="true"></i>
 					Repo Style Guide
 				</p>
-				<p class="doc-skill-diagram-folder-text">
-					Tokens primitivos: color, spacing, sizing, radios, tipografía, opacidad y motion. Son la única fuente de valores.
-				</p>
-				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de tokens">
-					<li>--i-spacing-150: 12px</li>
-					<li>--i-color-grey-100</li>
-				</ul>
-				<p class="doc-skill-diagram-target">
-					<i class="pi pi-arrow-right" aria-hidden="true"></i>
-					_tokens.*.scss
-				</p>
+				<code>Intelica.Style.Guide.New</code>
 			</div>
 
-			<!-- 2. Component aliases: the adjustment point, always var(--i-*). -->
-			<div class="doc-skill-diagram-folder doc-is-base">
+			<div class="doc-skill-diagram-folder doc-is-variants">
 				<p class="doc-skill-diagram-folder-name">
-					<i class="pi pi-sliders-h" aria-hidden="true"></i>
-					styles/_chip.scss
+					<i class="pi pi-palette" aria-hidden="true"></i>
+					Alias
 				</p>
-				<p class="doc-skill-diagram-folder-text">
-					Sección TOKENS: un alias por cada valor del componente. Siempre apunta a un
-					<code>--i-*</code>
-					, nunca a un valor fijo.
-				</p>
-				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de alias">
-					<li>--int-chip-padding-x: var(--i-spacing-150)</li>
-					<li>--int-chip-background: var(--i-color-grey-100)</li>
-				</ul>
-				<p class="doc-skill-diagram-target">Punto de ajuste del componente</p>
-			</div>
-
-			<!-- 3. Consumption: BEM rules only read the component aliases. -->
-			<div class="doc-skill-diagram-folder">
-				<p class="doc-skill-diagram-folder-name">
-					<i class="pi pi-code" aria-hidden="true"></i>
-					Reglas BEM
-				</p>
-				<p class="doc-skill-diagram-folder-text">
-					Bloque, elementos y modificadores usan solo los alias
-					<code>--int-chip-*</code>
-					.
-				</p>
-				<ul class="doc-skill-diagram-files" aria-label="Ejemplos de reglas">
-					<li>.int-chip {{ '{' }} padding-inline: var(--int-chip-padding-x) {{ '}' }}</li>
-				</ul>
-				<p class="doc-skill-diagram-target">Lo que se ve en pantalla</p>
+				<p class="doc-skill-diagram-folder-text">Escala xs, sm, md… de spacing, sizing, radios, tipografía, etc.</p>
+<pre class="doc-token-code">:root {{ '{' }}
+  --i-spacing-gap-sm: var(--i-spacing-100);
+  --i-spacing-container-lg: var(--i-spacing-150);
+{{ '}' }}</pre>
+				<p class="doc-skill-diagram-target">_tokens.*.scss</p>
 			</div>
 		</div>
 	</div>
@@ -81,7 +93,7 @@
 			<i class="pi pi-book" aria-hidden="true"></i>
 			<code>PrimeNG Aura</code>
 			<span class="doc-skill-diagram-hint">
-				solo referencia: <code>dt('chip.padding.x')</code> = 0.75rem queda como comentario <code>// Aura: 0.75rem</code>, nunca como valor
+				solo referencia: <code>dt('chip.gap')</code> = 0.5rem queda como comentario <code>// Aura: 0.5rem</code>, nunca como valor
 			</span>
 		</p>
 	</div>

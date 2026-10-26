@@ -35,6 +35,13 @@
     </span>
     <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
     <app-status-chip [status]="version?.status" />
+    <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
+    @if (version?.figma; as figma) {
+      <a class="doc-chip doc-chip-link" [href]="figma" target="_blank" rel="noopener noreferrer">
+        <i class="pi pi-external-link" aria-hidden="true"></i>
+        Figma
+      </a>
+    }
     <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
     <app-designer-badge class="doc-designer" [designer]="version?.designer" />
   </div>

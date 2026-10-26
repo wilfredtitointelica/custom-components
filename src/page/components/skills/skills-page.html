@@ -443,7 +443,7 @@ src/components/button/
 					.
 				</li>
 			</ol>
-			<p>
+			<p class="doc-skill-card-legend">
 				<code>/crear-variante</code>
 				también te pregunta la posición cuando el componente tiene 3 o más variantes.
 			</p>
@@ -833,6 +833,8 @@ export class IntButton &#123;
 			<h3>Cómo pedirlo</h3>
 			<pre class="doc-skill-prompt">/replicar-primeng p-chip</pre>
 			<pre class="doc-skill-prompt">Replica p-select de PrimeNG v20</pre>
+			<pre class="doc-skill-prompt">/replicar-primeng p-chip https://www.figma.com/design/…?node-id=12-345</pre>
+			<p class="doc-skill-card-legend">Con link de Figma: el diseño manda en lo visual, PrimeNG en el comportamiento y los valores salen de los tokens del Style&nbsp;Guide.</p>
 		</article>
 	</div>
 
@@ -859,15 +861,87 @@ src/components/chip/version-1/
 
 	<h3 class="doc-skill-subtitle">De dónde salen los tokens</h3>
 	<p>
-		Los tokens primitivos (color, spacing, sizing, radios, tipografía, opacidad, motion) se consumen
+		Los tokens (color, spacing, sizing, radios, tipografía, opacidad, motion, etc.) se consumen
 		<strong>siempre del repo Style Guide</strong>
 		(
 		<code>Intelica.Style.Guide.New</code>
-		). El componente solo declara alias
+		), preferiblemente sus alias con escala (xs, sm, md…). El componente solo declara alias
 		<code>--int-chip-*: var(--i-*)</code>
 		y sus reglas leen esos alias. Si un valor de PrimeNG no tiene token equivalente, la skill usa el más cercano y lo informa, o te pregunta; nunca escribe un valor fijo.
 	</p>
 	<app-token-diagram />
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Actualizar una réplica ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-update-replica" [class.doc-is-active]="nav.fragment() === 'skill-update-replica'" aria-labelledby="skill-update-replica-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-update-replica-title">
+			<a [routerLink]="path" fragment="skill-update-replica">
+				Actualizar una réplica
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/actualizar-replica</code>
+		</span>
+	</div>
+	<p>
+		Cuando el diseño en Figma de un componente ya implementado cambia. Lee el link guardado en la cabecera de
+		<code>base/&lt;id&gt;.html</code>
+		(
+		<code>figma:</code>
+		), compara el diseño con los comentarios
+		<code>// Figma:</code>
+		de los tokens y te muestra qué cambió. Solo aplica lo que apruebes, siempre con tokens
+		<code>--i-*</code>
+		del Style Guide.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Componente</strong>
+					y versión; el link de Figma solo si no está guardado.
+				</li>
+				<li>
+					Tras la tabla de cambios:
+					<strong>aplicar</strong>
+					, decidir variantes o estados nuevos y, si tocaste algo a mano,
+					<strong>forzar</strong>
+					o dejarlo.
+				</li>
+			</ol>
+			<p>No cambia la API ni el comportamiento. Para un rediseño grande propone una versión nueva.</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/actualizar-replica chip</pre>
+			<pre class="doc-skill-prompt">/actualizar-replica chip --solo-verificar</pre>
+			<pre class="doc-skill-prompt">El figma de button cambió, actualízalo</pre>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Cómo detecta los cambios</h3>
+	<pre class="doc-skill-code">
+--int-chip-gap: var(--i-spacing-gap-sm); // Figma: 8px (spacing/gap/sm) · Aura: 0.5rem
+                                         └─ huella: lo que se aplicó la última vez
+
+✅ igual   🔄 cambió en Figma   ✏️ editado a mano (no se toca sin forzar)
+🆕 nuevo en Figma   🗑️ ya no está en Figma   ❔ sin huella</pre
+	>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		El link de Figma se ve en la página del componente como un chip
+		<em>Figma</em>
+		junto al estado. Con
+		<code>--solo-verificar</code>
+		solo informa, sin cambiar nada.
+	</p>
 </section>
 
 <hr class="doc-skill-divider" />
@@ -973,6 +1047,11 @@ src/components/chip/version-1/
 				<tr>
 					<td>Un componente igual a uno de PrimeNG v20</td>
 					<td><code>/replicar-primeng</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Verificar o actualizar un componente cuando cambia su Figma</td>
+					<td><code>/actualizar-replica</code></td>
 					<td>—</td>
 				</tr>
 				<tr>

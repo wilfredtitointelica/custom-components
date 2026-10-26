@@ -149,6 +149,8 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
   bajo el título). Cada versión tiene la suya; el menú usa la de la versión más reciente.
 - Variante → cabecera de `version-N/variants/<slug>/example.html` (título y descripción de la sección).
 - `description:` puede quedar vacío y continuar en varias líneas.
+- Opcional, solo en `base/<id>.html`: `figma: <link to selection>` debajo de `description:` (lo agregan
+  `/replicar-primeng` y `/actualizar-replica`). La página muestra un chip "Figma" que abre el diseño.
 - No poner títulos ni descripciones en `<id>.config.ts` ni en ningún `.ts`.
 
 ### 3.1 `chip.config.ts` (carpeta principal)

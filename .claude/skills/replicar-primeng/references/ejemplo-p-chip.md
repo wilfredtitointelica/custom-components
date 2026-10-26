@@ -178,12 +178,12 @@ export class IntChip {
   --NOTE-CHIP: 'int-chip ( Custom )';
   --int-chip-background: var(--i-color-grey-100);        // Aura: {surface.100} #f1f5f9
   --int-chip-color: var(--i-color-grey-800);             // Aura: {surface.800} #1e293b
-  --int-chip-border-radius: var(--i-border-radius-200);  // Aura: 16px
-  --int-chip-padding-x: var(--i-spacing-150);            // Aura: 0.75rem
-  --int-chip-padding-y: var(--i-spacing-100);            // Aura: 0.5rem
-  --int-chip-gap: var(--i-spacing-100);                  // Aura: 0.5rem
-  --int-chip-icon-size: var(--i-sizing-200);             // Aura: 1rem
-  --int-chip-image-size: var(--i-sizing-400);            // Aura: 2rem
+  --int-chip-border-radius: var(--i-border-radius-200);       // Aura: 16px (no xs–xl alias)
+  --int-chip-padding-x: var(--i-spacing-container-lg);       // Aura: 0.75rem
+  --int-chip-padding-y: var(--i-spacing-container-md);       // Aura: 0.5rem
+  --int-chip-gap: var(--i-spacing-gap-sm);                   // Aura: 0.5rem
+  --int-chip-icon-size: var(--i-sizing-xs);                  // Aura: 1rem
+  --int-chip-image-size: var(--i-sizing-lg);                 // Aura: 2rem
   --int-chip-transition-duration: var(--i-motion-duration-fast); // Aura: 0.2s (Style Guide: 150ms)
   --int-chip-disabled-opacity: var(--i-opacity-semi);            // Aura: 0.6 (Style Guide: 0.5)
   // … focus ring: width, style, color, offset

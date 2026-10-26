@@ -21,5 +21,6 @@ export const SKILLS_SECTIONS: readonly SkillSection[] = [
   { id: 'skill-remove', name: 'Eliminar' },
   { id: 'skill-status', name: 'Cambiar el estado' },
   { id: 'skill-replicate', name: 'Replicar de PrimeNG', badge: 'New' },
+  { id: 'skill-update-replica', name: 'Actualizar una réplica', badge: 'New' },
   { id: 'skill-cheatsheet', name: 'Resumen rápido' },
 ];

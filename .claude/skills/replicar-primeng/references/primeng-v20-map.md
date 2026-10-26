@@ -64,22 +64,27 @@ Si el archivo no usa `var style=` (cambia entre versiones), abrirlo con `Read` y
    o en la app con el diálogo "Style Guide" de la barra superior). Orden de preferencia:
    1. Token de componente del Style Guide si existe (`--i-badge-*`, `--i-button-*`, `--i-form-field-*`).
    2. Token semántico (`--i-text-color-*`, `--i-icon-color-*`, `--i-background-*`, `--i-focus-*`).
-   3. Escala base (`--i-spacing-*`, `--i-sizing-*`, `--i-border-radius-*`, `--i-typography-font-size-*`,
-      `--i-color-grey-*`, `--i-color-primary-*`).
-   4. Sin equivalente exacto: el `--i-*` más cercano de la misma escala, anotando la diferencia.
-   5. Sin ningún token de esa categoría: **no** se pone un literal; se pregunta al usuario.
+   3. **Alias con escala xs · sm · md · lg · xl** (preferidos sobre la escala numérica):
+      `--i-spacing-gap-*` (separación entre elementos), `--i-spacing-container-*` (padding interno),
+      `--i-sizing-*`, `--i-border-radius-*`, `--i-border-width-*`, `--i-typography-font-size-*`,
+      `--i-icon-size-*`, `--i-shadow-*-*`.
+   4. Escala numérica (`--i-spacing-150`, `--i-sizing-200`, `--i-color-grey-100`…) solo cuando no hay
+      alias con ese valor (colores de paleta, valores fuera de xs–xl).
+   5. Sin equivalente exacto: el `--i-*` más cercano, anotando la diferencia.
+   6. Sin ningún token de esa categoría: **no** se pone un literal; se pregunta al usuario.
 4. Declara en TOKENS (`:root` de `_<id>.scss`) siempre como alias: `--int-<id>-<parte>: var(--i-…);`
-   con `// Aura: <valor>` como comentario. Los primitivos vienen **solo** del Style Guide.
+   con `// Aura: <valor>` como comentario. Los valores vienen **solo** del Style Guide.
 5. En las reglas usa solo `var(--int-<id>-…)`.
 
-Equivalencias frecuentes (Aura → escala `--i-*`, por valor; confirmar que el token existe):
+Equivalencias frecuentes (Aura → `--i-*`, por valor; confirmar que el token existe):
 
-| Aura | Valor | `--i-*` |
+| Aura | Valor | `--i-*` (alias primero) |
 |---|---|---|
-| `0.25rem` / `0.5rem` / `0.75rem` / `1rem` | 4 / 8 / 12 / 16 px | `--i-spacing-50` / `-100` / `-150` / `-200` |
-| `borderRadius.sm` / `md` / `lg` / `xl` | 4 / 6 / 8 / 12 px | `--i-border-radius-50` / `-75` / `-100` / `-150` |
-| `16px` (chip) / `50%` / pill | — | `--i-border-radius-200` / `50%` literal / `--i-border-radius-full` |
-| `1rem` icono · `2rem` imagen | 16 / 32 px | `--i-sizing-200` / `--i-sizing-400` |
+| gap `0.25rem` / `0.5rem` / `0.75rem` / `1rem` | 4 / 8 / 12 / 16 px | `--i-spacing-gap-xs` / `-sm` / `-md` / `-lg` |
+| padding `0.25rem` / `0.5rem` / `0.75rem` / `1rem` | 4 / 8 / 12 / 16 px | `--i-spacing-container-xs` / `-md` / `-lg` / `-xl` (6px = `-sm`) |
+| `borderRadius.xs` / `sm` / `md` / `lg` / `xl` | 2 / 4 / 6 / 8 / 12 px | `--i-border-radius-xs` / `-sm` / `-md` / `-lg` / `-xl` |
+| `16px` (chip) / `50%` / pill | — | `--i-border-radius-200` (sin alias) / `50%` literal / `--i-border-radius-full` |
+| `1rem` icono · `2rem` imagen | 16 / 32 px | `--i-sizing-xs` / `--i-sizing-lg` |
 | `{surface.100}` · `{surface.800}` | `#f1f5f9` · `#1e293b` | `--i-color-grey-100` · `--i-color-grey-800` (gris de marca, no idéntico) |
 | `focus.ring.width` / `offset` | 1px / 2px | `--i-border-width-10` / `--i-spacing-25` |
 | `focus.ring.color` (`{primary.color}`) | emerald 500 | `--i-focus-border-color` o `--i-color-primary-600` |

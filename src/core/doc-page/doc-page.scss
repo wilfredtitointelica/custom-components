@@ -72,6 +72,16 @@
   }
 }
 
+// Chip that opens the version's Figma design in a new tab.
+.doc-chip-link {
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--doc-state-hover);
+  }
+}
+
 /* Variant sections */
 .doc-section {
   position: relative;

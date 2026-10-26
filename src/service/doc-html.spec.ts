@@ -10,6 +10,17 @@ describe('parseDocHtml', () => {
     expect(html.pending).toBeFalse();
   });
 
+  it('reads the figma link without appending it to the description', () => {
+    const html = parseDocHtml(
+      '<!--\n  title: Chip\n  description: Chips represent entities.\n  figma: https://www.figma.com/design/abc/Lib?node-id=12-345\n-->\nint-chip',
+    );
+    expect(html.meta).toEqual({
+      title: 'Chip',
+      description: 'Chips represent entities.',
+      figma: 'https://www.figma.com/design/abc/Lib?node-id=12-345',
+    });
+  });
+
   it('omits empty header values', () => {
     expect(parseDocHtml('<!--\n  title: Basic\n  description:\n-->\n').meta).toEqual({ title: 'Basic' });
   });

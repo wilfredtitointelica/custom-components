@@ -1,7 +1,7 @@
 ---
 name: replicar-primeng
-description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
-argument-hint: "<p-selector o nombre del componente de PrimeNG>"
+description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
+argument-hint: "<p-selector o nombre del componente de PrimeNG> [link de Figma]"
 ---
 
 # Replicar un componente de PrimeNG v20 como `int-*`
@@ -15,6 +15,8 @@ Referencias de esta skill (léelas cuando la fase lo pida, no antes):
   `node_modules`, cómo leer el código compilado y cómo traducir tokens `dt('…')` a `--i-*`.
 - [references/ejemplo-p-chip.md](references/ejemplo-p-chip.md): recorrido completo con `p-chip`
   (inventario, plan, archivos y variantes esperadas).
+- [references/figma.md](references/figma.md): cómo usar un link de Figma como referencia visual y
+  traducir sus valores a tokens `--i-*` (solo si el usuario da el link).
 
 Convenciones del proyecto (fuente de verdad, no se duplican aquí): skill `crear-componente`
 (`.claude/skills/crear-componente/SKILL.md`) y la implementación de referencia `src/components/_demo_/`.
@@ -68,9 +70,13 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `date-picker`,
    `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-inputotp` → `input-otp`,
    `p-progressbar` → `progress-bar`, `p-tag`/`p-chip` ↔ `pill`.
-2. Pregunta: **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión
-   (por defecto la más reciente). Aunque el candidato parezca obvio, se confirma. El diseñador y el
-   estado no se preguntan: se conservan los del componente.
+2. Pregunta, en un solo mensaje:
+   - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
+     defecto la más reciente). Aunque el candidato parezca obvio, se confirma.
+   - **"¿Tienes un link de Figma (Link to selection) del componente? (opcional)"**, salvo que ya venga
+     en el pedido. Con link se sigue 1.5; sin link, la apariencia sale de PrimeNG + Style Guide.
+
+   El diseñador y el estado no se preguntan: se conservan los del componente.
 3. **Si el componente indicado no existe**: no se crea nada y se responde:
 
    > El componente **<nombre>** no existe en Intelica Components. Créalo primero con
@@ -142,6 +148,44 @@ Escríbelo en el chat como tabla. Separa lo público de lo interno:
 Se listan en "Diferencias" del informe. Los templates por nombre (`#removeicon`, `#item`) sí se replican
 con `contentChild('nombre')` + `TemplateRef`.
 
+### 1.5 Referencia visual de Figma (solo si hay link)
+
+Procedimiento completo en [references/figma.md](references/figma.md). En resumen:
+
+1. Del link (`figma.com/design/:fileKey/…?node-id=1-2`) saca `fileKey` y `nodeId` (`1-2` → `1:2`).
+2. Con el MCP de Figma: `create_session` (fileKey + tarea) y luego, sobre ese nodo,
+   `get_screenshot` (referencia visual), `get_variable_defs` (variables usadas) y `get_design_context`
+   (medidas y estructura; antes, cargar la skill `figma-design-to-code` como pide el MCP). Si el MCP no
+   está disponible o pide autorización, avisar y seguir sin Figma.
+3. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
+   token `--i-*` del Style Guide → `--int-<id>-*`.
+4. **Guarda el link** en la cabecera de `version-N/base/<id>.html`, en una línea `figma:` debajo de
+   `description:` (si ya había uno distinto, se pregunta antes de reemplazarlo). Es el único cambio
+   permitido en la cabecera. La página muestra un chip "Figma" que abre el diseño, y
+   `/actualizar-replica` lo usa para comparar después:
+   ```html
+   <!--
+     title: Chip
+     description: Chip represents people using icons, labels and images.
+     figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
+   -->
+   ```
+5. Cada `--int-*` que salga de Figma lleva el comentario `// Figma: <valor> (<variable>) · Aura: <valor>`
+   (**obligatorio**): es la huella con la que `/actualizar-replica` detecta qué cambió en el diseño.
+
+Reparto de responsabilidades (no se discute en cada réplica):
+
+| Aspecto | Manda |
+|---|---|
+| API, estructura de elementos, estados internos, teclado, ARIA, eventos | **PrimeNG** |
+| Medidas, espaciados, radios, colores, tipografía, sombras, iconos y estados que se ven en el diseño | **Figma** |
+| Valores CSS | **Style Guide** (`--i-*`): Figma dice *qué* valor; el token del Style Guide es *cómo* se escribe |
+| Lo que Figma no muestra (un estado, una variante) | PrimeNG traducido a tokens (3.3) |
+
+- Figma nunca se copia como CSS literal (`#hex`, `px`, `font-family`): cada valor se resuelve a un `--i-*`.
+- Variantes o estados que aparecen en Figma pero no existen en la API de PrimeNG v20 no se inventan:
+  se listan y se pregunta si se agregan como **extensión `int-*`** (2.2).
+
 ---
 
 ## 2. Fase 2 · Planificación
@@ -159,9 +203,10 @@ Decide y muestra, sin pedir confirmación salvo lo indicado en 2.2:
 
 ### 2.2 Lo único que se pregunta
 
-- **Componente destino** (1.1): siempre, al inicio.
+- **Componente destino** y **link de Figma opcional** (1.1): siempre, al inicio.
 - **Archivos customizados** (1.2): completar solo la plantilla, forzar o cancelar.
-- Un token sin equivalente en el Style Guide (3.3).
+- Un token sin equivalente en el Style Guide (3.3), también para un valor de Figma.
+- Variantes o estados de Figma que PrimeNG no tiene (1.5): ¿extensión `int-*` o se omiten?
 - Una decisión de diseño que el proyecto no resuelve (p. ej. el Style Guide define un componente
   equivalente con un aspecto distinto al de PrimeNG: ¿manda PrimeNG o el Style Guide?).
 
@@ -287,14 +332,18 @@ Reglas:
   **rellena**:
   - **TOKENS** (`:root`): `--NOTE-<ID>` + un token por cada `dt('<id>.…')` del CSS de PrimeNG, con
     nombre `--int-<id>-<parte>` (`--int-chip-padding-x`).
-    > 🎯 **Regla de tokens: `--int-<id>-*: var(--i-*)`.** Los tokens primitivos (color, spacing,
-    > sizing, border-radius, border-width, tipografía, sombra, opacidad, motion) se consumen **siempre**
-    > del Intelica Style Guide. Cada `--int-*` es un alias de un `--i-*`, nunca un valor propio:
+    > 🎯 **Regla de tokens: `--int-<id>-*: var(--i-*)`.** Los tokens (color, spacing, sizing,
+    > border-radius, border-width, tipografía, sombra, opacidad, motion, etc.) se consumen **siempre**
+    > del Intelica Style Guide. Cada `--int-*` es un alias de un `--i-*`, nunca un valor propio, y se
+    > prefiere el **alias con escala** del Style Guide (`xs`, `sm`, `md`, `lg`, `xl`) sobre la escala
+    > numérica (`--i-spacing-100`):
     > ```scss
-    > --int-chip-padding-x: var(--i-spacing-150); // Aura: 0.75rem
+    > --int-chip-gap: var(--i-spacing-gap-sm);              // Aura: 0.5rem
+    > --int-chip-padding-x: var(--i-spacing-container-lg);  // Aura: 0.75rem
     > ```
     - Sin literales (`#hex`, `rgb()`, `px`, `rem`, `0.6`, `0.2s`) ni valores de Aura en los `--int-*`.
-      El comentario `// Aura: <valor>` solo documenta el original de PrimeNG.
+      El comentario `// Aura: <valor>` solo documenta el original de PrimeNG (con Figma:
+      `// Figma: <valor> (<variable>) · Aura: <valor>`, ver references/figma.md).
     - Si el valor de Aura no existe exacto en el Style Guide, se usa el `--i-*` **más cercano** de su
       escala y la diferencia va al informe ("Diferencias"). Si no hay ninguno de esa categoría, no se
       inventa: se pregunta al usuario (2.2) qué token usar o si se crea en el Style Guide.
@@ -357,8 +406,10 @@ Revisión manual (lista corta, en el informe):
 - Teclado y ARIA como en PrimeNG (repasar `onKeydown` original línea a línea).
 - Visual: `npm start` → `http://localhost:4321/components/<id>`; para comparar con PrimeNG, montar
   temporalmente el `p-<nombre>` en una variante **sin guardarlo** o comparar con la demo oficial. Los
-  tokens `--i-*` solo existen con el Style Guide levantado (`localhost:8080`); sin él se ven los respaldos.
-  Si no se puede abrir un navegador, decirlo: no afirmar fidelidad visual sin verla.
+  tokens `--i-*` solo existen con el Style Guide levantado (`localhost:8080`); sin él el componente queda
+  sin tokens. Si no se puede abrir un navegador, decirlo: no afirmar fidelidad visual sin verla.
+- Con Figma: comparar el resultado con el `get_screenshot` del nodo (estructura, medidas, colores,
+  estados) y revisar que cada fila de la tabla visual (1.5) terminó en un `--int-*` → `--i-*`.
 
 Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arreglar" otras partes.
 
@@ -372,7 +423,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 3. Funcionalidades implementadas (tabla del inventario con ✅ / ➖ descartado + motivo).
 4. Variantes generadas con su enlace `/components/<id>#<id>-<slug>`.
 5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué.
-6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente).
+6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente)
+   y, con Figma, diferencias con el diseño (valores aproximados a un token, lo que Figma no mostraba).
 7. Validaciones ejecutadas con su resultado real.
 8. Limitaciones conocidas y mejoras futuras.
 9. Sugerencia: marcar el estado con `/cambiar-estado <id> in-progress|done`.
@@ -385,7 +437,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 - ❌ Empezar sin preguntar el componente destino, o crear el componente desde esta skill (se sugiere
   `/crear-componente` y se para).
 - ❌ Alterar o sobrescribir un archivo customizado sin que el usuario elija **forzar** (1.2).
-- ❌ Cambiar cabecera, `status` o `designer`, aun forzando.
+- ❌ Cambiar cabecera, `status` o `designer`, aun forzando (salvo agregar la línea `figma:`, 1.5).
+- ❌ Omitir el comentario `// Figma: …` de un token que viene de Figma: sin él no se puede actualizar.
 - ❌ Borrar o renombrar variantes existentes que vienen del Excel/Figma.
 - ❌ Inventar inputs, outputs o variantes como si fueran de PrimeNG; las extensiones se marcan.
 - ❌ Crear archivos a mano que tienen script (`new:variant`, `new:version`) o editar `src/generated/`.
@@ -396,3 +449,7 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   `0.2s`) en lugar de `var(--i-*)` del Style Guide.
 - ❌ Cambiar `status` o `designer` existentes, tocar `app.routes.ts` o configuraciones globales.
 - ❌ Afirmar que build, tests o la fidelidad visual están bien sin haberlos ejecutado/visto.
+- ❌ Copiar valores de Figma como literales (`#hex`, `px`) o el código que genera `get_design_context`
+  (React/Tailwind): es referencia; se escribe en Angular + BEM + `--int-*` → `--i-*`.
+- ❌ Cambiar la API o el comportamiento de PrimeNG porque Figma muestra otra cosa: Figma manda en lo
+  visual, PrimeNG en el comportamiento.

@@ -212,6 +212,12 @@ code {
   }
 }
 
+// Footnote of a card (a legend under the list or the prompts): smaller, muted.
+.doc-skill-card-legend {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 .doc-skill-card-icon {
   display: grid;
   place-items: center;
