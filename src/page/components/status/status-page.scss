@@ -406,30 +406,31 @@ code {
 
   // On narrow screens the wrapper scrolls horizontally instead of squeezing the columns.
   @media (max-width: 1199px) {
-    min-width: 820px;
+    min-width: 1040px;
   }
 
-  // Widths of the <colgroup>, independent of the content; "Componente" takes the rest (~22%).
+  // Widths of the <colgroup>, independent of the content; "Componente" takes the rest.
+  // Short columns use px sized to fit their header label (uppercase), so it is never truncated.
   .doc-w-index {
-    width: 5%;
+    width: 56px;
   }
   .doc-w-designer {
-    width: 15%;
+    width: 14%;
   }
   .doc-w-version {
-    width: 7%;
+    width: 96px;
   }
   .doc-w-status {
-    width: 12%;
+    width: 140px;
   }
   .doc-w-requires {
-    width: 15%;
+    width: 14%;
   }
   .doc-w-variants {
-    width: 8%;
+    width: 112px;
   }
   .doc-w-previous {
-    width: 16%;
+    width: 208px;
   }
 
   th,
@@ -457,6 +458,9 @@ code {
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    // Fallback if a column still gets narrower than its label: wrap to two lines, never "…".
+    white-space: normal;
+    text-overflow: clip;
   }
 
   tbody tr:hover {

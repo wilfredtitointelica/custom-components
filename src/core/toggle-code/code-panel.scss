@@ -115,6 +115,135 @@
   font: inherit;
 }
 
+// Selection like a code editor (not the browser's default blue); the text keeps its colors.
+.doc-code-body ::selection {
+  background: rgb(255 255 255 / 0.18);
+}
+
+// HTML tab: <int-*> tags, <ng-*> tags (blue) and the "dep:" comments of provisionals (Scan color).
+.doc-code-int {
+  color: var(--doc-accent);
+}
+
+.doc-code-ng {
+  color: #2c73cd;
+}
+
+.doc-code-ng,
+.doc-code-name {
+  font-weight: 700;
+}
+
+.doc-code-dep {
+  color: var(--doc-scan);
+}
+
+// Highlight switch off: the HTML tab keeps the base color.
+.doc-code-plain :is(.doc-code-int, .doc-code-ng, .doc-code-dep) {
+  color: inherit;
+  font-weight: inherit;
+}
+
+/* Bar of the HTML tab under the toolbar: color legend + Highlight switch. */
+.doc-code-legend-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  color: rgb(255 255 255 / 0.7);
+  font-size: 0.75rem;
+}
+
+.doc-code-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity 0.2s;
+
+  // Mono name and sans label share the baseline (centering their boxes leaves them uneven).
+  li {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    line-height: 16px;
+  }
+
+  code {
+    font-family: var(--doc-font-mono);
+    font-size: inherit;
+  }
+
+  .doc-code-legend-bar:has([aria-pressed='false']) & {
+    opacity: 0.45;
+  }
+}
+
+.doc-code-swatch {
+  align-self: center;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.doc-code-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: rgb(255 255 255 / 0.7);
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+}
+
+// Same mechanics as the Scan switch (doc-page.scss), adapted to the dark background.
+.doc-code-switch {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+  transition: background-color 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s var(--doc-ease-emphasized);
+  }
+
+  [aria-pressed='true'] > & {
+    background: var(--doc-accent);
+
+    &::after {
+      transform: translateX(12px);
+    }
+  }
+}
+
 .doc-code-pending {
   margin: 0;
   color: rgb(255 255 255 / 0.55);

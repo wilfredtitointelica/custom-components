@@ -5,6 +5,8 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
 import { ClipCodeSource, ClipboardHistory } from '../../service/clipboard-history';
 import { CodeVisibility } from '../../service/code-visibility';
 
+type CodePartKind = 'int' | 'ng' | 'dep';
+
 /**
  * Code viewer shown under a variant when its Code switch is on.
  * Shows the real source of the example folder (example.html / example.ts); nothing is invented here.
@@ -17,6 +19,7 @@ import { CodeVisibility } from '../../service/code-visibility';
   template: `
     <div class="doc-code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
       <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: false }" />
+      <ng-container *ngTemplateOutlet="legend" />
       <ng-container *ngTemplateOutlet="body" />
     </div>
 
@@ -28,6 +31,7 @@ import { CodeVisibility } from '../../service/code-visibility';
     >
       <div class="doc-code-panel">
         <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: true }" />
+        <ng-container *ngTemplateOutlet="legend" />
         <ng-container *ngTemplateOutlet="body" />
       </div>
     </dialog>
@@ -92,9 +96,9 @@ import { CodeVisibility } from '../../service/code-visibility';
     </ng-template>
 
     <ng-template #body>
-      <div class="doc-code-body" role="tabpanel">
-        @if (current(); as source) {
-          <pre><code>{{ source }}</code></pre>
+      <div class="doc-code-body" role="tabpanel" [class.doc-code-plain]="!highlight()">
+        @if (current()) {
+          <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
           <p class="doc-code-pending">
             {{ selected() | uppercase }} code not available yet. It will be published once this
@@ -102,6 +106,36 @@ import { CodeVisibility } from '../../service/code-visibility';
           </p>
         }
       </div>
+    </ng-template>
+
+    <!-- HTML tab only: what each color means (only the kinds this example uses) and the switch
+         that turns them off (this panel only). -->
+    <ng-template #legend>
+      @if (kinds().size) {
+        <div class="doc-code-legend-bar">
+          <ul class="doc-code-legend" aria-label="Color legend">
+            @if (kinds().has('int')) {
+              <li><span class="doc-code-swatch doc-code-int"></span><code class="doc-code-int">int-*</code> Component</li>
+            }
+            @if (kinds().has('ng')) {
+              <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
+            }
+            @if (kinds().has('dep')) {
+              <li><span class="doc-code-swatch doc-code-dep"></span><code class="doc-code-dep">dep:</code> Provisional dependency</li>
+            }
+          </ul>
+          <button
+            type="button"
+            class="doc-code-highlight"
+            [attr.aria-pressed]="highlight()"
+            title="Color the highlighted pieces of this code"
+            (click)="highlight.set(!highlight())"
+          >
+            Highlight
+            <span class="doc-code-switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      }
     </ng-template>
   `,
   styleUrl: './code-panel.scss',
@@ -115,6 +149,38 @@ export class CodePanel {
   protected readonly languages = CODE_LANGUAGES;
   protected readonly selected = signal<CodeLanguage>(CODE_LANGUAGES[0]);
   protected readonly current = computed(() => this.sources()?.[this.selected()] ?? null);
+  /**
+   * Source split so some pieces of the HTML tab stand out (text only, no innerHTML):
+   * <int-*> tags, <ng-*> tags and the "dep:" comments that wrap a provisional.
+   * The Highlight switch of the legend bar only removes the colors (CSS); the split stays.
+   */
+  protected readonly parts = computed(() => {
+    const source = this.current() ?? '';
+    if (this.selected() !== 'html') {
+      return [{ text: source, kind: null, name: false }];
+    }
+    const parts: { text: string; kind: CodePartKind | null; name: boolean }[] = [];
+    let last = 0;
+    for (const match of source.matchAll(/<!--\s*\/?dep:[\s\S]*?-->|(<\/?)((int|ng)-[\w-]+)([^>]*>)/g)) {
+      parts.push({ text: source.slice(last, match.index), kind: null, name: false });
+      const [comment, open, name, prefix, rest] = match;
+      if (name) {
+        const kind = prefix === 'int' ? 'int' : 'ng';
+        parts.push({ text: open, kind, name: false }, { text: name, kind, name: true }, { text: rest, kind, name: false });
+      } else {
+        parts.push({ text: comment, kind: 'dep', name: false });
+      }
+      last = match.index + match[0].length;
+    }
+    parts.push({ text: source.slice(last), kind: null, name: false });
+    return parts.filter((part) => part.text);
+  });
+  /** Kinds present in the current source: the legend lists only these (none in the TS tab). */
+  protected readonly kinds = computed(
+    () => new Set(this.parts().flatMap((part) => (part.kind ? [part.kind] : []))),
+  );
+  /** Highlight switch of the legend bar: own state of each variant's panel, on by default. */
+  protected readonly highlight = signal(true);
   protected readonly copied = signal(false);
 
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');

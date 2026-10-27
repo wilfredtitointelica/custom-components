@@ -58,6 +58,13 @@
 
   // --- data ---
   --int-card-data-body-padding: var(--i-spacing-container-none); // Figma: 0 (card/padding/x/none) [Data card] · Aura: —
+  --int-card-data-value-color: inherit; // Figma: #0A1733 (card/color/text) [Data card] · Aura: —
+  --int-card-chart-1-color: var(--i-color-new-grey-500); // Figma: #64738B (card/color/product-a/default) [Type=color graph level 1] · Aura: —
+  --int-card-chart-2-color: var(--i-color-teal-500); // Figma: #5CB39D (card/color/product-a/2) [Type=color graph level 2] · Aura: —
+  --int-card-chart-3-color: var(--i-color-pastelgreen-500); // Figma: #91BE82 (card/color/product-a/3) [Type=color graph level 3] · Aura: —
+  --int-card-chart-4-color: var(--i-color-olive-500); // Figma: #BAC76D (card/color/product-a/4) [Type=color graph level 4] · Aura: —
+  --int-card-chart-5-color: var(--i-color-yellow-500); // Figma: #F7D54D (card/color/product-a/5) [Type=color graph level 5] · Aura: —
+  --int-card-chart-6-color: var(--i-color-yellow-500); // Figma: #F7D54D (card/color/graph/6) [Type=color graph level 6] · Aura: —
 
   // --- skeleton ---
   --int-card-skeleton-background: var(--i-color-secondary-100);
