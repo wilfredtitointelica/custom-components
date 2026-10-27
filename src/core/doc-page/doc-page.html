@@ -47,7 +47,6 @@
   <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
   @if (version?.figma; as figma) {
     <a class="doc-action" [href]="figma" target="_blank" rel="noopener noreferrer">
-      <i class="pi pi-pen-to-square" aria-hidden="true"></i>
       Figma
       <i class="pi pi-arrow-up-right doc-action-trail" aria-hidden="true"></i>
     </a>
@@ -55,54 +54,76 @@
   <!-- int-* components it depends on: `requires` (base) and `uses` (variant templates) of <id>.config.ts.
        The chip opens a popover anchored below it; each entry links to that component's page. -->
   @if (deps.count) {
-    <button
-      type="button"
-      class="doc-action doc-deps-trigger"
-      popovertarget="doc-deps-panel"
-      [attr.aria-expanded]="dependenciesOpen()"
-    >
-      <i class="pi pi-sitemap" aria-hidden="true"></i>
-      Dependencies
-      <span class="doc-deps-count">{{ deps.count }}</span>
-      <i class="pi pi-chevron-down doc-action-trail doc-deps-caret" aria-hidden="true"></i>
-    </button>
-    <div
-      #depsPanel
-      id="doc-deps-panel"
-      class="doc-deps-panel"
-      popover
-      role="dialog"
-      aria-labelledby="doc-deps-title"
-      (toggle)="dependenciesOpen.set($any($event).newState === 'open')"
-    >
-      <header class="doc-deps-head">
-        <h2 id="doc-deps-title" class="doc-deps-title">Dependencias</h2>
-        <p class="doc-deps-subtitle">Componentes int-* que usa {{ current.name }}</p>
-      </header>
-      @for (group of deps.groups; track group.kind) {
-        <section class="doc-deps-group" [attr.aria-labelledby]="'doc-deps-' + group.kind">
-          <h3 class="doc-deps-group-title" [id]="'doc-deps-' + group.kind">{{ group.title }}</h3>
-          <p class="doc-deps-hint">{{ group.hint }}</p>
-          <ul class="doc-deps-list">
-            @for (item of group.items; track item.id) {
-              <li>
-                @if (item.path; as path) {
-                  <a class="doc-deps-item" [routerLink]="path" (click)="depsPanel.hidePopover()">
-                    <span class="doc-deps-name">{{ item.name }}</span>
-                    <app-status-chip [status]="item.status" size="sm" />
-                    <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
-                  </a>
-                } @else {
-                  <span class="doc-deps-item doc-is-missing" [title]="item.id + ' is not created yet'">
-                    <span class="doc-deps-name">{{ item.name }}</span>
-                    <span class="doc-deps-missing">No creado</span>
-                  </span>
-                }
-              </li>
-            }
-          </ul>
-        </section>
-      }
+    @if (version?.figma) {
+      <span class="doc-meta-divider" aria-hidden="true"></span>
+    }
+    <!-- "Dependencies:" label + its two actions: Detect (popover) and Scan (outline provisionals). -->
+    <div class="doc-meta-group" role="group" aria-labelledby="doc-deps-label">
+      <span id="doc-deps-label" class="doc-meta-label">Dependencies:</span>
+      <button
+        type="button"
+        class="doc-action doc-deps-trigger"
+        popovertarget="doc-deps-panel"
+        aria-label="Detect dependencies"
+        [attr.aria-expanded]="dependenciesOpen()"
+      >
+        Detect
+        <span class="doc-deps-count">{{ deps.count }}</span>
+        <i class="pi pi-chevron-down doc-action-trail doc-deps-caret" aria-hidden="true"></i>
+      </button>
+      <div
+        #depsPanel
+        id="doc-deps-panel"
+        class="doc-deps-panel"
+        popover
+        role="dialog"
+        aria-labelledby="doc-deps-title"
+        (toggle)="dependenciesOpen.set($any($event).newState === 'open')"
+      >
+        <header class="doc-deps-head">
+          <h2 id="doc-deps-title" class="doc-deps-title">Dependencias detectadas</h2>
+          <p class="doc-deps-subtitle">Componentes int-* que usa {{ current.name }}</p>
+        </header>
+        @for (group of deps.groups; track group.kind) {
+          <section class="doc-deps-group" [attr.aria-labelledby]="'doc-deps-' + group.kind">
+            <h3 class="doc-deps-group-title" [id]="'doc-deps-' + group.kind">{{ group.title }}</h3>
+            <p class="doc-deps-hint">{{ group.hint }}</p>
+            <ul class="doc-deps-list">
+              @for (item of group.items; track item.id) {
+                <li>
+                  @if (item.path; as path) {
+                    <a class="doc-deps-item" [routerLink]="path" (click)="depsPanel.hidePopover()">
+                      <span class="doc-deps-name">{{ item.name }}</span>
+                      <app-status-chip [status]="item.status" size="sm" />
+                      <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
+                    </a>
+                  } @else {
+                    <span
+                      class="doc-deps-item doc-is-missing"
+                      [title]="item.id + ' is not created yet'"
+                    >
+                      <span class="doc-deps-name">{{ item.name }}</span>
+                      <span class="doc-deps-missing">No creado</span>
+                    </span>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+      <!-- Scan: outlines every provisional still waiting for its dependency (global [data-dep] rule). -->
+      <button
+        type="button"
+        class="doc-action doc-scan-toggle"
+        aria-label="Scan dependencies"
+        [attr.aria-pressed]="scanning()"
+        title="Highlight the provisionals that are waiting for their dependency"
+        (click)="scanning.set(!scanning())"
+      >
+        Scan
+        <span class="doc-scan-switch" aria-hidden="true"></span>
+      </button>
     </div>
   }
   <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
@@ -146,6 +167,16 @@
     <!-- Example of the selected version: version-N/variants/<slug>/example.ts, detected by folder.
          An example.html that is empty or only has comments is still pending. -->
     @let example = examples.value()?.get(variant.slug);
+    <!-- While scanning: dependencies still provisional in this example (requires ones live in the base). -->
+    @if (scanning() && example?.provisionalDeps?.length) {
+      <p class="doc-scan-tags">
+        <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+        Por resolver:
+        @for (dep of example!.provisionalDeps; track dep) {
+          <code class="doc-scan-tag">dep:{{ dep }}</code>
+        }
+      </p>
+    }
     <div class="doc-preview">
       @if (example && !example.pending) {
         <ng-container *ngComponentOutlet="example.component" />
@@ -153,7 +184,11 @@
         <div class="doc-placeholder">
           <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
           <p>Preview pending</p>
-          <code>{{ version?.folder ?? 'version-1' }}/variants/{{ variant.slug }}/{{ example ? 'example.html' : '' }}</code>
+          <code
+            >{{ version?.folder ?? 'version-1' }}/variants/{{ variant.slug }}/{{
+              example ? 'example.html' : ''
+            }}</code
+          >
         </div>
       }
     </div>
@@ -163,7 +198,11 @@
         [id]="variant.id + '-code'"
         [label]="current.name + ' · ' + variant.name"
         [sources]="example?.sources"
-        [source]="{ path: current.path, variantId: variant.id, version: current.versions.length > 1 ? version?.number : undefined }"
+        [source]="{
+          path: current.path,
+          variantId: variant.id,
+          version: current.versions.length > 1 ? version?.number : undefined,
+        }"
       />
     }
   </section>

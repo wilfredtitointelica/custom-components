@@ -34,7 +34,12 @@ interface DocExample {
   readonly sources: DocExampleCode;
   /** example.html is empty or only has comments: "Preview pending" instead of the preview. */
   readonly pending: boolean;
+  /** Dependencies still provisional in example.html (`data-dep="<id>"` of the provisional element). */
+  readonly provisionalDeps: readonly string[];
 }
+
+/** `data-dep="<id>"`: root element of a provisional marked `dep:<id> provisional` (skill replicar-primeng). */
+const PROVISIONAL_DEP = /\bdata-dep="([a-z0-9-]+)"/g;
 
 /** The Angular component exported by an example module (whatever its class name). */
 function toExample({ slug, module, sources }: DocExampleSource): [string, DocExample][] {
@@ -48,8 +53,17 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
   }
   // The code panel shows example.html without its documentation header.
   const html = parseDocHtml(sources.html);
+  const provisionalDeps = [...new Set([...(sources.html ?? '').matchAll(PROVISIONAL_DEP)].map((m) => m[1]))];
   return [
-    [slug, { component, sources: { ...sources, html: html.body, ts: sources.ts?.trim() }, pending: html.pending }],
+    [
+      slug,
+      {
+        component,
+        sources: { ...sources, html: html.body, ts: sources.ts?.trim() },
+        pending: html.pending,
+        provisionalDeps,
+      },
+    ],
   ];
 }
 
@@ -63,6 +77,8 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
   imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker, StatusChip, DesignerBadge],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
+  // Read by the global [data-dep] rule of src/styles.scss: previews are other components' views.
+  host: { '[class.doc-is-scanning]': 'scanning()' },
 })
 export class DocPage {
   readonly componentId = input.required<string>();
@@ -117,6 +133,9 @@ export class DocPage {
   /** The Dependencies popover is open (aria-expanded of its chip). */
   protected readonly dependenciesOpen = signal(false);
 
+  /** "Scan dependencies": outlines every provisional (`[data-dep]`) in the previews and tags their sections. */
+  protected readonly scanning = signal(false);
+
   /** Examples of the selected version, by slug; its chunk is loaded when the version changes. */
   protected readonly examples = resource({
     params: () => this.nav.activeVersion(),
@@ -149,5 +168,53 @@ export class DocPage {
       const variantId = untracked(() => this.nav.activeVariantId());
       if (variantId) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
     });
+
+    // Scan: only the first provisional of each dependency per preview is outlined, with the total
+    // (a list of 20 checkboxes or a table with a button per row shows one indicator, not 20). Previews
+    // can re-render (pagination, filters…), so the marks are refreshed while scanning is on.
+    effect((onCleanup) => {
+      if (!this.scanning() || !this.examples.hasValue()) return;
+      let frame = 0;
+      const mark = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => markProvisionals(host));
+      };
+      const observer = new MutationObserver(mark);
+      afterNextRender(
+        () => {
+          mark();
+          observer.observe(host, { childList: true, subtree: true });
+        },
+        { injector },
+      );
+      onCleanup(() => {
+        observer.disconnect();
+        cancelAnimationFrame(frame);
+        clearProvisionalMarks(host);
+      });
+    });
   }
+}
+
+/** Attribute read by the global scan rule of src/styles.scss; its value is the label ("checkbox ×12"). */
+const SCAN_MARK = 'data-dep-scan';
+
+/** Marks the first [data-dep] of each dependency inside every preview, with how many there are. */
+function markProvisionals(host: HTMLElement): void {
+  for (const preview of host.querySelectorAll<HTMLElement>('.doc-preview')) {
+    const byDep = new Map<string, HTMLElement[]>();
+    for (const element of preview.querySelectorAll<HTMLElement>('[data-dep]')) {
+      const dep = element.dataset['dep'] ?? '';
+      byDep.set(dep, [...(byDep.get(dep) ?? []), element]);
+    }
+    for (const [dep, [first, ...rest]] of byDep) {
+      const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
+      if (first.getAttribute(SCAN_MARK) !== label) first.setAttribute(SCAN_MARK, label);
+      for (const element of rest) element.removeAttribute(SCAN_MARK);
+    }
+  }
+}
+
+function clearProvisionalMarks(host: HTMLElement): void {
+  for (const element of host.querySelectorAll(`[${SCAN_MARK}]`)) element.removeAttribute(SCAN_MARK);
 }

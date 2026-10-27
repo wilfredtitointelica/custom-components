@@ -110,7 +110,8 @@ Orden de preferencia:
 
 1. **Componente `int-*` en `done`** si el contenido es otro componente (botón, chip, avatar): se usa el
    componente, no se imita con helpers. Si no está en `done`, el marcado nativo mínimo + helpers entre
-   `<!-- dep:<id> provisional · replace with <int-<id>> when <id> is done -->` y `<!-- /dep:<id> -->`, y
+   `<!-- dep:<id> provisional · replace with <int-<id>> when <id> is done -->` y `<!-- /dep:<id> -->`, con
+   `data-dep="<id>"` en su elemento raíz (lo resalta el botón Scan dependencies de la página), y
    el id en `uses` del config (SKILL.md 1.6) para que `/resolver-dependencias` lo reemplace.
 2. **Helper exacto** (mismo token) para estructura y visual estático.
 3. **Estructura sin helper exacto**: el helper más cercano de la misma escala; la diferencia va a

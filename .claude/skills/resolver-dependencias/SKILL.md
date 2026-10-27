@@ -25,7 +25,7 @@ Hay dos tipos de dependencia, con el mismo marcador:
 | `requires` (la base lo compone: multi-select → checkbox) | `base/<id>.html` / `.ts` / `.scss` | la base (`base/<id>.ts`) |
 | `uses` (solo el contenido de una variante: el botón del `#footer` de card) | `variants/<slug>/example.html` (marcado nativo + helpers `.u-*`) | el `example.ts` de esa variante, **nunca** la base |
 
-La página de cada componente lista ambas en el chip **Dependencies** (popover "Requeridas" /
+La página de cada componente lista ambas en **Dependencies: Detect** (popover "Requeridas" /
 "Opcionales", con estado y enlace).
 
 ---
@@ -57,7 +57,8 @@ inconsistencia: un provisional en la base sin `<dep>` en `requires`, uno en una 
    `ControlValueAccessor`) y su variante `basic`.
 2. **HTML**: cambia el bloque entre `<!-- dep:<dep> provisional … -->` y `<!-- /dep:<dep> -->` por
    `<int-<dep>>` con los mismos datos, eventos y ARIA que tenía el provisional, usando la API real
-   (mismos nombres que PrimeNG). Borra ambos comentarios marcadores.
+   (mismos nombres que PrimeNG). Borra ambos comentarios marcadores y el atributo `data-dep="<dep>"`
+   (el componente real no lo lleva; así deja de resaltarse con **Scan dependencies**).
 3. **TS**: importa `Int<Dep>` y agrégalo a `imports`; borra el código marcado
    `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…).
    - Base (`requires`): `../../../<dep>/version-N/base/<dep>` desde `base/<id>.ts`.
@@ -83,14 +84,14 @@ provisional sí/no. El orden de trabajo solo lo condicionan las **requeridas**: 
 dar el componente por terminado (su variante sigue funcionando con el provisional).
 Para el orden de trabajo, ordena por capas: primero los que nadie requiere y no requieren nada (átomos),
 después los que solo requieren componentes ya `done`. Si hay un ciclo, repórtalo. La misma información se
-ve en Reference → Status (columna "Requiere") y en el chip "Dependencies" de cada página.
+ve en Reference → Status (columna "Requiere") y en "Dependencies: Detect" de cada página.
 
 ## 5. Validar e informar
 
 ```bash
 npm run build
 npm test -- --watch=false --browsers=ChromeHeadless
-grep -rn "dep:<dep> provisional\|TODO(dep:<dep>" src/components/   # debe salir vacío
+grep -rn "dep:<dep> provisional\|TODO(dep:<dep>\|data-dep=\"<dep>\"" src/components/   # debe salir vacío
 ```
 
 Informe: componentes actualizados (enlaces), lo que quedó provisional y por qué, resultado real de build
