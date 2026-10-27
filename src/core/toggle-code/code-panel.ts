@@ -19,6 +19,7 @@ type CodePartKind = 'int' | 'ng' | 'dep';
   template: `
     <div class="doc-code-panel" role="region" [attr.aria-label]="'Code: ' + label()">
       <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: false }" />
+      <ng-container *ngTemplateOutlet="legend" />
       <ng-container *ngTemplateOutlet="body" />
     </div>
 
@@ -30,6 +31,7 @@ type CodePartKind = 'int' | 'ng' | 'dep';
     >
       <div class="doc-code-panel">
         <ng-container *ngTemplateOutlet="toolbar; context: { $implicit: true }" />
+        <ng-container *ngTemplateOutlet="legend" />
         <ng-container *ngTemplateOutlet="body" />
       </div>
     </dialog>
@@ -94,7 +96,7 @@ type CodePartKind = 'int' | 'ng' | 'dep';
     </ng-template>
 
     <ng-template #body>
-      <div class="doc-code-body" role="tabpanel">
+      <div class="doc-code-body" role="tabpanel" [class.doc-code-plain]="!code.highlight()">
         @if (current()) {
           <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
@@ -104,6 +106,29 @@ type CodePartKind = 'int' | 'ng' | 'dep';
           </p>
         }
       </div>
+    </ng-template>
+
+    <!-- HTML tab only: what each color means and the switch that turns them off (all panels). -->
+    <ng-template #legend>
+      @if (selected() === 'html' && current()) {
+        <div class="doc-code-legend-bar">
+          <ul class="doc-code-legend" aria-label="Color legend">
+            <li><span class="doc-code-swatch doc-code-int"></span><code class="doc-code-int">int-*</code> Component</li>
+            <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
+            <li><span class="doc-code-swatch doc-code-dep"></span><code class="doc-code-dep">dep:</code> Provisional dependency</li>
+          </ul>
+          <button
+            type="button"
+            class="doc-code-highlight"
+            [attr.aria-pressed]="code.highlight()"
+            title="Color the int-*, ng-* tags and the dep: comments"
+            (click)="code.setHighlight(!code.highlight())"
+          >
+            Highlight
+            <span class="doc-code-switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      }
     </ng-template>
   `,
   styleUrl: './code-panel.scss',
@@ -120,6 +145,7 @@ export class CodePanel {
   /**
    * Source split so some pieces of the HTML tab stand out (text only, no innerHTML):
    * <int-*> tags, <ng-*> tags and the "dep:" comments that wrap a provisional.
+   * The Highlight switch of the legend bar only removes the colors (CSS); the split stays.
    */
   protected readonly parts = computed(() => {
     const source = this.current() ?? '';
@@ -146,15 +172,15 @@ export class CodePanel {
 
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private readonly clipboard = inject(ClipboardHistory);
+  protected readonly code = inject(CodeVisibility);
 
   constructor() {
     // Link of the history: switch to the tab the code was copied from (once).
-    const code = inject(CodeVisibility);
     effect(() => {
-      const requested = code.requested();
+      const requested = this.code.requested();
       if (requested && requested.variantId === this.source()?.variantId) {
         this.selected.set(requested.language);
-        untracked(() => code.requested.set(null));
+        untracked(() => this.code.requested.set(null));
       }
     });
   }
