@@ -141,6 +141,17 @@ describe('Component catalog', () => {
     );
   });
 
+  it('keeps the components used in its variant templates apart from the required ones', () => {
+    const loadRoutes = () => Promise.resolve([]);
+    const [card] = resolveInventory([{ id: 'card', uses: ['button', 'badge'], loadRoutes }]);
+    expect(card.uses).toEqual(['button', 'badge']);
+    expect(card.requires).toEqual([]);
+    expect(resolveInventory([{ id: 'chip', loadRoutes }])[0].uses).toEqual([]);
+    expect(() => resolveInventory([{ id: 'card', uses: ['card'], loadRoutes }])).toThrowError(
+      /uses an invalid ID "card"/,
+    );
+  });
+
   it('leaves hidden components and variants out of the catalog, keeping their IDs reserved', () => {
     const loadRoutes = () => Promise.resolve([]);
     const resolved = resolveInventory(

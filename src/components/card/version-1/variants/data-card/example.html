@@ -1,0 +1,43 @@
+<!--
+  title: Data card
+  description: Composición para KPIs: int-card--data quita fondo, sombra y padding; el valor y su moneda se maquetan con helpers. Incluye un grupo de data cards.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl u-full-width">
+  <!-- Group with background: the data cards sit inside a regular card -->
+  <int-card>
+    <div class="u-display-flex u-flex-wrap u-justify-content-between u-gap-xl">
+      @for (item of items; track item.id) {
+        <int-card class="int-card--data">
+          <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
+            <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm">
+              <span>{{ item.title }}</span>
+              <i class="pi pi-info-circle" aria-hidden="true"></i>
+            </div>
+            <div class="u-display-flex u-align-items-baseline u-gap-xs">
+              <span class="u-text-sm u-bold">{{ item.currency }}</span>
+              <span class="u-heading-2xl">{{ item.amount }}</span>
+            </div>
+          </div>
+        </int-card>
+      }
+    </div>
+  </int-card>
+
+  <!-- Group without background -->
+  <div class="u-display-flex u-flex-wrap u-justify-content-between u-gap-xl u-px-5">
+    @for (item of items; track item.id) {
+      <int-card class="int-card--data">
+        <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
+          <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm">
+            <span>{{ item.title }}</span>
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
+          </div>
+          <div class="u-display-flex u-align-items-baseline u-gap-xs">
+            <span class="u-text-sm u-bold">{{ item.currency }}</span>
+            <span class="u-heading-2xl">{{ item.amount }}</span>
+          </div>
+        </div>
+      </int-card>
+    }
+  </div>
+</div>

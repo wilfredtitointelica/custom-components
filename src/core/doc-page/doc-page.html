@@ -10,57 +10,99 @@
   }
   <!-- Intro content projected by the component page (description, usage notes…). -->
   <div class="doc-intro"><ng-content /></div>
-  <div class="doc-meta">
-    @if (current.versions.length > 1) {
-      <app-version-picker [versions]="current.versions" [active]="version" />
-    } @else if (current.versions.length === 1) {
-      <span class="doc-chip">
-        <i class="pi pi-tag" aria-hidden="true"></i>
-        Version {{ current.versions[0].number }}
-      </span>
-    }
-    <span class="doc-chip">
-      <i class="pi pi-clone" aria-hidden="true"></i>
-      @switch (current.variants.length) {
-        @case (0) {
-          No variants defined yet
-        }
-        @case (1) {
-          1 variant
-        }
-        @default {
-          {{ current.variants.length }} variants
-        }
-      }
-    </span>
-    <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
-    <app-status-chip [status]="version?.status" />
-    <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
-    @if (version?.figma; as figma) {
-      <a class="doc-chip doc-chip-link" [href]="figma" target="_blank" rel="noopener noreferrer">
-        <i class="pi pi-external-link" aria-hidden="true"></i>
-        Figma
-      </a>
-    }
-    <!-- Components it composes: `requires` of <id>.config.ts, with the status of their latest version. -->
-    @for (required of requirements(); track required.id) {
-      @if (required.path; as path) {
-        <a class="doc-chip doc-chip-link" [routerLink]="path" [title]="'Requires ' + required.name">
-          <i class="pi pi-link" aria-hidden="true"></i>
-          Requires {{ required.name }}
-          <app-status-chip [status]="required.status" size="sm" />
-        </a>
-      } @else {
-        <span class="doc-chip" [title]="required.id + ' is not created yet'">
-          <i class="pi pi-link" aria-hidden="true"></i>
-          Requires {{ required.name }} · not created
-        </span>
-      }
-    }
-    <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
-    <app-designer-badge class="doc-designer" [designer]="version?.designer" />
-  </div>
 </header>
+
+<!-- Outside the header so it stays sticky below the top bar for the whole page (a sticky element
+     never leaves its parent). Its height is published as --doc-meta-h for the variant heads. -->
+<div #meta class="doc-meta" data-doc-sticky>
+  @if (current.versions.length > 1) {
+    <app-version-picker [versions]="current.versions" [active]="version" />
+  } @else if (current.versions.length === 1) {
+    <span class="doc-chip">
+      <i class="pi pi-tag" aria-hidden="true"></i>
+      Version {{ current.versions[0].number }}
+    </span>
+  }
+  <span class="doc-chip">
+    <i class="pi pi-clone" aria-hidden="true"></i>
+    @switch (current.variants.length) {
+      @case (0) {
+        No variants defined yet
+      }
+      @case (1) {
+        1 variant
+      }
+      @default {
+        {{ current.variants.length }} variants
+      }
+    }
+  </span>
+  <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
+  <app-status-chip [status]="version?.status" />
+  <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
+  @if (version?.figma; as figma) {
+    <a class="doc-chip doc-chip-link" [href]="figma" target="_blank" rel="noopener noreferrer">
+      <i class="pi pi-external-link" aria-hidden="true"></i>
+      Figma
+    </a>
+  }
+  <!-- int-* components it depends on: `requires` (base) and `uses` (variant templates) of <id>.config.ts.
+       The chip opens a popover anchored below it; each entry links to that component's page. -->
+  @let deps = dependencies();
+  @if (deps.count) {
+    <button
+      type="button"
+      class="doc-chip doc-chip-link doc-deps-trigger"
+      popovertarget="doc-deps-panel"
+      [attr.aria-expanded]="dependenciesOpen()"
+    >
+      <i class="pi pi-sitemap" aria-hidden="true"></i>
+      Dependencies
+      <span class="doc-deps-count">{{ deps.count }}</span>
+      <i class="pi pi-chevron-down doc-deps-caret" aria-hidden="true"></i>
+    </button>
+    <div
+      #depsPanel
+      id="doc-deps-panel"
+      class="doc-deps-panel"
+      popover
+      role="dialog"
+      aria-labelledby="doc-deps-title"
+      (toggle)="dependenciesOpen.set($any($event).newState === 'open')"
+    >
+      <header class="doc-deps-head">
+        <h2 id="doc-deps-title" class="doc-deps-title">Dependencias</h2>
+        <p class="doc-deps-subtitle">Componentes int-* que usa {{ current.name }}</p>
+      </header>
+      @for (group of deps.groups; track group.kind) {
+        <section class="doc-deps-group" [attr.aria-labelledby]="'doc-deps-' + group.kind">
+          <h3 class="doc-deps-group-title" [id]="'doc-deps-' + group.kind">{{ group.title }}</h3>
+          <p class="doc-deps-hint">{{ group.hint }}</p>
+          <ul class="doc-deps-list">
+            @for (item of group.items; track item.id) {
+              <li>
+                @if (item.path; as path) {
+                  <a class="doc-deps-item" [routerLink]="path" (click)="depsPanel.hidePopover()">
+                    <span class="doc-deps-name">{{ item.name }}</span>
+                    <app-status-chip [status]="item.status" size="sm" />
+                    <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
+                  </a>
+                } @else {
+                  <span class="doc-deps-item doc-is-missing" [title]="item.id + ' is not created yet'">
+                    <span class="doc-deps-name">{{ item.name }}</span>
+                    <span class="doc-deps-missing">No creado</span>
+                  </span>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  }
+  <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
+  <app-designer-badge class="doc-designer" [designer]="version?.designer" />
+</div>
 
 @for (variant of current.variants; track variant.id) {
   <section

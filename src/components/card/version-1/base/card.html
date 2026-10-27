@@ -1,6 +1,51 @@
 <!--
   title: Card
-  description:
-  figma:
+  description: Card is a flexible container component.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=18479-11415&t=ZMo1f2IR2pSuf9Eq-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=18479-11415
 -->
-int-card
+
+<!-- Header slot (e.g. an image), outside the padded body as in PrimeNG -->
+@if (headerTemplate()) {
+  <div class="int-card__header">
+    <ng-container [ngTemplateOutlet]="headerTemplate()" />
+  </div>
+}
+
+<div class="int-card__body">
+  <!-- Caption: title + subtitle. int-* extension: PrimeNG declares p-card-caption but v20 does not render it -->
+  @if (hasTitle() || hasSubtitle()) {
+    <div class="int-card__caption">
+      @if (hasTitle()) {
+        <div class="int-card__title">
+          @if (titleTemplate()) {
+            <ng-container [ngTemplateOutlet]="titleTemplate()" />
+          } @else {
+            {{ header() }}
+          }
+        </div>
+      }
+      @if (hasSubtitle()) {
+        <div class="int-card__subtitle">
+          @if (subtitleTemplate()) {
+            <ng-container [ngTemplateOutlet]="subtitleTemplate()" />
+          } @else {
+            {{ subheader() }}
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Content: projected children first, then the #content template -->
+  <div class="int-card__content">
+    <ng-content />
+    <ng-container [ngTemplateOutlet]="contentTemplate() ?? null" />
+  </div>
+
+  @if (footerTemplate()) {
+    <div class="int-card__footer">
+      <ng-container [ngTemplateOutlet]="footerTemplate()" />
+    </div>
+  }
+</div>

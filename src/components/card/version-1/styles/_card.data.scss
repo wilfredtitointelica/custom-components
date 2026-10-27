@@ -1,0 +1,13 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Data card
+\*——————————————————————————————————————————————————————————*/
+
+// Bare KPI block: no surface, the content (value, currency, title) is laid out with .u-* helpers.
+.int-card--data {
+  background: transparent;
+  box-shadow: none;
+
+  .int-card__body {
+    padding: var(--int-card-data-body-padding);
+  }
+}

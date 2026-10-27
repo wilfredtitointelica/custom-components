@@ -1,2 +1,6 @@
 // int-card · entry point. Add one `@use 'card.<variant>' as card-<variant>;` per variant module.
 @use 'card';
+@use 'card.data' as card-data;
+@use 'card.interactive' as card-interactive;
+@use 'card.mini' as card-mini;
+@use 'card.option' as card-option;

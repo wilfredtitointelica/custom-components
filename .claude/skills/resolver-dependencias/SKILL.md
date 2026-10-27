@@ -18,6 +18,16 @@ en `requires` de `src/components/<id>/<id>.config.ts` y, si la dependencia no es
 
 más `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por él. Esta skill los reemplaza.
 
+Hay dos tipos de dependencia, con el mismo marcador:
+
+| Config | Dónde está el provisional | Al reemplazar se importa `Int<Dep>` en |
+|---|---|---|
+| `requires` (la base lo compone: multi-select → checkbox) | `base/<id>.html` / `.ts` / `.scss` | la base (`base/<id>.ts`) |
+| `uses` (solo el contenido de una variante: el botón del `#footer` de card) | `variants/<slug>/example.html` (marcado nativo + helpers `.u-*`) | el `example.ts` de esa variante, **nunca** la base |
+
+La página de cada componente lista ambas en el chip **Dependencies** (popover "Requeridas" /
+"Opcionales", con estado y enlace).
+
 ---
 
 ## 1. Datos
@@ -37,8 +47,9 @@ grep -rn "dep:<dep> provisional\|TODO(dep:<dep>" src/components/
 grep -ln "'<dep>'" src/components/*/*.config.ts
 ```
 
-Muestra la lista (componente, versión, archivo, línea). Una versión con el provisional que **no** declara
-`<dep>` en `requires`, o un `requires` sin provisional ni uso real, se reporta como inconsistencia.
+Muestra la lista (componente, versión, archivo, línea, `requires`/`uses`). Se reporta como
+inconsistencia: un provisional en la base sin `<dep>` en `requires`, uno en una variante sin `<dep>` en
+`uses`, o un `requires`/`uses` sin provisional ni uso real.
 
 ## 3. Reemplazar (por cada componente, sin preguntar salvo conflicto)
 
@@ -47,11 +58,15 @@ Muestra la lista (componente, versión, archivo, línea). Una versión con el pr
 2. **HTML**: cambia el bloque entre `<!-- dep:<dep> provisional … -->` y `<!-- /dep:<dep> -->` por
    `<int-<dep>>` con los mismos datos, eventos y ARIA que tenía el provisional, usando la API real
    (mismos nombres que PrimeNG). Borra ambos comentarios marcadores.
-3. **TS**: importa `Int<Dep>` desde `../../../<dep>/version-N/base/<dep>` y agrégalo a `imports`; borra
-   el código marcado `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…).
-4. **SCSS**: borra las reglas y tokens marcados `TODO(dep:<dep> provisional)`; deja solo lo que
-   posiciona al hijo dentro del padre (márgenes, alineación), nunca estilos que pisen los del hijo.
-5. `requires` se **mantiene** (sigue componiéndolo).
+3. **TS**: importa `Int<Dep>` y agrégalo a `imports`; borra el código marcado
+   `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…).
+   - Base (`requires`): `../../../<dep>/version-N/base/<dep>` desde `base/<id>.ts`.
+   - Variante (`uses`): `../../../../<dep>/version-N/base/<dep>` desde `variants/<slug>/example.ts`.
+4. **SCSS** (solo `requires`): borra las reglas y tokens marcados `TODO(dep:<dep> provisional)`; deja solo
+   lo que posiciona al hijo dentro del padre (márgenes, alineación), nunca estilos que pisen los del hijo.
+   En una variante (`uses`) quita también los helpers que solo imitaban al hijo (`u-px-3 u-radius-lg…` del
+   botón nativo) y deja los de posición (`u-ms-auto`, `u-align-self-*`).
+5. `requires` / `uses` se **mantienen** (sigue usándolo).
 6. Si la API real no cubre algo que el provisional hacía (un evento, un estado), **no** inventes: deja
    ese punto con el provisional, avísalo y pregunta.
 7. Lo customizado a mano fuera de los marcadores no se toca.
@@ -59,14 +74,16 @@ Muestra la lista (componente, versión, archivo, línea). Una versión con el pr
 ## 4. Listar dependencias (`--listar` o "¿en qué orden…?")
 
 ```bash
-grep -n "requires" src/components/*/*.config.ts
+grep -nE "requires|uses" src/components/*/*.config.ts
 grep -rln "dep:[a-z-]* provisional" src/components/
 ```
 
-Responde con una tabla: componente · requiere · estado de cada dependencia (diseñador) · provisional sí/no.
+Responde con una tabla: componente · dependencia · tipo (requerida / opcional) · estado (diseñador) ·
+provisional sí/no. El orden de trabajo solo lo condicionan las **requeridas**: una opcional no bloquea
+dar el componente por terminado (su variante sigue funcionando con el provisional).
 Para el orden de trabajo, ordena por capas: primero los que nadie requiere y no requieren nada (átomos),
 después los que solo requieren componentes ya `done`. Si hay un ciclo, repórtalo. La misma información se
-ve en Reference → Status (columna "Requiere") y en el chip "Requires …" de cada página.
+ve en Reference → Status (columna "Requiere") y en el chip "Dependencies" de cada página.
 
 ## 5. Validar e informar
 
@@ -85,5 +102,6 @@ y tests. Revisión visual en `http://localhost:4321/components/<id>` (con el Sty
 - ❌ Reemplazar si la dependencia no está en `done`.
 - ❌ Modificar la base, estilos o variantes del componente requerido para que "encaje": si falta algo en
   su API, se reporta a su diseñador.
-- ❌ Quitar `requires` ni tocar `status`/`designer` del componente actualizado.
+- ❌ Quitar `requires`/`uses` ni tocar `status`/`designer` del componente actualizado.
+- ❌ Mover a la base una dependencia de `uses`: el componente real se importa solo en el `example.ts`.
 - ❌ Importar variantes o estilos sueltos del componente requerido: solo su base.

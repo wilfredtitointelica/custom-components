@@ -1,0 +1,12 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Option card
+\*——————————————————————————————————————————————————————————*/
+
+.int-card--option {
+  border-radius: var(--int-card-option-border-radius);
+
+  .int-card__body {
+    padding-block: var(--int-card-option-body-padding-y);
+    padding-inline: var(--int-card-option-body-padding-x);
+  }
+}

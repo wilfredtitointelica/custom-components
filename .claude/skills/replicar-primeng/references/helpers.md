@@ -13,7 +13,7 @@ tiene SCSS propio**. Para acercarlo al diseño de Figma se usan las **clases hel
 |---|---|---|
 | Contenido dentro de un template proyectable de la variante (`<ng-template #item>…</ng-template>`, `#header`, `#footer`, `#empty`…) | ✅ | Es marcado del consumidor: así lo escribiría una vista real |
 | Contenido proyectado con `<ng-content>` en la variante (cuerpo de dialog/card/panel) | ✅ | Igual que arriba |
-| Contenedor de la variante para mostrar varias instancias (fila de severidades, grupo de cards) | ✅ solo layout (`u-display-flex`, `u-gap-*`, `u-flex-wrap`) si la página no basta | Sustituye a estilos inline |
+| Contenedor de la variante para mostrar varias instancias o grupos (fila de severidades, grupo con fondo + grupo sin fondo) | ✅ solo layout: `u-display-flex u-flex-column u-gap-xl` entre grupos, `u-gap-lg`/`u-gap-xl` + `u-flex-wrap` en cada fila, `u-full-width` y `u-px-*` para alinear bordes entre grupos | Sustituye a estilos inline; sin él los grupos quedan pegados o centrados a medio ancho |
 | Estados visuales del contenido u otra cosa no estructural sin helper | ❌ → modificador `_<id>.<grupo>.scss` con tokens (1b) | Los helpers no expresan estados |
 | `base/<id>.html` (estructura del propio componente) | ❌ | La base usa BEM `int-<id>__*` + `--int-*` → `--i-*`; se extrae a npm y no puede depender de helpers |
 | `styles/*.scss` | ❌ | Ahí se escriben reglas con tokens, no clases helper |
@@ -109,7 +109,9 @@ de un dialog, el pie con botones). Para cada una:
 Orden de preferencia:
 
 1. **Componente `int-*` en `done`** si el contenido es otro componente (botón, chip, avatar): se usa el
-   componente, no se imita con helpers. Si no está en `done`, el marcado nativo mínimo + helpers.
+   componente, no se imita con helpers. Si no está en `done`, el marcado nativo mínimo + helpers entre
+   `<!-- dep:<id> provisional · replace with <int-<id>> when <id> is done -->` y `<!-- /dep:<id> -->`, y
+   el id en `uses` del config (SKILL.md 1.6) para que `/resolver-dependencias` lo reemplace.
 2. **Helper exacto** (mismo token) para estructura y visual estático.
 3. **Estructura sin helper exacto**: el helper más cercano de la misma escala; la diferencia va a
    "Diferencias" del informe.

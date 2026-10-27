@@ -1,6 +1,6 @@
 ---
 name: replicar-primeng
-description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. El contenido que va dentro de los templates del componente (#item, #header, cuerpo proyectado) se maqueta en las variantes con las clases helper .u-* del Style Guide. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires y, si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
+description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. El contenido que va dentro de los templates del componente (#item, #header, cuerpo proyectado) se maqueta en las variantes con las clases helper .u-* del Style Guide. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires; si solo lo usa el contenido de una variante (un botón en el #footer de una card), en uses. Si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
 argument-hint: "<p-selector o nombre del componente de PrimeNG> [link de Figma]"
 ---
 
@@ -110,7 +110,7 @@ Si hay archivos customizados, muéstralos (ruta + resumen de qué tienen) y preg
   se conservan siempre, incluso forzando.
 - Nunca se borran ni renombran variantes, archivos de estilo ni versiones existentes, ni se edita
   `<id>.config.ts`, `inventory.ts`, `routes.ts`, `<id>-page.ts` o `catalog-groups.ts` del componente.
-  Única excepción: agregar ids a `requires` de `<id>.config.ts` (1.6).
+  Única excepción: agregar ids a `requires` o `uses` de `<id>.config.ts` (1.6).
 - Agregar archivos **nuevos** (variantes con `new:variant`, módulos `_<id>.<grupo>.scss`) no altera lo
   existente; la línea `@use` nueva en `_index.scss` sí es un cambio permitido mientras sea solo agregar.
 
@@ -232,8 +232,8 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
    y `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por el provisional.
    El provisional respeta la API y el ARIA que PrimeNG le daría al hijo (rol, `aria-checked`…).
 5. Agrega el id a `requires` de `src/components/<id>/<id>.config.ts` (crea la propiedad si falta; no
-   toques el resto del config). La página muestra el chip "Requires …" con el estado de la dependencia
-   y Reference → Status la columna "Requiere":
+   toques el resto del config). La página muestra el chip **Dependencies** (popover con "Requeridas" y
+   "Opcionales", cada una con su estado y enlace a su página) y Reference → Status la columna "Requiere":
    ```ts
    export default {
      id: 'multi-select',
@@ -243,6 +243,27 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
    ```
 6. En el informe (5) se lista cada dependencia: estado, diseñador a cargo y si quedó provisional.
    Cuando la dependencia pase a `done`, el provisional se reemplaza con `/resolver-dependencias <dep>`.
+
+**Dependencias opcionales (`uses`): otros `int-*` dentro de los templates de las variantes.** Si el
+contenido que maqueta una variante (3.5) incluye otro componente (el botón del `#footer` de una card, un
+badge, un avatar en el `#item`), la **base no lo compone**: lo decide quien consume el componente. Mismo
+tratamiento que arriba, pero en el `example.html`/`example.ts` de la variante:
+
+| | `requires` | `uses` |
+|---|---|---|
+| Dónde se usa | `base/<id>.html` / `.ts` (lo compone el componente) | solo `variants/<slug>/example.*` |
+| Si está en `done` | `import Int<Dep>` en la base | `import Int<Dep>` en el `example.ts` |
+| Si no está en `done` | provisional marcado en la base | provisional marcado en el `example.html` (marcado nativo + helpers `.u-*`, sin SCSS) |
+| En el config | `requires: ['checkbox']` | `uses: ['button', 'badge']` |
+| En la página | popover Dependencies → "Requeridas" | popover Dependencies → "Opcionales" |
+
+```html
+<!-- dep:button provisional · replace with <int-button> when button is done -->
+<button type="button" class="u-px-3 u-py-2 u-radius-lg u-background-white u-pointer">View details</button>
+<!-- /dep:button -->
+```
+
+Un id va en `requires` **o** en `uses`, nunca en los dos: si la base lo compone, es `requires`.
 
 ---
 
@@ -474,7 +495,13 @@ de traducción en [references/helpers.md](references/helpers.md).
      sin helper** → modificador `.int-<id>--<grupo>` con `&__<elem>` en `_<id>.<grupo>.scss` (3.3),
      solo con `--int-*` → `--i-*`. Solo eso; la estructura sigue en helpers.
 - Si el contenido es otro componente (botón, chip, avatar), se usa su `int-*` en `done`, no se imita con
-  helpers; si no está en `done`, marcado nativo mínimo + helpers.
+  helpers; si no está en `done`, marcado nativo mínimo + helpers **marcado** `dep:<id> provisional`, y el
+  id va a `uses` del config (dependencia opcional, 1.6) para que `/resolver-dependencias` lo cambie.
+- **Diagramación del ejemplo**: cuando la variante muestra varias instancias o **varios grupos** (fila de
+  severidades, "grupo con fondo" + "grupo sin fondo"), el contenedor de la variante los separa con helpers
+  (`u-display-flex u-flex-column u-gap-xl`, filas con `u-gap-lg`/`u-gap-xl` y `u-flex-wrap`), y alinea
+  los bordes entre grupos (`u-full-width`, `u-px-*` igual al padding del componente). Nada debe quedar
+  pegado ni centrado a medio ancho por accidente: revisa la captura antes de dar la variante por buena.
 - Estructura sin helper exacto: el más cercano de la escala y la diferencia al informe. Nunca `style`
   inline, SCSS en la carpeta de la variante, clases de PrimeFlex/Tailwind (de la demo de PrimeNG o de
   `get_design_context`) ni clases `u-*` inventadas.
@@ -515,7 +542,7 @@ Dependencias (1.6), no deben salir vacías sino coincidir con lo reportado:
 
 ```bash
 grep -rn "dep:[a-z-]* provisional" src/components/<id>/     # un bloque por dependencia no done
-grep -n "requires" src/components/<id>/<id>.config.ts        # todas las dependencias detectadas
+grep -nE "requires|uses" src/components/<id>/<id>.config.ts  # base → requires · variantes → uses
 ```
 
 Revisión manual (lista corta, en el informe):
@@ -544,8 +571,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 3. Funcionalidades implementadas (tabla del inventario con ✅ / ➖ descartado + motivo).
 4. Variantes generadas con su enlace `/components/<id>#<id>-<slug>`.
 5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué; y **componentes
-   `int-*` requeridos** (1.6): estado, diseñador a cargo, real o provisional, y
-   "cuando esté done: `/resolver-dependencias <dep>`".
+   `int-*` requeridos y opcionales** (1.6, `requires` / `uses`): estado, diseñador a cargo, real o
+   provisional, y "cuando esté done: `/resolver-dependencias <dep>`".
 5b. Con Figma: tabla de ejes y formatos con lo decidido; formatos que quedaron como componente aparte.
 6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente)
    y, con Figma, diferencias con el diseño (valores aproximados a un token o a un helper `.u-*`, lo que
@@ -580,7 +607,7 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   visual, PrimeNG en el comportamiento.
 - ❌ Leer solo el nodo del link de Figma: se recorre su frame padre (ejes y formatos).
 - ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
-  `dep:<id> provisional` y se declara en `requires`.
+  `dep:<id> provisional` y se declara en `requires` (base) o `uses` (solo variantes).
 - ❌ Usar un provisional sin marcar o importar un `int-*` que no está en `done`.
 - ❌ Maquetar el contenido de los templates de las variantes con `style` inline, SCSS propio o clases de
   PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).

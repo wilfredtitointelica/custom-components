@@ -1,0 +1,36 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Interactive formats (mini, option)
+\*——————————————————————————————————————————————————————————*/
+
+// Shared border and states of the clickable formats. Behaviour (role, tabindex, keys) comes from
+// the consumer: pressed = :active or [aria-pressed='true'], disabled = [aria-disabled='true'].
+:is(.int-card--mini, .int-card--option) {
+  border: var(--int-card-interactive-border-width) solid var(--int-card-interactive-border-color);
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    background-color var(--int-card-interactive-transition-duration),
+    border-color var(--int-card-interactive-transition-duration);
+
+  &:hover {
+    border-color: var(--int-card-interactive-hover-border-color);
+  }
+
+  &:active,
+  &[aria-pressed='true'] {
+    border-color: var(--int-card-interactive-pressed-border-color);
+    background: var(--int-card-interactive-pressed-background);
+  }
+
+  &:focus-visible {
+    outline: var(--int-card-interactive-focus-width) solid var(--int-card-interactive-focus-color);
+    outline-offset: var(--int-card-interactive-focus-offset);
+  }
+
+  &[aria-disabled='true'] {
+    border-color: var(--int-card-interactive-disabled-border-color);
+    background: var(--int-card-interactive-disabled-background);
+    color: var(--int-card-interactive-disabled-color);
+    pointer-events: none;
+  }
+}

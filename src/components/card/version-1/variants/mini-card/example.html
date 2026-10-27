@@ -1,0 +1,33 @@
+<!--
+  title: Mini card
+  description: Composición int-card--mini: tarjeta compacta con borde. Pasa el mouse (hover) y haz clic o pulsa Enter/Espacio para marcarla (pressed, aria-pressed); la última está deshabilitada con aria-disabled.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  @for (item of items; track item.id) {
+    <int-card
+      class="int-card--mini u-flex-grow-1 u-flex-basis-0"
+      role="button"
+      [attr.tabindex]="item.disabled ? -1 : 0"
+      [attr.aria-disabled]="item.disabled || null"
+      [attr.aria-pressed]="item.disabled ? null : pressed().has(item.id)"
+      (click)="toggle(item)"
+      (keydown.enter)="toggle(item)"
+      (keydown.space)="$event.preventDefault(); toggle(item)"
+    >
+      <div class="u-display-flex u-gap-none">
+        <div class="u-display-flex u-flex-column u-flex-grow-1">
+          <div class="u-display-flex u-align-items-center u-gap-xs u-text-lg u-bold">
+            <i class="pi {{ item.icon }}" aria-hidden="true"></i>
+            <span>{{ item.title }}</span>
+          </div>
+          <span class="u-text-md">{{ item.description }}</span>
+          <div class="u-display-flex u-gap-xs u-text-sm">
+            <span class="u-bold">{{ item.helperTitle }}</span>
+            <span>{{ item.helperText }}</span>
+          </div>
+        </div>
+        <i class="pi pi-arrow-up-right" aria-hidden="true"></i>
+      </div>
+    </int-card>
+  }
+</div>

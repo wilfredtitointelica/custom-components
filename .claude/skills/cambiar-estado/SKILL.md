@@ -81,12 +81,12 @@ No edites el archivo a mano desde la IA: usa el script (el maquetador sí puede 
 **Al marcar `done`**: busca quién lo requiere y si le dejó provisionales, y avísalo en la respuesta:
 
 ```bash
-grep -ln "'<id>'" src/components/*/*.config.ts          # configs con requires: [..., '<id>']
-grep -rln "dep:<id> provisional" src/components/        # bases que aún usan el provisional
+grep -ln "'<id>'" src/components/*/*.config.ts          # configs con requires/uses: [..., '<id>']
+grep -rln "dep:<id> provisional" src/components/        # bases o variantes que aún usan el provisional
 ```
 
-> **<nombre>** ya está en Done. Lo requieren: **multi-select** (con provisional). Reemplázalo con
-> `/resolver-dependencias <id>`.
+> **<nombre>** ya está en Done. Lo requieren: **multi-select** (con provisional). Lo usan en sus
+> variantes: **card** (con provisional). Reemplázalos con `/resolver-dependencias <id>`.
 
 ## 3. Consultar estados
 

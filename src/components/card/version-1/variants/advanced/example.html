@@ -1,0 +1,36 @@
+<!--
+  title: Advanced
+  description: Usa los templates #title y #footer y contenido con scroll: título con icono de ayuda, textos de estado, badge y botón en el pie separado por un divisor.
+-->
+<int-card subheader="Write a description">
+  <ng-template #title>
+    <span class="u-display-inline-flex u-align-items-center u-gap-xs">
+      Title here
+      <i class="pi pi-info-circle" aria-hidden="true"></i>
+    </span>
+  </ng-template>
+
+  <p class="u-m-0">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam
+    deserunt quisquam repellat libero asperiores earum nam nobis.
+  </p>
+
+  <ng-template #footer>
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <div class="u-display-flex u-flex-column u-flex-grow-1">
+        <span>Text here</span>
+        <span class="u-color-success">Success text</span>
+        <span class="u-color-error">Error text</span>
+        <!-- dep:badge provisional · replace with <int-badge> when badge is done -->
+        <span class="u-display-inline-flex u-align-items-center u-gap-xs u-text-xs">
+          <i class="pi pi-tag" aria-hidden="true"></i>
+          Text here
+        </span>
+        <!-- /dep:badge -->
+      </div>
+      <!-- dep:button provisional · replace with <int-button> when button is done -->
+      <button type="button" class="u-px-3 u-py-2 u-radius-lg u-background-white u-pointer">View details</button>
+      <!-- /dep:button -->
+    </div>
+  </ng-template>
+</int-card>

@@ -1,0 +1,12 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Mini card
+\*——————————————————————————————————————————————————————————*/
+
+.int-card--mini {
+  border-radius: var(--int-card-mini-border-radius);
+
+  .int-card__body {
+    gap: var(--int-card-mini-body-gap);
+    padding: var(--int-card-mini-body-padding);
+  }
+}
