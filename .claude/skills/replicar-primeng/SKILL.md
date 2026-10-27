@@ -226,13 +226,17 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
 4. Cada provisional queda **marcado** para encontrarlo después (el texto exacto importa):
    ```html
    <!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
-   <input type="checkbox" class="int-multi-select__checkbox" … />
+   <input type="checkbox" class="int-multi-select__checkbox" data-dep="checkbox" … />
    <!-- /dep:checkbox -->
    ```
    y `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por el provisional.
+   El elemento raíz del provisional lleva **`data-dep="<id>"`** (los comentarios desaparecen al compilar):
+   con él el botón **Scan dependencies** de la página lo resalta con un contorno fucsia y la sección muestra
+   "Por resolver: dep:<id>". Si el provisional son varios elementos hermanos, cada uno lleva el atributo.
+   Preferir un elemento contenedor (no un `<input>` suelto) para que se vea la etiqueta `dep:<id>`.
    El provisional respeta la API y el ARIA que PrimeNG le daría al hijo (rol, `aria-checked`…).
 5. Agrega el id a `requires` de `src/components/<id>/<id>.config.ts` (crea la propiedad si falta; no
-   toques el resto del config). La página muestra el chip **Dependencies** (popover con "Requeridas" y
+   toques el resto del config). La página muestra **Dependencies: Detect** (popover con "Requeridas" y
    "Opcionales", cada una con su estado y enlace a su página) y Reference → Status la columna "Requiere":
    ```ts
    export default {
@@ -259,7 +263,9 @@ tratamiento que arriba, pero en el `example.html`/`example.ts` de la variante:
 
 ```html
 <!-- dep:button provisional · replace with <int-button> when button is done -->
-<button type="button" class="u-px-3 u-py-2 u-radius-lg u-background-white u-pointer">View details</button>
+<button type="button" class="u-px-3 u-py-2 u-radius-lg u-background-white u-pointer" data-dep="button">
+  View details
+</button>
 <!-- /dep:button -->
 ```
 
@@ -542,6 +548,7 @@ Dependencias (1.6), no deben salir vacías sino coincidir con lo reportado:
 
 ```bash
 grep -rn "dep:[a-z-]* provisional" src/components/<id>/     # un bloque por dependencia no done
+grep -rn "data-dep=" src/components/<id>/                    # al menos uno dentro de cada bloque
 grep -nE "requires|uses" src/components/<id>/<id>.config.ts  # base → requires · variantes → uses
 ```
 

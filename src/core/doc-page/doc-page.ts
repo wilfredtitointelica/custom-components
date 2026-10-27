@@ -34,7 +34,12 @@ interface DocExample {
   readonly sources: DocExampleCode;
   /** example.html is empty or only has comments: "Preview pending" instead of the preview. */
   readonly pending: boolean;
+  /** Dependencies still provisional in example.html (`data-dep="<id>"` of the provisional element). */
+  readonly provisionalDeps: readonly string[];
 }
+
+/** `data-dep="<id>"`: root element of a provisional marked `dep:<id> provisional` (skill replicar-primeng). */
+const PROVISIONAL_DEP = /\bdata-dep="([a-z0-9-]+)"/g;
 
 /** The Angular component exported by an example module (whatever its class name). */
 function toExample({ slug, module, sources }: DocExampleSource): [string, DocExample][] {
@@ -48,8 +53,17 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
   }
   // The code panel shows example.html without its documentation header.
   const html = parseDocHtml(sources.html);
+  const provisionalDeps = [...new Set([...(sources.html ?? '').matchAll(PROVISIONAL_DEP)].map((m) => m[1]))];
   return [
-    [slug, { component, sources: { ...sources, html: html.body, ts: sources.ts?.trim() }, pending: html.pending }],
+    [
+      slug,
+      {
+        component,
+        sources: { ...sources, html: html.body, ts: sources.ts?.trim() },
+        pending: html.pending,
+        provisionalDeps,
+      },
+    ],
   ];
 }
 
@@ -63,6 +77,8 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
   imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker, StatusChip, DesignerBadge],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
+  // Read by the global [data-dep] rule of src/styles.scss: previews are other components' views.
+  host: { '[class.doc-is-scanning]': 'scanning()' },
 })
 export class DocPage {
   readonly componentId = input.required<string>();
@@ -84,7 +100,8 @@ export class DocPage {
    * is not created yet; not done = a provisional marked `dep:<id> provisional` stands in for it.
    */
   protected readonly dependencies = computed(() => {
-    const { requires, uses } = this.component();
+    const { requires, uses, variants } = this.component();
+    const examples = this.examples.value();
     const toItem = (id: string) => {
       const dependency = this.catalog.find(id);
       return {
@@ -92,6 +109,8 @@ export class DocPage {
         name: dependency?.name ?? id,
         path: dependency?.path,
         status: dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined,
+        /** Variants of the selected version whose example.html still has a provisional for it. */
+        usedIn: variants.filter((v) => examples?.get(v.slug)?.provisionalDeps.includes(id)),
       };
     };
     const groups = [
@@ -116,6 +135,9 @@ export class DocPage {
 
   /** The Dependencies popover is open (aria-expanded of its chip). */
   protected readonly dependenciesOpen = signal(false);
+
+  /** "Scan dependencies": outlines every provisional (`[data-dep]`) in the previews and tags their sections. */
+  protected readonly scanning = signal(false);
 
   /** Examples of the selected version, by slug; its chunk is loaded when the version changes. */
   protected readonly examples = resource({

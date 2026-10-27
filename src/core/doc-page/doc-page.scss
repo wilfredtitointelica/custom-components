@@ -86,8 +86,22 @@
   align-self: center;
   width: 1px;
   height: 20px;
-  margin: 0 4px;
+  margin: 0 8px;
   background: var(--doc-outline-variant);
+}
+
+// Labelled set of actions on the same subject ("Dependencies: Detect · Scan").
+.doc-meta-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-meta-label {
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 // Clickable control (Figma link, Dependencies): outlined + trailing affordance.
@@ -238,6 +252,91 @@
 .doc-deps-missing {
   color: var(--doc-ink-muted);
   font-size: 0.75rem;
+}
+
+// "Se usa en: Advanced, …" below an optional dependency.
+.doc-deps-used {
+  margin: 0 8px 6px;
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+}
+
+.doc-deps-used-link {
+  color: var(--doc-accent-text);
+  font-weight: 600;
+  text-decoration: none;
+
+  & + &::before {
+    content: ', ';
+    color: var(--doc-ink-muted);
+    font-weight: 400;
+  }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+/* Scan toggle (outlines provisionals; the outline itself is the global [data-dep] rule of styles.scss) */
+.doc-scan-toggle[aria-pressed='true'] {
+  border-color: var(--doc-scan);
+  background: var(--doc-scan-container);
+}
+
+.doc-scan-switch {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  margin-left: 2px;
+  border-radius: 999px;
+  background: var(--doc-outline-variant);
+  transition: background-color 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--doc-surface);
+    transition: transform 0.2s var(--doc-ease-emphasized);
+  }
+
+  [aria-pressed='true'] > & {
+    background: var(--doc-scan);
+
+    &::after {
+      transform: translateX(12px);
+    }
+  }
+}
+
+// Section line while scanning: "Por resolver: dep:button dep:badge".
+.doc-scan-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+
+  .pi {
+    color: var(--doc-scan);
+  }
+}
+
+.doc-scan-tag {
+  padding: 2px 8px;
+  border: 1px dashed var(--doc-scan);
+  border-radius: 999px;
+  background: var(--doc-scan-container);
+  color: var(--doc-on-scan-container);
+  font-size: 0.6875rem;
+  font-weight: 600;
 }
 
 /* Variant sections */

@@ -35,6 +35,11 @@
   --doc-danger-container: #fbdcdc;
   --doc-on-danger-container: #5c0b0b;
   --doc-danger-on-dark: #ff8a80;
+  /* Scan of provisionals (Scan dependencies): electric fuchsia, never used by a component */
+  --doc-scan: #ff00d4;
+  --doc-scan-glow: rgb(255 0 212 / 0.28);
+  --doc-scan-container: #ffe0fa;
+  --doc-on-scan-container: #6b0059;
 
   /* Surfaces (tonal, cool tint of the primary) */
   --doc-bg: #edf0f5;
@@ -202,5 +207,42 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Scan of provisionals (doc page "Scan dependencies" toggle). A provisional stands in for an int-* component that
+ * is not done yet and its root element carries data-dep="<id>" (skill replicar-primeng 1.6). Global
+ * because the previews are the examples' own views, outside the doc page's encapsulation.
+ */
+.doc-is-scanning .doc-preview [data-dep] {
+  position: relative;
+  outline: 2px dashed var(--doc-scan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--doc-scan-glow);
+  animation: doc-scan-pulse 1.6s ease-in-out infinite;
+
+  // Name of the pending dependency (not shown on void elements such as <input> or <img>).
+  &::after {
+    content: 'dep:' attr(data-dep);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--doc-scan);
+    color: #ffffff;
+    font: 700 10px/14px var(--doc-font-sans);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transform: translate(35%, -70%);
+    pointer-events: none;
+  }
+}
+
+@keyframes doc-scan-pulse {
+  50% {
+    box-shadow: 0 0 0 10px transparent;
   }
 }
