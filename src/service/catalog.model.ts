@@ -56,6 +56,12 @@ export interface ComponentDefinition {
    * resolver-dependencias). It may name a component that does not exist yet.
    */
   readonly requires?: readonly string[];
+  /**
+   * IDs of the int-* components used only inside the templates of its variants (e.g. a button in the
+   * #footer of a card): optional for the consumer, the base does not import them. While one is not done,
+   * the example uses a provisional marked `dep:<id> provisional`. It may name a component not created yet.
+   */
+  readonly uses?: readonly string[];
   /** Lazy reference to the component's own routes file (src/components/<id>/routes.ts). */
   readonly loadRoutes: LoadChildrenCallback;
 }
@@ -155,6 +161,8 @@ export interface CatalogComponent {
   readonly reference: boolean;
   /** IDs of the int-* components it composes (config `requires`), in config order. */
   readonly requires: readonly string[];
+  /** IDs of the int-* components used in its variant templates (config `uses`), in config order. */
+  readonly uses: readonly string[];
   readonly loadRoutes: LoadChildrenCallback;
 }
 

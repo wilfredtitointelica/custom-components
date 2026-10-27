@@ -2,14 +2,18 @@ import {
   afterNextRender,
   Component,
   computed,
+  DestroyRef,
   effect,
+  ElementRef,
   inject,
   Injector,
   input,
   reflectComponentType,
   resource,
+  signal,
   Type,
   untracked,
+  viewChild,
 } from '@angular/core';
 import { NgComponentOutlet, ViewportScroller } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -75,20 +79,43 @@ export class DocPage {
   });
 
   /**
-   * Components this one composes (config `requires`), with the status of their latest version; a
-   * missing one is not created yet. Not done = the base still uses a provisional for it.
+   * int-* components it depends on, for the "Dependencies" popover: `requires` (composed by the base)
+   * and `uses` (only inside variant templates), with the status of their latest version. A missing one
+   * is not created yet; not done = a provisional marked `dep:<id> provisional` stands in for it.
    */
-  protected readonly requirements = computed(() =>
-    this.component().requires.map((id) => {
-      const required = this.catalog.find(id);
+  protected readonly dependencies = computed(() => {
+    const { requires, uses } = this.component();
+    const toItem = (id: string) => {
+      const dependency = this.catalog.find(id);
       return {
         id,
-        name: required?.name ?? id,
-        path: required?.path,
-        status: required ? (required.versions.at(-1)?.status ?? 'pending') : undefined,
+        name: dependency?.name ?? id,
+        path: dependency?.path,
+        status: dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined,
       };
-    }),
-  );
+    };
+    const groups = [
+      {
+        kind: 'required',
+        title: 'Requeridas',
+        hint: 'Las compone la base: el componente no funciona sin ellas.',
+        items: requires.map(toItem),
+      },
+      {
+        kind: 'optional',
+        title: 'Opcionales',
+        hint: 'Se usan dentro de los templates de las variantes; quien consume el componente decide.',
+        items: uses.map(toItem),
+      },
+    ].filter((group) => group.items.length > 0);
+    return { groups, count: requires.length + uses.length };
+  });
+
+  /** Sticky row of chips (version, variants, status, Figma, dependencies, designer). */
+  private readonly meta = viewChild.required<ElementRef<HTMLElement>>('meta');
+
+  /** The Dependencies popover is open (aria-expanded of its chip). */
+  protected readonly dependenciesOpen = signal(false);
 
   /** Examples of the selected version, by slug; its chunk is loaded when the version changes. */
   protected readonly examples = resource({
@@ -105,6 +132,18 @@ export class DocPage {
     // direct link, version change). Clicking a variant later does not re-run this.
     const scroller = inject(ViewportScroller);
     const injector = inject(Injector);
+
+    // The chips row is sticky and its height changes (wrapping, version picker…): publish it as
+    // --doc-meta-h so the variant heads stick right below it.
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const observer = new ResizeObserver(([entry]) =>
+        host.style.setProperty('--doc-meta-h', `${entry.borderBoxSize[0].blockSize}px`),
+      );
+      observer.observe(this.meta().nativeElement);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
     effect(() => {
       if (this.examples.isLoading() || !this.examples.hasValue()) return;
       const variantId = untracked(() => this.nav.activeVariantId());

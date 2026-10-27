@@ -68,6 +68,46 @@
   font-family: var(--doc-font-mono);
   font-size: 0.8125rem;
   line-height: 1.6;
+  // Same dark scrollbar as the Style Guide dialog (style-guide-dialog.scss). scrollbar-color is reset
+  // (inherited from styles.scss) so Chrome applies the ::-webkit-scrollbar rules.
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    min-height: 0;
+    height: auto;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.28) padding-box;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(255 255 255 / 0.4);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: rgb(255 255 255 / 0.55);
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  // Firefox (no ::-webkit-scrollbar).
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.28) transparent;
+  }
 }
 
 .doc-code-body pre {

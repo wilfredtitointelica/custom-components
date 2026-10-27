@@ -1,13 +1,12 @@
+@use 'doc-action' as *;
+
 :host {
   display: block;
+  // Height of the sticky chips row, measured in doc-page.ts.
+  --doc-meta-h: 0px;
 }
 
 /* Page header (M3 display / headline scale) */
-.doc-header {
-  margin-bottom: 48px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--doc-outline-variant);
-}
 
 .doc-eyebrow {
   margin: 0 0 8px;
@@ -41,12 +40,20 @@
   font-size: 1rem;
 }
 
+// Sticks right below the top bar (breadcrumb) for the whole page, painted with the pane background
+// so the content scrolls under it. Its bottom border is the header's divider.
 .doc-meta {
+  position: sticky;
+  top: var(--doc-topbar-h);
+  z-index: 11;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-top: 20px;
+  margin-bottom: 48px;
+  padding: 20px 0 16px;
+  border-bottom: 1px solid var(--doc-outline-variant);
+  background: var(--doc-surface);
 }
 
 // Pushed to the right end of the row (wraps below the chips on narrow screens).
@@ -54,38 +61,189 @@
   margin-left: auto;
 }
 
+// Read-only info (single version, variant count): tonal pill, no border, no hover, so it doesn't
+// read as a button. Same shape as app-status-chip.
 .doc-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 32px;
-  padding: 0 14px;
-  border: 1px solid var(--doc-outline-variant);
-  border-radius: var(--doc-radius-sm);
-  color: var(--doc-ink);
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--doc-surface-high);
+  color: var(--doc-ink-muted);
   font-size: 0.8125rem;
   font-weight: 500;
+  white-space: nowrap;
 
   .pi {
-    color: var(--doc-ink-muted);
     font-size: 0.8125rem;
   }
 }
 
-// Chip that opens the version's Figma design in a new tab.
-.doc-chip-link {
+// Vertical rule between the read-only chips and the actions.
+.doc-meta-divider {
+  align-self: center;
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--doc-outline-variant);
+}
+
+// Clickable control (Figma link, Dependencies): outlined + trailing affordance.
+.doc-action {
+  @include doc-action;
+}
+
+.doc-action-trail {
+  @include doc-action-trail;
+}
+
+/* Dependencies button + popover (anchored below the button; without anchor positioning the UA centers it) */
+.doc-deps-trigger {
+  anchor-name: --doc-deps;
+
+  &[aria-expanded='true'] .doc-deps-caret {
+    transform: rotate(180deg);
+  }
+}
+
+.doc-deps-count {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--doc-accent-container);
+  color: var(--doc-on-accent-container);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.doc-deps-panel {
+  width: min(340px, calc(100vw - 32px));
+  max-height: min(480px, calc(100dvh - 32px));
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-lg);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font-family: var(--doc-font-sans);
+  box-shadow: 0 16px 40px rgb(22 50 92 / 0.2);
+
+  &:popover-open {
+    animation: doc-deps-in 0.18s var(--doc-ease-emphasized);
+  }
+
+  @supports (position-area: block-end) {
+    position-anchor: --doc-deps;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    inset: auto;
+    margin: 8px 0 0;
+  }
+}
+
+@keyframes doc-deps-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.doc-deps-head {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--doc-outline-variant);
+}
+
+.doc-deps-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.doc-deps-subtitle {
+  margin: 2px 0 0;
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+}
+
+.doc-deps-group {
+  padding: 12px 8px 8px;
+
+  & + & {
+    border-top: 1px solid var(--doc-outline-variant);
+  }
+}
+
+.doc-deps-group-title {
+  margin: 0 8px;
+  color: var(--doc-accent-text);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.doc-deps-hint {
+  margin: 2px 8px 8px;
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+}
+
+.doc-deps-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-deps-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--doc-radius-sm);
+  color: var(--doc-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
   text-decoration: none;
 
-  &:hover,
-  &:focus-visible {
+  &:is(a):hover,
+  &:is(a):focus-visible {
     background: var(--doc-state-hover);
+
+    .doc-deps-go {
+      opacity: 1;
+      transform: translateX(2px);
+    }
   }
+}
+
+.doc-deps-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-deps-go {
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+
+.doc-deps-missing {
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
 }
 
 /* Variant sections */
 .doc-section {
   position: relative;
-  scroll-margin-top: calc(var(--doc-topbar-h) + 16px);
+  scroll-margin-top: calc(var(--doc-topbar-h) + var(--doc-meta-h) + 16px);
 
   // 56px between sections, minus the head's 16px top padding.
   & + & {
@@ -93,12 +251,12 @@
   }
 }
 
-// The head (title + Code button) sticks right below the top bar (breadcrumb) while its section
-// scrolls, so a long example or code panel still shows which variant you're in. The 16px margin it
-// had becomes bottom padding, painted with the pane background so the content scrolls under it.
+// The head (title + Code button) sticks right below the chips row while its section scrolls, so a
+// long example or code panel still shows which variant you're in. The 16px margin it had becomes
+// bottom padding, painted with the pane background so the content scrolls under it.
 .doc-section-head {
   position: sticky;
-  top: var(--doc-topbar-h);
+  top: calc(var(--doc-topbar-h) + var(--doc-meta-h));
   z-index: 10;
   display: flex;
   align-items: center;
@@ -263,9 +421,9 @@
 }
 
 @media (max-width: 839px) {
-  .doc-header {
+  .doc-meta {
     margin-bottom: 32px;
-    padding-bottom: 24px;
+    padding: 16px 0 12px;
   }
 
   .doc-section + .doc-section {

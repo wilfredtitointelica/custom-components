@@ -37,13 +37,14 @@ export class ComponentsPage {
     return id ? this.catalog.find(id) : undefined;
   });
   protected readonly referencePage = computed(() => REFERENCE_PAGES[this.nav.page() ?? ''] ?? null);
-  protected readonly variant = computed(() => {
-    const id = this.nav.activeVariantId();
-    return id ? this.catalog.findVariant(id) : undefined;
-  });
 
   constructor() {
-    // The top bar is sticky: anchor scrolling must stop below it, whatever its current height.
-    inject(ViewportScroller).setOffset(() => [0, this.topbar().nativeElement.offsetHeight + ANCHOR_GAP]);
+    // The top bar is sticky, and so is the page's [data-doc-sticky] block (chips of the component page):
+    // anchor scrolling must stop below both, whatever their current height.
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    inject(ViewportScroller).setOffset(() => {
+      const sticky = host.querySelector<HTMLElement>('[data-doc-sticky]')?.offsetHeight ?? 0;
+      return [0, this.topbar().nativeElement.offsetHeight + sticky + ANCHOR_GAP];
+    });
   }
 }

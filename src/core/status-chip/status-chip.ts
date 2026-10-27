@@ -26,9 +26,9 @@ export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      height: 32px;
-      padding: 0 14px;
-      border-radius: var(--doc-radius-sm);
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 999px;
       font-size: 0.8125rem;
       font-weight: 500;
       white-space: nowrap;

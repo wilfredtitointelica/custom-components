@@ -40,16 +40,11 @@
               <span aria-current="page">{{ page }}</span>
             </li>
           }
+          <!-- The variant is a section of the component page, not another view: it is not a crumb. -->
           @if (component(); as current) {
-            <li>
-              <i class="pi pi-chevron-right" aria-hidden="true"></i>
-              <a [routerLink]="current.path" [attr.aria-current]="variant() ? null : 'page'">{{ current.name }}</a>
-            </li>
-          }
-          @if (variant(); as selected) {
             <li class="doc-breadcrumb-leaf">
               <i class="pi pi-chevron-right" aria-hidden="true"></i>
-              <span aria-current="location">{{ selected.name }}</span>
+              <a [routerLink]="current.path" aria-current="page">{{ current.name }}</a>
             </li>
           }
         </ol>
