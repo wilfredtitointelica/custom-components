@@ -946,6 +946,88 @@ src/components/chip/version-1/
 
 <hr class="doc-skill-divider" />
 
+<!-- ─────────────────────────── Resolver dependencias ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-dependencies" [class.doc-is-active]="nav.fragment() === 'skill-dependencies'" aria-labelledby="skill-dependencies-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-dependencies-title">
+			<a [routerLink]="path" fragment="skill-dependencies">
+				Resolver dependencias
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/resolver-dependencias</code>
+		</span>
+	</div>
+	<p>
+		Algunos componentes usan otros por dentro (un
+		<strong>MultiSelect</strong>
+		usa un
+		<strong>Checkbox</strong>
+		). Cada maquetador replica el suyo sin esperar al otro: si el componente que necesitas aún no está en
+		<em>Done</em>
+		,
+		<code>/replicar-primeng</code>
+		pone en su lugar un
+		<strong>provisional</strong>
+		(un elemento nativo marcado) y lo anota en
+		<code>requires</code>
+		del config. Cuando ese componente se termina, esta skill cambia el provisional por el componente real.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Qué componente se terminó</strong>
+					(p. ej. checkbox). Si no lo dices, te lista los provisionales pendientes.
+				</li>
+				<li>
+					Solo si el componente real no cubre algo que hacía el provisional (un evento, un estado): qué hacer con ese punto.
+				</li>
+			</ol>
+			<p>Si la dependencia aún no está en Done, no toca nada. Nunca modifica el componente requerido ni lo customizado fuera de los marcadores.</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/resolver-dependencias checkbox</pre>
+			<pre class="doc-skill-prompt">El checkbox ya está listo, actualiza el multiselect</pre>
+			<pre class="doc-skill-prompt">/resolver-dependencias --listar</pre>
+			<p class="doc-skill-card-legend">Con <code>--listar</code> (o "¿en qué orden maquetamos?") muestra qué requiere cada componente y el orden de trabajo: primero los que no dependen de nadie.</p>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Cómo funciona</h3>
+	<pre class="doc-skill-code">
+// multi-select.config.ts                       lo agrega /replicar-primeng
+requires: ['checkbox'],
+
+&lt;!-- dep:checkbox provisional · replace with &lt;int-checkbox&gt; when checkbox is done --&gt;
+&lt;input type="checkbox" class="int-multi-select__checkbox" /&gt;      provisional
+&lt;!-- /dep:checkbox --&gt;
+
+            checkbox pasa a Done  →  /resolver-dependencias checkbox
+
+&lt;int-checkbox … /&gt;                                                  componente real</pre
+	>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		La página de cada componente muestra un chip
+		<em>Requires …</em>
+		con el estado de lo que necesita, y
+		<a routerLink="/components/status">Reference → Status</a>
+		tiene la columna
+		<em>Requiere</em>
+		. Al marcar un componente como Done,
+		<code>/cambiar-estado</code>
+		avisa quién lo estaba esperando.
+	</p>
+</section>
+
+<hr class="doc-skill-divider" />
+
 <!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
 <section class="doc-skill-section" id="skill-cheatsheet" [class.doc-is-active]="nav.fragment() === 'skill-cheatsheet'" aria-labelledby="skill-cheatsheet-title">
 	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
@@ -1052,6 +1134,11 @@ src/components/chip/version-1/
 				<tr>
 					<td>Verificar o actualizar un componente cuando cambia su Figma</td>
 					<td><code>/actualizar-replica</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Cambiar un provisional por el componente real cuando este se termina</td>
+					<td><code>/resolver-dependencias</code></td>
 					<td>—</td>
 				</tr>
 				<tr>

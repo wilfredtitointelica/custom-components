@@ -35,5 +35,6 @@ export const SKILLS_SECTIONS: readonly SkillSection[] = [
   { id: 'skill-status', name: 'Cambiar el estado', group: 'tracking' },
   { id: 'skill-replicate', name: 'Replicar de PrimeNG', group: 'implementation', badge: 'New' },
   { id: 'skill-update-replica', name: 'Actualizar una réplica', group: 'implementation', badge: 'New' },
+  { id: 'skill-dependencies', name: 'Resolver dependencias', group: 'implementation', badge: 'New' },
   { id: 'skill-cheatsheet', name: 'Resumen rápido', group: 'summary' },
 ];
