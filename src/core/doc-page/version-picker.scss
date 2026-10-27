@@ -1,55 +1,22 @@
+@use 'doc-action' as *;
+
 /* Version dropdown (shown once a component has more than one version-N folder).
- * The whole chip is the trigger; the menu opens in a CDK overlay below it. */
+ * The whole button is the trigger (same look as the other meta-row actions); the menu opens in a
+ * CDK overlay below it. */
 :host {
   display: inline-flex;
 }
 
 .doc-version-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 12px 0 14px;
-  border: 1px solid var(--doc-outline-variant);
-  border-radius: var(--doc-radius-sm);
-  background: var(--doc-surface);
-  color: var(--doc-ink);
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
-
-  &:hover {
-    border-color: var(--doc-outline);
-    background: var(--doc-state-hover);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--doc-accent-ring);
-    outline-offset: 2px;
-  }
+  @include doc-action;
 
   // Open: CDK sets aria-expanded on the trigger.
-  &[aria-expanded='true'] {
-    border-color: var(--doc-accent);
-
-    .doc-version-trigger-arrow {
-      transform: rotate(180deg);
-    }
-  }
-
-  .pi {
-    color: var(--doc-ink-muted);
-    font-size: 0.8125rem;
+  &[aria-expanded='true'] .doc-version-trigger-arrow {
+    transform: rotate(180deg);
   }
 
   .doc-version-trigger-arrow {
-    margin-left: 2px;
-    font-size: 0.625rem;
-    transition: transform 0.2s;
+    @include doc-action-trail;
   }
 }
 

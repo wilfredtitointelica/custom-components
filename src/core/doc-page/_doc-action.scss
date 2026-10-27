@@ -1,0 +1,49 @@
+/* Interactive control of the meta row (version picker, Figma link, Dependencies).
+ * Outlined rectangle + hover/focus states, so it reads as clickable next to the
+ * tonal, borderless info chips (.doc-chip / app-status-chip). */
+@mixin doc-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px 0 14px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    border-color: var(--doc-outline);
+    background: var(--doc-state-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent-ring);
+    outline-offset: 2px;
+  }
+
+  // Open (menu / popover): the trigger sets aria-expanded.
+  &[aria-expanded='true'] {
+    border-color: var(--doc-accent);
+  }
+
+  .pi {
+    color: var(--doc-ink-muted);
+    font-size: 0.8125rem;
+  }
+}
+
+// Trailing affordance (▾ menu, ↗ external link).
+@mixin doc-action-trail {
+  margin-left: 2px;
+  font-size: 0.625rem;
+  transition: transform 0.2s;
+}

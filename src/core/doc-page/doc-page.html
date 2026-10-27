@@ -39,27 +39,32 @@
   </span>
   <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
   <app-status-chip [status]="version?.status" />
+  @let deps = dependencies();
+  <!-- Splits the read-only chips from the actions; only when there is at least one action. -->
+  @if (version?.figma || deps.count) {
+    <span class="doc-meta-divider" aria-hidden="true"></span>
+  }
   <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
   @if (version?.figma; as figma) {
-    <a class="doc-chip doc-chip-link" [href]="figma" target="_blank" rel="noopener noreferrer">
-      <i class="pi pi-external-link" aria-hidden="true"></i>
+    <a class="doc-action" [href]="figma" target="_blank" rel="noopener noreferrer">
+      <i class="pi pi-pen-to-square" aria-hidden="true"></i>
       Figma
+      <i class="pi pi-arrow-up-right doc-action-trail" aria-hidden="true"></i>
     </a>
   }
   <!-- int-* components it depends on: `requires` (base) and `uses` (variant templates) of <id>.config.ts.
        The chip opens a popover anchored below it; each entry links to that component's page. -->
-  @let deps = dependencies();
   @if (deps.count) {
     <button
       type="button"
-      class="doc-chip doc-chip-link doc-deps-trigger"
+      class="doc-action doc-deps-trigger"
       popovertarget="doc-deps-panel"
       [attr.aria-expanded]="dependenciesOpen()"
     >
       <i class="pi pi-sitemap" aria-hidden="true"></i>
       Dependencies
       <span class="doc-deps-count">{{ deps.count }}</span>
-      <i class="pi pi-chevron-down doc-deps-caret" aria-hidden="true"></i>
+      <i class="pi pi-chevron-down doc-action-trail doc-deps-caret" aria-hidden="true"></i>
     </button>
     <div
       #depsPanel

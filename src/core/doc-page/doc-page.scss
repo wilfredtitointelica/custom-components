@@ -1,3 +1,5 @@
+@use 'doc-action' as *;
+
 :host {
   display: block;
   // Height of the sticky chips row, measured in doc-page.ts.
@@ -59,47 +61,50 @@
   margin-left: auto;
 }
 
+// Read-only info (single version, variant count): tonal pill, no border, no hover, so it doesn't
+// read as a button. Same shape as app-status-chip.
 .doc-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 32px;
-  padding: 0 14px;
-  border: 1px solid var(--doc-outline-variant);
-  border-radius: var(--doc-radius-sm);
-  color: var(--doc-ink);
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--doc-surface-high);
+  color: var(--doc-ink-muted);
   font-size: 0.8125rem;
   font-weight: 500;
+  white-space: nowrap;
 
   .pi {
-    color: var(--doc-ink-muted);
     font-size: 0.8125rem;
   }
 }
 
-// Chip that opens the version's Figma design in a new tab.
-.doc-chip-link {
-  text-decoration: none;
-
-  &:hover,
-  &:focus-visible {
-    background: var(--doc-state-hover);
-  }
+// Vertical rule between the read-only chips and the actions.
+.doc-meta-divider {
+  align-self: center;
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--doc-outline-variant);
 }
 
-/* Dependencies chip + popover (anchored below the chip; without anchor positioning the UA centers it) */
+// Clickable control (Figma link, Dependencies): outlined + trailing affordance.
+.doc-action {
+  @include doc-action;
+}
+
+.doc-action-trail {
+  @include doc-action-trail;
+}
+
+/* Dependencies button + popover (anchored below the button; without anchor positioning the UA centers it) */
 .doc-deps-trigger {
   anchor-name: --doc-deps;
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
 
-  &[aria-expanded='true'] {
-    background: var(--doc-state-hover);
-
-    .doc-deps-caret {
-      transform: rotate(180deg);
-    }
+  &[aria-expanded='true'] .doc-deps-caret {
+    transform: rotate(180deg);
   }
 }
 
@@ -114,10 +119,6 @@
   color: var(--doc-on-accent-container);
   font-size: 0.6875rem;
   font-weight: 700;
-}
-
-.doc-deps-caret {
-  transition: transform 0.2s;
 }
 
 .doc-deps-panel {
