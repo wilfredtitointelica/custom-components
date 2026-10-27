@@ -183,6 +183,22 @@ code {
   }
 }
 
+// Numbered walkthrough: one short explanation + its code block per step.
+.doc-skill-steps {
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding-left: 20px;
+
+  p {
+    margin: 0 0 10px;
+  }
+
+  .doc-skill-code {
+    padding: 14px 20px;
+  }
+}
+
 /* Cards */
 .doc-skill-grid {
   display: grid;

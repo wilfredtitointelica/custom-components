@@ -1000,18 +1000,38 @@ src/components/chip/version-1/
 	</div>
 
 	<h3 class="doc-skill-subtitle">Cómo funciona</h3>
-	<pre class="doc-skill-code">
-// multi-select.config.ts                       lo agrega /replicar-primeng
-requires: ['checkbox'],
-
-&lt;!-- dep:checkbox provisional · replace with &lt;int-checkbox&gt; when checkbox is done --&gt;
-&lt;input type="checkbox" class="int-multi-select__checkbox" /&gt;      provisional
-&lt;!-- /dep:checkbox --&gt;
-
-            checkbox pasa a Done  →  /resolver-dependencias checkbox
-
-&lt;int-checkbox … /&gt;                                                  componente real</pre
-	>
+	<ol class="doc-skill-steps">
+		<li>
+			<p>
+				<code>/replicar-primeng</code>
+				anota la dependencia en el config del componente:
+			</p>
+			<pre class="doc-skill-code"><span class="doc-skill-code-muted">// multi-select.config.ts</span>
+requires: ['checkbox'],</pre>
+		</li>
+		<li>
+			<p>
+				Como el checkbox aún no está en
+				<em>Done</em>
+				, deja un provisional marcado en
+				<code>base/multi-select.html</code>
+				:
+			</p>
+			<pre class="doc-skill-code"><span class="doc-skill-code-muted">&lt;!-- dep:checkbox provisional --&gt;</span>
+&lt;input type="checkbox" class="int-multi-select__checkbox" /&gt;
+<span class="doc-skill-code-muted">&lt;!-- /dep:checkbox --&gt;</span></pre>
+		</li>
+		<li>
+			<p>
+				Cuando el checkbox pasa a
+				<em>Done</em>
+				, ejecutas
+				<code>/resolver-dependencias checkbox</code>
+				y el provisional se cambia por el componente real:
+			</p>
+			<pre class="doc-skill-code">&lt;int-checkbox … /&gt;</pre>
+		</li>
+	</ol>
 	<p class="doc-skill-note">
 		<i class="pi pi-info-circle" aria-hidden="true"></i>
 		La página de cada componente muestra un chip
