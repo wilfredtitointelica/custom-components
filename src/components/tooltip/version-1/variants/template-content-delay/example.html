@@ -4,6 +4,8 @@
 -->
 <int-pill value="Rate" severity="info" tabindex="0" [intTooltip]="rateTpl" [showDelay]="300" />
 <ng-template #rateTpl>
-  <strong>Rate breakdown</strong><br />
-  0.80% + USD 0.10 per transaction
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-bold">Rate breakdown</span>
+    <span>0.80% + USD 0.10 per transaction</span>
+  </div>
 </ng-template>

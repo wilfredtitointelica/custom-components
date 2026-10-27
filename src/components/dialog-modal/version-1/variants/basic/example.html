@@ -4,18 +4,20 @@
 -->
 <button intButton label="Set alert" icon="icon icon-notification" (click)="visible.set(true)"></button>
 <int-dialog-modal header="Set alert" [(visible)]="visible" [style]="{ width: '32rem' }">
-  <p>
-    <label for="dm-alert-name">Name</label>
-    <input id="dm-alert-name" intInputText fluid [(ngModel)]="name" />
-  </p>
-  <p>
-    <label for="dm-alert-brand">Brand</label>
-    <int-dropdown-select inputId="dm-alert-brand" fluid [options]="brands" optionLabel="name" optionValue="code" [(ngModel)]="brand" placeholder="Select" />
-  </p>
-  <p>
-    <label for="dm-alert-date">Effective date</label>
-    <int-date-picker inputId="dm-alert-date" fluid [(ngModel)]="date" dateFormat="dd/mm/yy" showIcon />
-  </p>
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <label for="dm-alert-name">Name</label>
+      <input id="dm-alert-name" intInputText fluid [(ngModel)]="name" />
+    </div>
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <label for="dm-alert-brand">Brand</label>
+      <int-dropdown-select inputId="dm-alert-brand" fluid [options]="brands" optionLabel="name" optionValue="code" [(ngModel)]="brand" placeholder="Select" />
+    </div>
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <label for="dm-alert-date">Effective date</label>
+      <int-date-picker inputId="dm-alert-date" fluid [(ngModel)]="date" dateFormat="dd/mm/yy" showIcon />
+    </div>
+  </div>
   <ng-template #footer>
     <button intButton label="Cancel" severity="secondary" (click)="visible.set(false)"></button>
     <button intButton label="Save" (click)="visible.set(false)"></button>

@@ -4,7 +4,9 @@
 -->
 <button intButton icon="icon icon-info" ariaLabel="More info" variant="text" (click)="info.toggle($event)"></button>
 <int-popover #info ariaLabel="Fee information" (onShow)="opened.set(opened() + 1)">
-  <strong>Cross-border fee</strong>
-  <p>Charged when the issuer and the acquirer are in different countries.</p>
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-bold">Cross-border fee</span>
+    <p class="u-m-0 u-text-sm">Charged when the issuer and the acquirer are in different countries.</p>
+  </div>
 </int-popover>
 <p>Opened {{ opened() }} times</p>
