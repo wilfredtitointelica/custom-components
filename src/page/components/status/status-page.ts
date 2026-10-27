@@ -52,8 +52,6 @@ export class StatusPage {
         latest,
         status: latest?.status ?? ('pending' as ComponentStatus),
         designer: latest?.designer || UNASSIGNED,
-        /** Older versions, newest first (only when there is more than one). */
-        previous: component.versions.slice(0, -1).reverse(),
       };
     });
 
