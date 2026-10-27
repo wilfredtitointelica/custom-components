@@ -74,6 +74,22 @@ export class DocPage {
     return component;
   });
 
+  /**
+   * Components this one composes (config `requires`), with the status of their latest version; a
+   * missing one is not created yet. Not done = the base still uses a provisional for it.
+   */
+  protected readonly requirements = computed(() =>
+    this.component().requires.map((id) => {
+      const required = this.catalog.find(id);
+      return {
+        id,
+        name: required?.name ?? id,
+        path: required?.path,
+        status: required ? (required.versions.at(-1)?.status ?? 'pending') : undefined,
+      };
+    }),
+  );
+
   /** Examples of the selected version, by slug; its chunk is loaded when the version changes. */
   protected readonly examples = resource({
     params: () => this.nav.activeVersion(),

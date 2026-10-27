@@ -257,7 +257,7 @@ export class ChipRemovableExample {
 ```html
 <!--
   title: Removable
-  description: removable shows a remove action; click, Enter or Backspace on it emits onRemove and hides the chip.
+  description: removable muestra la acción de quitar; al hacer clic o pulsar Enter o Backspace sobre ella emite onRemove y oculta el chip.
 -->
 @for (chip of chips(); track chip.id) {
   <int-chip [label]="chip.label" removable (onRemove)="remove(chip.id)" />

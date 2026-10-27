@@ -1,6 +1,6 @@
 ---
 name: replicar-primeng
-description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
+description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires y, si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
 argument-hint: "<p-selector o nombre del componente de PrimeNG> [link de Figma]"
 ---
 
@@ -106,6 +106,7 @@ Si hay archivos customizados, muéstralos (ruta + resumen de qué tienen) y preg
   se conservan siempre, incluso forzando.
 - Nunca se borran ni renombran variantes, archivos de estilo ni versiones existentes, ni se edita
   `<id>.config.ts`, `inventory.ts`, `routes.ts`, `<id>-page.ts` o `catalog-groups.ts` del componente.
+  Única excepción: agregar ids a `requires` de `<id>.config.ts` (1.6).
 - Agregar archivos **nuevos** (variantes con `new:variant`, módulos `_<id>.<grupo>.scss`) no altera lo
   existente; la línea `@use` nueva en `_index.scss` sí es un cambio permitido mientras sea solo agregar.
 
@@ -141,6 +142,7 @@ Escríbelo en el chat como tabla. Separa lo público de lo interno:
 | A11y | roles, `aria-*`, teclas | | | |
 | Forms | `ControlValueAccessor`, `ngModel` | | | si hereda de `BaseEditableHolder`/`BaseInput` |
 | Dependencias | CDK, iconos, overlays, servicios | | | se reemplaza por… |
+| Componentes compuestos | `p-checkbox`, `p-chip`, `p-button`… usados en la plantilla | | | `int-*` equivalente + su estado (1.6) |
 
 **Fuera de alcance por defecto** (infraestructura de PrimeNG, no del componente): `pt` / `ptOptions`
 (PassThrough), `unstyled`, `dt` (input de tokens), `pTemplate` / `PrimeTemplate`, `pBind`,
@@ -157,22 +159,28 @@ Procedimiento completo en [references/figma.md](references/figma.md). En resumen
    `get_screenshot` (referencia visual), `get_variable_defs` (variables usadas) y `get_design_context`
    (medidas y estructura; antes, cargar la skill `figma-design-to-code` como pide el MCP). Si el MCP no
    está disponible o pide autorización, avisar y seguir sin Figma.
-3. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
-   token `--i-*` del Style Guide → `--int-<id>-*`.
-4. **Guarda el link** en la cabecera de `version-N/base/<id>.html`, en la línea `figma:` (vacía por
-   defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta antes de
-   reemplazarlo). Es el único cambio
-   permitido en la cabecera. La página muestra un chip "Figma" que abre el diseño, y
-   `/actualizar-replica` lo usa para comparar después:
+3. **Recorre el frame padre** del link (el link suele ser solo el primer diseño): detecta **ejes**
+   (tamaños, estados, colores) y **formatos** (group, chart, large…) y muestra la **tabla de
+   clasificación** (references/figma.md, sección 3). Lo que coincide con PrimeNG o es un pseudo-estado se
+   implementa sin preguntar; lo demás va a las preguntas de 2.2.
+4. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
+   token `--i-*` del Style Guide → `--int-<id>-*`; por cada valor de eje, solo lo que cambia.
+5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
+   vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
+   antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
+   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/actualizar-replica` los usa para
+   comparar después:
    ```html
    <!--
      title: Chip
      description: Chip represents people using icons, labels and images.
      figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
+     figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
    ```
-5. Cada `--int-*` que salga de Figma lleva el comentario `// Figma: <valor> (<variable>) · Aura: <valor>`
-   (**obligatorio**): es la huella con la que `/actualizar-replica` detecta qué cambió en el diseño.
+6. Cada `--int-*` que salga de Figma lleva el comentario `// Figma: <valor> (<variable>) · Aura: <valor>`
+   (**obligatorio**; con `[Eje=Valor]` si sale de un eje): es la huella con la que `/actualizar-replica`
+   detecta qué cambió en el diseño.
 
 Reparto de responsabilidades (no se discute en cada réplica):
 
@@ -186,6 +194,47 @@ Reparto de responsabilidades (no se discute en cada réplica):
 - Figma nunca se copia como CSS literal (`#hex`, `px`, `font-family`): cada valor se resuelve a un `--i-*`.
 - Variantes o estados que aparecen en Figma pero no existen en la API de PrimeNG v20 no se inventan:
   se listan y se pregunta si se agregan como **extensión `int-*`** (2.2).
+
+### 1.6 Dependencias entre componentes `int-*`
+
+Cada maquetador replica su componente, pero algunos componen otros (`p-multiselect` usa `p-checkbox` y
+`p-chip`; `p-paginator` usa `p-select`). Nadie se bloquea esperando al otro:
+
+1. De la plantilla de PrimeNG (1.3), lista cada componente PrimeNG que usa y su `int-*` equivalente
+   (tabla de 1.1; ojo: hoy `p-checkbox`/`p-radiobutton` viven dentro de `input`, así que se pregunta si
+   el destino es `input` o un componente propio). Los iconos y el CDK no son dependencias de este tipo.
+2. Lee el estado de la versión más reciente de cada uno:
+   ```bash
+   grep -n "static readonly status\|static readonly designer" src/components/<dep>/version-*/base/<dep>.ts
+   ```
+3. Según el estado:
+
+| Estado de la dependencia | Qué hace la réplica |
+|---|---|
+| `done` | Compone el componente real: importa `Int<Dep>` de `../../../<dep>/version-N/base/<dep>` y usa `<int-<dep>>` con su API pública |
+| `pending` / `in-progress` | **Provisional**: el marcado nativo mínimo equivalente (`<input type="checkbox">`, `<button>`, `<span>`) con clases BEM **del componente actual** (`int-multi-select__checkbox`) y estilos mínimos en su SCSS; nada de copiar la réplica del otro |
+| No existe | Igual que pendiente, y en el informe se sugiere crearlo con `/crear-componente` |
+
+4. Cada provisional queda **marcado** para encontrarlo después (el texto exacto importa):
+   ```html
+   <!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
+   <input type="checkbox" class="int-multi-select__checkbox" … />
+   <!-- /dep:checkbox -->
+   ```
+   y `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por el provisional.
+   El provisional respeta la API y el ARIA que PrimeNG le daría al hijo (rol, `aria-checked`…).
+5. Agrega el id a `requires` de `src/components/<id>/<id>.config.ts` (crea la propiedad si falta; no
+   toques el resto del config). La página muestra el chip "Requires …" con el estado de la dependencia
+   y Reference → Status la columna "Requiere":
+   ```ts
+   export default {
+     id: 'multi-select',
+     requires: ['checkbox', 'pill'],
+     loadRoutes: () => import('./routes'),
+   } satisfies ComponentDefinition;
+   ```
+6. En el informe (5) se lista cada dependencia: estado, diseñador a cargo y si quedó provisional.
+   Cuando la dependencia pase a `done`, el provisional se reemplaza con `/resolver-dependencias <dep>`.
 
 ---
 
@@ -208,6 +257,9 @@ Decide y muestra, sin pedir confirmación salvo lo indicado en 2.2:
 - **Archivos customizados** (1.2): completar solo la plantilla, forzar o cancelar.
 - Un token sin equivalente en el Style Guide (3.3), también para un valor de Figma.
 - Variantes o estados de Figma que PrimeNG no tiene (1.5): ¿extensión `int-*` o se omiten?
+- Formatos del frame de Figma (1.5, ❓ de la tabla de clasificación): ¿variante de composición,
+  modificador o componente aparte?
+- Dependencia ambigua (1.6): p. ej. checkbox → ¿`input` o un componente propio?
 - Una decisión de diseño que el proyecto no resuelve (p. ej. el Style Guide define un componente
   equivalente con un aspecto distinto al de PrimeNG: ¿manda PrimeNG o el Style Guide?).
 
@@ -224,6 +276,8 @@ correspondan a inputs/outputs/templates del inventario.
 - Una carpeta por característica: `icon`, `image`, `removable`, `template`, `disabled`, `severity`,
   `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG.
 - `combinations` solo si revela algo que las otras no (interacción entre atributos, conflictos de estilo).
+- Con Figma: cada **eje** implementado tiene su variante (`sizes`, `disabled`, `severity`…) mostrando
+  todos sus valores, y cada **formato** aceptado como composición la suya (`group`, `chart`…).
 - Nunca carpetas para atributos que no existen en PrimeNG v20 ni para extensiones propias sin marcarlas.
 - Variantes existentes (vienen del Excel/Figma): **no se borran ni renombran**. Si están en plantilla
   y corresponden a una característica, se completan; si están customizadas, se aplica 1.2 (no se
@@ -234,6 +288,10 @@ Cada variante se crea con el script (nunca a mano ni copiando otra):
 ```bash
 npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué observar>"
 ```
+
+**Idioma de las descripciones:** si la documentación de PrimeNG trae la descripción (como la del
+componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
+se escribe **en español**. Los títulos siguen como en PrimeNG.
 
 Con 3 o más variantes, aplica `ordenar-variantes` siguiendo el orden de la documentación de PrimeNG
 (`npm run order:variants -- <id> basic icon image …`), sin preguntar posición.
@@ -307,6 +365,8 @@ Reglas:
   listeners en vez de `addEventListener` cuando se pueda.
 - Prohibido: imports de `primeng/*` o `@primeuix/*`, `any`, `as unknown as`, propiedades públicas sin
   uso, imports de `core/`, `service/` o `variants/` (la base se extrae a npm), datos mock.
+- Permitido: importar la **base** de otro `int-*` declarado en `requires` y en `done`
+  (`../../../<dep>/version-N/base/<dep>`), nunca sus variantes ni sus estilos sueltos (1.6).
 - Comentarios (inglés): responsabilidad del componente, inputs/outputs no evidentes, signals de estado,
   `computed`, foco/a11y, diferencias con PrimeNG. Nada de comentarios que repitan la línea.
 
@@ -372,7 +432,7 @@ cabecera). Completar:
   Sin clases de documentación ni estilos inline: si se muestran varios valores juntos (todas las
   severidades), van como componentes seguidos; la página de documentación ya les da espacio.
 - Descripción de la cabecera: qué demuestra, qué atributos usa, qué observar (estado, teclado, evento)
-  y limitaciones. Una o dos frases.
+  y limitaciones. Una o dos frases, en español cuando la redactas tú (ver 2.4).
 - `example.ts`: un solo componente exportado; datos de demostración como constante tipada en el mismo
   archivo (`const MOCK_ITEMS: readonly Item[] = […]`) expuesta en la clase; `signal()` solo si el ejemplo
   la modifica (p. ej. lista de chips que se eliminan con `onRemove`). Sin servicios, HTTP ni `*.mock.ts`.
@@ -399,6 +459,13 @@ grep -rnE "^\s*--int-[a-z0-9-]+:" src/components/<id>/ | grep -v "var(--i-"   # 
 grep -rnE "class=\"([^\"]* )?(icon|label|active|disabled|container|selected)( |\")" src/components/<id>/
 ```
 
+Dependencias (1.6), no deben salir vacías sino coincidir con lo reportado:
+
+```bash
+grep -rn "dep:[a-z-]* provisional" src/components/<id>/     # un bloque por dependencia no done
+grep -n "requires" src/components/<id>/<id>.config.ts        # todas las dependencias detectadas
+```
+
 Revisión manual (lista corta, en el informe):
 - Cada input/output del inventario marcado como implementado existe con el mismo nombre y default.
 - Cada variante usa solo la API pública de `Int<Id>` y su descripción coincide con lo que muestra.
@@ -423,7 +490,10 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 2. Archivos creados / modificados (rutas como enlaces).
 3. Funcionalidades implementadas (tabla del inventario con ✅ / ➖ descartado + motivo).
 4. Variantes generadas con su enlace `/components/<id>#<id>-<slug>`.
-5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué.
+5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué; y **componentes
+   `int-*` requeridos** (1.6): estado, diseñador a cargo, real o provisional, y
+   "cuando esté done: `/resolver-dependencias <dep>`".
+5b. Con Figma: tabla de ejes y formatos con lo decidido; formatos que quedaron como componente aparte.
 6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente)
    y, con Figma, diferencias con el diseño (valores aproximados a un token, lo que Figma no mostraba).
 7. Validaciones ejecutadas con su resultado real.
@@ -454,3 +524,7 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   (React/Tailwind): es referencia; se escribe en Angular + BEM + `--int-*` → `--i-*`.
 - ❌ Cambiar la API o el comportamiento de PrimeNG porque Figma muestra otra cosa: Figma manda en lo
   visual, PrimeNG en el comportamiento.
+- ❌ Leer solo el nodo del link de Figma: se recorre su frame padre (ejes y formatos).
+- ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
+  `dep:<id> provisional` y se declara en `requires`.
+- ❌ Usar un provisional sin marcar o importar un `int-*` que no está en `done`.

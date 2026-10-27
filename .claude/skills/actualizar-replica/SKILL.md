@@ -28,6 +28,8 @@ Lo que no venga en el pedido se pregunta en **un solo mensaje**:
 2. **Link de Figma**: se lee de la cabecera de `version-N/base/<id>.html` (línea `figma:`).
    - Sin línea `figma:` → pedir el "Link to selection" del componente.
    - Si el usuario da un link distinto al guardado → preguntar si reemplaza el guardado.
+   - Si la cabecera tiene `figma-frame:` (frame padre con todas las variantes y formatos), se compara
+     también ese frame, eje por eje (ver `replicar-primeng/references/figma.md`, sección 3).
 3. **Modo**: verificar y actualizar (por defecto) o **solo verificar** (`--solo-verificar`).
 
 Si la versión está en plantilla (sin estilos), no hay nada que actualizar: sugerir `/replicar-primeng`.
@@ -40,7 +42,9 @@ Si la versión está en plantilla (sin estilos), no hay nada que actualizar: sug
 2. Leer lo implementado en `version-N/styles/*.scss` (TOKENS de `_<id>.scss` y módulos) y la estructura
    de `base/<id>.html`.
 3. Comparar **cada valor de Figma** con su token, usando el comentario `// Figma: <valor> (<variable>)`
-   como huella de lo que se aplicó la última vez:
+   como huella de lo que se aplicó la última vez. Con `figma-frame:`, el comentario lleva el eje
+   (`[Size=Small]`, `[State=Hover]`) y se compara con la muestra de ese valor del eje; un eje o formato
+   nuevo en el frame cuenta como 🆕 y se clasifica como en `replicar-primeng` 1.5:
 
 | Estado | Cómo se detecta | Acción propuesta |
 |---|---|---|
@@ -88,7 +92,7 @@ Pregunta en un solo mensaje:
 - **Base** (`<id>.ts` / `<id>.html`): solo si el usuario aprobó una extensión `int-*` o un cambio de
   estructura. La API de PrimeNG no se renombra ni se quita.
 - **Variantes**: una variante nueva solo para una extensión aprobada, con `npm run new:variant`.
-- **Cabecera**: si el usuario aprobó un link nuevo, reemplazar la línea `figma:`. Título, descripción,
+- **Cabecera**: si el usuario aprobó un link nuevo, reemplazar la línea `figma:` (o `figma-frame:`). Título, descripción,
   `status` y `designer` no se tocan.
 - Lo ✏️ customizado solo se cambia con **forzar**, y forzar aplica a las filas listadas, no a todo.
 

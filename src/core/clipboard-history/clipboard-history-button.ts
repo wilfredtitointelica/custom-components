@@ -25,6 +25,8 @@ const COPIED_MS = 1500;
 /** Gap between the panel and the preview card, and room the card needs to its left. */
 const PREVIEW_GAP = 12;
 const PREVIEW_ROOM = 120;
+/** Wait before hiding the preview card, so moving to the next entry glides it instead of fading out and in. */
+const PREVIEW_HIDE_MS = 90;
 
 /** What the floating card next to an entry shows: the icon glyph or the color of a token. */
 type ClipPreviewContent = { readonly kind: 'icon'; readonly className: string } | { readonly kind: 'color'; readonly color: string };
@@ -59,7 +61,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
           </button>
         </header>
 
-        <div class="doc-clip-body" (scroll)="preview.set(null)">
+        <div class="doc-clip-body" (scroll)="hidePreview(0)">
           @for (group of groups(); track group.kind) {
             @if (!$first) {
               <hr class="doc-clip-divider" />
@@ -79,9 +81,9 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
                     class="doc-clip-item"
                     [class.doc-is-copied]="copied() === entry.id"
                     (mouseenter)="showPreview(entry, $any($event.currentTarget), panel)"
-                    (mouseleave)="preview.set(null)"
+                    (mouseleave)="hidePreview()"
                     (focusin)="showPreview(entry, $any($event.currentTarget), panel)"
-                    (focusout)="preview.set(null)"
+                    (focusout)="hidePreview()"
                   >
                     <!-- Code: link to its variant, with the Code panel open on the copied tab. -->
                     @if (sourceOf(entry); as source) {
@@ -136,9 +138,15 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
           }
         </div>
 
-        <!-- Fixed (not absolute), so the overflow of the panel does not clip it. -->
+        <!-- Fixed (not absolute), so the overflow of the panel does not clip it. Stays mounted so it can fade out. -->
         @if (preview(); as p) {
-          <div class="doc-clip-preview" [style.top.px]="p.top" [style.left.px]="p.left" aria-hidden="true">
+          <div
+            class="doc-clip-preview"
+            [class.doc-is-visible]="previewShown()"
+            [style.top.px]="p.top"
+            [style.left.px]="p.left"
+            aria-hidden="true"
+          >
             @if (p.kind === 'icon') {
               <i class="doc-clip-preview-glyph {{ p.className }}"></i>
             } @else {
@@ -193,7 +201,11 @@ export class ClipboardHistoryButton {
   protected readonly copied = signal<string | null>(null);
   /** Card shown to the left of the hovered (or focused) entry, for icons and color tokens. */
   protected readonly preview = signal<ClipPreview | null>(null);
+  /** Whether the preview card is faded in; its content stays while it fades out. */
+  protected readonly previewShown = signal(false);
   private timer?: ReturnType<typeof setTimeout>;
+  private previewTimer?: ReturnType<typeof setTimeout>;
+  private previewFrame?: number;
 
   /** Where the icon font comes from right now (Style Guide bundle or the local fallback). */
   private readonly iconSource = inject(ExternalResources).iconSource;
@@ -213,7 +225,11 @@ export class ClipboardHistoryButton {
 
   constructor() {
     const destroyRef = inject(DestroyRef);
-    destroyRef.onDestroy(() => clearTimeout(this.timer));
+    destroyRef.onDestroy(() => {
+      clearTimeout(this.timer);
+      clearTimeout(this.previewTimer);
+      cancelAnimationFrame(this.previewFrame ?? 0);
+    });
 
     afterNextRender(() => {
       const stack = document.querySelector('.doc-toast-stack');
@@ -258,20 +274,38 @@ export class ClipboardHistoryButton {
   protected onToggle(isOpen: boolean): void {
     this.open.set(isOpen);
     if (!isOpen) {
-      this.preview.set(null);
+      this.hidePreview(0);
     }
   }
 
-  /** Places the preview card outside the panel, vertically centered on the entry; nothing when there is no room. */
+  /**
+   * Places the preview card outside the panel, vertically centered on the entry; nothing when there is no room.
+   * Already visible, it glides to the new entry. Hidden, it moves first and fades in on a later frame, so it
+   * does not slide from where it was last shown.
+   */
   protected showPreview(entry: ClipEntry, item: HTMLElement, panel: HTMLElement): void {
     const content = previewOf(entry);
     const panelLeft = panel.getBoundingClientRect().left;
     if (!content || panelLeft < PREVIEW_ROOM) {
-      this.preview.set(null);
+      this.hidePreview(0);
       return;
     }
+    clearTimeout(this.previewTimer);
     const rect = item.getBoundingClientRect();
     this.preview.set({ ...content, top: rect.top + rect.height / 2, left: panelLeft - PREVIEW_GAP });
+    if (!this.previewShown()) {
+      cancelAnimationFrame(this.previewFrame ?? 0);
+      this.previewFrame = requestAnimationFrame(() => {
+        this.previewFrame = requestAnimationFrame(() => this.previewShown.set(true));
+      });
+    }
+  }
+
+  /** Fades the preview card out (after a short wait, so hovering the next entry keeps it). */
+  protected hidePreview(delay = PREVIEW_HIDE_MS): void {
+    clearTimeout(this.previewTimer);
+    cancelAnimationFrame(this.previewFrame ?? 0);
+    this.previewTimer = setTimeout(() => this.previewShown.set(false), delay);
   }
 
   protected async copy(entry: ClipEntry): Promise<void> {

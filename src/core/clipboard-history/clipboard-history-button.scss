@@ -521,8 +521,23 @@
   color: var(--doc-ink);
   box-shadow: 0 8px 24px rgb(22 50 92 / 0.16);
   pointer-events: none;
-  transform: translate(-100%, -50%);
-  animation: doc-clip-preview-in 0.15s var(--doc-ease-emphasized);
+  opacity: 0;
+  transform: translate(calc(-100% + 8px), -50%) scale(0.96);
+  transform-origin: right center;
+  /* Hidden: no transition on top, so it jumps to the next entry while invisible. */
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.22s ease-out;
+
+  /* Visible: also glides between entries instead of jumping. */
+  &.doc-is-visible {
+    opacity: 1;
+    transform: translate(-100%, -50%);
+    transition:
+      opacity 0.22s ease-out,
+      transform 0.3s var(--doc-ease-emphasized),
+      top 0.28s var(--doc-ease-emphasized);
+  }
 
   &::after {
     content: '';
@@ -538,13 +553,6 @@
   }
 }
 
-@keyframes doc-clip-preview-in {
-  from {
-    opacity: 0;
-    transform: translate(calc(-100% + 4px), -50%);
-  }
-}
-
 .doc-clip-preview-glyph {
   display: block;
   font-size: 2.5rem;
@@ -556,6 +564,7 @@
   height: 48px;
   border-radius: var(--doc-radius-sm);
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+  transition: background 0.25s ease-out;
 }
 
 .doc-clip-preview-value {
@@ -569,8 +578,13 @@
   .doc-clip-fab-icon.doc-is-bumped,
   .doc-clip-drop,
   .doc-clip-ripple,
-  .doc-clip-preview,
   .doc-clip-panel:popover-open {
     animation: none;
+  }
+
+  .doc-clip-preview,
+  .doc-clip-preview.doc-is-visible {
+    transform: translate(-100%, -50%);
+    transition: opacity 0.18s ease-out;
   }
 }

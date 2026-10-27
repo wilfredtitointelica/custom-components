@@ -21,6 +21,17 @@ describe('parseDocHtml', () => {
     });
   });
 
+  it('reads the figma-frame link apart from the figma link', () => {
+    const html = parseDocHtml(
+      '<!--\n  title: Card\n  figma: https://www.figma.com/design/abc/Lib?node-id=1-2\n  figma-frame: https://www.figma.com/design/abc/Lib?node-id=1-1\n-->\nint-card',
+    );
+    expect(html.meta).toEqual({
+      title: 'Card',
+      figma: 'https://www.figma.com/design/abc/Lib?node-id=1-2',
+      figmaFrame: 'https://www.figma.com/design/abc/Lib?node-id=1-1',
+    });
+  });
+
   it('omits empty header values', () => {
     expect(parseDocHtml('<!--\n  title: Basic\n  description:\n-->\n').meta).toEqual({ title: 'Basic' });
   });

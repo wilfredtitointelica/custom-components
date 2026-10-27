@@ -42,6 +42,21 @@
         Figma
       </a>
     }
+    <!-- Components it composes: `requires` of <id>.config.ts, with the status of their latest version. -->
+    @for (required of requirements(); track required.id) {
+      @if (required.path; as path) {
+        <a class="doc-chip doc-chip-link" [routerLink]="path" [title]="'Requires ' + required.name">
+          <i class="pi pi-link" aria-hidden="true"></i>
+          Requires {{ required.name }}
+          <app-status-chip [status]="required.status" size="sm" />
+        </a>
+      } @else {
+        <span class="doc-chip" [title]="required.id + ' is not created yet'">
+          <i class="pi pi-link" aria-hidden="true"></i>
+          Requires {{ required.name }} · not created
+        </span>
+      }
+    }
     <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
     <app-designer-badge class="doc-designer" [designer]="version?.designer" />
   </div>

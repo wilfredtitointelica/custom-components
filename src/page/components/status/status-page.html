@@ -115,6 +115,7 @@
         <col class="doc-w-designer" />
         <col class="doc-w-version" />
         <col class="doc-w-status" />
+        <col class="doc-w-requires" />
         <col class="doc-w-variants" />
         <col class="doc-w-previous" />
       </colgroup>
@@ -125,6 +126,7 @@
           <th scope="col">Diseñador</th>
           <th scope="col">Versión</th>
           <th scope="col">Estado</th>
+          <th scope="col">Requiere</th>
           <th scope="col" class="doc-col-number">Variantes</th>
           <th scope="col">Versiones anteriores</th>
         </tr>
@@ -157,6 +159,23 @@
               }
             </td>
             <td><app-status-chip [status]="row.status" size="sm" /></td>
+            <!-- `requires` of <id>.config.ts: components to finish first (not created = no link). -->
+            <td>
+              @for (required of row.requires; track required.id) {
+                @if (required.path; as path) {
+                  <a class="doc-previous-version" [routerLink]="path" [title]="'Requires ' + required.name">
+                    {{ required.name }}
+                    <app-status-chip [status]="required.status" size="sm" />
+                  </a>
+                } @else {
+                  <span class="doc-previous-version doc-muted" [title]="required.id + ' is not created yet'">
+                    {{ required.id }} · not created
+                  </span>
+                }
+              } @empty {
+                <span class="doc-muted">—</span>
+              }
+            </td>
             <td class="doc-col-number">{{ row.component.variants.length }}</td>
             <td>
               @for (version of row.previous; track version.number) {
@@ -176,7 +195,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="7" class="doc-empty">No hay componentes con este filtro.</td>
+            <td colspan="8" class="doc-empty">No hay componentes con este filtro.</td>
           </tr>
         }
       </tbody>
