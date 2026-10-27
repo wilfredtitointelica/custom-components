@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,11 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The trigger uses the shared field look (--int-field-*); the panel uses the overlay surface.
 .int-dropdown-select {
+  display: inline-flex;
+  min-width: 10rem;
+  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +24,85 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-dropdown-select {
+  &__trigger {
+    @include int.field-box;
+    display: flex;
+    align-items: center;
+    gap: var(--i-spacing-gap-sm);
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+
+    &:hover {
+      border-color: int.field(border-hover);
+    }
+    &:focus-visible {
+      border-color: int.field(border-focus);
+    }
+  }
+
+  &__label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--placeholder {
+      color: int.field(placeholder);
+    }
+  }
+
+  // #selectedItem content: one row, so block-level icons (`.icon` is display: flex) sit beside the text.
+  &__value {
+    display: flex;
+    align-items: center;
+    gap: var(--i-spacing-gap-sm);
+    min-width: 0;
+
+    > * {
+      flex-shrink: 0;
+    }
+  }
+
+  &__clear {
+    @include int.reset-button;
+    display: inline-flex;
+    color: int.field(icon-color);
+    font-size: var(--i-icon-size-xs);
+
+    &:hover {
+      color: var(--i-icon-color-default);
+    }
+  }
+
+  &__icon {
+    color: var(--i-icon-color-default);
+    font-size: var(--i-icon-size-sm);
+    transition: transform var(--i-motion-base);
+  }
+
+  // Rendered in the CDK overlay container, outside the host.
+  // Options: grey/50 rows, grey/100 on hover or keyboard focus, solid blue/700 + blue/50 when selected.
+  &__panel {
+    --int-option-radius: var(--i-border-radius-lg);
+    --int-option-background:var(--i-color-secondary-50);
+    --int-option-background-focused: var(--i-color-secondary-100);
+    --int-option-background-hover: var(--i-color-secondary-100);
+    --int-option-background-selected: var(--i-color-primary-700);
+    --int-option-color-selected: var(--i-color-primary-50);
+    --int-option-font-weight-selected: var(--i-typography-font-weight-regular);
+
+    @include int.overlay-surface;
+    width: 100%;
+    overflow: hidden;
+    background: var(--i-color-secondary-50);
+
+    .int-list-box__option--selected .int-list-box__check {
+      color: inherit;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +110,26 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-dropdown-select {
+  @include int.field-sizes(int-dropdown-select);
+
+  &--fluid {
+    display: flex;
+  }
+  &--open &__trigger {
+    border-color: int.field(border-focus);
+  }
+  &--open &__icon {
+    transform: rotate(180deg);
+  }
+  &--invalid &__trigger {
+    border-color: int.field(border-invalid);
+  }
+  &--disabled &__trigger {
+    background: int.field(background-disabled);
+    color: int.field(color-disabled);
+    border-color: transparent;
+    cursor: default;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +137,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-dropdown-select {
+  display: inline-block;
+  width: 10rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

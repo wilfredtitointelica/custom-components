@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,21 +12,37 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-.int-input {
+// Text field (input[intInputText] / textarea[intInputText]): parity with Style Guide `.prInputText`
+// (32px, radius 8, grey border, blue-900 focus). The look is read from --int-field-* (see _shared_/mixins),
+// so overriding one on any ancestor restyles every field inside it. Checkbox, radio and number hosts
+// also carry .int-input but only as a block for their type modifier: the field box is for native fields.
+.int-input:is(input, textarea) {
+  @include int.field-box;
+  margin: 0;
+  appearance: none;
+  outline: none;
+
+  &::placeholder {
+    color: int.field(placeholder);
+    opacity: 1;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
-.int-input {
-}
-
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-input {
+.int-input:is(input, textarea) {
+  @include int.field-states(int-input);
+  @include int.field-sizes(int-input);
+
+  &.int-input--invalid::placeholder {
+    color: int.field(color-invalid);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +50,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-input {
+  display: inline-block;
+  width: 12rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

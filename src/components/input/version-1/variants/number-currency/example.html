@@ -1,0 +1,8 @@
+<!--
+  title: Number · Currency
+  description: mode="currency" con currency (ISO 4217), currencyDisplay y locale propios.
+-->
+<int-inputnumber [(ngModel)]="fee" mode="currency" currency="USD" [min]="0" />
+<int-inputnumber [(ngModel)]="fee" mode="currency" currency="PEN" />
+<int-inputnumber [(ngModel)]="fee" mode="currency" currency="EUR" currencyDisplay="code" locale="de-DE" />
+<p>Value: {{ fee }}</p>

@@ -1,5 +1,74 @@
 <!--
   title: ListBox
-  description:
+  description: Lista seleccionable (simple o múltiple) con filtro y navegación completa por teclado (patrón WAI-ARIA listbox). Dropdown-select la reutiliza como su motor de opciones.
 -->
-int-list-box
+@if (filter()) {
+  <div class="int-list-box__filter">
+    <input
+      #filterInput
+      intInputText
+      intSize="small"
+      fluid
+      type="text"
+      role="searchbox"
+      autocomplete="off"
+      [placeholder]="filterPlaceholder() ?? config.t('searchPlaceholder')"
+      [value]="filterValue()"
+      [disabled]="isDisabled()"
+      [attr.aria-controls]="listId"
+      [attr.aria-activedescendant]="activeDescendant()"
+      (input)="onFilterInput($event)"
+      (keydown)="handleKeydown($event)"
+    />
+    <int-icon class="int-list-box__filter-icon" name="search" />
+  </div>
+}
+<ul
+  class="int-list-box__list"
+  role="listbox"
+  [id]="listId"
+  [style.max-height]="scrollHeight()"
+  [attr.tabindex]="embedded() || isDisabled() ? -1 : 0"
+  [attr.aria-activedescendant]="listFocused() ? activeDescendant() : null"
+  [attr.aria-multiselectable]="multiple() || null"
+  [attr.aria-disabled]="isDisabled() || null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  (keydown)="handleKeydown($event)"
+  (focus)="onListFocus()"
+  (blur)="onListBlur()"
+>
+  @for (option of visibleOptions(); track $index; let i = $index) {
+    @let selected = isSelected(option);
+    <!-- Keyboard is handled on the listbox (aria-activedescendant pattern), not per option. -->
+    <li
+      role="option"
+      class="int-list-box__option"
+      [id]="optionId(i)"
+      [class.int-list-box__option--selected]="selected"
+      [class.int-list-box__option--focused]="focusedIndex() === i && (listFocused() || embedded())"
+      [class.int-list-box__option--disabled]="isDisabledOption(option)"
+      [attr.aria-selected]="selected"
+      [attr.aria-disabled]="isDisabledOption(option) || null"
+      (mousedown)="onOptionMousedown($event)"
+      (mousemove)="focusedIndex.set(i)"
+      (click)="selectOption($event, option, i)"
+    >
+      @if (checkmark()) {
+        <int-icon class="int-list-box__check" name="check" [class.int-list-box__check--hidden]="!selected" />
+      }
+      @if (resolvedItemTemplate(); as tpl) {
+        <ng-container
+          [ngTemplateOutlet]="tpl"
+          [ngTemplateOutletContext]="{ $implicit: option, index: i, selected }"
+        />
+      } @else {
+        <span class="int-list-box__label">{{ label(option) }}</span>
+      }
+    </li>
+  } @empty {
+    <li class="int-list-box__empty" role="option" aria-selected="false" aria-disabled="true">
+      {{ filterValue() ? (emptyFilterMessage() ?? config.t('emptyFilterMessage')) : (emptyMessage() ?? config.t('emptyMessage')) }}
+    </li>
+  }
+</ul>

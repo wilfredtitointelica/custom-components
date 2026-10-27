@@ -1,4 +1,9 @@
 <!--
   title: Basic
-  description:
+  description: Selector de columnas, el patrón típico de tablas - un Popover con un List-box múltiple. toggle($event) lo ancla al botón.
 -->
+<button intButton label="Columns" icon="icon icon-list" severity="secondary" (click)="op.toggle($event)"></button>
+<int-popover #op ariaLabel="Visible columns">
+  <int-list-box [options]="columns" [(ngModel)]="visibleColumns" multiple checkmark ariaLabel="Columns" />
+</int-popover>
+<p>Visible: {{ visibleColumns.join(', ') }}</p>

@@ -1,4 +1,15 @@
 <!--
   title: Basic
-  description:
+  description: Modo avanzado (por defecto) - acepta .csv y .xlsx de hasta 5 MB, con un máximo de 3 archivos. Upload emite uploadHandler y la app hace la subida.
 -->
+<int-file-upload
+  #fu
+  multiple
+  accept=".csv,.xlsx"
+  [maxFileSize]="5_000_000"
+  [fileLimit]="3"
+  chooseIcon="icon icon-add"
+  uploadIcon="icon icon-upload"
+  (uploadHandler)="upload($event); fu.clear()"
+/>
+<p>Uploaded: {{ uploaded().join(', ') || '—' }}</p>

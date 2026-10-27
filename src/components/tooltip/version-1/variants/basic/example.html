@@ -1,4 +1,7 @@
 <!--
   title: Basic
-  description:
+  description: intTooltip con tooltipPosition - top, right, bottom o left (si no hay espacio, usa el lado opuesto).
 -->
+@for (placement of placements; track placement) {
+  <button intButton severity="secondary" [label]="placement" [intTooltip]="'Tooltip on ' + placement" [tooltipPosition]="placement"></button>
+}

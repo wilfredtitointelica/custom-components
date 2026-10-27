@@ -1,0 +1,12 @@
+<!--
+  title: Templates
+  description: #selectedItem dibuja el valor elegido en el trigger y #item cada opción del panel. Diners Club está deshabilitado.
+-->
+<int-dropdown-select [options]="brands" optionLabel="name" optionDisabled="inactive" [(ngModel)]="brand" placeholder="Brand" ariaLabel="Brand">
+  <ng-template #selectedItem let-brand>
+    <span [class]="brand.icon" aria-hidden="true"></span> {{ brand.name }}
+  </ng-template>
+  <ng-template #item let-brand>
+    <span [class]="brand.icon" aria-hidden="true"></span> {{ brand.name }} ({{ brand.code }})
+  </ng-template>
+</int-dropdown-select>

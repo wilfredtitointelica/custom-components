@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -6,11 +8,144 @@
   --NOTE-BUTTON: 'int-button ( Custom )';
 }
 
+// Each severity defines its solid colors + an accent used by the outlined/text variants.
+$severities: (
+  primary: (
+    background: var(--i-color-primary-base),
+    color: var(--i-button-primary-color),
+    border: transparent,
+    hover-background: var(--i-button-primary-hover-background),
+    hover-color: var(--i-button-primary-hover-color),
+    active-background: var(--i-button-primary-pressed-background),
+    accent: var(--i-color-primary-700),
+  ),
+  // Hover is grey/100 (#F2F2F5) by design: --i-button-secondary-hover-background resolves to blue/100.
+  secondary: (
+    background: var(--i-button-secondary-background),
+    color: var(--i-button-secondary-color),
+    border: var(--i-button-secondary-border),
+    hover-background: var(--i-color-secondary-100),
+    hover-color: var(--i-button-secondary-hover-color),
+    hover-border: var(--i-button-secondary-hover-border),
+    active-background: var(--i-button-secondary-pressed-background),
+    active-color: var(--i-button-secondary-pressed-color),
+    active-border: var(--i-button-secondary-pressed-border),
+    accent: var(--i-color-secondary-700),
+  ),
+  success: (
+    background: var(--i-button-primary-success-background),
+    color: var(--i-button-primary-success-color),
+    border: var(--i-button-secondary-success-border),
+    hover-background: var(--i-color-success-100),
+    hover-color: var(--i-button-primary-success-color),
+    active-background: var(--i-color-success-200),
+    accent: var(--i-color-success-800),
+  ),
+  info: (
+    background: var(--i-background-info),
+    color: var(--i-text-color-default),
+    border: var(--i-border-info),
+    hover-background: var(--i-color-primary-200),
+    hover-color: var(--i-text-color-default),
+    active-background: var(--i-color-primary-300),
+    accent: var(--i-color-primary-700),
+  ),
+  warn: (
+    background: var(--i-background-warning),
+    color: var(--i-color-warning-700),
+    border: var(--i-border-warning),
+    hover-background: var(--i-color-warning-200),
+    hover-color: var(--i-color-warning-700),
+    active-background: var(--i-color-warning-300),
+    accent: var(--i-color-warning-700),
+  ),
+  danger: (
+    background: var(--i-button-primary-error-background),
+    color: var(--i-button-primary-error-color),
+    border: var(--i-button-secondary-error-border),
+    hover-background: var(--i-color-error-100),
+    hover-color: var(--i-button-primary-error-color),
+    active-background: var(--i-color-error-200),
+    accent: var(--i-color-error-700),
+  ),
+  contrast: (
+    background: var(--i-color-primary-900),
+    color: var(--i-color-primary-50),
+    border: transparent,
+    hover-background: var(--i-color-primary-800),
+    hover-color: var(--i-color-primary-50),
+    active-background: var(--i-color-primary-900),
+    accent: var(--i-color-primary-900),
+  ),
+);
+
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Visual parity with the Style Guide `.prButton` skin, using --i-button-* tokens.
+// Overridable props: --int-button-{height,padding-x,radius,font-size,icon-size} and the severity
+// colors --int-button-{background,color,border,hover-*,active-*,accent}. hover-border and
+// active-{color,border} default to the resting / hover values when a severity doesn't set them.
 .int-button {
+  --int-button-hover-border: var(--int-button-border);
+  --int-button-active-color: var(--int-button-hover-color);
+  --int-button-active-border: var(--int-button-hover-border);
+  --int-button-height: var(--i-button-sizing-lg);
+  --int-button-padding-x: var(--i-button-padding-x-md);
+  --int-button-radius: var(--i-button-border-radius-lg);
+  --int-button-font-size: var(--i-button-font-size-md);
+  --int-button-icon-size: var(--i-icon-size-sm);
+
+  @include int.reset-button;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--i-button-gap-xs);
+  box-sizing: border-box;
+  min-height: var(--int-button-height);
+  padding: 0 var(--int-button-padding-x);
+  border: var(--i-button-border-width-sm) solid var(--int-button-border);
+  border-radius: var(--int-button-radius);
+  background: var(--int-button-background);
+  color: var(--int-button-color);
+  font-family: var(--i-button-font-fontFamily);
+  font-size: var(--int-button-font-size);
+  font-weight: var(--i-button-font-weight);
+  line-height: var(--i-button-font-lineHeight-md);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  vertical-align: middle;
+  transition:
+    background-color var(--i-motion-base),
+    border-color var(--i-motion-base),
+    color var(--i-motion-base);
+
+  &:not([disabled]):hover {
+    background: var(--int-button-hover-background);
+    border-color: var(--int-button-hover-border);
+    color: var(--int-button-hover-color);
+  }
+  &:not([disabled]):active {
+    background: var(--int-button-active-background);
+    border-color: var(--int-button-active-border);
+    color: var(--int-button-active-color);
+  }
+  &:focus-visible {
+    @include int.focus-ring;
+  }
+  &[disabled] {
+    background: var(--i-button-primary-disabled-background);
+    border-color: transparent;
+    color: var(--i-button-primary-disabled-color);
+    cursor: default;
+  }
+}
+
+// Anchors ignore the disabled attribute natively.
+a.int-button[disabled] {
+  pointer-events: none;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +153,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-button {
+  &__icon {
+    font-size: var(--int-button-icon-size);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +163,106 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-button {
+  // Severities
+  @each $name, $tokens in $severities {
+    &--#{$name} {
+      @each $key, $value in $tokens {
+        --int-button-#{$key}: #{$value};
+      }
+    }
+  }
+
+  // Variants
+  &--outlined,
+  &--text {
+    --int-button-background: transparent;
+    --int-button-color: var(--int-button-accent);
+    --int-button-hover-background: var(--i-background-hover);
+    --int-button-hover-color: var(--int-button-accent);
+    --int-button-hover-border: var(--int-button-border);
+    --int-button-active-background: var(--i-color-primary-200);
+    --int-button-active-color: var(--int-button-accent);
+    --int-button-active-border: var(--int-button-border);
+  }
+  &--outlined {
+    --int-button-border: var(--int-button-accent);
+  }
+  &--text {
+    --int-button-border: transparent;
+  }
+  &--outlined[disabled],
+  &--text[disabled],
+  &--link[disabled] {
+    background: transparent;
+  }
+  &--link {
+    --int-button-background: transparent;
+    --int-button-border: transparent;
+    --int-button-color: var(--i-button-hyperlink-color);
+    --int-button-hover-background: transparent;
+    --int-button-hover-color: var(--i-button-hyperlink-hover-color);
+    --int-button-hover-border: transparent;
+    --int-button-active-background: transparent;
+    --int-button-active-color: var(--int-button-hover-color);
+    --int-button-active-border: transparent;
+    --int-button-font-size: var(--i-button-font-size-sm);
+    text-decoration: underline;
+  }
+  &--link.int-button--danger {
+    --int-button-color: var(--i-button-hyperlink-error-color);
+    --int-button-hover-color: var(--i-button-hyperlink-error-color);
+  }
+  &--link.int-button--success {
+    --int-button-color: var(--i-button-hyperlink-success-color);
+    --int-button-hover-color: var(--i-button-hyperlink-success-color);
+  }
+
+  // Sizes
+  &--small {
+    --int-button-height: var(--i-button-sizing-md);
+    --int-button-padding-x: var(--i-button-padding-x-sm);
+    --int-button-radius: var(--i-button-border-radius-md);
+    --int-button-font-size: var(--i-button-font-size-sm);
+    --int-button-icon-size: var(--i-icon-size-xs);
+  }
+  &--large {
+    --int-button-height: var(--i-button-sizing-xl);
+    --int-button-padding-x: var(--i-button-padding-x-lg);
+    --int-button-radius: var(--i-button-border-radius-xl);
+    --int-button-font-size: var(--i-button-font-size-lg);
+    --int-button-icon-size: var(--i-icon-size-md);
+  }
+
+  // Flags
+  &--rounded {
+    --int-button-radius: var(--i-border-radius-full);
+  }
+  &--fluid {
+    width: 100%;
+  }
+  &--icon-only {
+    width: var(--int-button-height);
+    padding: 0;
+  }
+  &--loading {
+    cursor: progress;
+  }
+
+  // Icon position
+  &--icon-right {
+    flex-direction: row-reverse;
+  }
+  &--icon-top,
+  &--icon-bottom {
+    --int-button-height: auto;
+    padding-block: var(--i-button-padding-y-md);
+  }
+  &--icon-top {
+    flex-direction: column;
+  }
+  &--icon-bottom {
+    flex-direction: column-reverse;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +270,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-button {
+  display: inline-block;
+  width: 6rem;
+  height: var(--i-button-sizing-lg);
+  border-radius: var(--i-button-border-radius-lg);
+  background: var(--i-background-disabled);
 }

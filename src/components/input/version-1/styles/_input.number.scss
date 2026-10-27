@@ -1,0 +1,90 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Number
+\*——————————————————————————————————————————————————————————*/
+
+// <int-inputnumber>: an int-input text field (__field) plus optional spin buttons.
+.int-input--number {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+
+  &.int-input--fluid {
+    display: flex;
+    width: 100%;
+  }
+  &.int-input--small {
+    --int-field-height: var(--i-sizing-md);
+  }
+  &.int-input--large {
+    --int-field-height: var(--i-sizing-xl);
+  }
+
+  .int-input__field {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .int-input__button {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: int.field(icon-color);
+    font-size: var(--i-icon-size-xs);
+
+    &:not(:disabled):hover {
+      color: var(--i-icon-color-default);
+      background: var(--i-background-hover);
+    }
+    &:disabled {
+      color: var(--i-icon-color-disabled);
+      cursor: default;
+    }
+  }
+
+  // Stacked: chevrons inside the field, right side.
+  &.int-input--stacked .int-input__field {
+    padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-sm));
+  }
+  .int-input__stack {
+    position: absolute;
+    top: var(--i-border-width-sm);
+    right: var(--i-border-width-sm);
+    bottom: var(--i-border-width-sm);
+    display: flex;
+    flex-direction: column;
+    width: var(--i-sizing-sm);
+
+    .int-input__button {
+      flex: 1 1 50%;
+      &:first-child {
+        border-top-right-radius: var(--i-border-radius-lg);
+      }
+      &:last-child {
+        border-bottom-right-radius: var(--i-border-radius-lg);
+      }
+    }
+  }
+
+  // Horizontal: [-][ input ][+]
+  &.int-input--horizontal .int-input__field {
+    border-radius: 0;
+    text-align: center;
+  }
+  &.int-input--horizontal .int-input__button {
+    width: int.field(height);
+    border: var(--i-border-width-sm) solid int.field(border);
+    background: var(--i-background-default);
+  }
+  .int-input__button--decrement {
+    border-right-width: 0;
+    border-radius: int.field(radius) 0 0 int.field(radius);
+  }
+  .int-input__button--increment {
+    border-left-width: 0;
+    border-radius: 0 int.field(radius) int.field(radius) 0;
+  }
+}

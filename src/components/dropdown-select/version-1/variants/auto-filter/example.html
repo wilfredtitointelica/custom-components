@@ -1,0 +1,10 @@
+<!--
+  title: Auto filter
+  description: Con filter y filterThreshold, la búsqueda del panel solo aparece cuando hay más opciones que el umbral (aquí, más de 5).
+-->
+<!-- 4 options: no search -->
+<int-dropdown-select [options]="regions" optionLabel="name" optionValue="code" [(ngModel)]="region"
+                     filter [filterThreshold]="5" ariaLabel="Region" />
+<!-- 8 options: search shown -->
+<int-dropdown-select [options]="countries" optionLabel="name" optionValue="code" [(ngModel)]="country"
+                     filter [filterThreshold]="5" ariaLabel="Country" />

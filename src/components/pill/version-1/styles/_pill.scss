@@ -10,7 +10,33 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Maps the Intelica badge tokens (--i-badge-*) to PrimeNG-style severities.
+// Overridable props: --int-pill-{background,color,border-color,radius,height,padding-x,font-size}.
 .int-pill {
+  --int-pill-background: var(--i-badge-primary-background);
+  --int-pill-color: var(--i-badge-primary-color);
+  --int-pill-border-color: var(--i-badge-primary-border);
+  --int-pill-radius: var(--i-border-radius-md);
+  --int-pill-height: var(--i-sizing-md);
+  --int-pill-padding-x: var(--i-badge-padding-x-md);
+  --int-pill-font-size: var(--i-badge-font-size-sm);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--i-badge-gap-xs);
+  box-sizing: border-box;
+  height: var(--int-pill-height);
+  padding: 0 var(--int-pill-padding-x);
+  border: var(--i-badge-border-width-sm) solid var(--int-pill-border-color);
+  border-radius: var(--int-pill-radius);
+  background: var(--int-pill-background);
+  color: var(--int-pill-color);
+  font-family: var(--i-badge-font-fontFamily);
+  font-size: var(--int-pill-font-size);
+  font-weight: var(--i-badge-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +44,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-pill {
+  &__icon {
+    font-size: var(--i-icon-size-xs);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +54,37 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-pill {
+  &--rounded {
+    --int-pill-radius: var(--i-badge-border-radius-full);
+  }
+
+  // Severities (secondary keeps the block defaults)
+  &--primary,
+  &--info {
+    --int-pill-background: var(--i-badge-primary-info-background);
+    --int-pill-color: var(--i-badge-primary-info-color);
+    --int-pill-border-color: var(--i-badge-primary-info-border);
+  }
+  &--success {
+    --int-pill-background: var(--i-badge-primary-success-background);
+    --int-pill-color: var(--i-badge-primary-success-color);
+    --int-pill-border-color: var(--i-badge-primary-success-border);
+  }
+  &--warn {
+    --int-pill-background: var(--i-badge-primary-warning-background);
+    --int-pill-color: var(--i-badge-primary-warning-color);
+    --int-pill-border-color: var(--i-badge-primary-warning-border);
+  }
+  &--danger {
+    --int-pill-background: var(--i-badge-primary-error-background);
+    --int-pill-color: var(--i-badge-primary-error-color);
+    --int-pill-border-color: var(--i-badge-primary-error-border);
+  }
+  &--contrast {
+    --int-pill-background: var(--i-color-primary-900);
+    --int-pill-color: var(--i-color-primary-50);
+    --int-pill-border-color: var(--i-color-primary-900);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +92,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-pill {
+  display: inline-block;
+  width: 4rem;
+  height: var(--i-sizing-md);
+  border-radius: var(--i-badge-border-radius-full);
+  background: var(--i-background-disabled);
 }

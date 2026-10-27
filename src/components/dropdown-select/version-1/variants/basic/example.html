@@ -1,4 +1,13 @@
 <!--
   title: Basic
-  description:
+  description: optionLabel indica qué se muestra y optionValue qué se guarda en el modelo; placeholder aparece mientras no hay valor.
 -->
+<int-dropdown-select
+  [options]="regions"
+  optionLabel="name"
+  optionValue="code"
+  [(ngModel)]="region"
+  placeholder="Select a region"
+  ariaLabel="Region"
+/>
+<p>Value: {{ region ?? '—' }}</p>

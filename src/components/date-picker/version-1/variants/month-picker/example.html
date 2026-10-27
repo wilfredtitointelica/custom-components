@@ -1,0 +1,7 @@
+<!--
+  title: Month picker
+  description: view="month" elige meses (el valor es el primer día del mes); también funciona con rango.
+-->
+<int-date-picker [(ngModel)]="month" view="month" dateFormat="MM yy" showIcon ariaLabel="Month" />
+<int-date-picker [(ngModel)]="monthRange" view="month" selectionMode="range" dateFormat="M yy" showIcon ariaLabel="Month range" />
+<p>Value: {{ monthRange | json }}</p>

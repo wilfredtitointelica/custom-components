@@ -10,26 +10,46 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prTooltip`. <int-tooltip> is the bubble in the CDK overlay.
+// Overridable props: --int-tooltip-{background,color,border-color,max-width}.
 .int-tooltip {
+  --int-tooltip-background: var(--i-color-secondary-50);
+  --int-tooltip-color: var(--i-color-primary-900);
+  --int-tooltip-border-color: var(--i-color-secondary-200);
+  --int-tooltip-max-width: 360px;
+
+  display: block;
+  box-sizing: border-box;
+  max-width: var(--int-tooltip-max-width);
+  padding: var(--i-spacing-container-md);
+  border: var(--i-border-width-sm) solid var(--int-tooltip-border-color);
+  border-radius: var(--i-border-radius-md);
+  background: var(--int-tooltip-background);
+  box-shadow: var(--i-shadow-depth-2);
+  color: var(--int-tooltip-color);
+  font-family: var(--i-text-body-family);
+  font-size: var(--i-typography-font-size-sm);
+  line-height: var(--i-typography-lineHeight-sm);
+  overflow-wrap: break-word;
+  pointer-events: none;
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
-.int-tooltip {
-}
-
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
-
-.int-tooltip {
-}
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-tooltip {
+  display: inline-block;
+  width: 8rem;
+  height: var(--i-sizing-md);
+  border-radius: var(--i-border-radius-md);
+  background: var(--i-background-disabled);
 }

@@ -12,5 +12,12 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'dropdown-select',
+  variants: [
+    'basic',
+    'filter-clear-checkmark',
+    'templates',
+    'reactive-forms-validation',
+    'sizes-fluid',
+  ],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

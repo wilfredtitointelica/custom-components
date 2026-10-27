@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,26 +12,38 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The block is the panel rendered in the CDK overlay. Overridable prop: --int-popover-padding.
 .int-popover {
+  --int-popover-padding: var(--i-spacing-container-lg);
+
+  @include int.overlay-surface;
+  max-width: min(480px, calc(100vw - 16px));
+  padding: var(--int-popover-padding);
+
+  &:focus-visible {
+    @include int.focus-ring(-2px);
+  }
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
-.int-popover {
-}
-
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
-
-.int-popover {
-}
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-popover {
+  display: block;
+  width: 16rem;
+  height: 8rem;
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

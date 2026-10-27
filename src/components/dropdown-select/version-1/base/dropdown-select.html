@@ -1,5 +1,77 @@
 <!--
   title: Dropdown / Select
-  description:
+  description: Lista desplegable de un solo valor. El panel es un List-box embebido en un overlay del CDK, así que el filtro, las plantillas y el teclado funcionan igual.
 -->
-int-dropdown-select
+<div
+  #trigger
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  class="int-dropdown-select__trigger"
+  role="combobox"
+  aria-haspopup="listbox"
+  [id]="inputId()"
+  [attr.tabindex]="isDisabled() ? -1 : 0"
+  [attr.aria-expanded]="open()"
+  [attr.aria-controls]="open() ? listBox()?.listId : null"
+  [attr.aria-activedescendant]="open() ? listBox()?.activeDescendant() : null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  [attr.aria-disabled]="isDisabled() || null"
+  (click)="toggle()"
+  (keydown)="onTriggerKeydown($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="onTriggerBlur($event)"
+>
+  <span class="int-dropdown-select__label" [class.int-dropdown-select__label--placeholder]="!hasValue()">
+    @if (hasValue()) {
+      @if (selectedItemTemplate(); as tpl) {
+        <span class="int-dropdown-select__value">
+          <ng-container [ngTemplateOutlet]="tpl" [ngTemplateOutletContext]="{ $implicit: selectedOption() }" />
+        </span>
+      } @else {
+        {{ selectedLabel() }}
+      }
+    } @else {
+      {{ placeholder() }}
+    }
+  </span>
+  @if (showClear() && hasValue() && !isDisabled()) {
+    <button type="button" class="int-dropdown-select__clear" tabindex="-1" [attr.aria-label]="config.t('clear')"
+            (click)="clear($event)">
+      <int-icon name="close" />
+    </button>
+  }
+  <int-icon class="int-dropdown-select__icon" name="chevron-down" />
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayMinWidth]="triggerWidth()"
+  [cdkConnectedOverlayViewportMargin]="8"
+  (overlayOutsideClick)="onOutsideClick($event)"
+  (overlayKeydown)="onOverlayKeydown($event)"
+  (detach)="close(false)"
+>
+  <div class="int-dropdown-select__panel" [class]="panelStyleClass() ?? ''">
+    <int-list-box
+      embedded
+      [options]="options()"
+      [optionLabel]="optionLabel()"
+      [optionValue]="optionValue()"
+      [optionDisabled]="optionDisabled()"
+      [dataKey]="dataKey()"
+      [filter]="showFilter()"
+      [filterPlaceholder]="filterPlaceholder()"
+      [checkmark]="checkmark()"
+      [emptyMessage]="emptyMessage()"
+      [emptyFilterMessage]="emptyFilterMessage()"
+      [scrollHeight]="scrollHeight()"
+      [itemTemplate]="itemTemplate()"
+      (onChange)="onListBoxChange($event)"
+    />
+  </div>
+</ng-template>

@@ -1,5 +1,39 @@
 <!--
   title: Dialog / Modal
-  description:
+  description: Ventana modal en un overlay del CDK - el foco queda atrapado y vuelve al botón que la abrió, Escape la cierra y el scroll de la página se bloquea. Los overlays anidados (Dropdown-select, Date-picker) se cierran primero con Escape.
 -->
-int-dialog-modal
+<ng-template #dialog>
+  <div
+    class="int-dialog-modal"
+    role="dialog"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="focusOnShow()"
+    [class]="styleClass() ?? ''"
+    [ngStyle]="style()"
+    [attr.aria-modal]="modal()"
+    [attr.aria-labelledby]="headerId"
+  >
+    <div class="int-dialog-modal__header">
+      <div class="int-dialog-modal__title" [id]="headerId">
+        @if (headerTemplate(); as tpl) {
+          <ng-container [ngTemplateOutlet]="tpl" />
+        } @else {
+          {{ header() }}
+        }
+      </div>
+      @if (closable()) {
+        <button type="button" class="int-dialog-modal__close" [attr.aria-label]="config.t('close')" (click)="close()">
+          <int-icon name="close" />
+        </button>
+      }
+    </div>
+    <div class="int-dialog-modal__content">
+      <ng-content />
+    </div>
+    @if (footerTemplate(); as tpl) {
+      <div class="int-dialog-modal__footer">
+        <ng-container [ngTemplateOutlet]="tpl" />
+      </div>
+    }
+  </div>
+</ng-template>

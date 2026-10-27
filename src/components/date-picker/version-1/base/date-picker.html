@@ -1,5 +1,184 @@
 <!--
   title: DatePicker
-  description:
+  description: Fecha única o rango, con vistas de día, mes y año. Los nombres de meses y días siguen el locale global. Teclado - flechas, RePág/AvPág, Enter y Escape.
 -->
-int-date-picker
+@if (inline()) {
+  <ng-container [ngTemplateOutlet]="panelTpl" />
+} @else {
+  <div class="int-date-picker__input-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+    <input
+      #inputEl
+      intInputText
+      readonly
+      type="text"
+      class="int-date-picker__input"
+      role="combobox"
+      aria-haspopup="dialog"
+      autocomplete="off"
+      [id]="inputId()"
+      [intSize]="size()"
+      [fluid]="fluid()"
+      [invalid]="isInvalid()"
+      [disabled]="isDisabled()"
+      [placeholder]="placeholder() ?? ''"
+      [value]="displayValue()"
+      [attr.aria-label]="ariaLabel() ?? null"
+      [attr.aria-expanded]="open()"
+      [attr.aria-controls]="open() ? panelId : null"
+      (click)="toggle()"
+      (keydown)="onInputKeydown($event)"
+      (blur)="!open() && markAsTouched()"
+    />
+    @if (showClear() && hasValue() && !isDisabled()) {
+      <button type="button" class="int-date-picker__clear" tabindex="-1" [attr.aria-label]="config.t('clear')"
+              (click)="clear($event)">
+        <int-icon name="close" />
+      </button>
+    }
+    @if (showIcon()) {
+      <int-icon class="int-date-picker__icon" name="calendar" (click)="toggle()" />
+    }
+  </div>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayOpen]="open()"
+    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayViewportMargin]="8"
+    (overlayOutsideClick)="onOutsideClick($event)"
+    (detach)="close(false)"
+  >
+    <ng-container [ngTemplateOutlet]="panelTpl" />
+  </ng-template>
+}
+
+<ng-template #panelTpl>
+  <div
+    #panel
+    class="int-date-picker__panel"
+    role="dialog"
+    [cdkTrapFocus]="!inline()"
+    [class]="panelStyleClass() ?? ''"
+    [id]="panelId"
+    [attr.aria-modal]="!inline() || null"
+    [attr.aria-label]="ariaLabel() ?? null"
+    (keydown)="onPanelKeydown($event)"
+  >
+    <!-- Header: prev | month · year | next -->
+    <div class="int-date-picker__header">
+      <button type="button" class="int-date-picker__nav" [attr.aria-label]="currentView() === 'date' ? config.t('prevMonth') : config.t('prevYear')"
+              (click)="navigate(-1)">
+        <int-icon name="chevron-left" />
+      </button>
+      <div class="int-date-picker__title" aria-live="polite">
+        @switch (currentView()) {
+          @case ('date') {
+            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseMonth')"
+                    (click)="switchView('month')">{{ monthLabel() }}</button>
+            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseYear')"
+                    (click)="switchView('year')">{{ focusedDate().getFullYear() }}</button>
+          }
+          @case ('month') {
+            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseYear')"
+                    (click)="switchView('year')">{{ focusedDate().getFullYear() }}</button>
+          }
+          @case ('year') {
+            <span class="int-date-picker__decade">{{ yearPageStart() }} - {{ yearPageStart() + 11 }}</span>
+          }
+        }
+      </div>
+      <button type="button" class="int-date-picker__nav" [attr.aria-label]="currentView() === 'date' ? config.t('nextMonth') : config.t('nextYear')"
+              (click)="navigate(1)">
+        <int-icon name="chevron-right" />
+      </button>
+    </div>
+
+    @switch (currentView()) {
+      @case ('date') {
+        <!-- Keyboard is handled on the grid (roving tabindex), see onGridKeydown. -->
+        <table class="int-date-picker__calendar" role="grid" (keydown)="onGridKeydown($event)" (mouseleave)="onHover(null)">
+          <thead>
+            <tr>
+              @for (day of weekdays(); track $index) {
+                <th scope="col" abbr="{{ day }}">{{ day }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (week of weeks(); track $index) {
+              <tr>
+                @for (cell of week; track cell.date.getTime()) {
+                  @let active = isActiveCell(cell.date, 'day');
+                  <td role="gridcell" [attr.aria-selected]="isSelected(cell.date)">
+                    <span
+                      class="int-date-picker__cell int-date-picker__cell--day"
+                      [id]="cellId(cell.date)"
+                      [class.int-date-picker__cell--other-month]="cell.otherMonth"
+                      [class.int-date-picker__cell--today]="cell.today"
+                      [class.int-date-picker__cell--selected]="isSelected(cell.date)"
+                      [class.int-date-picker__cell--in-range]="isInRange(cell.date)"
+                      [class.int-date-picker__cell--disabled]="!cell.selectable"
+                      [attr.data-active]="active"
+                      [attr.tabindex]="active ? 0 : -1"
+                      [attr.aria-disabled]="!cell.selectable || null"
+                      (click)="selectDay(cell, $event)"
+                      (mouseenter)="onHover(cell.date)"
+                    >{{ cell.date.getDate() }}</span>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @case ('month') {
+        <div class="int-date-picker__grid" role="grid" (keydown)="onGridKeydown($event)">
+          @for (name of shortMonths(); track $index; let m = $index) {
+            @let date = monthDate(m);
+            @let active = isActiveCell(date, 'month');
+            <span
+              role="gridcell"
+              class="int-date-picker__cell"
+              [class.int-date-picker__cell--today]="date.getFullYear() === currentMonth().year && m === currentMonth().month"
+              [class.int-date-picker__cell--selected]="isSelected(date, 'month')"
+              [class.int-date-picker__cell--in-range]="isInRange(date)"
+              [class.int-date-picker__cell--disabled]="!isSelectableMonth(date.getFullYear(), m)"
+              [attr.aria-selected]="isSelected(date, 'month')"
+              [attr.data-active]="active"
+              [attr.tabindex]="active ? 0 : -1"
+              (click)="selectMonth(m)"
+              (mouseenter)="onHover(date)"
+            >{{ name }}</span>
+          }
+        </div>
+      }
+      @case ('year') {
+        <div class="int-date-picker__grid" role="grid" (keydown)="onGridKeydown($event)">
+          @for (year of years(); track year) {
+            @let date = yearDate(year);
+            @let active = isActiveCell(date, 'year');
+            <span
+              role="gridcell"
+              class="int-date-picker__cell"
+              [class.int-date-picker__cell--today]="year === currentMonth().year"
+              [class.int-date-picker__cell--selected]="isSelected(date, 'year')"
+              [class.int-date-picker__cell--disabled]="!isSelectableYear(year)"
+              [attr.aria-selected]="isSelected(date, 'year')"
+              [attr.data-active]="active"
+              [attr.tabindex]="active ? 0 : -1"
+              (click)="selectYear(year)"
+            >{{ year }}</span>
+          }
+        </div>
+      }
+    }
+
+    @if (showButtonBar()) {
+      <div class="int-date-picker__buttonbar">
+        <button type="button" class="int-date-picker__link" (click)="selectToday()">{{ config.t('today') }}</button>
+        <button type="button" class="int-date-picker__link" (click)="clear()">{{ config.t('clear') }}</button>
+      </div>
+    }
+  </div>
+</ng-template>

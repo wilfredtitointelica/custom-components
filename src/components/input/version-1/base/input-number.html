@@ -1,0 +1,47 @@
+@if (horizontal()) {
+  <button type="button" class="int-input__button int-input__button--decrement" tabindex="-1"
+          [disabled]="isDisabled()" [attr.aria-label]="config.t('decrement')" (click)="spin($event, -1)">
+    <int-icon name="minus" />
+  </button>
+}
+<input
+  #inputEl
+  intInputText
+  class="int-input__field"
+  role="spinbutton"
+  inputmode="decimal"
+  autocomplete="off"
+  [id]="inputId()"
+  [intSize]="size()"
+  [invalid]="isInvalid()"
+  [disabled]="isDisabled()"
+  [readOnly]="readonly()"
+  [placeholder]="placeholder() ?? ''"
+  [value]="display()"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-valuemin]="min() ?? null"
+  [attr.aria-valuemax]="max() ?? null"
+  [attr.aria-valuenow]="modelValue()"
+  (input)="onInputChange($event, inputEl)"
+  (focus)="onInputFocus($event)"
+  (blur)="onInputBlur($event)"
+  (keydown)="onKeydown($event)"
+/>
+@if (stacked()) {
+  <span class="int-input__stack">
+    <button type="button" class="int-input__button" tabindex="-1" [disabled]="isDisabled()"
+            [attr.aria-label]="config.t('increment')" (click)="spin($event, 1)">
+      <int-icon name="chevron-up" />
+    </button>
+    <button type="button" class="int-input__button" tabindex="-1" [disabled]="isDisabled()"
+            [attr.aria-label]="config.t('decrement')" (click)="spin($event, -1)">
+      <int-icon name="chevron-down" />
+    </button>
+  </span>
+}
+@if (horizontal()) {
+  <button type="button" class="int-input__button int-input__button--increment" tabindex="-1"
+          [disabled]="isDisabled()" [attr.aria-label]="config.t('increment')" (click)="spin($event, 1)">
+    <int-icon name="plus" />
+  </button>
+}

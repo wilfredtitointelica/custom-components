@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,26 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Overridable props: --int-date-picker-{cell-size,day-size,hover-background,hover-color,selected-background,
+// selected-color,range-background,range-color,today-border,disabled-color}.
+// The input is an int-input text field; the panel uses the overlay surface (CDK overlay container).
+// Cells follow the "Atoms / Calendar" design: round days, pill months/years, grey hover with blue text,
+// solid blue selection, outlined today; disabled cells keep the today outline in the disabled color.
 .int-date-picker {
+  --int-date-picker-cell-size: var(--i-sizing-600);
+  --int-date-picker-day-size: var(--i-sizing-md);
+  --int-date-picker-hover-background: var(--i-color-secondary-100);
+  --int-date-picker-hover-color: var(--i-color-primary-700);
+  --int-date-picker-selected-background: var(--i-color-primary-700);
+  --int-date-picker-selected-color: var(--i-color-primary-50);
+  --int-date-picker-range-background: var(--int-date-picker-hover-background);
+  --int-date-picker-range-color: var(--int-date-picker-hover-color);
+  --int-date-picker-today-border: var(--i-color-primary-900);
+  --int-date-picker-disabled-color: var(--i-text-color-disabled);
+
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +39,150 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-date-picker {
+  // ---------- Input ----------
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  // Wrapper-qualified to outrank the int-input field padding without !important.
+  &__input-wrapper &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    cursor: pointer;
+    padding-right: calc(var(--i-sizing-sm) * 2 + var(--i-spacing-container-md));
+  }
+  &__icon,
+  &__clear {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--i-icon-color-default);
+    font-size: var(--i-icon-size-sm);
+  }
+  &__icon {
+    right: var(--i-spacing-container-md);
+    cursor: pointer;
+  }
+  &__clear {
+    @include int.reset-button;
+    display: inline-flex;
+    right: calc(var(--i-spacing-container-md) + var(--i-sizing-sm));
+    color: var(--i-icon-color-secondary);
+    font-size: var(--i-icon-size-xs);
+  }
+
+  // ---------- Panel ----------
+  &__panel {
+    @include int.overlay-surface;
+    width: max-content;
+    padding: var(--i-spacing-container-md);
+    background: var(--i-color-secondary-50);
+    user-select: none;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--i-spacing-gap-sm);
+    margin-bottom: var(--i-spacing-container-sm);
+  }
+  &__title {
+    display: flex;
+    gap: var(--i-spacing-gap-xs);
+  }
+  &__nav,
+  &__title-button,
+  &__link {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--i-border-radius-full);
+    color: var(--i-text-color-default);
+
+    &:hover {
+      background: var(--int-date-picker-hover-background);
+      color: var(--int-date-picker-hover-color);
+    }
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+  &__nav {
+    width: var(--i-sizing-md);
+    height: var(--i-sizing-md);
+    font-size: var(--i-icon-size-sm);
+  }
+  &__title-button,
+  &__decade {
+    padding: var(--i-spacing-container-xs) var(--i-spacing-container-sm);
+  }
+
+  // ---------- Day grid ----------
+  &__calendar {
+    border-collapse: collapse;
+
+    th {
+      width: var(--int-date-picker-cell-size);
+      padding-bottom: var(--i-spacing-container-xs);
+      color: var(--i-text-color-default);
+      font-weight: var(--i-typography-font-weight-regular);
+      text-align: center;
+    }
+    td {
+      padding: var(--i-spacing-50) 0;
+      text-align: center;
+    }
+  }
+
+  // ---------- Month / year grid ----------
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--i-spacing-300) var(--i-spacing-gap-sm);
+    width: calc(var(--int-date-picker-cell-size) * 7);
+    padding-block: var(--i-spacing-container-sm);
+  }
+
+  // Day, month and year cells; days add --day (circle), months/years are pills.
+  &__cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: var(--i-sizing-lg);
+    padding: 0 var(--i-spacing-container-md);
+    border: var(--i-border-width-sm) solid transparent;
+    border-radius: var(--i-border-radius-full);
+    color: var(--i-text-color-default);
+    cursor: pointer;
+    outline: none;
+
+    &:hover:not(.int-date-picker__cell--disabled):not(.int-date-picker__cell--selected) {
+      background: var(--int-date-picker-hover-background);
+      color: var(--int-date-picker-hover-color);
+    }
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+
+  &__buttonbar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--i-spacing-container-md);
+    padding-top: var(--i-spacing-container-md);
+    border-top: var(--i-border-width-sm) solid var(--i-border-default);
+  }
+  &__link {
+    padding: var(--i-spacing-container-xs) var(--i-spacing-container-sm);
+    color: var(--i-button-hyperlink-color);
+    font-size: var(--i-typography-font-size-sm);
+    text-decoration: underline;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +190,42 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-date-picker {
+  &--fluid {
+    display: flex;
+  }
+  &--inline &__panel {
+    box-shadow: none;
+  }
+
+  // Cell states (order matters: selected and disabled win over range / today / other-month)
+  &__cell--day {
+    width: var(--int-date-picker-day-size);
+    height: var(--int-date-picker-day-size);
+    padding: 0;
+  }
+  &__cell--other-month {
+    color: var(--int-date-picker-disabled-color);
+  }
+  &__cell--in-range {
+    background: var(--int-date-picker-range-background);
+    color: var(--int-date-picker-range-color);
+  }
+  &__cell--today {
+    border-color: var(--int-date-picker-today-border);
+  }
+  &__cell--selected {
+    border-color: transparent;
+    background: var(--int-date-picker-selected-background);
+    color: var(--int-date-picker-selected-color);
+  }
+  &__cell--disabled {
+    background: transparent;
+    color: var(--int-date-picker-disabled-color);
+    cursor: default;
+  }
+  &__cell--today.int-date-picker__cell--disabled {
+    border-color: var(--int-date-picker-disabled-color);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +233,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-date-picker {
+  display: inline-block;
+  width: 12rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

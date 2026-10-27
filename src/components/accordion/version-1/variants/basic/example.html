@@ -1,4 +1,18 @@
 <!--
   title: Basic
-  description:
+  description: Un panel abierto a la vez; [(value)] guarda el value del panel activo y disabled bloquea un panel.
 -->
+<int-accordion [(value)]="active">
+  <int-accordion-panel value="fees">
+    <int-accordion-header>Scheme fees</int-accordion-header>
+    <int-accordion-content>Assessment, processing and cross-border fees charged by the networks.</int-accordion-content>
+  </int-accordion-panel>
+  <int-accordion-panel value="interchange">
+    <int-accordion-header>Interchange</int-accordion-header>
+    <int-accordion-content>Interchange rates paid between acquirer and issuer.</int-accordion-content>
+  </int-accordion-panel>
+  <int-accordion-panel value="archived" disabled>
+    <int-accordion-header>Archived (disabled)</int-accordion-header>
+    <int-accordion-content>Not available.</int-accordion-content>
+  </int-accordion-panel>
+</int-accordion>

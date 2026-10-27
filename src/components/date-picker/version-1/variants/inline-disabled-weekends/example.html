@@ -1,0 +1,5 @@
+<!--
+  title: Inline, disabled weekends
+  description: inline muestra el calendario sin overlay; disabledDays bloquea días de la semana y firstDayOfWeek="1" empieza en lunes.
+-->
+<int-date-picker [(ngModel)]="date" inline [disabledDays]="[0, 6]" [firstDayOfWeek]="1" ariaLabel="Inline calendar" />

@@ -1,0 +1,16 @@
+<!--
+  title: Range with min & max
+  description: selectionMode="range" guarda [inicio, fin]; minDate y maxDate limitan el rango (aquí, los últimos 90 días). showButtonBar agrega Hoy y Limpiar.
+-->
+<int-date-picker
+  [(ngModel)]="range"
+  selectionMode="range"
+  dateFormat="dd/mm/yy"
+  [minDate]="minDate"
+  [maxDate]="maxDate"
+  showIcon
+  showButtonBar
+  placeholder="Period"
+  ariaLabel="Period"
+/>
+<p>Value: {{ range | json }}</p>

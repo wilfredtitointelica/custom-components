@@ -1,0 +1,16 @@
+<input
+  type="radio"
+  class="int-input__control"
+  [id]="inputId()"
+  [checked]="checked()"
+  [disabled]="isDisabled()"
+  [attr.name]="name() ?? null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  (change)="select($event)"
+  (blur)="markAsTouched()"
+/>
+<span class="int-input__box" aria-hidden="true">
+  <span class="int-input__dot"></span>
+</span>

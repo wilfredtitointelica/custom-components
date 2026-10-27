@@ -1,0 +1,9 @@
+<!--
+  title: Checkbox · Group
+  description: Sin binary, el modelo es un arreglo: value se agrega o se quita. Diners Club está deshabilitado.
+-->
+@for (brand of brands; track brand.code) {
+  <int-checkbox [inputId]="'cb-group-' + brand.code" [value]="brand.code" [(ngModel)]="selected" [disabled]="!!brand.inactive" />
+  <label [for]="'cb-group-' + brand.code">{{ brand.name }}</label>
+}
+<p>Value: {{ selected.join(', ') }}</p>

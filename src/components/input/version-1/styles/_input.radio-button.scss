@@ -1,6 +1,109 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
- * MODIFIERS ( --modifier ) · RadioButton
+ * MODIFIERS ( --modifier ) · Radio button
 \*——————————————————————————————————————————————————————————*/
 
+// <int-radiobutton>: parity with Style Guide `.prRadioButton`. The native input (__control) covers
+// the visual box (__box + __dot) and receives clicks, focus and arrow keys.
 .int-input--radio-button {
+  --int-radiobutton-size: var(--i-sizing-xs);
+  --int-radiobutton-dot-size: calc(var(--int-radiobutton-size) / 2);
+  --int-radiobutton-border: var(--i-color-secondary-200);
+  --int-radiobutton-hover-border: var(--i-color-primary-700);
+  --int-radiobutton-hover-background: var(--i-color-primary-50);
+  --int-radiobutton-checked: var(--i-color-primary-700);
+  --int-radiobutton-dot-color: var(--i-color-primary-50);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--int-radiobutton-size);
+  height: var(--int-radiobutton-size);
+  vertical-align: middle;
+
+  &.int-input--small {
+    --int-radiobutton-size: var(--i-sizing-2xs);
+  }
+  &.int-input--large {
+    --int-radiobutton-size: var(--i-sizing-sm);
+  }
+
+  .int-input__control {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  .int-input__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: var(--i-border-width-sm) solid var(--int-radiobutton-border);
+    border-radius: var(--i-border-radius-full);
+    background: transparent;
+    transition:
+      background-color var(--i-motion-base),
+      border-color var(--i-motion-base);
+  }
+
+  .int-input__dot {
+    width: var(--int-radiobutton-dot-size);
+    height: var(--int-radiobutton-dot-size);
+    border-radius: var(--i-border-radius-full);
+    background: var(--int-radiobutton-dot-color);
+    transform: scale(0);
+    transition: transform var(--i-motion-base);
+  }
+
+  &:not(.int-input--disabled):not(.int-input--checked):hover .int-input__box {
+    border-color: var(--int-radiobutton-hover-border);
+    background: var(--int-radiobutton-hover-background);
+  }
+  .int-input__control:focus-visible + .int-input__box {
+    @include int.focus-ring;
+  }
+
+  &.int-input--checked .int-input__box {
+    border-color: var(--int-radiobutton-checked);
+    background: var(--int-radiobutton-checked);
+  }
+  &.int-input--checked .int-input__dot {
+    transform: scale(1);
+  }
+
+  &.int-input--invalid .int-input__box {
+    border-color: var(--i-color-error-700);
+    background: var(--i-color-error-50);
+  }
+  &.int-input--invalid .int-input__dot {
+    background: var(--i-color-error-700);
+  }
+
+  &.int-input--disabled .int-input__box {
+    border-color: var(--i-color-secondary-400);
+    background: var(--i-color-secondary-200);
+  }
+  &.int-input--disabled .int-input__dot {
+    background: var(--i-color-secondary-400);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .int-input__box,
+    .int-input__dot {
+      transition: none;
+    }
+  }
 }

@@ -1,5 +1,16 @@
 <!--
   title: Popover
-  description:
+  description: Contenedor flotante anclado a su disparador, que se abre por código con toggle, show y hide. Se cierra al hacer clic fuera o con Escape y devuelve el foco al disparador.
 -->
-int-popover
+<ng-template #panel>
+  <div
+    class="int-popover"
+    role="dialog"
+    tabindex="-1"
+    [id]="id"
+    [class]="styleClass() ?? ''"
+    [attr.aria-label]="ariaLabel() ?? null"
+  >
+    <ng-content />
+  </div>
+</ng-template>

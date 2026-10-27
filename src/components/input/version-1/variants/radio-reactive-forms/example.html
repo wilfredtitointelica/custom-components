@@ -1,0 +1,11 @@
+<!--
+  title: Radio · Reactive forms
+  description: Un FormControl compartido por todo el grupo, con validación required.
+-->
+<div role="radiogroup" aria-label="Report frequency">
+  @for (f of frequencies; track f) {
+    <int-radiobutton name="rb-frequency" [inputId]="'rb-fr-' + f" [value]="f" [formControl]="frequency" />
+    <label [for]="'rb-fr-' + f">{{ f }}</label>
+  }
+</div>
+<p>Value: {{ frequency.value ?? '—' }}</p>

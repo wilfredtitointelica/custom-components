@@ -1,0 +1,6 @@
+<!--
+  title: Number · Prefix & suffix
+  description: prefix y suffix se agregan al valor formateado; max limita el valor al salir del campo.
+-->
+<int-inputnumber [(ngModel)]="percentage" suffix=" %" [max]="100" />
+<int-inputnumber [(ngModel)]="txn" prefix="≈ " suffix=" txn" />

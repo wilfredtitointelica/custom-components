@@ -1,0 +1,187 @@
+@use 'sass:map';
+
+// ============================================================================
+// Shared style building blocks for @intelica/ui components.
+// Rule: only reference --i-* tokens here; never hardcode colors.
+// Components expose overridable --int-<component>-* custom properties on
+// their host class that default to these tokens.
+// ============================================================================
+
+@mixin focus-ring($offset: 2px) {
+  outline: var(--i-border-width-sm) solid var(--i-color-primary-600);
+  outline-offset: $offset;
+}
+
+@mixin reset-button {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Field look shared by InputText, InputNumber, Select, Listbox and DatePicker.
+/// Values are read as `var(--int-field-*, <token>)` and never re-declared on the elements,
+/// so overriding a --int-field-* property on any ancestor restyles every control inside it.
+$field-defaults: (
+  height: var(--i-sizing-lg),
+  padding-y: var(--i-spacing-container-sm),
+  padding-x: var(--i-spacing-container-md),
+  radius: var(--i-border-radius-lg),
+  font-size: var(--i-typography-font-size-md),
+  line-height: var(--i-typography-lineHeight-md),
+  background: var(--i-background-default),
+  color: var(--i-text-color-default),
+  placeholder: var(--i-text-color-disabled),
+  border: var(--i-border-default),
+  border-hover: var(--i-border-hover),
+  border-focus: var(--i-color-primary-900),
+  border-invalid: var(--i-border-error),
+  color-invalid: var(--i-text-color-error),
+  background-disabled: var(--i-background-disabled),
+  color-disabled: var(--i-text-color-disabled),
+  icon-color: var(--i-icon-color-secondary),
+);
+
+@function field($name) {
+  @if not map.has-key($field-defaults, $name) {
+    @error 'Unknown field token: #{$name}';
+  }
+  @return var(--int-field-#{$name}, #{map.get($field-defaults, $name)});
+}
+
+@mixin field-box {
+  box-sizing: border-box;
+  min-height: field(height);
+  padding: field(padding-y) field(padding-x);
+  border: var(--i-border-width-sm) solid field(border);
+  border-radius: field(radius);
+  background: field(background);
+  color: field(color);
+  font-family: var(--i-text-body-family);
+  font-size: field(font-size);
+  line-height: field(line-height);
+  transition:
+    border-color var(--i-motion-base),
+    background-color var(--i-motion-base);
+}
+
+/// States for a field box, as BEM modifiers of $block (`int-input` → `.int-input--invalid`).
+/// $focus-selector lets composite controls (select, datepicker) use :focus-within instead of :focus.
+@mixin field-states($block, $focus-selector: '&:focus') {
+  &:hover:not(.#{$block}--disabled):not(:disabled) {
+    border-color: field(border-hover);
+  }
+  #{$focus-selector} {
+    outline: none;
+    border-color: field(border-focus);
+  }
+  &.#{$block}--invalid {
+    border-color: field(border-invalid);
+    color: field(color-invalid);
+  }
+  &:disabled,
+  &.#{$block}--disabled {
+    background: field(background-disabled);
+    color: field(color-disabled);
+    border-color: transparent;
+    cursor: default;
+  }
+}
+
+/// Size modifiers of $block: `--small`, `--large` and `--fluid`.
+@mixin field-sizes($block) {
+  &.#{$block}--small {
+    --int-field-height: var(--i-sizing-md);
+    --int-field-padding-y: var(--i-spacing-container-xs);
+    --int-field-font-size: var(--i-typography-font-size-sm);
+    --int-field-line-height: var(--i-typography-lineHeight-sm);
+  }
+  &.#{$block}--large {
+    --int-field-height: var(--i-sizing-xl);
+    --int-field-padding-y: var(--i-spacing-container-md);
+    --int-field-padding-x: var(--i-spacing-container-lg);
+    --int-field-font-size: var(--i-typography-font-size-lg);
+  }
+  &.#{$block}--fluid {
+    width: 100%;
+  }
+}
+
+/// Floating surfaces: popover, select/datepicker panels, tooltip.
+@mixin overlay-surface {
+  box-sizing: border-box;
+  background: var(--i-background-default);
+  color: var(--i-text-color-default);
+  border: var(--i-border-width-sm) solid var(--i-border-default);
+  border-radius: var(--i-border-radius-lg);
+  box-shadow: var(--i-shadow-depth-3);
+  font-family: var(--i-text-body-family);
+  font-size: var(--i-typography-font-size-md);
+}
+
+/// Option row colors, read as `var(--int-option-*, <token>)` like the field tokens, so a container
+/// (e.g. the Dropdown-select panel) can restyle the options inside it without touching the others.
+$option-defaults: (
+  radius: var(--i-border-radius-md),
+  background: transparent,
+  color: var(--i-text-color-default),
+  background-focused: var(--i-color-secondary-100),
+  background-hover: var(--i-background-hover),
+  background-selected: var(--i-background-subtle),
+  color-selected: var(--i-color-primary-700),
+  font-weight-selected: var(--i-typography-font-weight-bold),
+);
+
+@function option-token($name) {
+  @if not map.has-key($option-defaults, $name) {
+    @error 'Unknown option token: #{$name}';
+  }
+  @return var(--int-option-#{$name}, #{map.get($option-defaults, $name)});
+}
+
+/// Option row used by List-box, Dropdown-select and Date-picker month/year pickers.
+/// $element is the option's BEM class (`int-list-box__option`): states are `--focused`, `--selected`
+/// and `--disabled` modifiers of it.
+@mixin option($element) {
+  display: flex;
+  align-items: center;
+  gap: var(--i-spacing-gap-sm);
+  padding: var(--i-spacing-container-sm) var(--i-spacing-container-md);
+  border-radius: option-token(radius);
+  background: option-token(background);
+  color: option-token(color);
+  cursor: pointer;
+  user-select: none;
+
+  &.#{$element}--focused {
+    background: option-token(background-focused);
+  }
+  &:hover:not(.#{$element}--disabled):not(.#{$element}--selected) {
+    background: option-token(background-hover);
+  }
+  &.#{$element}--selected {
+    background: option-token(background-selected);
+    color: option-token(color-selected);
+    font-weight: option-token(font-weight-selected);
+  }
+  &.#{$element}--disabled {
+    color: var(--i-text-color-disabled);
+    cursor: default;
+  }
+}

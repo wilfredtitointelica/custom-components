@@ -1,5 +1,13 @@
 <!--
   title: Button
-  description:
+  description: Botón aplicado sobre un <button> o <a> nativo (intButton): teclado, envío de formularios y ARIA se comportan de forma nativa.
 -->
-int-button
+@if (loading()) {
+  <int-icon class="int-button__icon" name="spinner" />
+} @else if (icon()) {
+  <span class="int-button__icon" [class]="icon()" aria-hidden="true"></span>
+}
+@if (label()) {
+  <span class="int-button__label">{{ label() }}</span>
+}
+<ng-content />

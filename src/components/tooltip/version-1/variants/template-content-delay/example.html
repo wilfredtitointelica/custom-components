@@ -1,0 +1,9 @@
+<!--
+  title: Template content & delay
+  description: intTooltip acepta un ng-template para contenido enriquecido; showDelay retrasa la aparición.
+-->
+<int-pill value="Rate" severity="info" tabindex="0" [intTooltip]="rateTpl" [showDelay]="300" />
+<ng-template #rateTpl>
+  <strong>Rate breakdown</strong><br />
+  0.80% + USD 0.10 per transaction
+</ng-template>

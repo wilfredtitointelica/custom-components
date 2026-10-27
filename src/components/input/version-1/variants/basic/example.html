@@ -1,4 +1,6 @@
 <!--
   title: Basic
-  description:
+  description: intInputText sobre un input nativo; funciona con ngModel y formularios reactivos.
 -->
+<input intInputText [(ngModel)]="name" placeholder="Merchant name" />
+<p>Value: {{ name || '—' }}</p>

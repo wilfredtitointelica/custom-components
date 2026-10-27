@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'list-box',
+  variants: ['basic', 'multiple-filter-checkmark', 'item-template'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

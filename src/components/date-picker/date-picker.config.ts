@@ -12,5 +12,12 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'date-picker',
+  variants: [
+    'basic',
+    'range-with-min-max',
+    'month-picker',
+    'year-picker',
+    'inline-disabled-weekends',
+  ],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

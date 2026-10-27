@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,20 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prAccordion`. Overridable props: --int-accordion-{border-color,
+// header-color,header-hover-color,header-active-color,background,content-color,padding}.
 .int-accordion {
+  --int-accordion-border-color: var(--i-color-neutral-400);
+  --int-accordion-header-color: var(--i-color-neutral-700);
+  --int-accordion-header-hover-color: var(--i-color-neutral-800);
+  --int-accordion-header-active-color: var(--i-color-primary-700);
+  --int-accordion-background: var(--i-color-neutral-50);
+  --int-accordion-content-color: var(--i-color-neutral-700);
+  --int-accordion-padding: var(--i-spacing-container-xl);
+
+  display: block;
+  background: var(--int-accordion-background);
+  font-family: var(--i-text-body-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +33,78 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-accordion {
+  &__panel {
+    display: block;
+    border-bottom: var(--i-border-width-sm) solid var(--int-accordion-border-color);
+  }
+
+  &__trigger {
+    @include int.reset-button;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--i-spacing-gap-sm);
+    width: 100%;
+    padding: var(--int-accordion-padding) 0;
+    color: var(--int-accordion-header-color);
+    font-size: var(--i-typography-font-size-md);
+    font-weight: var(--i-typography-font-weight-bold);
+    text-align: left;
+
+    &:hover:not(:disabled) {
+      color: var(--int-accordion-header-hover-color);
+    }
+    &:focus-visible {
+      @include int.focus-ring(-3px);
+    }
+    &:disabled {
+      color: var(--i-text-color-disabled);
+      cursor: default;
+    }
+  }
+
+  &__toggle-icon {
+    font-size: var(--i-icon-size-sm);
+    transition: transform var(--i-motion-base);
+  }
+
+  // Height animation without measuring: grid rows 0fr → 1fr.
+  &__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--i-motion-base);
+    color: var(--int-accordion-content-color);
+    font-size: var(--i-typography-font-size-md);
+  }
+  &__content-inner {
+    overflow: hidden;
+  }
+  &__content-body {
+    padding-bottom: var(--int-accordion-padding);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__content,
+    &__toggle-icon {
+      transition: none;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-accordion {
+.int-accordion__panel--active {
+  > .int-accordion__header > .int-accordion__trigger {
+    color: var(--int-accordion-header-active-color);
+  }
+  > .int-accordion__header .int-accordion__toggle-icon {
+    transform: rotate(180deg);
+  }
+  > .int-accordion__content {
+    grid-template-rows: 1fr;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +112,8 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-accordion {
+  display: block;
+  height: 9rem;
+  border-radius: var(--i-border-radius-md);
+  background: var(--i-background-disabled);
 }

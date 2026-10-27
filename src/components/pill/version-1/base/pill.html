@@ -1,5 +1,11 @@
 <!--
   title: Pill
-  description:
+  description: Etiqueta corta de estado basada en los tokens de badge del Style Guide (--i-badge-*).
 -->
-int-pill
+@if (icon()) {
+  <span class="int-pill__icon" [class]="icon()" aria-hidden="true"></span>
+}
+@if (value() !== null && value() !== undefined) {
+  <span class="int-pill__label">{{ value() }}</span>
+}
+<ng-content />

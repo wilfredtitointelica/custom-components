@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,26 +12,108 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prDialog`. The block is the panel rendered in the CDK overlay.
+// Overridable props: --int-dialog-modal-{padding,radius,background,color}.
 .int-dialog-modal {
+  --int-dialog-modal-padding: var(--i-spacing-container-2xl);
+  --int-dialog-modal-radius: var(--i-border-radius-2xl);
+  --int-dialog-modal-background: var(--i-color-secondary-50);
+  --int-dialog-modal-color: var(--i-color-primary-900);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--i-spacing-gap-lg);
+  box-sizing: border-box;
+  min-width: min(20rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  padding: var(--int-dialog-modal-padding);
+  border-radius: var(--int-dialog-modal-radius);
+  background: var(--int-dialog-modal-background);
+  box-shadow: var(--i-shadow-depth-5);
+  color: var(--int-dialog-modal-color);
+  font-family: var(--i-text-body-family);
+  font-size: var(--i-typography-font-size-md);
+  outline: none;
+  animation: int-dialog-modal-enter var(--i-motion-duration-fast) var(--i-motion-ease-out);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes int-dialog-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
+// Backdrop of the CDK overlay (outside the panel).
+.int-dialog-modal__mask {
+  background: var(--i-shadow-color-strong);
+}
+
 .int-dialog-modal {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--i-spacing-gap-lg);
+    padding-bottom: var(--i-spacing-gap-lg);
+    border-bottom: var(--i-border-width-sm) solid var(--i-color-neutral-200);
+  }
+  &__title {
+    font-size: var(--i-typography-font-size-lg);
+    font-weight: var(--i-typography-font-weight-bold);
+  }
+  &__close {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--i-sizing-md);
+    height: var(--i-sizing-md);
+    border-radius: var(--i-border-radius-md);
+    color: var(--i-color-primary-900);
+    font-size: var(--i-icon-size-sm);
+
+    &:hover {
+      background: var(--i-color-secondary-100);
+    }
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+  &__content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--i-spacing-gap-sm);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-dialog-modal {
-}
-
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-dialog-modal {
+  display: block;
+  width: 32rem;
+  max-width: 100%;
+  height: 12rem;
+  border-radius: var(--i-border-radius-2xl);
+  background: var(--i-background-disabled);
 }

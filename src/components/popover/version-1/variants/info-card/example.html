@@ -1,0 +1,10 @@
+<!--
+  title: Info card
+  description: Popover informativo junto a un botón de solo icono; onShow avisa cada vez que se abre.
+-->
+<button intButton icon="icon icon-info" ariaLabel="More info" variant="text" (click)="info.toggle($event)"></button>
+<int-popover #info ariaLabel="Fee information" (onShow)="opened.set(opened() + 1)">
+  <strong>Cross-border fee</strong>
+  <p>Charged when the issuer and the acquirer are in different countries.</p>
+</int-popover>
+<p>Opened {{ opened() }} times</p>

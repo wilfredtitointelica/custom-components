@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,21 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prTabs` (orange active border = tertiary-500). Overridable props:
+// --int-tabs-{tab-color,tab-background,tab-border,tab-hover-color,tab-hover-background,
+// tab-active-border,tab-padding,panels-padding}.
 .int-tabs {
+  --int-tabs-tab-color: var(--i-color-grey-400);
+  --int-tabs-tab-background: var(--i-color-secondary-50);
+  --int-tabs-tab-border: var(--i-color-secondary-200);
+  --int-tabs-tab-hover-color: var(--i-color-primary-900);
+  --int-tabs-tab-hover-background: var(--i-color-secondary-100);
+  --int-tabs-tab-active-border: var(--i-color-tertiary-500);
+  --int-tabs-tab-padding: var(--i-spacing-container-lg) var(--i-spacing-container-2xl);
+  --int-tabs-panels-padding: var(--i-spacing-gap-lg) var(--i-spacing-gap-sm);
+
+  display: block;
+  font-family: var(--i-text-body-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +34,55 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tabs {
+  &__list {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  &__tab {
+    flex: 1 0 auto;
+    padding: var(--int-tabs-tab-padding);
+    border-bottom: var(--i-border-width-sm) solid var(--int-tabs-tab-border);
+    border-radius: var(--i-border-radius-lg) var(--i-border-radius-lg) 0 0;
+    background: var(--int-tabs-tab-background);
+    color: var(--int-tabs-tab-color);
+    font-size: var(--i-typography-font-size-md);
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      color var(--i-motion-base),
+      background-color var(--i-motion-base);
+
+    &:not(.int-tabs__tab--active):not(.int-tabs__tab--disabled):hover {
+      color: var(--int-tabs-tab-hover-color);
+      background: var(--int-tabs-tab-hover-background);
+    }
+    &:focus-visible {
+      @include int.focus-ring(-2px);
+    }
+  }
+
+  &__panels {
+    display: block;
+    padding: var(--int-tabs-panels-padding);
+    background: var(--int-tabs-tab-background);
+    color: var(--i-color-primary-900);
+  }
+
+  &__panel {
+    display: block;
+
+    &:focus-visible {
+      @include int.focus-ring;
+    }
+    &[hidden] {
+      display: none;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +90,17 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tabs {
+  &__tab--active {
+    border-bottom: var(--i-border-width-md) solid var(--int-tabs-tab-active-border);
+    color: var(--int-tabs-tab-hover-color);
+    font-weight: var(--i-typography-font-weight-bold);
+  }
+  &__tab--disabled {
+    color: var(--i-color-secondary-400);
+    background: var(--i-color-secondary-200);
+    border-bottom-color: var(--i-color-secondary-400);
+    cursor: default;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +108,8 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-tabs {
+  display: block;
+  height: 8rem;
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

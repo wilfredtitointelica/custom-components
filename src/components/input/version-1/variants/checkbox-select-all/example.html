@@ -1,0 +1,14 @@
+<!--
+  title: Checkbox · Select all
+  description: indeterminate muestra el estado mixto y se limpia al siguiente clic.
+-->
+<int-checkbox inputId="cb-all" binary [ngModel]="allChecked()" [indeterminate]="someChecked()" (onChange)="toggleAll($event.checked)" />
+<label for="cb-all"><strong>All regions</strong></label>
+<ul>
+  @for (region of regions; track region) {
+    <li>
+      <int-checkbox [inputId]="'cb-all-' + region" [value]="region" [ngModel]="selected()" (ngModelChange)="selected.set($event)" />
+      <label [for]="'cb-all-' + region">{{ region }}</label>
+    </li>
+  }
+</ul>

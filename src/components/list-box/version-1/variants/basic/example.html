@@ -1,4 +1,6 @@
 <!--
   title: Basic
-  description:
+  description: Selección simple; optionLabel y optionValue indican qué propiedad se muestra y cuál se guarda en el modelo.
 -->
+<int-list-box [options]="regions" optionLabel="name" optionValue="code" [(ngModel)]="region" ariaLabel="Region" />
+<p>Value: {{ region ?? '—' }}</p>

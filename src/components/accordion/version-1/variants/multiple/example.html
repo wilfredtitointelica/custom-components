@@ -1,0 +1,13 @@
+<!--
+  title: Multiple
+  description: Con multiple, value es un arreglo y se pueden abrir varios paneles a la vez.
+-->
+<int-accordion [(value)]="active" multiple>
+  @for (section of sections; track section) {
+    <int-accordion-panel [value]="section">
+      <int-accordion-header>{{ section }}</int-accordion-header>
+      <int-accordion-content>Content for {{ section }}.</int-accordion-content>
+    </int-accordion-panel>
+  }
+</int-accordion>
+<p>Value: {{ active | json }}</p>

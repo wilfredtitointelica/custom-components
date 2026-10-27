@@ -1,5 +1,9 @@
 <!--
   title: Tooltip
-  description:
+  description: Directiva intTooltip. Se muestra con hover y con foco de teclado (tooltipEvent="both"), queda enlazada con aria-describedby y Escape la oculta.
 -->
-int-tooltip
+@if (template(); as tpl) {
+  <ng-container [ngTemplateOutlet]="tpl" />
+} @else {
+  {{ content() }}
+}

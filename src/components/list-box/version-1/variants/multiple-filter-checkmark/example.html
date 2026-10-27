@@ -1,0 +1,16 @@
+<!--
+  title: Multiple, filter & checkmark
+  description: multiple guarda un arreglo; filter ignora mayúsculas y tildes; checkmark marca las seleccionadas. Diners Club está deshabilitado con optionDisabled.
+-->
+<int-list-box
+  [options]="brands"
+  optionLabel="name"
+  optionValue="code"
+  optionDisabled="inactive"
+  [(ngModel)]="selected"
+  multiple
+  filter
+  checkmark
+  ariaLabel="Brands"
+/>
+<p>Value: {{ selected.join(', ') || '—' }}</p>

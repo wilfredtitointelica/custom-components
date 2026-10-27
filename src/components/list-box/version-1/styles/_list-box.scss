@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,22 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Same look as the form fields: border, radius, colors and font come from --int-field-*.
 .int-list-box {
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 12rem;
+  border: var(--i-border-width-sm) solid int.field(border);
+  border-radius: int.field(radius);
+  background: int.field(background);
+  font-family: var(--i-text-body-family);
+  font-size: int.field(font-size);
+  color: int.field(color);
+
+  &:focus-within:not(.int-list-box--embedded) {
+    border-color: int.field(border-focus);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +35,47 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-list-box {
+  &__filter {
+    position: relative;
+    padding: var(--i-spacing-container-md) var(--i-spacing-container-md) 0;
+
+    .int-input {
+      padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-md));
+    }
+  }
+  &__filter-icon {
+    position: absolute;
+    top: 50%;
+    right: calc(var(--i-spacing-container-md) * 2);
+    transform: translateY(calc(-50% + var(--i-spacing-container-md) / 2));
+    color: int.field(icon-color);
+    font-size: var(--i-icon-size-sm);
+  }
+
+  &__list {
+    margin: 0;
+    padding: var(--i-spacing-container-xs);
+    list-style: none;
+    overflow-y: auto;
+    outline: none;
+  }
+
+  &__option {
+    @include int.option(int-list-box__option);
+  }
+  &__check {
+    color: var(--i-color-primary-700);
+
+    &--hidden {
+      visibility: hidden;
+    }
+  }
+
+  &__empty {
+    padding: var(--i-spacing-container-sm) var(--i-spacing-container-md);
+    color: var(--i-text-color-secondary);
+    cursor: default;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +83,24 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-list-box {
+  &--fluid {
+    display: flex;
+    width: 100%;
+  }
+  &--invalid {
+    border-color: int.field(border-invalid);
+  }
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  // Inside Dropdown-select: no frame, the overlay panel draws it.
+  &--embedded {
+    display: flex;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +108,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-list-box {
+  display: inline-block;
+  width: 12rem;
+  height: 10rem;
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

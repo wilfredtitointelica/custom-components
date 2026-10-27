@@ -1,0 +1,7 @@
+<!--
+  title: Number · Buttons
+  description: showButtons con buttonLayout stacked (por defecto) u horizontal; las flechas del teclado también cambian el valor.
+-->
+<int-inputnumber [(ngModel)]="qty" showButtons [min]="0" [max]="10" ariaLabel="Quantity" />
+<int-inputnumber [(ngModel)]="qty" showButtons buttonLayout="horizontal" [min]="0" [max]="10" ariaLabel="Quantity" />
+<p>Value: {{ qty }}</p>
