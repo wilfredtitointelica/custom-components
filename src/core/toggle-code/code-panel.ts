@@ -96,7 +96,7 @@ type CodePartKind = 'int' | 'ng' | 'dep';
     </ng-template>
 
     <ng-template #body>
-      <div class="doc-code-body" role="tabpanel" [class.doc-code-plain]="!code.highlight()">
+      <div class="doc-code-body" role="tabpanel" [class.doc-code-plain]="!highlight()">
         @if (current()) {
           <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
@@ -108,21 +108,28 @@ type CodePartKind = 'int' | 'ng' | 'dep';
       </div>
     </ng-template>
 
-    <!-- HTML tab only: what each color means and the switch that turns them off (all panels). -->
+    <!-- HTML tab only: what each color means (only the kinds this example uses) and the switch
+         that turns them off (this panel only). -->
     <ng-template #legend>
-      @if (selected() === 'html' && current()) {
+      @if (kinds().size) {
         <div class="doc-code-legend-bar">
           <ul class="doc-code-legend" aria-label="Color legend">
-            <li><span class="doc-code-swatch doc-code-int"></span><code class="doc-code-int">int-*</code> Component</li>
-            <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
-            <li><span class="doc-code-swatch doc-code-dep"></span><code class="doc-code-dep">dep:</code> Provisional dependency</li>
+            @if (kinds().has('int')) {
+              <li><span class="doc-code-swatch doc-code-int"></span><code class="doc-code-int">int-*</code> Component</li>
+            }
+            @if (kinds().has('ng')) {
+              <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
+            }
+            @if (kinds().has('dep')) {
+              <li><span class="doc-code-swatch doc-code-dep"></span><code class="doc-code-dep">dep:</code> Provisional dependency</li>
+            }
           </ul>
           <button
             type="button"
             class="doc-code-highlight"
-            [attr.aria-pressed]="code.highlight()"
-            title="Color the int-*, ng-* tags and the dep: comments"
-            (click)="code.setHighlight(!code.highlight())"
+            [attr.aria-pressed]="highlight()"
+            title="Color the highlighted pieces of this code"
+            (click)="highlight.set(!highlight())"
           >
             Highlight
             <span class="doc-code-switch" aria-hidden="true"></span>
@@ -168,19 +175,25 @@ export class CodePanel {
     parts.push({ text: source.slice(last), kind: null, name: false });
     return parts.filter((part) => part.text);
   });
+  /** Kinds present in the current source: the legend lists only these (none in the TS tab). */
+  protected readonly kinds = computed(
+    () => new Set(this.parts().flatMap((part) => (part.kind ? [part.kind] : []))),
+  );
+  /** Highlight switch of the legend bar: own state of each variant's panel, on by default. */
+  protected readonly highlight = signal(true);
   protected readonly copied = signal(false);
 
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private readonly clipboard = inject(ClipboardHistory);
-  protected readonly code = inject(CodeVisibility);
 
   constructor() {
     // Link of the history: switch to the tab the code was copied from (once).
+    const code = inject(CodeVisibility);
     effect(() => {
-      const requested = this.code.requested();
+      const requested = code.requested();
       if (requested && requested.variantId === this.source()?.variantId) {
         this.selected.set(requested.language);
-        untracked(() => this.code.requested.set(null));
+        untracked(() => code.requested.set(null));
       }
     });
   }

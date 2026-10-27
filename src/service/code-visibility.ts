@@ -2,8 +2,6 @@ import { Injectable, signal } from '@angular/core';
 
 import { CodeLanguage } from './catalog.model';
 
-const HIGHLIGHT_KEY = 'doc-code-highlight';
-
 /**
  * Which code panels are shown. The global switch (top bar) shows or hides all of them;
  * each variant's own "Code" button overrides that choice for its variant only.
@@ -12,12 +10,9 @@ const HIGHLIGHT_KEY = 'doc-code-highlight';
 export class CodeVisibility {
   private readonly all = signal(false);
   private readonly overrides = signal<ReadonlyMap<string, boolean>>(new Map());
-  private readonly colored = signal(loadHighlight());
 
   /** State of the global switch. */
   readonly allVisible = this.all.asReadonly();
-  /** Highlight switch of the HTML tab (int-*, ng-* tags and dep: comments): shared by every panel, saved in localStorage. */
-  readonly highlight = this.colored.asReadonly();
   /** Last tab asked for by reveal(); the panel of that variant switches to it. */
   readonly requested = signal<{ readonly variantId: string; readonly language: CodeLanguage } | null>(null);
 
@@ -41,22 +36,5 @@ export class CodeVisibility {
   toggle(variantId: string): void {
     const visible = !this.isVisible(variantId);
     this.overrides.update((current) => new Map(current).set(variantId, visible));
-  }
-
-  setHighlight(on: boolean): void {
-    this.colored.set(on);
-    try {
-      localStorage.setItem(HIGHLIGHT_KEY, String(on));
-    } catch {
-      // Storage blocked: the choice lives only in this session.
-    }
-  }
-}
-
-function loadHighlight(): boolean {
-  try {
-    return localStorage.getItem(HIGHLIGHT_KEY) !== 'false';
-  } catch {
-    return true;
   }
 }
