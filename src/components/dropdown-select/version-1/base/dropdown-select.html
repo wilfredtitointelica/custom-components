@@ -1,6 +1,7 @@
 <!--
   title: Dropdown / Select
   description: Lista desplegable de un solo valor. El panel es un List-box embebido en un overlay del CDK, así que el filtro, las plantillas y el teclado funcionan igual.
+  figma:
 -->
 <div
   #trigger
@@ -23,11 +24,17 @@
   (focus)="onFocus.emit($event)"
   (blur)="onTriggerBlur($event)"
 >
-  <span class="int-dropdown-select__label" [class.int-dropdown-select__label--placeholder]="!hasValue()">
+  <span
+    class="int-dropdown-select__label"
+    [class.int-dropdown-select__label--placeholder]="!hasValue()"
+  >
     @if (hasValue()) {
       @if (selectedItemTemplate(); as tpl) {
         <span class="int-dropdown-select__value">
-          <ng-container [ngTemplateOutlet]="tpl" [ngTemplateOutletContext]="{ $implicit: selectedOption() }" />
+          <ng-container
+            [ngTemplateOutlet]="tpl"
+            [ngTemplateOutletContext]="{ $implicit: selectedOption() }"
+          />
         </span>
       } @else {
         {{ selectedLabel() }}
@@ -37,8 +44,13 @@
     }
   </span>
   @if (showClear() && hasValue() && !isDisabled()) {
-    <button type="button" class="int-dropdown-select__clear" tabindex="-1" [attr.aria-label]="config.t('clear')"
-            (click)="clear($event)">
+    <button
+      type="button"
+      class="int-dropdown-select__clear"
+      tabindex="-1"
+      [attr.aria-label]="config.t('clear')"
+      (click)="clear($event)"
+    >
       <int-icon name="close" />
     </button>
   }

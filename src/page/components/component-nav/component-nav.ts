@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 
 import { ComponentCatalog } from '../../../service/component-catalog';
 import { NavigationState } from '../../../service/navigation-state';
-import { SKILLS_PATH, SKILLS_SECTIONS, SKILLS_SEGMENT } from '../skills/skills-sections';
+import { SKILL_GROUP_LABELS, SKILLS_PATH, SKILLS_SECTIONS, SKILLS_SEGMENT } from '../skills/skills-sections';
 import { STATUS_PATH, STATUS_SEGMENT } from '../status/status-route';
 
 /** Nearest ancestor that scrolls vertically (the drawer), or null. */
@@ -46,7 +46,12 @@ export class ComponentNav {
     key: '__skills__',
     segment: SKILLS_SEGMENT,
     path: SKILLS_PATH,
-    sections: SKILLS_SECTIONS,
+    // separator: null inside a group; at the first item of a new group, its label ('' = line only).
+    sections: SKILLS_SECTIONS.map((section, i) => ({
+      ...section,
+      separator:
+        i > 0 && section.group !== SKILLS_SECTIONS[i - 1].group ? SKILL_GROUP_LABELS[section.group] : null,
+    })),
   };
   /** Progress page, pinned last under "Reference". */
   protected readonly status = { segment: STATUS_SEGMENT, path: STATUS_PATH };

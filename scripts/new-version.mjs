@@ -89,10 +89,15 @@ if (title !== undefined || description !== undefined) {
   const targetHtml = join(targetDir, 'base', `${id}.html`);
   const html = readFileSync(targetHtml, 'utf8');
   const current = HEADER.exec(html)?.[1] ?? '';
-  // Same layout the documentation reads: "title:" on one line, "description:" up to the end.
+  // Same layout the documentation reads: "title:" on one line, "description:" up to the next key or
+  // the end, optional "figma:" link kept as is (copied from the previous version).
   const newTitle = title ?? /title:(.*)/.exec(current)?.[1].trim() ?? '';
-  const newDescription = description ?? /description:([\s\S]*)/.exec(current)?.[1].trim() ?? '';
-  const header = `<!--\n  title: ${newTitle}\n  description:${newDescription && ` ${newDescription}`}\n-->`;
+  const newDescription =
+    description ?? /description:([\s\S]*?)(?=^\s*figma:|$(?![\s\S]))/m.exec(current)?.[1].trim() ?? '';
+  const figma = /^\s*figma:(.*)$/m.exec(current)?.[1].trim();
+  const header =
+    `<!--\n  title: ${newTitle}\n  description:${newDescription && ` ${newDescription}`}\n` +
+    `  figma:${figma ? ` ${figma}` : ''}\n-->`;
   writeFileSync(targetHtml, HEADER.test(html) ? html.replace(HEADER, header) : `${header}\n${html}`);
 }
 

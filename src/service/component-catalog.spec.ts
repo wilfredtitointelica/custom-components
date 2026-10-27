@@ -126,6 +126,21 @@ describe('Component catalog', () => {
     ).toThrowError(/Duplicated ID "search-dropdown"/);
   });
 
+  it('keeps the components it requires, even not created yet, and rejects invalid ones', () => {
+    const loadRoutes = () => Promise.resolve([]);
+    const [multiSelect] = resolveInventory([
+      { id: 'multi-select', requires: ['checkbox', 'pill'], loadRoutes },
+    ]);
+    expect(multiSelect.requires).toEqual(['checkbox', 'pill']);
+    expect(resolveInventory([{ id: 'chip', loadRoutes }])[0].requires).toEqual([]);
+    expect(() => resolveInventory([{ id: 'chip', requires: ['chip'], loadRoutes }])).toThrowError(
+      /requires an invalid ID "chip"/,
+    );
+    expect(() => resolveInventory([{ id: 'chip', requires: ['Check Box'], loadRoutes }])).toThrowError(
+      /requires an invalid ID/,
+    );
+  });
+
   it('leaves hidden components and variants out of the catalog, keeping their IDs reserved', () => {
     const loadRoutes = () => Promise.resolve([]);
     const resolved = resolveInventory(

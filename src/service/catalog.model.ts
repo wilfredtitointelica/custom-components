@@ -50,6 +50,12 @@ export interface ComponentDefinition {
    * above a divider, and not counted as a component.
    */
   readonly reference?: boolean;
+  /**
+   * IDs of the int-* components this one composes (e.g. multi-select → ['checkbox']). While one is not
+   * done, the base uses a provisional marked `dep:<id> provisional` (skills replicar-primeng and
+   * resolver-dependencias). It may name a component that does not exist yet.
+   */
+  readonly requires?: readonly string[];
   /** Lazy reference to the component's own routes file (src/components/<id>/routes.ts). */
   readonly loadRoutes: LoadChildrenCallback;
 }
@@ -77,6 +83,13 @@ export interface DocExampleSource {
 export interface DocMeta {
   readonly title?: string;
   readonly description?: string;
+  /** Figma "Link to selection" of the version's design (base/<id>.html only; empty = none yet). */
+  readonly figma?: string;
+  /**
+   * `figma-frame:` line (base/<id>.html only): parent frame or component set of the design, with every
+   * variant axis and format; replicar-primeng and actualizar-replica walk it.
+   */
+  readonly figmaFrame?: string;
 }
 
 /**
@@ -140,6 +153,8 @@ export interface CatalogComponent {
   readonly versions: readonly ComponentVersion[];
   /** Reference implementation (e.g. _demo_), pinned above the component list in the menu. */
   readonly reference: boolean;
+  /** IDs of the int-* components it composes (config `requires`), in config order. */
+  readonly requires: readonly string[];
   readonly loadRoutes: LoadChildrenCallback;
 }
 

@@ -350,6 +350,25 @@
     font-family: var(--doc-font-mono);
     font-size: 0.78125rem;
   }
+
+  /* Copied code: link to its variant, underlined only on hover. Only the text is clickable: it doesn't
+     stretch, the free space goes to the margin. */
+  &.doc-is-link {
+    flex: 0 1 auto;
+    margin-right: auto;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--doc-accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
 }
 
 .doc-clip-icon-btn {
@@ -482,11 +501,90 @@
   transform: translate(0, -50%);
 }
 
+/*
+ * White card to the left of the panel with what the hovered entry looks like: the icon glyph or the
+ * color of the token. Fixed at the left edge of the panel (TS), vertically centered on the entry,
+ * with an arrow pointing at it.
+ */
+.doc-clip-preview {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 72px;
+  padding: 12px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  box-shadow: 0 8px 24px rgb(22 50 92 / 0.16);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(calc(-100% + 8px), -50%) scale(0.96);
+  transform-origin: right center;
+  /* Hidden: no transition on top, so it jumps to the next entry while invisible. */
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.22s ease-out;
+
+  /* Visible: also glides between entries instead of jumping. */
+  &.doc-is-visible {
+    opacity: 1;
+    transform: translate(-100%, -50%);
+    transition:
+      opacity 0.22s ease-out,
+      transform 0.3s var(--doc-ease-emphasized),
+      top 0.28s var(--doc-ease-emphasized);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid var(--doc-outline-variant);
+    border-right: 1px solid var(--doc-outline-variant);
+    background: inherit;
+    transform: translateY(-50%) rotate(45deg);
+  }
+}
+
+.doc-clip-preview-glyph {
+  display: block;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.doc-clip-preview-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--doc-radius-sm);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+  transition: background 0.25s ease-out;
+}
+
+.doc-clip-preview-value {
+  font-family: var(--doc-font-mono);
+  font-size: 0.6875rem;
+  color: var(--doc-ink-muted);
+  white-space: nowrap;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .doc-clip-fab-icon.doc-is-bumped,
   .doc-clip-drop,
   .doc-clip-ripple,
   .doc-clip-panel:popover-open {
     animation: none;
+  }
+
+  .doc-clip-preview,
+  .doc-clip-preview.doc-is-visible {
+    transform: translate(-100%, -50%);
+    transition: opacity 0.18s ease-out;
   }
 }

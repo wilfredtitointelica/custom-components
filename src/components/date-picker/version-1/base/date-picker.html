@@ -1,6 +1,7 @@
 <!--
   title: DatePicker
   description: Fecha única o rango, con vistas de día, mes y año. Los nombres de meses y días siguen el locale global. Teclado - flechas, RePág/AvPág, Enter y Escape.
+  figma:
 -->
 @if (inline()) {
   <ng-container [ngTemplateOutlet]="panelTpl" />
@@ -30,8 +31,13 @@
       (blur)="!open() && markAsTouched()"
     />
     @if (showClear() && hasValue() && !isDisabled()) {
-      <button type="button" class="int-date-picker__clear" tabindex="-1" [attr.aria-label]="config.t('clear')"
-              (click)="clear($event)">
+      <button
+        type="button"
+        class="int-date-picker__clear"
+        tabindex="-1"
+        [attr.aria-label]="config.t('clear')"
+        (click)="clear($event)"
+      >
         <int-icon name="close" />
       </button>
     }
@@ -67,29 +73,57 @@
   >
     <!-- Header: prev | month · year | next -->
     <div class="int-date-picker__header">
-      <button type="button" class="int-date-picker__nav" [attr.aria-label]="currentView() === 'date' ? config.t('prevMonth') : config.t('prevYear')"
-              (click)="navigate(-1)">
+      <button
+        type="button"
+        class="int-date-picker__nav"
+        [attr.aria-label]="currentView() === 'date' ? config.t('prevMonth') : config.t('prevYear')"
+        (click)="navigate(-1)"
+      >
         <int-icon name="chevron-left" />
       </button>
       <div class="int-date-picker__title" aria-live="polite">
         @switch (currentView()) {
           @case ('date') {
-            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseMonth')"
-                    (click)="switchView('month')">{{ monthLabel() }}</button>
-            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseYear')"
-                    (click)="switchView('year')">{{ focusedDate().getFullYear() }}</button>
+            <button
+              type="button"
+              class="int-date-picker__title-button"
+              [attr.aria-label]="config.t('chooseMonth')"
+              (click)="switchView('month')"
+            >
+              {{ monthLabel() }}
+            </button>
+            <button
+              type="button"
+              class="int-date-picker__title-button"
+              [attr.aria-label]="config.t('chooseYear')"
+              (click)="switchView('year')"
+            >
+              {{ focusedDate().getFullYear() }}
+            </button>
           }
           @case ('month') {
-            <button type="button" class="int-date-picker__title-button" [attr.aria-label]="config.t('chooseYear')"
-                    (click)="switchView('year')">{{ focusedDate().getFullYear() }}</button>
+            <button
+              type="button"
+              class="int-date-picker__title-button"
+              [attr.aria-label]="config.t('chooseYear')"
+              (click)="switchView('year')"
+            >
+              {{ focusedDate().getFullYear() }}
+            </button>
           }
           @case ('year') {
-            <span class="int-date-picker__decade">{{ yearPageStart() }} - {{ yearPageStart() + 11 }}</span>
+            <span class="int-date-picker__decade"
+              >{{ yearPageStart() }} - {{ yearPageStart() + 11 }}</span
+            >
           }
         }
       </div>
-      <button type="button" class="int-date-picker__nav" [attr.aria-label]="currentView() === 'date' ? config.t('nextMonth') : config.t('nextYear')"
-              (click)="navigate(1)">
+      <button
+        type="button"
+        class="int-date-picker__nav"
+        [attr.aria-label]="currentView() === 'date' ? config.t('nextMonth') : config.t('nextYear')"
+        (click)="navigate(1)"
+      >
         <int-icon name="chevron-right" />
       </button>
     </div>
@@ -97,7 +131,12 @@
     @switch (currentView()) {
       @case ('date') {
         <!-- Keyboard is handled on the grid (roving tabindex), see onGridKeydown. -->
-        <table class="int-date-picker__calendar" role="grid" (keydown)="onGridKeydown($event)" (mouseleave)="onHover(null)">
+        <table
+          class="int-date-picker__calendar"
+          role="grid"
+          (keydown)="onGridKeydown($event)"
+          (mouseleave)="onHover(null)"
+        >
           <thead>
             <tr>
               @for (day of weekdays(); track $index) {
@@ -124,7 +163,8 @@
                       [attr.aria-disabled]="!cell.selectable || null"
                       (click)="selectDay(cell, $event)"
                       (mouseenter)="onHover(cell.date)"
-                    >{{ cell.date.getDate() }}</span>
+                      >{{ cell.date.getDate() }}</span
+                    >
                   </td>
                 }
               </tr>
@@ -140,7 +180,9 @@
             <span
               role="gridcell"
               class="int-date-picker__cell"
-              [class.int-date-picker__cell--today]="date.getFullYear() === currentMonth().year && m === currentMonth().month"
+              [class.int-date-picker__cell--today]="
+                date.getFullYear() === currentMonth().year && m === currentMonth().month
+              "
               [class.int-date-picker__cell--selected]="isSelected(date, 'month')"
               [class.int-date-picker__cell--in-range]="isInRange(date)"
               [class.int-date-picker__cell--disabled]="!isSelectableMonth(date.getFullYear(), m)"
@@ -149,7 +191,8 @@
               [attr.tabindex]="active ? 0 : -1"
               (click)="selectMonth(m)"
               (mouseenter)="onHover(date)"
-            >{{ name }}</span>
+              >{{ name }}</span
+            >
           }
         </div>
       }
@@ -168,7 +211,8 @@
               [attr.data-active]="active"
               [attr.tabindex]="active ? 0 : -1"
               (click)="selectYear(year)"
-            >{{ year }}</span>
+              >{{ year }}</span
+            >
           }
         </div>
       }
@@ -176,8 +220,12 @@
 
     @if (showButtonBar()) {
       <div class="int-date-picker__buttonbar">
-        <button type="button" class="int-date-picker__link" (click)="selectToday()">{{ config.t('today') }}</button>
-        <button type="button" class="int-date-picker__link" (click)="clear()">{{ config.t('clear') }}</button>
+        <button type="button" class="int-date-picker__link" (click)="selectToday()">
+          {{ config.t('today') }}
+        </button>
+        <button type="button" class="int-date-picker__link" (click)="clear()">
+          {{ config.t('clear') }}
+        </button>
       </div>
     }
   </div>

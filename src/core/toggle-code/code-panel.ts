@@ -1,8 +1,9 @@
-import { Component, ElementRef, computed, inject, input, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, input, signal, untracked, viewChild } from '@angular/core';
 import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 
 import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/catalog.model';
-import { ClipboardHistory } from '../../service/clipboard-history';
+import { ClipCodeSource, ClipboardHistory } from '../../service/clipboard-history';
+import { CodeVisibility } from '../../service/code-visibility';
 
 /**
  * Code viewer shown under a variant when its Code switch is on.
@@ -108,6 +109,8 @@ import { ClipboardHistory } from '../../service/clipboard-history';
 export class CodePanel {
   readonly label = input.required<string>();
   readonly sources = input<DocExampleCode>();
+  /** Variant shown (page, #fragment, version): saved with every copy so the history can link back. */
+  readonly source = input<Omit<ClipCodeSource, 'language'>>();
 
   protected readonly languages = CODE_LANGUAGES;
   protected readonly selected = signal<CodeLanguage>(CODE_LANGUAGES[0]);
@@ -117,9 +120,23 @@ export class CodePanel {
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private readonly clipboard = inject(ClipboardHistory);
 
+  constructor() {
+    // Link of the history: switch to the tab the code was copied from (once).
+    const code = inject(CodeVisibility);
+    effect(() => {
+      const requested = code.requested();
+      if (requested && requested.variantId === this.source()?.variantId) {
+        this.selected.set(requested.language);
+        untracked(() => code.requested.set(null));
+      }
+    });
+  }
+
   protected async copy(): Promise<void> {
     const label = `${this.selected().toUpperCase()} · ${this.label()}`;
-    if (!(await this.clipboard.copy('code', this.current() ?? '', label))) {
+    const from = this.source();
+    const source = from && { ...from, language: this.selected() };
+    if (!(await this.clipboard.copy('code', this.current() ?? '', label, source))) {
       return;
     }
     this.copied.set(true);

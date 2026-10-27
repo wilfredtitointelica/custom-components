@@ -5,11 +5,12 @@ import { StatusChip } from '../../../core/status-chip/status-chip';
 import { NavigationState } from '../../../service/navigation-state';
 import { FolderDiagram } from './folder-diagram/folder-diagram';
 import { SKILLS_PATH, SKILLS_SECTIONS } from './skills-sections';
+import { TokenDiagram } from './token-diagram/token-diagram';
 
 /** /components/skills: how to create components, variants and versions with the Claude skills. */
 @Component({
   selector: 'app-skills-page',
-  imports: [RouterLink, StatusChip, FolderDiagram],
+  imports: [RouterLink, StatusChip, FolderDiagram, TokenDiagram],
   templateUrl: './skills-page.html',
   styleUrl: './skills-page.scss',
 })

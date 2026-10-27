@@ -72,6 +72,16 @@
   }
 }
 
+// Chip that opens the version's Figma design in a new tab.
+.doc-chip-link {
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--doc-state-hover);
+  }
+}
+
 /* Variant sections */
 .doc-section {
   position: relative;
@@ -171,7 +181,7 @@
 }
 
 .doc-section-description {
-  max-width: 72ch;
+  // max-width: 72ch;
   margin: -4px 0 16px;
   color: var(--doc-ink-muted);
   font-size: 0.9375rem;

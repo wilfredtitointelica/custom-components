@@ -1,6 +1,7 @@
 <!--
   title: ListBox
   description: Lista seleccionable (simple o múltiple) con filtro y navegación completa por teclado (patrón WAI-ARIA listbox). Dropdown-select la reutiliza como su motor de opciones.
+  figma:
 -->
 @if (filter()) {
   <div class="int-list-box__filter">
@@ -55,7 +56,11 @@
       (click)="selectOption($event, option, i)"
     >
       @if (checkmark()) {
-        <int-icon class="int-list-box__check" name="check" [class.int-list-box__check--hidden]="!selected" />
+        <int-icon
+          class="int-list-box__check"
+          name="check"
+          [class.int-list-box__check--hidden]="!selected"
+        />
       }
       @if (resolvedItemTemplate(); as tpl) {
         <ng-container
@@ -68,7 +73,11 @@
     </li>
   } @empty {
     <li class="int-list-box__empty" role="option" aria-selected="false" aria-disabled="true">
-      {{ filterValue() ? (emptyFilterMessage() ?? config.t('emptyFilterMessage')) : (emptyMessage() ?? config.t('emptyMessage')) }}
+      {{
+        filterValue()
+          ? (emptyFilterMessage() ?? config.t('emptyFilterMessage'))
+          : (emptyMessage() ?? config.t('emptyMessage'))
+      }}
     </li>
   }
 </ul>

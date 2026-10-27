@@ -3,6 +3,7 @@ import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core'
 import {
   importStyleGuide,
   pingStyleGuide,
+  refreshIconFont,
   removeStyleGuide,
   setIconLabFallback,
   STYLE_GUIDE_BASE_URL,
@@ -103,7 +104,8 @@ export class ExternalResources {
   check(): Promise<void> {
     return pingStyleGuide().then((up) => {
       if (up) {
-        return this.styleGuideInPage() ? this.setStatus('connected') : this.load(false);
+        // Connected: also picks up icons re-exported to the style guide while the page is open.
+        return this.styleGuideInPage() ? refreshIconFont().then(() => this.setStatus('connected')) : this.load(false);
       }
       // Lost: the page shows what a reload would (local icons, int-* without tokens), not a stale copy.
       if (this.styleGuideInPage()) {
@@ -112,6 +114,7 @@ export class ExternalResources {
         setIconLabFallback(true);
       }
       this.setStatus('disconnected');
+      return undefined;
     });
   }
 
@@ -124,6 +127,7 @@ export class ExternalResources {
       () => {
         this.styleGuideInPage.set(true);
         setIconLabFallback(false);
+        refreshIconFont();
         this.setStatus('connected', first);
       },
       (err) => {

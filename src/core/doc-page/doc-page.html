@@ -35,6 +35,28 @@
     </span>
     <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
     <app-status-chip [status]="version?.status" />
+    <!-- Design of the selected version: optional `figma:` line of the header of version-N/base/<id>.html. -->
+    @if (version?.figma; as figma) {
+      <a class="doc-chip doc-chip-link" [href]="figma" target="_blank" rel="noopener noreferrer">
+        <i class="pi pi-external-link" aria-hidden="true"></i>
+        Figma
+      </a>
+    }
+    <!-- Components it composes: `requires` of <id>.config.ts, with the status of their latest version. -->
+    @for (required of requirements(); track required.id) {
+      @if (required.path; as path) {
+        <a class="doc-chip doc-chip-link" [routerLink]="path" [title]="'Requires ' + required.name">
+          <i class="pi pi-link" aria-hidden="true"></i>
+          Requires {{ required.name }}
+          <app-status-chip [status]="required.status" size="sm" />
+        </a>
+      } @else {
+        <span class="doc-chip" [title]="required.id + ' is not created yet'">
+          <i class="pi pi-link" aria-hidden="true"></i>
+          Requires {{ required.name }} · not created
+        </span>
+      }
+    }
     <!-- Designer of the selected version: static `designer` property of the class in version-N/base/<id>.ts. -->
     <app-designer-badge class="doc-designer" [designer]="version?.designer" />
   </div>
@@ -94,6 +116,7 @@
         [id]="variant.id + '-code'"
         [label]="current.name + ' · ' + variant.name"
         [sources]="example?.sources"
+        [source]="{ path: current.path, variantId: variant.id, version: current.versions.length > 1 ? version?.number : undefined }"
       />
     }
   </section>

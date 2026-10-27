@@ -1,6 +1,7 @@
 <!--
   title: FileUpload
   description: Selector de archivos con arrastrar y soltar, validación de tipo, tamaño y cantidad, y lista de pendientes. La subida HTTP queda en la app (uploadHandler), con sus servicios, autenticación y manejo de errores.
+  figma:
 -->
 <input
   #fileInput
@@ -17,28 +18,61 @@
 
 @if (mode() === 'basic') {
   <div class="int-file-upload__basic">
-    <button intButton type="button" [label]="chooseLabel() ?? config.t('choose')" [icon]="chooseIcon()"
-            [disabled]="disabled()" (click)="choose()"></button>
+    <button
+      intButton
+      type="button"
+      [label]="chooseLabel() ?? config.t('choose')"
+      [icon]="chooseIcon()"
+      [disabled]="disabled()"
+      (click)="choose()"
+    ></button>
     @if (files().length) {
       <span class="int-file-upload__basic-names">{{ fileNames() }}</span>
       @if (!auto()) {
-        <button intButton type="button" severity="secondary" [label]="uploadLabel() ?? config.t('upload')"
-                [icon]="uploadIcon()" [disabled]="disabled()" (click)="upload()"></button>
+        <button
+          intButton
+          type="button"
+          severity="secondary"
+          [label]="uploadLabel() ?? config.t('upload')"
+          [icon]="uploadIcon()"
+          [disabled]="disabled()"
+          (click)="upload()"
+        ></button>
       }
     }
   </div>
 } @else {
   <div class="int-file-upload__header">
-    <button intButton type="button" [label]="chooseLabel() ?? config.t('choose')" [icon]="chooseIcon()"
-            [disabled]="disabled() || limitReached()" (click)="choose()"></button>
+    <button
+      intButton
+      type="button"
+      [label]="chooseLabel() ?? config.t('choose')"
+      [icon]="chooseIcon()"
+      [disabled]="disabled() || limitReached()"
+      (click)="choose()"
+    ></button>
     @if (showUploadButton() && !auto()) {
-      <button intButton type="button" severity="secondary" [label]="uploadLabel() ?? config.t('upload')"
-              [icon]="uploadIcon()" [disabled]="disabled() || !files().length" (click)="upload()"></button>
+      <button
+        intButton
+        type="button"
+        severity="secondary"
+        [label]="uploadLabel() ?? config.t('upload')"
+        [icon]="uploadIcon()"
+        [disabled]="disabled() || !files().length"
+        (click)="upload()"
+      ></button>
     }
     @if (showCancelButton() && !auto()) {
-      <button intButton type="button" severity="secondary" variant="text"
-              [label]="cancelLabel() ?? config.t('cancel')" [icon]="cancelIcon()"
-              [disabled]="disabled() || !files().length" (click)="clear()"></button>
+      <button
+        intButton
+        type="button"
+        severity="secondary"
+        variant="text"
+        [label]="cancelLabel() ?? config.t('cancel')"
+        [icon]="cancelIcon()"
+        [disabled]="disabled() || !files().length"
+        (click)="clear()"
+      ></button>
     }
   </div>
 
@@ -62,9 +96,16 @@
             <span class="int-file-upload__file-name" [title]="file.name">{{ file.name }}</span>
             <span class="int-file-upload__file-size">{{ formatSize(file.size) }}</span>
             <int-pill severity="warn" [value]="config.t('pending')" />
-            <button intButton type="button" severity="danger" variant="text" size="small"
-                    [ariaLabel]="config.t('remove') + ' ' + file.name" [disabled]="disabled()"
-                    (click)="remove($event, i)">
+            <button
+              intButton
+              type="button"
+              severity="danger"
+              variant="text"
+              size="small"
+              [ariaLabel]="config.t('remove') + ' ' + file.name"
+              [disabled]="disabled()"
+              (click)="remove($event, i)"
+            >
               <int-icon name="close" />
             </button>
           </li>

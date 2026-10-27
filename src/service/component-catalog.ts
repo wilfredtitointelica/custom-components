@@ -88,6 +88,12 @@ export function resolveInventory(
     .map((definition) => {
       const owner = definition.name ?? definition.id;
       claim(definition.id, owner);
+      // A required component may not exist yet (it is built with a provisional), but it must be an ID.
+      for (const required of definition.requires ?? []) {
+        if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(required) || required === definition.id) {
+          throw new Error(`[inventory] "${owner}" requires an invalid ID "${required}".`);
+        }
+      }
       const path = `${COMPONENTS_BASE_PATH}/${definition.id}`;
       const versions = [...(registry[definition.id] ?? [])]
         .filter((v) => !definition.hiddenVersions?.includes(v.number))
@@ -130,6 +136,7 @@ export function resolveInventory(
           hiddenVariantIds: variants.filter((v) => v.hidden).map((v) => v.variant.id),
           versions,
           reference: definition.reference ?? false,
+          requires: definition.requires ?? [],
           loadRoutes: definition.loadRoutes,
         } satisfies CatalogComponent,
       };

@@ -30,11 +30,23 @@ export class StatusPage {
     return { [VERSION_QUERY_PARAM]: version };
   }
 
-  protected readonly rows = inject(ComponentCatalog)
+  private readonly catalog = inject(ComponentCatalog);
+
+  protected readonly rows = this.catalog
     .components.filter((component) => !component.reference)
     .map((component, index) => {
       const latest = component.versions.at(-1);
       return {
+        /** Components it composes (config `requires`): not done = the base uses a provisional. */
+        requires: component.requires.map((id) => {
+          const required = this.catalog.find(id);
+          return {
+            id,
+            name: required?.name ?? id,
+            path: required?.path,
+            status: required?.versions.at(-1)?.status ?? ('pending' as ComponentStatus),
+          };
+        }),
         index: index + 1,
         component,
         latest,

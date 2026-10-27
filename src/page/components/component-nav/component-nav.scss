@@ -120,7 +120,7 @@
 // Vertical spacing is padding (not margin) so it is clipped with the list when collapsed.
 .doc-variant-list {
   position: relative;
-  margin: 0 0 0 28px;
+  margin: 0 0 0 22px;
   padding: 4px 0 10px 8px;
 
   &::before {
@@ -135,7 +135,7 @@
 .doc-variant-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-height: 36px;
   padding: 6px 12px;
   border-radius: 999px;
@@ -170,6 +170,40 @@
       background: var(--doc-accent);
     }
   }
+}
+
+// Opens a group of the Skills menu: small uppercase label (like "Reference") + dotted line to the end.
+.doc-nav-separator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 12px;
+  color: var(--doc-ink-muted);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: .5;
+
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dotted var(--doc-outline);
+  }
+}
+
+// Highlight chip of a featured menu entry ("New"): white with dark text in every state.
+.doc-nav-badge {
+  margin-inline-start: auto;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--doc-ink);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  text-transform: uppercase;
 }
 
 .doc-variant-empty {

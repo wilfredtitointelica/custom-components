@@ -1,7 +1,14 @@
-import { Component, DestroyRef, afterNextRender, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
-import { CLIP_KINDS, ClipEntry, ClipKind, ClipboardHistory } from '../../service/clipboard-history';
+import { CLIP_KINDS, ClipCodeSource, ClipEntry, ClipKind, ClipboardHistory } from '../../service/clipboard-history';
+import { CODE_LANGUAGES } from '../../service/catalog.model';
+import { CodeVisibility } from '../../service/code-visibility';
+import { ComponentCatalog } from '../../service/component-catalog';
 import { ExternalResources } from '../../service/external-resources';
+import { ICON_BRANDS } from '../../page/icon-lab/icon-sections';
+import { isColor } from '../style-guide/style-guide-source';
 
 const ICON_SOURCES = { styleguide: 'Styleguides', local: 'Local' } as const;
 
@@ -15,6 +22,15 @@ const KIND_INFO: Record<ClipKind, { readonly title: string; readonly icon: strin
 
 /** Time the copy button of an entry shows its check. */
 const COPIED_MS = 1500;
+/** Gap between the panel and the preview card, and room the card needs to its left. */
+const PREVIEW_GAP = 12;
+const PREVIEW_ROOM = 120;
+/** Wait before hiding the preview card, so moving to the next entry glides it instead of fading out and in. */
+const PREVIEW_HIDE_MS = 90;
+
+/** What the floating card next to an entry shows: the icon glyph or the color of a token. */
+type ClipPreviewContent = { readonly kind: 'icon'; readonly className: string } | { readonly kind: 'color'; readonly color: string };
+type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: number };
 
 /**
  * Floating button of every view with the last copies (code, icons, tokens and helper classes).
@@ -22,6 +38,7 @@ const COPIED_MS = 1500;
  */
 @Component({
   selector: 'app-clipboard-history-button',
+  imports: [RouterLink],
   template: `
     <div class="doc-clip">
       <div
@@ -31,7 +48,7 @@ const COPIED_MS = 1500;
         popover
         role="dialog"
         aria-labelledby="doc-clip-title"
-        (toggle)="open.set($any($event).newState === 'open')"
+        (toggle)="onToggle($any($event).newState === 'open')"
       >
         <header class="doc-clip-head">
           <span class="doc-clip-head-icon"><i class="pi pi-history" aria-hidden="true"></i></span>
@@ -44,7 +61,7 @@ const COPIED_MS = 1500;
           </button>
         </header>
 
-        <div class="doc-clip-body">
+        <div class="doc-clip-body" (scroll)="hidePreview(0)">
           @for (group of groups(); track group.kind) {
             @if (!$first) {
               <hr class="doc-clip-divider" />
@@ -60,10 +77,36 @@ const COPIED_MS = 1500;
               </h3>
               <ul class="doc-clip-list">
                 @for (entry of group.entries; track entry.id) {
-                  <li class="doc-clip-item" [class.doc-is-copied]="copied() === entry.id">
-                    <span class="doc-clip-label" [class.doc-is-mono]="entry.kind !== 'code'" [title]="entry.label">
-                      {{ entry.label }}
-                    </span>
+                  <li
+                    class="doc-clip-item"
+                    [class.doc-is-copied]="copied() === entry.id"
+                    (mouseenter)="showPreview(entry, $any($event.currentTarget), panel)"
+                    (mouseleave)="hidePreview()"
+                    (focusin)="showPreview(entry, $any($event.currentTarget), panel)"
+                    (focusout)="hidePreview()"
+                  >
+                    <!-- Code: link to its variant, with the Code panel open on the copied tab. -->
+                    @if (sourceOf(entry); as source) {
+                      <a
+                        class="doc-clip-label doc-is-link"
+                        [routerLink]="source.path"
+                        [fragment]="source.variantId"
+                        [queryParams]="{ version: source.version ?? null }"
+                        queryParamsHandling="merge"
+                        [attr.aria-label]="'Ir al código: ' + entry.label"
+                        (click)="goTo(source, panel)"
+                      >
+                        {{ entry.label }}
+                      </a>
+                    } @else {
+                      <span
+                        class="doc-clip-label"
+                        [class.doc-is-mono]="entry.kind !== 'code'"
+                        [attr.title]="entry.kind === 'icon' || entry.kind === 'token' ? entry.label : null"
+                      >
+                        {{ entry.label }}
+                      </span>
+                    }
                     <button
                       type="button"
                       class="doc-clip-icon-btn"
@@ -94,6 +137,24 @@ const COPIED_MS = 1500;
             </div>
           }
         </div>
+
+        <!-- Fixed (not absolute), so the overflow of the panel does not clip it. Stays mounted so it can fade out. -->
+        @if (preview(); as p) {
+          <div
+            class="doc-clip-preview"
+            [class.doc-is-visible]="previewShown()"
+            [style.top.px]="p.top"
+            [style.left.px]="p.left"
+            aria-hidden="true"
+          >
+            @if (p.kind === 'icon') {
+              <i class="doc-clip-preview-glyph {{ p.className }}"></i>
+            } @else {
+              <span class="doc-clip-preview-swatch" [style.background]="p.color"></span>
+              <span class="doc-clip-preview-value">{{ p.color }}</span>
+            }
+          </div>
+        }
 
         @if (history.count()) {
           <footer class="doc-clip-foot">
@@ -131,10 +192,20 @@ const COPIED_MS = 1500;
 })
 export class ClipboardHistoryButton {
   protected readonly history = inject(ClipboardHistory);
+  private readonly code = inject(CodeVisibility);
+  private readonly catalog = inject(ComponentCatalog);
+  private readonly scroller = inject(ViewportScroller);
+  private readonly injector = inject(Injector);
   protected readonly open = signal(false);
   /** Entry whose copy button shows the check. */
   protected readonly copied = signal<string | null>(null);
+  /** Card shown to the left of the hovered (or focused) entry, for icons and color tokens. */
+  protected readonly preview = signal<ClipPreview | null>(null);
+  /** Whether the preview card is faded in; its content stays while it fades out. */
+  protected readonly previewShown = signal(false);
   private timer?: ReturnType<typeof setTimeout>;
+  private previewTimer?: ReturnType<typeof setTimeout>;
+  private previewFrame?: number;
 
   /** Where the icon font comes from right now (Style Guide bundle or the local fallback). */
   private readonly iconSource = inject(ExternalResources).iconSource;
@@ -154,7 +225,11 @@ export class ClipboardHistoryButton {
 
   constructor() {
     const destroyRef = inject(DestroyRef);
-    destroyRef.onDestroy(() => clearTimeout(this.timer));
+    destroyRef.onDestroy(() => {
+      clearTimeout(this.timer);
+      clearTimeout(this.previewTimer);
+      cancelAnimationFrame(this.previewFrame ?? 0);
+    });
 
     afterNextRender(() => {
       const stack = document.querySelector('.doc-toast-stack');
@@ -167,6 +242,72 @@ export class ClipboardHistoryButton {
     });
   }
 
+  /**
+   * Variant a copied code comes from. Entries saved before the source was recorded are resolved from
+   * their label ("TS · <component> · <variant>") against the catalog; null when it no longer exists.
+   */
+  protected sourceOf(entry: ClipEntry): ClipCodeSource | null {
+    if (entry.kind !== 'code') {
+      return null;
+    }
+    if (entry.source) {
+      return entry.source;
+    }
+    const [language, ...rest] = entry.label.split(' · ');
+    const variantName = rest.pop();
+    const component = this.catalog.components.find((c) => c.name === rest.join(' · '));
+    const variant = component?.variants.find((v) => v.name === variantName);
+    const lang = CODE_LANGUAGES.find((l) => l === language?.toLowerCase());
+    return component && variant && lang ? { path: component.path, variantId: variant.id, language: lang } : null;
+  }
+
+  /**
+   * Link of a copied code (the routerLink navigates): opens its Code panel on the copied tab, closes the
+   * history and scrolls to the variant. On another page the doc page scrolls itself once the previews load.
+   */
+  protected goTo(source: ClipCodeSource, panel: HTMLElement): void {
+    this.code.reveal(source.variantId, source.language);
+    panel.hidePopover();
+    afterNextRender(() => this.scroller.scrollToAnchor(source.variantId), { injector: this.injector });
+  }
+
+  protected onToggle(isOpen: boolean): void {
+    this.open.set(isOpen);
+    if (!isOpen) {
+      this.hidePreview(0);
+    }
+  }
+
+  /**
+   * Places the preview card outside the panel, vertically centered on the entry; nothing when there is no room.
+   * Already visible, it glides to the new entry. Hidden, it moves first and fades in on a later frame, so it
+   * does not slide from where it was last shown.
+   */
+  protected showPreview(entry: ClipEntry, item: HTMLElement, panel: HTMLElement): void {
+    const content = previewOf(entry);
+    const panelLeft = panel.getBoundingClientRect().left;
+    if (!content || panelLeft < PREVIEW_ROOM) {
+      this.hidePreview(0);
+      return;
+    }
+    clearTimeout(this.previewTimer);
+    const rect = item.getBoundingClientRect();
+    this.preview.set({ ...content, top: rect.top + rect.height / 2, left: panelLeft - PREVIEW_GAP });
+    if (!this.previewShown()) {
+      cancelAnimationFrame(this.previewFrame ?? 0);
+      this.previewFrame = requestAnimationFrame(() => {
+        this.previewFrame = requestAnimationFrame(() => this.previewShown.set(true));
+      });
+    }
+  }
+
+  /** Fades the preview card out (after a short wait, so hovering the next entry keeps it). */
+  protected hidePreview(delay = PREVIEW_HIDE_MS): void {
+    clearTimeout(this.previewTimer);
+    cancelAnimationFrame(this.previewFrame ?? 0);
+    this.previewTimer = setTimeout(() => this.previewShown.set(false), delay);
+  }
+
   protected async copy(entry: ClipEntry): Promise<void> {
     if (!(await this.history.recopy(entry))) {
       return;
@@ -175,4 +316,22 @@ export class ClipboardHistoryButton {
     this.copied.set(entry.id);
     this.timer = setTimeout(() => this.copied.set(null), COPIED_MS);
   }
+}
+
+/** Icons: their class (size modifiers on a sample glyph, brands framed). Tokens: their color, if they resolve to one. */
+function previewOf(entry: ClipEntry): ClipPreviewContent | null {
+  if (entry.kind === 'icon') {
+    const name = entry.label;
+    const className = name.startsWith('icon--')
+      ? `icon-database ${name}`
+      : ICON_BRANDS.some((brand) => brand.name === name)
+        ? `${name} icon--outlined`
+        : name;
+    return { kind: 'icon', className };
+  }
+  if (entry.kind === 'token') {
+    const color = getComputedStyle(document.documentElement).getPropertyValue(entry.label).trim();
+    return isColor(color) ? { kind: 'color', color } : null;
+  }
+  return null;
 }

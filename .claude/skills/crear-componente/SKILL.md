@@ -142,6 +142,7 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
 <!--
   title: Chip
   description: Chips represent entities using icons, labels and images.
+  figma:
 -->
 ```
 
@@ -149,6 +150,10 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
   bajo el título). Cada versión tiene la suya; el menú usa la de la versión más reciente.
 - Variante → cabecera de `version-N/variants/<slug>/example.html` (título y descripción de la sección).
 - `description:` puede quedar vacío y continuar en varias líneas.
+- `figma:` va **solo en `base/<id>.html`**, siempre, debajo de `description:` y **vacío** si aún no hay
+  diseño: indica que el componente puede tener un "Link to selection" de Figma como referencia. La
+  página muestra un chip "Figma" que lo abre; lo usan `/replicar-primeng` y `/actualizar-replica`, y
+  `npm run new:version` lo conserva. Los `example.html` de las variantes **no** llevan `figma:`.
 - No poner títulos ni descripciones en `<id>.config.ts` ni en ningún `.ts`.
 
 ### 3.1 `chip.config.ts` (carpeta principal)
@@ -305,6 +310,7 @@ Se entrega **exactamente así**: la cabecera con lo respondido en 3.0 y el nombr
 <!--
   title: Chip
   description: Chips represent entities using icons, labels and images.
+  figma:
 -->
 int-chip
 ```

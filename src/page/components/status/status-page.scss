@@ -409,24 +409,27 @@ code {
     min-width: 820px;
   }
 
-  // Widths of the <colgroup>, independent of the content; "Componente" takes the rest (~27%).
+  // Widths of the <colgroup>, independent of the content; "Componente" takes the rest (~22%).
   .doc-w-index {
     width: 5%;
   }
   .doc-w-designer {
-    width: 17%;
+    width: 15%;
   }
   .doc-w-version {
-    width: 8%;
+    width: 7%;
   }
   .doc-w-status {
-    width: 13%;
+    width: 12%;
+  }
+  .doc-w-requires {
+    width: 15%;
   }
   .doc-w-variants {
-    width: 10%;
+    width: 8%;
   }
   .doc-w-previous {
-    width: 20%;
+    width: 16%;
   }
 
   th,
