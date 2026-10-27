@@ -115,6 +115,29 @@
   font: inherit;
 }
 
+// Selection like a code editor (not the browser's default blue); the text keeps its colors.
+.doc-code-body ::selection {
+  background: rgb(255 255 255 / 0.18);
+}
+
+// HTML tab: <int-*> tags, <ng-*> tags (blue) and the "dep:" comments of provisionals (Scan color).
+.doc-code-int {
+  color: var(--doc-accent);
+}
+
+.doc-code-ng {
+  color: #2c73cd;
+}
+
+.doc-code-ng,
+.doc-code-name {
+  font-weight: 700;
+}
+
+.doc-code-dep {
+  color: var(--doc-scan);
+}
+
 .doc-code-pending {
   margin: 0;
   color: rgb(255 255 255 / 0.55);

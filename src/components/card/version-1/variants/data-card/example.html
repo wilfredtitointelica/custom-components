@@ -1,43 +1,104 @@
 <!--
   title: Data card
-  description: Composición para KPIs: int-card--data quita fondo, sombra y padding; el valor y su moneda se maquetan con helpers. Incluye un grupo de data cards.
+  description: Composición para KPIs: int-card--data quita fondo, sombra y padding y el contenido se maqueta con helpers. Muestra los formatos de Figma: data card, grupo (con y sin fondo), chart (int-card--chart-1…6 colorea el valor marcado con int-card__value) y chart group.
 -->
+<!-- One block per Figma format: name on top, sample below, a divider between blocks. -->
 <div class="u-display-flex u-flex-column u-gap-xl u-full-width">
-  <!-- Group with background: the data cards sit inside a regular card -->
-  <int-card>
-    <div class="u-display-flex u-flex-wrap u-justify-content-between u-gap-xl">
+  <!-- Data card -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Data card</p>
+    <div class="u-display-flex">
+      <int-card class="int-card--data">
+        <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
+          <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm u-text-nowrap">
+            <span>{{ first.title }}</span>
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
+          </div>
+          <div class="u-display-flex u-align-items-baseline u-gap-xs u-text-nowrap">
+            <span class="u-text-sm u-bold int-card__value">{{ first.currency }}</span>
+            <span class="u-heading-2xl int-card__value">{{ first.amount }}</span>
+          </div>
+        </div>
+      </int-card>
+    </div>
+  </div>
+
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <!-- Data card group: with background (card surface + shadow) and without (surface, no shadow) -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Data card group</p>
+    @for (shadow of [true, false]; track shadow) {
+      <int-card [class.u-shadow-none]="!shadow">
+        <div class="u-display-flex u-gap-lg">
+          @for (item of items; track item.id) {
+            @if (!$first) {
+              <span class="u-divider-vertical u-mx-0 u-align-self-stretch" aria-hidden="true"></span>
+            }
+            <int-card class="int-card--data u-flex-grow-1 u-flex-basis-0">
+              <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
+                <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm u-text-nowrap">
+                  <span>{{ item.title }}</span>
+                  <i class="pi pi-info-circle" aria-hidden="true"></i>
+                </div>
+                <div class="u-display-flex u-align-items-baseline u-gap-xs u-text-nowrap">
+                  <span class="u-text-sm u-bold int-card__value">{{ item.currency }}</span>
+                  <span class="u-heading-2xl int-card__value">{{ item.amount }}</span>
+                </div>
+              </div>
+            </int-card>
+          }
+        </div>
+      </int-card>
+    }
+  </div>
+
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <!-- Data card chart: one color level per series (int-card--chart-1…6) -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Data card chart</p>
+    <div class="u-display-flex u-flex-wrap u-justify-content-around u-gap-xl">
       @for (item of items; track item.id) {
-        <int-card class="int-card--data">
-          <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
-            <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm">
-              <span>{{ item.title }}</span>
-              <i class="pi pi-info-circle" aria-hidden="true"></i>
+        <int-card class="int-card--data int-card--chart-{{ item.level }}">
+          <div class="u-display-flex u-align-items-center u-gap-sm u-text-nowrap">
+            <div class="u-display-flex u-flex-column u-text-right">
+              <span class="u-text-lg u-bold">{{ item.title }}</span>
+              <span class="u-text-sm">{{ item.description }}</span>
             </div>
-            <div class="u-display-flex u-align-items-baseline u-gap-xs">
-              <span class="u-text-sm u-bold">{{ item.currency }}</span>
-              <span class="u-heading-2xl">{{ item.amount }}</span>
+            <div class="u-display-flex u-align-items-baseline">
+              <span class="u-text-sm u-bold int-card__value">{{ item.currency }}</span>
+              <span class="u-heading-3xl int-card__value">{{ item.amount }}</span>
             </div>
           </div>
         </int-card>
       }
     </div>
-  </int-card>
+  </div>
 
-  <!-- Group without background -->
-  <div class="u-display-flex u-flex-wrap u-justify-content-between u-gap-xl u-px-5">
-    @for (item of items; track item.id) {
-      <int-card class="int-card--data">
-        <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
-          <div class="u-display-flex u-align-items-center u-gap-xs u-text-sm">
-            <span>{{ item.title }}</span>
-            <i class="pi pi-info-circle" aria-hidden="true"></i>
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <!-- Data card chart group: chart cards of the same series separated by dividers -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Data card chart group</p>
+    <div class="u-display-flex u-gap-lg u-px-5">
+      @for (item of items; track item.id) {
+        @if (!$first) {
+          <span class="u-divider-vertical u-mx-0 u-align-self-stretch" aria-hidden="true"></span>
+        }
+        <int-card class="int-card--data int-card--chart-1 u-flex-grow-1 u-flex-basis-0">
+          <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm u-text-nowrap">
+            <div class="u-display-flex u-flex-column u-text-right">
+              <span class="u-text-lg u-bold">{{ item.title }}</span>
+              <span class="u-text-sm">{{ item.description }}</span>
+            </div>
+            <div class="u-display-flex u-align-items-baseline">
+              <span class="u-text-sm u-bold int-card__value">{{ item.currency }}</span>
+              <span class="u-heading-3xl int-card__value">{{ item.amount }}</span>
+            </div>
           </div>
-          <div class="u-display-flex u-align-items-baseline u-gap-xs">
-            <span class="u-text-sm u-bold">{{ item.currency }}</span>
-            <span class="u-heading-2xl">{{ item.amount }}</span>
-          </div>
-        </div>
-      </int-card>
-    }
+        </int-card>
+      }
+    </div>
   </div>
 </div>
