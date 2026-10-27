@@ -108,6 +108,7 @@ Cómo resolver la columna `--i-*`:
 | Figma muestra una variante/estado sin equivalente en la API de PrimeNG v20 | No se inventa: se pregunta si va como extensión `int-*` (input nuevo comentado `int-* extension`) |
 | Figma usa otra estructura de capas (envoltorios, auto layout) | Se mantiene la estructura de elementos de PrimeNG; el auto layout se traduce a flex/gap en BEM |
 | Icono distinto en Figma | `pi pi-*` o `incontrol-icons` equivalente; si no hay, preguntar |
+| Figma muestra contenido dentro de un template (fila de `#item`, cuerpo de dialog, pie con botones) | No es del componente: estructura y visual estático con helpers `.u-*` en el `example.html`; estados u otra cosa no estructural sin helper, en un modificador `_<id>.<grupo>.scss` con tokens ([helpers.md](helpers.md) 1b). Nunca clases del Style Guide como `.prCard` |
 
 ## 6. Comentarios en `_<id>.scss`
 
