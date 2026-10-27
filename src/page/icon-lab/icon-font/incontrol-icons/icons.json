@@ -325,11 +325,6 @@
           "unicode": "f113"
         },
         {
-          "name": "icon-input-success-disabled",
-          "code": 61714,
-          "unicode": "f112"
-        },
-        {
           "name": "icon-input-error",
           "code": 61713,
           "unicode": "f111"

@@ -1,6 +1,6 @@
 ---
 name: replicar-primeng
-description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires y, si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
+description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. El contenido que va dentro de los templates del componente (#item, #header, cuerpo proyectado) se maqueta en las variantes con las clases helper .u-* del Style Guide. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires y, si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
 argument-hint: "<p-selector o nombre del componente de PrimeNG> [link de Figma]"
 ---
 
@@ -17,6 +17,8 @@ Referencias de esta skill (léelas cuando la fase lo pida, no antes):
   (inventario, plan, archivos y variantes esperadas).
 - [references/figma.md](references/figma.md): cómo usar un link de Figma como referencia visual y
   traducir sus valores a tokens `--i-*` (solo si el usuario da el link).
+- [references/helpers.md](references/helpers.md): clases helper `.u-*` del Style Guide para maquetar el
+  contenido que va **dentro de los templates** del componente en las variantes (3.5).
 
 Convenciones del proyecto (fuente de verdad, no se duplican aquí): skill `crear-componente`
 (`.claude/skills/crear-componente/SKILL.md`) y la implementación de referencia `src/components/_demo_/`.
@@ -46,6 +48,8 @@ vuelve a discutir en cada réplica:
 | Carpeta `components/` | `src/components/<id>/` con `<id>.config.ts`, `routes.ts`, `<id>-page.ts`, `version-N/` |
 | Mocks "en el .ts del componente" | En la clase del `example.ts` de la variante. La base **no** lleva mocks: se extrae a npm |
 | Tokens de diseño | `--i-*` del Intelica Style Guide; nunca `--doc-*` ni `dt()` de PrimeNG |
+| Contenido de los templates en la demo (`flex gap-2`, PrimeFlex/Tailwind) | Clases helper `.u-*` del Style Guide en el `example.html` (3.5) |
+| Clases del Style Guide (`.prCard`, `.pt*`, `.ly*`, `.gr*`, `row`/`col-*`) | **Nunca.** Del Style Guide solo se usan tokens `--i-*` y helpers `.u-*` |
 | Comentarios | En inglés, como el resto del código del repo; densidad similar a `_demo_` |
 | Título y descripción | Cabecera HTML (`<!-- title: … description: … -->`), nunca en TS |
 
@@ -165,6 +169,9 @@ Procedimiento completo en [references/figma.md](references/figma.md). En resumen
    implementa sin preguntar; lo demás va a las preguntas de 2.2.
 4. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
    token `--i-*` del Style Guide → `--int-<id>-*`; por cada valor de eje, solo lo que cambia.
+   Si el diseño muestra **contenido dentro de los templates** (la fila de un `#item`, el cuerpo de un
+   dialog), arma además la **tabla de contenido**: capa → propiedad → destino (helper `.u-*` o
+   modificador con tokens, 3.5).
 5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
    vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
    antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
@@ -189,6 +196,7 @@ Reparto de responsabilidades (no se discute en cada réplica):
 | API, estructura de elementos, estados internos, teclado, ARIA, eventos | **PrimeNG** |
 | Medidas, espaciados, radios, colores, tipografía, sombras, iconos y estados que se ven en el diseño | **Figma** |
 | Valores CSS | **Style Guide** (`--i-*`): Figma dice *qué* valor; el token del Style Guide es *cómo* se escribe |
+| Contenido del consumidor dentro de los templates (variantes) | **Style Guide** (helpers `.u-*`): Figma dice el layout; el helper es *cómo* se escribe |
 | Lo que Figma no muestra (un estado, una variante) | PrimeNG traducido a tokens (3.3) |
 
 - Figma nunca se copia como CSS literal (`#hex`, `px`, `font-family`): cada valor se resuelve a un `--i-*`.
@@ -417,7 +425,11 @@ Reglas:
   - Estados (`:hover`, `:focus-visible`, `:disabled`, `[aria-disabled]`) en el módulo base.
   - **SKELETON** `.sk-<id>`: forma básica (mismas dimensiones, fondo neutro) o vacío si no aplica.
 - `_<id>.<grupo>.scss` (uno por **grupo** de modificadores reales: `severity`, `size`, `removable`…):
-  solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`.
+  solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. También un grupo por
+  **formato de contenido** de una variante (`_card.data.scss` → `.int-card--data &__<elem>`), pero solo
+  con estados visuales u otra cosa no estructural que ningún helper cubre (3.5); la estructura va con helpers.
+- Del Style Guide solo se consumen tokens `--i-*`: ningún selector ni CSS copiado de sus clases
+  (`.prCard`, `.pt*`, `.ly*`, `.gr*`…).
 - Prohibido: clases `p-*`, clases sueltas (`.icon`, `.active`), `::ng-deep`, selectores de etiqueta
   globales, `.doc-*` / `--doc-*`, `!important` sin motivo, anidar más de 3 niveles.
 - Presupuesto: `anyComponentStyle` avisa a 4 kB y **falla a 8 kB** (angular.json, build production).
@@ -430,13 +442,42 @@ cabecera). Completar:
 
 - `example.html`: debajo de la cabecera, uso real de `<int-<id>>` que un consumidor podría copiar.
   Sin clases de documentación ni estilos inline: si se muestran varios valores juntos (todas las
-  severidades), van como componentes seguidos; la página de documentación ya les da espacio.
+  severidades), van como componentes seguidos; la página de documentación ya les da espacio. El
+  contenido que va dentro de los templates del componente se maqueta con helpers `.u-*` (3.5).
 - Descripción de la cabecera: qué demuestra, qué atributos usa, qué observar (estado, teclado, evento)
   y limitaciones. Una o dos frases, en español cuando la redactas tú (ver 2.4).
 - `example.ts`: un solo componente exportado; datos de demostración como constante tipada en el mismo
   archivo (`const MOCK_ITEMS: readonly Item[] = […]`) expuesta en la clase; `signal()` solo si el ejemplo
   la modifica (p. ej. lista de chips que se eliminan con `onRemove`). Sin servicios, HTTP ni `*.mock.ts`.
   Los mocks alimentan inputs públicos; nunca sustituyen la API.
+
+### 3.5 Contenido de los templates: clases helper del Style Guide
+
+Además de los tokens, cuando hay que **maquetar contenido dentro de los templates** del componente
+replicado (`<ng-template #item>`, `#header`, `#footer`, `#empty`…, o lo proyectado con `<ng-content>`:
+cuerpo de un dialog, de una card), ese contenido se escribe con las **clases helper `.u-*` del
+Style Guide** (`utilities/_helpers.scss`) para acercarse al diseño de Figma. Detalle, catálogo y tabla
+de traducción en [references/helpers.md](references/helpers.md).
+
+- Aplica al `example.html` de las variantes (marcado del consumidor). La **base** y su SCSS siguen con
+  BEM + `--int-*` → `--i-*`: nunca helpers en `base/<id>.html`.
+- Figma → helper con el mismo token: auto layout → `u-display-flex`/`u-flex-column` + `u-gap-*` +
+  `u-align-items-*`/`u-justify-content-*`; padding/margin → `u-p*-{0..5}`/`u-m*-{0..5}`; texto →
+  `u-text-*`, `u-heading-*`, `u-bold`; color → `u-color-*`; radio/sombra/borde → `u-radius-*`,
+  `u-shadow-*`, `u-b*-*`.
+- 🔒 **Del Style Guide solo TOKENS y HELPERS**: nada de `.prCard`, `.prButton`, `.pt*`, `.ly*`, `.gr*`,
+  clases de proyectos ni `row`/`col-*`, en ningún archivo.
+- Por capa de contenido:
+  1. **Estructura** (flex, gap, padding, margin, alineación, tamaño, overflow) → helpers.
+  2. **Visual estático** con helper exacto (texto, peso, color, radio, sombra, bordes) → helpers.
+  3. **Estados visuales** (hover, active, focus, seleccionado, disabled) **u otra cosa no estructural
+     sin helper** → modificador `.int-<id>--<grupo>` con `&__<elem>` en `_<id>.<grupo>.scss` (3.3),
+     solo con `--int-*` → `--i-*`. Solo eso; la estructura sigue en helpers.
+- Si el contenido es otro componente (botón, chip, avatar), se usa su `int-*` en `done`, no se imita con
+  helpers; si no está en `done`, marcado nativo mínimo + helpers.
+- Estructura sin helper exacto: el más cercano de la escala y la diferencia al informe. Nunca `style`
+  inline, SCSS en la carpeta de la variante, clases de PrimeFlex/Tailwind (de la demo de PrimeNG o de
+  `get_design_context`) ni clases `u-*` inventadas.
 
 ---
 
@@ -457,6 +498,17 @@ grep -rnE "class=\"([^\"]* )?p-[a-z]|selector: '(\[)?p-|^\s*\.p-[a-z]|<p-[a-z]" 
 grep -rnE "::ng-deep|--doc-|\.doc-|: any\b|as unknown as" src/components/<id>/
 grep -rnE "^\s*--int-[a-z0-9-]+:" src/components/<id>/ | grep -v "var(--i-"   # --int-* sin --i-*: solo excepciones de 3.3
 grep -rnE "class=\"([^\"]* )?(icon|label|active|disabled|container|selected)( |\")" src/components/<id>/
+grep -rnE "style=\"|\[style\.|class=\"([^\"]* )?(flex|gap-[0-9]|items-|justify-|text-(sm|xs|lg)|p-[0-9]|m-[0-9])( |\")" src/components/<id>/version-*/variants/   # contenido sin helpers (3.5)
+grep -rnE "\bu-[a-zA-Z0-9-]+" src/components/<id>/version-*/base/   # helpers en la base: prohibido (3.5)
+grep -rnE "\.?\b(pr|pt|ly|gr)[A-Z][a-zA-Z]*|class=\"([^\"]* )?(row|col(-[a-z0-9]+)*)( |\")" src/components/<id>/   # clases del Style Guide que no son u-* (3.5)
+```
+
+Cada clase `u-*` usada en las variantes debe existir en el Style Guide (no debe imprimir nada):
+
+```bash
+grep -rhoE "\bu-[a-zA-Z0-9-]+" src/components/<id>/version-*/variants/ | sort -u | while read c; do
+  grep -qE "\.$c\b" C:/christian/repos/Intelica.Style.Guide.New/IntelicaStyleGuide/src/assets/css/utilities/_helpers.scss || echo "no existe: $c"
+done
 ```
 
 Dependencias (1.6), no deben salir vacías sino coincidir con lo reportado:
@@ -477,7 +529,8 @@ Revisión manual (lista corta, en el informe):
   tokens `--i-*` solo existen con el Style Guide levantado (`localhost:8080`); sin él el componente queda
   sin tokens. Si no se puede abrir un navegador, decirlo: no afirmar fidelidad visual sin verla.
 - Con Figma: comparar el resultado con el `get_screenshot` del nodo (estructura, medidas, colores,
-  estados) y revisar que cada fila de la tabla visual (1.5) terminó en un `--int-*` → `--i-*`.
+  estados) y revisar que cada fila de la tabla visual (1.5) terminó en un `--int-*` → `--i-*` y cada
+  fila de la tabla de contenido en un helper `.u-*` (3.5).
 
 Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arreglar" otras partes.
 
@@ -495,7 +548,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
    "cuando esté done: `/resolver-dependencias <dep>`".
 5b. Con Figma: tabla de ejes y formatos con lo decidido; formatos que quedaron como componente aparte.
 6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente)
-   y, con Figma, diferencias con el diseño (valores aproximados a un token, lo que Figma no mostraba).
+   y, con Figma, diferencias con el diseño (valores aproximados a un token o a un helper `.u-*`, lo que
+   Figma no mostraba).
 7. Validaciones ejecutadas con su resultado real.
 8. Limitaciones conocidas y mejoras futuras.
 9. Sugerencia: marcar el estado con `/cambiar-estado <id> in-progress|done`.
@@ -528,3 +582,9 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 - ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
   `dep:<id> provisional` y se declara en `requires`.
 - ❌ Usar un provisional sin marcar o importar un `int-*` que no está en `done`.
+- ❌ Maquetar el contenido de los templates de las variantes con `style` inline, SCSS propio o clases de
+  PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).
+- ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,
+  `.gr*`, `row`/`col-*`) o copiar su CSS.
+- ❌ Poner estructura (flex, gap, padding…) en un modificador de contenido cuando la resuelve un helper:
+  el modificador solo lleva estados u otra cosa no estructural (3.5).
