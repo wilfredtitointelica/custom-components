@@ -166,15 +166,17 @@
   list-style: none;
   transition: opacity 0.2s;
 
+  // Mono name and sans label share the baseline (centering their boxes leaves them uneven).
   li {
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
     gap: 6px;
+    line-height: 16px;
   }
 
   code {
     font-family: var(--doc-font-mono);
-    line-height: 1cap;
+    font-size: inherit;
   }
 
   .doc-code-legend-bar:has([aria-pressed='false']) & {
@@ -183,6 +185,8 @@
 }
 
 .doc-code-swatch {
+  align-self: center;
+  flex-shrink: 0;
   width: 10px;
   height: 10px;
   border-radius: 2px;
