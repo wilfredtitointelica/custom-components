@@ -254,30 +254,6 @@
   font-size: 0.75rem;
 }
 
-// "Se usa en: Advanced, …" below an optional dependency.
-.doc-deps-used {
-  margin: 0 8px 6px;
-  color: var(--doc-ink-muted);
-  font-size: 0.75rem;
-}
-
-.doc-deps-used-link {
-  color: var(--doc-accent-text);
-  font-weight: 600;
-  text-decoration: none;
-
-  & + &::before {
-    content: ', ';
-    color: var(--doc-ink-muted);
-    font-weight: 400;
-  }
-
-  &:hover,
-  &:focus-visible {
-    text-decoration: underline;
-  }
-}
-
 /* Scan toggle (outlines provisionals; the outline itself is the global [data-dep] rule of styles.scss) */
 .doc-scan-toggle[aria-pressed='true'] {
   border-color: var(--doc-scan);

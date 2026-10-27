@@ -233,6 +233,8 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
    El elemento raíz del provisional lleva **`data-dep="<id>"`** (los comentarios desaparecen al compilar):
    con él el botón **Scan dependencies** de la página lo resalta con un contorno fucsia y la sección muestra
    "Por resolver: dep:<id>". Si el provisional son varios elementos hermanos, cada uno lleva el atributo.
+   Dentro de un `@for` (checkbox por opción, botón por fila) se marca igual cada repetición: el scan
+   resalta solo la primera de cada dependencia por ejemplo y muestra el total (`dep:checkbox ×20`).
    Preferir un elemento contenedor (no un `<input>` suelto) para que se vea la etiqueta `dep:<id>`.
    El provisional respeta la API y el ARIA que PrimeNG le daría al hijo (rol, `aria-checked`…).
 5. Agrega el id a `requires` de `src/components/<id>/<id>.config.ts` (crea la propiedad si falta; no

@@ -97,22 +97,6 @@
                       <app-status-chip [status]="item.status" size="sm" />
                       <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
                     </a>
-                    <!-- Optional ones: variants whose example still has a provisional (data-dep) for it. -->
-                    @if (group.kind === 'optional' && item.usedIn.length) {
-                      <p class="doc-deps-used">
-                        Se usa en:
-                        @for (variant of item.usedIn; track variant.id) {
-                          <a
-                            class="doc-deps-used-link"
-                            [routerLink]="current.path"
-                            [fragment]="variant.id"
-                            queryParamsHandling="preserve"
-                            (click)="depsPanel.hidePopover(); scanning.set(true)"
-                            >{{ variant.name }}</a
-                          >
-                        }
-                      </p>
-                    }
                   } @else {
                     <span
                       class="doc-deps-item doc-is-missing"

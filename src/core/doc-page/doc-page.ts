@@ -100,8 +100,7 @@ export class DocPage {
    * is not created yet; not done = a provisional marked `dep:<id> provisional` stands in for it.
    */
   protected readonly dependencies = computed(() => {
-    const { requires, uses, variants } = this.component();
-    const examples = this.examples.value();
+    const { requires, uses } = this.component();
     const toItem = (id: string) => {
       const dependency = this.catalog.find(id);
       return {
@@ -109,8 +108,6 @@ export class DocPage {
         name: dependency?.name ?? id,
         path: dependency?.path,
         status: dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined,
-        /** Variants of the selected version whose example.html still has a provisional for it. */
-        usedIn: variants.filter((v) => examples?.get(v.slug)?.provisionalDeps.includes(id)),
       };
     };
     const groups = [
@@ -171,5 +168,53 @@ export class DocPage {
       const variantId = untracked(() => this.nav.activeVariantId());
       if (variantId) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
     });
+
+    // Scan: only the first provisional of each dependency per preview is outlined, with the total
+    // (a list of 20 checkboxes or a table with a button per row shows one indicator, not 20). Previews
+    // can re-render (pagination, filters…), so the marks are refreshed while scanning is on.
+    effect((onCleanup) => {
+      if (!this.scanning() || !this.examples.hasValue()) return;
+      let frame = 0;
+      const mark = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => markProvisionals(host));
+      };
+      const observer = new MutationObserver(mark);
+      afterNextRender(
+        () => {
+          mark();
+          observer.observe(host, { childList: true, subtree: true });
+        },
+        { injector },
+      );
+      onCleanup(() => {
+        observer.disconnect();
+        cancelAnimationFrame(frame);
+        clearProvisionalMarks(host);
+      });
+    });
   }
+}
+
+/** Attribute read by the global scan rule of src/styles.scss; its value is the label ("checkbox ×12"). */
+const SCAN_MARK = 'data-dep-scan';
+
+/** Marks the first [data-dep] of each dependency inside every preview, with how many there are. */
+function markProvisionals(host: HTMLElement): void {
+  for (const preview of host.querySelectorAll<HTMLElement>('.doc-preview')) {
+    const byDep = new Map<string, HTMLElement[]>();
+    for (const element of preview.querySelectorAll<HTMLElement>('[data-dep]')) {
+      const dep = element.dataset['dep'] ?? '';
+      byDep.set(dep, [...(byDep.get(dep) ?? []), element]);
+    }
+    for (const [dep, [first, ...rest]] of byDep) {
+      const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
+      if (first.getAttribute(SCAN_MARK) !== label) first.setAttribute(SCAN_MARK, label);
+      for (const element of rest) element.removeAttribute(SCAN_MARK);
+    }
+  }
+}
+
+function clearProvisionalMarks(host: HTMLElement): void {
+  for (const element of host.querySelectorAll(`[${SCAN_MARK}]`)) element.removeAttribute(SCAN_MARK);
 }

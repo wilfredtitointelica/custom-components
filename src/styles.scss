@@ -212,10 +212,12 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
 
 /*
  * Scan of provisionals (doc page "Scan dependencies" toggle). A provisional stands in for an int-* component that
- * is not done yet and its root element carries data-dep="<id>" (skill replicar-primeng 1.6). Global
- * because the previews are the examples' own views, outside the doc page's encapsulation.
+ * is not done yet and its root element carries data-dep="<id>" (skill replicar-primeng 1.6). DocPage
+ * marks only the first one of each dependency per preview with data-dep-scan="<id> ×<total>", so a list
+ * or table that repeats it shows a single indicator. Global because the previews are the examples' own
+ * views, outside the doc page's encapsulation.
  */
-.doc-is-scanning .doc-preview [data-dep] {
+.doc-is-scanning .doc-preview [data-dep-scan] {
   position: relative;
   outline: 2px dashed var(--doc-scan);
   outline-offset: 3px;
@@ -224,7 +226,7 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
 
   // Name of the pending dependency (not shown on void elements such as <input> or <img>).
   &::after {
-    content: 'dep:' attr(data-dep);
+    content: 'dep:' attr(data-dep-scan);
     position: absolute;
     top: 0;
     right: 0;
