@@ -84,24 +84,12 @@
   }
 
   // Rendered in the CDK overlay container, outside the host.
-  // Options: grey/50 rows, grey/100 on hover or keyboard focus, solid blue/700 + blue/50 when selected.
+  // Grey/50 panel; option colors (hover, focus, selected) come from the embedded List-box.
   &__panel {
-    --int-option-radius: var(--i-border-radius-lg);
-    --int-option-background:var(--i-color-secondary-50);
-    --int-option-background-focused: var(--i-color-secondary-100);
-    --int-option-background-hover: var(--i-color-secondary-100);
-    --int-option-background-selected: var(--i-color-primary-700);
-    --int-option-color-selected: var(--i-color-primary-50);
-    --int-option-font-weight-selected: var(--i-typography-font-weight-regular);
-
     @include int.overlay-surface;
     width: 100%;
     overflow: hidden;
     background: var(--i-color-secondary-50);
-
-    .int-list-box__option--selected .int-list-box__check {
-      color: inherit;
-    }
   }
 }
 

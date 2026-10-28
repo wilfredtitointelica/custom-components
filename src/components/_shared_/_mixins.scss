@@ -137,15 +137,16 @@ $field-defaults: (
 
 /// Option row colors, read as `var(--int-option-*, <token>)` like the field tokens, so a container
 /// (e.g. the Dropdown-select panel) can restyle the options inside it without touching the others.
+/// Rows grey/50; hover and keyboard focus grey/100; selected solid blue/700 with blue/50 text.
 $option-defaults: (
-  radius: var(--i-border-radius-md),
-  background: transparent,
+  radius: var(--i-border-radius-lg),
+  background: var(--i-color-secondary-50),
   color: var(--i-text-color-default),
   background-focused: var(--i-color-secondary-100),
-  background-hover: var(--i-background-hover),
-  background-selected: var(--i-background-subtle),
-  color-selected: var(--i-color-primary-700),
-  font-weight-selected: var(--i-typography-font-weight-bold),
+  background-hover: var(--i-color-secondary-100),
+  background-selected: var(--i-color-primary-700),
+  color-selected: var(--i-color-primary-50),
+  font-weight-selected: var(--i-typography-font-weight-regular),
 );
 
 @function option-token($name) {
@@ -155,7 +156,7 @@ $option-defaults: (
   @return var(--int-option-#{$name}, #{map.get($option-defaults, $name)});
 }
 
-/// Option row used by List-box, Dropdown-select and Date-picker month/year pickers.
+/// Option row used by List-box (and Dropdown-select through its embedded List-box).
 /// $element is the option's BEM class (`int-list-box__option`): states are `--focused`, `--selected`
 /// and `--disabled` modifiers of it.
 @mixin option($element) {

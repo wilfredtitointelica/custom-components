@@ -6,6 +6,7 @@
 
 :root {
   --NOTE-LIST-BOX: 'int-list-box ( Custom )';
+  --int-list-box-gap: var(--i-spacing-gap-xs); // space between options (4px)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -53,6 +54,9 @@
   }
 
   &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-list-box-gap);
     margin: 0;
     padding: var(--i-spacing-container-xs);
     list-style: none;
@@ -65,6 +69,11 @@
   }
   &__check {
     color: var(--i-color-primary-700);
+
+    // On the solid selected row the check takes the row's text color.
+    .int-list-box__option--selected & {
+      color: inherit;
+    }
 
     &--hidden {
       visibility: hidden;
