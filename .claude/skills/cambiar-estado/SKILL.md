@@ -28,7 +28,7 @@ página de documentación la muestra como chip junto a la versión:
 
 El avance de todos los componentes se ve en la app en **Reference → Status** (`/components/status`):
 porcentaje terminado, conteo por estado y una tabla filtrable (estado de la versión más reciente de
-cada componente y de sus versiones anteriores).
+cada componente).
 
 Es **por versión**: `version-1` puede estar `done` mientras `version-2` está `in-progress`; el chip
 muestra el de la versión elegida en el desplegable.

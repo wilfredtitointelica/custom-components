@@ -117,7 +117,6 @@
         <col class="doc-w-status" />
         <col class="doc-w-requires" />
         <col class="doc-w-variants" />
-        <col class="doc-w-previous" />
       </colgroup>
       <thead>
         <tr>
@@ -128,7 +127,6 @@
           <th scope="col">Estado</th>
           <th scope="col">Requiere</th>
           <th scope="col" class="doc-col-number">Variantes</th>
-          <th scope="col">Versiones anteriores</th>
         </tr>
       </thead>
       <tbody>
@@ -177,25 +175,10 @@
               }
             </td>
             <td class="doc-col-number">{{ row.component.variants.length }}</td>
-            <td>
-              @for (version of row.previous; track version.number) {
-                <a
-                  class="doc-previous-version"
-                  [routerLink]="row.component.path"
-                  [queryParams]="versionQuery(version.number)"
-                  [title]="'Version ' + version.number"
-                >
-                  v{{ version.number }}
-                  <app-status-chip [status]="version.status" size="sm" />
-                </a>
-              } @empty {
-                <span class="doc-muted">—</span>
-              }
-            </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="8" class="doc-empty">No hay componentes con este filtro.</td>
+            <td colspan="7" class="doc-empty">No hay componentes con este filtro.</td>
           </tr>
         }
       </tbody>
