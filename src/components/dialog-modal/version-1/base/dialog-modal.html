@@ -1,7 +1,7 @@
 <!--
   title: Dialog / Modal
   description: Ventana modal en un overlay del CDK - el foco queda atrapado y vuelve al botón que la abrió, Escape la cierra y el scroll de la página se bloquea. Los overlays anidados (Dropdown-select, Date-picker) se cierran primero con Escape.
-  figma:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-3101&m=dev
 -->
 <ng-template #dialog>
   <div
@@ -9,7 +9,7 @@
     role="dialog"
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="focusOnShow()"
-    [class]="styleClass() ?? ''"
+    [class]="panelClass()"
     [ngStyle]="style()"
     [attr.aria-modal]="modal()"
     [attr.aria-labelledby]="headerId"
@@ -23,14 +23,16 @@
         }
       </div>
       @if (closable()) {
+        <!-- Figma icon-button: the bare text + icon-only int-button (24px box, 16px icon). -->
         <button
+          intButton
           type="button"
           class="int-dialog-modal__close"
-          [attr.aria-label]="config.t('close')"
+          variant="text"
+          icon="icon icon-cancel"
+          [ariaLabel]="config.t('close')"
           (click)="close()"
-        >
-          <int-icon name="close" />
-        </button>
+        ></button>
       }
     </div>
     <div class="int-dialog-modal__content">

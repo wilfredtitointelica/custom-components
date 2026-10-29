@@ -12,8 +12,8 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// Parity with Style Guide `.prDialog`. The block is the panel rendered in the CDK overlay.
-// Overridable props: --int-dialog-modal-{padding,radius,background,color}.
+// Parity with Style Guide `.prDialog` and Figma "Atoms / Overlay". The block is the panel rendered
+// in the CDK overlay. Overridable props: --int-dialog-modal-{padding,radius,background,color,width}.
 .int-dialog-modal {
   --int-dialog-modal-padding: var(--i-spacing-container-2xl);
   --int-dialog-modal-radius: var(--i-border-radius-2xl);
@@ -24,13 +24,15 @@
   flex-direction: column;
   gap: var(--i-spacing-gap-lg);
   box-sizing: border-box;
+  // Without --int-dialog-modal-width (no size) the declaration is invalid and the width stays auto.
+  width: min(var(--int-dialog-modal-width), calc(100vw - 2rem));
   min-width: min(20rem, calc(100vw - 2rem));
   max-width: calc(100vw - 2rem);
   max-height: calc(100vh - 2rem);
   padding: var(--int-dialog-modal-padding);
   border-radius: var(--int-dialog-modal-radius);
   background: var(--int-dialog-modal-background);
-  box-shadow: var(--i-shadow-depth-5);
+  box-shadow: var(--i-shadow-depth-3); // Figma: shadow.300
   color: var(--int-dialog-modal-color);
   font-family: var(--i-text-body-family);
   font-size: var(--i-typography-font-size-md);
@@ -68,27 +70,13 @@
     border-bottom: var(--i-border-width-sm) solid var(--i-color-neutral-200);
   }
   &__title {
-    font-size: var(--i-typography-font-size-lg);
+    font-size: var(--i-typography-font-size-lg); // Figma: 16px (overlay/font/size/lg)
     font-weight: var(--i-typography-font-weight-bold);
+    line-height: var(--i-typography-lineHeight-lg); // Figma: 24px (overlay/font/lineHeight/lg)
   }
+  // Text + icon-only int-button: its look comes from the button block.
   &__close {
-    @include int.reset-button;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    width: var(--i-sizing-md);
-    height: var(--i-sizing-md);
-    border-radius: var(--i-border-radius-md);
-    color: var(--i-color-primary-900);
-    font-size: var(--i-icon-size-sm);
-
-    &:hover {
-      background: var(--i-color-secondary-100);
-    }
-    &:focus-visible {
-      @include int.focus-ring(0);
-    }
   }
   &__content {
     flex: 1 1 auto;
@@ -96,14 +84,33 @@
   }
   &__footer {
     display: flex;
+    // Right-aligned, Cancel before the primary action (knowledgeBase dialog.md; Figma centers them).
     justify-content: flex-end;
-    gap: var(--i-spacing-gap-sm);
+    gap: var(--i-spacing-gap-lg); // Figma: 16px
   }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
+
+// Sizes: Style Guide .prDialog--sm|md|lg|xl (Figma XSmall / Medium / Large / XLarge).
+// --i-dialog-max-width-* live in the Style Guide components/dialog/_dialog-size.scss, not in tokens/,
+// so the base bundle (tokens only) lacks them: the fallbacks are the same Style Guide values.
+$sizes: (
+  sm: 400px,
+  md: 600px,
+  lg: 800px,
+  xl: 1024px,
+);
+
+.int-dialog-modal {
+  @each $size, $width in $sizes {
+    &--#{$size} {
+      --int-dialog-modal-width: var(--i-dialog-max-width-#{$size}, #{$width});
+    }
+  }
+}
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON

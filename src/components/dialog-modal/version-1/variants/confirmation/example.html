@@ -3,7 +3,7 @@
   description: dismissableMask cierra al hacer clic fuera y position="top" la ubica arriba.
 -->
 <button intButton label="Delete" severity="danger" icon="icon icon-delete" (click)="visible.set(true)"></button>
-<int-dialog-modal header="Delete file?" [(visible)]="visible" dismissableMask position="top" [style]="{ width: '24rem' }">
+<int-dialog-modal header="Delete file?" [(visible)]="visible" dismissableMask position="top" size="sm">
   <p class="u-m-0">This action cannot be undone.</p>
   <ng-template #footer>
     <button intButton label="Cancel" severity="secondary" (click)="visible.set(false)"></button>

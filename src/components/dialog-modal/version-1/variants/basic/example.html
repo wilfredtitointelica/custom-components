@@ -1,9 +1,9 @@
 <!--
   title: Basic
-  description: Diálogo con formulario - [(visible)] lo abre y cierra, [style] fija el ancho y #footer define las acciones.
+  description: Diálogo con formulario - [(visible)] lo abre y cierra, size="md" fija el ancho (600px) y #footer define las acciones.
 -->
 <button intButton label="Set alert" icon="icon icon-notification" (click)="visible.set(true)"></button>
-<int-dialog-modal header="Set alert" [(visible)]="visible" [style]="{ width: '32rem' }">
+<int-dialog-modal header="Set alert" [(visible)]="visible" size="md">
   <div class="u-display-flex u-flex-column u-gap-md">
     <div class="u-display-flex u-flex-column u-gap-xs">
       <label for="dm-alert-name">Name</label>

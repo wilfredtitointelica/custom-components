@@ -7,7 +7,7 @@ import { IntDialogModal } from './dialog-modal';
 @Component({
   imports: [IntDialogModal],
   template: `
-    <int-dialog-modal header="Set alert" [(visible)]="visible" dismissableMask>
+    <int-dialog-modal header="Set alert" [(visible)]="visible" dismissableMask size="md" styleClass="custom">
       <input class="first-field" />
       <ng-template #footer><button class="save">Save</button></ng-template>
     </int-dialog-modal>
@@ -43,6 +43,24 @@ describe('IntDialogModal', () => {
     expect(title.textContent?.trim()).toBe('Set alert');
     expect(dialog.querySelector('.first-field')).not.toBeNull();
     expect(dialog.querySelector('.int-dialog-modal__footer .save')).not.toBeNull();
+  });
+
+  it('applies the size modifier next to styleClass', () => {
+    const { overlay, open } = setup();
+    open();
+    const dialog = overlay.querySelector('[role="dialog"]')!;
+    expect(dialog.classList).toContain('int-dialog-modal');
+    expect(dialog.classList).toContain('int-dialog-modal--md');
+    expect(dialog.classList).toContain('custom');
+  });
+
+  it('renders the close button as a labelled text icon-only int-button', () => {
+    const { overlay, open } = setup();
+    open();
+    const close = overlay.querySelector<HTMLButtonElement>('.int-dialog-modal__close')!;
+    expect(close.classList).toContain('int-button--text');
+    expect(close.classList).toContain('int-button--icon-only');
+    expect(close.getAttribute('aria-label')).toBeTruthy();
   });
 
   it('closes with the close button and updates the two-way binding', () => {

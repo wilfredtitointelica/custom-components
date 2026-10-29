@@ -10,6 +10,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   contentChild,
   afterRenderEffect,
   inject,
@@ -20,7 +21,14 @@ import {
   viewChild,
 } from '@angular/core';
 
-import { IntConfig, IntIcon, uniqueId } from '../../../_shared_';
+import { IntConfig, uniqueId } from '../../../_shared_';
+import { IntButton } from '../../../button/version-1/base/button';
+
+/**
+ * Style Guide `.prDialog--sm|md|lg|xl` widths (--i-dialog-max-width-*: 400/600/800/1024px). Those tokens
+ * ship with the Style Guide dialog component styles, so the SCSS falls back to the same values.
+ */
+export type IntDialogModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 /**
  * <int-dialog-modal> · version 1. Modal window rendered in a CDK overlay (focus trap, Escape, scroll lock);
@@ -28,7 +36,7 @@ import { IntConfig, IntIcon, uniqueId } from '../../../_shared_';
  * `display: contents`: the `int-dialog-modal` block is the panel inside the overlay.
  *
  * @example
- * <int-dialog-modal header="Set alert" [(visible)]="showAlert" [style]="{ width: '32rem' }">
+ * <int-dialog-modal header="Set alert" [(visible)]="showAlert" size="md">
  *   <p>Content</p>
  *   <ng-template #footer>
  *     <button intButton severity="secondary" label="Cancel" (click)="showAlert = false"></button>
@@ -38,7 +46,7 @@ import { IntConfig, IntIcon, uniqueId } from '../../../_shared_';
  */
 @Component({
   selector: 'int-dialog-modal',
-  imports: [CdkTrapFocus, NgStyle, NgTemplateOutlet, IntIcon],
+  imports: [CdkTrapFocus, NgStyle, NgTemplateOutlet, IntButton],
   templateUrl: './dialog-modal.html',
   styleUrl: '../styles/_index.scss',
   host: { style: 'display: contents' },
@@ -62,7 +70,17 @@ export class IntDialogModal implements OnDestroy {
   /** Focus the first focusable element when shown; focus is restored to the opener on hide. */
   readonly focusOnShow = input(true, { transform: booleanAttribute });
   readonly position = input<'center' | 'top'>('center');
-  /** Inline styles of the dialog panel, e.g. `{ width: '40rem' }` (PrimeNG `[style]`). */
+  /**
+   * int-* extension (PrimeNG sizes dialogs with `[style]`): panel width from the Style Guide
+   * `.prDialog--<size>` tokens. Figma "Atoms / Overlay": sm = XSmall (400px), md = Medium (600px),
+   * lg = Large (800px), xl = XLarge (1024px). Figma Small (440px, the confirm width) has no token:
+   * set `--int-dialog-modal-width: 440px` through `styleClass`.
+   */
+  readonly size = input<IntDialogModalSize | undefined>(undefined);
+  /**
+   * Inline styles of the dialog panel, e.g. `{ width: '40rem' }` (PrimeNG `[style]`). Prefer `size`:
+   * the app guidelines (knowledgeBase dialog.md) discourage `[style]` on dialogs.
+   */
   readonly style = input<Record<string, string> | null>(null);
   readonly styleClass = input<string | undefined>(undefined);
 
@@ -71,6 +89,10 @@ export class IntDialogModal implements OnDestroy {
 
   protected readonly config = inject(IntConfig);
   protected readonly headerId = uniqueId('int-dialog-modal-title');
+  /** Size modifier (int-dialog-modal--<size>) plus the consumer's styleClass. */
+  protected readonly panelClass = computed(() =>
+    [this.size() && `int-dialog-modal--${this.size()}`, this.styleClass()].filter(Boolean).join(' '),
+  );
   protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header');
   protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer');
   private readonly dialogTemplate = viewChild.required<TemplateRef<unknown>>('dialog');

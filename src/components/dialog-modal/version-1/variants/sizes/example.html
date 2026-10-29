@@ -1,0 +1,21 @@
+<!--
+  title: Sizes
+  description: size="sm" | "md" | "lg" | "xl" (400 / 600 / 800 / 1024px, tokens --i-dialog-max-width-*). Figma: XSmall, Medium, Large, XLarge.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-sm">
+  @for (size of sizes; track size) {
+    <button intButton severity="secondary" [label]="'Size ' + size" (click)="openSize.set(size)"></button>
+  }
+</div>
+<int-dialog-modal
+  [header]="'Size ' + openSize()"
+  [visible]="openSize() !== null"
+  (visibleChange)="$event || openSize.set(null)"
+  [size]="openSize() ?? undefined"
+>
+  <p class="u-m-0">The panel width comes from the Style Guide token --i-dialog-max-width-{{ openSize() }}.</p>
+  <ng-template #footer>
+    <button intButton label="Cancel" severity="secondary" (click)="openSize.set(null)"></button>
+    <button intButton label="Save" (click)="openSize.set(null)"></button>
+  </ng-template>
+</int-dialog-modal>
