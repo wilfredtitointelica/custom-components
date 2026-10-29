@@ -1,0 +1,8 @@
+<!--
+  title: Label
+  description: El label va fuera del componente, como contenido del consumidor: un label for asociado a inputId, así el click en el texto también alterna el valor.
+-->
+<div class="u-display-flex u-align-items-center u-gap-sm">
+  <int-toggle-switch [(ngModel)]="checked" inputId="notifications" />
+  <label for="notifications" class="u-text-md u-color-body">Recibir notificaciones</label>
+</div>

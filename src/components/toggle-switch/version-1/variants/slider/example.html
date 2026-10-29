@@ -1,0 +1,10 @@
+<!--
+  title: Slider
+  description: Extensión int-*: variant="slider" dibuja el track lineal de Figma toggle-small (sin label). Apagado, encendido y deshabilitado.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-lg">
+  <int-toggle-switch variant="slider" [(ngModel)]="off" ariaLabel="Slider off" />
+  <int-toggle-switch variant="slider" [(ngModel)]="on" ariaLabel="Slider on" />
+  <int-toggle-switch variant="slider" [ngModel]="false" disabled ariaLabel="Slider disabled off" />
+  <int-toggle-switch variant="slider" [ngModel]="true" disabled ariaLabel="Slider disabled on" />
+</div>

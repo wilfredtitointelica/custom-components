@@ -1,0 +1,18 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Forced checked
+\*——————————————————————————————————————————————————————————*/
+
+// Always together with --disabled (the base sets both), so it wins over the disabled rules.
+.int-toggle-switch--forced-checked.int-toggle-switch--disabled {
+  .int-toggle-switch__input {
+    cursor: not-allowed;
+  }
+
+  .int-toggle-switch__slider {
+    background-color: var(--int-toggle-switch-checked-border-color);
+  }
+
+  .int-toggle-switch__handle {
+    border-color: var(--int-toggle-switch-checked-border-color);
+  }
+}

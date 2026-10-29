@@ -1,6 +1,23 @@
 <!--
   title: ToggleSwitch
-  description:
-  figma:
+  description: ToggleSwitch is used to select a boolean value.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2072-2244
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2091-3074
 -->
-int-toggle-switch
+<!-- Native checkbox over the whole switch: keyboard, focus and an external <label for> come from it -->
+<input
+  #input
+  type="checkbox"
+  role="switch"
+  class="int-toggle-switch__input"
+  [attr.id]="inputId()"
+  [checked]="checked()"
+  [attr.disabled]="isDisabled() ? '' : null"
+  [attr.aria-checked]="checked()"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+  [attr.aria-label]="ariaLabel()"
+  (blur)="onTouched()"
+/>
+<div class="int-toggle-switch__slider">
+  <div class="int-toggle-switch__handle"></div>
+</div>

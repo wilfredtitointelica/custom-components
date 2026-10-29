@@ -1,0 +1,16 @@
+<!--
+  title: Disabled
+  description: Con disabled el toggle no responde, apagado y encendido tienen el mismo aspecto y el label pasa a gris.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-lg">
+  <int-toggle-switch [ngModel]="false" disabled ariaLabel="Disabled off" />
+  <int-toggle-switch [ngModel]="true" disabled ariaLabel="Disabled on" />
+  <div class="u-display-flex u-align-items-center u-gap-sm">
+    <int-toggle-switch [ngModel]="false" disabled inputId="disabled-off" />
+    <label for="disabled-off" class="u-text-md u-color-grey-500">Text here</label>
+  </div>
+  <div class="u-display-flex u-align-items-center u-gap-sm">
+    <int-toggle-switch [ngModel]="true" disabled inputId="disabled-on" />
+    <label for="disabled-on" class="u-text-md u-color-grey-500">Text here</label>
+  </div>
+</div>
