@@ -20,26 +20,33 @@ $severities: (
     accent: var(--i-color-primary-700),
   ),
   // Hover is grey/100 (#F2F2F5) by design: --i-button-secondary-hover-background resolves to blue/100.
+  // Text is blue/900 (#0A1733) by design: --i-button-secondary-color resolves to grey/700.
   secondary: (
-    background: var(--i-button-secondary-background),
-    color: var(--i-button-secondary-color),
-    border: var(--i-button-secondary-border),
-    hover-background: var(--i-color-secondary-100),
-    hover-color: var(--i-button-secondary-hover-color),
-    hover-border: var(--i-button-secondary-hover-border),
-    active-background: var(--i-button-secondary-pressed-background),
-    active-color: var(--i-button-secondary-pressed-color),
-    active-border: var(--i-button-secondary-pressed-border),
-    accent: var(--i-color-secondary-700),
+    background: var(--i-button-secondary-background), // Figma: #FCFCFC (button/secondary/background)
+    color: var(--i-color-primary-900), // Figma: #0A1733 (button/secondary/text)
+    border: var(--i-button-secondary-border), // Figma: #D9D9E3 (button/secondary/border)
+    hover-background: var(--i-color-secondary-100), // Figma: #F2F2F5 (button/secondary/hover/background)
+    hover-color: var(--i-button-secondary-hover-color), // Figma: #0A1733 (button/secondary/hover/text)
+    hover-border: var(--i-button-secondary-hover-border), // Figma: #D9D9E3 (button/secondary/hover/border)
+    active-background: var(--i-button-secondary-pressed-background), // Figma: #F2F2F5 (button/secondary/pressed/background)
+    active-color: var(--i-color-primary-900), // Figma: #0A1733 (button/secondary/pressed/text)
+    active-border: var(--i-button-secondary-pressed-border), // Figma: #0A1733 (button/secondary/pressed/border)
+    accent: var(--i-color-primary-900), // Figma: #0A1733 [Type=Tertiary]
+    soft-hover-background: var(--i-color-secondary-100), // Figma: #F2F2F5 [Type=Tertiary, State=Hover]
+    soft-active-background: transparent, // Figma: no fill [Type=Tertiary, State=Pressed]
   ),
   success: (
     background: var(--i-button-primary-success-background),
     color: var(--i-button-primary-success-color),
-    border: var(--i-button-secondary-success-border),
+    border: transparent, // Figma: no border [Type=Primary, State=Success]
+    outline-border: var(--i-button-secondary-success-border), // Figma: #126629 (button/secondary/success/border) [Type=Secondary]
     hover-background: var(--i-color-success-100),
     hover-color: var(--i-button-primary-success-color),
     active-background: var(--i-color-success-200),
     accent: var(--i-color-success-800),
+    // Style Guide .prButton outlined success.
+    soft-hover-background: var(--i-button-secondary-success-background),
+    soft-active-background: var(--i-button-secondary-success-background),
   ),
   info: (
     background: var(--i-background-info),
@@ -62,11 +69,15 @@ $severities: (
   danger: (
     background: var(--i-button-primary-error-background),
     color: var(--i-button-primary-error-color),
-    border: var(--i-button-secondary-error-border),
+    border: transparent, // Figma: no border [Type=Primary, State=Error]
+    outline-border: var(--i-button-secondary-error-border), // Figma: #960D0D (button/secondary/error/border) [Type=Secondary]
     hover-background: var(--i-color-error-100),
     hover-color: var(--i-button-primary-error-color),
     active-background: var(--i-color-error-200),
     accent: var(--i-color-error-700),
+    // Style Guide .prButton outlined danger.
+    soft-hover-background: var(--i-color-error-50),
+    soft-active-background: var(--i-color-error-50),
   ),
   contrast: (
     background: var(--i-color-primary-900),
@@ -82,6 +93,11 @@ $severities: (
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
+
+// <int-button> (element form) only wraps the native button: it lays out as if the button were the child.
+int-button {
+  display: contents;
+}
 
 // Visual parity with the Style Guide `.prButton` skin, using --i-button-* tokens.
 // Overridable props: --int-button-{height,padding-x,radius,font-size,icon-size} and the severity
@@ -177,18 +193,23 @@ a.int-button[disabled] {
   &--text {
     --int-button-background: transparent;
     --int-button-color: var(--int-button-accent);
-    --int-button-hover-background: var(--i-background-hover);
+    // Light fill per severity (soft-*); severities without one keep blue/100 and blue/200.
+    --int-button-hover-background: var(--int-button-soft-hover-background, var(--i-background-hover));
     --int-button-hover-color: var(--int-button-accent);
     --int-button-hover-border: var(--int-button-border);
-    --int-button-active-background: var(--i-color-primary-200);
+    --int-button-active-background: var(--int-button-soft-active-background, var(--i-color-primary-200));
     --int-button-active-color: var(--int-button-accent);
     --int-button-active-border: var(--int-button-border);
   }
   &--outlined {
-    --int-button-border: var(--int-button-accent);
+    --int-button-border: var(--int-button-outline-border, var(--int-button-accent));
   }
   &--text {
     --int-button-border: transparent;
+  }
+  // Figma Secondary disabled keeps a border: #9CA3BA (button/secondary/disabled/border).
+  &--secondary[disabled]:not(.int-button--text, .int-button--link) {
+    border-color: var(--i-button-secondary-disabled-border);
   }
   &--outlined[disabled],
   &--text[disabled],
@@ -205,7 +226,6 @@ a.int-button[disabled] {
     --int-button-active-background: transparent;
     --int-button-active-color: var(--int-button-hover-color);
     --int-button-active-border: transparent;
-    --int-button-font-size: var(--i-button-font-size-sm);
     text-decoration: underline;
   }
   &--link.int-button--danger {
@@ -230,7 +250,11 @@ a.int-button[disabled] {
     --int-button-padding-x: var(--i-button-padding-x-lg);
     --int-button-radius: var(--i-button-border-radius-xl);
     --int-button-font-size: var(--i-button-font-size-lg);
-    --int-button-icon-size: var(--i-icon-size-md);
+    --int-button-icon-size: var(--i-icon-size-sm); // Style Guide .p-button-lg: 16px icon
+  }
+  // Style Guide .prButton link: 12px text at every size (declared after the sizes so it wins).
+  &--link {
+    --int-button-font-size: var(--i-button-font-size-sm);
   }
 
   // Flags
@@ -243,6 +267,63 @@ a.int-button[disabled] {
   &--icon-only {
     width: var(--int-button-height);
     padding: 0;
+  }
+  // Style Guide .prButton--icon: text + icon only is a bare icon in a 24px box (16px small, 32px large).
+  &--text.int-button--icon-only {
+    --int-button-height: var(--i-button-sizing-md);
+    --int-button-radius: var(--i-button-border-radius-md);
+    --int-button-icon-size: var(--i-icon-size-sm);
+    --int-button-color: var(--i-icon-color-default);
+    --int-button-hover-background: transparent;
+    // Blue on hover (guardrails.md); the Style Guide's --i-icon-color-secondary-hover is undefined.
+    --int-button-hover-color: var(--i-color-primary-600);
+    --int-button-active-background: transparent;
+    --int-button-active-color: var(--i-color-primary-600);
+    padding: var(--i-button-padding-x-xs);
+
+    &.int-button--small {
+      --int-button-height: var(--i-button-sizing-xs);
+      --int-button-radius: var(--i-button-border-radius-sm);
+      --int-button-icon-size: var(--i-icon-size-xs);
+      padding: var(--i-button-padding-x-2xs);
+    }
+    &.int-button--large {
+      --int-button-height: var(--i-button-sizing-lg);
+      --int-button-radius: var(--i-button-border-radius-lg);
+      padding: var(--i-button-padding-x-md);
+    }
+    &[disabled] {
+      color: var(--i-icon-color-disabled);
+    }
+  }
+  // Figma button-help (Style Guide .prButton--help): icon only at rest, the label slides in on hover /
+  // keyboard focus (int-* extension).
+  &--label-on-hover {
+    gap: 0;
+
+    .int-button__label {
+      interpolate-size: allow-keywords;
+      overflow: hidden;
+      margin-left: var(--i-spacing-gap-xs);
+      transition:
+        width var(--i-motion-duration-base) var(--i-motion-ease-in-out),
+        margin-left var(--i-motion-duration-base) var(--i-motion-ease-in-out),
+        opacity var(--i-motion-duration-base) var(--i-motion-ease-in-out);
+    }
+    &:not(:hover, :focus-visible) {
+      border-color: transparent;
+
+      .int-button__label {
+        width: 0;
+        margin-left: 0;
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .int-button__label {
+        transition: none;
+      }
+    }
   }
   &--loading {
     cursor: progress;

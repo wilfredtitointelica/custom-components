@@ -271,6 +271,11 @@ tratamiento que arriba, pero en el `example.html`/`example.ts` de la variante:
 <!-- /dep:button -->
 ```
 
+Button tiene las dos formas de PrimeNG: `<int-button>` (`IntButtonElement`, `base/button-element`, como
+`p-button`) y `button[intButton]` / `a[intButton]` (`IntButton`, `base/button`, como `pButton`). Al
+resolver el provisional sirve cualquiera; `button[intButton]` si hace falta el elemento nativo (link,
+atributos de formulario).
+
 Un id va en `requires` **o** en `uses`, nunca en los dos: si la base lo compone, es `requires`.
 
 ---

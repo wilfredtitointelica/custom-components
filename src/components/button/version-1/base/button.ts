@@ -16,11 +16,11 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
  * <button intButton> · version 1. Applied on a native `<button>` or `<a>` so keyboard, form submit
  * and ARIA behave natively. API mirrors PrimeNG v20 Button.
  *
- * Deviation: attribute selector instead of the `<int-button>` element used by the rest of the catalog,
- * to keep native button/link semantics.
+ * Same pair as PrimeNG: this is `pButton`; the element form `<int-button>` (`p-button`) is
+ * `IntButtonElement` in ./button-element and renders this component on a native `<button>`.
  *
  * @example
- * <button intButton label="Save" icon="icon icon-save" (click)="save()"></button>
+ * <button intButton label="Save" icon="icon icon-check" (click)="save()"></button>
  * <button intButton severity="secondary" variant="outlined" size="small">Cancel</button>
  * <a intButton variant="link" href="/help">Help</a>
  */
@@ -35,7 +35,7 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
     '[attr.disabled]': 'isDisabled() ? "" : null',
     '[attr.aria-disabled]': 'isDisabled() || null',
     '[attr.aria-busy]': 'loading() || null',
-    '[attr.aria-label]': 'ariaLabel() ?? null',
+    '[attr.aria-label]': 'ariaLabel() ?? (labelOnHover() ? label() : null) ?? null',
   },
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
@@ -52,6 +52,10 @@ export class IntButton {
   readonly icon = input<string | undefined>(undefined);
   readonly iconPos = input<IntButtonIconPos>('left');
   readonly severity = input<IntSeverity>('primary');
+  /**
+   * `text` with an icon and no label renders the Style Guide `.prButton--icon` look: a bare icon in a
+   * 24px box (16px small, 32px large) that turns blue on hover.
+   */
   readonly variant = input<IntButtonVariant | undefined>(undefined);
   readonly size = input<IntSize | undefined>(undefined);
   readonly rounded = input(false, { transform: booleanAttribute });
@@ -60,6 +64,11 @@ export class IntButton {
   readonly disabled = input(false, { transform: booleanAttribute });
   /** Required for icon-only buttons. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /**
+   * int-* extension (Figma button-help): the label is hidden until hover or keyboard focus; it stays
+   * the accessible name.
+   */
+  readonly labelOnHover = input(false, { transform: booleanAttribute });
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
   protected readonly iconOnly = computed(() => !!(this.icon() || this.loading()) && !this.label());
@@ -71,6 +80,7 @@ export class IntButton {
     if (this.size()) modifiers.push(this.size()!);
     if (this.rounded()) modifiers.push('rounded');
     if (this.fluid()) modifiers.push('fluid');
+    if (this.labelOnHover()) modifiers.push('label-on-hover');
     if (this.loading()) modifiers.push('loading');
     if (this.iconOnly()) modifiers.push('icon-only');
     return modifiers.map((modifier) => `int-button--${modifier}`).join(' ');

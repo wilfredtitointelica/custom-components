@@ -2,6 +2,8 @@
   title: Basic
   description: intTooltip con tooltipPosition - top, right, bottom o left (si no hay espacio, usa el lado opuesto).
 -->
-@for (placement of placements; track placement) {
-  <button intButton severity="secondary" [label]="placement" [intTooltip]="'Tooltip on ' + placement" [tooltipPosition]="placement"></button>
-}
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  @for (placement of placements; track placement) {
+    <button intButton severity="secondary" [label]="placement" [intTooltip]="'Tooltip on ' + placement" [tooltipPosition]="placement"></button>
+  }
+</div>

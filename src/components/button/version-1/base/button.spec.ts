@@ -8,6 +8,8 @@ import { IntButton } from './button';
   template: `
     <button intButton label="Save" severity="secondary" variant="outlined" [loading]="loading()" (click)="clicks = clicks + 1"></button>
     <button intButton icon="icon icon-download" ariaLabel="Download"></button>
+    <button intButton icon="icon icon-help" label="About this" labelOnHover></button>
+    <button intButton icon="icon icon-settings" variant="text" size="small" ariaLabel="Settings"></button>
   `,
 })
 class Host {
@@ -45,5 +47,23 @@ describe('IntButton', () => {
     expect(iconButton.classList).toContain('int-button--icon-only');
     expect(iconButton.querySelector('.int-button__icon.icon-download')).not.toBeNull();
     expect(iconButton.getAttribute('aria-label')).toBe('Download');
+  });
+
+  it('keeps the label as accessible name when it only shows on hover', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const help = fixture.nativeElement.querySelectorAll('button')[2];
+    expect(help.classList).toContain('int-button--label-on-hover');
+    expect(help.getAttribute('aria-label')).toBe('About this');
+  });
+
+  it('combines text and icon-only modifiers for the bare icon button', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const settings = fixture.nativeElement.querySelectorAll('button')[3];
+    expect(settings.classList).toContain('int-button--text');
+    expect(settings.classList).toContain('int-button--icon-only');
+    expect(settings.classList).toContain('int-button--small');
+    expect(settings.getAttribute('aria-label')).toBe('Settings');
   });
 });

@@ -2,6 +2,8 @@
   title: Severities
   description: severity aplica el color de intención: primary, secondary, success, info, warn, danger y contrast.
 -->
-@for (severity of severities; track severity) {
-  <button intButton [label]="severity" [severity]="severity"></button>
-}
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  @for (severity of severities; track severity) {
+    <button intButton [label]="severity" [severity]="severity"></button>
+  }
+</div>

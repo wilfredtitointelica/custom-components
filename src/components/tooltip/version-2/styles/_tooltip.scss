@@ -1,0 +1,153 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-TOOLTIP: 'int-tooltip ( Custom )';
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// Figma "Atoms / Tooltip". <int-tooltip> is the wrapper in the CDK overlay: arrow + container (bubble).
+// Overridable props: --int-tooltip-{background,color,border-color,arrow-color,max-width}.
+.int-tooltip {
+  --int-tooltip-background: var(--i-color-secondary-50); // Figma: #FCFCFC (tooltip/color/background)
+  --int-tooltip-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/text)
+  --int-tooltip-border-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (tooltip/color/border)
+  --int-tooltip-arrow-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/arrow)
+  --int-tooltip-arrow-size: var(--i-border-width-lg); // Figma: 4px (beak 8×4, valor suelto)
+  --int-tooltip-arrow-inset: var(--i-spacing-container-lg); // Figma: 12px (space/150) [Indicator=corners]
+  --int-tooltip-max-width: 360px; // Figma: 336px · Style Guide: 360px (kept, pending decision)
+
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-width: var(--int-tooltip-max-width);
+  // Reset of the version-1 bubble rules (same block, both versions can be loaded in the docs).
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--int-tooltip-color);
+  font-family: var(--i-text-body-family); // Figma: Lato (tooltip/font/fontFamily)
+  pointer-events: none;
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-tooltip {
+  // Bubble.
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--i-spacing-gap-xs); // Figma: 4px (tooltip/gap/xs)
+    box-sizing: border-box;
+    padding: var(--i-spacing-container-md); // Figma: 8px (tooltip/padding/x/md, tooltip/padding/y/md)
+    border: var(--i-border-width-sm) solid var(--int-tooltip-border-color); // Figma: 1px (tooltip/border/width/sm)
+    border-radius: var(--i-border-radius-md); // Figma: 6px (tooltip/border/radius/md)
+    background: var(--int-tooltip-background);
+    box-shadow: var(--i-shadow-depth-2); // Figma: shadow.200
+    overflow-wrap: break-word;
+  }
+
+  &__title {
+    font-size: var(--i-typography-font-size-md); // Figma: 14px (tooltip/font/size/md)
+    font-weight: var(--i-typography-font-weight-bold); // Figma: 700 (tooltip/font/weightTitle)
+    line-height: var(--i-typography-lineHeight-md); // Figma: 20px (tooltip/font/lineHeight/md)
+  }
+
+  &__text,
+  &__container > :not(.int-tooltip__title) {
+    font-size: var(--i-typography-font-size-sm); // Figma: 12px (tooltip/font/size/sm)
+    line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (tooltip/font/lineHeight/sm)
+  }
+
+  // 8×4 triangle; the side modifiers set which border is painted and where it sits.
+  &__arrow {
+    flex-shrink: 0;
+    align-self: center;
+    width: 0;
+    height: 0;
+    border: var(--int-tooltip-arrow-size) solid transparent;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+// Position = where the tooltip sits; the arrow is on the opposite edge, pointing at the host.
+.int-tooltip {
+  &--top,
+  &--top-left,
+  &--top-right {
+    .int-tooltip__arrow {
+      order: 1;
+      border-bottom-width: 0;
+      border-top-color: var(--int-tooltip-arrow-color);
+    }
+  }
+
+  &--bottom,
+  &--bottom-left,
+  &--bottom-right {
+    .int-tooltip__arrow {
+      border-top-width: 0;
+      border-bottom-color: var(--int-tooltip-arrow-color);
+    }
+  }
+
+  &--left,
+  &--right {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &--left .int-tooltip__arrow {
+    order: 1;
+    border-right-width: 0;
+    border-left-color: var(--int-tooltip-arrow-color);
+  }
+
+  &--right .int-tooltip__arrow {
+    border-left-width: 0;
+    border-right-color: var(--int-tooltip-arrow-color);
+  }
+
+  &--top-left,
+  &--bottom-left {
+    .int-tooltip__arrow {
+      align-self: flex-start;
+      margin-inline-start: var(--int-tooltip-arrow-inset);
+    }
+  }
+
+  &--top-right,
+  &--bottom-right {
+    .int-tooltip__arrow {
+      align-self: flex-end;
+      margin-inline-end: var(--int-tooltip-arrow-inset);
+    }
+  }
+
+  // Indicator=None: the arrow keeps its space so the gap to the host does not change.
+  &--no-arrow .int-tooltip__arrow {
+    visibility: hidden;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-tooltip {
+  display: inline-block;
+  width: 8rem;
+  height: var(--i-sizing-md);
+  border-radius: var(--i-border-radius-md);
+  background: var(--i-background-disabled);
+}

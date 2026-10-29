@@ -10,3 +10,8 @@
   <span class="int-pill__label">{{ value() }}</span>
 }
 <ng-content />
+@if (removable()) {
+  <button type="button" class="int-pill__remove" [attr.aria-label]="config.t('remove')" (click)="remove($event)">
+    <int-icon name="close" />
+  </button>
+}

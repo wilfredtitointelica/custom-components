@@ -1,0 +1,23 @@
+<button
+  intButton
+  [type]="type()"
+  [attr.autofocus]="autofocus() || null"
+  [class]="styleClass() ?? ''"
+  [label]="label()"
+  [icon]="icon()"
+  [iconPos]="iconPos()"
+  [severity]="severity()"
+  [variant]="variant()"
+  [size]="size()"
+  [rounded]="rounded()"
+  [fluid]="fluid()"
+  [loading]="loading()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  [labelOnHover]="labelOnHover()"
+  (click)="onClick.emit($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="onBlur.emit($event)"
+>
+  <ng-content />
+</button>

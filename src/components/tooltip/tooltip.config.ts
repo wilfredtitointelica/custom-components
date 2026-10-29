@@ -12,6 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'tooltip',
-  variants: ['basic', 'truncated-cell', 'template-content-delay'],
+  variants: ['basic', 'corner-positions', 'title-no-arrow', 'truncated-cell', 'template-content-delay'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

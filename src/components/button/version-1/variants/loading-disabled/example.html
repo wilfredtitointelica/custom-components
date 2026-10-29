@@ -2,6 +2,8 @@
   title: Loading & disabled
   description: loading muestra un spinner, deshabilita el botón y marca aria-busy.
 -->
-<button intButton label="Export" icon="icon icon-download" [loading]="exporting()" (click)="export()"></button>
-<button intButton label="Disabled" disabled></button>
-<button intButton label="Disabled outlined" variant="outlined" disabled></button>
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <button intButton label="Export" icon="icon icon-download" [loading]="exporting()" (click)="export()"></button>
+  <button intButton label="Disabled" disabled></button>
+  <button intButton label="Disabled outlined" variant="outlined" disabled></button>
+</div>

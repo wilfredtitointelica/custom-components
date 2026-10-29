@@ -47,6 +47,25 @@
   &__icon {
     font-size: var(--i-icon-size-xs);
   }
+
+  // Close button of removable pills: bare icon in the pill color.
+  &__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--i-badge-border-radius-full);
+    background: none;
+    color: inherit;
+    font-size: var(--i-icon-size-sm);
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: var(--i-badge-border-width-sm) solid currentColor;
+      outline-offset: 1px;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -56,6 +75,20 @@
 .int-pill {
   &--rounded {
     --int-pill-radius: var(--i-badge-border-radius-full);
+  }
+
+  // Filter (removable without severity): blue/100 bg, blue/400 text, blue/900 border on hover.
+  // Declared before the severities so an explicit severity wins.
+  &--removable {
+    --int-pill-background: var(--i-color-blue-100);
+    --int-pill-color: var(--i-color-blue-400);
+    --int-pill-border-color: var(--int-pill-background);
+    --int-pill-hover-border-color: var(--i-color-blue-900);
+    --int-pill-radius: var(--i-badge-border-radius-full);
+
+    &:hover {
+      --int-pill-border-color: var(--int-pill-hover-border-color);
+    }
   }
 
   // Severities (secondary keeps the block defaults)
@@ -84,6 +117,14 @@
     --int-pill-background: var(--i-color-primary-900);
     --int-pill-color: var(--i-color-primary-50);
     --int-pill-border-color: var(--i-color-primary-900);
+  }
+
+  // AI filter: purple/50 bg, purple/900 text and hover border.
+  &--ai {
+    --int-pill-background: var(--i-color-purple-50);
+    --int-pill-color: var(--i-color-purple-900);
+    --int-pill-border-color: var(--int-pill-background);
+    --int-pill-hover-border-color: var(--i-color-purple-900);
   }
 }
 

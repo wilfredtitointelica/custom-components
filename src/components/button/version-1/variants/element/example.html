@@ -1,0 +1,10 @@
+<!--
+  title: Element
+  description: <int-button> es la forma elemento (p-button de PrimeNG): mismos inputs que intButton más type, autofocus y styleClass, y los eventos onClick, onFocus y onBlur.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-button label="Save" icon="icon icon-check" (onClick)="clicks.set(clicks() + 1)" />
+  <int-button severity="secondary" variant="outlined">Cancel</int-button>
+  <int-button type="submit" label="Send" size="small" />
+  <span>Clicks: {{ clicks() }}</span>
+</div>
