@@ -2,12 +2,14 @@
   title: Basic mode & auto
   description: mode="basic" muestra solo el botón; con auto, uploadHandler se emite apenas se elige un archivo válido.
 -->
-<int-file-upload
-  mode="basic"
-  accept=".pdf"
-  auto
-  chooseLabel="Attach PDF"
-  chooseIcon="icon icon-attachment"
-  (uploadHandler)="upload($event)"
-/>
-<p>Uploaded: {{ uploaded().join(', ') || '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-file-upload
+    mode="basic"
+    accept=".pdf"
+    auto
+    chooseLabel="Attach PDF"
+    chooseIcon="icon icon-attachment"
+    (uploadHandler)="upload($event)"
+  />
+  <p class="u-m-0 u-text-sm">Uploaded: {{ uploaded().join(', ') || '—' }}</p>
+</div>

@@ -2,5 +2,7 @@
   title: Reactive forms & validation
   description: Tócalo y déjalo vacío para ver el estado inválido; un FormControl deshabilitado deshabilita el control.
 -->
-<int-dropdown-select [formControl]="required" [options]="brands" optionLabel="name" optionValue="code" placeholder="Required" ariaLabel="Required brand" />
-<int-dropdown-select [formControl]="disabledControl" [options]="brands" optionLabel="name" optionValue="code" ariaLabel="Disabled" />
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-dropdown-select [formControl]="required" [options]="brands" optionLabel="name" optionValue="code" placeholder="Required" ariaLabel="Required brand" />
+  <int-dropdown-select [formControl]="disabledControl" [options]="brands" optionLabel="name" optionValue="code" ariaLabel="Disabled" />
+</div>

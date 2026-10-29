@@ -2,15 +2,17 @@
   title: Filter, clear & checkmark
   description: filter agrega una búsqueda en el panel, showClear un botón para vaciar el valor y checkmark marca la opción elegida.
 -->
-<int-dropdown-select
-  [options]="regions"
-  optionLabel="name"
-  optionValue="code"
-  [(ngModel)]="region"
-  placeholder="Region"
-  filter
-  showClear
-  checkmark
-  ariaLabel="Region"
-/>
-<p>Value: {{ region ?? '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-dropdown-select
+    [options]="regions"
+    optionLabel="name"
+    optionValue="code"
+    [(ngModel)]="region"
+    placeholder="Region"
+    filter
+    showClear
+    checkmark
+    ariaLabel="Region"
+  />
+  <p class="u-m-0 u-text-sm">Value: {{ region ?? '—' }}</p>
+</div>

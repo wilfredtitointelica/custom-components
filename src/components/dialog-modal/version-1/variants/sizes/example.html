@@ -2,7 +2,7 @@
   title: Sizes
   description: size="sm" | "md" | "lg" | "xl" (400 / 600 / 800 / 1024px, tokens --i-dialog-max-width-*). Figma: XSmall, Medium, Large, XLarge.
 -->
-<div class="u-display-flex u-flex-wrap u-gap-sm">
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
   @for (size of sizes; track size) {
     <button intButton severity="secondary" [label]="'Size ' + size" (click)="openSize.set(size)"></button>
   }

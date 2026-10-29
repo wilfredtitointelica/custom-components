@@ -2,9 +2,11 @@
   title: Removable
   description: removable agrega el botón de cerrar (evento onRemove); ai aplica el estilo de filtro IA. Al pasar el cursor se marca el borde.
 -->
-@for (filter of filters(); track filter) {
-  <int-pill [value]="filter" removable (onRemove)="remove(filter)" />
-}
-@for (filter of aiFilters(); track filter) {
-  <int-pill [value]="filter" removable ai (onRemove)="removeAi(filter)" />
-}
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  @for (filter of filters(); track filter) {
+    <int-pill [value]="filter" removable (onRemove)="remove(filter)" />
+  }
+  @for (filter of aiFilters(); track filter) {
+    <int-pill [value]="filter" removable ai (onRemove)="removeAi(filter)" />
+  }
+</div>

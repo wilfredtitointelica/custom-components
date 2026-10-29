@@ -2,7 +2,11 @@
   title: Number · Currency
   description: mode="currency" con currency (ISO 4217), currencyDisplay y locale propios.
 -->
-<int-inputnumber [(ngModel)]="fee" mode="currency" currency="USD" [min]="0" />
-<int-inputnumber [(ngModel)]="fee" mode="currency" currency="PEN" />
-<int-inputnumber [(ngModel)]="fee" mode="currency" currency="EUR" currencyDisplay="code" locale="de-DE" />
-<p>Value: {{ fee }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <int-inputnumber [(ngModel)]="fee" mode="currency" currency="USD" [min]="0" ariaLabel="Fee in USD" />
+    <int-inputnumber [(ngModel)]="fee" mode="currency" currency="PEN" ariaLabel="Fee in PEN" />
+    <int-inputnumber [(ngModel)]="fee" mode="currency" currency="EUR" currencyDisplay="code" locale="de-DE" ariaLabel="Fee in EUR" />
+  </div>
+  <p class="u-m-0 u-text-sm">Value: {{ fee }}</p>
+</div>

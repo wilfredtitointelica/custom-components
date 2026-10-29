@@ -2,5 +2,7 @@
   title: Basic
   description: Una fecha con dateFormat (tokens de PrimeNG: d, dd, m, mm, M, MM, y, yy), showIcon y showClear.
 -->
-<int-date-picker [(ngModel)]="date" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon showClear ariaLabel="Date" />
-<p>Value: {{ date | json }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-date-picker [(ngModel)]="date" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon showClear ariaLabel="Date" />
+  <p class="u-m-0 u-text-sm">Value: {{ date | json }}</p>
+</div>

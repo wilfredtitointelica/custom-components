@@ -3,7 +3,7 @@
   description: Con multiple, value es un arreglo y se pueden abrir varios paneles a la vez.
 -->
 <!-- Fixed width: the preview shrinks to its content, so the growing Value line would resize the accordion. -->
-<div style="width: 28rem; max-width: 100%">
+<div class="u-display-flex u-flex-column u-gap-sm" style="width: 28rem; max-width: 100%">
   <int-accordion [(value)]="active" multiple>
     @for (section of sections; track section) {
       <int-accordion-panel [value]="section">
@@ -12,5 +12,5 @@
       </int-accordion-panel>
     }
   </int-accordion>
-  <p>Value: {{ active | json }}</p>
+  <p class="u-m-0 u-text-sm">Value: {{ active | json }}</p>
 </div>

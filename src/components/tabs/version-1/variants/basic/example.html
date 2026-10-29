@@ -2,18 +2,20 @@
   title: Basic
   description: [(value)] guarda la pestaña activa; Enter o Espacio activan la pestaña enfocada y disabled la bloquea.
 -->
-<int-tabs [(value)]="tab">
-  <int-tablist>
-    <int-tab value="summary">Summary</int-tab>
-    <int-tab value="detail">Fee detail</int-tab>
-    <int-tab value="history">History</int-tab>
-    <int-tab value="audit" disabled>Audit</int-tab>
-  </int-tablist>
-  <int-tabpanels>
-    <int-tabpanel value="summary">KPIs and totals for the selected period.</int-tabpanel>
-    <int-tabpanel value="detail">Fee-by-fee breakdown.</int-tabpanel>
-    <int-tabpanel value="history">Changes over time.</int-tabpanel>
-    <int-tabpanel value="audit">Audit log.</int-tabpanel>
-  </int-tabpanels>
-</int-tabs>
-<p>Value: {{ tab }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-tabs [(value)]="tab">
+    <int-tablist>
+      <int-tab value="summary">Summary</int-tab>
+      <int-tab value="detail">Fee detail</int-tab>
+      <int-tab value="history">History</int-tab>
+      <int-tab value="audit" disabled>Audit</int-tab>
+    </int-tablist>
+    <int-tabpanels>
+      <int-tabpanel value="summary">KPIs and totals for the selected period.</int-tabpanel>
+      <int-tabpanel value="detail">Fee-by-fee breakdown.</int-tabpanel>
+      <int-tabpanel value="history">Changes over time.</int-tabpanel>
+      <int-tabpanel value="audit">Audit log.</int-tabpanel>
+    </int-tabpanels>
+  </int-tabs>
+  <p class="u-m-0 u-text-sm">Value: {{ tab }}</p>
+</div>

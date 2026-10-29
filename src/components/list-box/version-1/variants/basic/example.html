@@ -2,5 +2,7 @@
   title: Basic
   description: Selección simple; optionLabel y optionValue indican qué propiedad se muestra y cuál se guarda en el modelo.
 -->
-<int-list-box [options]="regions" optionLabel="name" optionValue="code" [(ngModel)]="region" ariaLabel="Region" />
-<p>Value: {{ region ?? '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-list-box [options]="regions" optionLabel="name" optionValue="code" [(ngModel)]="region" ariaLabel="Region" />
+  <p class="u-m-0 u-text-sm">Value: {{ region ?? '—' }}</p>
+</div>

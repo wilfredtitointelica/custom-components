@@ -2,11 +2,15 @@
   title: Item template
   description: Un ng-template #item proyectado define cómo se dibuja cada opción (contexto: $implicit, index, selected).
 -->
-<int-list-box [options]="brands" optionLabel="name" [(ngModel)]="brand" ariaLabel="Brand">
-  <ng-template #item let-brand>
-    <span [class]="brand.icon" aria-hidden="true"></span>
-    <span>{{ brand.name }}</span>
-    <small>{{ brand.code }}</small>
-  </ng-template>
-</int-list-box>
-<p>Value: {{ brand?.code ?? '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-list-box [options]="brands" optionLabel="name" [(ngModel)]="brand" ariaLabel="Brand">
+    <ng-template #item let-brand>
+      <span class="u-display-inline-flex u-align-items-center u-gap-xs">
+        <span [class]="brand.icon" aria-hidden="true"></span>
+        <span>{{ brand.name }}</span>
+        <span class="u-text-xs">{{ brand.code }}</span>
+      </span>
+    </ng-template>
+  </int-list-box>
+  <p class="u-m-0 u-text-sm">Value: {{ brand?.code ?? '—' }}</p>
+</div>

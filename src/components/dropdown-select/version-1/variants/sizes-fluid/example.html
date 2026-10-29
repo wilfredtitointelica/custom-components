@@ -2,6 +2,11 @@
   title: Sizes & fluid
   description: size="small" | "large" y fluid para ocupar todo el ancho.
 -->
-<int-dropdown-select [options]="regions" optionLabel="name" size="small" placeholder="Small" ariaLabel="Small" />
-<int-dropdown-select [options]="regions" optionLabel="name" size="large" placeholder="Large" ariaLabel="Large" />
-<int-dropdown-select [options]="regions" optionLabel="name" fluid placeholder="Fluid" ariaLabel="Fluid" />
+<!-- Inline width (no width helper in the Style Guide): the preview shrinks to its content, so fluid needs a wide container. -->
+<div class="u-display-flex u-flex-column u-gap-sm" style="width: 28rem; max-width: 100%">
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <int-dropdown-select [options]="regions" optionLabel="name" size="small" placeholder="Small" ariaLabel="Small" />
+    <int-dropdown-select [options]="regions" optionLabel="name" size="large" placeholder="Large" ariaLabel="Large" />
+  </div>
+  <int-dropdown-select [options]="regions" optionLabel="name" fluid placeholder="Fluid" ariaLabel="Fluid" />
+</div>

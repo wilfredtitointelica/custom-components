@@ -2,11 +2,13 @@
   title: Info card
   description: Popover informativo junto a un botón de solo icono; onShow avisa cada vez que se abre.
 -->
-<button intButton icon="icon icon-info" ariaLabel="More info" variant="text" (click)="info.toggle($event)"></button>
-<int-popover #info ariaLabel="Fee information" (onShow)="opened.set(opened() + 1)">
-  <div class="u-display-flex u-flex-column u-gap-xs">
-    <span class="u-bold">Cross-border fee</span>
-    <p class="u-m-0 u-text-sm">Charged when the issuer and the acquirer are in different countries.</p>
-  </div>
-</int-popover>
-<p>Opened {{ opened() }} times</p>
+<div class="u-display-flex u-flex-column u-align-items-center u-gap-sm">
+  <button intButton icon="icon icon-info" ariaLabel="More info" variant="text" (click)="info.toggle($event)"></button>
+  <int-popover #info ariaLabel="Fee information" (onShow)="opened.set(opened() + 1)">
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <span class="u-bold">Cross-border fee</span>
+      <p class="u-m-0 u-text-sm">Charged when the issuer and the acquirer are in different countries.</p>
+    </div>
+  </int-popover>
+  <p class="u-m-0 u-text-sm">Opened {{ opened() }} times</p>
+</div>

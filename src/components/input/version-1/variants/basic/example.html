@@ -2,5 +2,7 @@
   title: Basic
   description: intInputText sobre un input nativo; funciona con ngModel y formularios reactivos.
 -->
-<input intInputText [(ngModel)]="name" placeholder="Merchant name" />
-<p>Value: {{ name || '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <input intInputText [(ngModel)]="name" placeholder="Merchant name" aria-label="Merchant name" />
+  <p class="u-m-0 u-text-sm">Value: {{ name || '—' }}</p>
+</div>

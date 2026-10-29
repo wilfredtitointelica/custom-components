@@ -2,5 +2,7 @@
   title: Text · Validation
   description: El estilo inválido aparece solo cuando el control se toca o se edita; invalid lo fuerza.
 -->
-<input intInputText type="email" [formControl]="email" placeholder="Email (required)" />
-<input intInputText invalid placeholder="Forced invalid" />
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <input intInputText type="email" [formControl]="email" placeholder="Email (required)" aria-label="Email" />
+  <input intInputText invalid placeholder="Forced invalid" aria-label="Forced invalid" />
+</div>

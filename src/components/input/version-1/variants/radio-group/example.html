@@ -2,11 +2,17 @@
   title: Radio · Group
   description: Todos los radios del grupo comparten el modelo y el name: Tab entra al grupo y las flechas mueven la selección.
 -->
-<div role="radiogroup" aria-labelledby="rb-fee-type">
-  <span id="rb-fee-type">Fee type</span>
-  @for (type of feeTypes; track type.code) {
-    <int-radiobutton name="rb-fee-type" [inputId]="'rb-ft-' + type.code" [value]="type.code" [(ngModel)]="feeType" />
-    <label [for]="'rb-ft-' + type.code">{{ type.label }}</label>
-  }
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-flex-column u-gap-sm" role="radiogroup" aria-labelledby="rb-fee-type">
+    <span class="u-bold" id="rb-fee-type">Fee type</span>
+    <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+      @for (type of feeTypes; track type.code) {
+        <div class="u-display-flex u-align-items-center u-gap-xs">
+          <int-radiobutton name="rb-fee-type" [inputId]="'rb-ft-' + type.code" [value]="type.code" [(ngModel)]="feeType" />
+          <label [for]="'rb-ft-' + type.code">{{ type.label }}</label>
+        </div>
+      }
+    </div>
+  </div>
+  <p class="u-m-0 u-text-sm">Value: {{ feeType }}</p>
 </div>
-<p>Value: {{ feeType }}</p>

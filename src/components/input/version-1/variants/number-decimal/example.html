@@ -2,5 +2,7 @@
   title: Number · Decimal
   description: Formatea con Intl.NumberFormat usando el locale global; al enfocar muestra el número editable.
 -->
-<int-inputnumber [(ngModel)]="rate" [minFractionDigits]="2" [maxFractionDigits]="4" placeholder="Rate" />
-<p>Value: {{ rate }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-inputnumber [(ngModel)]="rate" [minFractionDigits]="2" [maxFractionDigits]="4" placeholder="Rate" ariaLabel="Rate" />
+  <p class="u-m-0 u-text-sm">Value: {{ rate }}</p>
+</div>

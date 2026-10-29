@@ -2,12 +2,14 @@
   title: Basic
   description: optionLabel indica qué se muestra y optionValue qué se guarda en el modelo; placeholder aparece mientras no hay valor.
 -->
-<int-dropdown-select
-  [options]="regions"
-  optionLabel="name"
-  optionValue="code"
-  [(ngModel)]="region"
-  placeholder="Select a region"
-  ariaLabel="Region"
-/>
-<p>Value: {{ region ?? '—' }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-dropdown-select
+    [options]="regions"
+    optionLabel="name"
+    optionValue="code"
+    [(ngModel)]="region"
+    placeholder="Select a region"
+    ariaLabel="Region"
+  />
+  <p class="u-m-0 u-text-sm">Value: {{ region ?? '—' }}</p>
+</div>

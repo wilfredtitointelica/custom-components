@@ -2,6 +2,10 @@
   title: Month picker
   description: view="month" elige meses (el valor es el primer día del mes); también funciona con rango.
 -->
-<int-date-picker [(ngModel)]="month" view="month" dateFormat="MM yy" showIcon ariaLabel="Month" />
-<int-date-picker [(ngModel)]="monthRange" view="month" selectionMode="range" dateFormat="M yy" showIcon ariaLabel="Month range" />
-<p>Value: {{ monthRange | json }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <int-date-picker [(ngModel)]="month" view="month" dateFormat="MM yy" showIcon ariaLabel="Month" />
+    <int-date-picker [(ngModel)]="monthRange" view="month" selectionMode="range" dateFormat="M yy" showIcon ariaLabel="Month range" />
+  </div>
+  <p class="u-m-0 u-text-sm">Value: {{ monthRange | json }}</p>
+</div>

@@ -2,10 +2,12 @@
   title: Checkbox · Sizes & states
   description: size, invalid, disabled y readonly.
 -->
-<int-checkbox binary size="small" [ngModel]="true" ariaLabel="Small" />
-<int-checkbox binary [ngModel]="true" ariaLabel="Default" />
-<int-checkbox binary size="large" [ngModel]="true" ariaLabel="Large" />
-<int-checkbox binary invalid ariaLabel="Invalid" />
-<int-checkbox binary disabled ariaLabel="Disabled" />
-<int-checkbox binary disabled [ngModel]="true" ariaLabel="Disabled checked" />
-<int-checkbox binary readonly [ngModel]="true" ariaLabel="Read only" />
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-checkbox binary size="small" [ngModel]="true" ariaLabel="Small" />
+  <int-checkbox binary [ngModel]="true" ariaLabel="Default" />
+  <int-checkbox binary size="large" [ngModel]="true" ariaLabel="Large" />
+  <int-checkbox binary invalid ariaLabel="Invalid" />
+  <int-checkbox binary disabled ariaLabel="Disabled" />
+  <int-checkbox binary disabled [ngModel]="true" ariaLabel="Disabled checked" />
+  <int-checkbox binary readonly [ngModel]="true" ariaLabel="Read only" />
+</div>

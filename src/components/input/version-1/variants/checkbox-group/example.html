@@ -2,8 +2,14 @@
   title: Checkbox · Group
   description: Sin binary, el modelo es un arreglo: value se agrega o se quita. Diners Club está deshabilitado.
 -->
-@for (brand of brands; track brand.code) {
-  <int-checkbox [inputId]="'cb-group-' + brand.code" [value]="brand.code" [(ngModel)]="selected" [disabled]="!!brand.inactive" />
-  <label [for]="'cb-group-' + brand.code">{{ brand.name }}</label>
-}
-<p>Value: {{ selected.join(', ') }}</p>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    @for (brand of brands; track brand.code) {
+      <div class="u-display-flex u-align-items-center u-gap-xs">
+        <int-checkbox [inputId]="'cb-group-' + brand.code" [value]="brand.code" [(ngModel)]="selected" [disabled]="!!brand.inactive" />
+        <label [for]="'cb-group-' + brand.code">{{ brand.name }}</label>
+      </div>
+    }
+  </div>
+  <p class="u-m-0 u-text-sm">Value: {{ selected.join(', ') || '—' }}</p>
+</div>
