@@ -1,0 +1,36 @@
+<!--
+  title: Table inside
+  description: Tabla dentro del contenido con encabezado fijo; --int-accordion-content-max-height (extensión int-*) limita la altura y activa el scroll vertical.
+-->
+<int-accordion variant="card" [(value)]="active">
+  <int-accordion-panel value="sent" style="--int-accordion-content-max-height: 14rem">
+    <int-accordion-header>
+      <span class="int-accordion__status-icon int-accordion__status-icon--success icon icon-success" aria-hidden="true"></span>
+      Alert sent: {{ alerts.length }}
+    </int-accordion-header>
+    <int-accordion-content>
+      <!-- TODO(dep:table provisional): replace with int-table (sticky header) once it is done. -->
+      <table class="u-text-sm" style="width: 100%; border-collapse: collapse">
+        <thead>
+          <tr>
+            @for (column of ['N°', 'Alert Type', 'Impacted clients']; track column) {
+              <th
+                class="u-text-left u-py-2 u-px-2"
+                style="position: sticky; top: 0; background: var(--i-color-secondary-50); border-bottom: var(--i-border-width-sm) solid var(--i-color-primary-900)"
+              >{{ column }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (alert of alerts; track alert.id; let odd = $odd) {
+            <tr [style.background]="odd ? 'var(--i-color-secondary-100)' : null">
+              <td class="u-py-2 u-px-2">{{ alert.id }}</td>
+              <td class="u-py-2 u-px-2">Opt-Out - <span class="u-bold">{{ alert.type }}</span></td>
+              <td class="u-py-2 u-px-2">{{ alert.client }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </int-accordion-content>
+  </int-accordion-panel>
+</int-accordion>

@@ -1,6 +1,6 @@
 <!--
   title: Basic
-  description: Un panel abierto a la vez; [(value)] guarda el value del panel activo y disabled bloquea un panel.
+  description: Un panel abierto a la vez; [(value)] guarda el value del panel activo.
 -->
 <int-accordion [(value)]="active">
   <int-accordion-panel value="fees">
@@ -10,9 +10,5 @@
   <int-accordion-panel value="interchange">
     <int-accordion-header>Interchange</int-accordion-header>
     <int-accordion-content>Interchange rates paid between acquirer and issuer.</int-accordion-content>
-  </int-accordion-panel>
-  <int-accordion-panel value="archived" disabled>
-    <int-accordion-header>Archived (disabled)</int-accordion-header>
-    <int-accordion-content>Not available.</int-accordion-content>
   </int-accordion-panel>
 </int-accordion>

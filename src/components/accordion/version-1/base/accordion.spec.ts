@@ -6,7 +6,7 @@ import { IntAccordionImports, IntAccordionValue } from './accordion';
 @Component({
   imports: [IntAccordionImports],
   template: `
-    <int-accordion [(value)]="value" [multiple]="multiple()">
+    <int-accordion [(value)]="value" [multiple]="multiple()" [variant]="variant()">
       <int-accordion-panel value="a">
         <int-accordion-header>A</int-accordion-header>
         <int-accordion-content>Content A</int-accordion-content>
@@ -25,6 +25,7 @@ import { IntAccordionImports, IntAccordionValue } from './accordion';
 class Host {
   value = signal<IntAccordionValue | IntAccordionValue[] | null>('a');
   multiple = signal(false);
+  variant = signal<'card' | undefined>(undefined);
 }
 
 describe('IntAccordion', () => {
@@ -55,6 +56,15 @@ describe('IntAccordion', () => {
     expect(host.value()).toEqual(['a', 'b']);
     headers[0].click();
     expect(host.value()).toEqual(['b']);
+  });
+
+  it('adds the card modifier only with variant="card"', () => {
+    const { fixture } = setup();
+    const accordion: HTMLElement = fixture.nativeElement.querySelector('int-accordion');
+    expect(accordion.classList).not.toContain('int-accordion--card');
+    fixture.componentInstance.variant.set('card');
+    fixture.detectChanges();
+    expect(accordion.classList).toContain('int-accordion--card');
   });
 
   it('disables headers of disabled panels and supports arrow navigation', () => {

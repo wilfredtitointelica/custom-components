@@ -32,7 +32,7 @@ export type IntAccordionValue = string | number;
   selector: 'int-accordion',
   templateUrl: './accordion.html',
   styleUrl: '../styles/_index.scss',
-  host: { class: 'int-accordion' },
+  host: { class: 'int-accordion', '[class.int-accordion--card]': 'variant() === "card"' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -45,6 +45,11 @@ export class IntAccordion {
   /** Active panel value (single) or values (`multiple`). */
   readonly value = model<IntAccordionValue | IntAccordionValue[] | null>(null);
   readonly multiple = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension (PrimeNG restyles through `dt`): `card` renders each panel as a bordered card
+   * (Style Guide alerts `.borderWrapper`, "Alert sent" accordion). Default: panels separated by lines.
+   */
+  readonly variant = input<'card' | undefined>(undefined);
 
   readonly onOpen = output<IntAccordionValue>();
   readonly onClose = output<IntAccordionValue>();
