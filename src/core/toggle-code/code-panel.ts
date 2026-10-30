@@ -122,7 +122,7 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
         @if (current() && fold()) {
           <!-- Blocks switch on: one row per line; the row that opens a block draws its guide down to
                the closing line and the button that folds it. -->
-          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [class.doc-code-wrapper]="block.wrapper" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
+          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line" [style.--doc-code-extra]="row.extra || null">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
         } @else if (current()) {
           <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
@@ -256,18 +256,15 @@ export class CodePanel {
     }
     const leads = lines.map((parts) => parts.map((part) => part.text).join('').match(/^\s*/)?.[0] ?? '');
     // A block that wraps others starting in its same column (a "dep:" pair around its element)
-    // moves its guide a bit to the left so both guides do not overlap.
-    const wrappers = new Set(
-      [...starts.values()]
-        .filter((block) =>
-          [...starts.values()].some(
-            (inner) =>
-              inner.start > block.start &&
-              inner.start < block.end &&
-              leads[inner.start].length === leads[block.start].length,
-          ),
-        )
-        .map((block) => block.start),
+    // counts as one more level: its inner lines go one level to the right (`extra`) so the guides
+    // keep their room instead of overlapping.
+    const wrappers = [...starts.values()].filter((block) =>
+      [...starts.values()].some(
+        (inner) =>
+          inner.start > block.start &&
+          inner.start < block.end &&
+          leads[inner.start].length === leads[block.start].length,
+      ),
     );
     return lines.flatMap((parts, index) => {
       if (hidden[index]) {
@@ -278,6 +275,7 @@ export class CodePanel {
       return [
         {
           index,
+          extra: wrappers.filter((wrapper) => wrapper.start < index && index < wrapper.end).length,
           // Indentation apart, so the CSS can widen it (the spaces stay: copying keeps them).
           lead,
           parts: dropLead(parts, lead.length),
@@ -285,7 +283,6 @@ export class CodePanel {
             kind: block.kind,
             end: block.end,
             indent: lead.length,
-            wrapper: wrappers.has(index),
             span: shown[block.end] - shown[index],
             folded: folded.has(`${language}:${index}`),
           },

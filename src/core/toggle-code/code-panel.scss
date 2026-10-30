@@ -134,11 +134,14 @@
   min-width: 100%;
 }
 
+// --doc-code-extra: levels added inside a "dep:" pair that wraps code in its same column (one level =
+// two indentation spaces), so its guide and the inner ones keep their room.
 .doc-code-line {
+  --doc-code-start: calc(var(--doc-code-gutter) + var(--doc-code-extra, 0) * 2 * var(--doc-code-step));
   position: relative;
   display: block;
   min-height: 1.6em; // empty lines keep their height
-  padding-left: var(--doc-code-gutter);
+  padding-left: var(--doc-code-start);
 }
 
 // Wider indentation so the nested guides breathe.
@@ -149,17 +152,11 @@
 .doc-code-guide {
   position: absolute;
   top: 0.8em;
-  left: calc(var(--doc-code-gutter) + var(--doc-code-indent) * var(--doc-code-step) - var(--doc-code-gap));
+  left: calc(var(--doc-code-start) + var(--doc-code-indent) * var(--doc-code-step) - var(--doc-code-gap));
   height: calc(var(--doc-code-span) * 1.6em);
   border-left: 1px solid;
   color: rgb(255 255 255 / 0.32);
   pointer-events: none;
-
-  // Wraps blocks that start in its same column ("dep:" pair around its element): half a level to
-  // the left, between the parent's guide and the inner one, so they do not overlap.
-  &.doc-code-wrapper {
-    margin-left: calc(var(--doc-code-step) * -1);
-  }
 
   // Closing line: short tick towards the code (└).
   &::after {
