@@ -90,7 +90,7 @@ code {
 .doc-skill-divider {
   max-width: 1200px;
   height: 0;
-  margin: 72px 0;
+  margin: 72px 0 56px;
   border: 0;
   border-top: 1px solid var(--doc-outline-variant);
 }
@@ -318,6 +318,31 @@ code {
 
 .doc-skill-table-wrap + .doc-skill-grid {
   margin-top: 24px;
+}
+
+.doc-skill-code + .doc-skill-table-wrap {
+  margin-top: 16px;
+}
+
+/* States list inside a note: the emoji in its own column, bigger so it reads on the light background. */
+.doc-skill-states {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+}
+
+.doc-skill-emoji {
+  flex: none;
+  font-size: 1.125rem;
+  line-height: 1;
 }
 
 /* Cheatsheet */

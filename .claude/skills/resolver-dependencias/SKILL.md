@@ -33,6 +33,10 @@ La página de cada componente lista ambas en **Dependencies: Detect** (popover "
 ## 1. Datos
 
 - **Dependencia** (id). Si no viene, lista las pendientes (sección 4) y pregunta cuál.
+- **Requiere componentes estándar** (hechos con `/replicar-primeng` o `/estandarizar-componente`): cada
+  componente que se va a tocar debe pasar `npm run check:component -- <id>`. Si da errores
+  (provisional sin `data-dep`, sin `requires`/`uses`, trabajo traído de fuera sin estandarizar), sugerir
+  `/estandarizar-componente <id>` y saltarlo: sin marcadores fiables no se reemplaza nada.
 - Comprueba su estado (versión más reciente):
   ```bash
   grep -n "static readonly status" src/components/<dep>/version-*/base/<dep>.ts

@@ -93,7 +93,7 @@ export interface DocMeta {
   readonly figma?: string;
   /**
    * `figma-frame:` line (base/<id>.html only): parent frame or component set of the design, with every
-   * variant axis and format; replicar-primeng and actualizar-replica walk it.
+   * variant axis and format; replicar-primeng and sincronizar-componente walk it.
    */
   readonly figmaFrame?: string;
 }

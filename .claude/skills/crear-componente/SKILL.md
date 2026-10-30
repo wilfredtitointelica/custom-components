@@ -18,6 +18,9 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 >
 > **El maquetador** escribe los estilos, la estructura y la lógica, e importa lo que necesite.
 > Tampoco se crean módulos de estilo ni ejemplos que no se hayan pedido explícitamente (salvo `basic`, que va siempre).
+>
+> Antes de subir su trabajo, el maquetador corre `npm run check:component -- <id>` (0 errores). Si lo
+> hizo fuera del repo (su local, otra IA) y lo pegó en la versión, se alinea con `/estandarizar-componente <id>`.
 
 ---
 
@@ -152,7 +155,7 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
 - `description:` puede quedar vacío y continuar en varias líneas.
 - `figma:` va **solo en `base/<id>.html`**, siempre, debajo de `description:` y **vacío** si aún no hay
   diseño: indica que el componente puede tener un "Link to selection" de Figma como referencia. La
-  página muestra un chip "Figma" que lo abre; lo usan `/replicar-primeng` y `/actualizar-replica`, y
+  página muestra un chip "Figma" que lo abre; lo usan `/replicar-primeng` y `/sincronizar-componente`, y
   `npm run new:version` lo conserva. Los `example.html` de las variantes **no** llevan `figma:`.
 - No poner títulos ni descripciones en `<id>.config.ts` ni en ningún `.ts`.
 

@@ -108,7 +108,7 @@ Aura son `slate`/`zinc` y los del Style Guide `grey` de marca. Usar los del Styl
 | `DomHandler`, `@primeuix/utils` | API del DOM; `@angular/cdk/a11y` (`FocusTrap`, `FocusMonitor`, `LiveAnnouncer`) |
 | `Overlay`, `ConnectedOverlayScrollHandler`, `ZIndexUtils` | `@angular/cdk/overlay` (`CdkConnectedOverlay`) |
 | `Scroller` (virtual scroll) | `@angular/cdk/scrolling` |
-| `Ripple` (`pRipple`) | omitir (Aura lo desactiva por defecto) o extensión CSS documentada |
-| `@angular/animations` (`trigger`) | transiciones CSS o `animate.enter` / `animate.leave` |
+| `Ripple` (`pRipple`) | ink propio del componente + input `ripple` (`int-* extension`, default `true`), solo si la plantilla de PrimeNG usa `pRipple` ([interaccion.md](interaccion.md) 1.3) |
+| `@angular/animations` (`trigger`) | `animate.enter` / `animate.leave` + CSS con `--i-motion-*` y `prefers-reduced-motion` ([interaccion.md](interaccion.md) 1.2) |
 | `PrimeNG.getTranslation` / `TranslationKeys` | textos por defecto + input opcional de extensión |
 | `uuid('pn_id_')` | contador propio en el módulo (`let nextId = 0`) o `inject(_IdGenerator)` de CDK |

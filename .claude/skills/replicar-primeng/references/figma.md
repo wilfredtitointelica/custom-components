@@ -1,8 +1,10 @@
-# Referencia visual de Figma
+# Guía visual de Figma
 
-Solo aplica cuando el usuario da un link de Figma ("Copy link to selection") del componente. Figma es la
-**referencia visual**; PrimeNG sigue mandando en API y comportamiento, y todo valor CSS se escribe con
-tokens `--i-*` del Style Guide (SKILL.md 1.5 y 3.3).
+Solo aplica cuando el usuario da un link de Figma ("Copy link to selection") del componente. Figma es
+la **cuarta fuente** (SKILL.md "Orden de prioridad"): una guía visual para comparar, **no** la fuente de
+verdad. PrimeNG manda en API y comportamiento; la base de conocimientos (Intelica.knowledgeBase, casos `.pr`) en variantes,
+casos de uso y estilos; el Style Guide en el CSS de esos casos, tokens y helpers. Figma no crea
+variantes ni fija valores: lo que difiere se reporta.
 
 ## 1. Leer el link
 
@@ -51,41 +53,42 @@ la configuración de conectores de claude.ai") y continuar **sin Figma**, como s
    "Data card group", "Data card chart", "Option large card".
 4. **Clasificar** cada eje y formato y mostrar la tabla en el chat, **antes** de la tabla visual:
 
-| Eje / formato | Valores en Figma | Clasificación | Destino en el componente |
+| Eje / formato | Valores en Figma | Existe en | Qué se hace |
 |---|---|---|---|
-| Size | XSmall, Small, Medium, Large | input `size` de PrimeNG | `_<id>.size.scss` + variante `sizes` |
-| State | Default, Hover, Pressed, Disabled | estado CSS + input `disabled` | módulo base (`:hover`, `:active`, `--disabled`) + variante `disabled` |
-| Color | 5 paletas × 3 tonos | sin equivalente en PrimeNG | ❓ extensión `int-*` (`severity`/`color`) u omitir |
-| Formato | Data card group | composición del mismo bloque | ❓ variante `group` con varios `<int-<id>>` / componente aparte |
-| Formato | Option large card | otra presentación del bloque | ❓ modificador `--large` (extensión) / componente aparte |
+| Size | XSmall, Small, Medium, Large | input `size` de PrimeNG | se implementa según PrimeNG + base de conocimientos (Intelica.knowledgeBase); Figma solo para comparar |
+| State | Default, Hover, Pressed, Disabled | estados de PrimeNG | módulo base; Figma solo para comparar |
+| Tipo | Minimal | Base de conocimientos (Intelica.knowledgeBase) `.prSelect--minimal` | variante `minimal` según la base de conocimientos (Intelica.knowledgeBase) |
+| Color | 5 paletas × 3 tonos | solo Figma | no se implementa → "Solo en Figma" |
+| Formato | Option large card | solo Figma | no se implementa → "Solo en Figma" |
 
-   Reglas (las seguras no se preguntan):
-   - Coincide con un input de PrimeNG v20 → se implementa con ese input.
-   - Es un pseudo-estado (hover, pressed = `:active`, focus, disabled) → CSS en el módulo base; disabled
-     también por su input si PrimeNG lo tiene.
-   - No existe en PrimeNG → **❓**: extensión `int-*` (input comentado `/** int-* extension: … */`) u omitir.
-   - Formato que es otro bloque o una composición → **❓**: variante de composición (solo marcado en el
-     `example.html`, sin cambiar la base), modificador (extensión) o **componente aparte** (se sugiere
-     `/crear-componente` y queda en "Pendientes" del informe; si el actual lo compone, ver SKILL.md 1.6).
-   - Todas las ❓ van en **un solo mensaje** junto con las demás preguntas de SKILL.md 2.2.
+   Reglas (no se pregunta nada de esta tabla):
+   - Existe en PrimeNG v20 o en la base de conocimientos (Intelica.knowledgeBase) → se implementa con lo que digan esas fuentes; Figma sirve para
+     revisar el resultado.
+   - Es un pseudo-estado (hover, pressed = `:active`, focus, disabled) → CSS en el módulo base, con los
+     valores de la base de conocimientos (Intelica.knowledgeBase) o Style Guide.
+   - Solo en Figma → no se implementa ni se inventa una extensión: va a "Solo en Figma" del informe,
+     para que el equipo decida si se documenta en la base de conocimientos (Intelica.knowledgeBase).
 5. **Guardar el frame** en la cabecera de `version-N/base/<id>.html`, en la línea `figma-frame:` debajo
    de `figma:` (link del frame con su `node-id`). `figma:` sigue siendo el link que dio el usuario.
-   `/actualizar-replica` recorre el frame para detectar ejes o formatos nuevos.
+   `/sincronizar-componente` recorre el frame para detectar ejes o formatos nuevos.
 
 ## 4. Tabla visual (en el chat, antes de planificar)
 
 Se arma con la muestra base (el link) y, por cada valor de eje, **solo lo que cambia** respecto de ella
 (columna "Elemento / estado" con el eje: `raíz [Size=Small]`).
 
-Una fila por valor que se ve en el diseño. Columnas fijas:
+Una fila por valor que se ve en el diseño. El token implementado sale de la base de conocimientos (Intelica.knowledgeBase) / Style Guide; Figma solo
+se compara. Columnas fijas:
 
-| Elemento / estado | Propiedad | Figma (valor) | Variable de Figma | `--i-*` del Style Guide | `--int-<id>-*` |
-|---|---|---|---|---|---|
-| raíz | gap | 8px | `spacing/gap/sm` | `--i-spacing-gap-sm` | `--int-chip-gap` |
-| raíz | background | #F2F2F5 | `color/grey/100` | `--i-color-grey-100` | `--int-chip-background` |
-| quitar :hover | color | #2351B3 | — (hex suelto) | `--i-color-blue-600` (mismo valor) | `--int-chip-remove-icon-hover-color` |
+| Elemento / estado | Propiedad | Figma (valor) | Variable de Figma | `--i-*` de Figma | `--i-*` implementado (base de conocimientos (Intelica.knowledgeBase) o Style Guide) | `--int-<id>-*` | |
+|---|---|---|---|---|---|---|---|
+| raíz | gap | 4px | `spacing/gap/xs` | `--i-spacing-gap-xs` | `--i-spacing-gap-xs` (base de conocimientos (Intelica.knowledgeBase)) | `--int-chip-gap` | ✅ |
+| raíz | background | #F2F2F5 | `color/grey/100` | `--i-color-grey-100` | `--i-color-primary-100` (base de conocimientos (Intelica.knowledgeBase)) | `--int-chip-background` | ⚠️ difiere |
+| quitar :hover | color | #2351B3 | — (hex suelto) | `--i-color-blue-600` (mismo valor) | — (sin caso en base de conocimientos (Intelica.knowledgeBase) o Style Guide: Aura traducido) | `--int-chip-remove-icon-hover-color` | ⚠️ |
 
-Cómo resolver la columna `--i-*`:
+Las filas ⚠️ van a "Diferencias con Figma" del informe; el valor implementado no cambia.
+
+Cómo resolver la columna "`--i-*` de Figma" (para comparar):
 
 1. **Con variable de Figma**: las variables del Style Guide se exportan de Figma (colecciones
    Foundations → Alias → Semantics → Components, ver cabecera de `_tokens.figma.scss`). El nombre se
@@ -98,33 +101,36 @@ Cómo resolver la columna `--i-*`:
 3. **Sin token con ese valor**: el más cercano y la diferencia al informe, o preguntar (SKILL.md 2.2).
    Nunca literal.
 
-## 5. Figma contra PrimeNG
+## 5. Figma contra las demás fuentes
 
 | Situación | Qué hacer |
 |---|---|
-| Figma y PrimeNG difieren en medidas, colores, radios, tipografía | Gana Figma (vía token) |
-| Figma muestra un estado que PrimeNG también tiene (hover, focus, disabled) | Estilo de Figma, comportamiento de PrimeNG |
-| PrimeNG tiene un estado que Figma no dibuja | Estilo de PrimeNG traducido a tokens; anotarlo |
-| Figma muestra una variante/estado sin equivalente en la API de PrimeNG v20 | No se inventa: se pregunta si va como extensión `int-*` (input nuevo comentado `int-* extension`) |
-| Figma usa otra estructura de capas (envoltorios, auto layout) | Se mantiene la estructura de elementos de PrimeNG; el auto layout se traduce a flex/gap en BEM |
-| Icono distinto en Figma | `pi pi-*` o `incontrol-icons` equivalente; si no hay, preguntar |
-| Figma muestra contenido dentro de un template (fila de `#item`, cuerpo de dialog, pie con botones) | No es del componente: estructura y visual estático con helpers `.u-*` en el `example.html`; estados u otra cosa no estructural sin helper, en un modificador `_<id>.<grupo>.scss` con tokens ([helpers.md](helpers.md) 1b). Nunca clases del Style Guide como `.prCard` |
+| Figma difiere de la base de conocimientos (Intelica.knowledgeBase) / Style Guide en medidas, colores, radios, tipografía | Gana la base de conocimientos (Intelica.knowledgeBase) / Style Guide; ⚠️ en la tabla y "Diferencias con Figma" |
+| Figma difiere de PrimeNG y la base de conocimientos (Intelica.knowledgeBase) no dice nada | Gana el SCSS `.pr*` del Style Guide o, sin él, PrimeNG traducido a tokens; se reporta |
+| Figma muestra un estado que PrimeNG también tiene (hover, focus, disabled) | Estilo de la base de conocimientos (Intelica.knowledgeBase) o Style Guide, comportamiento de PrimeNG; Figma para comparar |
+| PrimeNG tiene un estado que Figma no dibuja | Se implementa igual (base de conocimientos (Intelica.knowledgeBase) o Style Guide o Aura traducido) |
+| Figma muestra una variante/estado que no está en PrimeNG ni en la base de conocimientos (Intelica.knowledgeBase) | No se implementa: "Solo en Figma" |
+| Figma usa otra estructura de capas (envoltorios, auto layout) | Se mantiene la estructura de PrimeNG |
+| Icono distinto en Figma | El de PrimeNG o base de conocimientos (Intelica.knowledgeBase, `pi pi-*` o `incontrol-icons`); la diferencia se reporta |
+| Figma muestra contenido dentro de un template (fila de `#item`, cuerpo de dialog) | Si la base de conocimientos (Intelica.knowledgeBase) tiene la maqueta, se usa la base de conocimientos (Intelica.knowledgeBase); si no, Figma orienta los helpers `.u-*` del `example.html` de una variante ya decidida ([helpers.md](helpers.md) 1b). Nunca clases del Style Guide como `.prCard` |
 
 ## 6. Comentarios en `_<id>.scss`
 
-Con Figma, el comentario del token documenta las dos fuentes; si el valor sale de un eje (no de la
-muestra base), lleva el eje entre corchetes:
+Con Figma, el comentario del token documenta las fuentes: primero de dónde sale el token (`knowledgeBase` o `SG`),
+luego lo que muestra Figma y el original de Aura. Si el valor de Figma sale de un eje, lleva el eje
+entre corchetes:
 
 ```scss
---int-chip-gap: var(--i-spacing-gap-sm); // Figma: 8px (spacing/gap/sm) · Aura: 0.5rem
---int-card-padding-sm: var(--i-spacing-container-sm); // Figma: 12px (spacing/container/sm) [Size=Small] · Aura: —
+--int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
+--int-chip-background: var(--i-color-primary-100); // knowledgeBase: --i-color-primary-100 · Figma: #F2F2F5 (color/grey/100) ⚠️ · Aura: {surface.100}
 ```
+
+`/sincronizar-componente` compara contra el valor `Figma:` para detectar cambios en el diseño.
 
 ## 7. Validación e informe
 
 - Comparar el resultado en `localhost:4321/components/<id>` (con el Style Guide levantado) con el
   `get_screenshot`. Si no se puede ver el navegador, decirlo: no afirmar que coincide.
 - Comparar también cada valor de eje y formato implementado con su muestra del frame.
-- En el informe: link de Figma y frame usados, la tabla de ejes/formatos con lo decidido, la tabla
-  visual final y las diferencias (valores aproximados,
-  estados que Figma no mostraba, extensiones `int-*` aceptadas o descartadas).
+- En el informe: link de Figma y frame usados, la tabla de ejes/formatos cruzada con PrimeNG o base de conocimientos (Intelica.knowledgeBase), la
+  lista "Solo en Figma", la tabla visual final con ✅/⚠️ y las diferencias con Figma.
