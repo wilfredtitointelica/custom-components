@@ -1,6 +1,44 @@
 <!--
   title: Message
-  description:
-  figma:
+  description: Message component is used to display inline messages.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=19103-80838
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=2708-5147
 -->
-int-message
+@if (visible()) {
+  <!-- Root: polite live region, same as PrimeNG -->
+  <div
+    [class]="classes()"
+    role="alert"
+    aria-live="polite"
+    animate.enter="int-message--enter"
+    animate.leave="int-message--leave"
+  >
+    <div class="int-message__content">
+      <!-- Icon: #icon template and/or icon class. Unlike PrimeNG, the template goes inside the icon box so it
+           stays centered on the first line. -->
+      @if (iconTemplate(); as iconTpl) {
+        <span class="int-message__icon"><ng-container [ngTemplateOutlet]="iconTpl" /></span>
+      }
+      @if (icon()) {
+        <i class="int-message__icon" [class]="icon()" aria-hidden="true"></i>
+      }
+
+      <!-- Body: #container replaces the text wrapper -->
+      @if (containerTemplate(); as containerTpl) {
+        <ng-container [ngTemplateOutlet]="containerTpl" [ngTemplateOutletContext]="{ closeCallback }" />
+      } @else {
+        <span class="int-message__text"><ng-content /></span>
+      }
+
+      @if (closable()) {
+        <button type="button" class="int-message__close-button" aria-label="Close" (click)="close($event)">
+          @if (closeIconTemplate(); as closeIconTpl) {
+            <ng-container [ngTemplateOutlet]="closeIconTpl" />
+          } @else {
+            <i class="int-message__close-icon" [class]="closeIcon() || 'icon icon-cancel'" aria-hidden="true"></i>
+          }
+        </button>
+      }
+    </div>
+  </div>
+}

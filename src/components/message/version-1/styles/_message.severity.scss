@@ -1,0 +1,16 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Severity
+\*——————————————————————————————————————————————————————————*/
+
+// Icon and close button take the severity color; the text keeps --int-message-text-color.
+@each $severity in info, success, warn, error, secondary {
+  .int-message--#{$severity} {
+    color: var(--int-message-#{$severity}-color);
+    background-color: var(--int-message-#{$severity}-background);
+    outline-color: var(--int-message-#{$severity}-border-color);
+
+    .int-message__close-button:hover {
+      background-color: var(--int-message-#{$severity}-close-button-hover-background);
+    }
+  }
+}

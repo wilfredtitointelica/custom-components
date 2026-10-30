@@ -1,0 +1,22 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Simple
+\*——————————————————————————————————————————————————————————*/
+
+// No background, border or padding; the text takes the severity color (Style Guide variant="simple").
+.int-message--simple {
+  background-color: transparent;
+  border-radius: 0;
+  outline: 0;
+
+  .int-message__content {
+    padding: 0;
+  }
+
+  .int-message__text {
+    color: inherit;
+  }
+
+  .int-message__close-button:hover {
+    background-color: transparent;
+  }
+}

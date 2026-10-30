@@ -1,0 +1,15 @@
+<!--
+  title: Closable
+  description: Con closable se muestra el botón de cerrar (icon-cancel por defecto); al cerrarse, el mensaje sale del DOM y emite onClose.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-message severity="success" icon="icon icon-success" closable>
+    <span class="u-display-flex u-flex-column">
+      <span class="u-text-lg u-text-lineHeight-lg u-bold">File downloaded successfully</span>
+      <span>Your file has been downloaded to your device.</span>
+    </span>
+  </int-message>
+  <int-message severity="warn" size="small" icon="icon icon-warning" closable>
+    Write here the text of the description and to help the user to understand more information
+  </int-message>
+</div>

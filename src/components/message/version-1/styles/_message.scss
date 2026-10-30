@@ -4,13 +4,91 @@
 
 :root {
   --NOTE-MESSAGE: 'int-message ( Custom )';
+
+  // --- root ---
+  --int-message-border-radius: var(--i-border-radius-lg); // Figma: 8px (toast/border/radius/lg) · Aura: {content.border.radius} · SG: not set
+  --int-message-border-width: var(--i-border-width-sm); // Figma: 1px (toast/border/width/sm) · Aura: 1px
+  --int-message-transition-duration: var(--i-motion-duration-fast); // Figma: — · Aura: {transition.duration}
+
+  // --- content ---
+  --int-message-content-padding: var(--i-spacing-container-md); // Figma: 8px (toast/padding/x/md) · Aura: 0.5rem 0.75rem · SG: --i-message-content-padding
+  --int-message-content-gap: var(--i-spacing-gap-sm); // Figma: 8px (toast/gap/sm) · Aura: 0.5rem · SG: --i-message-content-gap 12px
+  --int-message-font-family: var(--i-typography-font-family-base); // Figma: Lato (toast/font/fontFamily) · Aura: inherit
+  --int-message-text-color: var(--i-color-primary-900); // Figma: #0A1733 (toast/color/info/text) · Aura: {severity.600} · SG: --i-message-content-color
+  --int-message-text-font-size: var(--i-text-body-size-md); // Figma: 14px (toast/font/size/md) · Aura: 1rem · SG: --i-message-text-font-size
+  --int-message-text-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (toast/font/lineHeight/md) · Aura: — · SG: --i-message-text-line-height
+
+  // --- icon ---
+  --int-message-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon/sizing/sm) · Aura: 1.125rem · SG: --i-message-icon-size
+  --int-message-icon-box-height: var(--i-typography-lineHeight-lg); // Figma: 24px (icon/sizing/sm 16 + toast/padding/y/xs 4) · Aura: — · SG: --i-message-title-line-height
+
+  // --- close button ---
+  --int-message-close-button-size: var(--i-sizing-sm); // Figma: — · Aura: 1.75rem · SG: --i-message-text-line-height 20px
+  --int-message-close-icon-size: var(--i-icon-size-xs); // Figma: 12px (icon/sizing/xs) · Aura: 1rem · SG: --i-message-close-button-icon-size
+  --int-message-focus-ring-width: var(--i-border-width-sm); // Figma: — · Aura: {focus.ring.width}
+
+  // --- severity ---
+  --int-message-info-background: var(--i-color-primary-100); // Figma: #DDE6F8 (toast/color/info/background) [Type=Info] · Aura: {blue.50} · SG: --i-message-info-background
+  --int-message-info-border-color: var(--i-color-primary-700); // Figma: #1B3E88 (toast/color/info/border) [Type=Info] · Aura: {blue.200} · SG: --i-message-info-border-color
+  --int-message-info-color: var(--i-color-primary-700); // Figma: #1B3E88 (toast/color/info/icon) [Type=Info] · Aura: {blue.600} · SG: --i-message-info-color
+  --int-message-info-close-button-hover-background: var(--i-color-primary-200); // Figma: — · Aura: {blue.100} · SG: --i-message-info-close-button-hover-background
+  --int-message-success-background: var(--i-color-success-50); // Figma: #F2FAF5 (toast/color/success/background) [Type=Success] · Aura: {green.50} · SG: --i-message-success-background
+  --int-message-success-border-color: var(--i-color-success-800); // Figma: #126629 (toast/color/success/border) [Type=Success] · Aura: {green.200} · SG: --i-message-success-border-color
+  --int-message-success-color: var(--i-color-success-800); // Figma: #126629 (toast/color/success/icon) [Type=Success] · Aura: {green.600} · SG: --i-message-success-color
+  --int-message-success-close-button-hover-background: var(--i-color-success-200); // Figma: — · Aura: {green.100} · SG: --i-message-success-close-button-hover-background
+  --int-message-warn-background: var(--i-color-warning-100); // Figma: #FFF8ED (toast/color/warning/background) [Type=Warning] · Aura: {yellow.50} · SG: --i-message-warn-background
+  --int-message-warn-border-color: var(--i-color-warning-700); // Figma: #C27E00 (toast/color/warning/border) [Type=Warning] · Aura: {yellow.200} · SG: --i-message-warn-border-color
+  --int-message-warn-color: var(--i-color-warning-700); // Figma: #C27E00 (toast/color/warning/icon) [Type=Warning] · Aura: {yellow.600} · SG: --i-message-warn-color
+  --int-message-warn-close-button-hover-background: var(--i-color-warning-300); // Figma: — · Aura: {yellow.100} · SG: --i-message-warn-close-button-hover-background
+  --int-message-error-background: var(--i-color-error-50); // Figma: #FCEDED (toast/color/error/background) [Type=Error] · Aura: {red.50} · SG: --i-message-error-background
+  --int-message-error-border-color: var(--i-color-error-700); // Figma: #960D0D (toast/color/error/border) [Type=Error] · Aura: {red.200} · SG: --i-message-error-border-color
+  --int-message-error-color: var(--i-color-error-700); // Figma: #960D0D (toast/color/error/icon) [Type=Error] · Aura: {red.600} · SG: --i-message-error-color
+  --int-message-error-close-button-hover-background: var(--i-color-error-100); // Figma: — · Aura: {red.100} · SG: --i-message-error-close-button-hover-background
+  --int-message-secondary-background: var(--i-color-secondary-50); // Figma: #FCFCFC (toast/color/default/background) [Type=Loading] · Aura: {surface.100} · SG: --i-toast-message-secondary-background
+  --int-message-secondary-border-color: var(--i-color-primary-900); // Figma: #0A1733 (toast/color/default/border) [Type=Loading] · Aura: {surface.200} · SG: --i-toast-message-secondary-border-color secondary-600
+  --int-message-secondary-color: var(--i-color-secondary-500); // Figma: #7D85A6 (loading/color/loader) [Type=Loading] · Aura: {surface.600} · SG: --i-toast-message-secondary-color secondary-600
+  --int-message-secondary-close-button-hover-background: var(--i-color-secondary-200); // Figma: — · Aura: {surface.200} · SG: --i-toast-message-secondary-close-button-hover-background
+
+  // --- size small ---
+  --int-message-sm-content-padding-y: var(--i-spacing-container-md); // Figma: 8px (toast/padding/y/md) [Size=Small] · Aura: 0.375rem · SG: --i-message-content-sm-padding 6px
+  --int-message-sm-content-gap: var(--i-spacing-gap-sm); // Figma: 8px (toast/gap/sm) [Size=Small] · Aura: — · SG: --i-message-content-sm-gap 6px
+  --int-message-sm-icon-box-height: var(--i-typography-lineHeight-sm); // Figma: 16px (icon/sizing/sm) [Size=Small] · Aura: — · SG: —
+  --int-message-sm-text-font-size: var(--i-text-body-size-sm); // Figma: 12px (toast/font/size/sm) [Size=Small] · Aura: 0.875rem · SG: --i-message-text-sm-font-size
+  --int-message-sm-text-line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (toast/font/lineHeight/sm) [Size=Small] · Aura: — · SG: --i-message-text-sm-line-height
+  --int-message-sm-close-button-size: var(--i-sizing-xs); // Figma: — [Size=Small] · Aura: — · SG: --i-message-text-sm-line-height 16px
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Outline instead of border, as PrimeNG; the -1px offset keeps it inside the box (Style Guide).
 .int-message {
+  overflow: hidden;
+  border-radius: var(--int-message-border-radius);
+  outline: var(--int-message-border-width) solid transparent;
+  outline-offset: calc(var(--int-message-border-width) * -1);
+
+  &.int-message--enter {
+    animation: int-message-enter var(--i-motion-duration-base) var(--i-motion-ease-out);
+  }
+
+  &.int-message--leave {
+    animation: int-message-leave var(--int-message-transition-duration) var(--i-motion-ease-in-out) forwards;
+  }
+}
+
+@keyframes int-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-25%);
+  }
+}
+
+@keyframes int-message-leave {
+  to {
+    opacity: 0;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,14 +96,69 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-message {
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--int-message-content-gap);
+    height: 100%;
+    padding: var(--int-message-content-padding);
+    font-family: var(--int-message-font-family);
+    font-size: var(--int-message-text-font-size);
+    line-height: var(--int-message-text-line-height);
+  }
+
+  // Box as tall as the title line (Figma icon-container 16px + 4px block padding), so the icon is centered on it.
+  &__icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--int-message-icon-size);
+    height: var(--int-message-icon-box-height);
+    font-size: var(--int-message-icon-size);
+    line-height: 1em;
+  }
+
+  &__text {
+    flex-grow: 1;
+    color: var(--int-message-text-color);
+  }
+
+  &__close-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-message-close-button-size);
+    height: var(--int-message-close-button-size);
+    margin-inline-start: auto;
+    padding: 0;
+    overflow: hidden;
+    color: inherit;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    outline-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background var(--int-message-transition-duration),
+      outline-color var(--int-message-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-message-focus-ring-width) solid currentColor;
+    }
+  }
+
+  &__close-icon {
+    font-size: var(--int-message-close-icon-size);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-message {
-}
+// Severities, size and variant live in _message.severity, _message.size and _message.simple.
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
