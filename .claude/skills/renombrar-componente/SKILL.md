@@ -59,11 +59,29 @@ npm run build
 
 Confirma la URL nueva y recuerda los archivos de "Still mentioned in".
 
+### Dependencias de otros componentes
+
+Si otros componentes lo componen, sus huellas usan el id viejo y `/resolver-dependencias` dejaría de
+encontrarlas. Búscalas y muéstralas en la simulación (paso 2), aparte de "Still mentioned in":
+
+```bash
+grep -ln "'<id>'" src/components/*/*.config.ts              # requires / uses
+grep -rn "dep:<id>\b\|data-dep=\"<id>\"\|TODO(dep:<id>" src/components/
+grep -rln "<id>/version-[0-9]*/base/<id>'" src/components/  # imports de Int<Id> (dependencia ya resuelta)
+```
+
+Con la misma confirmación del renombre, actualiza **solo esas huellas** al id nuevo: la entrada en
+`requires`/`uses`, los marcadores `<!-- dep:<id> provisional … -->` / `<!-- /dep:<id> -->`, `data-dep`,
+`TODO(dep:<id> provisional)` y, si ya estaba resuelta, el import, el selector `<int-<id>>` y la clase
+`Int<Id>`. Nada más de esos componentes.
+
 ## Qué NO hacer
 
 - ❌ Renombrar sin la simulación previa y la confirmación del usuario.
 - ❌ Mover carpetas o buscar/reemplazar a mano: el script cubre todas las formas del id
   (kebab, Pascal, `--NOTE-ID`, `@use`, selectores de ejemplos).
 - ❌ Renombrar o renumerar las versiones.
-- ❌ Editar por tu cuenta los archivos de "Still mentioned in".
+- ❌ Editar por tu cuenta los archivos de "Still mentioned in" (salvo las huellas de dependencias de
+  la sección anterior, con la confirmación del renombre).
+- ❌ Dejar `requires`/`uses` o marcadores `dep:` con el id viejo.
 - ❌ Cambiar el título sin preguntarlo: el id y el título son independientes.

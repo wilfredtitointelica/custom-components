@@ -1,0 +1,17 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Content layout
+\*——————————————————————————————————————————————————————————*/
+
+// knowledgeBase: .prCard--stretchContent · body and content take the card height, so a child with
+// u-flex-grow-1 (empty or error state) has real space to grow into.
+.int-card--stretch-content {
+  .int-card__body,
+  .int-card__content {
+    block-size: 100%;
+  }
+}
+
+// knowledgeBase: .prCard--contentGapLg · #content gap from --i-card-body-gap (6px) to --i-card-gap (16px).
+.int-card--content-gap-lg {
+  --int-card-content-gap: var(--i-card-gap); // knowledgeBase: --i-card-gap · Aura: —
+}

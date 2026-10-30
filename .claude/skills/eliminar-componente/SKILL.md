@@ -14,6 +14,15 @@ argument-hint: "[componente]"
    implementación de referencia del flujo. El script también lo bloquea.
 3. Muestra un resumen: versiones, variantes (`npm run order:variants -- <id>`), estado y diseñador de
    cada versión.
+4. **Quién lo usa**: otros componentes que lo tienen en `requires`/`uses` o con su provisional o su
+   import:
+   ```bash
+   grep -ln "'<id>'" src/components/*/*.config.ts
+   grep -rln "dep:<id>\b\|<id>/version-[0-9]*/base/<id>'" src/components/
+   ```
+   Si hay alguno, avísalo antes de seguir. Con el componente ya resuelto (import de `Int<Id>`), borrarlo
+   rompe el build de esos componentes: recomienda **ocultar**. Con un provisional, el provisional se
+   queda para siempre; esas huellas no se tocan aquí, se listan para que su diseñador decida.
 
 ## 2. ¿Borrar del todo u ocultar?
 
@@ -55,5 +64,6 @@ Confirma qué se borró y recuerda los archivos que todavía lo mencionan.
 
 - ❌ Borrar sin la simulación previa y la confirmación del usuario.
 - ❌ Eliminar `demo` u otro componente con `reference: true`.
+- ❌ Borrar sin avisar que otros componentes lo requieren o lo usan (paso 1.4).
 - ❌ Borrar la carpeta a mano o editar `inventory.ts` / `catalog-groups.ts` a mano: usa el script.
 - ❌ Editar por tu cuenta los archivos de "still mentioned in" (la guía usa componentes como ejemplo).

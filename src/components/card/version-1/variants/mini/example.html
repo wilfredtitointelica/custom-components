@@ -1,0 +1,23 @@
+<!--
+  title: Mini
+  description: Composición int-card--mini: tarjeta compacta con borde. Con selectable se marca o desmarca con clic o Enter/Espacio (aria-pressed); pasa el mouse para ver el hover. La última está deshabilitada.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  @for (item of items; track item.id) {
+    <int-card
+      class="int-card--mini u-flex-grow-1 u-flex-basis-0"
+      selectable
+      [selected]="selected().has(item.id)"
+      [disabled]="item.disabled"
+      (onSelect)="toggle(item.id)"
+    >
+      <div class="u-display-flex u-align-items-center u-gap-xs">
+        <i class="pi pi-chart-bar" aria-hidden="true"></i>
+        <span class="u-text-lg u-bold u-flex-grow-1 u-text-nowrap">{{ item.title }}</span>
+        <i class="pi pi-arrow-up-right" aria-hidden="true"></i>
+      </div>
+      <span class="u-text-md">{{ item.description }}</span>
+      <span class="u-text-sm"><span class="u-bold">{{ item.label }}</span> {{ item.date }}</span>
+    </int-card>
+  }
+</div>

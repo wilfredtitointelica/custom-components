@@ -1,0 +1,49 @@
+<!--
+  title: Data
+  description: Composición int-card--data para KPIs: card sin sombra ni padding con título, icono, moneda y valor. El segundo bloque alinea el monto a la derecha (money right).
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Default</p>
+    <div class="u-display-flex u-flex-wrap u-gap-xl">
+      @for (kpi of kpis; track kpi.title) {
+        <int-card class="int-card--data">
+          <div class="u-display-flex u-justify-content-center u-align-items-center u-gap-xs u-px-1">
+            <span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
+            @if (kpi.alert) {
+              <i class="pi pi-exclamation-circle u-color-error" aria-hidden="true"></i>
+            }
+          </div>
+          <div class="u-display-flex u-justify-content-center u-gap-xs">
+            <span class="u-text-sm u-bold">{{ kpi.currency }}</span>
+            <span class="u-text-2xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ kpi.amount }}</span>
+          </div>
+        </int-card>
+      }
+    </div>
+  </div>
+
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">Money right</p>
+    <div class="u-display-flex u-flex-wrap u-gap-xl">
+      @for (kpi of kpis; track kpi.title) {
+        <int-card class="int-card--data">
+          <div class="u-display-inline-flex u-flex-column u-mx-auto">
+            <div class="u-display-flex u-align-items-center u-gap-xs u-px-1">
+              <span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
+              @if (kpi.alert) {
+                <i class="pi pi-exclamation-circle u-color-error" aria-hidden="true"></i>
+              }
+            </div>
+            <div class="u-display-flex u-justify-content-right u-gap-xs">
+              <span class="u-text-sm u-bold">{{ kpi.currency }}</span>
+              <span class="u-text-2xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ kpi.amount }}</span>
+            </div>
+          </div>
+        </int-card>
+      }
+    </div>
+  </div>
+</div>
