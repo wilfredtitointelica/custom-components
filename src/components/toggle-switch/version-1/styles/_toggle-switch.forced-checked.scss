@@ -2,7 +2,7 @@
  * MODIFIERS ( --modifier ) · Forced checked
 \*——————————————————————————————————————————————————————————*/
 
-// Always together with --disabled (the base sets both), so it wins over the disabled rules.
+// Knowledge base .prToggleswitch--forcedChecked: forcedChecked sets --disabled too, so it wins over the disabled rules.
 .int-toggle-switch--forced-checked.int-toggle-switch--disabled {
   .int-toggle-switch__input {
     cursor: not-allowed;

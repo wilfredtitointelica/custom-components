@@ -1,0 +1,20 @@
+<!--
+  title: Forms
+  description: Se integra con formularios de Angular (ngModel, name, required). Como un false no cuenta como vacío para required, el ejemplo valida que esté encendido y muestra el error al enviar.
+-->
+<form class="u-display-flex u-flex-column u-gap-md" (ngSubmit)="submitted.set(true)">
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <int-toggle-switch name="terms" inputId="terms" [(ngModel)]="accepted" required [invalid]="showError()" />
+      <label for="terms" class="u-text-md u-color-body">Acepto los términos</label>
+    </div>
+    @if (showError()) {
+      <span class="u-text-sm u-color-error">Debes aceptar los términos.</span>
+    }
+  </div>
+  <div>
+    <!-- dep:button provisional · replace with <int-button> when button is done -->
+    <button type="submit" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button">Submit</button>
+    <!-- /dep:button -->
+  </div>
+</form>

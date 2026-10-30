@@ -1,0 +1,9 @@
+<!--
+  title: Template
+  description: El template #handle muestra contenido propio dentro del handle; recibe checked para cambiarlo según el estado.
+-->
+<int-toggle-switch [(ngModel)]="checked" ariaLabel="Template">
+  <ng-template #handle let-checked="checked">
+    <i class="icon u-text-xs" [class.icon-check]="checked" [class.icon-cancel]="!checked" aria-hidden="true"></i>
+  </ng-template>
+</int-toggle-switch>

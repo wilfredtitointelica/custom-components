@@ -6,38 +6,40 @@
   --NOTE-TOGGLE-SWITCH: 'int-toggle-switch ( Custom )';
 
   // --- root ---
-  --int-toggle-switch-width: var(--i-sizing-600); // Figma: 48px (—) · Aura: 2.5rem · SG: --i-toggleswitch-width
-  --int-toggle-switch-height: var(--i-sizing-md); // Figma: 24px (—) · Aura: 1.5rem · SG: --i-toggleswitch-height
-  --int-toggle-switch-gap: var(--i-spacing-25); // Figma: 2px (toggle/padding/x/2xs) · Aura: 0.25rem · SG: --i-toggleswitch-gap
-  --int-toggle-switch-background: var(--i-color-neutral-100); // Figma: #F2F2F5 (toggle/inactive/background) · Aura: {surface.300} · SG: --i-toggleswitch-background
-  --int-toggle-switch-border-width: var(--i-border-width-sm); // Figma: 1px (toggle/border/width/sm) · Aura: 1px · SG: --i-toggleswitch-border-width
-  --int-toggle-switch-border-color: var(--i-color-secondary-400); // Figma: #9CA3BA (toggle/inactive/border) · Aura: transparent · SG: --i-toggleswitch-border-color
-  --int-toggle-switch-border-radius: var(--i-border-radius-full); // Figma: 1000px (toggle/border/radius/full) · Aura: 30px · SG: --i-toggleswitch-border-radius
-  --int-toggle-switch-hover-border-color: var(--i-color-primary-900); // Figma: #0A1733 (toggle/inactive/hover/border) [State=Hover] · Aura: transparent · SG: --i-toggleswitch-hover-border-color
-  --int-toggle-switch-checked-background: var(--i-color-neutral-100); // Figma: #FCFCFC (toggle/active/background) [Type=Active] · Aura: {primary.color} · SG: --i-toggleswitch-background
-  --int-toggle-switch-checked-border-color: var(--i-color-primary-900); // Figma: #0A1733 (toggle/active/border) [Type=Active] · Aura: transparent · SG: --i-toggleswitch-checked-border-color
-  --int-toggle-switch-checked-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (toggle/active/hover/background) [Type=Active, State=Hover] · Aura: {primary.hover.color} · SG: --i-toggleswitch-hover-background
-  --int-toggle-switch-disabled-background: var(--i-color-neutral-200); // Figma: #D9D9E3 (toggle/inactive/disabled/background) [State=Disabled] · Aura: {form.field.disabled.background} · SG: --i-toggleswitch-disabled-background
-  --int-toggle-switch-focus-ring-width: var(--i-border-width-sm); // Figma: — · Aura: {focus.ring.width} 1px · SG: literal 1px
-  --int-toggle-switch-focus-ring-color: var(--i-focus-border-color); // Figma: — · Aura: {focus.ring.color} · SG: --i-focus-border-color
-  --int-toggle-switch-transition-duration: var(--i-motion-duration-fast); // Figma: — · Aura: {form.field.transition.duration} 0.2s
+  --int-toggle-switch-width: var(--i-sizing-600); // knowledgeBase: --i-toggleswitch-width 48px · Figma: 48px (—) · Aura: 2.5rem
+  --int-toggle-switch-height: var(--i-sizing-md); // knowledgeBase: --i-toggleswitch-height 24px · Figma: 24px (—) · Aura: 1.5rem
+  --int-toggle-switch-gap: var(--i-spacing-25); // knowledgeBase: --i-toggleswitch-gap 2px · Figma: 2px (toggle/padding/x/2xs) · Aura: 0.25rem
+  --int-toggle-switch-background: var(--i-color-neutral-100); // knowledgeBase: --i-toggleswitch-background · Figma: #F2F2F5 (toggle/inactive/background) · Aura: {surface.300}
+  --int-toggle-switch-border-width: var(--i-border-width-sm); // knowledgeBase: --i-toggleswitch-border-width · Figma: 1px (toggle/border/width/sm) · Aura: 1px
+  --int-toggle-switch-border-color: var(--i-color-secondary-400); // knowledgeBase: --i-toggleswitch-border-color · Figma: #9CA3BA (toggle/inactive/border) · Aura: transparent
+  --int-toggle-switch-border-radius: var(--i-border-radius-full); // knowledgeBase: --i-toggleswitch-border-radius · Figma: 1000px (toggle/border/radius/full) · Aura: 30px
+  --int-toggle-switch-hover-border-color: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-hover-border-color · Figma: #0A1733 (toggle/inactive/hover/border) [State=Hover] · Aura: transparent
+  --int-toggle-switch-checked-background: var(--i-color-neutral-100); // SG: --i-toggleswitch-background (checked rule) · Figma: #FCFCFC (toggle/active/background) [Type=Active] ⚠️ · Aura: {primary.color}
+  --int-toggle-switch-checked-border-color: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-checked-border-color · Figma: #0A1733 (toggle/active/border) [Type=Active] · Aura: transparent
+  --int-toggle-switch-checked-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-toggleswitch-hover-background · Figma: #DDE6F8 (toggle/active/hover/background) [Type=Active, State=Hover] · Aura: {primary.hover.color}
+  --int-toggle-switch-disabled-background: var(--i-color-neutral-200); // knowledgeBase: --i-toggleswitch-disabled-background · Figma: #D9D9E3 (toggle/inactive/disabled/background) [State=Disabled] · Aura: {form.field.disabled.background}
+  --int-toggle-switch-invalid-border-color: var(--i-border-error); // SG: --i-checkbox-invalid-border-color · Aura: {form.field.invalid.border.color}
+  --int-toggle-switch-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: outline 1px · Aura: {focus.ring.width}
+  --int-toggle-switch-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-toggle-switch-transition-duration: var(--i-motion-duration-fast); // Aura: {form.field.transition.duration} 0.2s
 
   // --- handle ---
-  --int-toggle-switch-handle-size: var(--i-sizing-sm); // Figma: 20px (toggle/sizing/sm) · Aura: 1rem · SG: --i-toggleswitch-handle-size
-  --int-toggle-switch-handle-border-radius: var(--i-border-radius-full); // Figma: 1000px (toggle/border/radius/full) · Aura: 50% · SG: --i-toggleswitch-handle-border-radius
-  --int-toggle-switch-handle-background: var(--i-color-secondary-400); // Figma: #9CA3BA (toggle/inactive/ellipse) · Aura: {surface.0} · SG: literal --i-color-secondary-400
-  --int-toggle-switch-handle-checked-background: var(--i-color-primary-900); // Figma: #0A1733 (toggle/active/ellipse) [Type=Active] · Aura: {surface.0} · SG: --i-toggleswitch-checked-handle-color
-  --int-toggle-switch-handle-checked-hover-background: var(--i-color-primary-900); // Figma: #0A1733 (toggle/active/hover/ellipse) [Type=Active, State=Hover] · Aura: {surface.0} · SG: --i-toggleswitch-handle-hover-color
-  --int-toggle-switch-handle-disabled-background: var(--i-color-neutral-400); // Figma: #9CA3BA (toggle/inactive/disabled/ellipse) [State=Disabled] · Aura: {form.field.disabled.color} · SG: --i-toggleswitch-handle-disabled-background
+  --int-toggle-switch-handle-size: var(--i-sizing-sm); // knowledgeBase: --i-toggleswitch-handle-size 20px · Figma: 20px (toggle/sizing/sm) · Aura: 1rem
+  --int-toggle-switch-handle-border-radius: var(--i-border-radius-full); // SG: --i-toggleswitch-handle-border-radius · Figma: 1000px (toggle/border/radius/full) · Aura: 50%
+  --int-toggle-switch-handle-background: var(--i-color-secondary-400); // knowledgeBase: handle secondary-400 · Figma: #9CA3BA (toggle/inactive/ellipse) · Aura: {surface.0}
+  --int-toggle-switch-handle-checked-background: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-checked-handle-color · Figma: #0A1733 (toggle/active/ellipse) [Type=Active] · Aura: {surface.0}
+  --int-toggle-switch-handle-checked-hover-background: var(--i-color-primary-900); // SG: --i-toggleswitch-handle-hover-color · Figma: #0A1733 (toggle/active/hover/ellipse) [Type=Active, State=Hover] · Aura: {surface.0}
+  --int-toggle-switch-handle-disabled-background: var(--i-color-neutral-400); // knowledgeBase: --i-toggleswitch-handle-disabled-background · Figma: #9CA3BA (toggle/inactive/disabled/ellipse) [State=Disabled] · Aura: {form.field.disabled.color}
+  --int-toggle-switch-handle-color: var(--i-color-secondary-50); // SG: — · Aura: {text.muted.color} (icon of the #handle template)
 
-  // --- slider (int-* extension) ---
-  --int-toggle-switch-slider-width: var(--i-sizing-450); // Figma: 36px (—) [toggle-small] · Aura: — · SG: literal 36px
-  --int-toggle-switch-slider-track-height: var(--i-spacing-50); // Figma: 4px (—) [toggle-small] · Aura: — · SG: literal 4px
-  --int-toggle-switch-slider-track-color: var(--i-color-secondary-600); // Figma: — [toggle-small] · Aura: — · SG: literal --i-color-secondary-600
-  --int-toggle-switch-slider-disabled-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (toggle/inactive/disabled/background) [toggle-small, State=Disabled] · Aura: — · SG: literal --i-color-secondary-200
-  --int-toggle-switch-slider-handle-size: var(--i-sizing-xs); // Figma: 16px (—) [toggle-small] · Aura: — · SG: literal 16px
-  --int-toggle-switch-slider-handle-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (toggle/inactive/background) [toggle-small] · Aura: — · SG: literal --i-color-secondary-100
-  --int-toggle-switch-slider-handle-checked-background: var(--i-color-secondary-50); // Figma: #FCFCFC (toggle/active/background) [toggle-small, Type=Active] · Aura: — · SG: literal --i-color-secondary-50
+  // --- slider (knowledgeBase modifier .prToggleswitch--slider) ---
+  --int-toggle-switch-slider-width: var(--i-sizing-450); // knowledgeBase: --slider width 36px · Figma: 36px (—) [toggle-small] · Aura: —
+  --int-toggle-switch-slider-track-height: var(--i-spacing-50); // knowledgeBase: track 4px · Figma: 4px (—) [toggle-small] · Aura: —
+  --int-toggle-switch-slider-track-color: var(--i-color-secondary-600); // knowledgeBase: track secondary-600 · Figma: — [toggle-small] · Aura: —
+  --int-toggle-switch-slider-disabled-color: var(--i-color-secondary-200); // knowledgeBase: track disabled secondary-200 · Figma: #D9D9E3 (toggle/inactive/disabled/background) [toggle-small, State=Disabled] · Aura: —
+  --int-toggle-switch-slider-handle-size: var(--i-sizing-xs); // knowledgeBase: --slider handle 16px · Figma: 16px (—) [toggle-small] · Aura: —
+  --int-toggle-switch-slider-handle-background: var(--i-color-secondary-100); // knowledgeBase: handle secondary-100 · Figma: #F2F2F5 (toggle/inactive/background) [toggle-small] · Aura: —
+  --int-toggle-switch-slider-handle-checked-background: var(--i-color-secondary-50); // knowledgeBase: handle checked secondary-50 · Figma: #FCFCFC (toggle/active/background) [toggle-small, Type=Active] · Aura: —
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -91,12 +93,16 @@
   &__handle {
     position: absolute;
     top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     inset-inline-start: var(--int-toggle-switch-gap);
     box-sizing: border-box;
     width: var(--int-toggle-switch-handle-size);
     height: var(--int-toggle-switch-handle-size);
     margin-block-start: calc(var(--int-toggle-switch-handle-size) / -2);
     background: var(--int-toggle-switch-handle-background);
+    color: var(--int-toggle-switch-handle-color);
     border-radius: var(--int-toggle-switch-handle-border-radius);
     transition:
       background var(--int-toggle-switch-transition-duration),
@@ -154,6 +160,18 @@
 
   .int-toggle-switch__handle {
     background: var(--int-toggle-switch-handle-disabled-background);
+  }
+}
+
+// Invalid: error border, as PrimeNG p-invalid (no knowledge base case).
+.int-toggle-switch--invalid:not(.int-toggle-switch--disabled) .int-toggle-switch__slider {
+  border-color: var(--int-toggle-switch-invalid-border-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-toggle-switch__slider,
+  .int-toggle-switch__handle {
+    transition-duration: 0s;
   }
 }
 

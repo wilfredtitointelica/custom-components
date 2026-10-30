@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IntToggleSwitch } from '../../base/toggle-switch';
 
 @Component({
-  selector: 'toggle-switch-label-example',
+  selector: 'toggle-switch-invalid-example',
   templateUrl: './example.html',
   imports: [IntToggleSwitch, FormsModule],
 })
-export class ToggleSwitchLabelExample {
-  checked = true;
+export class ToggleSwitchInvalidExample {
+  checked = false;
 }
