@@ -1,6 +1,6 @@
 ---
 name: replicar-primeng
-description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Acepta un link de Figma (Link to selection) como referencia visual: Figma manda en la apariencia, PrimeNG en el comportamiento y los valores siempre salen de los tokens --i-* del Style Guide; recorre el frame padre del link para no perder tamaños, estados, colores ni formatos. El contenido que va dentro de los templates del componente (#item, #header, cuerpo proyectado) se maqueta en las variantes con las clases helper .u-* del Style Guide. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires; si solo lo usa el contenido de una variante (un botón en el #footer de una card), en uses. Si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
+description: Replica un componente de PrimeNG v20 (p-chip, p-button, p-select, p-dialog…) como componente int-* propio de Intelica Components, sin depender de PrimeNG en runtime. Analiza su implementación real en node_modules (primeng/fesm2022, @primeuix/styles, @primeuix/themes), inventaría su API pública y genera base (Signals, OnPush, a11y), estilos SCSS BEM con tokens --i-* y una variante de documentación por característica, y valida con build y tests. Úsalo cuando el usuario diga "replica p-chip de PrimeNG", "clona el p-select", "haz un int-dialog igual al de PrimeNG", "copia el componente X de PrimeNG v20" o /replicar-primeng. Orden de prioridad de fuentes: 1) PrimeNG (node_modules) para implementación y comportamiento; 2) la base de conocimientos Intelica.knowledgeBase (MCP knowledgeBaseMcp o el repo local), cuyos casos .pr son la referencia autoritativa de estilos, maquetas HTML, variantes y casos de uso (se ignoran .pt, .ly y otros archivos); 3) el Style Guide (CSS de las clases .pr, tokens --i-* y helpers .u-*); 4) Figma, solo como guía visual (nunca define variantes ni valores). Replica también animaciones y transiciones (ripple cuando PrimeNG lo usa, fade de overlays, dropdowns y modales) y la accesibilidad por teclado (tabindex, foco, teclas y ARIA de PrimeNG). El contenido que va dentro de los templates del componente (#item, #header, cuerpo proyectado) se maqueta en las variantes con las clases helper .u-* del Style Guide. Si el componente compone otro int-* (multiselect → checkbox), lo declara en requires; si solo lo usa el contenido de una variante (un botón en el #footer de una card), en uses. Si ese aún no está done, usa un provisional marcado que luego reemplaza /resolver-dependencias. Siempre pregunta primero en qué componente int-* existente se replica: si no existe, sugiere crearlo con crear-componente y se detiene; si ya tiene contenido customizado, no lo altera salvo que el usuario elija forzar.
 argument-hint: "<p-selector o nombre del componente de PrimeNG> [link de Figma]"
 ---
 
@@ -15,8 +15,12 @@ Referencias de esta skill (léelas cuando la fase lo pida, no antes):
   `node_modules`, cómo leer el código compilado y cómo traducir tokens `dt('…')` a `--i-*`.
 - [references/ejemplo-p-chip.md](references/ejemplo-p-chip.md): recorrido completo con `p-chip`
   (inventario, plan, archivos y variantes esperadas).
-- [references/figma.md](references/figma.md): cómo usar un link de Figma como referencia visual y
-  traducir sus valores a tokens `--i-*` (solo si el usuario da el link).
+- [references/knowledge-base.md](references/knowledge-base.md): cómo leer los casos `.pr` de la base de
+  conocimientos (variantes, maquetas HTML, estilos) y traducirlos a `int-*`.
+- [references/interaccion.md](references/interaccion.md): animaciones y transiciones (overlays, modales,
+  ripple, movimiento reducido) y accesibilidad por teclado (tab stops, foco, teclas, ARIA).
+- [references/figma.md](references/figma.md): cómo usar un link de Figma como guía visual y comparar
+  contra lo implementado (solo si el usuario da el link).
 - [references/helpers.md](references/helpers.md): clases helper `.u-*` del Style Guide para maquetar el
   contenido que va **dentro de los templates** del componente en las variantes (3.5).
 
@@ -31,6 +35,24 @@ Convenciones del proyecto (fuente de verdad, no se duplican aquí): skill `crear
 > 🔒 **Solo sobre componentes existentes y sin pisar lo customizado.** Siempre se pregunta el componente
 > destino (1.1); si no existe se sugiere `/crear-componente` y se para. Lo que ya está customizado no se
 > altera ni se sobrescribe salvo que el usuario elija **forzar** (1.2).
+
+### Orden de prioridad de fuentes
+
+Cuando dos fuentes dicen cosas distintas, gana la de número menor (no se pregunta; la diferencia va al
+informe):
+
+| # | Fuente | Qué aporta | Dónde |
+|---|---|---|---|
+| 1 | **PrimeNG v20** | Implementación y comportamiento original: API, estructura de elementos, estados, teclado, ARIA, eventos, animaciones | `node_modules/primeng`, `@primeuix/styles`, `@primeuix/themes` (1.3) |
+| 2 | **Base de conocimientos (Intelica.knowledgeBase)** | Casos `.pr*`: estilos autoritativos, maquetas HTML, **variantes y casos de uso** existentes. Se ignoran `.pt*`, `.ly*`, `.gr*` y los demás archivos | MCP `knowledgeBaseMcp` o `C:\christian\repos\Intelica.knowledgeBase` (1.3b) |
+| 3 | **Style Guide** | CSS real de las clases `.pr*` (para reproducirlo), tokens `--i-*` y helpers `.u-*` | `C:\christian\repos\Intelica.Style.Guide.New\IntelicaStyleGuide\src\assets\css` |
+| 4 | **Figma** | Solo guía visual: comparar y detectar diferencias. No define variantes, casos de uso ni valores | MCP de Figma, si hay link (1.5) |
+
+- Comportamiento, API y estructura: siempre PrimeNG. La base de conocimientos (Intelica.knowledgeBase) y Figma nunca cambian la API.
+- Apariencia: base de conocimientos (Intelica.knowledgeBase, `.pr*`) → SCSS `.pr*` del Style Guide → Aura traducido a tokens. Figma no corrige
+  valores: lo que difiere se reporta en "Diferencias con Figma".
+- Las clases `.pr*` se **leen** para reproducir su estilo en BEM `int-*`; nunca se aplican ni se copian
+  sus selectores en el código.
 
 ---
 
@@ -49,7 +71,8 @@ vuelve a discutir en cada réplica:
 | Mocks "en el .ts del componente" | En la clase del `example.ts` de la variante. La base **no** lleva mocks: se extrae a npm |
 | Tokens de diseño | `--i-*` del Intelica Style Guide; nunca `--doc-*` ni `dt()` de PrimeNG |
 | Contenido de los templates en la demo (`flex gap-2`, PrimeFlex/Tailwind) | Clases helper `.u-*` del Style Guide en el `example.html` (3.5) |
-| Clases del Style Guide (`.prCard`, `.pt*`, `.ly*`, `.gr*`, `row`/`col-*`) | **Nunca.** Del Style Guide solo se usan tokens `--i-*` y helpers `.u-*` |
+| Clases del Style Guide (`.prCard`, `.pt*`, `.ly*`, `.gr*`, `row`/`col-*`) | **Nunca en el código.** Del Style Guide solo se usan tokens `--i-*` y helpers `.u-*`. Los casos `.pr*` (base de conocimientos (Intelica.knowledgeBase) + su SCSS) se leen como referencia y se traducen a BEM `int-*`; `.pt*`, `.ly*`, `.gr*` se ignoran |
+| `pRipple`, `@angular/animations` | Ripple propio del componente y `animate.enter`/`animate.leave` + CSS con tokens `--i-motion-*` (3.6) |
 | Comentarios | En inglés, como el resto del código del repo; densidad similar a `_demo_` |
 | Título y descripción | Cabecera HTML (`<!-- title: … description: … -->`), nunca en TS |
 
@@ -78,7 +101,8 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
      defecto la más reciente). Aunque el candidato parezca obvio, se confirma.
    - **"¿Tienes un link de Figma (Link to selection) del componente? (opcional)"**, salvo que ya venga
-     en el pedido. Con link se sigue 1.5; sin link, la apariencia sale de PrimeNG + Style Guide.
+     en el pedido. Es opcional porque la apariencia sale de la base de conocimientos (Intelica.knowledgeBase) + Style Guide + PrimeNG; con link se
+     sigue 1.5 solo para comparar.
 
    El diseñador y el estado no se preguntan: se conservan los del componente.
 3. **Si el componente indicado no existe**: no se crea nada y se responde:
@@ -97,7 +121,16 @@ En la versión elegida, clasifica **cada archivo** que la réplica tocaría:
 | **Plantilla** | `base/<id>.html` solo con cabecera + `int-<id>`; `base/<id>.ts` solo con `status` y `designer`; `.scss` con selectores vacíos; `example.html` solo con cabecera ("Preview pending") | Se puede completar. Se conservan cabecera, `status`, `designer` y comentarios de plantilla |
 | **Customizado** | Cualquier contenido más allá de la plantilla: marcado, inputs, lógica, declaraciones CSS, un ejemplo escrito, módulos de estilo con reglas | **No se altera ni se sobrescribe** |
 
-Si hay archivos customizados, muéstralos (ruta + resumen de qué tienen) y pregunta:
+Si hay archivos customizados, corre `npm run check:component -- <id> --version <N>`. Si da errores (❌),
+lo más probable es que sea **trabajo hecho fuera del repo** (un maquetador con su propia IA): no se ofrece
+"completar". Se sugiere `/estandarizar-componente <id>`, que conserva ese trabajo y lo lleva a los
+estándares. Solo se replica encima si el usuario elige **forzar** (rehacer desde PrimeNG):
+
+> `<componente>` tiene trabajo que no cumple las bases del repo (<n> errores de `check:component`),
+> probablemente hecho fuera. Te sugiero `/estandarizar-componente <id>`, que lo conserva y lo alinea.
+> ¿O prefieres **forzar** y rehacerlo desde PrimeNG?
+
+Si el check pasa, muéstralos (ruta + resumen de qué tienen) y pregunta:
 
 > `<componente>` ya tiene contenido propio en: `<lista>`. No lo voy a modificar salvo que lo fuerces.
 > ¿Qué hago?
@@ -130,8 +163,30 @@ Sigue [references/primeng-v20-map.md](references/primeng-v20-map.md). Como míni
   `DomHandler`, `primeng/icons`, `@angular/cdk`…): sigue cada import hasta saber qué aporta al
   comportamiento público. No asumas que todo está en un archivo.
 
+- **Animaciones**: `animation(…)`/`trigger(…)`/`transition(…)` del `.mjs`, `.p-connected-overlay-*`,
+  `.p-toggleable-content-*` y `.p-overlay-mask-*` de `@primeuix/styles/dist/base`, y si la plantilla usa
+  `pRipple` (`@primeuix/styles/dist/ripple`). Ver [references/interaccion.md](references/interaccion.md) 1.1.
+- **Teclado**: cada handler (`onKeyDown`, `onArrowDownKey`, `onEscapeKey`, `onTabKey`…), los
+  `tabindex`, `aria-activedescendant` y la gestión de foco (`focus()`, `FocusTrap`, `focusOnShow`).
+
 Si un archivo no existe o la lógica vive en un paquete que no está instalado, anótalo como limitación
 y continúa con lo verificable.
+
+### 1.3b Leer la base de conocimientos (Intelica.knowledgeBase, casos `.pr`)
+
+Procedimiento completo en [references/knowledge-base.md](references/knowledge-base.md). En resumen:
+
+1. Busca `Desarrollo/Estandares/Diseño/components/<nombre>.md` con el MCP `knowledgeBaseMcp`; si no
+   conecta, léelo del repo local `C:\christian\repos\Intelica.knowledgeBase` sin preguntar.
+2. Lee **solo** los casos `.pr*` (clase raíz, tokens, estilos base, estados, modificadores
+   `.pr<Nombre>--*`, paneles, HTML/TS de uso, props frecuentes, notas). Ignora `.pt*`, `.ly*`, `.gr*`,
+   `patterns/`, `guardrails.md` y cualquier otro archivo.
+3. Complementa con el SCSS real del caso en el Style Guide (`assets/css/components/<nombre>/`) para lo
+   que la base de conocimientos (Intelica.knowledgeBase) no detalla.
+4. Muestra en el chat la **tabla de la base de conocimientos (Intelica.knowledgeBase)** (references/knowledge-base.md, sección 2): cada caso →
+   destino en `int-<id>` (token, módulo de estilo, variante, `example.html`).
+5. Las **variantes y casos de uso** salen de aquí y de la API de PrimeNG (2.4), nunca de Figma.
+6. Si no hay archivo para el componente, sigue con Style Guide + PrimeNG y anótalo en el informe.
 
 ### 1.4 Inventario de la API (obligatorio, antes de planificar)
 
@@ -143,7 +198,10 @@ Escríbelo en el chat como tabla. Separa lo público de lo interno:
 | Output | … | payload | — | cuándo se emite |
 | Template / contenido | `#nombre`, `<ng-content>` | contexto | — | |
 | Estado interno | `visible`, `focused`… | | | qué lo cambia |
-| A11y | roles, `aria-*`, teclas | | | |
+| A11y | roles, `aria-*`, `tabindex`, foco | | | quién recibe el foco y cuándo vuelve |
+| Teclado | tecla por elemento | | | tabla completa en [interaccion.md](references/interaccion.md) 2.1 |
+| Animación | overlay, modal, plegable, ripple | duración · curva | | origen en PrimeNG y token `--i-motion-*` (3.6) |
+| Caso `.pr` (base de conocimientos (Intelica.knowledgeBase)) | `.prSelect--minimal`, "Variante Export"… | | | modificador / variante / input de PrimeNG (1.3b) |
 | Forms | `ControlValueAccessor`, `ngModel` | | | si hereda de `BaseEditableHolder`/`BaseInput` |
 | Dependencias | CDK, iconos, overlays, servicios | | | se reemplaza por… |
 | Componentes compuestos | `p-checkbox`, `p-chip`, `p-button`… usados en la plantilla | | | `int-*` equivalente + su estado (1.6) |
@@ -154,9 +212,12 @@ Escríbelo en el chat como tabla. Separa lo público de lo interno:
 Se listan en "Diferencias" del informe. Los templates por nombre (`#removeicon`, `#item`) sí se replican
 con `contentChild('nombre')` + `TemplateRef`.
 
-### 1.5 Referencia visual de Figma (solo si hay link)
+### 1.5 Guía visual de Figma (solo si hay link)
 
-Procedimiento completo en [references/figma.md](references/figma.md). En resumen:
+Figma es la **cuarta** fuente: sirve para ver el diseño y comparar, **no** es fuente de verdad. No
+define variantes, casos de uso ni valores; si difiere de PrimeNG, la base de conocimientos (Intelica.knowledgeBase) o el Style Guide, gana la fuente
+de mayor prioridad y la diferencia se reporta. Procedimiento completo en
+[references/figma.md](references/figma.md). En resumen:
 
 1. Del link (`figma.com/design/:fileKey/…?node-id=1-2`) saca `fileKey` y `nodeId` (`1-2` → `1:2`).
 2. Con el MCP de Figma: `create_session` (fileKey + tarea) y luego, sobre ese nodo,
@@ -165,17 +226,19 @@ Procedimiento completo en [references/figma.md](references/figma.md). En resumen
    está disponible o pide autorización, avisar y seguir sin Figma.
 3. **Recorre el frame padre** del link (el link suele ser solo el primer diseño): detecta **ejes**
    (tamaños, estados, colores) y **formatos** (group, chart, large…) y muestra la **tabla de
-   clasificación** (references/figma.md, sección 3). Lo que coincide con PrimeNG o es un pseudo-estado se
-   implementa sin preguntar; lo demás va a las preguntas de 2.2.
-4. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma →
-   token `--i-*` del Style Guide → `--int-<id>-*`; por cada valor de eje, solo lo que cambia.
+   clasificación** (references/figma.md, sección 3), cruzando cada uno con la API de PrimeNG y los
+   casos de la base de conocimientos (Intelica.knowledgeBase). Lo que existe en PrimeNG o en la base de conocimientos (Intelica.knowledgeBase) se implementa según esas fuentes; lo que **solo**
+   está en Figma no se implementa ni se pregunta: va a "Solo en Figma" del informe.
+4. Arma la **tabla visual** en el chat: cada medida/color/estado de Figma → variable de Figma → token
+   `--i-*` que usa la base de conocimientos (Intelica.knowledgeBase) / Style Guide → `--int-<id>-*` y si coincide (✅) o difiere (⚠️); por cada
+   valor de eje, solo lo que cambia.
    Si el diseño muestra **contenido dentro de los templates** (la fila de un `#item`, el cuerpo de un
    dialog), arma además la **tabla de contenido**: capa → propiedad → destino (helper `.u-*` o
    modificador con tokens, 3.5).
 5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
    vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
    antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
-   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/actualizar-replica` los usa para
+   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
    comparar después:
    ```html
    <!--
@@ -185,23 +248,14 @@ Procedimiento completo en [references/figma.md](references/figma.md). En resumen
      figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
    ```
-6. Cada `--int-*` que salga de Figma lleva el comentario `// Figma: <valor> (<variable>) · Aura: <valor>`
-   (**obligatorio**; con `[Eje=Valor]` si sale de un eje): es la huella con la que `/actualizar-replica`
-   detecta qué cambió en el diseño.
+6. Cada `--int-*` que Figma también muestra lleva el comentario
+   `// knowledgeBase: <token> · Figma: <valor> (<variable>) · Aura: <valor>` (con `[Eje=Valor]` si sale de un eje;
+   sin caso en la base de conocimientos (Intelica.knowledgeBase): `// SG: <token>`). El valor **lo fija la base de conocimientos (Intelica.knowledgeBase) o Style Guide**; `Figma:` es la huella
+   con la que `/sincronizar-componente` detecta qué cambió en el diseño.
 
-Reparto de responsabilidades (no se discute en cada réplica):
-
-| Aspecto | Manda |
-|---|---|
-| API, estructura de elementos, estados internos, teclado, ARIA, eventos | **PrimeNG** |
-| Medidas, espaciados, radios, colores, tipografía, sombras, iconos y estados que se ven en el diseño | **Figma** |
-| Valores CSS | **Style Guide** (`--i-*`): Figma dice *qué* valor; el token del Style Guide es *cómo* se escribe |
-| Contenido del consumidor dentro de los templates (variantes) | **Style Guide** (helpers `.u-*`): Figma dice el layout; el helper es *cómo* se escribe |
-| Lo que Figma no muestra (un estado, una variante) | PrimeNG traducido a tokens (3.3) |
-
-- Figma nunca se copia como CSS literal (`#hex`, `px`, `font-family`): cada valor se resuelve a un `--i-*`.
-- Variantes o estados que aparecen en Figma pero no existen en la API de PrimeNG v20 no se inventan:
-  se listan y se pregunta si se agregan como **extensión `int-*`** (2.2).
+- Figma nunca se copia como CSS literal (`#hex`, `px`, `font-family`) ni su código generado.
+- Contenido dentro de los templates que se ve en Figma: el layout de la base de conocimientos (Intelica.knowledgeBase) manda; si la base de conocimientos (Intelica.knowledgeBase) no lo
+  muestra, Figma orienta qué helpers `.u-*` usar en el `example.html` de una variante ya decidida (3.5).
 
 ### 1.6 Dependencias entre componentes `int-*`
 
@@ -285,37 +339,48 @@ Decide y muestra, sin pedir confirmación salvo lo indicado en 2.2:
 2. **Funcionalidades**: cada fila del inventario → implementada / descartada (con motivo).
 3. **Dependencias eliminadas** y su reemplazo (p. ej. `TimesCircleIcon` → `pi pi-times-circle`;
    `DomHandler` → API del DOM; `ConnectedOverlay` → `@angular/cdk/overlay`).
-4. **Variantes** (2.4) y **módulos de estilo** (3.3).
-5. **Validaciones** que se ejecutarán (fase 4).
+4. **Variantes** (2.4) con su origen (PrimeNG / base de conocimientos (Intelica.knowledgeBase)) y **módulos de estilo** (3.3).
+5. **Animaciones** (3.6): cada efecto con su token de duración/curva, y si lleva ripple.
+6. **Teclado** (3.7): resumen de la tabla de teclas y el modelo de foco (activedescendant / roving / trap).
+7. **Validaciones** que se ejecutarán (fase 4).
 
 ### 2.2 Lo único que se pregunta
 
 - **Componente destino** y **link de Figma opcional** (1.1): siempre, al inicio.
 - **Archivos customizados** (1.2): completar solo la plantilla, forzar o cancelar.
-- Un token sin equivalente en el Style Guide (3.3), también para un valor de Figma.
-- Variantes o estados de Figma que PrimeNG no tiene (1.5): ¿extensión `int-*` o se omiten?
-- Formatos del frame de Figma (1.5, ❓ de la tabla de clasificación): ¿variante de composición,
-  modificador o componente aparte?
+- Un token sin equivalente en el Style Guide (3.3).
+- Un caso `.pr` de la base de conocimientos (Intelica.knowledgeBase) que necesita un input o comportamiento que PrimeNG v20 no tiene (1.3b):
+  ¿extensión `int-*` o se omite?
+
+Lo que solo aparece en Figma **no** se pregunta: se reporta en "Solo en Figma".
 - Dependencia ambigua (1.6): p. ej. checkbox → ¿`input` o un componente propio?
-- Una decisión de diseño que el proyecto no resuelve (p. ej. el Style Guide define un componente
-  equivalente con un aspecto distinto al de PrimeNG: ¿manda PrimeNG o el Style Guide?).
+- Una decisión que el orden de prioridad no resuelve (p. ej. dos casos de la base de conocimientos (Intelica.knowledgeBase) que se contradicen).
 
 Todo lo demás (nombres, variantes, tokens, módulos) se resuelve inspeccionando. No preguntes por cada variante.
 
 ### 2.4 Variantes de documentación
 
-Una variante = una **sección de documentación** que demuestra una característica real de la API.
-Toma como guía las secciones de la documentación oficial de PrimeNG v20 para ese componente (Basic,
-Icon, Image, Template, Disabled, Sizes, Severity, Forms, Accessibility…), pero **solo** las que
-correspondan a inputs/outputs/templates del inventario.
+Una variante = una **sección de documentación** que demuestra una característica real de la API o un
+caso de uso del proyecto. Dos orígenes, y solo esos:
+
+1. **Base de conocimientos (Intelica.knowledgeBase)** (1.3b): cada modificador `.pr<Nombre>--*`, cada caso con título propio
+   ("Variante Export") y cada **vista alternativa** con otro contenido en los templates. Su
+   `example.html` parte de la maqueta HTML de la base de conocimientos (Intelica.knowledgeBase), traducida (references/knowledge-base.md, sección 2),
+   con el contenido de los templates en helpers `.u-*` (3.5).
+2. **PrimeNG v20**: las secciones de su documentación oficial (Basic, Icon, Image, Template, Disabled,
+   Sizes, Severity, Forms, Accessibility…), pero **solo** las que correspondan a inputs/outputs/templates
+   del inventario.
+
+Figma no crea variantes: solo sirve para revisar cómo se ven las que salen de 1 y 2.
 
 - `basic` siempre (ya existe: la crea `crear-componente`).
 - Una carpeta por característica: `icon`, `image`, `removable`, `template`, `disabled`, `severity`,
   `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG.
+- Casos de la base de conocimientos (Intelica.knowledgeBase): slug del modificador o del título (`minimal`, `export`), título como en la base de conocimientos (Intelica.knowledgeBase).
 - `combinations` solo si revela algo que las otras no (interacción entre atributos, conflictos de estilo).
-- Con Figma: cada **eje** implementado tiene su variante (`sizes`, `disabled`, `severity`…) mostrando
-  todos sus valores, y cada **formato** aceptado como composición la suya (`group`, `chart`…).
-- Nunca carpetas para atributos que no existen en PrimeNG v20 ni para extensiones propias sin marcarlas.
+- `accessibility` si PrimeNG la documenta: describe teclas y ARIA de la tabla de teclado (3.7).
+- Nunca carpetas para atributos que no existen en PrimeNG v20 ni en la base de conocimientos (Intelica.knowledgeBase), ni para extensiones propias
+  sin marcarlas.
 - Variantes existentes (vienen del Excel/Figma): **no se borran ni renombran**. Si están en plantilla
   y corresponden a una característica, se completan; si están customizadas, se aplica 1.2 (no se
   tocan salvo que se fuerce). Las que falten se crean.
@@ -330,8 +395,9 @@ npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué obs
 componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
 se escribe **en español**. Los títulos siguen como en PrimeNG.
 
-Con 3 o más variantes, aplica `ordenar-variantes` siguiendo el orden de la documentación de PrimeNG
-(`npm run order:variants -- <id> basic icon image …`), sin preguntar posición.
+Con 3 o más variantes, aplica `ordenar-variantes` siguiendo el orden de la documentación de PrimeNG y
+después los casos de la base de conocimientos (Intelica.knowledgeBase, `npm run order:variants -- <id> basic icon image … minimal export`), sin
+preguntar posición.
 
 ---
 
@@ -397,7 +463,10 @@ Reglas:
   Guide. Nunca `primeng/icons`. Si PrimeNG pinta un SVG propio sin equivalente, copiar el `path` en línea.
 - Overlays, foco atrapado, posiciones, listas virtuales: `@angular/cdk` (ya instalado) en vez de
   reimplementar o importar utilidades de PrimeNG. Cada uso de CDK se justifica en un comentario.
-- Animaciones: transiciones CSS o `animate.enter` / `animate.leave` (Angular 20.2+) antes que `@angular/animations`.
+- Animaciones: `animate.enter` / `animate.leave` (Angular 20.2+) y transiciones CSS, nunca
+  `@angular/animations`; ripple con input `ripple` (extensión) solo si PrimeNG usa `pRipple` (3.6).
+- Teclado y foco: mismos handlers que PrimeNG en `host`/plantilla, foco con `FocusMonitor` o
+  `focus()` dentro de `afterNextRender`, `cdkTrapFocus` en modales (3.7).
 - Limpieza: `DestroyRef` / `takeUntilDestroyed` para listeners o suscripciones manuales; `host`
   listeners en vez de `addEventListener` cuando se pueda.
 - Prohibido: imports de `primeng/*` o `@primeuix/*`, `any`, `as unknown as`, propiedades públicas sin
@@ -416,8 +485,8 @@ Reglas:
 - Control flow moderno (`@if`, `@for` con `track` estable —id/valor, no `$index` si hay id—, `@switch`).
   Sin `*ngIf`/`ngClass`.
 - Sin llamadas costosas en la plantilla: solo signals y `computed`.
-- ARIA y teclado **iguales** a PrimeNG (roles, `aria-*`, `tabindex`, teclas en `onKeydown`). No añadir
-  roles sin implementar su comportamiento. Si PrimeNG pone `role`/`tabindex` en un `<span>`, conservar
+- ARIA y teclado **iguales** a PrimeNG (roles, `aria-*`, `tabindex`, teclas en `onKeydown`; detalle en
+  3.7). No añadir roles sin implementar su comportamiento. Si PrimeNG pone `role`/`tabindex` en un `<span>`, conservar
   el comportamiento; si un elemento nativo (`<button>`) lo cubre mejor, se puede usar como extensión
   documentada sin cambiar la API.
 - Comentarios HTML en bloques: estructura principal, secciones condicionales, `@for`, ARIA no evidente.
@@ -439,19 +508,27 @@ Reglas:
     > --int-chip-gap: var(--i-spacing-gap-sm);              // Aura: 0.5rem
     > --int-chip-padding-x: var(--i-spacing-container-lg);  // Aura: 0.75rem
     > ```
+    - **Qué token**: el que indica la base de conocimientos (Intelica.knowledgeBase) para el caso `.pr` (o, si la base de conocimientos (Intelica.knowledgeBase) no lo dice, el que usa el SCSS
+      `.pr*` del Style Guide); solo sin ninguno de los dos, el equivalente del valor de Aura.
     - Sin literales (`#hex`, `rgb()`, `px`, `rem`, `0.6`, `0.2s`) ni valores de Aura en los `--int-*`.
-      El comentario `// Aura: <valor>` solo documenta el original de PrimeNG (con Figma:
-      `// Figma: <valor> (<variable>) · Aura: <valor>`, ver references/figma.md).
+      Comentario de origen: `// knowledgeBase: <token> · Aura: <valor>` (o `// SG: …` si sale del SCSS; con Figma
+      se agrega `· Figma: <valor> (<variable>)`, ver references/figma.md).
     - Si el valor de Aura no existe exacto en el Style Guide, se usa el `--i-*` **más cercano** de su
       escala y la diferencia va al informe ("Diferencias"). Si no hay ninguno de esa categoría, no se
       inventa: se pregunta al usuario (2.2) qué token usar o si se crea en el Style Guide.
     - Únicas excepciones, porque no son tokens de diseño: `0`, `50%` (círculo), `currentColor`,
-      `inherit`, `transparent` y `calc()` sobre otros `--int-*`/`--i-*`.
+      `inherit`, `transparent` y `calc()` sobre otros `--int-*`/`--i-*`. En `@keyframes` y estados
+      iniciales de animación, además, `opacity` 0/1 y `scale()` (3.6), siempre fuera de los `--int-*`.
     - Ver la traducción en el mapa (sección 3). Así se personaliza por variables CSS sin una segunda
       arquitectura de tokens: el `--int-*` es el punto de ajuste del componente y el `--i-*` la fuente.
   - **BLOCK / ELEMENTS**: las reglas de `@primeuix/styles` traducidas a BEM (`&__label`), usando solo
     `var(--int-<id>-…)`. Mantener propiedades lógicas (`padding-inline`, `margin-inline-start`) como PrimeNG.
-  - Estados (`:hover`, `:focus-visible`, `:disabled`, `[aria-disabled]`) en el módulo base.
+  - Estados (`:hover`, `:focus-visible`, `:disabled`, `[aria-disabled]`) en el módulo base. El foco
+    visible con `:focus-visible` y tokens `--i-control-outline-*` (3.7).
+  - Animaciones (`--enter`/`--leave`, `@keyframes int-<id>-*`, ink del ripple) y el bloque
+    `@media (prefers-reduced-motion: reduce)` en el módulo base (3.6).
+  - Modificadores de la base de conocimientos (Intelica.knowledgeBase, `.pr<Nombre>--minimal` → `.int-<id>--minimal`): un módulo por grupo, igual
+    que los de PrimeNG.
   - **SKELETON** `.sk-<id>`: forma básica (mismas dimensiones, fondo neutro) o vacío si no aplica.
 - `_<id>.<grupo>.scss` (uno por **grupo** de modificadores reales: `severity`, `size`, `removable`…):
   solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. También un grupo por
@@ -485,8 +562,9 @@ cabecera). Completar:
 Además de los tokens, cuando hay que **maquetar contenido dentro de los templates** del componente
 replicado (`<ng-template #item>`, `#header`, `#footer`, `#empty`…, o lo proyectado con `<ng-content>`:
 cuerpo de un dialog, de una card), ese contenido se escribe con las **clases helper `.u-*` del
-Style Guide** (`utilities/_helpers.scss`) para acercarse al diseño de Figma. Detalle, catálogo y tabla
-de traducción en [references/helpers.md](references/helpers.md).
+Style Guide** (`utilities/_helpers.scss`) para reproducir la maqueta de la base de conocimientos (Intelica.knowledgeBase, y, donde la base de conocimientos (Intelica.knowledgeBase) no la
+muestra, acercarse a Figma). Detalle, catálogo y tabla de traducción en
+[references/helpers.md](references/helpers.md).
 
 - Aplica al `example.html` de las variantes (marcado del consumidor). La **base** y su SCSS siguen con
   BEM + `--int-*` → `--i-*`: nunca helpers en `base/<id>.html`.
@@ -514,6 +592,42 @@ de traducción en [references/helpers.md](references/helpers.md).
   inline, SCSS en la carpeta de la variante, clases de PrimeFlex/Tailwind (de la demo de PrimeNG o de
   `get_design_context`) ni clases `u-*` inventadas.
 
+### 3.6 Animaciones y transiciones
+
+Se replica **cada** efecto que PrimeNG tiene (inventario, fila "Animación"); detalle en
+[references/interaccion.md](references/interaccion.md) sección 1.
+
+- **Overlays y desplegables** (select, multiselect, autocomplete, datepicker, popover, menús): fade +
+  `scaleY` al entrar y fade al salir, como `.p-connected-overlay-*`.
+- **Modales** (dialog, confirmdialog, drawer): fade + escala del panel y fundido de la máscara.
+- **Contenido plegable** (accordion, panel, panelmenu): transición de altura como `.p-toggleable-content-*`.
+- **Mensajes** (toast, message, tooltip): fade de entrada y salida.
+- **Ripple, cuando es compatible** (la plantilla de PrimeNG usa `pRipple`): ink propio del componente,
+  input `ripple` (`int-* extension`, default `true`), solo con puntero y sin deshabilitar.
+- Cómo: `animate.enter`/`animate.leave` + clases `--enter`/`--leave`; `transition` con propiedades
+  concretas; duración y curva **siempre** por token (`--int-<id>-*-duration: var(--i-motion-duration-*)`,
+  `--int-<id>-*-easing: var(--i-motion-ease-*)`).
+- Siempre `@media (prefers-reduced-motion: reduce)` que anula duraciones y el ripple.
+- Si con CDK overlay la salida no se ve, estado `closing` y cierre en `animationend` (interaccion.md 1.2).
+
+### 3.7 Accesibilidad por teclado
+
+Todo lo que PrimeNG permite con teclado se permite igual; detalle en
+[references/interaccion.md](references/interaccion.md) sección 2.
+
+- Tabla de teclado (elemento · tecla · acción · foco después) en el chat junto al inventario, sacada
+  línea a línea de los handlers de PrimeNG; cada fila se implementa con la misma condición y el mismo
+  `preventDefault`.
+- **`tabindex`**: un tab stop por widget compuesto; `aria-activedescendant` o *roving tabindex* según
+  lo use PrimeNG; `-1` (o `disabled` nativo) + `aria-disabled` cuando está deshabilitado.
+- **Foco**: vuelve al trigger al cerrar un overlay; modales con `cdkTrapFocus`, foco inicial como
+  PrimeNG y restaurado al cerrar; `Escape` cierra donde PrimeNG lo hace; la opción activa se mantiene
+  visible (`scrollIntoView({ block: 'nearest' })`).
+- **Foco visible**: `:focus-visible` con `--i-control-outline-*`; nunca `outline: none` sin reemplazo.
+- **ARIA ligada al teclado** (`aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`,
+  `aria-live`…) e inputs `ariaLabel`/`ariaLabelledBy` con los mismos nombres que PrimeNG.
+- Búsqueda por tecleo (*typeahead*) si PrimeNG la tiene, con el mismo intervalo.
+
 ---
 
 ## 4. Fase 4 · Validación
@@ -521,29 +635,24 @@ de traducción en [references/helpers.md](references/helpers.md).
 Ejecuta y reporta el resultado real (si algo no se pudo ejecutar, di cuál y por qué):
 
 ```bash
+npm run check:component -- <id> --version <N>          # convenciones del repo: 0 errores (ver abajo)
 npm run build                                          # docs + TS estricto + plantillas + SCSS + budgets
 npm test -- --watch=false --browsers=ChromeHeadless    # incluye component-catalog.spec.ts
 ```
 
-Comprobaciones con grep sobre `src/components/<id>/` (todas deben salir vacías):
+`check:component` ([scripts/check-component.mjs](../../../scripts/check-component.mjs)) revisa
+estructura y nombres, clase base (`Int<Id>`, `int-<id>`, `status`/`designer`), imports prohibidos
+(PrimeNG, `@angular/animations`, `core/`…), `any`, clases `p-*` / `.pr*` / `.pt*` / `.ly*` / `.gr*` /
+`row`/`col-*`, `::ng-deep`, `--doc-*`, helpers `u-*` en la base o inexistentes en el Style Guide,
+`style` inline en variantes, `--int-*` sin `var(--i-*)` o con `--i-*` inexistente, comentario de
+origen de cada token, `transition: all`, duraciones literales, `outline: none` sin `:focus-visible`,
+`prefers-reduced-motion` y los marcadores `dep:` contra `requires`/`uses`. Los ❌ se corrigen; cada ⚠️
+que quede se explica en el informe.
+
+Lo que el script no cubre, con grep (debe salir vacío):
 
 ```bash
-grep -rnE "from ['\"](primeng|@primeuix)" src/components/<id>/
-grep -rnE "class=\"([^\"]* )?p-[a-z]|selector: '(\[)?p-|^\s*\.p-[a-z]|<p-[a-z]" src/components/<id>/
-grep -rnE "::ng-deep|--doc-|\.doc-|: any\b|as unknown as" src/components/<id>/
-grep -rnE "^\s*--int-[a-z0-9-]+:" src/components/<id>/ | grep -v "var(--i-"   # --int-* sin --i-*: solo excepciones de 3.3
-grep -rnE "class=\"([^\"]* )?(icon|label|active|disabled|container|selected)( |\")" src/components/<id>/
-grep -rnE "style=\"|\[style\.|class=\"([^\"]* )?(flex|gap-[0-9]|items-|justify-|text-(sm|xs|lg)|p-[0-9]|m-[0-9])( |\")" src/components/<id>/version-*/variants/   # contenido sin helpers (3.5)
-grep -rnE "\bu-[a-zA-Z0-9-]+" src/components/<id>/version-*/base/   # helpers en la base: prohibido (3.5)
-grep -rnE "\.?\b(pr|pt|ly|gr)[A-Z][a-zA-Z]*|class=\"([^\"]* )?(row|col(-[a-z0-9]+)*)( |\")" src/components/<id>/   # clases del Style Guide que no son u-* (3.5)
-```
-
-Cada clase `u-*` usada en las variantes debe existir en el Style Guide (no debe imprimir nada):
-
-```bash
-grep -rhoE "\bu-[a-zA-Z0-9-]+" src/components/<id>/version-*/variants/ | sort -u | while read c; do
-  grep -qE "\.$c\b" C:/christian/repos/Intelica.Style.Guide.New/IntelicaStyleGuide/src/assets/css/utilities/_helpers.scss || echo "no existe: $c"
-done
+grep -rnE "pRipple|class=\"([^\"]* )?(flex|gap-[0-9]|items-|justify-|text-(sm|xs|lg)|p-[0-9]|m-[0-9])( |\")" src/components/<id>/   # ripple de PrimeNG o PrimeFlex/Tailwind (3.5)
 ```
 
 Dependencias (1.6), no deben salir vacías sino coincidir con lo reportado:
@@ -559,14 +668,19 @@ Revisión manual (lista corta, en el informe):
 - Cada variante usa solo la API pública de `Int<Id>` y su descripción coincide con lo que muestra.
 - Plantilla sin cálculos: solo signals/`computed`; `@for` con `track` estable.
 - Sin estado duplicado; `effect()` solo con efectos externos.
-- Teclado y ARIA como en PrimeNG (repasar `onKeydown` original línea a línea).
+- Teclado y ARIA como en PrimeNG (repasar `onKeydown` original línea a línea): en el navegador, cada
+  fila de la tabla de teclado (Tab, Shift+Tab, Enter, Space, Escape, flechas, Home/End, tecleo) y el
+  anillo de foco visible solo con teclado.
+- Animaciones: entrada y salida visibles en overlays/modales, ripple al pulsar (si aplica) y nada
+  animado con movimiento reducido activo (DevTools → Rendering → `prefers-reduced-motion`).
+- Cada caso `.pr` de la tabla de la base de conocimientos (Intelica.knowledgeBase, 1.3b) terminó en un token, un módulo o una variante.
 - Visual: `npm start` → `http://localhost:4321/components/<id>`; para comparar con PrimeNG, montar
   temporalmente el `p-<nombre>` en una variante **sin guardarlo** o comparar con la demo oficial. Los
   tokens `--i-*` solo existen con el Style Guide levantado (`localhost:8080`); sin él el componente queda
   sin tokens. Si no se puede abrir un navegador, decirlo: no afirmar fidelidad visual sin verla.
 - Con Figma: comparar el resultado con el `get_screenshot` del nodo (estructura, medidas, colores,
-  estados) y revisar que cada fila de la tabla visual (1.5) terminó en un `--int-*` → `--i-*` y cada
-  fila de la tabla de contenido en un helper `.u-*` (3.5).
+  estados) y marcar en la tabla visual (1.5) qué coincide y qué difiere; las diferencias se reportan,
+  no se corrigen contra la base de conocimientos (Intelica.knowledgeBase).
 
 Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arreglar" otras partes.
 
@@ -582,10 +696,15 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué; y **componentes
    `int-*` requeridos y opcionales** (1.6, `requires` / `uses`): estado, diseñador a cargo, real o
    provisional, y "cuando esté done: `/resolver-dependencias <dep>`".
-5b. Con Figma: tabla de ejes y formatos con lo decidido; formatos que quedaron como componente aparte.
-6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente)
-   y, con Figma, diferencias con el diseño (valores aproximados a un token o a un helper `.u-*`, lo que
-   Figma no mostraba).
+5a. Base de conocimientos (Intelica.knowledgeBase): fuente usada (MCP o repo local), archivo leído y tabla de casos `.pr` →
+   destino; casos omitidos y por qué; "sin caso `.pr` en la base de conocimientos (Intelica.knowledgeBase)" si no había archivo.
+5b. Con Figma: tabla de ejes y formatos cruzada con PrimeNG o base de conocimientos (Intelica.knowledgeBase) y la lista **"Solo en Figma"** (lo que
+   no se implementó por no estar en PrimeNG ni en la base de conocimientos (Intelica.knowledgeBase)).
+5c. Animaciones (efecto · origen en PrimeNG · tokens · ripple sí/no) y tabla de teclado con el
+   resultado de probar cada fila.
+6. Diferencias con PrimeNG v20 (fuera de alcance de 1.4, extensiones `int-*`, tokens sin equivalente),
+   entre base de conocimientos (Intelica.knowledgeBase) y Style Guide, y **diferencias con Figma** (valores donde Figma difiere de la base de conocimientos (Intelica.knowledgeBase) o Style Guide,
+   lo que Figma no mostraba).
 7. Validaciones ejecutadas con su resultado real.
 8. Limitaciones conocidas y mejoras futuras.
 9. Sugerencia: marcar el estado con `/cambiar-estado <id> in-progress|done`.
@@ -599,7 +718,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   `/crear-componente` y se para).
 - ❌ Alterar o sobrescribir un archivo customizado sin que el usuario elija **forzar** (1.2).
 - ❌ Cambiar cabecera, `status` o `designer`, aun forzando (salvo agregar la línea `figma:`, 1.5).
-- ❌ Omitir el comentario `// Figma: …` de un token que viene de Figma: sin él no se puede actualizar.
+- ❌ Omitir el comentario de origen (`// knowledgeBase: … · Figma: … · Aura: …`) de un token: sin él no se puede
+  actualizar ni auditar.
 - ❌ Borrar o renombrar variantes existentes que vienen del Excel/Figma.
 - ❌ Inventar inputs, outputs o variantes como si fueran de PrimeNG; las extensiones se marcan.
 - ❌ Crear archivos a mano que tienen script (`new:variant`, `new:version`) o editar `src/generated/`.
@@ -610,10 +730,19 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   `0.2s`) en lugar de `var(--i-*)` del Style Guide.
 - ❌ Cambiar `status` o `designer` existentes, tocar `app.routes.ts` o configuraciones globales.
 - ❌ Afirmar que build, tests o la fidelidad visual están bien sin haberlos ejecutado/visto.
+- ❌ Terminar con `npm run check:component -- <id>` en rojo.
 - ❌ Copiar valores de Figma como literales (`#hex`, `px`) o el código que genera `get_design_context`
   (React/Tailwind): es referencia; se escribe en Angular + BEM + `--int-*` → `--i-*`.
-- ❌ Cambiar la API o el comportamiento de PrimeNG porque Figma muestra otra cosa: Figma manda en lo
-  visual, PrimeNG en el comportamiento.
+- ❌ Cambiar la API o el comportamiento de PrimeNG porque la base de conocimientos (Intelica.knowledgeBase) o Figma muestran otra cosa.
+- ❌ Tomar Figma como fuente de verdad: crear variantes o casos de uso desde Figma, o cambiar un valor
+  de la base de conocimientos (Intelica.knowledgeBase) o Style Guide porque Figma lo dibuja distinto (se reporta).
+- ❌ Usar de la base de conocimientos (Intelica.knowledgeBase) casos `.pt*`, `.ly*`, `.gr*` u otros archivos que no sean `components/<nombre>.md`,
+  o aplicar en el código las clases `.pr*` en vez de traducirlas a BEM `int-*`.
+- ❌ Saltarse animaciones o el ripple que PrimeNG tiene, usar `@angular/animations`, duraciones
+  literales u omitir `prefers-reduced-motion`.
+- ❌ Agregar ripple a un componente cuya plantilla de PrimeNG no usa `pRipple`.
+- ❌ Dejar sin teclado algo que PrimeNG maneja con teclado, más de un tab stop por widget compuesto,
+  `outline: none` sin foco visible alternativo o perder el foco al cerrar un overlay/modal.
 - ❌ Leer solo el nodo del link de Figma: se recorre su frame padre (ejes y formatos).
 - ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
   `dep:<id> provisional` y se declara en `requires` (base) o `uses` (solo variantes).

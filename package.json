@@ -8,6 +8,7 @@
     "new:variant": "node scripts/new-variant.mjs",
     "new:version": "node scripts/new-version.mjs",
     "set:status": "node scripts/set-status.mjs",
+    "check:component": "node scripts/check-component.mjs",
     "order:variants": "node scripts/order-variants.mjs",
     "remove": "node scripts/remove.mjs",
     "rename": "node scripts/rename.mjs",

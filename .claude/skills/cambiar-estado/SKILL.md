@@ -78,6 +78,15 @@ El script:
 
 No edites el archivo a mano desde la IA: usa el script (el maquetador sí puede editar la línea a mano).
 
+**Antes de marcar `done`**, corre `npm run check:component -- <id> --version <N>`. Un componente
+terminado debe ser estándar: lo van a usar otros (`/resolver-dependencias`) y se va a sincronizar
+(`/sincronizar-componente`). Si da errores (❌), no cambies el estado y responde:
+
+> **<nombre>** todavía no cumple las bases del repo (<n> errores de `check:component`). Si se hizo fuera
+> del repo, estandarízalo primero con `/estandarizar-componente <id>`. ¿Lo marco `done` igual?
+
+Solo con un "sí" explícito se marca igual, y se menciona en la respuesta. Los avisos (⚠️) no bloquean.
+
 **Al marcar `done`**: busca quién lo requiere y si le dejó provisionales, y avísalo en la respuesta:
 
 ```bash

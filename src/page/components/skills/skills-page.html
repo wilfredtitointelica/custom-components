@@ -3,7 +3,8 @@
 	<h1 class="doc-skill-title">Guía de uso</h1>
 	<p class="doc-skill-description">
 		Cómo crear un componente, una variante o una versión nueva, cambiar su estado, ordenar las variantes, renombrar, ocultar y eliminar, con la IA (Claude Code) y las skills del proyecto. Las skills
-		generan solo la estructura: los estilos, el marcado y la lógica los escribe el maquetador. La excepción es Replicar de PrimeNG, que implementa el componente completo.
+		generan solo la estructura: los estilos, el marcado y la lógica los escribe el maquetador. Las excepciones son Replicar de PrimeNG, que implementa el componente completo, y Estandarizar un componente, que alinea
+			lo que un maquetador hizo fuera del repo.
 	</p>
 	<nav class="doc-skill-toc" aria-label="Contenido de la guía">
 		@for (section of sections; track section.id) {
@@ -82,6 +83,157 @@
 			(http://localhost:4321); las carpetas nuevas aparecen solas en el menú.
 		</li>
 	</ul>
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-cheatsheet" [class.doc-is-active]="nav.fragment() === 'skill-cheatsheet'" aria-labelledby="skill-cheatsheet-title">
+	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
+		<a [routerLink]="path" fragment="skill-cheatsheet">
+			Resumen rápido
+			<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+		</a>
+	</h2>
+	<p>
+		Si prefieres no usar la IA, cada skill tiene un script de
+		<code>npm</code>
+		equivalente (salvo crear el componente).
+	</p>
+
+	<div class="doc-skill-table-wrap">
+		<table class="doc-skill-table">
+			<thead>
+				<tr>
+					<th scope="col">Quiero…</th>
+					<th scope="col">Skill</th>
+					<th scope="col">Script</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Un componente nuevo</td>
+					<td><code>/crear-componente</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Un ejemplo en un componente existente</td>
+					<td><code>/crear-variante</code></td>
+					<td><code>npm run new:variant -- &lt;id&gt; "&lt;Título&gt;" --description "…"</code></td>
+				</tr>
+				<tr>
+					<td>Cambiar la implementación sin romper la actual</td>
+					<td><code>/crear-version</code></td>
+					<td><code>npm run new:version -- &lt;id&gt; [--title "…"] [--description "…"]</code></td>
+				</tr>
+				<tr>
+					<td>Ocultar sin borrar (componente, variante o versión)</td>
+					<td><code>/ocultar</code></td>
+					<td><code>npm run visibility -- hide component|variant|version &lt;id&gt; [&lt;slug&gt;|&lt;N&gt;]</code></td>
+				</tr>
+				<tr>
+					<td>Volver a mostrar lo oculto</td>
+					<td><code>/reactivar</code></td>
+					<td>
+						<code>npm run visibility -- list</code>
+						·
+						<code>show component|variant|version …</code>
+					</td>
+				</tr>
+				<tr>
+					<td>Cambiar el orden de las variantes</td>
+					<td><code>/ordenar-variantes</code></td>
+					<td><code>npm run order:variants -- &lt;id&gt; [&lt;slug&gt; …]</code></td>
+				</tr>
+				<tr>
+					<td>Cambiar título o descripción</td>
+					<td colspan="2">
+						Editar la cabecera del HTML (
+						<code>base/&lt;id&gt;.html</code>
+						o
+						<code>example.html</code>
+						)
+					</td>
+				</tr>
+				<tr>
+					<td>Renombrar un componente (cambia la URL)</td>
+					<td><code>/renombrar-componente</code></td>
+					<td><code>npm run rename -- component &lt;id&gt; &lt;nuevo-id&gt; [--title "…"] --yes</code></td>
+				</tr>
+				<tr>
+					<td>Renombrar una variante (cambia la URL)</td>
+					<td><code>/renombrar-variante</code></td>
+					<td><code>npm run rename -- variant &lt;id&gt; &lt;slug&gt; "&lt;Nuevo título&gt;" --yes</code></td>
+				</tr>
+				<tr>
+					<td>Eliminar una variante</td>
+					<td><code>/eliminar-variante</code></td>
+					<td><code>npm run remove -- variant &lt;id&gt; &lt;slug&gt; [--version &lt;N&gt; | --all] --yes</code></td>
+				</tr>
+				<tr>
+					<td>Eliminar una versión</td>
+					<td><code>/eliminar-version</code></td>
+					<td><code>npm run remove -- version &lt;id&gt; &lt;N&gt; --yes</code></td>
+				</tr>
+				<tr>
+					<td>Eliminar un componente</td>
+					<td><code>/eliminar-componente</code></td>
+					<td><code>npm run remove -- component &lt;id&gt; --yes</code></td>
+				</tr>
+				<tr>
+					<td>Cambiar el estado (pending · in-progress · done)</td>
+					<td><code>/cambiar-estado</code></td>
+					<td><code>npm run set:status -- &lt;id&gt; &lt;estado&gt; [--version &lt;N&gt;]</code></td>
+				</tr>
+				<tr>
+					<td>Un componente igual a uno de PrimeNG v20</td>
+					<td><code>/replicar-primeng</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Alinear un componente que un maquetador hizo fuera del repo</td>
+					<td><code>/estandarizar-componente</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Comprobar que un componente cumple las bases</td>
+					<td>—</td>
+					<td><code>npm run check:component -- &lt;id&gt; [--version &lt;N&gt;] | --all</code></td>
+				</tr>
+				<tr>
+					<td>Verificar o actualizar un componente cuando cambia su Figma</td>
+					<td><code>/sincronizar-componente</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Cambiar un provisional por el componente real cuando este se termina</td>
+					<td><code>/resolver-dependencias</code></td>
+					<td>—</td>
+				</tr>
+				<tr>
+					<td>Verificar</td>
+					<td colspan="2">
+						<code>npm start</code>
+						·
+						<code>npm run check:component -- &lt;id&gt;</code>
+						·
+						<code>npm run build</code>
+						·
+						<code>npm test</code>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<p class="doc-skill-note">
+		<i class="pi pi-book" aria-hidden="true"></i>
+		Referencia completa:
+		<a routerLink="/components/demo">Demo</a>
+		y
+		<code>.claude/skills/crear-componente/SKILL.md</code>
+		.
+	</p>
 </section>
 
 <hr class="doc-skill-divider" />
@@ -553,7 +705,7 @@ export default &#123;
 		</article>
 		<article class="doc-skill-card">
 			<h3>Antes de confirmar</h3>
-			<p>Te muestra todo lo que va a cambiar. El enlace viejo deja de funcionar y, en un componente, también cambian el selector y las clases: los proyectos que ya lo usen tendrán que actualizarse.</p>
+			<p>Te muestra todo lo que va a cambiar. El enlace viejo deja de funcionar y, en un componente, también cambian el selector y las clases: los proyectos que ya lo usen tendrán que actualizarse. Si otros componentes lo requieren o lo usan, también actualiza sus <code>requires</code>/<code>uses</code> y sus marcadores <code>dep:</code>.</p>
 		</article>
 	</div>
 </section>
@@ -655,10 +807,657 @@ export default &#123;
 				<code>/reactivar</code>
 				(ver
 				<a [routerLink]="path" fragment="skill-visibility">Ocultar y reactivar</a>
-				). Borrar del todo solo se recupera con git, si estaba commiteado.
+				). Borrar del todo solo se recupera con git, si estaba commiteado. Si otro componente lo requiere o lo usa, <code>/eliminar-componente</code> te avisa y recomienda ocultarlo.
 			</p>
 		</article>
 	</div>
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Replicar de PrimeNG ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-replicate" [class.doc-is-active]="nav.fragment() === 'skill-replicate'" aria-labelledby="skill-replicate-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-replicate-title">
+			<a [routerLink]="path" fragment="skill-replicate">
+				Replicar de PrimeNG
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/replicar-primeng</code>
+		</span>
+	</div>
+	<p>
+		Copia un componente de
+		<strong>PrimeNG v20</strong>
+		(estructura, estilos, API, teclado y ARIA) como un
+		<code>int-*</code>
+		propio que no importa nada de PrimeNG. Es la skill que
+		<strong>sí escribe</strong>
+		estilos, marcado y lógica: lee el código real en
+		<code>node_modules</code>
+		, toma los estilos y variantes de los casos
+		<code>.pr*</code>
+		de la base de conocimientos (<code>Intelica.knowledgeBase</code>), los traduce a tokens
+		<code>--i-*</code>
+		del Style Guide y agrega animaciones (ripple, fade de overlays) y navegación por teclado.
+	</p>
+
+	<h3 class="doc-skill-subtitle">¿Por dónde empiezo?</h3>
+	<p>
+		Un componente entra al repo por uno de dos caminos, nunca por los dos. Desde ahí queda
+		<strong>estándar</strong>
+		y lo mantienen las skills de Mantenimiento, que no funcionan sobre un componente sin estandarizar.
+	</p>
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<span class="doc-skill-card-icon"><i class="pi pi-sign-in" aria-hidden="true"></i></span>
+			<h3>1. Implementación</h3>
+			<p>Punto de partida: uno u otro.</p>
+			<ul class="doc-skill-list">
+				<li>
+					Se replica de PrimeNG <strong>desde cero</strong>, en un componente nuevo y limpio.
+					<br />
+					➜
+					<a [routerLink]="path" fragment="skill-replicate"><code>/replicar-primeng</code></a>
+				</li>
+				<li>
+					El componente se elaboró <strong>fuera de este repo</strong>.
+					<br />
+					➜
+					<a [routerLink]="path" fragment="skill-standardize"><code>/estandarizar-componente</code></a>
+				</li>
+			</ul>
+			<p class="doc-skill-card-legend">Resultado: un componente estándar.</p>
+		</article>
+		<article class="doc-skill-card">
+			<span class="doc-skill-card-icon"><i class="pi pi-sync" aria-hidden="true"></i></span>
+			<h3>2. Mantenimiento</h3>
+			<p>Requiere un componente estándar.</p>
+			<ul class="doc-skill-list">
+				<li>
+					Cambió el diseño.
+					<br />
+					➜
+					<a [routerLink]="path" fragment="skill-sync"><code>/sincronizar-componente</code></a>
+				</li>
+				<li>
+					Se terminó un componente que usa.
+					<br />
+					➜
+					<a [routerLink]="path" fragment="skill-dependencies"><code>/resolver-dependencias</code></a>
+				</li>
+			</ul>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Orden de prioridad de las fuentes</h3>
+	<div class="doc-skill-table-wrap">
+		<table class="doc-skill-table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Fuente</th>
+					<th scope="col">Qué define</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>
+						PrimeNG v20 (
+						<code>node_modules/primeng</code>
+						)
+					</td>
+					<td>API, estructura, comportamiento, teclado, ARIA y animaciones. Se lee, nunca se importa.</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>
+						Base de conocimientos (
+						<code>Intelica.knowledgeBase</code>
+						)
+					</td>
+					<td>
+						Solo los casos
+						<code>.pr*</code>
+						: estilos, variantes y casos de uso. Se ignoran
+						<code>.pt*</code>
+						,
+						<code>.ly*</code>
+						y
+						<code>.gr*</code>
+						.
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>
+						Style Guide (
+						<code>Intelica.Style.Guide.New</code>
+						)
+					</td>
+					<td>
+						CSS de las clases
+						<code>.pr*</code>
+						, tokens
+						<code>--i-*</code>
+						y helpers
+						<code>.u-*</code>
+						para los templates de las variantes.
+					</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Figma</td>
+					<td>Solo guía visual: no crea variantes ni cambia valores. Lo que solo está en Figma se reporta.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Siempre, en qué componente</strong>
+					replicar (sugiere uno, p. ej. p-chip → Pill). Si no existe, te pide crearlo antes con
+					<code>/crear-componente</code>
+					.
+				</li>
+				<li>
+					Si el componente ya tiene algo
+					<strong>customizado</strong>
+					: completar solo lo que está en plantilla,
+					<strong>forzar</strong>
+					(sobrescribir) o cancelar.
+				</li>
+			</ol>
+			<p>Sin forzar, nunca altera lo que ya escribiste. Cabecera, estado y diseñador se conservan siempre.</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/replicar-primeng p-chip</pre>
+			<pre class="doc-skill-prompt">Replica p-select de PrimeNG v20</pre>
+			<pre class="doc-skill-prompt">/replicar-primeng p-chip https://www.figma.com/design/…?node-id=12-345</pre>
+			<p class="doc-skill-card-legend">Con link de Figma: se usa como guía visual y para anotar la huella en cada token; los valores salen de la base de conocimientos (<code>Intelica.knowledgeBase</code>) y del Style&nbsp;Guide.</p>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Qué genera</h3>
+	<pre class="doc-skill-code">
+src/components/chip/version-1/
+├── base/chip.ts      inputs/outputs con los nombres de PrimeNG, signals, OnPush
+├── base/chip.html    misma estructura que p-chip con clases BEM .int-chip__*
+├── styles/           _index.scss + _chip.scss (tokens --int-chip-* → --i-*)
+└── variants/         basic, icon, image, removable, template, disabled</pre
+	>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		Al final informa qué se implementó, qué quedó fuera (PassThrough,
+		<code>unstyled</code>
+		…), las diferencias con PrimeNG, lo que solo está en Figma y el resultado de
+		<code>npm run check:component</code>
+		,
+		<code>npm run build</code>
+		y
+		<code>npm test</code>
+		. El estado queda en
+		<em>Pending</em>
+		hasta que lo cambies.
+	</p>
+
+	<h3 class="doc-skill-subtitle">De dónde salen los tokens</h3>
+	<p>
+		Los tokens (color, spacing, sizing, radios, tipografía, opacidad, motion, etc.) se consumen
+		<strong>siempre del repo Style Guide</strong>
+		(
+		<code>Intelica.Style.Guide.New</code>
+		), preferiblemente sus Primitives / Alias con escala (xs, sm, md…). El componente solo declara alias
+		<code>--int-chip-*: var(--i-*)</code>
+		y sus reglas leen esos alias. Si un valor de PrimeNG no tiene token equivalente, la skill usa el más cercano y lo informa, o te pregunta; nunca escribe un valor fijo.
+	</p>
+	<app-token-diagram />
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Estandarizar un componente ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-standardize" [class.doc-is-active]="nav.fragment() === 'skill-standardize'" aria-labelledby="skill-standardize-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-standardize-title">
+			<a [routerLink]="path" fragment="skill-standardize">
+				Estandarizar un componente
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/estandarizar-componente</code>
+		</span>
+	</div>
+	<p>
+		Para el componente que un maquetador replicó o customizó
+		<strong>en su local, con su propia IA</strong>
+		, y pegó sobre
+		<code>src/components/&lt;id&gt;/version-N/</code>
+		. Lo deja como si lo hubiera hecho
+		<code>/replicar-primeng</code>
+		: estructura, clase
+		<code>Int&lt;Id&gt;</code>
+		, API con los nombres de PrimeNG, BEM
+		<code>int-*</code>
+		, tokens con comentario de origen, animaciones, teclado y marcadores de dependencias. Sin esas huellas,
+		<code>/sincronizar-componente</code>
+		y
+		<code>/resolver-dependencias</code>
+		no pueden trabajar sobre el componente.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Componente</strong>
+					y versión; el link de Figma es opcional.
+				</li>
+				<li>
+					Si lo pegado no está commiteado, te pide un commit
+					<code>[Import] - &lt;id&gt; raw from &lt;maquetador&gt;</code>
+					antes de tocar nada: así queda el original para comparar.
+				</li>
+				<li>
+					Solo lo que ninguna fuente resuelve: una variante del maquetador que no está ni en la base de conocimientos (<code>Intelica.knowledgeBase</code>) ni en PrimeNG (conservar, ocultar o eliminar), un valor sin token o una dependencia
+					dudosa.
+				</li>
+			</ol>
+			<p>
+				Lo demás lo alinea con el orden de prioridad y lo reporta. Cabecera, estado y diseñador se conservan siempre. Si el trabajo envuelve PrimeNG (
+				<code>&lt;p-chip class="prChip"&gt;</code>
+				, imports de
+				<code>primeng</code>
+				), no se puede estandarizar: te avisa y lo rehace con
+				<code>/replicar-primeng</code>
+				usando lo del maquetador como referencia.
+			</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/estandarizar-componente chip</pre>
+			<pre class="doc-skill-prompt">Estandariza el select que subió Yony</pre>
+			<pre class="doc-skill-prompt">El maquetador pegó su tooltip, déjalo como replicar-primeng</pre>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Cómo funciona</h3>
+	<ol class="doc-skill-steps">
+		<li>
+			<p>
+				<strong>Diagnóstico</strong>
+				(sin escribir nada): corre
+				<code>npm run check:component</code>
+				, lee el código pegado, PrimeNG y el caso
+				<code>.pr</code>
+				de la base de conocimientos (<code>Intelica.knowledgeBase</code>).
+			</p>
+		</li>
+		<li>
+			<p>Te muestra el mapa de API (nombre del maquetador → nombre de PrimeNG) y la tabla de adaptación:</p>
+			<pre class="doc-skill-code">
+Conserva   lo que ya cumple
+Renombra   archivo, clase, selector, BEM o input con otro nombre que PrimeNG
+Alinea     difiere de PrimeNG o de la base de conocimientos (Intelica.knowledgeBase): gana la fuente y se anota
+Agrega     animaciones, ripple, teclado, marcadores dep:, comentarios de origen
+Quita      imports de PrimeNG, clases .pr*, valores fijos, mocks en la base</pre
+			>
+		</li>
+		<li>
+			<p>
+				<strong>Adapta</strong>
+				: mueve los archivos con
+				<code>git mv</code>
+				, convierte cada valor en un token y deja los provisionales marcados:
+			</p>
+			<pre class="doc-skill-code"><span class="doc-skill-code-muted">// antes (maquetador)</span>
+.chip &#123; gap: 4px; background: #eef2f6; &#125;
+
+<span class="doc-skill-code-muted">// después</span>
+--int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
+.int-chip &#123; gap: var(--int-chip-gap); &#125;</pre>
+		</li>
+		<li>
+			<p>
+				<strong>Valida</strong>
+				con
+				<code>npm run check:component</code>
+				(0 errores),
+				<code>npm run build</code>
+				y
+				<code>npm test</code>
+				, e informa los
+				<em>Cambios sobre el trabajo de &lt;maquetador&gt;</em>
+				con el porqué de cada uno, para devolvérselos.
+			</p>
+		</li>
+	</ol>
+
+	<h3 class="doc-skill-subtitle">Qué revisa</h3>
+	<p>
+		No tienes que ejecutar nada: la skill corre
+		<code>check:component</code>
+		por su cuenta al empezar y al terminar. El script revisa que un componente cumpla las bases: estructura, clase y selector, imports prohibidos, clases
+		<code>p-*</code>
+		/
+		<code>.pr*</code>
+		/ PrimeFlex, tokens que existan en el Style Guide, helpers
+		<code>.u-*</code>
+		, duraciones fijas,
+		<code>:focus-visible</code>
+		y marcadores
+		<code>dep:</code>
+		. Los errores ❌ los corrige la skill; los avisos ⚠️ te los reporta.
+	</p>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		Si trabajas con otra IA (Copilot, Cursor…), dale
+		<code>AGENTS.md</code>
+		de la raíz del repo: resume las reglas y así lo que subas llega casi alineado. Si quieres revisarlo por tu cuenta, el comando es
+		<code>npm run check:component -- &lt;id&gt;</code>
+		(o
+		<code>--all</code>
+		).
+	</p>
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Sincronizar un componente ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-sync" [class.doc-is-active]="nav.fragment() === 'skill-sync'" aria-labelledby="skill-sync-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-sync-title">
+			<a [routerLink]="path" fragment="skill-sync">
+				Sincronizar un componente
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/sincronizar-componente</code>
+		</span>
+	</div>
+	<p>
+		Cuando el diseño en Figma de un componente ya implementado cambia. Lee el link guardado en la cabecera de
+		<code>base/&lt;id&gt;.html</code>
+		(
+		<code>figma:</code>
+		), compara el diseño con los comentarios
+		<code>// Figma:</code>
+		de los tokens y te muestra qué cambió. También revisa si cambió el caso
+		<code>.pr</code>
+		en la base de conocimientos (<code>Intelica.knowledgeBase</code>). Solo aplica lo que apruebes, siempre con tokens
+		<code>--i-*</code>
+		del Style Guide.
+	</p>
+	<p>
+		Figma no es la fuente de verdad: si cambia un valor que viene de la base de conocimientos (<code>Intelica.knowledgeBase</code>,
+		<code>// knowledgeBase:</code>
+		) o del Style Guide (
+		<code>// SG:</code>
+		), el token no se toca; se reporta la diferencia para que el equipo actualice la base de conocimientos (<code>Intelica.knowledgeBase</code>). Tampoco crea variantes a partir de Figma.
+	</p>
+	<p class="doc-skill-note">
+		<i class="pi pi-lock" aria-hidden="true"></i>
+		Requiere un componente estándar, hecho con
+		<code>/replicar-primeng</code>
+		o
+		<code>/estandarizar-componente</code>
+		. Si lo hizo un maquetador fuera del repo, primero
+		<a [routerLink]="path" fragment="skill-standardize">Estandarizar un componente</a>
+		.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Componente</strong>
+					y versión; el link de Figma solo si no está guardado (sin link, sincroniza solo con la base de conocimientos).
+				</li>
+				<li>
+					Tras el informe:
+					<strong>aplicar</strong>
+					, decidir variantes o estados nuevos y, si tocaste algo a mano,
+					<strong>forzar</strong>
+					o dejarlo.
+				</li>
+			</ol>
+			<p>No cambia la API ni el comportamiento. Para un rediseño grande propone una versión nueva.</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/sincronizar-componente chip</pre>
+			<pre class="doc-skill-prompt">/sincronizar-componente chip --solo-verificar</pre>
+			<pre class="doc-skill-prompt">El figma de button cambió, actualízalo</pre>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Cómo detecta los cambios</h3>
+	<p>Cada token lleva un comentario con su origen y con lo que se vio en Figma la última vez:</p>
+	<pre class="doc-skill-code">--int-chip-gap: var(--i-spacing-gap-sm); <span class="doc-skill-code-muted">// knowledgeBase: … · Figma: … · Aura: …</span></pre>
+
+	<div class="doc-skill-table-wrap">
+		<table class="doc-skill-table">
+			<thead>
+				<tr>
+					<th scope="col">Parte</th>
+					<th scope="col">Ejemplo</th>
+					<th scope="col">Qué indica</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>knowledgeBase:</code></td>
+					<td><code>--i-spacing-gap-sm</code></td>
+					<td>
+						Origen del valor: la base de conocimientos (<code>Intelica.knowledgeBase</code>). Con
+						<code>SG:</code>
+						, el Style Guide.
+					</td>
+				</tr>
+				<tr>
+					<td><code>Figma:</code></td>
+					<td><code>8px (spacing/gap/sm)</code></td>
+					<td>Huella: lo que se vio en Figma la última vez. Sirve para detectar si cambió.</td>
+				</tr>
+				<tr>
+					<td><code>Aura:</code></td>
+					<td><code>0.5rem</code></td>
+					<td>Valor original de PrimeNG, como referencia.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Qué te muestra</h3>
+	<p>El informe sale en la terminal agrupado por estado, con una línea por token:</p>
+	<pre class="doc-skill-code">
+<span class="doc-skill-code-muted">Sincronizar chip · version-1
+Figma: …?node-id=12-345 · Base de conocimientos (Intelica.knowledgeBase): chip.md (MCP)</span>
+
+📘 Cambió en la base de conocimientos <span class="doc-skill-code-muted">(se aplica)</span>
+   • gap: --i-spacing-gap-sm → --i-spacing-gap-md <span class="doc-skill-code-muted">· _chip.scss</span>
+🔄 Cambió en Figma
+   • padding-x: 12px → 14px <span class="doc-skill-code-muted">· origen knowledgeBase: solo se reporta</span>
+✏️ Editado a mano <span class="doc-skill-code-muted">(no se toca sin forzar)</span>
+   • radius: no apunta a su origen <span class="doc-skill-code-muted">· _chip.scss</span>
+🆕 Solo en Figma <span class="doc-skill-code-muted">(no se implementa)</span>
+   • estado Pressed
+✅ Igual: 12 tokens</pre
+	>
+	<div class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		Otros estados posibles:
+		<ul class="doc-skill-states">
+			<li>
+				<span class="doc-skill-emoji" aria-hidden="true">🗑️</span>
+				<span>
+					<strong>Ya no está en Figma:</strong>
+					lo conserva si tiene origen; si no, te pregunta.
+				</span>
+			</li>
+			<li>
+				<span class="doc-skill-emoji" aria-hidden="true">❓</span>
+				<span>
+					<strong>Sin huella:</strong>
+					el token no tiene comentario
+					<code>Figma:</code>
+					; compara con la base de conocimientos y solo reporta lo de Figma.
+				</span>
+			</li>
+		</ul>
+	</div>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		El link de Figma se ve en la página del componente como un chip
+		<em>Figma</em>
+		junto al estado. Con
+		<code>--solo-verificar</code>
+		solo informa, sin cambiar nada.
+	</p>
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Resolver dependencias ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-dependencies" [class.doc-is-active]="nav.fragment() === 'skill-dependencies'" aria-labelledby="skill-dependencies-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-dependencies-title">
+			<a [routerLink]="path" fragment="skill-dependencies">
+				Resolver dependencias
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/resolver-dependencias</code>
+		</span>
+	</div>
+	<p>
+		Algunos componentes usan otros por dentro (un
+		<strong>MultiSelect</strong>
+		usa un
+		<strong>Checkbox</strong>
+		). Cada maquetador replica el suyo sin esperar al otro: si el componente que necesitas aún no está en
+		<em>Done</em>
+		,
+		<code>/replicar-primeng</code>
+		pone en su lugar un
+		<strong>provisional</strong>
+		(un elemento nativo marcado) y lo anota en
+		<code>requires</code>
+		del config. Cuando ese componente se termina, esta skill cambia el provisional por el componente real.
+	</p>
+	<p>
+		Si el otro componente solo aparece en el
+		<strong>contenido de una variante</strong>
+		(el botón del pie de una
+		<strong>Card</strong>
+		), es una dependencia
+		<strong>opcional</strong>
+		: va en
+		<code>uses</code>
+		y el provisional queda en el
+		<code>example.html</code>
+		. Ambas se ven en el chip
+		<strong>Dependencies</strong>
+		de la página del componente, con su estado y un enlace a cada una.
+	</p>
+	<p class="doc-skill-note">
+		<i class="pi pi-lock" aria-hidden="true"></i>
+		Requiere componentes estándar, hechos con
+		<code>/replicar-primeng</code>
+		o
+		<code>/estandarizar-componente</code>
+		. Si alguno lo hizo un maquetador fuera del repo, primero
+		<a [routerLink]="path" fragment="skill-standardize">Estandarizar un componente</a>
+		.
+	</p>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Qué componente se terminó</strong>
+					(p. ej. checkbox). Si no lo dices, te lista los provisionales pendientes.
+				</li>
+				<li>
+					Solo si el componente real no cubre algo que hacía el provisional (un evento, un estado): qué hacer con ese punto.
+				</li>
+			</ol>
+			<p>
+				Si la dependencia aún no está en Done, no toca nada. Nunca modifica el componente requerido ni lo customizado fuera de los marcadores.
+			</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/resolver-dependencias checkbox</pre>
+			<pre class="doc-skill-prompt">El checkbox ya está listo, actualiza el multiselect</pre>
+			<pre class="doc-skill-prompt">/resolver-dependencias --listar</pre>
+			<p class="doc-skill-card-legend">Con <code>--listar</code> (o "¿en qué orden maquetamos?") muestra qué requiere cada componente y el orden de trabajo: primero los que no dependen de nadie.</p>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Cómo funciona</h3>
+	<ol class="doc-skill-steps">
+		<li>
+			<p>
+				<code>/replicar-primeng</code>
+				anota la dependencia en el config del componente:
+			</p>
+			<pre class="doc-skill-code"><span class="doc-skill-code-muted">// multi-select.config.ts</span>
+requires: ['checkbox'],</pre>
+		</li>
+		<li>
+			<p>
+				Como el checkbox aún no está en
+				<em>Done</em>
+				, deja un provisional marcado en
+				<code>base/multi-select.html</code>
+				:
+			</p>
+			<pre class="doc-skill-code"><span class="doc-skill-code-muted">&lt;!-- dep:checkbox provisional --&gt;</span>
+&lt;input type="checkbox" class="int-multi-select__checkbox" /&gt;
+<span class="doc-skill-code-muted">&lt;!-- /dep:checkbox --&gt;</span></pre>
+		</li>
+		<li>
+			<p>
+				Cuando el checkbox pasa a
+				<em>Done</em>
+				, ejecutas
+				<code>/resolver-dependencias checkbox</code>
+				y el provisional se cambia por el componente real:
+			</p>
+			<pre class="doc-skill-code">&lt;int-checkbox … /&gt;</pre>
+		</li>
+	</ol>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		La página de cada componente muestra un chip
+		<em>Requires …</em>
+		con el estado de lo que necesita, y
+		<a routerLink="/components/status">Reference → Status</a>
+		tiene la columna
+		<em>Requiere</em>
+		. Al marcar un componente como Done,
+		<code>/cambiar-estado</code>
+		avisa quién lo estaba esperando.
+	</p>
 </section>
 
 <hr class="doc-skill-divider" />
@@ -705,7 +1504,7 @@ export default &#123;
 				<tr>
 					<td><code>done</code></td>
 					<td><app-status-chip status="done" size="sm" /></td>
-					<td>Terminado y listo para usar.</td>
+					<td>Terminado y listo para usar. Antes de marcarlo, la IA corre <code>npm run check:component</code>: si no cumple las bases, te sugiere estandarizarlo.</td>
 				</tr>
 			</tbody>
 		</table>
@@ -779,423 +1578,3 @@ export class IntButton &#123;
 	</p>
 </section>
 
-<hr class="doc-skill-divider" />
-
-<!-- ─────────────────────────── Replicar de PrimeNG ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-replicate" [class.doc-is-active]="nav.fragment() === 'skill-replicate'" aria-labelledby="skill-replicate-title">
-	<div class="doc-skill-section-head">
-		<h2 class="doc-skill-section-title" id="skill-replicate-title">
-			<a [routerLink]="path" fragment="skill-replicate">
-				Replicar de PrimeNG
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
-			</a>
-		</h2>
-		<span class="doc-skill-use">
-			Skill:
-			<code class="doc-skill-badge">/replicar-primeng</code>
-		</span>
-	</div>
-	<p>
-		Copia un componente de
-		<strong>PrimeNG v20</strong>
-		(estructura, estilos, API, teclado y ARIA) como un
-		<code>int-*</code>
-		propio que no importa nada de PrimeNG. Es la única skill que
-		<strong>sí escribe</strong>
-		estilos, marcado y lógica: lee el código real en
-		<code>node_modules</code>
-		, traduce sus tokens a los
-		<code>--i-*</code>
-		del repo Style Guide y crea una variante por cada característica de la API.
-	</p>
-
-	<div class="doc-skill-grid">
-		<article class="doc-skill-card">
-			<h3>Qué te pregunta</h3>
-			<ol class="doc-skill-list">
-				<li>
-					<strong>Siempre, en qué componente</strong>
-					replicar (sugiere uno, p. ej. p-chip → Pill). Si no existe, te pide crearlo antes con
-					<code>/crear-componente</code>
-					.
-				</li>
-				<li>
-					Si el componente ya tiene algo
-					<strong>customizado</strong>
-					: completar solo lo que está en plantilla,
-					<strong>forzar</strong>
-					(sobrescribir) o cancelar.
-				</li>
-			</ol>
-			<p>Sin forzar, nunca altera lo que ya escribiste. Cabecera, estado y diseñador se conservan siempre.</p>
-		</article>
-		<article class="doc-skill-card">
-			<h3>Cómo pedirlo</h3>
-			<pre class="doc-skill-prompt">/replicar-primeng p-chip</pre>
-			<pre class="doc-skill-prompt">Replica p-select de PrimeNG v20</pre>
-			<pre class="doc-skill-prompt">/replicar-primeng p-chip https://www.figma.com/design/…?node-id=12-345</pre>
-			<p class="doc-skill-card-legend">Con link de Figma: el diseño manda en lo visual, PrimeNG en el comportamiento y los valores salen de los tokens del Style&nbsp;Guide.</p>
-		</article>
-	</div>
-
-	<h3 class="doc-skill-subtitle">Qué genera</h3>
-	<pre class="doc-skill-code">
-src/components/chip/version-1/
-├── base/chip.ts      inputs/outputs con los nombres de PrimeNG, signals, OnPush
-├── base/chip.html    misma estructura que p-chip con clases BEM .int-chip__*
-├── styles/           _index.scss + _chip.scss (tokens --int-chip-* → --i-*)
-└── variants/         basic, icon, image, removable, template, disabled</pre
-	>
-	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
-		Al final informa qué se implementó, qué quedó fuera (PassThrough,
-		<code>unstyled</code>
-		…), las diferencias con PrimeNG y el resultado de
-		<code>npm run build</code>
-		y
-		<code>npm test</code>
-		. El estado queda en
-		<em>Pending</em>
-		hasta que lo cambies.
-	</p>
-
-	<h3 class="doc-skill-subtitle">De dónde salen los tokens</h3>
-	<p>
-		Los tokens (color, spacing, sizing, radios, tipografía, opacidad, motion, etc.) se consumen
-		<strong>siempre del repo Style Guide</strong>
-		(
-		<code>Intelica.Style.Guide.New</code>
-		), preferiblemente sus Primitives / Alias con escala (xs, sm, md…). El componente solo declara alias
-		<code>--int-chip-*: var(--i-*)</code>
-		y sus reglas leen esos alias. Si un valor de PrimeNG no tiene token equivalente, la skill usa el más cercano y lo informa, o te pregunta; nunca escribe un valor fijo.
-	</p>
-	<app-token-diagram />
-</section>
-
-<hr class="doc-skill-divider" />
-
-<!-- ─────────────────────────── Actualizar una réplica ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-update-replica" [class.doc-is-active]="nav.fragment() === 'skill-update-replica'" aria-labelledby="skill-update-replica-title">
-	<div class="doc-skill-section-head">
-		<h2 class="doc-skill-section-title" id="skill-update-replica-title">
-			<a [routerLink]="path" fragment="skill-update-replica">
-				Actualizar una réplica
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
-			</a>
-		</h2>
-		<span class="doc-skill-use">
-			Skill:
-			<code class="doc-skill-badge">/actualizar-replica</code>
-		</span>
-	</div>
-	<p>
-		Cuando el diseño en Figma de un componente ya implementado cambia. Lee el link guardado en la cabecera de
-		<code>base/&lt;id&gt;.html</code>
-		(
-		<code>figma:</code>
-		), compara el diseño con los comentarios
-		<code>// Figma:</code>
-		de los tokens y te muestra qué cambió. Solo aplica lo que apruebes, siempre con tokens
-		<code>--i-*</code>
-		del Style Guide.
-	</p>
-
-	<div class="doc-skill-grid">
-		<article class="doc-skill-card">
-			<h3>Qué te pregunta</h3>
-			<ol class="doc-skill-list">
-				<li>
-					<strong>Componente</strong>
-					y versión; el link de Figma solo si no está guardado.
-				</li>
-				<li>
-					Tras la tabla de cambios:
-					<strong>aplicar</strong>
-					, decidir variantes o estados nuevos y, si tocaste algo a mano,
-					<strong>forzar</strong>
-					o dejarlo.
-				</li>
-			</ol>
-			<p>No cambia la API ni el comportamiento. Para un rediseño grande propone una versión nueva.</p>
-		</article>
-		<article class="doc-skill-card">
-			<h3>Cómo pedirlo</h3>
-			<pre class="doc-skill-prompt">/actualizar-replica chip</pre>
-			<pre class="doc-skill-prompt">/actualizar-replica chip --solo-verificar</pre>
-			<pre class="doc-skill-prompt">El figma de button cambió, actualízalo</pre>
-		</article>
-	</div>
-
-	<h3 class="doc-skill-subtitle">Cómo detecta los cambios</h3>
-	<pre class="doc-skill-code">
---int-chip-gap: var(--i-spacing-gap-sm); // Figma: 8px (spacing/gap/sm) · Aura: 0.5rem
-                                         └─ huella: lo que se aplicó la última vez
-
-✅ igual   🔄 cambió en Figma   ✏️ editado a mano (no se toca sin forzar)
-🆕 nuevo en Figma   🗑️ ya no está en Figma   ❔ sin huella</pre
-	>
-	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
-		El link de Figma se ve en la página del componente como un chip
-		<em>Figma</em>
-		junto al estado. Con
-		<code>--solo-verificar</code>
-		solo informa, sin cambiar nada.
-	</p>
-</section>
-
-<hr class="doc-skill-divider" />
-
-<!-- ─────────────────────────── Resolver dependencias ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-dependencies" [class.doc-is-active]="nav.fragment() === 'skill-dependencies'" aria-labelledby="skill-dependencies-title">
-	<div class="doc-skill-section-head">
-		<h2 class="doc-skill-section-title" id="skill-dependencies-title">
-			<a [routerLink]="path" fragment="skill-dependencies">
-				Resolver dependencias
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
-			</a>
-		</h2>
-		<span class="doc-skill-use">
-			Skill:
-			<code class="doc-skill-badge">/resolver-dependencias</code>
-		</span>
-	</div>
-	<p>
-		Algunos componentes usan otros por dentro (un
-		<strong>MultiSelect</strong>
-		usa un
-		<strong>Checkbox</strong>
-		). Cada maquetador replica el suyo sin esperar al otro: si el componente que necesitas aún no está en
-		<em>Done</em>
-		,
-		<code>/replicar-primeng</code>
-		pone en su lugar un
-		<strong>provisional</strong>
-		(un elemento nativo marcado) y lo anota en
-		<code>requires</code>
-		del config. Cuando ese componente se termina, esta skill cambia el provisional por el componente real.
-	</p>
-	<p>
-		Si el otro componente solo aparece en el
-		<strong>contenido de una variante</strong>
-		(el botón del pie de una
-		<strong>Card</strong>
-		), es una dependencia
-		<strong>opcional</strong>
-		: va en
-		<code>uses</code>
-		y el provisional queda en el
-		<code>example.html</code>
-		. Ambas se ven en el chip
-		<strong>Dependencies</strong>
-		de la página del componente, con su estado y un enlace a cada una.
-	</p>
-
-	<div class="doc-skill-grid">
-		<article class="doc-skill-card">
-			<h3>Qué te pregunta</h3>
-			<ol class="doc-skill-list">
-				<li>
-					<strong>Qué componente se terminó</strong>
-					(p. ej. checkbox). Si no lo dices, te lista los provisionales pendientes.
-				</li>
-				<li>
-					Solo si el componente real no cubre algo que hacía el provisional (un evento, un estado): qué hacer con ese punto.
-				</li>
-			</ol>
-			<p>Si la dependencia aún no está en Done, no toca nada. Nunca modifica el componente requerido ni lo customizado fuera de los marcadores.</p>
-		</article>
-		<article class="doc-skill-card">
-			<h3>Cómo pedirlo</h3>
-			<pre class="doc-skill-prompt">/resolver-dependencias checkbox</pre>
-			<pre class="doc-skill-prompt">El checkbox ya está listo, actualiza el multiselect</pre>
-			<pre class="doc-skill-prompt">/resolver-dependencias --listar</pre>
-			<p class="doc-skill-card-legend">Con <code>--listar</code> (o "¿en qué orden maquetamos?") muestra qué requiere cada componente y el orden de trabajo: primero los que no dependen de nadie.</p>
-		</article>
-	</div>
-
-	<h3 class="doc-skill-subtitle">Cómo funciona</h3>
-	<ol class="doc-skill-steps">
-		<li>
-			<p>
-				<code>/replicar-primeng</code>
-				anota la dependencia en el config del componente:
-			</p>
-			<pre class="doc-skill-code"><span class="doc-skill-code-muted">// multi-select.config.ts</span>
-requires: ['checkbox'],</pre>
-		</li>
-		<li>
-			<p>
-				Como el checkbox aún no está en
-				<em>Done</em>
-				, deja un provisional marcado en
-				<code>base/multi-select.html</code>
-				:
-			</p>
-			<pre class="doc-skill-code"><span class="doc-skill-code-muted">&lt;!-- dep:checkbox provisional --&gt;</span>
-&lt;input type="checkbox" class="int-multi-select__checkbox" /&gt;
-<span class="doc-skill-code-muted">&lt;!-- /dep:checkbox --&gt;</span></pre>
-		</li>
-		<li>
-			<p>
-				Cuando el checkbox pasa a
-				<em>Done</em>
-				, ejecutas
-				<code>/resolver-dependencias checkbox</code>
-				y el provisional se cambia por el componente real:
-			</p>
-			<pre class="doc-skill-code">&lt;int-checkbox … /&gt;</pre>
-		</li>
-	</ol>
-	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
-		La página de cada componente muestra un chip
-		<em>Requires …</em>
-		con el estado de lo que necesita, y
-		<a routerLink="/components/status">Reference → Status</a>
-		tiene la columna
-		<em>Requiere</em>
-		. Al marcar un componente como Done,
-		<code>/cambiar-estado</code>
-		avisa quién lo estaba esperando.
-	</p>
-</section>
-
-<hr class="doc-skill-divider" />
-
-<!-- ─────────────────────────── Resumen rápido ─────────────────────────── -->
-<section class="doc-skill-section" id="skill-cheatsheet" [class.doc-is-active]="nav.fragment() === 'skill-cheatsheet'" aria-labelledby="skill-cheatsheet-title">
-	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
-		<a [routerLink]="path" fragment="skill-cheatsheet">
-			Resumen rápido
-			<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
-		</a>
-	</h2>
-	<p>
-		Si prefieres no usar la IA, cada skill tiene un script de
-		<code>npm</code>
-		equivalente (salvo crear el componente).
-	</p>
-
-	<div class="doc-skill-table-wrap">
-		<table class="doc-skill-table">
-			<thead>
-				<tr>
-					<th scope="col">Quiero…</th>
-					<th scope="col">Skill</th>
-					<th scope="col">Script</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Un componente nuevo</td>
-					<td><code>/crear-componente</code></td>
-					<td>—</td>
-				</tr>
-				<tr>
-					<td>Un ejemplo en un componente existente</td>
-					<td><code>/crear-variante</code></td>
-					<td><code>npm run new:variant -- &lt;id&gt; "&lt;Título&gt;" --description "…"</code></td>
-				</tr>
-				<tr>
-					<td>Cambiar la implementación sin romper la actual</td>
-					<td><code>/crear-version</code></td>
-					<td><code>npm run new:version -- &lt;id&gt; [--title "…"] [--description "…"]</code></td>
-				</tr>
-				<tr>
-					<td>Ocultar sin borrar (componente, variante o versión)</td>
-					<td><code>/ocultar</code></td>
-					<td><code>npm run visibility -- hide component|variant|version &lt;id&gt; [&lt;slug&gt;|&lt;N&gt;]</code></td>
-				</tr>
-				<tr>
-					<td>Volver a mostrar lo oculto</td>
-					<td><code>/reactivar</code></td>
-					<td>
-						<code>npm run visibility -- list</code>
-						·
-						<code>show component|variant|version …</code>
-					</td>
-				</tr>
-				<tr>
-					<td>Cambiar el orden de las variantes</td>
-					<td><code>/ordenar-variantes</code></td>
-					<td><code>npm run order:variants -- &lt;id&gt; [&lt;slug&gt; …]</code></td>
-				</tr>
-				<tr>
-					<td>Cambiar título o descripción</td>
-					<td colspan="2">
-						Editar la cabecera del HTML (
-						<code>base/&lt;id&gt;.html</code>
-						o
-						<code>example.html</code>
-						)
-					</td>
-				</tr>
-				<tr>
-					<td>Renombrar un componente (cambia la URL)</td>
-					<td><code>/renombrar-componente</code></td>
-					<td><code>npm run rename -- component &lt;id&gt; &lt;nuevo-id&gt; [--title "…"] --yes</code></td>
-				</tr>
-				<tr>
-					<td>Renombrar una variante (cambia la URL)</td>
-					<td><code>/renombrar-variante</code></td>
-					<td><code>npm run rename -- variant &lt;id&gt; &lt;slug&gt; "&lt;Nuevo título&gt;" --yes</code></td>
-				</tr>
-				<tr>
-					<td>Eliminar una variante</td>
-					<td><code>/eliminar-variante</code></td>
-					<td><code>npm run remove -- variant &lt;id&gt; &lt;slug&gt; [--version &lt;N&gt; | --all] --yes</code></td>
-				</tr>
-				<tr>
-					<td>Eliminar una versión</td>
-					<td><code>/eliminar-version</code></td>
-					<td><code>npm run remove -- version &lt;id&gt; &lt;N&gt; --yes</code></td>
-				</tr>
-				<tr>
-					<td>Eliminar un componente</td>
-					<td><code>/eliminar-componente</code></td>
-					<td><code>npm run remove -- component &lt;id&gt; --yes</code></td>
-				</tr>
-				<tr>
-					<td>Cambiar el estado (pending · in-progress · done)</td>
-					<td><code>/cambiar-estado</code></td>
-					<td><code>npm run set:status -- &lt;id&gt; &lt;estado&gt; [--version &lt;N&gt;]</code></td>
-				</tr>
-				<tr>
-					<td>Un componente igual a uno de PrimeNG v20</td>
-					<td><code>/replicar-primeng</code></td>
-					<td>—</td>
-				</tr>
-				<tr>
-					<td>Verificar o actualizar un componente cuando cambia su Figma</td>
-					<td><code>/actualizar-replica</code></td>
-					<td>—</td>
-				</tr>
-				<tr>
-					<td>Cambiar un provisional por el componente real cuando este se termina</td>
-					<td><code>/resolver-dependencias</code></td>
-					<td>—</td>
-				</tr>
-				<tr>
-					<td>Verificar</td>
-					<td colspan="2">
-						<code>npm start</code>
-						·
-						<code>npm run build</code>
-						·
-						<code>npm test</code>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<p class="doc-skill-note">
-		<i class="pi pi-book" aria-hidden="true"></i>
-		Referencia completa:
-		<a routerLink="/components/demo">Demo</a>
-		y
-		<code>.claude/skills/crear-componente/SKILL.md</code>
-		.
-	</p>
-</section>
