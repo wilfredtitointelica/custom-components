@@ -120,6 +120,117 @@
   background: rgb(255 255 255 / 0.18);
 }
 
+/*
+ * Blocks switch on: one row per line. The row that opens a block draws its guide in the column before
+ * its indentation, from the middle of that line down to the closing one (└), with the square that
+ * folds it at the top. The guide takes the color of its kind (rules below); the rest go neutral.
+ */
+.doc-code-lines {
+  --doc-code-gutter: 2.5ch; // room on the left so the square and the guide do not touch the code
+  --doc-code-step: 1.5ch; // width of each indentation space (1ch in the plain view)
+  --doc-code-gap: 1.6ch; // from a guide to the code of its block
+  display: block;
+  width: max-content;
+  min-width: 100%;
+}
+
+.doc-code-line {
+  position: relative;
+  display: block;
+  min-height: 1.6em; // empty lines keep their height
+  padding-left: var(--doc-code-gutter);
+}
+
+// Wider indentation so the nested guides breathe.
+.doc-code-lead {
+  letter-spacing: calc(var(--doc-code-step) - 1ch);
+}
+
+.doc-code-guide {
+  position: absolute;
+  top: 0.8em;
+  left: calc(var(--doc-code-gutter) + var(--doc-code-indent) * var(--doc-code-step) - var(--doc-code-gap));
+  height: calc(var(--doc-code-span) * 1.6em);
+  border-left: 1px solid;
+  color: rgb(255 255 255 / 0.32);
+  pointer-events: none;
+
+  // Closing line: short tick towards the code (└).
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0.8ch;
+    border-bottom: 1px solid;
+  }
+}
+
+// Square at the top of the guide: "−" open, "+" folded (CSS text, so it is not copied with the code).
+.doc-code-fold {
+  position: absolute;
+  top: -6px;
+  left: -6.5px;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 1px solid;
+  border-radius: 3px;
+  background: var(--doc-code-bg);
+  color: inherit;
+  font-family: var(--doc-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+
+  &::before {
+    content: '−';
+  }
+
+  &[aria-expanded='false']::before {
+    content: '+';
+  }
+
+  &:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent);
+    outline-offset: 2px;
+  }
+}
+
+// Folded block: "⋯" after the opening line (CSS text, so it is not copied with the code); opens it again.
+.doc-code-ellipsis {
+  margin-left: 0.5ch;
+  padding: 0 0.5ch;
+  border: 0;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 0.12);
+  color: rgb(255 255 255 / 0.7);
+  font: inherit;
+  line-height: 1.3;
+  cursor: pointer;
+
+  &::before {
+    content: '⋯';
+  }
+
+  &:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent);
+    outline-offset: 1px;
+  }
+}
+
 // HTML tab: <int-*> tags, <ng-*> tags (blue) and the "dep:" comments of provisionals (Scan color).
 .doc-code-int {
   color: var(--doc-accent);
@@ -138,13 +249,58 @@
   color: var(--doc-scan);
 }
 
-// Highlight switch off: the HTML tab keeps the base color.
-.doc-code-plain :is(.doc-code-int, .doc-code-ng, .doc-code-dep) {
+// TS tab (only the opening line of each piece): class = accent like int-*, decorator = Angular blue,
+// plus three new colors for imports, types and methods.
+.doc-code-class {
+  color: var(--doc-accent);
+}
+
+.doc-code-decorator {
+  color: #5b9cf0;
+}
+
+.doc-code-import {
+  color: #c58af9;
+}
+
+.doc-code-interface {
+  color: #4ec9b0;
+}
+
+.doc-code-method {
+  color: #e5c07b;
+}
+
+// Comments of both tabs (except "dep:"): dimmed so the code stands out.
+.doc-code-comment {
+  opacity: 0.5;
+}
+
+.doc-code-plain .doc-code-comment {
+  opacity: 1;
+}
+
+// Highlights switch off: the code keeps the base color.
+.doc-code-plain
+  :is(
+    .doc-code-int,
+    .doc-code-ng,
+    .doc-code-dep,
+    .doc-code-import,
+    .doc-code-interface,
+    .doc-code-decorator,
+    .doc-code-class,
+    .doc-code-method
+  ) {
   color: inherit;
   font-weight: inherit;
 }
 
-/* Bar of the HTML tab under the toolbar: color legend + Highlight switch. */
+.doc-code-plain .doc-code-guide {
+  color: rgb(255 255 255 / 0.32);
+}
+
+/* Bar under the toolbar: color legend + Blocks and Highlights switches. */
 .doc-code-legend-bar {
   display: flex;
   flex-wrap: wrap;
@@ -179,7 +335,7 @@
     font-size: inherit;
   }
 
-  .doc-code-legend-bar:has([aria-pressed='false']) & {
+  .doc-code-legend-bar:has(.doc-code-highlight[aria-pressed='false']) & {
     opacity: 0.45;
   }
 }
@@ -193,7 +349,12 @@
   background: currentColor;
 }
 
-.doc-code-highlight {
+.doc-code-switches {
+  display: flex;
+  gap: 4px;
+}
+
+.doc-code-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
