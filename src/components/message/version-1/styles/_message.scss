@@ -103,6 +103,7 @@
     height: 100%;
     padding: var(--int-message-content-padding);
     font-family: var(--int-message-font-family);
+    color: var(--int-message-text-color);
     font-size: var(--int-message-text-font-size);
     line-height: var(--int-message-text-line-height);
   }
@@ -120,7 +121,6 @@
 
   &__text {
     flex-grow: 1;
-    color: var(--int-message-text-color);
   }
 
   &__close-button {
