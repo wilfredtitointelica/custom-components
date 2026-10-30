@@ -179,9 +179,19 @@ function checkVersion(component, version, report, deps) {
       }
     }
 
+    // No PrimeNG traces: demo images, logos or any asset served by PrimeFaces.
+    for (const match of source.matchAll(/https?:\/\/[^\s"'`)]*(primefaces|primeng)[^\s"'`)]*/gi))
+      report.error(
+        `${path}:${lineOf(source, match.index)}`,
+        `PrimeNG asset "${match[0]}": use a Style Guide placeholder (u-background-* + pi icon)`,
+      );
+
     if (file.endsWith('.html')) {
       const markup = source.replace(/<!--[\s\S]*?-->/g, (block) => block.replace(/[^\n]/g, ' '));
       if (/<p-[a-z]/.test(markup)) report.error(path, 'uses <p-*> PrimeNG components');
+      const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
+      if (inVariants(file) && /\b(title|description):.*primeng/i.test(header))
+        report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');
       if (inVariants(file) && /\sstyle="|\[style\./.test(markup))
         report.error(path, 'inline style in a variant: use u-* helpers');
       if (/animate\.(enter|leave)/.test(markup)) animates = true;

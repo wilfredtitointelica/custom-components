@@ -5,7 +5,7 @@
 // knowledgeBase: .prCard + variante mini · compact bordered card. States come from --selectable.
 .int-card--mini {
   --int-card-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg · Figma: 8px (card/border/radius/lg) · Aura: —
-  --int-card-body-padding: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 12px (card/padding/x/lg) ⚠️ · Aura: —
+  --int-card-body-padding: var(--i-spacing-container-lg); // Figma: 12px (card/padding/x/lg) · SG: --i-spacing-gap-sm 8px ⚠️ · Aura: —
   --int-card-body-gap: var(--i-spacing-0); // SG: --i-spacing-0 · Figma: 0 (card/gap/none) · Aura: —
   --int-card-content-gap: var(--i-spacing-0); // SG: --i-spacing-0 · Aura: —
   --int-card-mini-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Figma: 1px (card/border/width/sm) · Aura: —

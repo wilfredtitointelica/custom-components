@@ -558,6 +558,17 @@ cabecera). Completar:
   archivo (`const MOCK_ITEMS: readonly Item[] = […]`) expuesta en la clase; `signal()` solo si el ejemplo
   la modifica (p. ej. lista de chips que se eliminan con `onRemove`). Sin servicios, HTTP ni `*.mock.ts`.
   Los mocks alimentan inputs públicos; nunca sustituyen la API.
+- **Sin rastros de PrimeNG** en lo que se ve: ni imágenes, logos o recursos de su CDN
+  (`primefaces.org/cdn/primeng/...`), ni "como la demo de PrimeNG" en la cabecera. Una imagen de demo
+  se reemplaza por un **placeholder con fondo del Style Guide**:
+  ```html
+  <div class="u-display-flex u-justify-content-center u-align-items-center u-py-5 u-background-surface u-color-grey-500 u-text-5xl" role="img" aria-label="Card image">
+    <i class="pi pi-image" aria-hidden="true"></i>
+  </div>
+  ```
+  Avatares, banderas o logos de ejemplo, igual: helper de fondo + icono `pi` o iniciales. Los
+  comentarios de código que citan PrimeNG para trazabilidad (`// same as p-card`) sí se mantienen.
+  `check:component` da error ante una URL de PrimeNG y aviso si la cabecera menciona PrimeNG.
 
 ### 3.5 Contenido de los templates: clases helper del Style Guide
 
@@ -761,6 +772,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   base (3.7).
 - ❌ Descartar una adaptación de comportamiento que la base de conocimientos documenta (*All* fija,
   iconos de orden propios) porque PrimeNG no la trae: se implementa nativa como extensión.
+- ❌ Copiar imágenes, logos o URLs de la demo de PrimeNG, o describir una variante "como la demo de
+  PrimeNG": placeholder con fondo del Style Guide (3.4).
 - ❌ Maquetar el contenido de los templates de las variantes con `style` inline, SCSS propio o clases de
   PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).
 - ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,

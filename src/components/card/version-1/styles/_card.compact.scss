@@ -11,9 +11,5 @@
   --int-card-content-gap: var(--i-card-body-sm-gap); // SG: --i-card-body-sm-gap · Aura: —
   --int-card-title-font-size: var(--i-card-title-sm-font-size); // SG: --i-card-title-sm-font-size · Aura: —
   --int-card-title-line-height: var(--i-card-title-sm-line-height); // SG: --i-card-title-sm-line-height · Aura: —
-  --int-card-compact-content-line-height: var(--i-card-body-sm-line-height); // SG: --i-card-body-sm-line-height · Aura: —
-
-  .int-card__content {
-    line-height: var(--int-card-compact-content-line-height);
-  }
+  --int-card-line-height: var(--i-typography-lineHeight-sm); // SG: --i-card-body-sm-line-height 12px ⚠️ (10px text) · Aura: —
 }

@@ -62,6 +62,9 @@ export class IntCard {
   protected readonly contentTemplate = contentChild<TemplateRef<unknown>>('content', { descendants: false });
   protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer', { descendants: false });
 
+  protected readonly hasTitle = computed(() => !!this.header() || !!this.titleTemplate());
+  protected readonly hasSubtitle = computed(() => !!this.subheader() || !!this.subtitleTemplate());
+
   /** One tab stop only when selectable; a disabled card leaves the tab order. */
   protected readonly tabIndex = computed(() => {
     if (!this.selectable()) return null;

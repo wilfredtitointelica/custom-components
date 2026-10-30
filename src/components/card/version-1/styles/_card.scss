@@ -7,10 +7,12 @@
 
   // --- root ---
   --int-card-background: var(--i-card-background); // knowledgeBase: --i-card-background · Figma: #FCFCFC (card/color/background) · Aura: {content.background}
-  --int-card-color: var(--i-card-color); // knowledgeBase: --i-card-color · Figma: #0A1733 (header/color/text) ⚠️ · Aura: {content.color}
+  --int-card-color: var(--i-text-color-default); // SG: --i-color-primary-900 (prCard color) · Figma: #0A1733 (header/color/text) · Aura: {content.color}
   --int-card-shadow: var(--i-card-box-shadow); // knowledgeBase: --i-card-box-shadow · Figma: shadow.200 · Aura: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px -1px rgba(0,0,0,.1)
   --int-card-border-radius: var(--i-card-border-radius); // knowledgeBase: --i-card-border-radius · Figma: 16px (card/border/radius/2xl) · Aura: {border.radius.xl}
-  --int-card-font-size: var(--i-card-font-size); // SG: --i-card-font-size · Figma: 14px (footer/font/size/md) ⚠️ · Aura: inherit
+  --int-card-font-family: var(--i-typography-font-family-base); // SG: --i-typography-font-family-base · Figma: Lato (header/font/fontFamily) · Aura: inherit
+  --int-card-font-size: var(--i-text-body-size-md); // Figma: 14px (footer/font/size/md) · SG: --i-card-font-size 12px ⚠️ · Aura: inherit
+  --int-card-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (footer/font/lineHeight/md) · Aura: inherit
 
   // --- body ---
   --int-card-body-padding: var(--i-card-body-padding); // knowledgeBase: --i-card-body-padding · Figma: 16px (card/padding/x/xl) · Aura: 1.25rem
@@ -20,11 +22,15 @@
   --int-card-title-font-size: var(--i-card-title-font-size); // SG: --i-card-title-font-size · Figma: 16px (header/font/size/lg) · Aura: 1.25rem
   --int-card-title-font-weight: var(--i-typography-font-weight-bold); // SG: bold · Figma: 700 (header/font/weightTilte) · Aura: 500
   --int-card-title-line-height: var(--i-card-title-line-height); // SG: --i-card-title-line-height · Figma: 24px (header/font/lineHeight/lg) · Aura: inherit
-  --int-card-subtitle-color: var(--i-color-secondary-600); // SG: --i-color-secondary-600 (prCard--mini subtitle) · Figma: #0A1733 (header/color/text) ⚠️ · Aura: {text.muted.color}
-  --int-card-content-gap: var(--i-card-body-gap); // knowledgeBase: --i-card-body-gap · Figma: 4px (card/gap/xs) ⚠️ · Aura: —
+  --int-card-caption-gap: var(--i-spacing-gap-none); // Figma: 0 (header/gap/none) · Aura: 0.5rem
+  --int-card-subtitle-color: var(--i-text-color-default); // Figma: #0A1733 (header/color/text) · Aura: {text.muted.color}
+  --int-card-content-gap: var(--i-card-body-gap); // knowledgeBase: --i-card-body-gap · Aura: —
+  --int-card-footer-padding-top: var(--i-card-gap); // knowledgeBase: --i-card-gap · Figma: 16px (footer/gap/lg) · Aura: —
+  --int-card-footer-border-width: var(--i-divider-border-sm); // Figma: 1px (divider/border/sm) · Aura: —
+  --int-card-footer-border-color: var(--i-divider-color-default); // Figma: #D9D9E3 (divider/color/default) · Aura: —
 
   // --- selectable (int-* extension: mini, option and version formats) ---
-  --int-card-selectable-hover-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 (prCard--option:hover) · Figma: #2351B3 (card/color/hover/border) ⚠️ · Aura: —
+  --int-card-selectable-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (card/color/hover/border) · SG: --i-color-primary-900 ⚠️ · Aura: —
   --int-card-selectable-selected-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 (prCard--option.is-active) · Figma: #0A1733 (card/color/pressed/border) · Aura: —
   --int-card-selectable-selected-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Figma: #F2F2F5 (card/color/pressed/background) · Aura: —
   --int-card-disabled-background: var(--i-background-disabled); // SG: #d9d9e3 (prCard--option.is-disabled) · Figma: #D9D9E3 (card/color/disabled/background) · Aura: —
@@ -53,7 +59,9 @@
   background: var(--int-card-background);
   box-shadow: var(--int-card-shadow);
   color: var(--int-card-color);
+  font-family: var(--int-card-font-family);
   font-size: var(--int-card-font-size);
+  line-height: var(--int-card-line-height);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -66,6 +74,13 @@
     flex-direction: column;
     gap: var(--int-card-body-gap);
     padding: var(--int-card-body-padding);
+  }
+
+  // int-* extension: title + subtitle stacked without the body gap (Figma header-card).
+  &__caption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-card-caption-gap);
   }
 
   &__title {
@@ -87,6 +102,12 @@
     &:empty {
       display: none;
     }
+  }
+
+  // Figma footer-card: starts with a horizontal divider.
+  &__footer {
+    padding-block-start: var(--int-card-footer-padding-top);
+    border-block-start: var(--int-card-footer-border-width) solid var(--int-card-footer-border-color);
   }
 }
 

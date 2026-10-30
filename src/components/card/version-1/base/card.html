@@ -13,24 +13,29 @@
 }
 
 <div class="int-card__body">
-  <!-- Title: the #title template wins over the header input -->
-  @if (header() || titleTemplate()) {
-    <div class="int-card__title">
-      @if (titleTemplate()) {
-        <ng-container [ngTemplateOutlet]="titleTemplate()" />
-      } @else {
-        {{ header() }}
+  <!-- Caption: title + subtitle. int-* extension: PrimeNG styles p-card-caption but v20 does not render it -->
+  @if (hasTitle() || hasSubtitle()) {
+    <div class="int-card__caption">
+      <!-- Title: the #title template wins over the header input -->
+      @if (hasTitle()) {
+        <div class="int-card__title">
+          @if (titleTemplate()) {
+            <ng-container [ngTemplateOutlet]="titleTemplate()" />
+          } @else {
+            {{ header() }}
+          }
+        </div>
       }
-    </div>
-  }
 
-  <!-- Subtitle: the #subtitle template wins over the subheader input -->
-  @if (subheader() || subtitleTemplate()) {
-    <div class="int-card__subtitle">
-      @if (subtitleTemplate()) {
-        <ng-container [ngTemplateOutlet]="subtitleTemplate()" />
-      } @else {
-        {{ subheader() }}
+      <!-- Subtitle: the #subtitle template wins over the subheader input -->
+      @if (hasSubtitle()) {
+        <div class="int-card__subtitle">
+          @if (subtitleTemplate()) {
+            <ng-container [ngTemplateOutlet]="subtitleTemplate()" />
+          } @else {
+            {{ subheader() }}
+          }
+        </div>
       }
     </div>
   }
