@@ -155,6 +155,12 @@
   color: rgb(255 255 255 / 0.32);
   pointer-events: none;
 
+  // Wraps blocks that start in its same column ("dep:" pair around its element): half a level to
+  // the left, between the parent's guide and the inner one, so they do not overlap.
+  &.doc-code-wrapper {
+    margin-left: calc(var(--doc-code-step) * -1);
+  }
+
   // Closing line: short tick towards the code (└).
   &::after {
     content: '';
@@ -249,6 +255,11 @@
   color: var(--doc-scan);
 }
 
+// Angular control flow (@if, @for, @switch…): its opening line and closing brace.
+.doc-code-flow {
+  color: #7ee787;
+}
+
 // TS tab (only the opening line of each piece): class = accent like int-*, decorator = Angular blue,
 // plus three new colors for imports, types and methods.
 .doc-code-class {
@@ -285,6 +296,7 @@
   :is(
     .doc-code-int,
     .doc-code-ng,
+    .doc-code-flow,
     .doc-code-dep,
     .doc-code-import,
     .doc-code-interface,

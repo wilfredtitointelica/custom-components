@@ -18,7 +18,7 @@ import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/cata
 import { ClipCodeSource, ClipboardHistory } from '../../service/clipboard-history';
 import { CodeVisibility } from '../../service/code-visibility';
 
-type CodePartKind = 'int' | 'ng' | 'dep' | 'import' | 'interface' | 'decorator' | 'class' | 'method' | 'comment';
+type CodePartKind = 'int' | 'ng' | 'flow' | 'dep' | 'import' | 'interface' | 'decorator' | 'class' | 'method' | 'comment';
 type CodePart = { text: string; kind: CodePartKind | null; name: boolean };
 /** Lines (0-based) from where a block opens to where it closes; `kind` colors its guide. */
 type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
@@ -122,7 +122,7 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
         @if (current() && fold()) {
           <!-- Blocks switch on: one row per line; the row that opens a block draws its guide down to
                the closing line and the button that folds it. -->
-          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
+          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [class.doc-code-wrapper]="block.wrapper" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
         } @else if (current()) {
           <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
@@ -145,6 +145,9 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
             }
             @if (kinds().has('ng')) {
               <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
+            }
+            @if (kinds().has('flow')) {
+              <li><span class="doc-code-swatch doc-code-flow"></span><code class="doc-code-flow">&#64;if &#64;for</code> Control flow</li>
             }
             @if (kinds().has('dep')) {
               <li><span class="doc-code-swatch doc-code-dep"></span><code class="doc-code-dep">dep:</code> Provisional dependency</li>
@@ -251,12 +254,27 @@ export class CodePanel {
       shown[line] = count;
       count += hidden[line] ? 0 : 1;
     }
+    const leads = lines.map((parts) => parts.map((part) => part.text).join('').match(/^\s*/)?.[0] ?? '');
+    // A block that wraps others starting in its same column (a "dep:" pair around its element)
+    // moves its guide a bit to the left so both guides do not overlap.
+    const wrappers = new Set(
+      [...starts.values()]
+        .filter((block) =>
+          [...starts.values()].some(
+            (inner) =>
+              inner.start > block.start &&
+              inner.start < block.end &&
+              leads[inner.start].length === leads[block.start].length,
+          ),
+        )
+        .map((block) => block.start),
+    );
     return lines.flatMap((parts, index) => {
       if (hidden[index]) {
         return [];
       }
       const block = starts.get(index);
-      const lead = parts.map((part) => part.text).join('').match(/^\s*/)?.[0] ?? '';
+      const lead = leads[index];
       return [
         {
           index,
@@ -267,6 +285,7 @@ export class CodePanel {
             kind: block.kind,
             end: block.end,
             indent: lead.length,
+            wrapper: wrappers.has(index),
             span: shown[block.end] - shown[index],
             folded: folded.has(`${language}:${index}`),
           },
@@ -337,23 +356,54 @@ export class CodePanel {
   }
 }
 
+/** Angular control flow blocks: `@if (…) {`, `} @else {`, `@for (…) {`, `@switch`, `@defer`… */
+const FLOW_BLOCK = '@(?:if|else|for|empty|switch|case|default|defer|placeholder|loading|error)\\b';
+
 /**
- * HTML tab: <int-*> tags, <ng-*> tags, the "dep:" comments that wrap a provisional and the other
- * comments (dimmed).
+ * HTML tab: <int-*> tags, <ng-*> tags, the "dep:" comments that wrap a provisional, the other
+ * comments (dimmed) and the control flow (`@for (…) {` and its closing `}`). Other tags and
+ * {{ interpolations }} are skipped whole so a brace inside them does not close a block.
  */
 function htmlParts(source: string): CodePart[] {
   const parts: CodePart[] = [];
+  const tokens = new RegExp(
+    [
+      /<!--\s*\/?(dep:)?[\s\S]*?-->/.source,
+      /(<\/?)((int|ng)-[\w-]+)((?:[^>"']|"[^"]*"|'[^']*')*>)/.source,
+      /<\/?[a-zA-Z](?:[^>"']|"[^"]*"|'[^']*')*>|\{\{[\s\S]*?\}\}/.source,
+      `(${FLOW_BLOCK})([^{}\\n]*\\{)`,
+      /\}/.source,
+    ].join('|'),
+    'g',
+  );
+  let flow = 0;
   let last = 0;
-  for (const match of source.matchAll(/<!--\s*\/?(dep:)?[\s\S]*?-->|(<\/?)((int|ng)-[\w-]+)([^>]*>)/g)) {
-    parts.push({ text: source.slice(last, match.index), kind: null, name: false });
-    const [comment, dep, open, name, prefix, rest] = match;
-    if (name) {
+  for (const match of source.matchAll(tokens)) {
+    const [token, dep, open, name, prefix, rest, keyword, condition] = match;
+    let found: CodePart[];
+    if (token.startsWith('<!--')) {
+      found = [{ text: token, kind: dep ? 'dep' : 'comment', name: false }];
+    } else if (name) {
       const kind = prefix === 'int' ? 'int' : 'ng';
-      parts.push({ text: open, kind, name: false }, { text: name, kind, name: true }, { text: rest, kind, name: false });
+      found = [
+        { text: open, kind, name: false },
+        { text: name, kind, name: true },
+        { text: rest, kind, name: false },
+      ];
+    } else if (keyword) {
+      flow++;
+      found = [
+        { text: keyword, kind: 'flow', name: true },
+        { text: condition, kind: 'flow', name: false },
+      ];
+    } else if (token === '}' && flow) {
+      flow--;
+      found = [{ text: token, kind: 'flow', name: false }];
     } else {
-      parts.push({ text: comment, kind: dep ? 'dep' : 'comment', name: false });
+      continue;
     }
-    last = match.index + match[0].length;
+    parts.push({ text: source.slice(last, match.index), kind: null, name: false }, ...found);
+    last = match.index + token.length;
   }
   parts.push({ text: source.slice(last), kind: null, name: false });
   return parts.filter((part) => part.text);
@@ -540,7 +590,7 @@ const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'i
 /**
  * HTML blocks: elements from the opening tag to the closing one (or a tag that spans lines),
  * Angular control flow (@if / @for … { }), "dep:" pairs and comments. Guide color: int-* / ng-* /
- * Angular / dep like their highlight; any other element goes neutral.
+ * control flow / dep like their highlight; any other element goes neutral.
  */
 function htmlBlocks(source: string): FoldBlock[] {
   const lineOf = lineIndex(source);
@@ -550,8 +600,15 @@ function htmlBlocks(source: string): FoldBlock[] {
   const tags: { name: string; line: number }[] = [];
   const braces: number[] = [];
   const deps: number[] = [];
-  const tokens =
-    /<!--\s*(\/?)(dep:)?[\s\S]*?-->|<(\/?)([a-zA-Z][\w-]*)(?:[^>"']|"[^"]*"|'[^']*')*?(\/?)>|@[a-z]+\b[^{}\n]*\{|\{\{[\s\S]*?\}\}|\}/g;
+  const tokens = new RegExp(
+    [
+      /<!--\s*(\/?)(dep:)?[\s\S]*?-->/.source,
+      /<(\/?)([a-zA-Z][\w-]*)(?:[^>"']|"[^"]*"|'[^']*')*?(\/?)>/.source,
+      `${FLOW_BLOCK}[^{}\\n]*\\{`,
+      /\{\{[\s\S]*?\}\}|\}/.source,
+    ].join('|'),
+    'g',
+  );
   for (const match of source.matchAll(tokens)) {
     const [token, closeDep, dep, closeTag, name, selfClose] = match;
     const line = lineOf[match.index];
@@ -584,7 +641,7 @@ function htmlBlocks(source: string): FoldBlock[] {
     } else if (token === '}') {
       const start = braces.pop();
       if (start !== undefined) {
-        blocks.push({ start, end: line, kind: 'ng' });
+        blocks.push({ start, end: line, kind: 'flow' });
       }
     }
   }
