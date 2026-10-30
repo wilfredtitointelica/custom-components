@@ -1,0 +1,20 @@
+<!--
+  title: Version
+  description: Composición int-card--version: tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  @for (version of versions; track version.id) {
+    <int-card
+      class="int-card--version u-flex-grow-1 u-flex-basis-0"
+      selectable
+      [selected]="chosen() === version.id"
+      (onSelect)="chosen.set(version.id)"
+    >
+      <div class="u-display-flex u-justify-content-between u-align-items-center u-gap-sm">
+        <span class="u-text-lg u-bold">{{ version.name }}</span>
+        <span class="u-text-sm u-color-grey-500 u-text-nowrap">{{ version.date }}</span>
+      </div>
+      <span class="u-text-md">{{ version.notes }}</span>
+    </int-card>
+  }
+</div>

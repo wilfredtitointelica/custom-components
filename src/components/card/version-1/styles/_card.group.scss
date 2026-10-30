@@ -1,0 +1,15 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Group
+\*——————————————————————————————————————————————————————————*/
+
+// knowledgeBase: .prCard--group · a row of data cards on a light background.
+.int-card--group {
+  --int-card-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: —
+  --int-card-body-padding: var(--i-spacing-container-lg) var(--i-spacing-container-xl); // SG: 14px 16px ⚠️ · Aura: —
+}
+
+// knowledgeBase: .prCard--noBg · no background and no shadow.
+.int-card--no-bg {
+  background: transparent;
+  box-shadow: none;
+}

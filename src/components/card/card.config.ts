@@ -12,7 +12,19 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'card',
-  variants: ['basic', 'advanced', 'data-card', 'mini-card', 'option-card'],
-  uses: ['button', 'badge'],
+  uses: ['button'],
+  variants: [
+    'basic',
+    'advanced',
+    'compact',
+    'outlined',
+    'content-gap-lg',
+    'stretch-content',
+    'data',
+    'group',
+    'mini',
+    'option',
+    'version',
+  ],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

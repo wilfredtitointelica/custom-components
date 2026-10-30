@@ -1,12 +1,15 @@
 /*——————————————————————————————————————————————————————————*\
- * MODIFIERS ( --modifier ) · Option card
+ * MODIFIERS ( --modifier ) · Option
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: .prCard + variante option · selectable option. States come from --selectable.
 .int-card--option {
-  border-radius: var(--int-card-option-border-radius);
+  --int-card-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #FCFCFC (card/color/background) ⚠️ · Aura: —
+  --int-card-body-padding: var(--i-spacing-gap-md) var(--i-spacing-container-2xl); // SG: --i-spacing-gap-md --i-spacing-container-2xl · Figma: 12px 24px (card/padding/y/lg, card/padding/x/2xl) · Aura: —
+  --int-card-content-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (card/gap/sm) · Aura: —
+  --int-card-option-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Figma: 1px (card/border/width/sm) · Aura: —
+  --int-card-option-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Figma: #D9D9E3 (card/color/border) · Aura: —
 
-  .int-card__body {
-    padding-block: var(--int-card-option-body-padding-y);
-    padding-inline: var(--int-card-option-body-padding-x);
-  }
+  border: var(--int-card-option-border-width) solid var(--int-card-option-border-color);
+  box-shadow: none;
 }
