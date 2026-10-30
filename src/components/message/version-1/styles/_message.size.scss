@@ -2,7 +2,7 @@
  * MODIFIERS ( --modifier ) · Size
 \*——————————————————————————————————————————————————————————*/
 
-// Small: smaller text and icon box; padding and gap as Figma toast Size=Small.
+// Small (Style Guide p-message-sm): less vertical padding, gap and text; the icon box follows the text line.
 .int-message--sm {
   .int-message__content {
     gap: var(--int-message-sm-content-gap);
@@ -12,7 +12,7 @@
   }
 
   .int-message__icon {
-    height: var(--int-message-sm-icon-box-height);
+    height: var(--int-message-sm-text-line-height);
   }
 
   .int-message__close-button {
@@ -20,3 +20,4 @@
     height: var(--int-message-sm-close-button-size);
   }
 }
+

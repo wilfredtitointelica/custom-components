@@ -1,16 +1,15 @@
 <!--
   title: Sizes
-  description: El tamaño por defecto lleva título (16/24 bold) y descripción (14/20); con size="small" el texto pasa a 12/16 y el ícono a una caja de 16px. En small el título va en negrita al tamaño del texto, en su propia línea.
+  description: Además del tamaño por defecto, size="small" (12/16, padding de 6px). En small no se usa int-message__title: el título va en negrita al tamaño del texto, en su propia línea.
 -->
 <div class="u-display-flex u-flex-column u-gap-md">
+  <int-message size="small" icon="icon icon-info">Small Message</int-message>
+  <int-message icon="icon icon-info">Normal Message</int-message>
   <int-message severity="error" icon="icon icon-alert">
     <span class="u-display-flex u-flex-column">
-      <span class="u-text-lg u-text-lineHeight-lg u-bold">Download failed</span>
+      <span class="int-message__title">Download failed</span>
       <span>We couldn’t generate the file. Please try again. If the issue persists, contact support.</span>
     </span>
-  </int-message>
-  <int-message severity="error" size="small" icon="icon icon-alert">
-    Write here the text of the description and to help the user to understand more information
   </int-message>
   <int-message severity="error" size="small" icon="icon icon-alert">
     <span class="u-bold u-display-block">Invalid Input Format</span>

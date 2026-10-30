@@ -1,14 +1,11 @@
 <!--
   title: Template
-  description: El template #container reemplaza el contenido y recibe closeCallback para cerrar desde un botón propio; #icon reemplaza el ícono. El contenido se maqueta con helpers.
+  description: El template #container reemplaza el contenido del mensaje (caso .prMessage--wrapVertical de la base de conocimientos): título y lista en columna con la acción a la derecha, armados con helpers; closeCallback cierra desde el botón.
 -->
-<int-message severity="info" closable>
-  <ng-template #icon>
-    <i class="icon icon-info" aria-hidden="true"></i>
-  </ng-template>
+<int-message severity="info" icon="icon icon-info" closable>
   <ng-template #container let-closeCallback="closeCallback">
-    <div class="u-display-flex u-flex-column u-flex-grow-1">
-      <span class="u-text-lg u-text-lineHeight-lg u-bold">What Happens Next</span>
+    <div class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+      <span class="int-message__title">What Happens Next</span>
       <span>• Wait for official confirmation via email (2-3 business days)</span>
       <span>• Your request will be processed once received</span>
       <span>• Contact support if you don't receive confirmation</span>

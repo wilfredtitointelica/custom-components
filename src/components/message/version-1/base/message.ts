@@ -20,8 +20,9 @@ export interface IntMessageContainerContext {
 
 /**
  * <int-message> · version 1. Replica of PrimeNG v20 p-message without PrimeNG at runtime.
- * Message component is used to display inline messages. Scope limited to the knowledge base, Figma and the Style
- * Guide: severity contrast, size large, variant outlined, life and the deprecated text/escape are left out.
+ * Message component is used to display inline messages. Scope: what the knowledge base, the Style Guide and Figma
+ * define; severity contrast, size large, variant outlined, life, the deprecated text/escape and the transition options
+ * are left out until a design asks for them.
  */
 @Component({
   selector: 'int-message',
@@ -61,7 +62,7 @@ export class IntMessage {
   protected readonly classes = computed(() => {
     const classes = ['int-message', `int-message--${this.severity()}`];
     if (this.size() === 'small') classes.push('int-message--sm');
-    if (this.variant() === 'simple') classes.push('int-message--simple');
+    if (this.variant()) classes.push(`int-message--${this.variant()}`);
     return classes.join(' ');
   });
 
