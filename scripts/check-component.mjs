@@ -185,6 +185,18 @@ function checkVersion(component, version, report, deps) {
       if (inVariants(file) && /\sstyle="|\[style\./.test(markup))
         report.error(path, 'inline style in a variant: use u-* helpers');
       if (/animate\.(enter|leave)/.test(markup)) animates = true;
+      // State and a11y belong to the component (an input + host bindings), not to whoever uses it.
+      if (inVariants(file))
+        for (const tag of markup.matchAll(/<int-[a-z-]+\b[^>]*>/g)) {
+          const wiring = tag[0].match(
+            /\[attr\.(aria-[a-z]+|tabindex)\]|\srole="|\(keydown\.[a-z]+\)/g,
+          );
+          if (wiring)
+            report.warn(
+              `${path}:${lineOf(markup, tag.index)}`,
+              `${[...new Set(wiring.map((w) => w.trim().replace(/="$/, '')))].join(', ')} on <int-*>: add an input (e.g. disabled) and handle it inside the component`,
+            );
+        }
       for (const match of markup.matchAll(/\sclass="([^"]*)"/g)) {
         // Interpolated parts ({{ item.icon }}) are data, not class names.
         const names = match[1]

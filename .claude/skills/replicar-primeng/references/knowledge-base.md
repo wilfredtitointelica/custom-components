@@ -43,6 +43,7 @@ Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase
 | Bloque **TS** (opciones, handlers) | datos y lógica de la demo | `example.ts` de la variante (constante tipada, `signal()` si cambia) |
 | Props frecuentes | inputs habituales en el proyecto | se muestran en las variantes; **no** cambian los defaults de PrimeNG |
 | Reglas ("`appendTo="body"` obligatorio") | restricciones de uso | se aplican en el `example.html` y se citan en la descripción de la variante |
+| **Adaptaciones** (JS/CSS que cambia el comportamiento natural de PrimeNG: la opción *All* fija en un select, iconos de orden propios en una tabla…) | lo que el proyecto necesitó y PrimeNG no daba | se implementa **de forma nativa** en el componente como extensión `/** int-* extension */` (input, template o lógica en la base), sin copiar el parche. Ver sección 4 |
 | Notas | límites de lo documentado | "Diferencias" / "Limitaciones" del informe |
 
 ## 3. Variantes que salen de la base de conocimientos (Intelica.knowledgeBase)
@@ -50,15 +51,17 @@ Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase
 - Cada **modificador** y cada **caso con título propio** (p. ej. "Variante Export") → una variante.
 - Cada **vista alternativa** que la base de conocimientos (Intelica.knowledgeBase) muestra con contenido distinto en los templates (`#item` con
   avatar, `#selectedItem` con bandera…) → una variante de composición, maquetada con helpers `.u-*`.
-- Si el caso no puede hacerse con la API de PrimeNG (necesita un input o un comportamiento que PrimeNG
-  no tiene), se pregunta (SKILL.md 2.2): extensión `int-*` comentada o se omite.
+- Si el caso necesita un input o un comportamiento que PrimeNG no tiene y la base de conocimientos lo
+  resolvió con una **adaptación**, se implementa como extensión `int-*` sin preguntar (sección 4). Solo
+  se pregunta (SKILL.md 2.2) si no queda claro qué hace la adaptación o si contradice otra.
 - Lo que solo aparece en Figma y no en la base de conocimientos (Intelica.knowledgeBase) **no** genera variante: va a "Solo en Figma" del informe.
 
 ## 4. Conflictos
 
 | Situación | Gana |
 |---|---|
-| Base de conocimientos (Intelica.knowledgeBase) y PrimeNG difieren en API, estructura o comportamiento | PrimeNG (la base de conocimientos (Intelica.knowledgeBase) se adapta y se anota) |
+| Base de conocimientos (Intelica.knowledgeBase) y PrimeNG difieren en API o estructura (nombres de inputs, elementos, orden) | PrimeNG (la base de conocimientos se adapta y se anota) |
+| La base de conocimientos documenta una **adaptación** del comportamiento de PrimeNG (la opción *All* que no quedaba fija, iconos de orden que PrimeNG no deja cambiar) | La base de conocimientos: el comportamiento adaptado es el deseado. Se implementa nativo como extensión `int-*`, conservando los nombres de PrimeNG en todo lo demás, y se anota en "Extensiones" del informe |
 | Base de conocimientos (Intelica.knowledgeBase) y PrimeNG/Aura difieren en un valor visual | Base de conocimientos (Intelica.knowledgeBase, vía su token `--i-*`) |
 | Base de conocimientos (Intelica.knowledgeBase) y el SCSS del Style Guide (`.pr*`) difieren | base de conocimientos (Intelica.knowledgeBase); la diferencia va al informe para corregir una de las dos fuentes |
 | La base de conocimientos (Intelica.knowledgeBase) no documenta algo (un estado, un elemento) | SCSS `.pr*` del Style Guide; si tampoco, PrimeNG traducido a tokens (SKILL.md 3.3) |

@@ -126,7 +126,13 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
 7. **Variantes** (2.4, 3.4, 3.5): las que corresponden a la base de conocimientos (Intelica.knowledgeBase) o a PrimeNG se reubican con su slug; el
    contenido de los templates con helpers `.u-*`; con 3 o más, `npm run order:variants`.
 8. **Interacción**: lo que falte de 3.6 (animaciones, ripple, `prefers-reduced-motion`) y de 3.7
-   (tab stops, foco, teclas, `:focus-visible`).
+   (tab stops, foco, teclas, `:focus-visible`). Si el maquetador conectó estado o ARIA en las variantes
+   (`[attr.aria-disabled]`, `[attr.tabindex]`, `role`, `(keydown.*)` sobre el `<int-*>`), se mueve a la
+   base: un input (`disabled`…) y el host resuelve `tabindex`, ARIA y teclado.
+9. **Adaptaciones de comportamiento**: lo que el maquetador cambió respecto a PrimeNG porque el
+   proyecto lo necesita (y la base de conocimientos lo documenta: *All* fija, iconos de orden propios…)
+   se **conserva** como extensión `/** int-* extension */`, implementado nativo en la base. No se
+   "corrige" hacia PrimeNG (`replicar-primeng/references/knowledge-base.md` sección 4).
 
 ## 5. Validar
 
@@ -158,6 +164,9 @@ El de la fase 5 de `replicar-primeng`, más:
 - ❌ Conservar nombres del maquetador que difieren de PrimeNG, o valores que difieren de la base de conocimientos (Intelica.knowledgeBase), sin
   reportarlo: se alinean y se anotan.
 - ❌ Adaptar un wrapper de PrimeNG "por encima": se replica con `/replicar-primeng`.
+- ❌ Quitar una adaptación de comportamiento documentada en la base de conocimientos para volver al
+  comportamiento de PrimeNG.
+- ❌ Dejar en las variantes estado o ARIA que corresponde al componente.
 - ❌ Dejar tokens sin comentario de origen o provisionales sin `data-dep`: `sincronizar-componente` y
   `resolver-dependencias` dependen de esas huellas.
 - ❌ Borrar variantes del maquetador sin preguntar cuando no tienen origen en la base de conocimientos (Intelica.knowledgeBase) ni en PrimeNG.

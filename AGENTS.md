@@ -39,6 +39,12 @@ src/components/<id>/version-N/
 - Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
   animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline.
+- Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se
+  agrega como input y la base resuelve `tabindex`, `role`, `aria-*` y teclado. Las variantes no ponen
+  `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>`.
+- Las adaptaciones de comportamiento que documenta la base de conocimientos (opción *All* fija en un
+  select, iconos de orden propios en una tabla…) se implementan nativas como extensión
+  `/** int-* extension */`; no se vuelve al comportamiento de PrimeNG.
 
 ## Dependencias entre componentes
 

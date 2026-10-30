@@ -349,8 +349,10 @@ Decide y muestra, sin pedir confirmación salvo lo indicado en 2.2:
 - **Componente destino** y **link de Figma opcional** (1.1): siempre, al inicio.
 - **Archivos customizados** (1.2): completar solo la plantilla, forzar o cancelar.
 - Un token sin equivalente en el Style Guide (3.3).
-- Un caso `.pr` de la base de conocimientos (Intelica.knowledgeBase) que necesita un input o comportamiento que PrimeNG v20 no tiene (1.3b):
-  ¿extensión `int-*` o se omite?
+- Un caso `.pr` de la base de conocimientos (Intelica.knowledgeBase) que necesita un input o comportamiento que PrimeNG v20 no tiene (1.3b)
+  y que la base de conocimientos **no** resolvió con una adaptación: ¿extensión `int-*` o se omite? Si la
+  base de conocimientos ya documenta la adaptación (*All* fija, iconos de orden propios…), no se
+  pregunta: se implementa nativa como extensión (`references/knowledge-base.md` sección 4).
 
 Lo que solo aparece en Figma **no** se pregunta: se reporta en "Solo en Figma".
 - Dependencia ambigua (1.6): p. ej. checkbox → ¿`input` o un componente propio?
@@ -627,6 +629,13 @@ Todo lo que PrimeNG permite con teclado se permite igual; detalle en
 - **ARIA ligada al teclado** (`aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`,
   `aria-live`…) e inputs `ariaLabel`/`ariaLabelledBy` con los mismos nombres que PrimeNG.
 - Búsqueda por tecleo (*typeahead*) si PrimeNG la tiene, con el mismo intervalo.
+- **Estado y ARIA dentro del componente, nunca en quien lo usa.** Si un caso necesita un estado que
+  PrimeNG no tiene en ese componente (una card deshabilitada o seleccionable), se agrega el input
+  (`disabled`, con el nombre que PrimeNG usa en otros componentes) como extensión `int-*`, y la base
+  resuelve en el host `tabindex`, `role`, `aria-disabled`/`aria-pressed`, clase de estado y teclado
+  (`Enter`/`Space`). La variante solo escribe `<int-card [disabled]="item.disabled">`; nunca
+  `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>` (`check:component` lo
+  avisa).
 
 ---
 
@@ -747,6 +756,11 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 - ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
   `dep:<id> provisional` y se declara en `requires` (base) o `uses` (solo variantes).
 - ❌ Usar un provisional sin marcar o importar un `int-*` que no está en `done`.
+- ❌ Poner en una variante el estado o la accesibilidad que corresponde al componente
+  (`[attr.aria-*]`, `[attr.tabindex]`, `role`, `(keydown.*)` sobre un `<int-*>`): va como input en la
+  base (3.7).
+- ❌ Descartar una adaptación de comportamiento que la base de conocimientos documenta (*All* fija,
+  iconos de orden propios) porque PrimeNG no la trae: se implementa nativa como extensión.
 - ❌ Maquetar el contenido de los templates de las variantes con `style` inline, SCSS propio o clases de
   PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).
 - ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,
