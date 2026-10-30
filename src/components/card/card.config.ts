@@ -12,7 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'card',
-  uses: ['button'],
+  uses: ['button', 'badge'],
   variants: [
     'basic',
     'advanced',

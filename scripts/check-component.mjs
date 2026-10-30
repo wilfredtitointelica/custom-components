@@ -228,7 +228,8 @@ function checkVersion(component, version, report, deps) {
               report.error(`${path}:${line}`, `helper "${name}" in the base: use BEM + tokens`);
             else if (styleGuide && !styleGuide.helpers.has(name))
               report.error(`${path}:${line}`, `helper "${name}" does not exist in the Style Guide`);
-          } else if (!/^(int-|sk-|pi$|pi-)/.test(name))
+          // Icon fonts: primeicons (pi pi-*) and the Style Guide incontrol-icons (icon icon-*).
+          } else if (!/^(int-|sk-|pi$|pi-|icon$|icon-)/.test(name))
             report.warn(
               `${path}:${line}`,
               `loose class "${name}": use int-${id}__<element> / --<modifier>`,

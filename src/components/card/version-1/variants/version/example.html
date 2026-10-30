@@ -1,6 +1,6 @@
 <!--
   title: Version
-  description: Composición int-card--version: tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla.
+  description: Composición int-card--version: tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla (clic o Enter/Espacio). La más reciente lleva el badge "Latest version".
 -->
 <div class="u-display-flex u-flex-wrap u-gap-lg">
   @for (version of versions; track version.id) {
@@ -10,11 +10,29 @@
       [selected]="chosen() === version.id"
       (onSelect)="chosen.set(version.id)"
     >
-      <div class="u-display-flex u-justify-content-between u-align-items-center u-gap-sm">
-        <span class="u-text-lg u-bold">{{ version.name }}</span>
-        <span class="u-text-sm u-color-grey-500 u-text-nowrap">{{ version.date }}</span>
+      <div class="u-display-flex">
+        <div class="u-display-flex u-flex-column u-flex-grow-1">
+          <div class="u-display-flex u-align-items-center u-gap-sm">
+            <div class="u-display-flex u-align-items-center u-gap-xs">
+              <i class="icon icon-calendar" aria-hidden="true"></i>
+              <span class="u-text-lg u-bold u-text-nowrap">{{ version.name }}</span>
+            </div>
+            @if (version.latest) {
+              <!-- dep:badge provisional · replace with <int-badge> when badge is done -->
+              <span class="u-px-3 u-py-2 u-radius-xl u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-surface u-text-xs u-text-lineHeight-xs u-text-nowrap" data-dep="badge">
+                Latest version
+              </span>
+              <!-- /dep:badge -->
+            }
+          </div>
+          <span class="u-text-md">{{ version.notes }}</span>
+          <span class="u-display-flex u-gap-xs u-text-sm u-text-lineHeight-sm u-text-nowrap">
+            <span class="u-bold">Date:</span>
+            <span>{{ version.date }}</span>
+          </span>
+        </div>
+        <i class="icon icon-nav-diagonal" aria-hidden="true"></i>
       </div>
-      <span class="u-text-md">{{ version.notes }}</span>
     </int-card>
   }
 </div>

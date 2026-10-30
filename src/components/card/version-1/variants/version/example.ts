@@ -5,14 +5,14 @@ import { IntCard } from '../../base/card';
 interface Version {
   id: string;
   name: string;
-  date: string;
   notes: string;
+  date: string;
+  latest: boolean;
 }
 
 const VERSIONS: readonly Version[] = [
-  { id: 'v3', name: 'Version 3', date: 'Jan 2026', notes: 'New fee categories and monthly summary.' },
-  { id: 'v2', name: 'Version 2', date: 'Jul 2025', notes: 'Regional breakdown of interchange.' },
-  { id: 'v1', name: 'Version 1', date: 'Jan 2025', notes: 'First release of the report.' },
+  { id: 'v12', name: 'Version 12', notes: 'Initial threshold 1.0%, USD 22,000 penalty', date: '19 feb, 2026', latest: true },
+  { id: 'v11', name: 'Version 11', notes: 'Initial threshold 1.5%, USD 18,000 penalty', date: '03 nov, 2025', latest: false },
 ];
 
 @Component({
@@ -22,5 +22,5 @@ const VERSIONS: readonly Version[] = [
 })
 export class CardVersionExample {
   readonly versions = VERSIONS;
-  readonly chosen = signal('v3');
+  readonly chosen = signal('v12');
 }
