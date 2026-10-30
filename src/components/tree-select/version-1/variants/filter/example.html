@@ -1,0 +1,5 @@
+<!--
+  title: Filter
+  description: Con filter el panel muestra un buscador arriba del árbol; al escribir se ven los nodos que coinciden y sus padres se abren.
+-->
+<int-tree-select [options]="nodes" selectionMode="checkbox" [(ngModel)]="selected" filter filterPlaceholder="Search text here" placeholder="Select items" />

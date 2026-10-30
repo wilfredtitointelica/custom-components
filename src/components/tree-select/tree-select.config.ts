@@ -12,5 +12,17 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'tree-select',
+  variants: [
+    'basic',
+    'multiple',
+    'checkbox',
+    'filter',
+    'clear-icon',
+    'disabled',
+    'invalid',
+    'label-as-toggle',
+    'children-aligned',
+  ],
+  requires: ['tree-view', 'input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

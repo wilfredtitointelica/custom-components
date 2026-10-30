@@ -1,6 +1,105 @@
 <!--
   title: TreeSelect
-  description:
-  figma:
+  description: TreeSelect is a form component to choose from hierarchical data.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15195-19617
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15195-19620
 -->
-int-tree-select
+<!-- Hidden combobox: focus, keyboard and ARIA of the trigger, as PrimeNG -->
+<div class="int-tree-select__hidden-accessible">
+  <input
+    #focusInput
+    type="text"
+    role="combobox"
+    readonly
+    [attr.id]="inputId()"
+    [attr.disabled]="isDisabled() ? '' : null"
+    [attr.tabindex]="isDisabled() ? -1 : tabindex()"
+    [attr.aria-controls]="overlayVisible() ? listId() : null"
+    aria-haspopup="tree"
+    [attr.aria-expanded]="overlayVisible()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel() || label() || placeholder()"
+    (focus)="onInputFocus($event)"
+    (blur)="onInputBlur($event)"
+    (keydown)="onKeyDown($event)"
+  />
+</div>
+
+<!-- Label: #value template, the selected labels or the placeholder -->
+<div class="int-tree-select__label-container">
+  <div class="int-tree-select__label" [class.int-tree-select__label--placeholder]="emptyValue()">
+    @if (valueTemplate(); as valueTpl) {
+      <ng-container [ngTemplateOutlet]="valueTpl" [ngTemplateOutletContext]="{ $implicit: value(), placeholder: placeholder() }" />
+    } @else {
+      @if (emptyValue()) {
+        {{ placeholder() }}
+      } @else {
+        {{ label() }}
+      }
+    }
+  </div>
+</div>
+
+@if (showClear() && !emptyValue() && !isDisabled()) {
+  <i class="int-tree-select__clear-icon icon icon-cancel" role="button" aria-label="Clear" (click)="clear($event)"></i>
+}
+
+<div class="int-tree-select__dropdown" aria-hidden="true">
+  <i class="int-tree-select__dropdown-icon icon" [class.icon-arrow-up]="overlayVisible()" [class.icon-arrow-down]="!overlayVisible()"></i>
+</div>
+
+<!-- Panel attached to the body under the trigger (CDK overlay instead of p-overlay) -->
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="host"
+  [cdkConnectedOverlayOpen]="overlayVisible()"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayMinWidth]="triggerWidth()"
+  (overlayOutsideClick)="onOutsideClick($event)"
+  (detach)="hide()"
+>
+  <div
+    #panel
+    class="int-tree-select__panel"
+    [class]="panelStyleClass()"
+    [attr.id]="listId()"
+    animate.enter="int-tree-select__panel--enter"
+    (keydown)="onPanelKeyDown($event)"
+  >
+    @if (filter()) {
+      <div class="int-tree-select__filter">
+        <!-- dep:input provisional · replace with <int-input> (icon field) when input is done -->
+        <input
+          type="text"
+          class="int-tree-select__filter-input"
+          data-dep="input"
+          [attr.placeholder]="filterPlaceholder()"
+          [attr.aria-label]="filterPlaceholder() || 'Search'"
+          [value]="filterValue()"
+          (input)="onFilterInput($event)"
+        />
+        <!-- /dep:input -->
+        <i class="int-tree-select__filter-icon icon icon-search" aria-hidden="true"></i>
+      </div>
+    }
+
+    <div class="int-tree-select__tree-container" [style.max-height]="scrollHeight()">
+      <int-tree-view
+        [value]="filteredOptions()"
+        [selectionMode]="selectionMode()"
+        [selection]="value()"
+        (selectionChange)="onSelectionChange($event)"
+        [propagateSelectionUp]="propagateSelectionUp()"
+        [propagateSelectionDown]="propagateSelectionDown()"
+        [emptyMessage]="emptyMessage()"
+        [labelAsToggle]="labelAsToggle()"
+        [childrenAligned]="childrenAligned()"
+        [ariaLabel]="ariaLabel() || placeholder()"
+        (onNodeSelect)="onSelect($event)"
+        (onNodeUnselect)="onNodeUnselect.emit($event)"
+        (onNodeExpand)="onNodeExpand.emit($event)"
+        (onNodeCollapse)="onNodeCollapse.emit($event)"
+      />
+    </div>
+  </div>
+</ng-template>

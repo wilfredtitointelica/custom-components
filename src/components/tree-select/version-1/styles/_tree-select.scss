@@ -2,15 +2,83 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// --i-treeselect-* and .prTreeselect are not in the Style Guide bundle base: each token points to the base token the
+// Style Guide _treeselect.scss resolves to. The rows of the tree come from int-tree-view.
 :root {
   --NOTE-TREE-SELECT: 'int-tree-select ( Custom )';
+
+  // --- trigger ---
+  --int-tree-select-width: calc(var(--i-sizing-3xl) * 2 + var(--i-sizing-xl)); // knowledgeBase: example min-width 232px · Figma: 232px (dropdown-input-levels), no exact token (96×2 + 40)
+  --int-tree-select-height: var(--i-sizing-lg); // SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels) · Aura: —
+  --int-tree-select-background: var(--i-color-secondary-50); // SG: .p-treeselect background · Figma: #FCFCFC (input/color/background) · Aura: {form.field.background}
+  --int-tree-select-border-width: var(--i-border-width-sm); // SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
+  --int-tree-select-border-color: var(--i-color-secondary-200); // SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border) · Aura: {form.field.border.color}
+  --int-tree-select-border-radius: var(--i-border-radius-lg); // SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg) · Aura: {form.field.border.radius}
+  --int-tree-select-hover-border-color: var(--i-color-primary-400); // SG: :hover border · Aura: {form.field.hover.border.color}
+  --int-tree-select-focus-border-color: var(--i-color-primary-900); // SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border) · Aura: {form.field.focus.border.color}
+  --int-tree-select-invalid-border-color: var(--i-border-error); // SG: .p-invalid border · Aura: {form.field.invalid.border.color}
+  --int-tree-select-invalid-color: var(--i-text-color-error); // SG: .p-invalid placeholder / icon · Aura: {form.field.invalid.placeholder.color}
+  --int-tree-select-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value · Aura: {form.field.disabled.background}
+  --int-tree-select-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value · Aura: {form.field.disabled.color}
+  --int-tree-select-transition-duration: var(--i-motion-duration-fast); // Aura: {form.field.transition.duration}
+
+  // --- label ---
+  --int-tree-select-label-padding-y: var(--i-spacing-container-sm); // SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
+  --int-tree-select-label-padding-x: var(--i-spacing-container-md); // SG: .p-treeselect-label padding 8px · Figma: 8px (input/padding/x/md)
+  --int-tree-select-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
+  --int-tree-select-font-size: var(--i-typography-font-size-md); // SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
+  --int-tree-select-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (input/font/lineHeight/md), no SG value
+  --int-tree-select-color: var(--i-color-primary-900); // SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
+  --int-tree-select-placeholder-color: var(--i-form-field-placeholder); // SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
+
+  // --- icons ---
+  --int-tree-select-icon-color: var(--i-color-primary-900); // SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
+  --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value · Aura: —
+  --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
+  --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
+
+  // --- panel ---
+  --int-tree-select-panel-background: var(--i-color-secondary-50); // SG: .prTreeselect__overlay background · Figma: #FCFCFC (dropdown/color/background)
+  --int-tree-select-panel-border-radius: var(--i-border-radius-lg); // SG: --i-select-overlay-border-radius · Figma: 8px (dropdown/border/radius/lg)
+  --int-tree-select-panel-padding: var(--i-spacing-container-xs); // Figma: 4px (dropdown/padding/x/xs, dropdown/padding/y/xs), no SG value
+  --int-tree-select-panel-gap: var(--i-spacing-gap-xs); // SG: .p-tree-selectable gap 4px · Figma: 4px (dropdown/gap/xs)
+  --int-tree-select-panel-offset: var(--i-spacing-50); // Figma: 4px between trigger and panel, no SG value
+
+  // --- filter ---
+  --int-tree-select-filter-height: var(--i-sizing-md); // SG: .p-tree-filter-input height 24px · Figma: 24px
+  --int-tree-select-filter-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-filter-input padding 4px · Figma: 4px (input/padding/y/xs)
+  --int-tree-select-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px · Figma: 8px (input/padding/x/md)
+  --int-tree-select-filter-font-size: var(--i-form-field-size-sm); // SG: .p-tree-filter-input --i-form-field-size-sm 12px · Figma: 12px (input/font/size/sm)
+  --int-tree-select-filter-border-radius: var(--i-border-radius-md); // Figma: 6px (input/border/radius/md), no SG value
+  --int-tree-select-filter-focus-border-color: var(--i-color-secondary-900); // SG: .p-iconfield .p-inputtext:focus border
+  --int-tree-select-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px · Figma: 12px (icon/sizing/xs)
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The host is the trigger, as PrimeNG p-treeselect.
 .int-tree-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--int-tree-select-icon-gap);
+  box-sizing: border-box;
+  // Fixed width as the taller, so a long selection ends with an ellipsis; the consumer changes the token.
+  width: var(--int-tree-select-width);
+  max-width: 100%;
+  height: var(--int-tree-select-height);
+  font-family: var(--int-tree-select-font-family);
+  font-size: var(--int-tree-select-font-size);
+  line-height: var(--int-tree-select-line-height);
+  color: var(--int-tree-select-color);
+  background: var(--int-tree-select-background);
+  border: var(--int-tree-select-border-width) solid var(--int-tree-select-border-color);
+  border-radius: var(--int-tree-select-border-radius);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color var(--int-tree-select-transition-duration);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +86,177 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tree-select {
+  // Visually hidden but focusable (PrimeNG p-hidden-accessible).
+  &__hidden-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    border: 0;
+    white-space: nowrap;
+
+    input {
+      transform: scale(0);
+    }
+  }
+
+  &__label-container {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  // Block of text (not flex), so text-overflow can add the ellipsis (Style Guide .p-treeselect-label > span).
+  &__label {
+    display: block;
+    padding: var(--int-tree-select-label-padding-y) var(--int-tree-select-label-padding-x);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &--placeholder {
+      color: var(--int-tree-select-placeholder-color);
+    }
+  }
+
+  &__clear-icon {
+    flex-shrink: 0;
+    font-size: var(--int-tree-select-clear-icon-size);
+    color: var(--int-tree-select-icon-color);
+  }
+
+  &__dropdown {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding-inline-end: var(--int-tree-select-label-padding-x);
+  }
+
+  &__dropdown-icon {
+    font-size: var(--int-tree-select-icon-size);
+    color: var(--int-tree-select-icon-color);
+  }
+
+  // Panel: rendered in the body by the CDK overlay, so it is styled on its own element.
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-tree-select-panel-gap);
+    box-sizing: border-box;
+    width: 100%;
+    margin-block: var(--int-tree-select-panel-offset);
+    padding: var(--int-tree-select-panel-padding);
+    font-family: var(--int-tree-select-font-family);
+    background: var(--int-tree-select-panel-background);
+    border: var(--int-tree-select-border-width) solid transparent;
+    border-radius: var(--int-tree-select-panel-border-radius);
+    // SG .prTreeselect__overlay box-shadow, with the base shadow tokens (Figma shadow.300).
+    box-shadow:
+      var(--i-shadow-x-0) var(--i-shadow-y-150) var(--i-shadow-y-200) var(--i-shadow-spread-40) var(--i-shadow-color-200),
+      var(--i-shadow-x-0) var(--i-shadow-y-100) var(--i-shadow-y-100) var(--i-shadow-spread-20) var(--i-shadow-color-100);
+
+    &--enter {
+      animation: int-tree-select-panel-enter var(--int-tree-select-transition-duration) var(--i-motion-ease-out);
+    }
+  }
+
+  &__filter {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  // TODO(dep:input provisional) minimal look until the icon field of int-input.
+  &__filter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--int-tree-select-filter-height);
+    padding: var(--int-tree-select-filter-padding-y) var(--int-tree-select-filter-padding-x);
+    padding-inline-end: calc(var(--int-tree-select-filter-padding-x) * 2 + var(--int-tree-select-filter-icon-size));
+    font: inherit;
+    font-size: var(--int-tree-select-filter-font-size);
+    color: var(--int-tree-select-color);
+    background: var(--int-tree-select-background);
+    border: var(--int-tree-select-border-width) solid var(--int-tree-select-border-color);
+    border-radius: var(--int-tree-select-filter-border-radius);
+    outline: none;
+
+    &::placeholder {
+      color: var(--int-tree-select-placeholder-color);
+    }
+
+    &:hover {
+      border-color: var(--int-tree-select-hover-border-color);
+    }
+
+    &:focus-visible {
+      border-color: var(--int-tree-select-filter-focus-border-color);
+    }
+  }
+
+  &__filter-icon {
+    position: absolute;
+    inset-inline-end: var(--int-tree-select-filter-padding-x);
+    top: 50%;
+    font-size: var(--int-tree-select-filter-icon-size);
+    color: var(--int-tree-select-icon-color);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__tree-container {
+    overflow: hidden auto;
+  }
+}
+
+// PrimeNG .p-connected-overlay-enter: fade + scaleY from the trigger.
+@keyframes int-tree-select-panel-enter {
+  from {
+    opacity: 0;
+    transform: scaleY(0.8); // Aura: scaleY(0.8)
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-tree-select {
+.int-tree-select:not(.int-tree-select--disabled):hover {
+  border-color: var(--int-tree-select-hover-border-color);
+}
+
+.int-tree-select:not(.int-tree-select--disabled):is(.int-tree-select--focus, .int-tree-select--open) {
+  border-color: var(--int-tree-select-focus-border-color);
+}
+
+.int-tree-select--invalid {
+  border-color: var(--int-tree-select-invalid-border-color);
+
+  .int-tree-select__label--placeholder,
+  .int-tree-select__dropdown-icon {
+    color: var(--int-tree-select-invalid-color);
+  }
+}
+
+.int-tree-select--disabled {
+  color: var(--int-tree-select-disabled-color);
+  background: var(--int-tree-select-disabled-background);
+  border-color: var(--int-tree-select-disabled-background);
+  cursor: default;
+
+  .int-tree-select__label--placeholder,
+  .int-tree-select__dropdown-icon {
+    color: var(--int-tree-select-disabled-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-tree-select,
+  .int-tree-select__panel {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
