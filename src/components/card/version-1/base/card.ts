@@ -42,6 +42,8 @@ export class IntCard {
   readonly header = input<string>();
   /** Subheader (subtitle) of the card; a #subtitle template takes precedence. */
   readonly subheader = input<string>();
+  /** int-* extension: fixed height of the #header (any CSS length, e.g. '240px'); the media fills it. */
+  readonly headerHeight = input<string>();
 
   /**
    * int-* extension: the card works as a toggle button (mini, option and version formats of the

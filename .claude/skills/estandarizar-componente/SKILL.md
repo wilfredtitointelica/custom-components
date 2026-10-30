@@ -121,6 +121,8 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
    la base de conocimientos (Intelica.knowledgeBase, o el SCSS `.pr*`, o Aura traducido) y su **comentario de origen**
    `// knowledgeBase: <token> · Figma: <valor> (<variable>) · Aura: <valor>`. El valor que tenía el maquetador no
    va al comentario: va a la tabla de cambios. Literales → token más cercano y la diferencia al informe.
+   Un `overflow` en el bloque `.int-<id>` (o `u-overflow-*` sobre el `<int-*>` de una variante) se mueve
+   al `__elemento` que necesita el recorte: el bloque no recorta, para no cortar overlays abiertos dentro.
 5. **Cabecera**: si hay link de Figma, `figma:` y `figma-frame:` (1.5).
 6. **Dependencias** (1.6): lo que el maquetador copió o imitó de otro componente → `int-*` real si está
    en `done`, o provisional marcado `dep:<id> provisional` + `data-dep`, y el id en `requires` (base) o

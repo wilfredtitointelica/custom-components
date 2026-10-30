@@ -39,6 +39,9 @@ src/components/<id>/version-N/
 - Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
   animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline.
+- El bloque no recorta: sin `overflow` en `.int-<id>` ni `u-overflow-*` sobre un `<int-*>` (cortaría
+  selects, datepickers, popovers abiertos dentro). Si hace falta recortar, va en el `__elemento` dentro
+  del SCSS del componente (p. ej. `.int-card__header { overflow: hidden }`).
 - Sin rastros de PrimeNG en lo visible: nada de imágenes, logos o URLs de `primefaces.org`. Una imagen de
   ejemplo es un placeholder con fondo del Style Guide (`u-background-surface` + icono `pi pi-image`).
 - Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se

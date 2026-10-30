@@ -38,6 +38,9 @@ Documentación con tablas: skill `angular-designer`, `references/utilities.md`.
 Para cada capa del contenido de un template en una variante:
 
 1. **Estructura** (flex, dirección, gap, padding, margin, alineación, tamaño, overflow) → helpers `.u-*`.
+   `u-overflow-*` solo sobre el contenido del template, **nunca sobre el `<int-*>`**: recortaría los
+   overlays (select, datepicker, popover) abiertos dentro. Si el componente necesita recortar (imagen
+   del header de una card), lo hace su SCSS en el `__elemento` (`&__header { overflow: hidden }`).
 2. **Visual estático** con helper exacto del mismo token (`u-text-*`, `u-bold`, `u-color-*`,
    `u-radius-*`, `u-shadow-*`, bordes `u-b*-*`) → helpers `.u-*`.
 3. **Estados visuales** (hover, active, focus, seleccionado, disabled) **u otra cosa que no sea
