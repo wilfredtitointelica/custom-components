@@ -1,2 +1,5 @@
 // int-stepper · entry point. Add one `@use 'stepper.<variant>' as stepper-<variant>;` per variant module.
 @use 'stepper';
+@use 'stepper.progressive' as stepper-progressive;
+@use 'stepper.vertical' as stepper-vertical;
+@use 'stepper.descriptive' as stepper-descriptive;

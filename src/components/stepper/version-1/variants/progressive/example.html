@@ -1,0 +1,12 @@
+<!--
+  title: Progressive
+  description: Con variant="progressive" los pasos anteriores al activo mantienen el color activo, para indicar que están completados.
+-->
+<int-stepper variant="progressive" [(value)]="step">
+  <int-step-list>
+    <int-step [value]="1">Review</int-step>
+    <int-step [value]="2">Action</int-step>
+    <int-step [value]="3">Confirm</int-step>
+    <int-step [value]="4">Done</int-step>
+  </int-step-list>
+</int-stepper>

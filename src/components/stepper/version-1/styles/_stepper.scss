@@ -2,15 +2,86 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// --i-stepper-* is not in the Style Guide bundle base: each token points to the base token it resolves to.
 :root {
   --NOTE-STEPPER: 'int-stepper ( Custom )';
+
+  // --- root ---
+  --int-stepper-gap: var(--i-spacing-gap-lg); // SG: --i-stepper-gap 16px · Aura: —
+  --int-stepper-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (step/font/fontFamily) · Aura: inherit
+  --int-stepper-transition-duration: var(--i-motion-duration-fast); // Aura: {transition.duration}
+
+  // --- step list ---
+  --int-stepper-list-gap: var(--i-spacing-gap-sm); // SG: --i-stepper-steplist-gap 8px · Figma: 8px (space/100) · Aura: —
+
+  // --- step ---
+  --int-stepper-step-padding: var(--i-spacing-25); // SG: .p-step padding 2px · Aura: 0.5rem
+  --int-stepper-step-gap: var(--i-spacing-gap-sm); // SG: --i-stepper-step-gap 8px · Figma: 8px (step/gap/sm) · Aura: 1rem
+  --int-stepper-step-font-size: var(--i-text-body-size-md); // SG: --i-stepper-step-font-size 14px · Figma: 14px (step/font/size/md)
+  --int-stepper-step-color: var(--i-color-neutral-900); // SG: --i-stepper-step-color · Aura: —
+  --int-stepper-step-header-gap: var(--i-spacing-gap-sm); // SG: --i-stepper-step-header-gap 8px · Figma: 8px (step/gap/sm) · Aura: 0.5rem
+  --int-stepper-focus-ring-width: var(--i-border-width-sm); // SG: outline 1px · Aura: {focus.ring.width}
+  --int-stepper-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-stepper-focus-ring-offset: var(--i-spacing-15); // SG: outline-offset 1px · Aura: {focus.ring.offset}
+
+  // --- step number ---
+  --int-stepper-number-size: var(--i-sizing-md); // SG: --i-stepper-step-number-size 24px · Figma: 24px (step/sizing/md) · Aura: 2rem
+  --int-stepper-number-font-size: var(--i-text-body-size-sm); // SG: --i-stepper-step-number-font-size 12px · Figma: 12px (step/font/size/sm) · Aura: 1.143rem
+  --int-stepper-number-line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (step/font/lineHeight/sm), no knowledgeBase/SG value
+  --int-stepper-number-font-weight: var(--i-typography-font-weight-bold); // Figma: 700 (step/font/weightTitle), no knowledgeBase/SG value · Aura: 500
+  --int-stepper-number-radius: var(--i-border-radius-full); // SG: --i-stepper-step-number-radius · Figma: 1000px (step/border/radius/full) · Aura: 50%
+  --int-stepper-number-color: var(--i-color-neutral-400); // SG: --i-stepper-step-number-color · Figma: #9CA3BA (step/color/disabled/step) [State=Disabled] · Aura: {text.muted.color}
+  --int-stepper-number-background: var(--i-color-neutral-200); // SG: --i-stepper-step-number-background · Figma: #D9D9E3 (step/color/disabled/background) [State=Disabled] · Aura: {content.background}
+  --int-stepper-number-active-color: var(--i-color-primary-50); // Figma: #EEF2FC (step/color/step) [State=Default], SG literal #fff · Aura: {primary.color}
+  --int-stepper-number-active-background: var(--i-color-primary-700); // SG: --i-stepper-step-number-active-background (primary-base) · Figma: #1B3E88 (step/color/background) [State=Default] · Aura: {content.background}
+
+  // --- step title ---
+  --int-stepper-title-font-size: var(--i-text-body-size-md); // SG: --i-stepper-step-title-font-size 14px · Figma: 14px (step/font/size/md)
+  --int-stepper-title-line-height: var(--i-typography-lineHeight-md); // SG: --i-stepper-step-title-line-height 20px · Figma: 20px (step/font/lineHeight/md)
+  --int-stepper-title-weight: var(--i-typography-font-weight-bold); // SG: --i-stepper-step-title-weight 700 · Figma: 700 (step/font/weightTitle) · Aura: 500
+  --int-stepper-title-color: var(--i-color-neutral-400); // SG: --i-stepper-step-title-color · Figma: #9CA3BA (step/color/disabled/text) [State=Disabled] · Aura: {text.muted.color}
+  --int-stepper-title-active-color: var(--i-color-neutral-900); // SG: --i-stepper-step-title-active-color · Figma: #0A1733 (step/color/text) [State=Default] ⚠️ · Aura: {primary.color}
+
+  // --- separator ---
+  --int-stepper-separator-size: var(--i-border-width-md); // SG: --i-stepper-separator-size 2px (border-radius-xs) · Figma: 1px (connector) ⚠️ · Aura: 2px
+  --int-stepper-separator-background: var(--i-color-neutral-200); // SG: --i-stepper-separator-background · Figma: #D8DAE4 (color/grey/200) · Aura: {content.border.color}
+  --int-stepper-separator-active-background: var(--i-color-neutral-900); // SG: --i-stepper-separator-active-background · Aura: {primary.color}
+  --int-stepper-separator-min-width: var(--i-sizing-3xl); // Figma: 96px (step-connector width), no knowledgeBase/SG value · Aura: —
+
+  // --- panels ---
+  --int-stepper-panels-padding: var(--i-spacing-container-xl); // SG: --i-stepper-steppanels-padding 16px · Aura: 0.875rem 0.5rem 1.125rem 0.5rem
+  --int-stepper-panels-font-size: var(--i-typography-font-size-lg); // SG: --i-stepper-steppanels-font-size 16px · Aura: —
+  --int-stepper-panels-border-color: var(--i-color-neutral-200); // SG: --i-stepper-steppanels-border-color · Aura: —
+  --int-stepper-panels-border-radius: var(--i-border-radius-2xl); // SG: --i-stepper-steppanels-border-radius 16px · Aura: —
+  --int-stepper-panel-content-gap: var(--i-spacing-gap-lg); // SG: .p-steppanel-content gap 16px · Aura: —
+
+  // --- vertical (Figma Type=Vertical, not in knowledgeBase/SG) ---
+  --int-stepper-vertical-step-gap: var(--i-spacing-gap-xs); // Figma: 4px (step/gap/xs) [Type=Vertical]
+  --int-stepper-vertical-separator-size: var(--i-border-width-sm); // Figma: 1px (connector) [Type=Vertical]
+  --int-stepper-vertical-separator-min-height: var(--i-sizing-600); // Figma: connector between steps (~48px) [Type=Vertical]
+
+  // --- descriptive (Figma stepper descriptive, not in knowledgeBase/SG) ---
+  --int-stepper-descriptive-gap: var(--i-spacing-gap-xl); // Figma: 33px between steps [stepper descriptive]
+  --int-stepper-descriptive-step-width: calc(var(--i-sizing-3xl) + var(--i-sizing-800)); // Figma: 151px (step-descriptive), nearest 160px
+  --int-stepper-badge-padding-x: var(--i-spacing-container-md); // Figma: 8px (step/padding/x/md)
+  --int-stepper-badge-padding-y: var(--i-spacing-container-sm); // Figma: 6px (step/padding/y/sm)
+  --int-stepper-badge-font-size: var(--i-text-body-size-xs); // Figma: 10px (step/font/size/xs)
+  --int-stepper-badge-line-height: var(--i-typography-lineHeight-xs); // Figma: 12px (step/font/lineheight/xs)
+  --int-stepper-badge-color: var(--i-color-primary-50); // Figma: #EEF2FC (step/color/step)
+  --int-stepper-badge-background: var(--i-color-primary-700); // Figma: #1B3E88 (step/color/background)
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Block level as p-stepper: it takes the available width, so the separators can grow.
 .int-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--int-stepper-gap);
+  width: 100%;
+  font-family: var(--int-stepper-font-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +89,152 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-stepper {
+  &__list {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--int-stepper-list-gap);
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  &__step {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--int-stepper-step-gap);
+    padding: var(--int-stepper-step-padding);
+    font-size: var(--int-stepper-step-font-size);
+    color: var(--int-stepper-step-color);
+
+    &:last-of-type {
+      flex: initial;
+    }
+  }
+
+  &__step-header {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--int-stepper-step-header-gap);
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0 none;
+    outline-color: transparent;
+    cursor: pointer;
+    transition: outline-color var(--int-stepper-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-stepper-focus-ring-width) solid var(--int-stepper-focus-ring-color);
+      outline-offset: var(--int-stepper-focus-ring-offset);
+    }
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  &__step-number {
+    display: grid;
+    flex-shrink: 0;
+    place-content: center;
+    width: var(--int-stepper-number-size);
+    height: var(--int-stepper-number-size);
+    font-size: var(--int-stepper-number-font-size);
+    font-weight: var(--int-stepper-number-font-weight);
+    line-height: var(--int-stepper-number-line-height);
+    color: var(--int-stepper-number-color);
+    background: var(--int-stepper-number-background);
+    border-radius: var(--int-stepper-number-radius);
+    transition:
+      background var(--int-stepper-transition-duration),
+      color var(--int-stepper-transition-duration);
+  }
+
+  &__step-title {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: var(--int-stepper-title-font-size);
+    font-weight: var(--int-stepper-title-weight);
+    line-height: var(--int-stepper-title-line-height);
+    color: var(--int-stepper-title-color);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: color var(--int-stepper-transition-duration);
+  }
+
+  &__separator {
+    display: block;
+    flex: 1 1 0;
+    width: 100%;
+    min-width: var(--int-stepper-separator-min-width);
+    height: var(--int-stepper-separator-size);
+    background: var(--int-stepper-separator-background);
+    transition: background var(--int-stepper-transition-duration);
+  }
+
+  &__panels {
+    display: block;
+    padding: var(--int-stepper-panels-padding);
+    font-size: var(--int-stepper-panels-font-size);
+    border: var(--i-border-width-sm) solid var(--int-stepper-panels-border-color);
+    border-radius: var(--int-stepper-panels-border-radius);
+  }
+
+  &__panel {
+    display: block;
+    color: inherit;
+  }
+
+  &__panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-stepper-panel-content-gap);
+
+    &--enter {
+      animation: int-stepper-panel-enter var(--int-stepper-transition-duration) var(--i-motion-ease-out);
+    }
+  }
+
+  &__step--active {
+    .int-stepper__step-header {
+      cursor: default;
+    }
+
+    .int-stepper__step-number {
+      color: var(--int-stepper-number-active-color);
+      background: var(--int-stepper-number-active-background);
+    }
+
+    .int-stepper__step-title {
+      color: var(--int-stepper-title-active-color);
+    }
+  }
+}
+
+@keyframes int-stepper-panel-enter {
+  from {
+    opacity: 0;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-stepper {
+// Progressive, vertical and descriptive live in _stepper.progressive, _stepper.vertical and _stepper.descriptive.
+
+@media (prefers-reduced-motion: reduce) {
+  .int-stepper *,
+  .int-stepper *::before {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

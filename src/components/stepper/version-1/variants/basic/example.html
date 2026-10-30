@@ -1,4 +1,16 @@
 <!--
   title: Basic
-  description:
+  description: Stepper se compone de int-step-list, int-step, int-step-panels e int-step-panel; la propiedad value asocia cada paso con su panel.
 -->
+<int-stepper [(value)]="step">
+  <int-step-list>
+    <int-step [value]="1">Datos básicos</int-step>
+    <int-step [value]="2">Revisión</int-step>
+    <int-step [value]="3">Confirmación</int-step>
+  </int-step-list>
+  <int-step-panels>
+    <int-step-panel [value]="1">Contenido del paso 1</int-step-panel>
+    <int-step-panel [value]="2">Contenido del paso 2</int-step-panel>
+    <int-step-panel [value]="3">Contenido del paso 3</int-step-panel>
+  </int-step-panels>
+</int-stepper>

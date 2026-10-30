@@ -1,0 +1,28 @@
+<!--
+  title: Descriptive
+  description: Con el template #content de cada paso se dibuja el stepper descriptive de Figma: badge Step N, título y descripción.
+-->
+<int-stepper variant="descriptive" [(value)]="step">
+  <int-step-list>
+    @for (item of steps; track item.value) {
+      <int-step [value]="item.value">
+        <ng-template #content let-activateCallback="activateCallback">
+          <button
+            type="button"
+            class="int-stepper__step-trigger"
+            (click)="activateCallback()"
+          >
+            <span><span class="int-stepper__badge">Step {{ item.value }}</span></span>
+            <span class="u-display-flex">
+              <span class="u-divider-vertical u-align-self-stretch u-auto-height u-ms-4 u-me-3"></span>
+              <span class="u-display-flex u-flex-column u-text-sm u-text-lineHeight-sm u-text-left">
+                <span class="u-bold">{{ item.title }}</span>
+                <span>{{ item.description }}</span>
+              </span>
+            </span>
+          </button>
+        </ng-template>
+      </int-step>
+    }
+  </int-step-list>
+</int-stepper>

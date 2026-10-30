@@ -1,0 +1,54 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Descriptive
+\*——————————————————————————————————————————————————————————*/
+
+// Figma stepper descriptive: steps drawn with the #content template (badge + title + description), side by side
+// without separators. Only the badge has no helper; the rest of the content uses .u-* helpers.
+.int-stepper--descriptive {
+  .int-stepper__list {
+    justify-content: flex-start;
+    gap: var(--int-stepper-descriptive-gap);
+  }
+
+  // Steps of the Figma width, so the description wraps.
+  .int-stepper__step,
+  .int-stepper__step:last-of-type {
+    flex: 0 0 var(--int-stepper-descriptive-step-width);
+    align-items: flex-start;
+  }
+
+  .int-stepper__separator {
+    display: none;
+  }
+
+  // The #content of each step is a button: no helper resets its native look.
+  .int-stepper__step-trigger {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: start;
+    background: transparent;
+    border: 0 none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: var(--int-stepper-focus-ring-width) solid var(--int-stepper-focus-ring-color);
+      outline-offset: var(--int-stepper-focus-ring-offset);
+    }
+  }
+
+  .int-stepper__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--int-stepper-badge-padding-y) var(--int-stepper-badge-padding-x);
+    font-size: var(--int-stepper-badge-font-size);
+    font-weight: var(--int-stepper-number-font-weight);
+    line-height: var(--int-stepper-badge-line-height);
+    color: var(--int-stepper-badge-color);
+    white-space: nowrap;
+    background: var(--int-stepper-badge-background);
+    border-radius: var(--int-stepper-number-radius);
+  }
+}

@@ -1,0 +1,31 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Progressive
+\*——————————————————————————————————————————————————————————*/
+
+// Knowledge base .prStepper--progressive: the steps before the active one keep the active colors (completed).
+.int-stepper--progressive {
+  .int-stepper__step-number {
+    color: var(--int-stepper-number-active-color);
+    background: var(--int-stepper-number-active-background);
+  }
+
+  .int-stepper__step-title {
+    color: var(--int-stepper-title-active-color);
+  }
+
+  .int-stepper__step--active ~ .int-stepper__step {
+    .int-stepper__step-number {
+      color: var(--int-stepper-number-color);
+      background: var(--int-stepper-number-background);
+    }
+
+    .int-stepper__step-title {
+      color: var(--int-stepper-title-color);
+    }
+  }
+
+  .int-stepper__step:has(~ .int-stepper__step--active) .int-stepper__separator,
+  .int-stepper__item:has(~ .int-stepper__item--active) .int-stepper__separator {
+    background: var(--int-stepper-separator-active-background);
+  }
+}

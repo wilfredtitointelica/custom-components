@@ -1,0 +1,30 @@
+<!--
+  title: Wizard
+  description: Modo wizard de la base de conocimientos: los pasos llevan disabled y solo se avanza con Continue o se retrocede con Back (deshabilitado en el primer paso). Los íconos de flecha llegan con int-button.
+-->
+<int-stepper variant="progressive" [value]="step()">
+  <int-step-list>
+    <int-step [value]="1" disabled>Review</int-step>
+    <int-step [value]="2" disabled>Action</int-step>
+    <int-step [value]="3" disabled>Confirm</int-step>
+  </int-step-list>
+  <int-step-panels>
+    @for (panel of panels; track panel.value; let first = $first; let last = $last) {
+      <int-step-panel [value]="panel.value">
+        <div class="u-display-flex u-flex-column u-align-items-center u-gap-lg">
+          <i class="icon u-text-5xl {{ panel.icon }}" aria-hidden="true"></i>
+          <div class="u-display-flex u-flex-column u-align-items-center">
+            <span class="u-text-xl u-bold u-text-center u-display-block">{{ panel.title }}</span>
+            <span class="u-text-lg u-text-center u-display-block">{{ panel.subtitle }}</span>
+          </div>
+        </div>
+        <div class="u-display-flex u-align-items-center u-justify-content-between">
+          <!-- dep:button provisional · replace with <int-button> when button is done (Back: icon-arrow-left, Continue: icon-arrow-right, as the knowledge base) -->
+          <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" [disabled]="first" (click)="prevStep()">Back</button>
+          <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" [disabled]="last" (click)="nextStep()">Continue</button>
+          <!-- /dep:button -->
+        </div>
+      </int-step-panel>
+    }
+  </int-step-panels>
+</int-stepper>
