@@ -1,6 +1,10 @@
-// int-card · entry point. Add one `@use 'card.<variant>' as card-<variant>;` per variant module.
+// int-card · entry point. Add one `@use 'card.<group>' as card-<group>;` per modifier module.
 @use 'card';
+@use 'card.compact' as card-compact;
+@use 'card.outlined' as card-outlined;
+@use 'card.content' as card-content;
 @use 'card.data' as card-data;
-@use 'card.interactive' as card-interactive;
+@use 'card.group' as card-group;
 @use 'card.mini' as card-mini;
 @use 'card.option' as card-option;
+@use 'card.version' as card-version;

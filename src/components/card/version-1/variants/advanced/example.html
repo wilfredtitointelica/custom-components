@@ -1,36 +1,29 @@
 <!--
   title: Advanced
-  description: Usa los templates #title y #footer y contenido con scroll: título con icono de ayuda, textos de estado, badge y botón en el pie separado por un divisor.
+  description: Card con imagen en #header, título, subtítulo, contenido y acciones en #footer.
 -->
-<int-card subheader="Write a description">
-  <ng-template #title>
-    <span class="u-display-inline-flex u-align-items-center u-gap-xs">
-      Title here
-      <i class="pi pi-info-circle" aria-hidden="true"></i>
-    </span>
+<int-card class="u-overflow-hidden">
+  <ng-template #header>
+    <div class="u-display-flex u-justify-content-center u-align-items-center u-py-5 u-background-surface u-color-grey-500 u-text-5xl" role="img" aria-label="Card image">
+      <i class="pi pi-image" aria-hidden="true"></i>
+    </div>
   </ng-template>
-
+  <ng-template #title>Advanced Card</ng-template>
+  <ng-template #subtitle>Card subtitle</ng-template>
   <p class="u-m-0">
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam
-    deserunt quisquam repellat libero asperiores earum nam nobis.
+    deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+    quas!
   </p>
-
   <ng-template #footer>
     <div class="u-display-flex u-align-items-center u-gap-sm">
-      <div class="u-display-flex u-flex-column u-flex-grow-1">
-        <span>Text here</span>
-        <span class="u-color-success">Success text</span>
-        <span class="u-color-error">Error text</span>
-        <!-- dep:badge provisional · replace with <int-badge> when badge is done -->
-        <span class="u-display-inline-flex u-align-items-center u-gap-xs u-text-xs" data-dep="badge">
-          <i class="pi pi-tag" aria-hidden="true"></i>
-          Text here
-        </span>
-        <!-- /dep:badge -->
-      </div>
+      <span class="u-flex-grow-1">Updated 2 days ago</span>
       <!-- dep:button provisional · replace with <int-button> when button is done -->
-      <button type="button" class="u-px-3 u-py-2 u-radius-lg u-background-white u-pointer" data-dep="button">
-        View details
+      <button type="button" class="u-px-3 u-py-2 u-radius-lg u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-text-md u-pointer" data-dep="button">
+        Cancel
+      </button>
+      <button type="button" class="u-px-3 u-py-2 u-radius-lg u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-text-md u-pointer" data-dep="button">
+        Save
       </button>
       <!-- /dep:button -->
     </div>

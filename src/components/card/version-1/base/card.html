@@ -13,9 +13,10 @@
 }
 
 <div class="int-card__body">
-  <!-- Caption: title + subtitle. int-* extension: PrimeNG declares p-card-caption but v20 does not render it -->
+  <!-- Caption: title + subtitle. int-* extension: PrimeNG styles p-card-caption but v20 does not render it -->
   @if (hasTitle() || hasSubtitle()) {
     <div class="int-card__caption">
+      <!-- Title: the #title template wins over the header input -->
       @if (hasTitle()) {
         <div class="int-card__title">
           @if (titleTemplate()) {
@@ -25,6 +26,8 @@
           }
         </div>
       }
+
+      <!-- Subtitle: the #subtitle template wins over the subheader input -->
       @if (hasSubtitle()) {
         <div class="int-card__subtitle">
           @if (subtitleTemplate()) {

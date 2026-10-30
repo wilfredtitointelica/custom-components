@@ -1,0 +1,41 @@
+<!--
+  title: Group
+  description: Composición int-card--group: varias métricas en una fila, separadas por divisores, con fondo. El segundo bloque usa int-card--no-bg (sin fondo ni sombra).
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">With background</p>
+    <int-card class="int-card--group">
+      <ng-container *ngTemplateOutlet="metricRow" />
+    </int-card>
+  </div>
+
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">No background</p>
+    <int-card class="int-card--group int-card--no-bg">
+      <ng-container *ngTemplateOutlet="metricRow" />
+    </int-card>
+  </div>
+</div>
+
+<ng-template #metricRow>
+  <div class="u-display-flex u-justify-content-around u-align-items-center">
+    @for (metric of metrics; track metric.label; let first = $first) {
+      @if (!first) {
+        <div class="u-divider-vertical u-align-self-stretch" aria-hidden="true"></div>
+      }
+      <div class="u-display-flex u-justify-content-center u-gap-lg">
+        <div class="u-display-flex u-flex-column u-justify-content-center">
+          <span class="u-text-lg u-bold u-text-nowrap">{{ metric.label }}</span>
+          <span class="u-text-sm u-text-nowrap">{{ metric.date }}</span>
+        </div>
+        <div class="u-display-flex u-gap-xs" [class]="metric.color">
+          <span class="u-text-sm u-bold">{{ metric.currency }}</span>
+          <span class="u-text-3xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ metric.value }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</ng-template>

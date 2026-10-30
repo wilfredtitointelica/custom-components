@@ -1,0 +1,11 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Outlined
+\*——————————————————————————————————————————————————————————*/
+
+// knowledgeBase: .prCard--outlined · visible border instead of the shadow.
+.int-card--outlined {
+  --int-card-outlined-border: var(--i-line); // SG: --i-line · Aura: —
+
+  border: var(--int-card-outlined-border);
+  box-shadow: none;
+}

@@ -87,7 +87,9 @@ git log --oneline -3 -- src/components/<id>/
 | import | `primeng/chip` | Quita | — | regla "sin PrimeNG" |
 
 Acciones: **Conserva** (ya cumple), **Renombra** (solo forma), **Alinea** (difiere de PrimeNG o de la base de conocimientos (Intelica.knowledgeBase):
-gana la fuente), **Agrega** (falta algo que `replicar-primeng` siempre hace), **Quita** (prohibido) y
+gana la fuente), **Agrega** (falta algo que `replicar-primeng` siempre hace), **Quita** (prohibido,
+incluidos los rastros de PrimeNG: imágenes o URLs de su CDN → placeholder con fondo del Style Guide,
+`replicar-primeng` 3.4) y
 **❓** (sin fuente que lo resuelva: va a 3).
 
 ## 3. Confirmar (un solo mensaje)

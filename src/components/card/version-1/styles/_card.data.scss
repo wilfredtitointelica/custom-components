@@ -1,25 +1,12 @@
 /*——————————————————————————————————————————————————————————*\
- * MODIFIERS ( --modifier ) · Data card
+ * MODIFIERS ( --modifier ) · Data
 \*——————————————————————————————————————————————————————————*/
 
-// Bare KPI block: no surface, the content (value, currency, title) is laid out with .u-* helpers.
+// knowledgeBase: .prCard--data · KPI card without shadow or padding. Its content (title, icon,
+// currency, amount, money right) is laid out with u-* helpers in the variant.
 .int-card--data {
-  background: transparent;
+  --int-card-body-padding: var(--i-spacing-0); // SG: --i-spacing-0 · Figma: 0 (card/padding/x/none) · Aura: —
+  --int-card-body-gap: var(--i-spacing-0); // SG: --i-spacing-0 · Figma: 0 (card/gap/none) · Aura: —
+
   box-shadow: none;
-
-  .int-card__body {
-    padding: var(--int-card-data-body-padding);
-  }
-
-  // Currency + amount, marked by the consumer: the only text a helper cannot color (chart levels).
-  .int-card__value {
-    color: var(--int-card-data-value-color);
-  }
-}
-
-// Data card chart: "color graph level 1…6" of Figma, one per series of the chart it summarizes.
-@for $level from 1 through 6 {
-  .int-card--chart-#{$level} {
-    --int-card-data-value-color: var(--int-card-chart-#{$level}-color);
-  }
 }

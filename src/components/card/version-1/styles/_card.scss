@@ -6,69 +6,45 @@
   --NOTE-CARD: 'int-card ( Custom )';
 
   // --- root ---
-  --int-card-background: var(--i-card-background); // Figma: #FCFCFC (card/color/background) · Aura: {content.background} #ffffff
-  --int-card-color: var(--i-text-color-default); // Figma: #0A1733 (header/color/text) · Aura: {content.color} #334155
-  --int-card-shadow: var(--i-card-box-shadow); // Figma: shadow.200 · Aura: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px -1px rgba(0,0,0,.1)
-  --int-card-border-radius: var(--i-card-border-radius); // Figma: 16px (card/border/radius/2xl) · Aura: {border.radius.xl} 12px
-  --int-card-font-family: var(--i-typography-font-family-base); // Figma: Lato (header/font/fontFamily) · Aura: inherit
-  --int-card-font-size: var(--i-text-body-size-md); // Figma: 14px (footer/font/size/md) · Aura: inherit
+  --int-card-background: var(--i-card-background); // knowledgeBase: --i-card-background · Figma: #FCFCFC (card/color/background) · Aura: {content.background}
+  --int-card-color: var(--i-text-color-default); // SG: --i-color-primary-900 (prCard color) · Figma: #0A1733 (header/color/text) · Aura: {content.color}
+  --int-card-shadow: var(--i-card-box-shadow); // knowledgeBase: --i-card-box-shadow · Figma: shadow.200 · Aura: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px -1px rgba(0,0,0,.1)
+  --int-card-border-radius: var(--i-card-border-radius); // knowledgeBase: --i-card-border-radius · Figma: 16px (card/border/radius/2xl) · Aura: {border.radius.xl}
+  --int-card-font-family: var(--i-typography-font-family-base); // SG: --i-typography-font-family-base · Figma: Lato (header/font/fontFamily) · Aura: inherit
+  --int-card-font-size: var(--i-text-body-size-md); // Figma: 14px (footer/font/size/md) · SG: --i-card-font-size 12px ⚠️ · Aura: inherit
   --int-card-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (footer/font/lineHeight/md) · Aura: inherit
 
   // --- body ---
-  --int-card-body-padding: var(--i-card-body-padding); // Figma: 16px (card/padding/x/xl) · Aura: 1.25rem
-  --int-card-body-gap: var(--i-card-gap); // Figma: 16px (card/gap/lg) · Aura: 0.5rem
+  --int-card-body-padding: var(--i-card-body-padding); // knowledgeBase: --i-card-body-padding · Figma: 16px (card/padding/x/xl) · Aura: 1.25rem
+  --int-card-body-gap: var(--i-card-gap); // knowledgeBase: --i-card-gap · Figma: 16px (card/gap/lg) · Aura: 0.5rem
 
-  // --- caption ---
+  // --- elements ---
+  --int-card-title-font-size: var(--i-card-title-font-size); // SG: --i-card-title-font-size · Figma: 16px (header/font/size/lg) · Aura: 1.25rem
+  --int-card-title-font-weight: var(--i-typography-font-weight-bold); // SG: bold · Figma: 700 (header/font/weightTilte) · Aura: 500
+  --int-card-title-line-height: var(--i-card-title-line-height); // SG: --i-card-title-line-height · Figma: 24px (header/font/lineHeight/lg) · Aura: inherit
   --int-card-caption-gap: var(--i-spacing-gap-none); // Figma: 0 (header/gap/none) · Aura: 0.5rem
-  --int-card-title-font-size: var(--i-card-title-font-size); // Figma: 16px (header/font/size/lg) · Aura: 1.25rem
-  --int-card-title-line-height: var(--i-card-title-line-height); // Figma: 24px (header/font/lineHeight/lg) · Aura: inherit
-  --int-card-title-font-weight: var(--i-typography-font-weight-bold); // Figma: 700 (header/font/weightTilte) · Aura: 500
-  --int-card-subtitle-font-size: var(--i-text-body-size-md); // Figma: 14px (header/font/size/md) · Aura: inherit
-  --int-card-subtitle-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (header/font/lineHeight/md) · Aura: inherit
-  --int-card-subtitle-color: var(--i-text-color-default); // Figma: #0A1733 (header/color/text) · Aura: {text.muted.color} #64748b
-
-  // --- footer ---
+  --int-card-subtitle-color: var(--i-text-color-default); // Figma: #0A1733 (header/color/text) · Aura: {text.muted.color}
+  --int-card-content-gap: var(--i-card-body-gap); // knowledgeBase: --i-card-body-gap · Aura: —
+  --int-card-footer-padding-top: var(--i-card-gap); // knowledgeBase: --i-card-gap · Figma: 16px (footer/gap/lg) · Aura: —
   --int-card-footer-border-width: var(--i-divider-border-sm); // Figma: 1px (divider/border/sm) · Aura: —
   --int-card-footer-border-color: var(--i-divider-color-default); // Figma: #D9D9E3 (divider/color/default) · Aura: —
-  --int-card-footer-padding-top: var(--i-card-gap); // Figma: 16px (footer/gap/lg) · Aura: —
 
-  // --- interactive formats (mini, option) ---
-  --int-card-interactive-border-width: var(--i-border-width-sm); // Figma: 1px (card/border/width/sm) [Mini card, Option card] · Aura: —
-  --int-card-interactive-border-color: var(--i-border-default); // Figma: #D9D9E3 (card/color/border) [State=Default] · Aura: —
-  --int-card-interactive-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (card/color/hover/border) [State=Hover] · Aura: —
-  --int-card-interactive-pressed-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (card/color/pressed/background) [State=Pressed] · Aura: —
-  --int-card-interactive-pressed-border-color: var(--i-color-primary-900); // Figma: #0A1733 (card/color/pressed/border) [State=Pressed] · Aura: —
-  --int-card-interactive-disabled-background: var(--i-background-disabled); // Figma: #D9D9E3 (card/color/disabled/background) [State=Disabled] · Aura: —
-  --int-card-interactive-disabled-border-color: var(--i-border-disabled); // Figma: #9CA3BA (card/color/disabled/border) [State=Disabled] · Aura: —
-  --int-card-interactive-disabled-color: var(--i-text-color-disabled); // Figma: #9CA3BA (card/color/disabled/text) [State=Disabled] · Aura: —
-  --int-card-interactive-focus-color: var(--i-focus-border-color); // Figma: — · Aura: {focus.ring.color}
-  --int-card-interactive-focus-width: var(--i-border-width-sm); // Figma: — · Aura: {focus.ring.width} 1px
-  --int-card-interactive-focus-offset: var(--i-spacing-25); // Figma: — · Aura: {focus.ring.offset} 2px
-  --int-card-interactive-transition-duration: var(--i-motion-duration-fast); // Figma: — · Aura: {transition.duration} 0.2s
-
-  // --- mini ---
-  --int-card-mini-border-radius: var(--i-border-radius-lg); // Figma: 8px (card/border/radius/lg) [Mini card] · Aura: —
-  --int-card-mini-body-padding: var(--i-spacing-container-lg); // Figma: 12px (card/padding/x/lg) [Mini card] · Aura: —
-  --int-card-mini-body-gap: var(--i-spacing-gap-none); // Figma: 0 (card/gap/none) [Mini card] · Aura: —
-
-  // --- option ---
-  --int-card-option-border-radius: var(--i-border-radius-xl); // Figma: 12px (card/border/radius/xl) [Option card] · Aura: —
-  --int-card-option-body-padding-x: var(--i-spacing-container-2xl); // Figma: 24px (card/padding/x/2xl) [Option card] · Aura: —
-  --int-card-option-body-padding-y: var(--i-spacing-container-lg); // Figma: 12px (card/padding/y/lg) [Option card] · Aura: —
-
-  // --- data ---
-  --int-card-data-body-padding: var(--i-spacing-container-none); // Figma: 0 (card/padding/x/none) [Data card] · Aura: —
-  --int-card-data-value-color: inherit; // Figma: #0A1733 (card/color/text) [Data card] · Aura: —
-  --int-card-chart-1-color: var(--i-color-new-grey-500); // Figma: #64738B (card/color/product-a/default) [Type=color graph level 1] · Aura: —
-  --int-card-chart-2-color: var(--i-color-teal-500); // Figma: #5CB39D (card/color/product-a/2) [Type=color graph level 2] · Aura: —
-  --int-card-chart-3-color: var(--i-color-pastelgreen-500); // Figma: #91BE82 (card/color/product-a/3) [Type=color graph level 3] · Aura: —
-  --int-card-chart-4-color: var(--i-color-olive-500); // Figma: #BAC76D (card/color/product-a/4) [Type=color graph level 4] · Aura: —
-  --int-card-chart-5-color: var(--i-color-yellow-500); // Figma: #F7D54D (card/color/product-a/5) [Type=color graph level 5] · Aura: —
-  --int-card-chart-6-color: var(--i-color-yellow-500); // Figma: #F7D54D (card/color/graph/6) [Type=color graph level 6] · Aura: —
+  // --- selectable (int-* extension: mini, option and version formats) ---
+  --int-card-selectable-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (card/color/hover/border) · SG: --i-color-primary-900 ⚠️ · Aura: —
+  --int-card-selectable-selected-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 (prCard--option.is-active) · Figma: #0A1733 (card/color/pressed/border) · Aura: —
+  --int-card-selectable-selected-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Figma: #F2F2F5 (card/color/pressed/background) · Aura: —
+  --int-card-disabled-background: var(--i-background-disabled); // SG: #d9d9e3 (prCard--option.is-disabled) · Figma: #D9D9E3 (card/color/disabled/background) · Aura: —
+  --int-card-disabled-border-color: var(--i-border-disabled); // SG: #d9d9e3 ⚠️ · Figma: #9CA3BA (card/color/disabled/border) · Aura: —
+  --int-card-disabled-color: var(--i-text-color-disabled); // SG: --i-color-secondary-400 · Figma: #9CA3BA (card/color/disabled/text) · Aura: —
+  --int-card-focus-ring-width: var(--i-border-width-sm); // SG: 1px (prCard--option:focus-visible) · Aura: {focus.ring.width} 1px
+  --int-card-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-card-focus-ring-offset: var(--i-spacing-25); // SG: 2px · Aura: {focus.ring.offset} 2px
+  --int-card-transition-duration: var(--i-motion-duration-fast); // Aura: {transition.duration} 0.2s
+  --int-card-transition-easing: var(--i-motion-ease-in-out); // Aura: —
 
   // --- skeleton ---
-  --int-card-skeleton-background: var(--i-color-secondary-100);
-  --int-card-skeleton-min-height: var(--i-sizing-3xl);
+  --int-card-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+  --int-card-skeleton-min-height: var(--i-sizing-3xl); // SG: --i-sizing-3xl
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -95,13 +71,12 @@
 .int-card {
   &__body {
     display: flex;
-    flex: 1 1 auto;
     flex-direction: column;
     gap: var(--int-card-body-gap);
-    min-block-size: 0;
     padding: var(--int-card-body-padding);
   }
 
+  // int-* extension: title + subtitle stacked without the body gap (Figma header-card).
   &__caption {
     display: flex;
     flex-direction: column;
@@ -116,18 +91,20 @@
 
   &__subtitle {
     color: var(--int-card-subtitle-color);
-    font-size: var(--int-card-subtitle-font-size);
-    line-height: var(--int-card-subtitle-line-height);
   }
 
-  // Figma shows a vertical scrollbar: the content scrolls when the card has a fixed height.
+  // knowledgeBase: the #content slot is a flex column; hidden when nothing is projected.
   &__content {
-    flex: 1 1 auto;
-    min-block-size: 0;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-card-content-gap);
+
+    &:empty {
+      display: none;
+    }
   }
 
-  // Figma: footer-card starts with a horizontal divider.
+  // Figma footer-card: starts with a horizontal divider.
   &__footer {
     padding-block-start: var(--int-card-footer-padding-top);
     border-block-start: var(--int-card-footer-border-width) solid var(--int-card-footer-border-color);
@@ -138,7 +115,43 @@
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-// Composition formats live in _card.data / _card.interactive / _card.mini / _card.option.
+// int-* extension: selectable card (role="button"). Formats set the border in their own module.
+.int-card--selectable {
+  cursor: pointer;
+  transition:
+    background-color var(--int-card-transition-duration) var(--int-card-transition-easing),
+    border-color var(--int-card-transition-duration) var(--int-card-transition-easing);
+
+  &:hover {
+    border-color: var(--int-card-selectable-hover-border-color);
+  }
+
+  &:active,
+  &.int-card--selected {
+    border-color: var(--int-card-selectable-selected-border-color);
+    background: var(--int-card-selectable-selected-background);
+  }
+
+  &:focus-visible {
+    outline: var(--int-card-focus-ring-width) solid var(--int-card-focus-ring-color);
+    outline-offset: var(--int-card-focus-ring-offset);
+  }
+}
+
+// Doubled block so the disabled border wins over the border shorthand of the format modules.
+.int-card.int-card--disabled {
+  border-color: var(--int-card-disabled-border-color);
+  background: var(--int-card-disabled-background);
+  color: var(--int-card-disabled-color);
+  cursor: default;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-card {
+    transition-duration: 0s;
+  }
+}
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON

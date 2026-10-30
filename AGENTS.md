@@ -39,6 +39,8 @@ src/components/<id>/version-N/
 - Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
   animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline.
+- Sin rastros de PrimeNG en lo visible: nada de imágenes, logos o URLs de `primefaces.org`. Una imagen de
+  ejemplo es un placeholder con fondo del Style Guide (`u-background-surface` + icono `pi pi-image`).
 - Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se
   agrega como input y la base resuelve `tabindex`, `role`, `aria-*` y teclado. Las variantes no ponen
   `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>`.
