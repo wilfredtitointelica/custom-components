@@ -1,11 +1,12 @@
 <!--
   title: Version
-  description: Composición int-card--version: tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla (clic o Enter/Espacio). La más reciente lleva el badge "Latest version".
+  description: Propiedad version (modificador int-card--version): tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla (clic o Enter/Espacio). La más reciente lleva el badge "Latest version".
 -->
 <div class="u-display-flex u-flex-wrap u-gap-lg">
   @for (version of versions; track version.id) {
     <int-card
-      class="int-card--version u-flex-grow-1 u-flex-basis-0"
+      version
+      class="u-flex-grow-1 u-flex-basis-0"
       selectable
       [selected]="chosen() === version.id"
       (onSelect)="chosen.set(version.id)"
