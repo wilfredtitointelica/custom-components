@@ -49,17 +49,20 @@ const EXCEL_NAMES = [
   'ProgressBar',
 ];
 
+/** Components added outside the Excel (chip and tag split from Badge; confirm-dialog-modal from Dialog). */
+const NON_EXCEL_IDS = ['chip', 'tag', 'confirm-dialog-modal'];
+
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
 
   it('lists exactly the Excel components, in the Excel order', () => {
-    const excel = COMPONENT_INVENTORY.filter((c) => !c.reference); // demo: reference implementation
+    const excel = COMPONENT_INVENTORY.filter((c) => !c.reference && !NON_EXCEL_IDS.includes(c.id)); // demo: reference implementation
     expect(excel.map((c) => c.sourceName ?? catalog.find(c.id)!.name)).toEqual(EXCEL_NAMES);
   });
 
   it('keeps the original Excel name only for simplified titles', () => {
     const renamed = COMPONENT_INVENTORY.filter((c) => c.sourceName).map((c) => catalog.find(c.id)!.name);
-    expect(renamed).toEqual(['Input', 'Tabs']);
+    expect(renamed).toEqual(['Input', 'Dialog (Modal)', 'Tabs']);
   });
 
   it('takes titles and descriptions from the HTML headers, over the config', () => {

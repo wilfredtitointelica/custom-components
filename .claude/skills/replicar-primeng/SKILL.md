@@ -588,7 +588,8 @@ muestra, acercarse a Figma). Detalle, catálogo y tabla de traducción en
 - 🔒 **Del Style Guide solo TOKENS y HELPERS**: nada de `.prCard`, `.prButton`, `.pt*`, `.ly*`, `.gr*`,
   clases de proyectos ni `row`/`col-*`, en ningún archivo.
 - Por capa de contenido:
-  1. **Estructura** (flex, gap, padding, margin, alineación, tamaño, overflow) → helpers.
+  1. **Estructura** (flex, gap, padding, margin, alineación, tamaño, overflow) → helpers, sobre el
+     contenido, **nunca sobre el `<int-*>`** (ver la regla de overflow abajo).
   2. **Visual estático** con helper exacto (texto, peso, color, radio, sombra, bordes) → helpers.
   3. **Estados visuales** (hover, active, focus, seleccionado, disabled) **u otra cosa no estructural
      sin helper** → modificador `.int-<id>--<grupo>` con `&__<elem>` en `_<id>.<grupo>.scss` (3.3),
@@ -601,6 +602,13 @@ muestra, acercarse a Figma). Detalle, catálogo y tabla de traducción en
   (`u-display-flex u-flex-column u-gap-xl`, filas con `u-gap-lg`/`u-gap-xl` y `u-flex-wrap`), y alinea
   los bordes entre grupos (`u-full-width`, `u-px-*` igual al padding del componente). Nada debe quedar
   pegado ni centrado a medio ancho por accidente: revisa la captura antes de dar la variante por buena.
+- 🔒 **Overflow: el bloque no recorta.** Ni `.int-<id>` en su SCSS ni el `<int-*>` en una variante
+  (`<int-card class="u-overflow-hidden">` ❌) llevan `overflow: hidden/auto/clip`: un select, datepicker,
+  popover o dialog abierto dentro quedaría cortado (y obligaría a `appendTo="body"`). Aunque PrimeNG
+  lo ponga en el bloque (`.p-card { overflow: hidden }`), el recorte va **en el elemento que lo
+  necesita, dentro de los estilos del componente**: p. ej. la imagen del header de la card →
+  `&__header { overflow: hidden; border-start-*-radius: var(--int-<id>-border-radius); }`. Un scroll
+  interno (lista de un select, cuerpo de un dialog) también va en su `__elemento`, no en el bloque.
 - Estructura sin helper exacto: el más cercano de la escala y la diferencia al informe. Nunca `style`
   inline, SCSS en la carpeta de la variante, clases de PrimeFlex/Tailwind (de la demo de PrimeNG o de
   `get_design_context`) ni clases `u-*` inventadas.
@@ -778,5 +786,7 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).
 - ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,
   `.gr*`, `row`/`col-*`) o copiar su CSS.
+- ❌ Poner `overflow` en el bloque `.int-<id>` o un helper `u-overflow-*` sobre un `<int-*>`: recorta
+  los overlays que se abren dentro; el recorte va en el `__elemento` que lo necesita (3.5).
 - ❌ Poner estructura (flex, gap, padding…) en un modificador de contenido cuando la resuelve un helper:
   el modificador solo lleva estados u otra cosa no estructural (3.5).

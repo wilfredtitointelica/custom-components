@@ -206,6 +206,12 @@ function checkVersion(component, version, report, deps) {
               `${path}:${lineOf(markup, tag.index)}`,
               `${[...new Set(wiring.map((w) => w.trim().replace(/="$/, '')))].join(', ')} on <int-*>: add an input (e.g. disabled) and handle it inside the component`,
             );
+          // A clipped <int-*> cuts the overlays opened inside it (select, datepicker, popover…).
+          if (/\sclass="[^"]*\bu-overflow-/.test(tag[0]))
+            report.warn(
+              `${path}:${lineOf(markup, tag.index)}`,
+              'u-overflow-* on <int-*>: clip the inner element in the component SCSS (e.g. __header), not the block',
+            );
         }
       for (const match of markup.matchAll(/\sclass="([^"]*)"/g)) {
         // Interpolated parts ({{ item.icon }}) are data, not class names.

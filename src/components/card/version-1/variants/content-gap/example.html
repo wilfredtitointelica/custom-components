@@ -1,0 +1,13 @@
+<!--
+  title: Content Gap
+  description: Propiedad contentGap (modificador int-card--content-gap-<valor>): separación entre los bloques de #content. Valores none (0), small (4px), medium (12px) y large (16px); sin la propiedad usa el gap por defecto (6px).
+-->
+<div class="u-display-flex u-flex-wrap u-gap-xl">
+	@for (gap of gaps; track gap.label) {
+	<int-card width="200px" [contentGap]="gap.value" [header]="gap.label">
+		<p class="u-m-0">First block</p>
+		<p class="u-m-0">Second block</p>
+		<p class="u-m-0">Third block</p>
+	</int-card>
+	}
+</div>

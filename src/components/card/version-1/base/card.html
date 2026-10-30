@@ -7,7 +7,7 @@
 
 <!-- Header slot (e.g. an image), outside the padded body as in PrimeNG -->
 @if (headerTemplate()) {
-  <div class="int-card__header">
+  <div class="int-card__header" [style.block-size]="headerHeight()">
     <ng-container [ngTemplateOutlet]="headerTemplate()" />
   </div>
 }

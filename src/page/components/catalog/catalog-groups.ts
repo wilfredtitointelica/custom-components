@@ -12,11 +12,11 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   { name: 'Navegación', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
     name: 'Contención',
-    ids: ['card', 'accordion', 'dialog-modal', 'carousel', 'table', 'tree-table', 'tree-view', 'timeline'],
+    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'tree-table', 'tree-view', 'timeline'],
   },
   {
     name: 'Comunicación',
-    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'pill', 'progress-bar'],
+    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'pill', 'progress-bar'],
   },
 ];
 
@@ -47,6 +47,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   card: 'pi-id-card',
   accordion: 'pi-bars',
   'dialog-modal': 'pi-window-maximize',
+  'confirm-dialog-modal': 'pi-question-circle',
   carousel: 'pi-images',
   table: 'pi-table',
   'tree-table': 'pi-objects-column',
@@ -58,6 +59,8 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   tooltip: 'pi-comment',
   popover: 'pi-clone',
   badge: 'pi-hashtag',
+  chip: 'pi-user',
+  tag: 'pi-bookmark',
   pill: 'pi-tag',
   'progress-bar': 'pi-chart-bar',
 };

@@ -11,7 +11,20 @@
   }
 }
 
-// knowledgeBase: .prCard--contentGapLg · #content gap from --i-card-body-gap (6px) to --i-card-gap (16px).
-.int-card--content-gap-lg {
-  --int-card-content-gap: var(--i-card-gap); // knowledgeBase: --i-card-gap · Aura: —
+// int-* extension of .prCard--contentGapLg (knowledgeBase) · contentGap input: gap between the
+// #content blocks. Without it the default is --i-card-body-gap (6px).
+.int-card--content-gap-none {
+  --int-card-content-gap: var(--i-spacing-gap-none); // SG: --i-spacing-gap-none · 0
+}
+
+.int-card--content-gap-small {
+  --int-card-content-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · 4px
+}
+
+.int-card--content-gap-medium {
+  --int-card-content-gap: var(--i-spacing-gap-md); // SG: --i-spacing-gap-md · 12px
+}
+
+.int-card--content-gap-large {
+  --int-card-content-gap: var(--i-card-gap); // knowledgeBase: --i-card-gap (.prCard--contentGapLg) · 16px
 }
