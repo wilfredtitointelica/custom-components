@@ -1,0 +1,12 @@
+<!--
+  title: Template
+  description: El template #node personaliza el contenido de cada nodo.
+-->
+<int-tree-view [value]="nodes" [(selection)]="selected" ariaLabel="Files">
+  <ng-template #node let-node>
+    <span class="u-display-flex u-align-items-center u-gap-sm">
+      <i class="icon" [class.icon-folder]="node.children" [class.icon-file]="!node.children" aria-hidden="true"></i>
+      <span>{{ node.label }}</span>
+    </span>
+  </ng-template>
+</int-tree-view>

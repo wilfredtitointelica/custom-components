@@ -1,0 +1,65 @@
+<!-- One treeitem: the row (toggle, checkbox, icon, label) and its children when expanded, as PrimeNG p-treeNode -->
+<li
+  class="int-tree-view__node"
+  [class.int-tree-view__node--leaf]="leaf()"
+  role="treeitem"
+  [attr.aria-label]="node().label"
+  [attr.aria-level]="level() + 1"
+  [attr.aria-posinset]="index() + 1"
+  [attr.aria-setsize]="setSize()"
+  [attr.aria-expanded]="leaf() ? null : expanded()"
+  [attr.aria-selected]="tree.isCheckboxMode() ? null : selected()"
+  [attr.aria-checked]="tree.isCheckboxMode() ? selected() : null"
+  [attr.aria-disabled]="disabled() || null"
+  [attr.tabindex]="tabStop() ? 0 : -1"
+  (keydown)="onKeyDown($event)"
+>
+  <div [class]="contentClasses()" (click)="onClick($event)">
+    <button type="button" class="int-tree-view__toggle-button" tabindex="-1" (click)="onToggle($event)">
+      <i class="int-tree-view__toggle-icon icon icon-arrow-right" aria-hidden="true"></i>
+    </button>
+
+    @if (tree.isCheckboxMode()) {
+      <!-- dep:input provisional · replace with the checkbox of <int-input> when input is done -->
+      <input
+        type="checkbox"
+        class="int-tree-view__checkbox"
+        data-dep="input"
+        tabindex="-1"
+        aria-hidden="true"
+        [checked]="selected()"
+        [indeterminate]="partial()"
+        [disabled]="disabled()"
+        (click)="$event.preventDefault()"
+      />
+      <!-- /dep:input -->
+    }
+
+    @if (node().icon) {
+      <span class="int-tree-view__node-icon" [class]="node().icon" aria-hidden="true"></span>
+    }
+
+    <span class="int-tree-view__node-label">
+      @if (tree.nodeTemplate(); as nodeTpl) {
+        <ng-container [ngTemplateOutlet]="nodeTpl" [ngTemplateOutletContext]="{ $implicit: node() }" />
+      } @else {
+        <span>{{ node().label }}</span>
+      }
+    </span>
+  </div>
+
+  <!-- Children, rendered only while the node is expanded -->
+  @if (node().children && expanded()) {
+    <ul class="int-tree-view__node-children" role="group">
+      @for (child of node().children; track child.key ?? $index; let childIndex = $index) {
+        <int-tree-view-node
+          [node]="child"
+          [parentNode]="node()"
+          [level]="level() + 1"
+          [index]="childIndex"
+          [setSize]="node().children!.length"
+        />
+      }
+    </ul>
+  }
+</li>

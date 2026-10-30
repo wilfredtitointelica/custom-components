@@ -1,0 +1,13 @@
+<!--
+  title: Controlled
+  description: El estado expandido se controla desde fuera con la propiedad expanded de los nodos: Expand all y Collapse all.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div class="u-display-flex u-gap-sm">
+    <!-- dep:button provisional · replace with <int-button> when button is done -->
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="expandAll()">Expand all</button>
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="collapseAll()">Collapse all</button>
+    <!-- /dep:button -->
+  </div>
+  <int-tree-view [value]="nodes()" [(selection)]="selected" ariaLabel="Files" />
+</div>

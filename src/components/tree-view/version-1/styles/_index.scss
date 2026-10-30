@@ -1,2 +1,4 @@
 // int-tree-view · entry point. Add one `@use 'tree-view.<variant>' as tree-view-<variant>;` per variant module.
 @use 'tree-view';
+@use 'tree-view.label-as-toggle' as tree-view-label-as-toggle;
+@use 'tree-view.children-aligned' as tree-view-children-aligned;

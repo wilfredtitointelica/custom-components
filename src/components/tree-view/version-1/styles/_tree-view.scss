@@ -2,8 +2,46 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// The knowledge base has no .prTree case and _tree.scss is empty: the rows follow the tree of the Style Guide
+// _treeselect.scss (not in the bundle base, so each token points to the base token it resolves to) and Figma
+// Atoms ↳ Select where the Style Guide sets nothing.
 :root {
   --NOTE-TREE-VIEW: 'int-tree-view ( Custom )';
+
+  // --- root ---
+  --int-tree-view-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (select/font/fontFamily) · Aura: inherit
+  --int-tree-view-font-size: var(--i-typography-font-size-md); // SG: .p-tree-node-content font-size 14px · Figma: 14px (select/font/size/md) · Aura: —
+  --int-tree-view-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (select/font/lineHeight/md), no knowledgeBase/SG value
+  --int-tree-view-color: var(--i-color-primary-900); // SG: .p-tree-node-content color · Figma: #0A1733 (select/color/text) · Aura: {text.color}
+  --int-tree-view-gap: var(--i-spacing-gap-xs); // SG: .p-tree-node gap 4px · Figma: 4px (select/gap/xs) · Aura: 2px
+  --int-tree-view-indent: var(--i-spacing-container-xl); // Figma: 16px (select/padding/x/xl) level indent, no knowledgeBase/SG value · Aura: 1rem
+  --int-tree-view-transition-duration: var(--i-motion-duration-fast); // Aura: {transition.duration}
+
+  // --- row ---
+  --int-tree-view-node-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-node-content padding 4px · Figma: 6px (select/padding/y/sm) ⚠️ · Aura: 0.25rem 0.5rem
+  --int-tree-view-node-padding-x: var(--i-spacing-container-sm); // SG: .p-tree-node-content padding 6px · Figma: 8px (select/padding/x/md) ⚠️
+  --int-tree-view-node-gap: var(--i-spacing-gap-sm); // Figma: 8px (select/gap/sm), no knowledgeBase/SG value · Aura: 0.25rem
+  --int-tree-view-node-radius: var(--i-border-radius-lg); // Figma: 8px (select/border/radius/lg), no knowledgeBase/SG value · Aura: {content.border.radius}
+  --int-tree-view-node-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background), no knowledgeBase/SG value · Aura: transparent
+  --int-tree-view-node-hover-background: var(--i-color-secondary-100); // SG: overlay .p-tree-node-content:hover · Figma: #F2F2F5 (select/color/hover/background) [State=Hover] · Aura: {navigation.item.focus.background}
+  --int-tree-view-node-selected-background: var(--i-color-primary-700); // SG: .p-tree-node-selected (no checkbox) · Figma: #1B3E88 (select/color/pressed/background) [State=Pressed] · Aura: {highlight.background}
+  --int-tree-view-node-selected-color: var(--i-color-primary-50); // SG: .p-tree-node-selected (no checkbox) · Figma: #EEF2FC (select/color/pressed/text) [State=Pressed] · Aura: {highlight.color}
+  --int-tree-view-node-checked-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background) [State=Selected], SG multiselect transparent · SG treeselect secondary-100 ⚠️ · Aura: {highlight.background}
+  --int-tree-view-node-checked-hover-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (select/color/hover/background) [State=Selected hover] · SG: multiselect .p-focus secondary-100
+  --int-tree-view-node-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (select/color/disabled/text) [State=Disabled], no knowledgeBase/SG value · Aura: {text.muted.color}
+  --int-tree-view-focus-ring-width: var(--i-border-width-sm); // SG: overlay focus-visible outline 1px · Aura: {focus.ring.width}
+  --int-tree-view-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color · Aura: {focus.ring.color}
+
+  // --- toggle ---
+  --int-tree-view-toggle-size: var(--i-spacing-container-xl); // SG: .p-tree-node-toggle-button 16px · Figma: 16px (icon-container) · Aura: 1.75rem
+  --int-tree-view-toggle-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container) · Aura: —
+
+  // --- checkbox (provisional until the checkbox of int-input) ---
+  --int-tree-view-checkbox-size: var(--i-sizing-xs); // SG: .p-checkbox-box 1rem · Figma: 16px (checkbox/sizing/xs)
+  --int-tree-view-checkbox-accent: var(--i-color-primary-700); // Figma: #1B3E88 (checkbox/color/background)
+
+  // --- empty message ---
+  --int-tree-view-empty-padding: var(--i-spacing-container-xs); // Aura: {tree.empty.message.padding}
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,6 +49,11 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tree-view {
+  display: block;
+  font-family: var(--int-tree-view-font-family);
+  font-size: var(--int-tree-view-font-size);
+  line-height: var(--int-tree-view-line-height);
+  color: var(--int-tree-view-color);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +61,133 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tree-view {
+  &__root,
+  &__node-children {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-tree-view-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__node-children {
+    padding-inline-start: var(--int-tree-view-indent);
+  }
+
+  &__node {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-tree-view-gap);
+    outline: none;
+
+    &:focus-visible > .int-tree-view__node-content {
+      outline: var(--int-tree-view-focus-ring-width) solid var(--int-tree-view-focus-ring-color);
+      outline-offset: calc(var(--int-tree-view-focus-ring-width) * -1);
+    }
+  }
+
+  &__node-content {
+    display: flex;
+    align-items: center;
+    gap: var(--int-tree-view-node-gap);
+    padding: var(--int-tree-view-node-padding-y) var(--int-tree-view-node-padding-x);
+    background: var(--int-tree-view-node-background);
+    border-radius: var(--int-tree-view-node-radius);
+    transition: background var(--int-tree-view-transition-duration), color var(--int-tree-view-transition-duration);
+
+    &--selectable {
+      cursor: pointer;
+
+      &:not(.int-tree-view__node-content--selected):hover {
+        background: var(--int-tree-view-node-hover-background);
+      }
+    }
+
+    &--selected {
+      color: var(--int-tree-view-node-selected-color);
+      background: var(--int-tree-view-node-selected-background);
+    }
+
+    &--disabled {
+      color: var(--int-tree-view-node-disabled-color);
+      cursor: default;
+    }
+  }
+
+  &__toggle-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-tree-view-toggle-size);
+    height: var(--int-tree-view-toggle-size);
+    padding: 0;
+    color: inherit;
+    background: transparent;
+    border: 0 none;
+    cursor: pointer;
+  }
+
+  &__toggle-icon {
+    font-size: var(--int-tree-view-toggle-icon-size);
+    transition: rotate var(--int-tree-view-transition-duration);
+  }
+
+  // A leaf keeps the space of the toggle, so labels stay aligned (PrimeNG .p-tree-node-leaf).
+  &__node--leaf > .int-tree-view__node-content > .int-tree-view__toggle-button {
+    visibility: hidden;
+  }
+
+  &__node[aria-expanded='true'] > .int-tree-view__node-content .int-tree-view__toggle-icon {
+    rotate: 90deg;
+  }
+
+  // TODO(dep:input provisional) minimal native look until the checkbox of int-input.
+  &__checkbox {
+    flex-shrink: 0;
+    width: var(--int-tree-view-checkbox-size);
+    height: var(--int-tree-view-checkbox-size);
+    margin: 0;
+    accent-color: var(--int-tree-view-checkbox-accent);
+    pointer-events: none;
+  }
+
+  &__node-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__empty-message {
+    padding: var(--int-tree-view-empty-padding);
+  }
+}
+
+// Checkbox mode (Figma Selected / Selected hover, Style Guide multiselect): a checked row keeps the text color and
+// the row background, and takes the hover background under the pointer.
+.int-tree-view:has(.int-tree-view__checkbox) .int-tree-view__node-content--selected {
+  color: var(--int-tree-view-color);
+  background: var(--int-tree-view-node-checked-background);
+
+  &.int-tree-view__node-content--selectable:hover {
+    background: var(--int-tree-view-node-checked-hover-background);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-tree-view {
+// Label as toggle and children aligned live in _tree-view.label-as-toggle and _tree-view.children-aligned.
+
+@media (prefers-reduced-motion: reduce) {
+  .int-tree-view__node-content,
+  .int-tree-view__toggle-icon {
+    transition-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

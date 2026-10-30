@@ -1,6 +1,22 @@
 <!--
   title: TreeView
-  description:
-  figma:
+  description: Tree is used to display hierarchical data.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15191-16637
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2649
 -->
-int-tree-view
+<!-- Root list of the tree (PrimeNG p-tree-root-children) -->
+@if (value().length) {
+  <ul
+    class="int-tree-view__root"
+    role="tree"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-multiselectable]="selectionMode() === 'multiple' || selectionMode() === 'checkbox' ? true : null"
+  >
+    @for (node of value(); track node.key ?? $index; let index = $index) {
+      <int-tree-view-node [node]="node" [index]="index" [setSize]="value().length" />
+    }
+  </ul>
+} @else {
+  <div class="int-tree-view__empty-message">{{ emptyMessage() }}</div>
+}
