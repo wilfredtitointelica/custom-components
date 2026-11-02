@@ -9,18 +9,18 @@
 
   // --- trigger ---
   --int-tree-select-width: calc(var(--i-sizing-3xl) * 2 + var(--i-sizing-xl)); // knowledgeBase: example min-width 232px · Figma: 232px (dropdown-input-levels), no exact token (96×2 + 40)
-  --int-tree-select-height: var(--i-sizing-lg); // SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels) · Aura: —
-  --int-tree-select-background: var(--i-color-secondary-50); // SG: .p-treeselect background · Figma: #FCFCFC (input/color/background) · Aura: {form.field.background}
+  --int-tree-select-height: var(--i-sizing-lg); // SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels)
+  --int-tree-select-background: var(--i-color-secondary-50); // SG: .p-treeselect background · Figma: #FCFCFC (input/color/background)
   --int-tree-select-border-width: var(--i-border-width-sm); // SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
-  --int-tree-select-border-color: var(--i-color-secondary-200); // SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border) · Aura: {form.field.border.color}
-  --int-tree-select-border-radius: var(--i-border-radius-lg); // SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg) · Aura: {form.field.border.radius}
-  --int-tree-select-hover-border-color: var(--i-color-primary-400); // SG: :hover border · Aura: {form.field.hover.border.color}
-  --int-tree-select-focus-border-color: var(--i-color-primary-900); // SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border) · Aura: {form.field.focus.border.color}
-  --int-tree-select-invalid-border-color: var(--i-border-error); // SG: .p-invalid border · Aura: {form.field.invalid.border.color}
-  --int-tree-select-invalid-color: var(--i-text-color-error); // SG: .p-invalid placeholder / icon · Aura: {form.field.invalid.placeholder.color}
-  --int-tree-select-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value · Aura: {form.field.disabled.background}
-  --int-tree-select-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value · Aura: {form.field.disabled.color}
-  --int-tree-select-transition-duration: var(--i-motion-duration-fast); // Aura: {form.field.transition.duration}
+  --int-tree-select-border-color: var(--i-color-secondary-200); // SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border)
+  --int-tree-select-border-radius: var(--i-border-radius-lg); // SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg)
+  --int-tree-select-hover-border-color: var(--i-color-primary-400); // SG: :hover border
+  --int-tree-select-focus-border-color: var(--i-color-primary-900); // SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border)
+  --int-tree-select-invalid-border-color: var(--i-border-error); // SG: .p-invalid border
+  --int-tree-select-invalid-color: var(--i-text-color-error); // SG: .p-invalid placeholder / icon
+  --int-tree-select-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
+  --int-tree-select-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
+  --int-tree-select-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
 
   // --- label ---
   --int-tree-select-label-padding-y: var(--i-spacing-container-sm); // SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
@@ -33,7 +33,7 @@
 
   // --- icons ---
   --int-tree-select-icon-color: var(--i-color-primary-900); // SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
-  --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value · Aura: —
+  --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
   --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
   --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
 

@@ -47,7 +47,10 @@ export class IntToggleSwitch implements ControlValueAccessor {
 
   /** Índice de tabulación del input interno. */
   readonly tabindex = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
-  /** Id del input interno; lo usa un <label for> externo. */
+  /**
+   * Id del input interno; lo usa un <label for> externo.
+   * @defaultValue 'int-toggle-switch-N' (autogenerado)
+   */
   readonly inputId = input<string>(`int-toggle-switch-${nextId++}`);
   /** Si es true, el valor no se puede cambiar. */
   readonly readonly = input(false, { transform: booleanAttribute });

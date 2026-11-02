@@ -196,14 +196,14 @@ export class IntTreeView {
     return rows;
   }
 
-  /** Mueve el foco a la fila visible anterior o siguiente. */
+  /** int-* extension: mueve el foco a la fila visible anterior o siguiente (la usa cada fila con las flechas). */
   focusSibling(node: IntTreeNode, step: 1 | -1): void {
     const rows = this.visibleNodes();
     const next = rows[rows.indexOf(node) + step];
     if (next) this.focusNode(next);
   }
 
-  /** Lleva el foco a la fila del nodo. */
+  /** int-* extension: lleva el foco a la fila del nodo. */
   focusNode(node: IntTreeNode): void {
     const rows = this.visibleNodes();
     const items = this.host.nativeElement.querySelectorAll<HTMLElement>('.int-tree-view__node');
@@ -213,7 +213,7 @@ export class IntTreeView {
     item?.focus();
   }
 
-  /** Indica si la fila del nodo es la que recibe el Tab (la primera seleccionada, o la primera). */
+  /** int-* extension: indica si la fila del nodo es la que recibe el Tab (la primera seleccionada, o la primera). */
   isTabStop(node: IntTreeNode): boolean {
     const rows = this.visibleNodes();
     const selected = rows.find(row => this.isSelected(row));

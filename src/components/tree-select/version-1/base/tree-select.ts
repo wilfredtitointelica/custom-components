@@ -48,7 +48,10 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
-  /** Id del input interno; lo usa un <label for> externo. */
+  /**
+   * Id del input interno; lo usa un <label for> externo.
+   * @defaultValue 'int-tree-select-N' (autogenerado)
+   */
   readonly inputId = input<string>(`int-tree-select-${nextId++}`);
   /** Nodos del árbol del panel. */
   readonly options = input<IntTreeNode[]>([]);
