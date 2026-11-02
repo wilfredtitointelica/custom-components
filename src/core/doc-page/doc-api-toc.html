@@ -1,0 +1,12 @@
+<span id="doc-api-toc-label" class="doc-api-toc-label">Go to:</span>
+@for (block of blocks(); track block.key) {
+  <a
+    class="doc-api-toc-link"
+    [routerLink]="path()"
+    [fragment]="blockId(componentId(), block.key)"
+    queryParamsHandling="preserve"
+  >
+    {{ block.title }}
+    <span class="doc-api-toc-count">{{ block.count }}</span>
+  </a>
+}

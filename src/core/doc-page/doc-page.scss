@@ -8,6 +8,15 @@
 
 /* Page header (M3 display / headline scale) */
 
+// Title on the left, Features | API tabs at the end (below it on narrow screens).
+.doc-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .doc-eyebrow {
   margin: 0 0 8px;
   color: var(--doc-accent-text);
@@ -117,8 +126,19 @@
 .doc-deps-trigger {
   anchor-name: --doc-deps;
 
-  &[aria-expanded='true'] .doc-deps-caret {
-    transform: rotate(180deg);
+  // Same palette as the Scan toggle: both actions belong to "Dependencies".
+  &[aria-expanded='true'] {
+    border-color: var(--doc-scan);
+    background: var(--doc-scan-container);
+
+    .doc-deps-caret {
+      transform: rotate(180deg);
+    }
+
+    .doc-deps-count {
+      background: var(--doc-scan);
+      color: var(--doc-surface);
+    }
   }
 }
 
@@ -129,8 +149,8 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: var(--doc-accent-container);
-  color: var(--doc-on-accent-container);
+  background: var(--doc-scan-container);
+  color: var(--doc-on-scan-container);
   font-size: 0.6875rem;
   font-weight: 700;
 }

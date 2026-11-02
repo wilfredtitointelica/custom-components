@@ -1,11 +1,20 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, input, output,
-  TemplateRef, ViewEncapsulation,
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  contentChild,
+  input,
+  output,
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
 /** Gap between the #content blocks: none 0 · small 4px · (default 6px) · medium 12px · large 16px. */
 export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
+/** Visual formats of the knowledge base; they exclude each other (compact / outlined / noBg add up). */
+export type IntCardAppearance = 'mini' | 'option' | 'version' | 'data' | 'group';
 
 /**
  * <int-card> · version 1. Replica of PrimeNG v20 p-card without PrimeNG at runtime.
@@ -23,7 +32,6 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
   // its int-card--* class here; single class bindings keep the consumer's own classes (u-*) on the host.
   host: {
     class: 'int-card',
-    '[style.inline-size]': 'width()',
     '[class.int-card--compact]': 'compact()',
     '[class.int-card--outlined]': 'outlined()',
     '[class.int-card--no-bg]': 'noBg()',
@@ -32,11 +40,11 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
     '[class.int-card--content-gap-small]': "contentGap() === 'small'",
     '[class.int-card--content-gap-medium]': "contentGap() === 'medium'",
     '[class.int-card--content-gap-large]': "contentGap() === 'large'",
-    '[class.int-card--mini]': 'mini()',
-    '[class.int-card--option]': 'option()',
-    '[class.int-card--version]': 'version()',
-    '[class.int-card--data]': 'data()',
-    '[class.int-card--group]': 'group()',
+    '[class.int-card--mini]': "appearance() === 'mini'",
+    '[class.int-card--option]': "appearance() === 'option'",
+    '[class.int-card--version]': "appearance() === 'version'",
+    '[class.int-card--data]': "appearance() === 'data'",
+    '[class.int-card--group]': "appearance() === 'group'",
     '[class.int-card--selectable]': 'selectable()',
     '[class.int-card--selected]': 'selectable() && selected()',
     '[class.int-card--disabled]': 'disabled()',
@@ -44,9 +52,9 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
     '[attr.tabindex]': 'tabIndex()',
     '[attr.aria-pressed]': 'selectable() ? selected() : null',
     '[attr.aria-disabled]': 'disabled() || null',
-    '(click)': 'select($event)',
-    '(keydown.enter)': 'select($event)',
-    '(keydown.space)': 'select($event)',
+    '(click)': 'activate($event)',
+    '(keydown.enter)': 'activate($event)',
+    '(keydown.space)': 'activate($event)',
   },
 })
 export class IntCard {
@@ -55,53 +63,63 @@ export class IntCard {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 
-  /** Header (title) of the card; a #title template takes precedence. */
+  // JSDoc of the public API in Spanish: it is the Descripción column of the API tab of the page.
+  /** Título de la card; una plantilla #title tiene prioridad. */
   readonly header = input<string>();
-  /** Subheader (subtitle) of the card; a #subtitle template takes precedence. */
+  /** Subtítulo de la card; una plantilla #subtitle tiene prioridad. */
   readonly subheader = input<string>();
-  /** int-* extension: fixed height of the #header (any CSS length, e.g. '240px'); the media fills it. */
+  /** int-* extension: alto fijo del #header (cualquier medida CSS, p. ej. '240px'); la imagen lo llena. */
   readonly headerHeight = input<string>();
-  /** int-* extension: fixed width of the card (any CSS length, e.g. '240px'); without it, it fills its container. */
-  readonly width = input<string>();
-  /** int-* extension: less padding, gap and radius, and smaller type (.prCard--compact of the knowledge base). */
+  /** int-* extension: menos padding, separación y radio, y texto más pequeño (.prCard--compact de la base de conocimientos). */
   readonly compact = input(false, { transform: booleanAttribute });
-  /** int-* extension: visible border instead of the shadow (.prCard--outlined of the knowledge base). */
+  /** int-* extension: borde visible en lugar de la sombra (.prCard--outlined de la base de conocimientos). */
   readonly outlined = input(false, { transform: booleanAttribute });
-  /** int-* extension: no background nor shadow (used with group). */
+  /** int-* extension: sin fondo ni sombra (se usa con appearance="group"). */
   readonly noBg = input(false, { transform: booleanAttribute });
-  /** int-* extension: body and content fill the card height, to center an empty or error state. */
+  /** int-* extension: el cuerpo y el contenido llenan el alto de la card, para centrar un estado vacío o de error. */
   readonly stretchContent = input(false, { transform: booleanAttribute });
-  /** int-* extension: gap between the blocks of #content; without it, the default (6px). */
+  /** int-* extension: separación entre los bloques de #content; sin él, la de por defecto (6px). */
   readonly contentGap = input<IntCardContentGap>();
-  /** int-* extension: compact bordered card (mini format of the knowledge base). */
-  readonly mini = input(false, { transform: booleanAttribute });
-  /** int-* extension: card to choose an option (option format of the knowledge base). */
-  readonly option = input(false, { transform: booleanAttribute });
-  /** int-* extension: bordered card to choose a version (version format of the knowledge base). */
-  readonly version = input(false, { transform: booleanAttribute });
-  /** int-* extension: KPI card without shadow nor padding (data format of the knowledge base). */
-  readonly data = input(false, { transform: booleanAttribute });
-  /** int-* extension: several metrics in a row, split by dividers (group format of the knowledge base). */
-  readonly group = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: formato visual de la base de conocimientos: mini (compacta con borde), option
+   * (elegir una opción), version (elegir una versión), data (KPI sin sombra ni padding) o group
+   * (métricas en fila con divisores); sin él, la card estándar.
+   */
+  readonly appearance = input<IntCardAppearance>();
 
   /**
-   * int-* extension: the card works as a toggle button (mini, option and version formats of the
-   * knowledge base). Adds role="button", a tab stop, aria-pressed and Enter/Space.
+   * int-* extension: la card funciona como botón de alternar (appearance mini, option y version de la
+   * base de conocimientos). Agrega role="button", parada de tabulación, aria-pressed y Enter/Espacio.
    */
   readonly selectable = input(false, { transform: booleanAttribute });
-  /** int-* extension: pressed state of a selectable card (aria-pressed). The consumer owns it. */
+  /** int-* extension: estado presionado de una card selectable (aria-pressed). Lo controla quien la usa. */
   readonly selected = input(false, { transform: booleanAttribute });
-  /** int-* extension: disables a selectable card (no tab stop, no onSelect, aria-disabled). */
+  /** int-* extension: deshabilita una card selectable (sin tabulación, sin onSelect, aria-disabled). */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** int-* extension: emitted on click, Enter or Space when the card is selectable and enabled. */
+  /** int-* extension: se emite con clic, Enter o Espacio cuando la card es selectable y está habilitada. */
   readonly onSelect = output<Event>();
 
   // Templates by reference, same names as PrimeNG (direct children only, like p-card).
-  protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header', { descendants: false });
-  protected readonly titleTemplate = contentChild<TemplateRef<unknown>>('title', { descendants: false });
-  protected readonly subtitleTemplate = contentChild<TemplateRef<unknown>>('subtitle', { descendants: false });
-  protected readonly contentTemplate = contentChild<TemplateRef<unknown>>('content', { descendants: false });
-  protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer', { descendants: false });
+  /** Imagen o gráfico arriba de la card; su alto es headerHeight. */
+  protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header', {
+    descendants: false,
+  });
+  /** Título personalizado; tiene prioridad sobre header. */
+  protected readonly titleTemplate = contentChild<TemplateRef<unknown>>('title', {
+    descendants: false,
+  });
+  /** Subtítulo personalizado; tiene prioridad sobre subheader. */
+  protected readonly subtitleTemplate = contentChild<TemplateRef<unknown>>('subtitle', {
+    descendants: false,
+  });
+  /** Cuerpo de la card, después del contenido proyectado; sus bloques se separan con contentGap. */
+  protected readonly contentTemplate = contentChild<TemplateRef<unknown>>('content', {
+    descendants: false,
+  });
+  /** Acciones al pie, sobre un divisor. */
+  protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer', {
+    descendants: false,
+  });
 
   protected readonly hasTitle = computed(() => !!this.header() || !!this.titleTemplate());
   protected readonly hasSubtitle = computed(() => !!this.subheader() || !!this.subtitleTemplate());
@@ -112,7 +130,7 @@ export class IntCard {
     return this.disabled() ? -1 : 0;
   });
 
-  protected select(event: Event): void {
+  protected activate(event: Event): void {
     if (!this.selectable() || this.disabled()) return;
     // Space would scroll the page and Enter could submit a surrounding form.
     if (event instanceof KeyboardEvent) event.preventDefault();

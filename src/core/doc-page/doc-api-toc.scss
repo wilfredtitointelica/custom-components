@@ -1,0 +1,33 @@
+@use 'doc-action' as *;
+
+// Labelled set of actions, like "Dependencies: Detect · Scan".
+:host {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-api-toc-label {
+  color: var(--doc-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+// Outlined action of the bar + count (scrolls to the block).
+.doc-api-toc-link {
+  @include doc-action;
+}
+
+.doc-api-toc-count {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--doc-surface-high);
+  color: var(--doc-ink-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}

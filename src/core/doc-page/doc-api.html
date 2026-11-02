@@ -1,0 +1,265 @@
+@let current = api();
+<!-- An empty API (version in template state) is handled by doc-page with its placeholder. -->
+@let tag = 'int-' + componentId();
+<!-- Jump buttons to each block: app-doc-api-toc, in the sticky bar. Text in Spanish (readers of the
+     documentation); member names, types and code stay as written in the component. -->
+@if (current) {
+  <!-- What the chip next to each name means: read once before the tables, so it is not sticky. -->
+  @if (hasOrigins()) {
+    <p class="doc-api-legend">
+      <span class="doc-api-origin doc-is-primeng">PrimeNG</span>
+      <span
+        >Mismo nombre y comportamiento que PrimeNG v20: migrar es cambiar <code>p-</code> por
+        <code>int-</code>.</span
+      >
+      <span class="doc-api-origin doc-is-int">int-*</span>
+      <span>Extensión de Intelica: no existe en PrimeNG.</span>
+    </p>
+  }
+
+  @if (current.inputs.length) {
+    <section
+      class="doc-api-block"
+      [id]="blockId(componentId(), 'inputs')"
+      aria-labelledby="doc-api-inputs"
+    >
+      <h2 class="doc-api-title" id="doc-api-inputs">
+        Properties <code class="doc-api-term">input()</code>
+      </h2>
+      <p class="doc-api-hint">
+        Se configuran en la etiqueta:
+        <code>&lt;{{ tag }} [{{ current.inputs[0].name }}]="valor"&gt;</code>. Los textos también se
+        escriben como atributo normal y los booleanos basta con poner el atributo.
+      </p>
+      <div class="doc-api-wrap">
+        <table class="doc-api-table">
+          <thead>
+            <tr>
+              <th scope="col" class="doc-w-name">Nombre</th>
+              <th scope="col" class="doc-w-type">Tipo</th>
+              <th scope="col" class="doc-w-default">Por defecto</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of current.inputs; track item.name) {
+              <tr>
+                <td>
+                  <code class="doc-api-name">{{
+                    item.twoWay ? '[(' + item.name + ')]' : item.name
+                  }}</code>
+                  @if (item.required) {
+                    <span class="doc-api-required">obligatorio</span>
+                  }
+                  @if (item.origin) {
+                    <span class="doc-api-origin" [class]="'doc-is-' + item.origin">{{
+                      item.origin === 'int' ? 'int-*' : 'PrimeNG'
+                    }}</span>
+                  }
+                </td>
+                <td>
+                  <!-- A type alias (IntCardContentGap) says nothing to the consumer: show its values instead. -->
+                  @if (item.values) {
+                    <code class="doc-api-type">{{ item.values }}</code>
+                  } @else {
+                    <code class="doc-api-type">{{ item.type }}</code>
+                  }
+                </td>
+                <td>
+                  <code class="doc-api-default">{{ item.default ?? 'undefined' }}</code>
+                </td>
+                <td class="doc-api-description">{{ item.description || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (current.outputs.length) {
+    <section
+      class="doc-api-block"
+      [id]="blockId(componentId(), 'outputs')"
+      aria-labelledby="doc-api-outputs"
+    >
+      <h2 class="doc-api-title" id="doc-api-outputs">
+        Events <code class="doc-api-term">output()</code>
+      </h2>
+      <p class="doc-api-hint">
+        Se escuchan en la etiqueta:
+        <code>&lt;{{ tag }} ({{ current.outputs[0].name }})="manejar($event)"&gt;</code>. El dato
+        que envía llega en <code>$event</code>.
+      </p>
+      <div class="doc-api-wrap">
+        <table class="doc-api-table">
+          <thead>
+            <tr>
+              <th scope="col" class="doc-w-name">Nombre</th>
+              <th scope="col" class="doc-w-type">Dato ($event)</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of current.outputs; track item.name) {
+              <tr>
+                <td>
+                  <code class="doc-api-name">({{ item.name }})</code>
+                  @if (item.origin) {
+                    <span class="doc-api-origin" [class]="'doc-is-' + item.origin">{{
+                      item.origin === 'int' ? 'int-*' : 'PrimeNG'
+                    }}</span>
+                  }
+                </td>
+                <td>
+                  <code class="doc-api-type">{{ item.type }}</code>
+                </td>
+                <td class="doc-api-description">{{ item.description || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (current.templates.length) {
+    <section
+      class="doc-api-block"
+      [id]="blockId(componentId(), 'templates')"
+      aria-labelledby="doc-api-templates"
+    >
+      <h2 class="doc-api-title" id="doc-api-templates">
+        Templates <code class="doc-api-term">ng-template</code>
+      </h2>
+      <p class="doc-api-hint">
+        Contenido propio que se pone dentro de la etiqueta, como hijo directo:
+        <code>&lt;ng-template #nombre&gt;…&lt;/ng-template&gt;</code>. Lo que va suelto entra por
+        <code>&lt;ng-content&gt;</code>.
+      </p>
+      <div class="doc-api-wrap">
+        <table class="doc-api-table">
+          <thead>
+            <tr>
+              <th scope="col" class="doc-w-name">Nombre</th>
+              <th scope="col" class="doc-w-type">Contexto</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of current.templates; track item.name) {
+              <tr>
+                <td>
+                  <code class="doc-api-name">
+                    @if (!item.slot) {
+                      #{{ item.name }}
+                    } @else if (item.name === 'default') {
+                      &lt;ng-content&gt;
+                    } @else {
+                      {{ item.name }}
+                    }
+                  </code>
+                  @if (item.origin) {
+                    <span class="doc-api-origin" [class]="'doc-is-' + item.origin">{{
+                      item.origin === 'int' ? 'int-*' : 'PrimeNG'
+                    }}</span>
+                  }
+                </td>
+                <td>
+                  <code class="doc-api-type">{{ item.context ?? '—' }}</code>
+                </td>
+                <td class="doc-api-description">{{ item.description || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (current.methods.length) {
+    <section
+      class="doc-api-block"
+      [id]="blockId(componentId(), 'methods')"
+      aria-labelledby="doc-api-methods"
+    >
+      <h2 class="doc-api-title" id="doc-api-methods">Methods</h2>
+      <p class="doc-api-hint">
+        Se llaman sobre la instancia, por ejemplo con una referencia: <code>#ref</code> →
+        <code>ref.metodo()</code>.
+      </p>
+      <div class="doc-api-wrap">
+        <table class="doc-api-table">
+          <thead>
+            <tr>
+              <th scope="col" class="doc-w-signature">Firma</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of current.methods; track item.name) {
+              <tr>
+                <td>
+                  <code class="doc-api-name">{{ item.signature }}</code>
+                  @if (item.origin) {
+                    <span class="doc-api-origin" [class]="'doc-is-' + item.origin">{{
+                      item.origin === 'int' ? 'int-*' : 'PrimeNG'
+                    }}</span>
+                  }
+                </td>
+                <td class="doc-api-description">{{ item.description || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (current.tokens.length) {
+    <section
+      class="doc-api-block"
+      [id]="blockId(componentId(), 'tokens')"
+      aria-labelledby="doc-api-tokens"
+    >
+      <h2 class="doc-api-title" id="doc-api-tokens">CSS tokens</h2>
+      <p class="doc-api-hint">
+        Declarados en el <code>:root</code> de <code>styles/_{{ componentId() }}.scss</code>, cada
+        uno apunta a un token <code>--i-*</code> del Style Guide. Sobrescribir uno cambia el estilo
+        de todos los <code>{{ tag }}</code
+        >.
+      </p>
+      <div class="doc-api-wrap">
+        <table class="doc-api-table">
+          <thead>
+            <tr>
+              <th scope="col" class="doc-w-token">Token</th>
+              <th scope="col" class="doc-w-value">Valor</th>
+              <th scope="col">Origen</th>
+            </tr>
+          </thead>
+          @for (group of tokenGroups(); track $index) {
+            <tbody>
+              @if (group.name) {
+                <tr class="doc-api-group">
+                  <th scope="colgroup" colspan="3">{{ group.name }}</th>
+                </tr>
+              }
+              @for (token of group.tokens; track token.name) {
+                <tr>
+                  <td>
+                    <code class="doc-api-name">{{ token.name }}</code>
+                  </td>
+                  <td>
+                    <code class="doc-api-type">{{ token.value }}</code>
+                  </td>
+                  <td class="doc-api-source">{{ token.source ?? '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          }
+        </table>
+      </div>
+    </section>
+  }
+}
