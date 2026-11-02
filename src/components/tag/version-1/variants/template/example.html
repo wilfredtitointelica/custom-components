@@ -1,0 +1,14 @@
+<!--
+  title: Template
+  description: El template #icon reemplaza al input icon con contenido propio.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-tag value="Mastercard" severity="contrast" rounded>
+    <ng-template #icon>
+      <i class="icon icon-credit-card" aria-hidden="true"></i>
+    </ng-template>
+  </int-tag>
+  <int-tag value="Rate" severity="info">
+    <ng-template #icon><strong>%</strong></ng-template>
+  </int-tag>
+</div>

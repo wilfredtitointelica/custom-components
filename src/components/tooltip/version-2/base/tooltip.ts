@@ -1,17 +1,11 @@
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
   ComponentRef,
   Directive,
   ElementRef,
   OnDestroy,
-  TemplateRef,
-  ViewEncapsulation,
   booleanAttribute,
-  computed,
   effect,
   inject,
   input,
@@ -20,22 +14,10 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { IntPlacement, uniqueId } from '../../../_shared_';
+import { uniqueId } from '../../../_shared_';
+import { IntTooltipContent, IntTooltipPanel, IntTooltipPosition } from './tooltip-panel';
 
-export type IntTooltipContent = string | TemplateRef<unknown> | null | undefined;
-
-/**
- * Where the tooltip opens relative to the host. The corner values keep the bubble on that side
- * (`top-*` above, `bottom-*` below) and align it so its arrow, inset from the `left` / `right` edge,
- * points at the host center. Figma "Indicator" names the arrow instead: `Indicator=bottom-left ↙️`
- * is `tooltipPosition="top-left"`.
- */
-export type IntTooltipPosition =
-  | IntPlacement
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
+export type { IntTooltipContent, IntTooltipPosition } from './tooltip-panel';
 
 /** Arrow inset from the bubble edge (12px, `space/150`) plus half the arrow width (4px). */
 const CORNER_SHIFT = 16;
@@ -61,50 +43,6 @@ const OPPOSITE: Record<IntTooltipPosition, IntTooltipPosition> = {
   'bottom-left': 'top-left',
   'bottom-right': 'top-right',
 };
-
-/**
- * <int-tooltip>: the floating bubble rendered in the CDK overlay (BEM block `int-tooltip`).
- * Internal — use the `intTooltip` directive.
- */
-@Component({
-  selector: 'int-tooltip',
-  imports: [NgTemplateOutlet],
-  templateUrl: './tooltip.html',
-  styleUrl: '../styles/_index.scss',
-  host: {
-    role: 'tooltip',
-    '[id]': 'id()',
-    '[class]': 'hostClass()',
-  },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class IntTooltipPanel {
-  readonly id = input.required<string>();
-  readonly content = input<IntTooltipContent>(null);
-  readonly title = input<string | undefined>(undefined);
-  /** Side actually used after the overlay flips; drives the arrow side. */
-  readonly position = input<IntTooltipPosition>('top');
-  readonly arrow = input(true);
-  readonly styleClass = input<string | undefined>(undefined);
-
-  protected readonly template = computed(() => {
-    const c = this.content();
-    return c instanceof TemplateRef ? c : null;
-  });
-
-  /** int-tooltip int-tooltip--<position> [int-tooltip--no-arrow] [styleClass]. */
-  protected readonly hostClass = computed(() =>
-    [
-      'int-tooltip',
-      `int-tooltip--${this.position()}`,
-      this.arrow() ? '' : 'int-tooltip--no-arrow',
-      this.styleClass() ?? '',
-    ]
-      .filter(Boolean)
-      .join(' '),
-  );
-}
 
 /**
  * [intTooltip] · version 2. Shows a tooltip on hover and keyboard focus (`tooltipEvent`), linked with

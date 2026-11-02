@@ -61,7 +61,11 @@
     padding: var(--i-spacing-container-xs);
     list-style: none;
     overflow-y: auto;
-    outline: none;
+
+    // aria-activedescendant: keyboard focus is shown on the --focused option and the :focus-within border.
+    &:focus-visible {
+      outline: none;
+    }
   }
 
   &__option {

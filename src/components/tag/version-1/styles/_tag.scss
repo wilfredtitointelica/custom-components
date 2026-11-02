@@ -3,7 +3,26 @@
 \*——————————————————————————————————————————————————————————*/
 
 :root {
-  --NOTE-TAG: 'int-tag ( Custom )';
+  --NOTE-TAG: 'int-tag ( PrimeNG v20 p-tag )';
+
+  // --- root ---
+  --int-tag-background: var(--i-badge-primary-background); // SG: --i-badge-primary-background · Aura: {surface.100} (secondary)
+  --int-tag-color: var(--i-badge-primary-color); // SG: --i-badge-primary-color · Aura: {surface.600} (secondary)
+  --int-tag-border-color: var(--i-badge-primary-border); // SG: --i-badge-primary-border · Aura: none
+  --int-tag-border-width: var(--i-badge-border-width-sm); // SG: --i-badge-border-width-sm · Aura: none
+  --int-tag-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Aura: {content.border.radius}
+  --int-tag-rounded-radius: var(--i-badge-border-radius-full); // SG: --i-badge-border-radius-full · Aura: {border.radius.xl}
+  // Medium (no size); small / large in _tag.size.scss.
+  --int-tag-height: var(--i-sizing-lg); // SG: --i-sizing-lg · Figma: 32px (Hug) · Aura: auto
+  --int-tag-padding-y: var(--i-spacing-container-md); // SG: --i-spacing-container-md · Figma: 8px · Aura: 0.25rem
+  --int-tag-padding-x: var(--i-badge-padding-x-lg); // SG: --i-badge-padding-x-lg · Figma: 12px · Aura: 0.5rem
+  --int-tag-gap: var(--i-badge-gap-xs); // SG: --i-badge-gap-xs · Aura: 0.25rem
+  --int-tag-font-family: var(--i-badge-font-fontFamily); // SG: --i-badge-font-fontFamily · Aura: inherit
+  --int-tag-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Figma: 14px · Aura: 0.875rem
+  --int-tag-font-weight: var(--i-badge-font-weight); // SG: --i-badge-font-weight · Aura: 700
+
+  // --- icon ---
+  --int-tag-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Figma: 16px · Aura: 0.75rem
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,6 +30,23 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--int-tag-gap);
+  box-sizing: border-box;
+  height: var(--int-tag-height);
+  padding: var(--int-tag-padding-y) var(--int-tag-padding-x);
+  border: var(--int-tag-border-width) solid var(--int-tag-border-color);
+  border-radius: var(--int-tag-radius);
+  background: var(--int-tag-background);
+  color: var(--int-tag-color);
+  font-family: var(--int-tag-font-family);
+  font-size: var(--int-tag-font-size);
+  font-weight: var(--int-tag-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +54,22 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tag {
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--int-tag-icon-size);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
+// Severities live in _tag.severity.scss.
 .int-tag {
+  &--rounded {
+    border-radius: var(--int-tag-rounded-radius);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +77,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-tag {
+  display: inline-block;
+  width: 4rem;
+  height: var(--int-tag-height);
+  border-radius: var(--int-tag-radius);
+  background: var(--i-background-disabled);
 }

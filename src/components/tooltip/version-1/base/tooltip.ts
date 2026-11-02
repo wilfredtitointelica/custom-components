@@ -1,16 +1,10 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
   Directive,
   ElementRef,
   OnDestroy,
-  TemplateRef,
-  ViewEncapsulation,
   booleanAttribute,
-  computed,
   effect,
   inject,
   input,
@@ -19,36 +13,9 @@ import {
 } from '@angular/core';
 
 import { IntPlacement, placementPositions, uniqueId } from '../../../_shared_';
+import { IntTooltipContent, IntTooltipPanel } from './tooltip-panel';
 
-export type IntTooltipContent = string | TemplateRef<unknown> | null | undefined;
-
-/**
- * <int-tooltip>: the floating bubble rendered in the CDK overlay (BEM block `int-tooltip`).
- * Internal — use the `intTooltip` directive.
- */
-@Component({
-  selector: 'int-tooltip',
-  imports: [NgTemplateOutlet],
-  templateUrl: './tooltip.html',
-  styleUrl: '../styles/_index.scss',
-  host: {
-    class: 'int-tooltip',
-    role: 'tooltip',
-    '[id]': 'id()',
-    '[class]': 'styleClass() ?? ""',
-  },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class IntTooltipPanel {
-  readonly id = input.required<string>();
-  readonly content = input<IntTooltipContent>(null);
-  readonly styleClass = input<string | undefined>(undefined);
-  protected readonly template = computed(() => {
-    const c = this.content();
-    return c instanceof TemplateRef ? c : null;
-  });
-}
+export type { IntTooltipContent } from './tooltip-panel';
 
 /**
  * [intTooltip] · version 1. Shows a tooltip on hover and keyboard focus (`tooltipEvent`), linked with

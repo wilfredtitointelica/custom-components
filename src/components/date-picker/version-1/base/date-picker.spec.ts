@@ -86,7 +86,9 @@ describe('IntDatePicker', () => {
     const [start, end] = control.value as [Date, Date];
     expect(start.getDate()).toBe(12);
     expect(end.getDate()).toBe(25);
-    expect(input.value).toBe('12/10/2026 - 25/10/2026');
+    // The calendar opens on the current month.
+    const monthYear = `${String(start.getMonth() + 1).padStart(2, '0')}/${start.getFullYear()}`;
+    expect(input.value).toBe(`12/${monthYear} - 25/${monthYear}`);
   });
 
   it('moves focus with arrow keys and selects with Enter', () => {

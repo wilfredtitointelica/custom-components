@@ -36,7 +36,6 @@
   color: var(--int-dialog-modal-color);
   font-family: var(--i-text-body-family);
   font-size: var(--i-typography-font-size-md);
-  outline: none;
   animation: int-dialog-modal-enter var(--i-motion-duration-fast) var(--i-motion-ease-out);
 
   @media (prefers-reduced-motion: reduce) {

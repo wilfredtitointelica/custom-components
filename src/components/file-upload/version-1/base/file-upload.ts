@@ -18,7 +18,7 @@ import {
 
 import { IntConfig, IntIcon } from '../../../_shared_';
 import { IntButton } from '../../../button/version-1/base/button';
-import { IntPill } from '../../../pill/version-1/base/pill';
+import { IntTag } from '../../../tag/version-1/base/tag';
 
 export interface IntFileSelectEvent {
   originalEvent: Event;
@@ -44,7 +44,7 @@ export interface IntFileUploadHandlerEvent {
  */
 @Component({
   selector: 'int-file-upload',
-  imports: [NgTemplateOutlet, IntButton, IntIcon, IntPill],
+  imports: [NgTemplateOutlet, IntButton, IntIcon, IntTag],
   templateUrl: './file-upload.html',
   styleUrl: '../styles/_index.scss',
   host: {

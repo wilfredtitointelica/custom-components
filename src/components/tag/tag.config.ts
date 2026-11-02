@@ -12,5 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'tag',
+  sourceName: 'Pill',
+  variants: ['basic', 'severity', 'pill', 'icon', 'template', 'sizes'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

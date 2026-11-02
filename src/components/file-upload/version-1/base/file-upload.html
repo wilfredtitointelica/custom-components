@@ -95,7 +95,7 @@
             <int-icon class="int-file-upload__file-icon" name="file" />
             <span class="int-file-upload__file-name" [title]="file.name">{{ file.name }}</span>
             <span class="int-file-upload__file-size">{{ formatSize(file.size) }}</span>
-            <int-pill severity="warn" [value]="config.t('pending')" />
+            <int-tag size="small" severity="warn" [value]="config.t('pending')" />
             <button
               intButton
               type="button"

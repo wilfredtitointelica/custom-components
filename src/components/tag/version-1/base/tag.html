@@ -3,4 +3,14 @@
   description: Tags categorize content with a short label.
   figma:
 -->
-int-tag
+<ng-content />
+@if (iconTemplate(); as tpl) {
+  <span class="int-tag__icon" aria-hidden="true">
+    <ng-container [ngTemplateOutlet]="tpl" />
+  </span>
+} @else if (icon()) {
+  <span class="int-tag__icon" [class]="icon()" aria-hidden="true"></span>
+}
+@if (hasValue()) {
+  <span class="int-tag__label">{{ value() }}</span>
+}
