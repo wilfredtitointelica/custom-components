@@ -1,0 +1,24 @@
+<!--
+  title: Template
+  description: The icon, the message and the footer replaced with templates.
+-->
+<int-confirm-dialog-modal key="template">
+  <ng-template #icon>
+    <i class="icon icon-overlay-success" aria-hidden="true"></i>
+  </ng-template>
+  <ng-template #message let-confirmation>
+    <div class="u-display-flex u-flex-column u-gap-xs u-text-center">
+      <span class="u-text-xl u-bold">{{ confirmation.header }}</span>
+      <span class="u-text-lg">{{ confirmation.message }}</span>
+    </div>
+  </ng-template>
+  <ng-template #footer let-onAccept="onAccept" let-onReject="onReject">
+    <!-- dep:button provisional · replace with <int-button> when button is done -->
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="onAccept()">Great</button>
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="onReject()">Later</button>
+    <!-- /dep:button -->
+  </ng-template>
+</int-confirm-dialog-modal>
+<!-- dep:button provisional · replace with <int-button> when button is done -->
+<button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="confirm()">Publish</button>
+<!-- /dep:button -->

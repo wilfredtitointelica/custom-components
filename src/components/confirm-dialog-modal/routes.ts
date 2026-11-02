@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 /**
- * Internal routes of "ConfirmDialog (Modal)", mounted at /components/confirm-dialog-modal.
+ * Internal routes of "ConfirmDialog (Alert)", mounted at /components/confirm-dialog-modal.
  * Add sub-views here (e.g. { path: 'playground', loadComponent: … }) without touching the global router.
  * Variants are not routes: they are #anchors inside the documentation page.
  */

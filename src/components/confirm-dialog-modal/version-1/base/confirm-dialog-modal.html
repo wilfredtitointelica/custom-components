@@ -1,6 +1,108 @@
 <!--
-  title: ConfirmDialog (Modal)
+  title: ConfirmDialog (Alert)
   description: ConfirmDialog uses a Dialog UI to confirm an action, with accept and reject buttons.
-  figma:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=15758-21049
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=13146-53859
 -->
-int-confirm-dialog-modal
+<!-- Rendered in a CDK overlay attached to the body while a confirmation is open -->
+<ng-template #dialog>
+  @if (active(); as confirmation) {
+    <!-- dep:dialog-modal provisional · replace with <int-dialog-modal> when dialog-modal is done -->
+    <div
+      #panel
+      [class]="classes()"
+      data-dep="dialog-modal"
+      role="alertdialog"
+      aria-modal="true"
+      tabindex="-1"
+      cdkTrapFocus
+      [attr.aria-labelledby]="labelledBy()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-describedby]="describedBy()"
+      animate.enter="int-confirm-dialog-modal--enter"
+    >
+      @if (resolved().closable) {
+        <div class="int-confirm-dialog-modal__close">
+          <!-- dep:button provisional · replace with <int-button> (text, secondary, icon only) when button is done -->
+          <button
+            type="button"
+            class="int-confirm-dialog-modal__close-button"
+            data-dep="button"
+            [attr.aria-label]="resolved().closeAriaLabel"
+            (click)="cancel()"
+          >
+            <i class="icon icon-cancel" aria-hidden="true"></i>
+          </button>
+          <!-- /dep:button -->
+        </div>
+      }
+
+      <div class="int-confirm-dialog-modal__content">
+        @if (iconTemplate(); as iconTpl) {
+          <div class="int-confirm-dialog-modal__icon">
+            <ng-container [ngTemplateOutlet]="iconTpl" [ngTemplateOutletContext]="context()" />
+          </div>
+        } @else if (confirmation.image) {
+          <div class="int-confirm-dialog-modal__icon">
+            <img [src]="confirmation.image" [alt]="confirmation.imageAlt ?? ''" />
+          </div>
+        } @else if (resolvedIcon(); as icon) {
+          <div class="int-confirm-dialog-modal__icon">
+            <i [class]="icon" aria-hidden="true"></i>
+          </div>
+        }
+
+        @if (messageTemplate(); as messageTpl) {
+          <ng-container [ngTemplateOutlet]="messageTpl" [ngTemplateOutletContext]="context()" />
+        } @else {
+          <div class="int-confirm-dialog-modal__details">
+            @if (resolved().header; as header) {
+              <h2 class="int-confirm-dialog-modal__title" [id]="titleId">{{ header }}</h2>
+            }
+            @if (resolved().message; as message) {
+              <p class="int-confirm-dialog-modal__subtitle" [id]="subtitleId">{{ message }}</p>
+            }
+            @if (confirmation.detail; as detail) {
+              <p class="int-confirm-dialog-modal__text" [id]="textId">{{ detail }}</p>
+            }
+          </div>
+        }
+      </div>
+
+      @if (footerTemplate(); as footerTpl) {
+        <div class="int-confirm-dialog-modal__footer">
+          <ng-container [ngTemplateOutlet]="footerTpl" [ngTemplateOutletContext]="context()" />
+        </div>
+      } @else if (resolved().acceptVisible || resolved().rejectVisible) {
+        <!-- Accept goes first in the DOM: row-reverse shows it on the right and Tab reaches it first -->
+        <div class="int-confirm-dialog-modal__footer">
+          @if (resolved().acceptVisible) {
+            <!-- dep:button provisional · replace with <int-button> when button is done -->
+            <button
+              type="button"
+              class="int-confirm-dialog-modal__accept-button"
+              data-dep="button"
+              (click)="accept()"
+            >
+              {{ resolved().acceptLabel }}
+            </button>
+            <!-- /dep:button -->
+          }
+          @if (resolved().rejectVisible) {
+            <!-- dep:button provisional · replace with <int-button severity="secondary"> when button is done -->
+            <button
+              type="button"
+              class="int-confirm-dialog-modal__reject-button"
+              data-dep="button"
+              (click)="reject()"
+            >
+              {{ resolved().rejectLabel }}
+            </button>
+            <!-- /dep:button -->
+          }
+        </div>
+      }
+    </div>
+    <!-- /dep:dialog-modal -->
+  }
+</ng-template>
