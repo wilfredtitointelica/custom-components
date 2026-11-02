@@ -1,6 +1,149 @@
 <!--
   title: Carousel
-  description:
-  figma:
+  description: Carousel is a content slider featuring various customization options.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=6502-20989
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=6464-19701
 -->
-int-carousel
+@if (headerTemplate(); as headerTpl) {
+  <div class="int-carousel__header"><ng-container [ngTemplateOutlet]="headerTpl" /></div>
+}
+
+<div class="int-carousel__content-container" [class]="contentClass()">
+  <!-- aria-live is off: without autoplay the user changes the page (PrimeNG sets polite only while autoplaying) -->
+  <div class="int-carousel__content" aria-live="off">
+    <!-- Side navigators (default format): shown on hover, over the viewport -->
+    @if (showNavigators() && !isMore()) {
+      <!-- dep:button provisional · replace with <int-button text severity="secondary"> when button is done -->
+      <button
+        type="button"
+        class="int-carousel__prev-button"
+        data-dep="button"
+        [disabled]="isBackwardNavDisabled()"
+        [attr.aria-label]="prevButtonAriaLabel()"
+        (click)="navBackward($event)"
+      >
+        <ng-container [ngTemplateOutlet]="prevIcon" />
+      </button>
+      <!-- /dep:button -->
+    }
+
+    <div
+      class="int-carousel__viewport"
+      (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)"
+    >
+      <div
+        class="int-carousel__item-list"
+        [class.int-carousel__item-list--animating]="animating()"
+        [style.transform]="trackTransform()"
+        (transitionend)="onTransitionEnd($event)"
+      >
+        @for (item of value(); track $index; let index = $index) {
+          <div
+            class="int-carousel__item"
+            [class.int-carousel__item--active]="isItemActive(index)"
+            [class.int-carousel__item--start]="firstIndex() === index"
+            [class.int-carousel__item--end]="lastIndex() === index"
+            [style.flex]="itemFlex()"
+            role="group"
+            [attr.aria-hidden]="!isItemActive(index)"
+            [attr.aria-roledescription]="slideAriaLabel()"
+          >
+            <ng-container [ngTemplateOutlet]="itemTemplate() ?? null" [ngTemplateOutletContext]="{ $implicit: item }" />
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (showNavigators() && !isMore()) {
+      <!-- dep:button provisional · replace with <int-button text severity="secondary"> when button is done -->
+      <button
+        type="button"
+        class="int-carousel__next-button"
+        data-dep="button"
+        [disabled]="isForwardNavDisabled()"
+        [attr.aria-label]="nextButtonAriaLabel()"
+        (click)="navForward($event)"
+      >
+        <ng-container [ngTemplateOutlet]="nextIcon" />
+      </button>
+      <!-- /dep:button -->
+    }
+  </div>
+
+  @if (isMore()) {
+    <!-- int-* extension: compact navigators and counter below the content (knowledge base .prCarousel--more) -->
+    @if (showNavigators()) {
+      <div class="int-carousel__nav">
+        <!-- dep:button provisional · replace with <int-button> (icon only, outlined) when button is done -->
+        <button
+          type="button"
+          class="int-carousel__prev-button"
+          data-dep="button"
+          [disabled]="isBackwardNavDisabled()"
+          [attr.aria-label]="prevButtonAriaLabel()"
+          (click)="navBackward($event)"
+        >
+          <ng-container [ngTemplateOutlet]="prevIcon" />
+        </button>
+        <span class="int-carousel__counter">{{ counter() }}</span>
+        <button
+          type="button"
+          class="int-carousel__next-button"
+          data-dep="button"
+          [disabled]="isForwardNavDisabled()"
+          [attr.aria-label]="nextButtonAriaLabel()"
+          (click)="navForward($event)"
+        >
+          <ng-container [ngTemplateOutlet]="nextIcon" />
+        </button>
+        <!-- /dep:button -->
+      </div>
+    }
+  } @else if (showIndicators()) {
+    <!-- Indicators: one tab stop (roving tabindex), arrows move the focus -->
+    <ul
+      class="int-carousel__indicator-list"
+      [class]="indicatorsContentClass()"
+      [style]="indicatorsContentStyle()"
+      (keydown)="onIndicatorKeydown($event)"
+    >
+      @for (dot of dots(); track dot) {
+        <li class="int-carousel__indicator" [class.int-carousel__indicator--active]="currentPage() === dot">
+          <button
+            #indicatorButton
+            type="button"
+            class="int-carousel__indicator-button"
+            [class]="indicatorStyleClass()"
+            [style]="indicatorStyle()"
+            [attr.aria-label]="pageLabel(dot)"
+            [attr.aria-current]="currentPage() === dot ? 'page' : null"
+            [tabindex]="focusedIndicator() === dot ? 0 : -1"
+            (click)="onDotClick($event, dot)"
+          ></button>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
+@if (footerTemplate(); as footerTpl) {
+  <div class="int-carousel__footer"><ng-container [ngTemplateOutlet]="footerTpl" /></div>
+}
+
+<!-- Navigator icons: #previousicon / #nexticon templates or the arrows of incontrol-icons -->
+<ng-template #prevIcon>
+  @if (previousIconTemplate(); as iconTpl) {
+    <ng-container [ngTemplateOutlet]="iconTpl" />
+  } @else {
+    <i class="icon icon-arrow-left" aria-hidden="true"></i>
+  }
+</ng-template>
+<ng-template #nextIcon>
+  @if (nextIconTemplate(); as iconTpl) {
+    <ng-container [ngTemplateOutlet]="iconTpl" />
+  } @else {
+    <i class="icon icon-arrow-right" aria-hidden="true"></i>
+  }
+</ng-template>
