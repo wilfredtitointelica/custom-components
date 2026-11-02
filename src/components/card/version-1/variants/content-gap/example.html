@@ -4,7 +4,7 @@
 -->
 <div class="u-display-flex u-flex-wrap u-gap-xl">
 	@for (gap of gaps; track gap.label) {
-	<int-card width="200px" [contentGap]="gap.value" [header]="gap.label">
+	<int-card [style]="{ width: '12.5rem' }" [contentGap]="gap.value" [header]="gap.label">
 		<p class="u-m-0">First block</p>
 		<p class="u-m-0">Second block</p>
 		<p class="u-m-0">Third block</p>

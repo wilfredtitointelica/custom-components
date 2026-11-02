@@ -7,6 +7,8 @@
 // itself reloads any edit (title, description, example). Only creating or deleting folders needs a
 // regeneration (ng serve / npm start via scripts/ng-builders, npm run docs, npm run new:variant do it).
 // That is what lets a maquetador add an example by creating a folder, with no import or registration.
+// The only copied content is the API tab of each version (scripts/extract-api.mjs): the watch mode
+// re-scans every second, so a JSDoc or token edit shows up the same way.
 //
 //   node scripts/generate-docs.mjs                  → generate once
 //   node scripts/generate-docs.mjs --watch -- <cmd> → generate, regenerate on any change, run <cmd>
@@ -14,6 +16,7 @@ import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, watch, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { extractApi } from './extract-api.mjs';
 
 const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
 const COMPONENTS_DIR = join(SRC_DIR, 'components');
@@ -82,6 +85,21 @@ function readDesigner(dir, folder, id) {
   return DESIGNER_PROPERTY.exec(readFileSync(file, 'utf8'))?.[2].trim() ?? '';
 }
 
+/** API tab of one version (scripts/extract-api.mjs); a parse error only leaves it out. */
+function readApi(dir, folder, id) {
+  const versionDir = join(COMPONENTS_DIR, dir, folder);
+  try {
+    return extractApi({
+      ts: join(versionDir, 'base', `${id}.ts`),
+      html: join(versionDir, 'base', `${id}.html`),
+      scss: join(versionDir, 'styles', `_${id}.scss`),
+    });
+  } catch (error) {
+    console.warn(`[docs] src/components/${dir}/${folder}: API not extracted (${error.message}).`);
+    return undefined;
+  }
+}
+
 /** Lazy chunk of one version: every example module + its example.html and example.ts as text. */
 function renderExamples(dir, folder, examples) {
   const imports = examples.flatMap((slug, i) => {
@@ -142,6 +160,7 @@ function render() {
           imports.push(textImport(`html${imports.length}`, path));
           return [`        '${slug}': html${imports.length - 1},`];
         });
+        const api = readApi(dir, folder, id);
         return [
           '    {',
           `      number: ${number},`,
@@ -149,6 +168,7 @@ function render() {
           `      status: '${readStatus(dir, folder, id)}',`,
           `      designer: ${JSON.stringify(readDesigner(dir, folder, id))},`,
           ...(baseName ? [`      html: ${baseName},`] : []),
+          ...(api ? [`      api: ${JSON.stringify(api)},`] : []),
           `      examples: [${examples.map((slug) => `'${slug}'`).join(', ')}],`,
           ...(exampleHtml.length ? ['      exampleHtml: {', ...exampleHtml, '      },'] : []),
           ...(examples.length ? [`      loadExamples: () => import('./examples/${chunk}'),`] : []),

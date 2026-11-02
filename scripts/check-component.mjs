@@ -15,6 +15,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { COMPONENTS_DIR, findComponent, toPosix } from './component-files.mjs';
+import { extractApi } from './extract-api.mjs';
 
 const STYLE_GUIDE =
   process.env.INTELICA_STYLE_GUIDE ??
@@ -30,6 +31,13 @@ function fail(message) {
   process.exit(1);
 }
 
+/** DOM events an output must not be named after (Angular binds both, see the base checks). */
+const NATIVE_EVENTS = new Set([
+  'select', 'click', 'dblclick', 'change', 'input', 'focus', 'blur', 'focusin', 'focusout', 'submit',
+  'reset', 'keydown', 'keyup', 'keypress', 'mousedown', 'mouseup', 'mouseenter', 'mouseleave',
+  'mouseover', 'mouseout', 'pointerdown', 'pointerup', 'scroll', 'wheel', 'toggle', 'close', 'load',
+  'error', 'copy', 'cut', 'paste', 'drag', 'drop', 'resize',
+]);
 const toPascal = (id) => id.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
 
 const walk = (dir) =>
@@ -135,6 +143,18 @@ function checkVersion(component, version, report, deps) {
       !/^static readonly designer\b/.test(members[1] ?? '')
     )
       report.error(rel(baseTs), 'the first two class members must be static status and designer');
+
+    // The API tab of the page is generated from the JSDoc: a member without it shows an empty description.
+    const api = extractApi({ ts: baseTs });
+    const groups = { input: api.inputs, output: api.outputs, template: api.templates, method: api.methods };
+    for (const [kind, members] of Object.entries(groups))
+      for (const member of members.filter((m) => !m.description))
+        report.warn(rel(baseTs), `${kind} "${member.name}" without JSDoc: the API tab shows no description`);
+
+    // (select)="…" on <int-*> also listens to the native DOM event of that name (it bubbles from inner
+    // inputs), so outputs follow PrimeNG: onSelect, onChange, onClick…
+    for (const output of api.outputs.filter((o) => NATIVE_EVENTS.has(o.name)))
+      report.error(rel(baseTs), `output "${output.name}" is a native DOM event: use the PrimeNG name (on${toPascal(output.name)})`);
   }
 
   // --- HTML header ---
@@ -192,8 +212,12 @@ function checkVersion(component, version, report, deps) {
       const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
       if (inVariants(file) && /\b(title|description):.*primeng/i.test(header))
         report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');
-      if (inVariants(file) && /\sstyle="|\[style\./.test(markup))
-        report.error(path, 'inline style in a variant: use u-* helpers');
+      // Sizing a component goes as PrimeNG ([style]="{ width: '25rem' }" on <int-*>); content uses u-* helpers.
+      const contentMarkup = markup.replace(/<int-[a-z-]+\b[^>]*>/g, (tag) =>
+        tag.replace(/\s\[style\]="[^"]*"/, ''),
+      );
+      if (inVariants(file) && /\sstyle="|\[style(\.|\]=)/.test(contentMarkup))
+        report.error(path, 'inline style in a variant: use u-* helpers ([style] only on <int-*> to size it)');
       if (/animate\.(enter|leave)/.test(markup)) animates = true;
       // State and a11y belong to the component (an input + host bindings), not to whoever uses it.
       if (inVariants(file))

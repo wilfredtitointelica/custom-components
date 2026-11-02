@@ -37,7 +37,7 @@ Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase
 | Clase raíz `.prChip` | estilos del DS sobre `<p-chip>` | el bloque `int-chip` ya los lleva: la base **es** el caso `.pr`; el consumidor no agrega clase |
 | Variables CSS / Estilos base (`gap`, `padding`, `color`…) | valores del caso base | `--int-<id>-*: var(--i-*)` con el token que indica la base de conocimientos (Intelica.knowledgeBase); comentario `// knowledgeBase: <token> · Aura: <valor>` |
 | Estados (`:hover`, `:focus-visible`, `[aria-expanded]`…) | estilos de estado | módulo base `_<id>.scss` |
-| Modificadores `.prSelect--minimal` | variante visual | `.int-select--minimal` en `_select.minimal.scss` + variante `minimal`; el consumidor la activa con `class="int-select--minimal"` (sin inputs nuevos) |
+| Modificadores `.prSelect--minimal` | variante visual | `.int-select--minimal` en `_select.minimal.scss` + variante `minimal`. Se activa con un input, según cómo se combina (sección 2b) |
 | Paneles / overlays (`panelStyleClass="prSelectPanelExport"`) | estilos del overlay de un caso | mismo input de PrimeNG (`panelStyleClass`) + clase `int-select-panel--export` en el módulo del grupo |
 | Bloque **HTML** de uso | maqueta del caso | `example.html` de la variante: `p-<x>` → `int-<x>`, sin la clase `.pr*` (ya es la base), modificador traducido y contenido de templates con helpers `.u-*` (SKILL.md 3.5) |
 | Bloque **TS** (opciones, handlers) | datos y lógica de la demo | `example.ts` de la variante (constante tipada, `signal()` si cambia) |
@@ -45,6 +45,24 @@ Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase
 | Reglas ("`appendTo="body"` obligatorio") | restricciones de uso | se aplican en el `example.html` y se citan en la descripción de la variante |
 | **Adaptaciones** (JS/CSS que cambia el comportamiento natural de PrimeNG: la opción *All* fija en un select, iconos de orden propios en una tabla…) | lo que el proyecto necesitó y PrimeNG no daba | se implementa **de forma nativa** en el componente como extensión `/** int-* extension */` (input, template o lógica en la base), sin copiar el parche. Ver sección 4 |
 | Notas | límites de lo documentado | "Diferencias" / "Limitaciones" del informe |
+
+## 2b. Cómo se activa cada modificador (columna "Activación" de la tabla)
+
+Antes de escribir la base, agrupa los modificadores `.pr<Nombre>--*` que solo cambian el aspecto:
+
+| Si el modificador… | Se activa con | Ejemplo |
+|---|---|---|
+| Corresponde a un input de PrimeNG (`severity`, `variant`, `size`, `raised`…) | ese input, con sus valores | `.prButton--outlined` → `variant="outlined"` |
+| Se **excluye** con otros (no tiene sentido llevar dos a la vez: formatos, layouts de la card) | un valor de **un** input tipado `appearance` (tipo exportado `Int<Id>Appearance`) | `.prCard--data`, `--group`, `--mini` → `appearance="data" \| "group" \| "mini"` |
+| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg` → `compact`, `outlined`, `noBg` |
+| Tiene una escala de valores (gap, tamaño) | un input tipado con esos valores | `content-gap-small/medium/large` → `contentGap="small"` |
+
+- Duda sobre si dos se excluyen: mira si la base de conocimientos, el SCSS `.pr*` o Figma los muestra
+  juntos alguna vez. Si nunca aparecen juntos y pisan las mismas propiedades (borde, padding, sombra),
+  se excluyen.
+- Nunca un booleano estético con nombre de dato (`data`, `group`, `items`, `list`): parece pedir un array.
+- La clase CSS no cambia (`.int-card--data`); solo cambia cómo se activa:
+  `'[class.int-card--data]': "appearance() === 'data'"` en el `host`.
 
 ## 3. Variantes que salen de la base de conocimientos (Intelica.knowledgeBase)
 
