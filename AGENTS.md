@@ -27,6 +27,15 @@ src/components/<id>/version-N/
 
 - Sin `.component.ts`, sin `.css`, sin `variants/default/`. Variantes nuevas: `npm run new:variant`.
 - Angular 20: Signals, `OnPush`, control flow `@if`/`@for`, nombres de inputs/outputs **iguales a PrimeNG**.
+  Los outputs de extensión también van con `onX` (`onSelect`), nunca con el nombre de un evento nativo
+  del DOM (`select`, `click`, `change`…): `(select)` escucharía también el evento nativo.
+- Formatos visuales que se excluyen entre sí van en **un** input tipado (`appearance="data"`, o el
+  nombre de PrimeNG: `severity`, `variant`, `size`), no en un booleano por formato (`<int-card data>`).
+  Booleanos solo para lo que se suma (`compact`, `outlined`).
+- Cada input, output, método público y template (`contentChild('nombre')`) lleva JSDoc `/** … */`
+  **en español** (es la columna Descripción de la pestaña API); lo que no existe en PrimeNG empieza por
+  `int-* extension:` (marca fija, en inglés). El resto de comentarios del código sigue en inglés. La pestaña **API** de la página se genera de ese
+  JSDoc y del `:root` de `styles/_<id>.scss` (`scripts/extract-api.mjs`).
 - Nada de `primeng`, `@primeuix`, `@angular/animations`, `any`, `::ng-deep`, clases `p-*` ni clases del
   Style Guide (`.prX`, `.ptX`, `.lyX`, `.grX`, `row`, `col-*`).
 
@@ -38,7 +47,12 @@ src/components/<id>/version-N/
   ```
 - Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
   animación, foco con `:focus-visible`.
-- Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline.
+- Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline. Única
+  excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`
+  (sin crear inputs `width`/`height` en la base para eso).
+- El bloque no recorta: sin `overflow` en `.int-<id>` ni `u-overflow-*` sobre un `<int-*>` (cortaría
+  selects, datepickers, popovers abiertos dentro). Si hace falta recortar, va en el `__elemento` dentro
+  del SCSS del componente (p. ej. `.int-card__header { overflow: hidden }`).
 - Sin rastros de PrimeNG en lo visible: nada de imágenes, logos o URLs de `primefaces.org`. Una imagen de
   ejemplo es un placeholder con fondo del Style Guide (`u-background-surface` + icono `pi pi-image`).
 - Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se

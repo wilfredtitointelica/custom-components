@@ -1,4 +1,5 @@
 .doc-code-panel {
+  --doc-code-divider: rgb(255 255 255 / 0.16); // between toolbar, legend bar and code
   margin-top: 16px;
   overflow: hidden;
   border-radius: var(--doc-radius-lg);
@@ -8,13 +9,21 @@
   color-scheme: dark; // native scrollbars match the dark background
 }
 
+// Toolbar, legend bar and the fold buttons are chrome: only the code can be selected.
+.doc-code-toolbar,
+.doc-code-legend-bar,
+.doc-code-fold,
+.doc-code-ellipsis {
+  user-select: none;
+}
+
 .doc-code-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding: 8px 8px 8px 12px;
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  border-bottom: 1px solid var(--doc-code-divider);
 }
 
 .doc-code-tabs {
@@ -134,25 +143,25 @@
   min-width: 100%;
 }
 
-// --doc-code-extra: levels added inside a "dep:" pair that wraps code in its same column (one level =
-// two indentation spaces), so its guide and the inner ones keep their room.
+// --doc-code-level: spaces of indentation of the line (the source comes tidied: 2 per level), drawn
+// --doc-code-step wide each so the nested guides breathe.
 .doc-code-line {
-  --doc-code-start: calc(var(--doc-code-gutter) + var(--doc-code-extra, 0) * 2 * var(--doc-code-step));
   position: relative;
   display: block;
   min-height: 1.6em; // empty lines keep their height
-  padding-left: var(--doc-code-start);
+  padding-left: calc(var(--doc-code-gutter) + var(--doc-code-level, 0) * var(--doc-code-step));
 }
 
-// Wider indentation so the nested guides breathe.
+// The indentation stays in the text (selecting and copying keeps it) but takes no room: the padding
+// of the line draws it.
 .doc-code-lead {
-  letter-spacing: calc(var(--doc-code-step) - 1ch);
+  font-size: 0;
 }
 
 .doc-code-guide {
   position: absolute;
   top: 0.8em;
-  left: calc(var(--doc-code-start) + var(--doc-code-indent) * var(--doc-code-step) - var(--doc-code-gap));
+  left: calc(var(--doc-code-gutter) + var(--doc-code-indent) * var(--doc-code-step) - var(--doc-code-gap));
   height: calc(var(--doc-code-span) * 1.6em);
   border-left: 1px solid;
   color: rgb(255 255 255 / 0.32);
@@ -317,7 +326,7 @@
   justify-content: space-between;
   gap: 8px 16px;
   padding: 8px 8px 8px 16px;
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  border-bottom: 1px solid var(--doc-code-divider);
   color: rgb(255 255 255 / 0.7);
   font-size: 0.75rem;
 }

@@ -302,6 +302,10 @@ Guía para el maquetador cuando implemente (patrón completo en `_demo_/version-
   ```
 - Si el bloque BEM vive en el elemento raíz de la plantilla, agregar `host: { style: 'display: contents' }`.
 - Booleanos como atributo (`<int-chip disabled>`): `input(false, { transform: booleanAttribute })`.
+- Formatos visuales que se excluyen entre sí → **un** input tipado (`appearance`, o el nombre de PrimeNG
+  si existe: `severity`, `variant`, `size`): `<int-card appearance="data">`. Un booleano por formato
+  solo si se combina con otros (`compact`, `outlined`). Nunca un booleano estético con nombre que suene
+  a dato (`data`, `group`, `items`).
 - Los estados nativos (`:disabled`, `:checked`) no son variantes de estilo: van en el módulo base.
 - La base no importa nada de la documentación (`core/`, `service/`, `variants/`): así se puede extraer a npm.
 
@@ -375,6 +379,8 @@ Reglas del ejemplo (lo que se ve en la pestaña HTML / TS de la documentación e
   Importa la base con ruta relativa `../../base/<id>` y todo lo que el ejemplo use.
 - Los datos de demostración viven en la clase del ejemplo (`readonly items = [...]`), no en archivos aparte.
 - El HTML (debajo de la cabecera) es código que un consumidor podría copiar: sin clases de la documentación ni estilos inline. La cabecera no se muestra en la pestaña HTML.
+  Excepción: el tamaño del propio componente va con `[style]` sobre el `<int-*>`, como PrimeNG
+  (`<int-card [style]="{ width: '25rem' }">`), sin crear un input `width`/`height` en la base.
 - Un ejemplo puede mostrar varios valores juntos (sección "Severity" con los 4 botones), como PrimeNG.
 
 ### 3.6 `version-1/styles/_index.scss`
@@ -494,6 +500,16 @@ No se toca `<id>-page.ts`, `routes.ts`, `inventory.ts` ni el router global.
 Si el ejemplo necesita un modificador visual nuevo (maquetador):
 1. Agregar el valor al tipo del input en `base/<id>.ts` (`'primary' | 'secondary' | 'outlined'`).
 2. Crear `styles/_<id>.<mod>.scss` con `.int-<id>--<mod>` y agregar `@use '<id>.<mod>' as <id>-<mod>;` en `_index.scss`.
+
+La pestaña **API** de la página (junto a *Features*) se genera sola desde `base/<id>.ts`
+(`scripts/extract-api.mjs`): cada `input`/`output`/método público/`contentChild('nombre')` que agregue el
+maquetador debe llevar su JSDoc `/** … */` en español (las extensiones a PrimeNG empiezan por `int-* extension:`),
+y los tokens salen del `:root` de `styles/_<id>.scss`. Mientras la base es plantilla, la pestaña muestra
+"API sin documentar todavía".
+
+Los outputs se nombran como PrimeNG, `onX` (`onSelect`), nunca como un evento nativo del DOM
+(`select`, `click`, `change`…): Angular escucharía también el evento nativo. Para fijar el tamaño del
+componente no se crea un input `width`/`height`: las variantes usan `[style]` sobre el `<int-*>`.
 
 ## 5. Crear una `version-2`
 

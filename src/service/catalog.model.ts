@@ -108,6 +108,68 @@ export interface DocMeta {
  */
 export type ComponentStatus = 'pending' | 'in-progress' | 'done';
 
+/**
+ * Where an API member comes from: `int` = JSDoc starts with `int-* extension:`; `primeng` = any other
+ * member of a PrimeNG replica (class JSDoc mentions PrimeNG). Absent in a component that is not a replica.
+ */
+export type DocApiOrigin = 'primeng' | 'int';
+
+/** One input, output, template or method of the API tab; its description is the member's JSDoc. */
+export interface DocApiMember {
+  readonly name: string;
+  readonly description: string;
+  readonly origin?: DocApiOrigin;
+}
+
+export interface DocApiInput extends DocApiMember {
+  /** Generic argument of input<T>(), or inferred from the transform / default. */
+  readonly type: string;
+  /** Union of a local type alias (`IntCardContentGap` → `'none' | 'small' | …`). */
+  readonly values?: string;
+  /** Source text of the initial value (or `@defaultValue`); absent = undefined. */
+  readonly default?: string;
+  /** input.required(). */
+  readonly required?: boolean;
+  /** model(): two-way binding [(name)]. */
+  readonly twoWay?: boolean;
+}
+
+export interface DocApiOutput extends DocApiMember {
+  /** Payload of output<T>(). */
+  readonly type: string;
+}
+
+export interface DocApiTemplate extends DocApiMember {
+  /** Context of TemplateRef<T>, when typed. */
+  readonly context?: string;
+  /** <ng-content> slot instead of a #name template ('default' or the select). */
+  readonly slot?: boolean;
+}
+
+export interface DocApiMethod extends DocApiMember {
+  readonly signature: string;
+}
+
+/** A --int-* token of the :root of styles/_<id>.scss. */
+export interface DocApiToken {
+  readonly name: string;
+  /** Usually var(--i-*) of the Style Guide. */
+  readonly value: string;
+  /** `// --- group ---` header it is under. */
+  readonly group?: string;
+  /** Origin comment (knowledgeBase · Figma · Aura). */
+  readonly source?: string;
+}
+
+/** API tab of one version, extracted from its sources by scripts/extract-api.mjs. */
+export interface DocApi {
+  readonly inputs: readonly DocApiInput[];
+  readonly outputs: readonly DocApiOutput[];
+  readonly templates: readonly DocApiTemplate[];
+  readonly methods: readonly DocApiMethod[];
+  readonly tokens: readonly DocApiToken[];
+}
+
 /** One implementation folder (version-N) of a component, detected by scripts/generate-docs.mjs. */
 export interface ComponentVersion extends DocMeta {
   readonly number: number;
@@ -117,6 +179,8 @@ export interface ComponentVersion extends DocMeta {
   readonly status?: ComponentStatus;
   /** From the static `designer` property of base/<id>.ts: who designs this version ('' = unassigned). */
   readonly designer?: string;
+  /** Inputs, outputs, templates, methods and tokens of its base, for the API tab. */
+  readonly api?: DocApi;
   /** Slugs of its variants/<slug>/ example folders. */
   readonly examples: readonly string[];
   /** Header of each example.html, by slug (only the examples that have one). */

@@ -1,0 +1,16 @@
+@for (item of tabs; track item.key) {
+  @let selected = active() === item.key;
+  <a
+    class="doc-tab"
+    role="tab"
+    [id]="componentId() + '-tab-' + item.key"
+    [attr.aria-selected]="selected"
+    [attr.aria-controls]="selected ? componentId() + '-panel-' + item.key : null"
+    [attr.tabindex]="selected ? 0 : -1"
+    [routerLink]="path()"
+    [queryParams]="{ tab: item.key === 'api' ? 'api' : null }"
+    queryParamsHandling="merge"
+  >
+    {{ item.label }}
+  </a>
+}

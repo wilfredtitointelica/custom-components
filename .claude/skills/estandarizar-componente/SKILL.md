@@ -70,6 +70,15 @@ git log --oneline -3 -- src/components/<id>/
 5. **Mapa de API** (tabla en el chat): input/output/template del maquetador → nombre en PrimeNG v20 →
    acción (`igual`, `renombrar`, `extensión int-*`, `quitar`). Los nombres siempre terminan como
    PrimeNG; lo que PrimeNG no tiene y la base de conocimientos (Intelica.knowledgeBase) respalda se marca `/** int-* extension: … */`.
+   Cada input/output/template/método público queda con su JSDoc en español (si viene en inglés se traduce; el prefijo `int-* extension:` no): es lo que muestra la pestaña **API** de
+   la página (`scripts/extract-api.mjs`; `check:component` avisa si falta).
+   Booleanos de formato que solo ponen una clase y se excluyen entre sí (`mini`, `data`, `group`…) se
+   agrupan en un input tipado `appearance` (o el nombre de PrimeNG si existe: `severity`, `variant`,
+   `size`); siguen como booleanos solo los que se suman (`compact`, `outlined`).
+   Un output de extensión va con `onX` como PrimeNG; si el maquetador lo nombró como un evento nativo
+   (`select`, `click`, `change`…) se renombra (`select` → `onSelect`), igual que sus `(select)` en las variantes.
+   Un input solo para dimensionar el componente (`width`, `height`) se quita y las variantes pasan a
+   `[style]="{ width: '…' }"` sobre el `<int-*>`.
 6. **Tabla de adaptación** (en el chat), una fila por pieza:
 
 | Pieza | Hoy (maquetador) | Acción | Destino | Fuente que decide |
@@ -77,6 +86,8 @@ git log --oneline -3 -- src/components/<id>/
 | archivo | `chip.component.ts` | Renombra | `base/chip.ts` | convención (tabla 0) |
 | clase / selector | `ChipComponent` · `app-chip` | Renombra | `IntChip` · `int-chip` | convención |
 | input | `closable` | Renombra | `removable` | PrimeNG |
+| input | `data`, `group`, `mini` (booleanos que se excluyen) | Alinea | `appearance="data" \| "group" \| "mini"` + variantes con `appearance="…"` | `replicar-primeng` knowledge-base.md 2b |
+| input | `compact`, `outlined` (se suman a otros) | Conserva | booleanos | knowledge-base.md 2b |
 | estilo | `.chip .close { color: #2351B3 }` | Alinea | `.int-chip__remove-icon` + `--int-chip-remove-icon-color: var(--i-…)` | Base de conocimientos (Intelica.knowledgeBase) `.prChip` |
 | token | `--chip-gap: 6px` | Alinea | `--int-chip-gap: var(--i-spacing-gap-xs)` | Base de conocimientos (Intelica.knowledgeBase) |
 | animación | sin transición | Agrega | 3.6 | PrimeNG |
@@ -100,6 +111,9 @@ Muestra el mapa de API y la tabla de adaptación, y pregunta **solo**:
   ocultarla (`/ocultar`) o eliminarla (`/eliminar-variante`)?
 - Tokens sin equivalente en el Style Guide (3.3 de `replicar-primeng`).
 - Dependencias ambiguas (1.6: checkbox → `input` o componente propio).
+- Booleanos estéticos de los que no se puede deducir si se excluyen o se suman (ni la base de
+  conocimientos, ni el SCSS `.pr*`, ni Figma los muestran juntos o separados): ¿van a `appearance` o
+  quedan como booleanos?
 - Si es wrapper: confirmar que se pasa a `/replicar-primeng` en modo forzar.
 
 Sin respuesta no se escribe nada.
@@ -121,6 +135,8 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
    la base de conocimientos (Intelica.knowledgeBase, o el SCSS `.pr*`, o Aura traducido) y su **comentario de origen**
    `// knowledgeBase: <token> · Figma: <valor> (<variable>) · Aura: <valor>`. El valor que tenía el maquetador no
    va al comentario: va a la tabla de cambios. Literales → token más cercano y la diferencia al informe.
+   Un `overflow` en el bloque `.int-<id>` (o `u-overflow-*` sobre el `<int-*>` de una variante) se mueve
+   al `__elemento` que necesita el recorte: el bloque no recorta, para no cortar overlays abiertos dentro.
 5. **Cabecera**: si hay link de Figma, `figma:` y `figma-frame:` (1.5).
 6. **Dependencias** (1.6): lo que el maquetador copió o imitó de otro componente → `int-*` real si está
    en `done`, o provisional marcado `dep:<id> provisional` + `data-dep`, y el id en `requires` (base) o

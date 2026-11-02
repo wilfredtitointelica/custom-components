@@ -69,6 +69,16 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-card {
+  // The block never clips (overlays inside the card would be cut): only the header rounds its media.
+  // Flex column so the projected media fills the height set with headerHeight.
+  &__header {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-start-start-radius: var(--int-card-border-radius);
+    border-start-end-radius: var(--int-card-border-radius);
+  }
+
   &__body {
     display: flex;
     flex-direction: column;

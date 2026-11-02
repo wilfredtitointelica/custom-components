@@ -18,7 +18,7 @@ export default {
     'advanced',
     'compact',
     'outlined',
-    'content-gap-lg',
+    'content-gap',
     'stretch-content',
     'data',
     'group',

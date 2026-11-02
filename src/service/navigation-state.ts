@@ -5,6 +5,10 @@ import { filter } from 'rxjs';
 
 import { ComponentCatalog, findVersion, VERSION_QUERY_PARAM } from './component-catalog';
 
+/** Query parameter that selects the tab of a documentation page: /components/<id>?tab=api. */
+export const TAB_QUERY_PARAM = 'tab';
+export type DocTab = 'features' | 'api';
+
 /** Derives the current selection (section, component, variant) from the URL. The URL is the only source of truth. */
 @Injectable({ providedIn: 'root' })
 export class NavigationState {
@@ -51,6 +55,13 @@ export class NavigationState {
     const component = componentId ? this.catalog.find(componentId) : undefined;
     return component && findVersion(component, this.urlTree().queryParams[VERSION_QUERY_PARAM]);
   });
+
+  /** Tab of the documentation page: ?tab=api, unless the fragment points at a variant (features). */
+  readonly activeTab = computed<DocTab>(() =>
+    this.urlTree().queryParams[TAB_QUERY_PARAM] === 'api' && !this.activeVariantId()
+      ? 'api'
+      : 'features',
+  );
 
   /** Selected variant: the fragment, only when it belongs to the open component. */
   readonly activeVariantId = computed(() => {

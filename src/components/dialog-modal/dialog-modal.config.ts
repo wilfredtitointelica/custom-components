@@ -1,7 +1,7 @@
 import { ComponentDefinition } from '../../service/catalog.model';
 
 /**
- * Documentation config of "Dialog / Modal": what the side menu and the documentation page show.
+ * Documentation config of "Dialog (Modal)": what the side menu and the documentation page show.
  * - Titles and descriptions are not written here: they live in the header comment of
  *   version-N/base/dialog-modal.html (component) and version-N/variants/<slug>/example.html (each variant).
  * - Variants are the version-N/variants/<slug>/ folders, detected automatically ("basic" first).
@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'dialog-modal',
+  sourceName: 'Dialog / Modal',
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

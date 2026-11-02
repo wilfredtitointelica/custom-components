@@ -122,7 +122,7 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
         @if (current() && fold()) {
           <!-- Blocks switch on: one row per line; the row that opens a block draws its guide down to
                the closing line and the button that folds it. -->
-          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line" [style.--doc-code-extra]="row.extra || null">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
+          <pre><code class="doc-code-lines">@for (row of rows(); track row.index) {<span class="doc-code-line" [style.--doc-code-level]="row.level">@if (row.block; as block) {<span [class]="'doc-code-guide' + (block.kind ? ' doc-code-' + block.kind : '')" [style.--doc-code-indent]="block.indent" [style.--doc-code-span]="block.span"><button type="button" class="doc-code-fold" [attr.aria-expanded]="!block.folded" [attr.aria-label]="(block.folded ? 'Unfold' : 'Fold') + ' lines ' + (row.index + 1) + '–' + (block.end + 1)" (click)="toggleFold(row.index)"></button></span>}@if (row.lead) {<span class="doc-code-lead">{{ row.lead }}</span>}@for (part of row.parts; track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}@if (row.block?.folded) {<button type="button" class="doc-code-ellipsis" aria-label="Unfold" (click)="toggleFold(row.index)"></button>}</span>}</code></pre>
         } @else if (current()) {
           <pre><code>@for (part of parts(); track $index) {<span [class]="part.kind ? 'doc-code-' + part.kind : ''" [class.doc-code-name]="part.name">{{ part.text }}</span>}</code></pre>
         } @else {
@@ -206,7 +206,14 @@ export class CodePanel {
 
   protected readonly languages = CODE_LANGUAGES;
   protected readonly selected = signal<CodeLanguage>(CODE_LANGUAGES[0]);
-  protected readonly current = computed(() => this.sources()?.[this.selected()] ?? null);
+  /**
+   * Source of the tab, tidied (tidy): indentation from its structure, no tabs nor trailing spaces.
+   * It is what the panel shows (both views) and what Copy copies.
+   */
+  protected readonly current = computed(() => {
+    const source = this.sources()?.[this.selected()];
+    return source ? tidy(source, this.selected() === 'html') : null;
+  });
   /**
    * Source split so some pieces stand out (text only, no innerHTML): htmlParts / tsParts.
    * The Highlights switch of the legend bar only removes the colors (CSS); the split stays.
@@ -254,29 +261,18 @@ export class CodePanel {
       shown[line] = count;
       count += hidden[line] ? 0 : 1;
     }
-    const leads = lines.map((parts) => parts.map((part) => part.text).join('').match(/^\s*/)?.[0] ?? '');
-    // A block that wraps others starting in its same column (a "dep:" pair around its element)
-    // counts as one more level: its inner lines go one level to the right (`extra`) so the guides
-    // keep their room instead of overlapping.
-    const wrappers = [...starts.values()].filter((block) =>
-      [...starts.values()].some(
-        (inner) =>
-          inner.start > block.start &&
-          inner.start < block.end &&
-          leads[inner.start].length === leads[block.start].length,
-      ),
-    );
     return lines.flatMap((parts, index) => {
       if (hidden[index]) {
         return [];
       }
       const block = starts.get(index);
-      const lead = leads[index];
+      // The source is tidied (spaces only), so the indentation is its length.
+      const lead = parts.map((part) => part.text).join('').match(/^ */)?.[0] ?? '';
       return [
         {
           index,
-          extra: wrappers.filter((wrapper) => wrapper.start < index && index < wrapper.end).length,
-          // Indentation apart, so the CSS can widen it (the spaces stay: copying keeps them).
+          level: lead.length,
+          // Indentation apart: the CSS widens it by `level` (the spaces stay, so copying keeps them).
           lead,
           parts: dropLead(parts, lead.length),
           block: block && {
@@ -521,6 +517,74 @@ function toLines(parts: CodePart[]): CodePart[][] {
     lines.pop();
   }
   return lines;
+}
+
+/**
+ * Source as the panel shows and copies it, whatever spaces or tabs the file has: indentation
+ * rebuilt from its structure (indentLevels, 2 spaces per level), no trailing spaces, at most one
+ * empty line in a row and none at the start or the end.
+ */
+function tidy(source: string, html: boolean): string {
+  const lines = source.split(/\r?\n/).map((line) => line.trimEnd());
+  const blocks = html ? htmlBlocks(lines.join('\n')) : tsBlocks(lines.join('\n'));
+  const levels = indentLevels(lines, blocks, html);
+  const text = lines.map((line, index) => (line ? ' '.repeat(levels[index]) + line.trimStart() : '')).join('\n');
+  return `${text.replace(/\n{3,}/g, '\n\n').replace(/^\n+|\n+$/g, '')}\n`;
+}
+
+/**
+ * Indentation of each line (in spaces) from the structure and not from the source: each block
+ * adds one level (2 spaces) to the lines inside it; its closing line goes with its opening one;
+ * inside the same block, a line indented more than its siblings (attributes, a chained call, a
+ * template) keeps that difference. Comments are not structure: their lines keep the spacing they
+ * have (the " * " of a JSDoc under its "/**").
+ */
+function indentLevels(lines: string[], foldable: FoldBlock[], html: boolean): number[] {
+  const blocks = foldable.filter((block) => block.kind !== 'comment');
+  const width = lines.map((line) => (line.match(/^\s*/)?.[0] ?? '').replace(/\t/g, '  ').length);
+  const empty = lines.map((line) => !line.trim());
+  // HTML: the `>` or `/>` that ends a tag written over several lines goes with the tag's first line.
+  const tagEnd = lines.map((line) => html && /^\s*\/?>/.test(line));
+  const byStart = new Map(blocks.map((block) => [block.start, block]));
+  // Closing line → the outermost block it closes (several can close on the same line).
+  const closing = new Map<number, FoldBlock>();
+  for (const block of [...blocks].reverse()) {
+    closing.set(block.end, block);
+  }
+  // Innermost block that contains each line (strictly between its opening and closing lines).
+  const parent: (FoldBlock | undefined)[] = [];
+  let open: FoldBlock[] = [];
+  for (const index of lines.keys()) {
+    open = open.filter((block) => block.end > index);
+    parent[index] = open.at(-1);
+    const block = byStart.get(index);
+    if (block) {
+      open.push(block);
+    }
+  }
+  // Smallest indentation of the lines that share a block: that is its level 0.
+  const base = new Map<FoldBlock | undefined, number>();
+  for (const index of lines.keys()) {
+    if (!empty[index] && !closing.has(index) && !tagEnd[index]) {
+      base.set(parent[index], Math.min(base.get(parent[index]) ?? Infinity, width[index]));
+    }
+  }
+  const levels: number[] = [];
+  for (const index of lines.keys()) {
+    const owner = parent[index];
+    const closes = closing.get(index);
+    if (empty[index]) {
+      levels[index] = 0;
+    } else if (closes) {
+      levels[index] = levels[closes.start];
+    } else if (tagEnd[index] && owner) {
+      levels[index] = levels[owner.start];
+    } else {
+      const inside = owner ? levels[owner.start] + 2 : 0;
+      levels[index] = inside + width[index] - (base.get(owner) ?? width[index]);
+    }
+  }
+  return levels;
 }
 
 /** Parts of a line without its first `count` characters (its indentation). */

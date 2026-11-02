@@ -7,6 +7,7 @@ import fileUpload from './file-upload/file-upload.config';
 import datePicker from './date-picker/date-picker.config';
 import listBox from './list-box/list-box.config';
 import dialogModal from './dialog-modal/dialog-modal.config';
+import confirmDialogModal from './confirm-dialog-modal/confirm-dialog-modal.config';
 import tabs from './tabs/tabs.config';
 import tooltip from './tooltip/tooltip.config';
 import pill from './pill/pill.config';
@@ -29,6 +30,8 @@ import toast from './toast/toast.config';
 import treeTable from './tree-table/tree-table.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
+import chip from './chip/chip.config';
+import tag from './tag/tag.config';
 import searchDropdown from './search-dropdown/search-dropdown.config';
 import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
@@ -53,6 +56,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   datePicker,
   listBox,
   dialogModal,
+  confirmDialogModal,
   tabs,
   tooltip,
   pill,
@@ -75,6 +79,8 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   treeTable,
   card,
   badge,
+  chip,
+  tag,
   searchDropdown,
   breadcrumb,
   paginator,

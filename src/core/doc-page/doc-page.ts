@@ -23,6 +23,9 @@ import { CodeVisibility } from '../../service/code-visibility';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { parseDocHtml } from '../../service/doc-html';
 import { NavigationState } from '../../service/navigation-state';
+import { DocApiView } from './doc-api';
+import { DocApiToc } from './doc-api-toc';
+import { DocTabs } from './doc-tabs';
 import { CodePanel } from '../toggle-code/code-panel';
 import { VersionPicker } from './version-picker';
 import { DesignerBadge } from '../designer-badge/designer-badge';
@@ -53,7 +56,9 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
   }
   // The code panel shows example.html without its documentation header.
   const html = parseDocHtml(sources.html);
-  const provisionalDeps = [...new Set([...(sources.html ?? '').matchAll(PROVISIONAL_DEP)].map((m) => m[1]))];
+  const provisionalDeps = [
+    ...new Set([...(sources.html ?? '').matchAll(PROVISIONAL_DEP)].map((m) => m[1])),
+  ];
   return [
     [
       slug,
@@ -71,10 +76,21 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
  * Documentation layout shared by every component page. Renders one anchored section per visible
  * variant (<id>.config.ts + detected folders) with the example of the selected version, found by
  * convention in version-N/variants/<slug>/ (see scripts/generate-docs.mjs). Nothing is registered by hand.
+ * The API tab (?tab=api) shows the inputs, outputs, templates and tokens extracted from that version's base.
  */
 @Component({
   selector: 'app-doc-page',
-  imports: [NgComponentOutlet, RouterLink, CodePanel, VersionPicker, StatusChip, DesignerBadge],
+  imports: [
+    NgComponentOutlet,
+    RouterLink,
+    CodePanel,
+    VersionPicker,
+    StatusChip,
+    DesignerBadge,
+    DocApiView,
+    DocTabs,
+    DocApiToc,
+  ],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
   // Read by the global [data-dep] rule of src/styles.scss: previews are other components' views.
@@ -126,6 +142,14 @@ export class DocPage {
     ].filter((group) => group.items.length > 0);
     return { groups, count: requires.length + uses.length };
   });
+
+  /** Entries of the API tab of the selected version (0 = still in template state: placeholder). */
+  protected readonly apiCount = computed(() =>
+    Object.values(this.nav.activeVersion()?.api ?? {}).reduce(
+      (total, block) => total + block.length,
+      0,
+    ),
+  );
 
   /** Sticky row of chips (version, variants, status, Figma, dependencies, designer). */
   private readonly meta = viewChild.required<ElementRef<HTMLElement>>('meta');
