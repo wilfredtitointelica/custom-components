@@ -51,26 +51,43 @@ export class IntTreeView {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
+  /** Nodos del árbol. */
   readonly value = input<IntTreeNode[]>([]);
-  /** Default 'single' as validated for the project (PrimeNG has none: read only). */
+  /**
+   * Modo de selección: 'single', 'multiple' o 'checkbox'. Por defecto 'single', como se validó para el proyecto
+   * (PrimeNG no tiene: solo lectura).
+   */
   readonly selectionMode = input<IntTreeSelectionMode>('single');
+  /** Nodo o nodos seleccionados (two-way con [(selection)]). */
   readonly selection = model<IntTreeSelection>();
+  /** En modo checkbox, un padre se marca cuando todos sus hijos lo están. */
   readonly propagateSelectionUp = input(true, { transform: booleanAttribute });
+  /** En modo checkbox, marcar un padre marca todos sus hijos. */
   readonly propagateSelectionDown = input(true, { transform: booleanAttribute });
+  /** Texto que se muestra cuando no hay nodos. */
   readonly emptyMessage = input('No results found');
+  /** Etiqueta accesible del árbol. */
   readonly ariaLabel = input<string>();
+  /** Id del elemento que etiqueta al árbol. */
   readonly ariaLabelledBy = input<string>();
-  /** int-* extension: a click on a parent row expands or collapses it (Style Guide --labelAsToggle). No checkbox mode. */
+  /**
+   * int-* extension: un clic en la fila de un padre lo expande o colapsa en vez de seleccionarlo
+   * (.prTreeselect--labelAsToggle del Style Guide). No aplica con checkbox.
+   */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: children without indentation (Style Guide --childrenAligned). */
+  /** int-* extension: los hijos se muestran sin sangría (.prTreeselect--childrenAligned del Style Guide). */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
 
+  /** Se emite al seleccionar un nodo. */
   readonly onNodeSelect = output<IntTreeNodeEvent>();
+  /** Se emite al quitar la selección de un nodo. */
   readonly onNodeUnselect = output<IntTreeNodeEvent>();
+  /** Se emite al expandir un nodo. */
   readonly onNodeExpand = output<IntTreeNodeEvent>();
+  /** Se emite al colapsar un nodo. */
   readonly onNodeCollapse = output<IntTreeNodeEvent>();
 
-  /** #node template, context { $implicit: node }. */
+  /** Template #node: contenido de cada nodo; recibe { $implicit: node }. */
   readonly nodeTemplate = contentChild<TemplateRef<{ $implicit: IntTreeNode }>>('node');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -85,15 +102,17 @@ export class IntTreeView {
     return classes.join(' ');
   });
 
+  /** Indica si el modo de selección es 'checkbox'. */
   isCheckboxMode(): boolean {
     return this.selectionMode() === 'checkbox';
   }
 
+  /** Indica si el nodo no tiene hijos. */
   isLeaf(node: IntTreeNode): boolean {
     return node.leaf === false ? false : !(node.children && node.children.length);
   }
 
-  /** Same as PrimeNG findIndexInSelection: by key, or by reference. */
+  /** Posición del nodo en la selección (por key o por referencia); -1 si no está. */
   findIndexInSelection(node: IntTreeNode): number {
     const selection = this.selection();
     if (!this.selectionMode() || !selection) return -1;
@@ -102,17 +121,19 @@ export class IntTreeView {
     return (selection as IntTreeNode[]).findIndex(same);
   }
 
+  /** Indica si el nodo está seleccionado. */
   isSelected(node: IntTreeNode): boolean {
     return this.findIndexInSelection(node) > -1;
   }
 
+  /** Expande o colapsa el nodo y emite onNodeExpand u onNodeCollapse. */
   toggle(event: Event, node: IntTreeNode): void {
     node.expanded = !node.expanded;
     this.revision.update(value => value + 1);
     (node.expanded ? this.onNodeExpand : this.onNodeCollapse).emit({ originalEvent: event, node });
   }
 
-  /** Same as PrimeNG onNodeClick without metaKeySelection: a click on a selected node unselects it. */
+  /** Selecciona o quita el nodo según el modo; un clic sobre un nodo seleccionado lo quita. */
   onNodeClick(event: Event, node: IntTreeNode): void {
     if (this.labelAsToggle() && !this.isCheckboxMode() && !this.isLeaf(node)) {
       this.toggle(event, node);
@@ -175,13 +196,14 @@ export class IntTreeView {
     return rows;
   }
 
-  /** Arrow keys move the focus between the visible rows, as PrimeNG onArrowUp / onArrowDown. */
+  /** Mueve el foco a la fila visible anterior o siguiente. */
   focusSibling(node: IntTreeNode, step: 1 | -1): void {
     const rows = this.visibleNodes();
     const next = rows[rows.indexOf(node) + step];
     if (next) this.focusNode(next);
   }
 
+  /** Lleva el foco a la fila del nodo. */
   focusNode(node: IntTreeNode): void {
     const rows = this.visibleNodes();
     const items = this.host.nativeElement.querySelectorAll<HTMLElement>('.int-tree-view__node');
@@ -191,7 +213,7 @@ export class IntTreeView {
     item?.focus();
   }
 
-  /** The tab stop: the first selected row, or the first row (PrimeNG setAllNodesTabIndexes). */
+  /** Indica si la fila del nodo es la que recibe el Tab (la primera seleccionada, o la primera). */
   isTabStop(node: IntTreeNode): boolean {
     const rows = this.visibleNodes();
     const selected = rows.find(row => this.isSelected(row));

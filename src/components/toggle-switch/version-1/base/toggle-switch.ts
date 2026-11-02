@@ -45,36 +45,47 @@ export class IntToggleSwitch implements ControlValueAccessor {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
+  /** Índice de tabulación del input interno. */
   readonly tabindex = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
-  /** Identifier of the input element; an external <label for> uses it. */
+  /** Id del input interno; lo usa un <label for> externo. */
   readonly inputId = input<string>(`int-toggle-switch-${nextId++}`);
+  /** Si es true, el valor no se puede cambiar. */
   readonly readonly = input(false, { transform: booleanAttribute });
-  /** Value written to the model when the switch is on. */
+  /** Valor que se escribe en el modelo cuando el switch está encendido. */
   readonly trueValue = input<unknown>(true);
-  /** Value written to the model when the switch is off. */
+  /** Valor que se escribe en el modelo cuando el switch está apagado. */
   readonly falseValue = input<unknown>(false);
+  /** Etiqueta accesible del switch. */
   readonly ariaLabel = input<string>();
-  /** Declared by PrimeNG without styles of its own; kept so p- → int- migrations compile. */
+  /** Tamaño del componente. PrimeNG lo declara sin estilos propios; se mantiene para que migrar p- → int- compile. */
   readonly size = input<'small' | 'large'>();
+  /** Id del elemento que etiqueta al switch. */
   readonly ariaLabelledBy = input<string>();
+  /** Si es true, el input recibe el foco al cargar. */
   readonly autofocus = input(false, { transform: booleanAttribute });
+  /** Nombre del input interno dentro del formulario. */
   readonly name = input<string>();
+  /** Marca el input como obligatorio. */
   readonly required = input(false, { transform: booleanAttribute });
+  /** Muestra el estado inválido (borde de error). */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Deshabilita el switch. */
   readonly disabled = input(false, { transform: booleanAttribute });
   /**
-   * int-* extension: appearance. 'slider' is the knowledge base toggle-small (linear track); with PrimeNG it was
-   * the .prToggleswitch--slider class, here it is a property as in the variant input of other PrimeNG components.
+   * int-* extension: apariencia. 'slider' es el toggle-small de la base de conocimientos (track lineal); con PrimeNG
+   * era la clase .prToggleswitch--slider.
    */
   readonly variant = input<IntToggleSwitchVariant>();
   /**
-   * int-* extension: shown on and locked (knowledge base .prToggleswitch--forcedChecked). Visual only: it never
-   * writes to the form model.
+   * int-* extension: lo muestra encendido y bloqueado (.prToggleswitch--forcedChecked de la base de conocimientos).
+   * Es solo visual: no escribe en el modelo.
    */
   readonly forcedChecked = input(false, { transform: booleanAttribute });
 
+  /** Se emite cuando cambia el valor por un clic o el teclado. */
   readonly onChange = output<IntToggleSwitchChangeEvent>();
 
+  /** Template #handle: contenido dentro del handle; recibe { checked }. */
   protected readonly handleTemplate = contentChild<TemplateRef<IntToggleSwitchHandleContext>>('handle');
   private readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
@@ -118,18 +129,22 @@ export class IntToggleSwitch implements ControlValueAccessor {
     this.inputRef().nativeElement.focus();
   }
 
+  /** ControlValueAccessor: escribe el valor del formulario. */
   writeValue(value: unknown): void {
     this.modelValue.set(value);
   }
 
+  /** ControlValueAccessor: registra la función que avisa los cambios al formulario. */
   registerOnChange(fn: (value: unknown) => void): void {
     this.onModelChange = fn;
   }
 
+  /** ControlValueAccessor: registra la función que marca el control como tocado. */
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  /** ControlValueAccessor: deshabilita el switch desde el formulario. */
   setDisabledState(disabled: boolean): void {
     this.formDisabled.set(disabled);
   }

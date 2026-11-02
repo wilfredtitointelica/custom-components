@@ -48,44 +48,72 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
+  /** Id del input interno; lo usa un <label for> externo. */
   readonly inputId = input<string>(`int-tree-select-${nextId++}`);
+  /** Nodos del árbol del panel. */
   readonly options = input<IntTreeNode[]>([]);
+  /** Modo de selección: 'single', 'multiple' o 'checkbox'. */
   readonly selectionMode = input<IntTreeSelectionMode>('single');
+  /** Texto del disparador cuando no hay selección. */
   readonly placeholder = input<string>();
+  /** Deshabilita el componente: el panel no se abre. */
   readonly disabled = input(false, { transform: booleanAttribute });
+  /** Muestra el estado inválido (borde y placeholder de error). */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Muestra una X en el disparador para limpiar la selección. */
   readonly showClear = input(false, { transform: booleanAttribute });
+  /** Muestra un buscador arriba del árbol. */
   readonly filter = input(false, { transform: booleanAttribute });
+  /** Placeholder del buscador. */
   readonly filterPlaceholder = input<string>();
-  /** Field of the node the filter compares (PrimeNG default 'label'). */
+  /** Campo del nodo que compara el buscador (por defecto 'label'). */
   readonly filterBy = input('label');
+  /** Texto que se muestra cuando no hay nodos. */
   readonly emptyMessage = input('No results found');
-  /** Max height of the tree. Default from Figma 15195:17805 (7 rows); PrimeNG uses 400px. */
+  /** Alto máximo del árbol. Por defecto 252px, 7 filas (Figma 15195:17805); PrimeNG usa 400px. */
   readonly scrollHeight = input('252px');
+  /** En modo checkbox, un padre se marca cuando todos sus hijos lo están. */
   readonly propagateSelectionUp = input(true, { transform: booleanAttribute });
+  /** En modo checkbox, marcar un padre marca todos sus hijos. */
   readonly propagateSelectionDown = input(true, { transform: booleanAttribute });
-  /** Extra class of the panel (the knowledge base pairs it with appendTo="body"). */
+  /** Clase extra del panel (la base de conocimientos la usa junto con appendTo="body"). */
   readonly panelStyleClass = input<string>();
+  /** Índice de tabulación del disparador. */
   readonly tabindex = input(0);
+  /** Etiqueta accesible del disparador. */
   readonly ariaLabel = input<string>();
+  /** Id del elemento que etiqueta al disparador. */
   readonly ariaLabelledBy = input<string>();
-  /** int-* extension: passed to int-tree-view (Style Guide .prTreeselect--labelAsToggle). */
+  /**
+   * int-* extension: se pasa al árbol; un clic en la fila de un padre lo expande o colapsa
+   * (.prTreeselect--labelAsToggle del Style Guide).
+   */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: passed to int-tree-view (Style Guide .prTreeselect--childrenAligned). */
+  /** int-* extension: se pasa al árbol; los hijos sin sangría (.prTreeselect--childrenAligned del Style Guide). */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
 
+  /** Se emite al seleccionar un nodo. */
   readonly onNodeSelect = output<IntTreeNodeEvent>();
+  /** Se emite al quitar la selección de un nodo. */
   readonly onNodeUnselect = output<IntTreeNodeEvent>();
+  /** Se emite al expandir un nodo. */
   readonly onNodeExpand = output<IntTreeNodeEvent>();
+  /** Se emite al colapsar un nodo. */
   readonly onNodeCollapse = output<IntTreeNodeEvent>();
+  /** Se emite al abrir el panel. */
   readonly onShow = output<void>();
+  /** Se emite al cerrar el panel. */
   readonly onHide = output<void>();
+  /** Se emite al limpiar la selección con la X. */
   readonly onClear = output<void>();
+  /** Se emite al escribir en el buscador, con el texto y los nodos filtrados. */
   readonly onFilter = output<{ filter: string; filteredValue: IntTreeNode[] }>();
+  /** Se emite cuando el disparador recibe el foco. */
   readonly onFocus = output<FocusEvent>();
+  /** Se emite cuando el disparador pierde el foco. */
   readonly onBlur = output<FocusEvent>();
 
-  /** #value template: context { $implicit: value, placeholder }. */
+  /** Template #value: reemplaza el texto del disparador; recibe { $implicit: value, placeholder }. */
   protected readonly valueTemplate = contentChild<TemplateRef<{ $implicit: IntTreeSelection; placeholder?: string }>>('value');
 
   protected readonly focusInput = viewChild.required<ElementRef<HTMLInputElement>>('focusInput');
@@ -143,6 +171,7 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** The whole trigger is the origin of the panel. */
   constructor(protected readonly host: ElementRef<HTMLElement>) {}
 
+  /** Abre el panel. */
   show(): void {
     if (this.isDisabled() || this.overlayVisible()) return;
     this.triggerWidth.set(this.host.nativeElement.offsetWidth);
@@ -150,7 +179,7 @@ export class IntTreeSelect implements ControlValueAccessor {
     this.onShow.emit();
   }
 
-  /** Closes the panel; the filter is cleared, as PrimeNG resetFilterOnHide. */
+  /** Cierra el panel y limpia el buscador. */
   hide(): void {
     if (!this.overlayVisible()) return;
     this.overlayVisible.set(false);
@@ -262,18 +291,22 @@ export class IntTreeSelect implements ControlValueAccessor {
     this.onClear.emit();
   }
 
+  /** ControlValueAccessor: escribe el valor del formulario. */
   writeValue(value: IntTreeSelection): void {
     this.value.set(value ?? null);
   }
 
+  /** ControlValueAccessor: registra la función que avisa los cambios al formulario. */
   registerOnChange(fn: (value: IntTreeSelection) => void): void {
     this.onModelChange = fn;
   }
 
+  /** ControlValueAccessor: registra la función que marca el control como tocado. */
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  /** ControlValueAccessor: deshabilita el componente desde el formulario. */
   setDisabledState(disabled: boolean): void {
     this.formDisabled.set(disabled);
   }
