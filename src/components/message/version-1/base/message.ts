@@ -45,7 +45,7 @@ export class IntMessage {
   readonly severity = input<IntMessageSeverity>('info');
   /** Tamaño del mensaje: `small` reduce el padding, el gap y el texto. */
   readonly size = input<IntMessageSize>();
-  /** Variante: 'simple' quita el fondo, el borde y el padding. */
+  /** Variante: `simple` quita el fondo, el borde y el padding. */
   readonly variant = input<IntMessageVariant>();
   /** Clase del ícono, de la fuente incontrol-icons o primeicons (por ejemplo `icon icon-info`). */
   readonly icon = input<string>();
