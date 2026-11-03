@@ -44,6 +44,7 @@
     "@primeuix/themes": "^1.2.5",
     "primeicons": "^8.0.2",
     "primeng": "^20.4.0",
+    "puppeteer-core": "^23.11.1",
     "rxjs": "~7.8.0",
     "systemjs": "^6.15.1",
     "tslib": "^2.3.0",
@@ -61,5 +62,10 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.2"
-  }
+  },
+  "description": "Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -12,9 +12,12 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// The block is the panel rendered in the CDK overlay. Overridable prop: --int-popover-padding.
+// The block is the panel rendered in the CDK overlay.
+// Overridable props: --int-popover-{padding,arrow-color,arrow-size}.
 .int-popover {
   --int-popover-padding: var(--i-spacing-container-lg);
+  --int-popover-arrow-color: var(--i-color-primary-900); // knowledgeBase: prPopover--tooltipLike · Figma: #0A1733 (tooltip/color/arrow)
+  --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
 
   @include int.overlay-surface;
   max-width: min(480px, calc(100vw - 16px));
@@ -35,6 +38,34 @@
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
+
+// Solid beak just outside the border, pointing at the trigger; --int-popover-arrow-left (px from the
+// left edge) is set by the component. Below the trigger it sits on top; --flipped moves it to the bottom.
+.int-popover--arrow {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + var(--i-border-width-sm));
+    left: var(--int-popover-arrow-left, 16px);
+    width: 0;
+    height: 0;
+    border: var(--int-popover-arrow-size) solid transparent;
+    border-top-width: 0;
+    border-bottom-color: var(--int-popover-arrow-color);
+    transform: translateX(-50%);
+  }
+
+  &.int-popover--flipped::before {
+    top: calc(100% + var(--i-border-width-sm));
+    bottom: auto;
+    border-top-width: var(--int-popover-arrow-size);
+    border-bottom-width: 0;
+    border-top-color: var(--int-popover-arrow-color);
+    border-bottom-color: transparent;
+  }
+}
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON

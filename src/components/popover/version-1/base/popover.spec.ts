@@ -33,4 +33,36 @@ describe('IntPopover', () => {
     expect(container.querySelector('.content')).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
+
+  it('has no arrow by default', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const container = TestBed.inject(OverlayContainer).getContainerElement();
+
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    expect(container.querySelector('.int-popover--arrow')).toBeNull();
+  });
+
+  it('draws the arrow pointing at the trigger when arrow is set', () => {
+    const fixture = TestBed.createComponent(ArrowHost);
+    fixture.detectChanges();
+    const container = TestBed.inject(OverlayContainer).getContainerElement();
+
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    const panel = container.querySelector<HTMLElement>('.int-popover');
+    expect(panel?.classList).toContain('int-popover--arrow');
+    expect(panel?.classList).not.toContain('int-popover--flipped');
+    expect(panel?.style.getPropertyValue('--int-popover-arrow-left')).toMatch(/^\d+px$/);
+  });
 });
+
+@Component({
+  imports: [IntPopover],
+  template: `
+    <button (click)="op.toggle($event)">Info</button>
+    <int-popover #op arrow ariaLabel="Info"><p>Hello</p></int-popover>
+  `,
+})
+class ArrowHost {}

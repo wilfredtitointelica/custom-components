@@ -10,6 +10,9 @@
     tabindex="-1"
     [id]="id"
     [class]="styleClass() ?? ''"
+    [class.int-popover--arrow]="arrow()"
+    [class.int-popover--flipped]="arrow() && flipped()"
+    [style.--int-popover-arrow-left.px]="arrow() ? arrowLeft() : null"
     [attr.aria-label]="ariaLabel() ?? null"
   >
     <ng-content />
