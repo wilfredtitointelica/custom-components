@@ -1,13 +1,11 @@
 <!--
   title: Demo
-  description: Implementación de referencia de todo el flujo: config, base, variantes y estilos.
+  description: Implementación de referencia de todo el flujo: config, base, variantes, composiciones y estilos.
   figma:
 -->
-<article [class]="classes()">
-  <h3 class="int-demo__title">{{ title() }}</h3>
-  <ul class="int-demo__list">
-    @for (item of items(); track item) {
-      <li class="int-demo__item">{{ item }}</li>
-    }
-  </ul>
-</article>
+<h3 class="int-demo__title">{{ title() }}</h3>
+<ul class="int-demo__list">
+  @for (item of items(); track item) {
+    <li class="int-demo__item">{{ item }}</li>
+  }
+</ul>

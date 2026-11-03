@@ -233,6 +233,44 @@ describe('Component catalog', () => {
     expect(chip.hiddenVariantIds).toEqual(['chip-draft']);
   });
 
+  it('documents compositions/<slug>/ folders apart from the variants, with their own order', () => {
+    const loadRoutes = () => Promise.resolve([]);
+    const [card] = resolveInventory(
+      [
+        {
+          id: 'card',
+          name: 'Card',
+          compositions: ['kpi', { name: 'draft', hidden: true }],
+          loadRoutes,
+        },
+      ],
+      {
+        card: [
+          {
+            number: 1,
+            folder: 'version-1',
+            examples: ['basic'],
+            compositions: ['metric-group', 'kpi', 'draft'],
+          },
+        ],
+      },
+    );
+    expect(card.variants.map((v) => [v.slug, v.kind])).toEqual([['basic', 'variant']]);
+    expect(card.compositions.map((v) => [v.id, v.kind])).toEqual([
+      ['card-kpi', 'composition'],
+      ['card-metric-group', 'composition'],
+    ]);
+    expect(card.hiddenVariantIds).toEqual(['card-draft']);
+  });
+
+  it('resolves a composition slug like a variant one', () => {
+    const card = CATALOG.find((c) => c.id === 'card')!;
+    expect(card.compositions.length).toBeGreaterThan(0);
+    const [first] = card.compositions;
+    expect(findVariantInComponent('card', first.slug)?.kind).toBe('composition');
+    expect(catalog.findVariant(first.id)?.kind).toBe('composition');
+  });
+
   it('every component has at least its version-1 folder (unless that version is hidden)', () => {
     for (const component of CATALOG) {
       const hidden = COMPONENT_INVENTORY.find((d) => d.id === component.id)?.hiddenVersions ?? [];

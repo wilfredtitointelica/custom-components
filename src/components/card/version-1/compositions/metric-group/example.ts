@@ -19,10 +19,10 @@ const METRICS: readonly Metric[] = [
 ];
 
 @Component({
-  selector: 'card-group-example',
+  selector: 'card-metric-group-example',
   templateUrl: './example.html',
   imports: [IntCard, NgTemplateOutlet],
 })
-export class CardGroupExample {
+export class CardMetricGroupExample {
   readonly metrics = METRICS;
 }

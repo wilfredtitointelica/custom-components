@@ -122,6 +122,16 @@
 					<td><code>npm run new:variant -- &lt;id&gt; "&lt;Título&gt;" --description "…"</code></td>
 				</tr>
 				<tr>
+					<td>Un caso de uso armado con la API (tab Compositions)</td>
+					<td><code>/crear-composicion</code></td>
+					<td><code>npm run new:composition -- &lt;id&gt; "&lt;Título&gt;" --description "…"</code></td>
+				</tr>
+				<tr>
+					<td>Pasar un ejemplo entre Variants y Compositions (conserva la URL)</td>
+					<td>—</td>
+					<td><code>npm run move -- &lt;id&gt; &lt;slug&gt; --to composition|variant --yes</code></td>
+				</tr>
+				<tr>
 					<td>Cambiar la implementación sin romper la actual</td>
 					<td><code>/crear-version</code></td>
 					<td><code>npm run new:version -- &lt;id&gt; [--title "…"] [--description "…"]</code></td>
@@ -143,7 +153,7 @@
 				<tr>
 					<td>Cambiar el orden de las variantes</td>
 					<td><code>/ordenar-variantes</code></td>
-					<td><code>npm run order:variants -- &lt;id&gt; [&lt;slug&gt; …]</code></td>
+					<td><code>npm run order:variants -- &lt;id&gt; [--compositions] [&lt;slug&gt; …]</code></td>
 				</tr>
 				<tr>
 					<td>Cambiar título o descripción</td>
@@ -406,6 +416,119 @@ src/components/accordion/version-N/variants/icons-border/
 		, nunca en un
 		<code>.ts</code>
 		.
+	</p>
+</section>
+
+<hr class="doc-skill-divider" />
+
+<!-- ─────────────────────────── Crear una composición ─────────────────────────── -->
+<section class="doc-skill-section" id="skill-composition" [class.doc-is-active]="nav.fragment() === 'skill-composition'" aria-labelledby="skill-composition-title">
+	<div class="doc-skill-section-head">
+		<h2 class="doc-skill-section-title" id="skill-composition-title">
+			<a [routerLink]="path" fragment="skill-composition">
+				Crear una composición
+				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			</a>
+		</h2>
+		<span class="doc-skill-use">
+			Skill:
+			<code class="doc-skill-badge">/crear-composicion</code>
+		</span>
+	</div>
+	<p>
+		Agrega un <strong>caso de uso</strong> armado con la API del componente y helpers (un KPI, un selector de versión, una
+		fila de métricas). Cada composición es una carpeta
+		<code>compositions/&lt;slug&gt;/</code>
+		: aparece en el tab <strong>Compositions</strong> de la página y en el menú, bajo el rótulo "Compositions".
+	</p>
+
+	<div class="doc-skill-table-wrap">
+		<table class="doc-skill-table">
+			<thead>
+				<tr>
+					<th scope="col"></th>
+					<th scope="col">Variante · <code>/crear-variante</code></th>
+					<th scope="col">Composición · <code>/crear-composicion</code></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Qué muestra</td>
+					<td><strong>Una</strong> propiedad, estado o template de la API (<code>outlined</code>, <code>selectable</code>, <code>footer</code>)</td>
+					<td>Un caso real de la base de conocimientos (KPI, selector de versión, fila de métricas)</td>
+				</tr>
+				<tr>
+					<td>De dónde sale</td>
+					<td>Secciones de PrimeNG y propiedades nuevas</td>
+					<td>Casos de la base de conocimientos: son combinaciones de la API</td>
+				</tr>
+				<tr>
+					<td>API</td>
+					<td>Puede nacer junto con una propiedad nueva</td>
+					<td><strong>No agrega</strong> propiedades: combina las que existen</td>
+				</tr>
+				<tr>
+					<td>Tab</td>
+					<td>Variants</td>
+					<td>Compositions</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="doc-skill-grid">
+		<article class="doc-skill-card">
+			<h3>Qué te pregunta</h3>
+			<ol class="doc-skill-list">
+				<li>
+					<strong>Componente</strong>
+					: id o nombre visible (
+					<code>card</code>
+					).
+				</li>
+				<li>
+					<strong>Título</strong>
+					del caso (
+					<em>KPI</em>
+					,
+					<em>Version Picker</em>
+					).
+				</li>
+				<li>
+					<strong>Descripción</strong>
+					(una línea, opcional): el caso y con qué API se arma.
+				</li>
+			</ol>
+			<p>
+				Si el caso necesita algo que la API no tiene, no crea la composición: te propone primero la propiedad (y su
+				variante).
+			</p>
+		</article>
+		<article class="doc-skill-card">
+			<h3>Cómo pedirlo</h3>
+			<pre class="doc-skill-prompt">/crear-composicion card KPI</pre>
+			<pre class="doc-skill-prompt">Agrega el caso Version Picker a card: cards compact y selectable para elegir una versión</pre>
+			<pre class="doc-skill-prompt">Nueva forma de uso Metric Group de card</pre>
+		</article>
+	</div>
+
+	<h3 class="doc-skill-subtitle">Qué genera</h3>
+	<pre class="doc-skill-code">
+src/components/card/version-N/compositions/kpi/
+├── example.html    solo la cabecera (title + description); debajo escribes el caso
+└── example.ts      CardKpiExample: importa solo la base</pre
+	>
+	<p class="doc-skill-note">
+		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		Enlace directo:
+		<code>/components/card#card-kpi</code>
+		(abre el tab Compositions). Un slug no se repite entre
+		<code>variants/</code>
+		y
+		<code>compositions/</code>
+		. Si una variante que ya existe es en realidad un caso de uso, no se recrea: se mueve con
+		<code>npm run move -- &lt;id&gt; &lt;slug&gt; --to composition --yes</code>
+		(conserva el slug y la URL).
 	</p>
 </section>
 

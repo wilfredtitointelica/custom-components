@@ -5,6 +5,7 @@
 //               catalog-groups.ts. With --title, also the title in the header of every base/<id>.html.
 //   variant   → /components/<id>#<id>-<slug>: the variants/<slug>/ folder in every version that has it,
 //               its selector and class in example.ts, the title in example.html and its config entry.
+//               A composition (compositions/<slug>/) is renamed the same way: its folder is detected.
 // Versions are never renamed. Without --yes it is a dry run: it prints what would change and touches
 // nothing. At the end it regenerates src/generated/ (a running ng serve picks it up).
 //
@@ -20,6 +21,7 @@ import { basename, dirname, join } from 'node:path';
 import {
   COMPONENTS_DIR,
   ROOT,
+  exampleKind,
   findComponent,
   readVariantEntries,
   regenerateDocs,
@@ -188,17 +190,19 @@ if (kind === 'variant') {
   const newSlug = slugFlag ?? toSlug(newTitle);
   if (!KEBAB_CASE.test(newSlug)) fail(`"${newSlug}" is not a valid folder name: use kebab-case.`);
 
-  const folders = variantVersions(component);
+  // variants/ or compositions/: the folder (and config list) that holds the slug.
+  const list = exampleKind(component, oldSlug) ?? 'variants';
+  const folders = variantVersions(component, list);
   const versions = folders.get(oldSlug);
   if (!versions) fail(`Variant "${oldSlug}" not found in ${component.id} (variants: ${[...folders.keys()].join(', ')}).`);
   if (oldSlug === 'basic' && newSlug !== 'basic') fail('"basic" is the default variant of every component: its folder is not renamed (only its title).');
-  if (newSlug !== oldSlug && folders.has(newSlug)) fail(`${component.id} already has a variant "${newSlug}".`);
+  if (newSlug !== oldSlug && exampleKind(component, newSlug)) fail(`${component.id} already has a variant or composition "${newSlug}".`);
 
   const id = component.id;
   const P = toPascal(id);
   for (const version of versions) {
-    const oldDir = join(component.path, `version-${version}`, 'variants', oldSlug);
-    const newDir = join(component.path, `version-${version}`, 'variants', newSlug);
+    const oldDir = join(component.path, `version-${version}`, list, oldSlug);
+    const newDir = join(component.path, `version-${version}`, list, newSlug);
     if (newDir !== oldDir) folderMoves.push({ from: oldDir, to: newDir });
     for (const file of filesUnder(oldDir)) {
       const source = readFileSync(file, 'utf8');
@@ -217,7 +221,7 @@ if (kind === 'variant') {
   // Config entry: a slug string becomes the new slug; an object gets its slug/name updated.
   if (existsSync(component.config) && newSlug !== oldSlug) {
     const source = readFileSync(component.config, 'utf8');
-    const entries = readVariantEntries(source)?.entries;
+    const entries = readVariantEntries(source, list)?.entries;
     if (entries?.some((e) => e.slug === oldSlug)) {
       const texts = entries.map((e) => {
         if (e.slug !== oldSlug) return e.text;
@@ -226,7 +230,7 @@ if (kind === 'variant') {
           ? e.text.replace(/(\bslug\s*:\s*)(['"`]).*?\2/, `$1'${newSlug}'`)
           : e.text.replace(/(\bname\s*:\s*)(['"`]).*?\2/, `$1'${newTitle.replace(/'/g, "\\'")}'`);
       });
-      fileChanges.push({ from: component.config, to: component.config, content: writeVariantEntries(source, texts) });
+      fileChanges.push({ from: component.config, to: component.config, content: writeVariantEntries(source, texts, list) });
     }
   }
 

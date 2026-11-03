@@ -101,6 +101,11 @@ code {
     --doc-folder-bg: var(--doc-success-container);
     --doc-folder-ink: var(--doc-on-success-container);
   }
+
+  &.doc-is-compositions {
+    --doc-folder-bg: var(--doc-surface-high);
+    --doc-folder-ink: var(--doc-ink);
+  }
 }
 
 .doc-skill-diagram-folder-name {

@@ -206,7 +206,8 @@ export class IntChip {
 }
 // ELEMENTS: &__icon, &__image (margin-inline-start: calc(-1 * padding-y)), &__label,
 //           &__remove-icon (+ :focus-visible con el focus ring)
-// MODIFIERS: &--disabled { opacity; pointer-events: none; user-select: none; cursor: default }
+// MODIFIERS: &--disabled { opacity; user-select: none; cursor: not-allowed } (sin pointer-events: none;
+//            remove() ignora el clic si está disabled)
 // SKELETON: .sk-chip con alto 32px, ancho fijo y radio del chip
 ```
 

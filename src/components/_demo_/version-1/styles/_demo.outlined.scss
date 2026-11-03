@@ -2,7 +2,10 @@
  * MODIFIERS ( --modifier ) · Outlined
 \*——————————————————————————————————————————————————————————*/
 
+// outlined input · visible border instead of the shadow.
 .int-demo--outlined {
-  border: 1px solid var(--doc-outline);
-  background: transparent;
+  --int-demo-outlined-border: var(--i-line); // SG: --i-line (1px solid grey-200)
+
+  border: var(--int-demo-outlined-border);
+  box-shadow: none;
 }

@@ -29,7 +29,10 @@
   --int-card-footer-border-width: var(--i-divider-border-sm); // Figma: 1px (divider/border/sm) · Aura: —
   --int-card-footer-border-color: var(--i-divider-color-default); // Figma: #D9D9E3 (divider/color/default) · Aura: —
 
-  // --- selectable (int-* extension: mini, option and version formats) ---
+  // --- outlined (also the border of a selectable card) ---
+  --int-card-outlined-border: var(--i-line); // SG: --i-line (1px solid grey-200) · Figma: 1px #D9D9E3 (card/border/width/sm, card/color/border) · Aura: —
+
+  // --- selectable (int-* extension: mini, option and version cards of the knowledge base) ---
   --int-card-selectable-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (card/color/hover/border) · SG: --i-color-primary-900 ⚠️ · Aura: —
   --int-card-selectable-selected-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 (prCard--option.is-active) · Figma: #0A1733 (card/color/pressed/border) · Aura: —
   --int-card-selectable-selected-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Figma: #F2F2F5 (card/color/pressed/background) · Aura: —
@@ -62,6 +65,12 @@
   font-family: var(--int-card-font-family);
   font-size: var(--int-card-font-size);
   line-height: var(--int-card-line-height);
+
+  // Alone in a flex wrapper (the consumer's layout cell), the card fills it; siblings in a row keep
+  // their own size. Layout helpers go on that wrapper, never on <int-card>.
+  &:only-child {
+    flex-grow: 1;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -100,7 +109,7 @@
   }
 
   &__subtitle {
-    color: var(--int-card-subtitle-color);
+    // color: var(--int-card-subtitle-color);
   }
 
   // knowledgeBase: the #content slot is a flex column; hidden when nothing is projected.
@@ -125,7 +134,7 @@
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-// int-* extension: selectable card (role="button"). Formats set the border in their own module.
+// int-* extension: selectable card (role="button"). Its border comes from _card.outlined.scss.
 .int-card--selectable {
   cursor: pointer;
   transition:
@@ -146,15 +155,22 @@
     outline: var(--int-card-focus-ring-width) solid var(--int-card-focus-ring-color);
     outline-offset: var(--int-card-focus-ring-offset);
   }
+
+  // Selectable cards sit side by side (mini, option, version cards): the body fills a stretched card.
+  .int-card__body {
+    flex-grow: 1;
+  }
 }
 
-// Doubled block so the disabled border wins over the border shorthand of the format modules.
+// Doubled block so the disabled border wins over the border shorthand of _card.outlined.scss and over
+// the hover/active of .int-card--selectable. No pointer-events: none, it would hide the not-allowed
+// cursor; activate() already ignores clicks and keys while disabled.
 .int-card.int-card--disabled {
   border-color: var(--int-card-disabled-border-color);
   background: var(--int-card-disabled-background);
   color: var(--int-card-disabled-color);
-  cursor: default;
-  pointer-events: none;
+  cursor: not-allowed;
+  user-select: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

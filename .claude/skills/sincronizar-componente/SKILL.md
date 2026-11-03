@@ -80,8 +80,8 @@ hizo fuera del repo: sugerir `/estandarizar-componente <id>` y parar.
    - **Estructura** (elementos nuevos o quitados, otro orden): no se aplica; se lista. La estructura la
      define PrimeNG.
    - **Variantes o estados nuevos en Figma**: no se crean ni se proponen como extensión; van a "Solo en
-     Figma". Una variante nueva solo si la base de conocimientos (Intelica.knowledgeBase) agregó un caso `.pr` (📘), siguiendo
-     `replicar-primeng` 2.4.
+     Figma". Una composición nueva solo si la base de conocimientos (Intelica.knowledgeBase) agregó un caso `.pr` (📘)
+     (input + variante solo si es candidato a propiedad), siguiendo `replicar-primeng` 2.4.
    - **Iconos** distintos en Figma: se mantiene el de PrimeNG o base de conocimientos (Intelica.knowledgeBase) y se reporta.
 
 6. **Informe de verificación** en el chat:
@@ -135,7 +135,7 @@ Pregunta en un solo mensaje:
 - **Reglas** (`_<id>.scss` y módulos): solo si un token nuevo o un caso nuevo de la base de conocimientos (Intelica.knowledgeBase) lo exige.
   Solo `var(--int-<id>-*)`, BEM, sin `p-*`, `::ng-deep` ni `--doc-*`.
 - **Base** (`<id>.ts` / `<id>.html`): no se cambia por Figma. La API de PrimeNG no se renombra ni se quita.
-- **Variantes**: una variante nueva solo para un caso `.pr` nuevo de la base de conocimientos (Intelica.knowledgeBase, 📘), con `npm run new:variant`.
+- **Variantes y composiciones**: un ejemplo nuevo solo para un caso `.pr` nuevo de la base de conocimientos (Intelica.knowledgeBase, 📘), y por defecto es una **composición** (`npm run new:composition`, skill `crear-composicion`): la base documenta combinaciones de la API. Solo si es candidato a propiedad (`replicar-primeng` 2.4) se agrega input + variante (`npm run new:variant`), y se reporta.
 - **Cabecera**: si el usuario aprobó un link nuevo, reemplazar la línea `figma:` (o `figma-frame:`). Título, descripción,
   `status` y `designer` no se tocan.
 - Lo ✏️ customizado solo se cambia con **forzar**, y forzar aplica a las filas listadas, no a todo.

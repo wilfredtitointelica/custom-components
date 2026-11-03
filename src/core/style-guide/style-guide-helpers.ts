@@ -1,4 +1,4 @@
-import { isColor, readStyleGuideSources, StyleGuideSource } from './style-guide-source';
+import { readStyleGuideSources, resolveColor, StyleGuideSource } from './style-guide-source';
 
 /** Piece of a code line of a helper block, as the dialog draws it. */
 export type HelperPart =
@@ -184,15 +184,6 @@ function importantParts(text: string): HelperPart[] {
     .split(/(!important)/)
     .filter(Boolean)
     .map((piece) => (piece === '!important' ? { kind: 'important' } : { kind: 'text', text: piece }));
-}
-
-/** Value with its var() references replaced by what :root computes; null if it is not a color. */
-function resolveColor(value: string, root: CSSStyleDeclaration): string | null {
-  let resolved = value;
-  for (let i = 0; i < 5 && resolved.includes('var('); i++) {
-    resolved = resolved.replace(/var\((--[\w-]+)\)/g, (_, name: string) => root.getPropertyValue(name).trim() || '?');
-  }
-  return isColor(resolved) ? resolved : null;
 }
 
 function clean(text: string): string {

@@ -1,11 +1,11 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { DocTab } from '../../service/navigation-state';
 
 /**
- * Features | API tabs of a documentation page, at the end of the title row: they switch the whole
- * page, so they come before the chips bar. Each tab is a link that sets ?tab=api or removes it;
+ * Variants | API | Compositions tabs of a documentation page, at the end of the title row: they switch the whole
+ * page, so they come before the chips bar. Each tab is a link that sets ?tab=api|compositions or removes it;
  * doc-page renders the panel of the active one, with the id `<componentId>-panel-<key>`.
  * Roving tabindex: arrows, Home and End move between them.
  */
@@ -27,11 +27,18 @@ export class DocTabs {
   readonly componentId = input.required<string>();
   /** Route of the documentation page. */
   readonly path = input.required<string>();
+  /** The component has compositions/<slug>/ folders: shows the Compositions tab. */
+  readonly hasCompositions = input(false);
 
-  protected readonly tabs = [
-    { key: 'features', label: 'Features' },
-    { key: 'api', label: 'API' },
-  ] as const satisfies readonly { key: DocTab; label: string }[];
+  protected readonly tabs = computed(() =>
+    (
+      [
+        { key: 'variants', label: 'Variants' },
+        { key: 'api', label: 'API' },
+        { key: 'compositions', label: 'Compositions' },
+      ] as const satisfies readonly { key: DocTab; label: string }[]
+    ).filter((tab) => tab.key !== 'compositions' || this.hasCompositions()),
+  );
 
   /** Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation). */
   protected onKeydown(event: KeyboardEvent): void {

@@ -4,7 +4,7 @@ import { DocPage } from '../../core/doc-page/doc-page';
 
 /**
  * Documentation page of "Demo" — reference for the other components.
- * Sections come from demo.config.ts + the version-N/variants/<slug>/ folders, which are detected
+ * Sections come from demo.config.ts + the version-N/variants/<slug>/ and compositions/<slug>/ folders, which are detected
  * automatically: nothing is registered here. Optional intro content goes inside <app-doc-page>.
  */
 @Component({

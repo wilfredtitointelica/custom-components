@@ -38,6 +38,11 @@ export interface ComponentDefinition {
    * appended automatically, alphabetically.
    */
   readonly variants?: readonly VariantDefinition[];
+  /**
+   * Compositions in display order, same shape as variants: the version-N/compositions/<slug>/ folders,
+   * shown in the Compositions tab. Folders not listed here are appended automatically, alphabetically.
+   */
+  readonly compositions?: readonly VariantDefinition[];
   /** true = the component is left out of the menu, the routes and the search. */
   readonly hidden?: boolean;
   /**
@@ -66,10 +71,17 @@ export interface ComponentDefinition {
   readonly loadRoutes: LoadChildrenCallback;
 }
 
-/** Code of one example, as written in its variants/<slug>/ folder. */
+/** Code of one example, as written in its variants/<slug>/ or compositions/<slug>/ folder. */
 export type DocExampleCode = Readonly<Partial<Record<CodeLanguage, string>>>;
 
-/** One example folder (version-N/variants/<slug>/), as emitted in the lazy chunk of its version. */
+/**
+ * Kind of an example folder: `variant` = version-N/variants/<slug>/ (one input, state or slot of the
+ * API, Variants tab); `composition` = version-N/compositions/<slug>/ (a real use case built with the API
+ * and u-* helpers, Compositions tab). A slug is unique across both folders of a component.
+ */
+export type DocExampleKind = 'variant' | 'composition';
+
+/** One example folder (variants/<slug>/ or compositions/<slug>/), as emitted in the lazy chunk of its version. */
 export interface DocExampleSource {
   readonly slug: string;
   /** The example.ts module: its exported component is the preview. */
@@ -183,11 +195,13 @@ export interface ComponentVersion extends DocMeta {
   readonly api?: DocApi;
   /** Slugs of its variants/<slug>/ example folders. */
   readonly examples: readonly string[];
+  /** Slugs of its compositions/<slug>/ example folders. */
+  readonly compositions?: readonly string[];
   /** Header of each example.html, by slug (only the examples that have one). */
   readonly exampleMeta?: Readonly<Record<string, DocMeta>>;
   /** base/<id>.html as text (generated registry): its header gives title and description. */
   readonly html?: string;
-  /** Each variants/<slug>/example.html as text (generated registry): headers of the variants. */
+  /** Each variants|compositions/<slug>/example.html as text (generated registry): headers of the examples. */
   readonly exampleHtml?: Readonly<Record<string, string>>;
   /** Lazy chunk with the examples (absent when the version has none yet). */
   readonly loadExamples?: () => Promise<{ default: readonly DocExampleSource[] }>;
@@ -199,8 +213,10 @@ export type DocRegistry = Readonly<Record<string, readonly ComponentVersion[]>>;
 export interface CatalogVariant {
   /** Globally unique ID, `<componentId>-<slug>`. Used as DOM id and URL fragment. */
   readonly id: string;
-  /** Also the name of its example folder: version-N/variants/<slug>/. */
+  /** Also the name of its example folder: version-N/variants/<slug>/ or version-N/compositions/<slug>/. */
   readonly slug: string;
+  /** variant (Variants tab) or composition (Compositions tab). */
+  readonly kind: DocExampleKind;
   readonly name: string;
   readonly description?: string;
   readonly componentId: string;
@@ -217,7 +233,9 @@ export interface CatalogComponent {
   readonly path: string;
   /** Visible variants, in display order. */
   readonly variants: readonly CatalogVariant[];
-  /** IDs of variants marked `hidden` (their IDs stay reserved). */
+  /** Visible compositions, in display order (Compositions tab). */
+  readonly compositions: readonly CatalogVariant[];
+  /** IDs of variants and compositions marked `hidden` (their IDs stay reserved). */
   readonly hiddenVariantIds: readonly string[];
   /** Implementation folders (version-N), ascending. The last one is shown by default. */
   readonly versions: readonly ComponentVersion[];

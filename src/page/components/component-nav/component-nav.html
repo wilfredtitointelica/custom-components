@@ -113,7 +113,8 @@
 						[class.doc-is-active]="active"
 						[routerLink]="variant.path"
 						[fragment]="variant.id"
-						[queryParamsHandling]="current ? 'preserve' : ''"
+						[queryParams]="{ tab: null }"
+						[queryParamsHandling]="current ? 'merge' : ''"
 						[attr.aria-current]="active ? 'location' : null"
 						(click)="navigated.emit()"
 					>
@@ -123,6 +124,25 @@
 				} @empty {
 				<li class="doc-variant-empty">No variants defined yet</li>
 				}
+				<!-- compositions/<slug>/ folders: after the variants, under their own label (Compositions tab). -->
+				@if (component.compositions.length) {
+				<li class="doc-nav-separator" aria-hidden="true">Compositions</li>
+				@for (composition of component.compositions; track composition.id) { @let active = nav.activeVariantId() === composition.id;
+				<li>
+					<a
+						class="doc-variant-link"
+						[class.doc-is-active]="active"
+						[routerLink]="composition.path"
+						[fragment]="composition.id"
+						[queryParams]="{ tab: null }"
+						[queryParamsHandling]="current ? 'merge' : ''"
+						[attr.aria-current]="active ? 'location' : null"
+						(click)="navigated.emit()"
+					>
+						{{ composition.name }}
+					</a>
+				</li>
+				} }
 			</ul>
 		</div>
 	</li>

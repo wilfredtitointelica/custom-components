@@ -23,7 +23,7 @@ Hay dos tipos de dependencia, con el mismo marcador:
 | Config | Dónde está el provisional | Al reemplazar se importa `Int<Dep>` en |
 |---|---|---|
 | `requires` (la base lo compone: multi-select → checkbox) | `base/<id>.html` / `.ts` / `.scss` | la base (`base/<id>.ts`) |
-| `uses` (solo el contenido de una variante: el botón del `#footer` de card) | `variants/<slug>/example.html` (marcado nativo + helpers `.u-*`) | el `example.ts` de esa variante, **nunca** la base |
+| `uses` (solo el contenido de un ejemplo: el botón del `#footer` de card, el badge de su composición Version Picker) | `variants/<slug>/example.html` o `compositions/<slug>/example.html` (marcado nativo + helpers `.u-*`) | el `example.ts` de ese ejemplo, **nunca** la base |
 
 La página de cada componente lista ambas en **Dependencies: Detect** (popover "Requeridas" /
 "Opcionales", con estado y enlace).
@@ -66,7 +66,8 @@ inconsistencia: un provisional en la base sin `<dep>` en `requires`, uno en una 
 3. **TS**: importa `Int<Dep>` y agrégalo a `imports`; borra el código marcado
    `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…).
    - Base (`requires`): `../../../<dep>/version-N/base/<dep>` desde `base/<id>.ts`.
-   - Variante (`uses`): `../../../../<dep>/version-N/base/<dep>` desde `variants/<slug>/example.ts`.
+   - Variante o composición (`uses`): `../../../../<dep>/version-N/base/<dep>` desde
+     `variants/<slug>/example.ts` o `compositions/<slug>/example.ts` (misma profundidad).
 4. **SCSS** (solo `requires`): borra las reglas y tokens marcados `TODO(dep:<dep> provisional)`; deja solo
    lo que posiciona al hijo dentro del padre (márgenes, alineación), nunca estilos que pisen los del hijo.
    En una variante (`uses`) quita también los helpers que solo imitaban al hijo (`u-px-3 u-radius-lg…` del

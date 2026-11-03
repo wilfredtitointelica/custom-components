@@ -6,6 +6,9 @@ argument-hint: "[componente] [slug slug …]"
 
 # Ordenar variantes
 
+> Las **composiciones** (`version-N/compositions/<slug>/`, tab Compositions) tienen su propio orden:
+> `npm run order:variants -- <id> --compositions [<slug>…]` lee y escribe la lista `compositions`.
+
 Las variantes son las carpetas `version-N/variants/<slug>/` y el menú las junta de **todas las
 versiones**, así que el orden es **por componente**, no por versión. Por defecto van `basic` primero y
 el resto en orden alfabético. Para otro orden se escribe la lista `variants` de

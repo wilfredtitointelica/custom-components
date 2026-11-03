@@ -5,6 +5,7 @@ import {
   CatalogVariant,
   ComponentDefinition,
   ComponentVersion,
+  DocExampleKind,
   DocMeta,
   DocRegistry,
   VariantDefinition,
@@ -17,7 +18,10 @@ import { toSearchKey, toSlug } from './slug';
 /** Reads the headers of the HTML files imported as text (title/description of component and variants). */
 function withHeaders(version: ComponentVersion): ComponentVersion {
   const exampleMeta = Object.fromEntries(
-    Object.entries(version.exampleHtml ?? {}).map(([slug, html]) => [slug, parseDocHtml(html).meta]),
+    Object.entries(version.exampleHtml ?? {}).map(([slug, html]) => [
+      slug,
+      parseDocHtml(html).meta,
+    ]),
   );
   return {
     ...version,
@@ -33,23 +37,30 @@ export const VERSION_QUERY_PARAM = 'version';
 
 /** "icons-border" → "Icons Border": visible name of an example folder not listed in the config. */
 const slugToName = (slug: string) =>
-  slug.replace(/(^|-)([a-z0-9])/g, (_, dash: string, char: string) => (dash && ' ') + char.toUpperCase());
+  slug.replace(
+    /(^|-)([a-z0-9])/g,
+    (_, dash: string, char: string) => (dash && ' ') + char.toUpperCase(),
+  );
 
 /** "basic" first (every component is born with it), then alphabetical. */
 const bySlug = (a: string, b: string) =>
   Number(b === 'basic') - Number(a === 'basic') || a.localeCompare(b);
 
 /**
- * Variants are the example folders (variants/<slug>/ of any version), detected automatically. The
- * config only orders them or hides them: an entry without a folder is not documented (hidden entries
- * are kept so their IDs stay reserved). Folders the config does not list go after the listed ones.
+ * Variants are the example folders (variants/<slug>/ of any version), detected automatically; the
+ * compositions, the compositions/<slug>/ folders. The config (`variants` / `compositions`) only orders
+ * them or hides them: an entry without a folder is not documented (hidden entries are kept so their IDs
+ * stay reserved). Folders the config does not list go after the listed ones.
  */
 function withDetectedVariants(
   definition: ComponentDefinition,
   versions: readonly ComponentVersion[],
+  kind: DocExampleKind,
 ): VariantDefinition[] {
-  const folders = new Set(versions.flatMap((v) => v.examples));
-  const declared = (definition.variants ?? [])
+  const folders = new Set(
+    versions.flatMap((v) => (kind === 'variant' ? v.examples : (v.compositions ?? []))),
+  );
+  const declared = ((kind === 'variant' ? definition.variants : definition.compositions) ?? [])
     .map((variant) => (typeof variant === 'string' ? { name: variant } : variant))
     .filter((v) => v.hidden || folders.has(v.slug ?? toSlug(v.name)));
   const declaredSlugs = new Set(declared.map((v) => v.slug ?? toSlug(v.name)));
@@ -60,7 +71,7 @@ function withDetectedVariants(
   return [...declared, ...detected];
 }
 
-/** Header of the latest version that has one (base/<id>.html or variants/<slug>/example.html). */
+/** Header of the latest version that has one (base/<id>.html or <variants|compositions>/<slug>/example.html). */
 const latestMeta = (metas: readonly (DocMeta | undefined)[]): DocMeta =>
   [...metas].reverse().find((meta) => meta?.title || meta?.description) ?? {};
 
@@ -104,7 +115,7 @@ export function resolveInventory(
         .sort((a, b) => a.number - b.number)
         .map(withHeaders);
       const header = latestMeta(versions);
-      const variants = withDetectedVariants(definition, versions).map((variant) => {
+      const toEntry = (kind: DocExampleKind) => (variant: VariantDefinition) => {
         const {
           name: configName,
           slug = toSlug(configName),
@@ -122,13 +133,20 @@ export function resolveInventory(
           variant: {
             id,
             slug,
+            kind,
             name,
             description,
             componentId: definition.id,
             path,
           } satisfies CatalogVariant,
         };
-      });
+      };
+      const variants = withDetectedVariants(definition, versions, 'variant').map(
+        toEntry('variant'),
+      );
+      const compositions = withDetectedVariants(definition, versions, 'composition').map(
+        toEntry('composition'),
+      );
       return {
         hidden: definition.hidden ?? false,
         component: {
@@ -137,7 +155,10 @@ export function resolveInventory(
           description: header.description,
           path,
           variants: variants.filter((v) => !v.hidden).map((v) => v.variant),
-          hiddenVariantIds: variants.filter((v) => v.hidden).map((v) => v.variant.id),
+          compositions: compositions.filter((v) => !v.hidden).map((v) => v.variant),
+          hiddenVariantIds: [...variants, ...compositions]
+            .filter((v) => v.hidden)
+            .map((v) => v.variant.id),
           versions,
           reference: definition.reference ?? false,
           requires: definition.requires ?? [],
@@ -157,21 +178,27 @@ export const CATALOG: readonly CatalogComponent[] = resolveInventory(
 );
 
 const componentsById = new Map(CATALOG.map((c) => [c.id, c]));
-const variantsById = new Map(CATALOG.flatMap((c) => c.variants.map((v) => [v.id, v] as const)));
+const variantsById = new Map(
+  CATALOG.flatMap((c) => [...c.variants, ...c.compositions].map((v) => [v.id, v] as const)),
+);
 
 export const findComponent = (componentId: string): CatalogComponent | undefined =>
   componentsById.get(componentId);
 
-/** Looks up a variant by its global ID (the URL fragment). */
+/** Looks up a variant or composition by its global ID (the URL fragment). */
 export const findVariant = (variantId: string): CatalogVariant | undefined =>
   variantsById.get(variantId);
 
-/** Resolves `/components/<componentId>/<segment>` where segment is a variant slug or full ID. */
+/** Resolves `/components/<componentId>/<segment>` where segment is a variant (or composition) slug or full ID. */
 export const findVariantInComponent = (
   componentId: string,
   segment: string,
-): CatalogVariant | undefined =>
-  findComponent(componentId)?.variants.find((v) => v.slug === segment || v.id === segment);
+): CatalogVariant | undefined => {
+  const component = findComponent(componentId);
+  return [...(component?.variants ?? []), ...(component?.compositions ?? [])].find(
+    (v) => v.slug === segment || v.id === segment,
+  );
+};
 
 /** Version selected by the `version` query param; the latest one when it is missing or unknown. */
 export const findVersion = (

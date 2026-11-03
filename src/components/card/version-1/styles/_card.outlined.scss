@@ -2,10 +2,10 @@
  * MODIFIERS ( --modifier ) · Outlined
 \*——————————————————————————————————————————————————————————*/
 
-// knowledgeBase: .prCard--outlined · visible border instead of the shadow.
-.int-card--outlined {
-  --int-card-outlined-border: var(--i-line); // SG: --i-line · Aura: —
-
+// knowledgeBase: .prCard--outlined · visible border instead of the shadow. A selectable card always has
+// it: its hover, selected and disabled states change that border (mini, option and version cards).
+.int-card--outlined,
+.int-card--selectable {
   border: var(--int-card-outlined-border);
   box-shadow: none;
 }

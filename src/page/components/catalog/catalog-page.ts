@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { InlineCode } from '../../../core/inline-code/inline-code';
 import { StatusChip } from '../../../core/status-chip/status-chip';
 import { CatalogComponent, ComponentStatus } from '../../../service/catalog.model';
 import { ComponentCatalog } from '../../../service/component-catalog';
@@ -24,7 +25,7 @@ const toCard = (component: CatalogComponent): CatalogCard => ({
  */
 @Component({
   selector: 'app-catalog-page',
-  imports: [RouterLink, StatusChip],
+  imports: [RouterLink, StatusChip, InlineCode],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })

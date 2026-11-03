@@ -1,12 +1,13 @@
 /*——————————————————————————————————————————————————————————*\
- * MODIFIERS ( --modifier ) · Data
+ * MODIFIERS ( --modifier ) · Flat
 \*——————————————————————————————————————————————————————————*/
 
-// knowledgeBase: .prCard--data · KPI card without shadow or padding. Its content (title, icon,
-// currency, amount, money right) is laid out with u-* helpers in the variant.
-.int-card--data {
+// knowledgeBase: .prCard--data + .prCard--noBg · no background, shadow or padding. The content (KPI,
+// row of metrics…) sets its own spacing with u-* helpers.
+.int-card--flat {
   --int-card-body-padding: var(--i-spacing-0); // SG: --i-spacing-0 · Figma: 0 (card/padding/x/none) · Aura: —
   --int-card-body-gap: var(--i-spacing-0); // SG: --i-spacing-0 · Figma: 0 (card/gap/none) · Aura: —
 
+  background: transparent;
   box-shadow: none;
 }

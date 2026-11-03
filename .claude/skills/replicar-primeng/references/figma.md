@@ -65,7 +65,8 @@ la configuración de conectores de claude.ai") y continuar **sin Figma**, como s
    - Existe en PrimeNG v20 o en la base de conocimientos (Intelica.knowledgeBase) → se implementa con lo que digan esas fuentes; Figma sirve para
      revisar el resultado.
    - Es un pseudo-estado (hover, pressed = `:active`, focus, disabled) → CSS en el módulo base, con los
-     valores de la base de conocimientos (Intelica.knowledgeBase) o Style Guide.
+     valores de la base de conocimientos (Intelica.knowledgeBase) o Style Guide. El estado Disabled de
+     Figma solo da colores: el cursor (`not-allowed`) y `user-select: none` son fijos (SKILL.md 3.3).
    - Solo en Figma → no se implementa ni se inventa una extensión: va a "Solo en Figma" del informe,
      para que el equipo decida si se documenta en la base de conocimientos (Intelica.knowledgeBase).
 5. **Guardar el frame** en la cabecera de `version-N/base/<id>.html`, en la línea `figma-frame:` debajo
