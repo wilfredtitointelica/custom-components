@@ -76,7 +76,7 @@ git log --oneline -3 -- src/components/<id>/
    trata como **combinación** (la base documenta PrimeNG + combinaciones de su API): por defecto **se quita
    de la API** y su variante pasa a **composición** (`compositions/<slug>/`, skill `crear-composicion`).
    Solo se conserva como input si es **candidato a propiedad** (`replicar-primeng` 2.4): cambia el
-   contenedor, ningún input existente lo logra y es reutilizable (en card: `flat`, `tinted` sí; `mini`,
+   contenedor, ningún input existente lo logra y es reutilizable (en card: `flat` sí; `tinted`, `mini`,
    `data`, `group` no). Los candidatos que se conservan y se excluyen entre sí van en un input tipado
    `appearance` (o el nombre de PrimeNG: `severity`, `variant`, `size`); los que se suman, booleanos.
    Un output de extensión va con `onX` como PrimeNG; si el maquetador lo nombró como un evento nativo
@@ -92,7 +92,7 @@ git log --oneline -3 -- src/components/<id>/
 | archivo | `chip.component.ts` | Renombra | `base/chip.ts` | convención (tabla 0) |
 | clase / selector | `ChipComponent` · `app-chip` | Renombra | `IntChip` · `int-chip` | convención |
 | input | `closable` | Renombra | `removable` | PrimeNG |
-| input | `data`, `group`, `mini` (casos de la base de conocimientos: combinaciones) | Quita | composiciones `compositions/kpi/`… con `flat`, `tinted`, `compact selectable` + helpers | `replicar-primeng` 2.4 / knowledge-base.md 2b |
+| input | `data`, `group`, `mini` (casos de la base de conocimientos: combinaciones) | Quita | composiciones `compositions/kpi/`… con `flat`, `compact selectable` + helpers | `replicar-primeng` 2.4 / knowledge-base.md 2b |
 | input | `noBg` (cambia el contenedor, nada existente lo logra, reutilizable) | Conserva como candidato | `flat` + variante `flat` | `replicar-primeng` 2.4 |
 | variante | `variants/data/` (caso de la base de conocimientos) | Mueve | `compositions/kpi/` | `replicar-primeng` 2.4 |
 | input | `inline`, `banner` (cambian el contenedor y se excluyen) | Alinea | `appearance="inline" \| "banner"` + variantes con `appearance="…"` | knowledge-base.md 2b |
