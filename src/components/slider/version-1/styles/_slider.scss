@@ -168,11 +168,16 @@
   }
 }
 
-// PrimeNG .p-disabled: faded and without pointer interaction.
+// PrimeNG .p-disabled is faded; the handlers ignore pointer and keyboard (no pointer-events: none, it would hide
+// the not-allowed cursor).
+.int-slider--disabled,
+.int-slider--disabled .int-slider__handle {
+  cursor: not-allowed;
+  user-select: none;
+}
+
 .int-slider--disabled {
   opacity: var(--int-slider-disabled-opacity);
-  pointer-events: none;
-  user-select: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -100,13 +100,13 @@ export class IntConfirmDialogModal implements OnDestroy {
 
   /** Clave del host: solo muestra las confirmaciones con la misma key (sin key, las que no tienen). */
   readonly key = input<string>();
-  /** Título por defecto; confirm() lo reemplaza. */
+  /** Título por defecto; `confirm()` lo reemplaza. */
   readonly header = input<string>();
   /** Mensaje por defecto; confirm() lo reemplaza. */
   readonly message = input<string>();
-  /** Clase del ícono por defecto; null quita el ícono. Sin valor se usa el ícono de la severidad. */
+  /** Clase del ícono por defecto; `null` quita el ícono. Sin valor se usa el ícono de la severidad. */
   readonly icon = input<string | null>();
-  /** int-* extension: severidad por defecto (colorea título e ícono, .prConfirmDialog--* de la base de conocimientos); confirm() la reemplaza. */
+  /** int-* extension: severidad por defecto (colorea título e ícono, `.prConfirmDialog--*` de la base de conocimientos); `confirm()` la reemplaza. */
   readonly severity = input<IntConfirmSeverity>('default');
   /** Texto del botón de aceptar. */
   readonly acceptLabel = input<string>('Yes');
@@ -121,14 +121,14 @@ export class IntConfirmDialogModal implements OnDestroy {
   /** Muestra el botón de cerrar (X). */
   readonly closable = input(true, { transform: booleanAttribute });
 
-  /** Se emite al cerrar: ACCEPT, REJECT, CANCEL, o undefined si se cerró con close() del servicio. */
+  /** Se emite al cerrar: `ACCEPT`, `REJECT`, `CANCEL`, o `undefined` si se cerró con `close()` del servicio. */
   readonly onHide = output<IntConfirmEventType | undefined>();
 
-  /** Template #message: reemplaza título, mensaje y detalle; recibe { $implicit, onAccept, onReject, onCancel }. */
+  /** Template `message`: reemplaza título, mensaje y detalle; recibe `{ $implicit, onAccept, onReject, onCancel }`. */
   protected readonly messageTemplate = contentChild<TemplateRef<IntConfirmTemplateContext>>('message');
-  /** Template #icon: reemplaza el ícono; recibe { $implicit, onAccept, onReject, onCancel }. */
+  /** Template `icon`: reemplaza el ícono; recibe `{ $implicit, onAccept, onReject, onCancel }`. */
   protected readonly iconTemplate = contentChild<TemplateRef<IntConfirmTemplateContext>>('icon');
-  /** Template #footer: reemplaza los botones; recibe { $implicit, onAccept, onReject, onCancel }. */
+  /** Template `footer`: reemplaza los botones; recibe `{ $implicit, onAccept, onReject, onCancel }`. */
   protected readonly footerTemplate = contentChild<TemplateRef<IntConfirmTemplateContext>>('footer');
 
   private readonly dialogTemplate = viewChild.required<TemplateRef<unknown>>('dialog');
@@ -225,7 +225,7 @@ export class IntConfirmDialogModal implements OnDestroy {
     });
   }
 
-  /** Acepta: cierra el diálogo y llama a accept. */
+  /** Acepta: cierra el diálogo y llama a `accept`. */
   accept(): void {
     const c = this.active();
     if (!c) return;
@@ -233,7 +233,7 @@ export class IntConfirmDialogModal implements OnDestroy {
     c.accept?.();
   }
 
-  /** Rechaza con el botón de rechazar: cierra el diálogo y llama a reject(REJECT). */
+  /** Rechaza con el botón de rechazar: cierra el diálogo y llama a `reject(REJECT)`. */
   reject(): void {
     const c = this.active();
     if (!c) return;
@@ -241,7 +241,7 @@ export class IntConfirmDialogModal implements OnDestroy {
     c.reject?.(IntConfirmEventType.REJECT);
   }
 
-  /** Descarta con la X o Escape: cierra el diálogo y llama a reject(CANCEL). */
+  /** Descarta con la X o Escape: cierra el diálogo y llama a `reject(CANCEL)`. */
   cancel(): void {
     const c = this.active();
     if (!c) return;
@@ -249,7 +249,7 @@ export class IntConfirmDialogModal implements OnDestroy {
     c.reject?.(IntConfirmEventType.CANCEL);
   }
 
-  /** Si el host se destruye con una confirmación abierta, la descarta (onHide(CANCEL) y reject(CANCEL)). */
+  /** Si el host se destruye con una confirmación abierta, la descarta (`onHide(CANCEL)` y `reject(CANCEL)`). */
   ngOnDestroy(): void {
     this.cancel();
   }
@@ -319,7 +319,7 @@ export class IntConfirmDialogModal implements OnDestroy {
 export class IntConfirmationService {
   private readonly requests = new Subject<IntConfirmation | null>();
 
-  /** Canal de solicitudes que escuchan los hosts; null cierra la confirmación abierta. */
+  /** Canal de solicitudes que escuchan los hosts; `null` cierra la confirmación abierta. */
   readonly requests$: Observable<IntConfirmation | null> = this.requests.asObservable();
 
   /** Abre una confirmación (o reemplaza la que está abierta). */
@@ -328,7 +328,7 @@ export class IntConfirmationService {
     return this;
   }
 
-  /** Cierra la confirmación abierta sin llamar a accept ni a reject. */
+  /** Cierra la confirmación abierta sin llamar a `accept` ni a `reject`. */
   close(): this {
     this.requests.next(null);
     return this;

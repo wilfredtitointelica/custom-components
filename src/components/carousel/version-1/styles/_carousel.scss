@@ -132,7 +132,8 @@
     }
 
     &:disabled {
-      cursor: default;
+      cursor: not-allowed;
+      user-select: none;
     }
   }
 

@@ -43,25 +43,25 @@ export class IntMessage {
 
   /** Severidad del mensaje: define el fondo, el borde y el color del ícono. */
   readonly severity = input<IntMessageSeverity>('info');
-  /** Tamaño del mensaje: 'small' reduce el padding, el gap y el texto. */
+  /** Tamaño del mensaje: `small` reduce el padding, el gap y el texto. */
   readonly size = input<IntMessageSize>();
   /** Variante: 'simple' quita el fondo, el borde y el padding. */
   readonly variant = input<IntMessageVariant>();
-  /** Clase del ícono, de la fuente incontrol-icons o primeicons (por ejemplo "icon icon-info"). */
+  /** Clase del ícono, de la fuente incontrol-icons o primeicons (por ejemplo `icon icon-info`). */
   readonly icon = input<string>();
   /** Muestra el botón para cerrar el mensaje. */
   readonly closable = input(false, { transform: booleanAttribute });
-  /** Clase del ícono del botón de cerrar; sin ella se usa icon-cancel. */
+  /** Clase del ícono del botón de cerrar; sin ella se usa `icon-cancel`. */
   readonly closeIcon = input<string>();
 
-  /** Se emite al cerrar el mensaje con el botón o con closeCallback. */
+  /** Se emite al cerrar el mensaje con el botón o con `closeCallback`. */
   readonly onClose = output<IntMessageCloseEvent>();
 
-  /** Template #container: reemplaza el contenido del mensaje; recibe { closeCallback }. */
+  /** Template `container`: reemplaza el contenido del mensaje; recibe `{ closeCallback }`. */
   protected readonly containerTemplate = contentChild<TemplateRef<IntMessageContainerContext>>('container');
-  /** Template #icon: reemplaza el ícono del mensaje. */
+  /** Template `icon`: reemplaza el ícono del mensaje. */
   protected readonly iconTemplate = contentChild<TemplateRef<unknown>>('icon');
-  /** Template #closeicon: reemplaza el ícono del botón de cerrar. */
+  /** Template `closeicon`: reemplaza el ícono del botón de cerrar. */
   protected readonly closeIconTemplate = contentChild<TemplateRef<unknown>>('closeicon');
 
   /** False once closed: the message leaves the DOM, as in PrimeNG. */

@@ -62,7 +62,7 @@ export class IntCarousel<T = unknown> {
   readonly numVisible = input(1, { transform: numberAttribute });
   /** Cantidad de elementos que avanza cada desplazamiento. */
   readonly numScroll = input(1, { transform: numberAttribute });
-  /** Opciones responsive: numVisible y numScroll por ancho máximo de pantalla. */
+  /** Opciones responsive: `numVisible` y `numScroll` por ancho máximo de pantalla. */
   readonly responsiveOptions = input<IntCarouselResponsiveOptions[]>();
   /** Clase extra del contenedor del contenido. */
   readonly contentClass = input('');
@@ -91,21 +91,21 @@ export class IntCarousel<T = unknown> {
   readonly nextButtonAriaLabel = input('Next Page');
   /** int-* extension: descripción del rol de cada elemento (en PrimeNG sale de las traducciones globales). */
   readonly slideAriaLabel = input('Slide');
-  /** int-* extension: etiqueta accesible de cada indicador; {page} se reemplaza por el número. */
+  /** int-* extension: etiqueta accesible de cada indicador; `{page}` se reemplaza por el número. */
   readonly pageAriaLabel = input('Page {page}');
 
-  /** Se emite al cambiar de página, con { page }. */
+  /** Se emite al cambiar de página, con `{ page }`. */
   readonly onPage = output<IntCarouselPageEvent>();
 
-  /** Template #item: contenido de cada elemento; recibe { $implicit: item }. */
+  /** Template `item`: contenido de cada elemento; recibe `{ $implicit: item }`. */
   protected readonly itemTemplate = contentChild<TemplateRef<IntCarouselItemContext<T>>>('item');
-  /** Template #header: contenido arriba del carousel. */
+  /** Template `header`: contenido arriba del carousel. */
   protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header');
-  /** Template #footer: contenido debajo del carousel. */
+  /** Template `footer`: contenido debajo del carousel. */
   protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer');
-  /** Template #previousicon: reemplaza el ícono del botón anterior. */
+  /** Template `previousicon`: reemplaza el ícono del botón anterior. */
   protected readonly previousIconTemplate = contentChild<TemplateRef<unknown>>('previousicon');
-  /** Template #nexticon: reemplaza el ícono del botón siguiente. */
+  /** Template `nexticon`: reemplaza el ícono del botón siguiente. */
   protected readonly nextIconTemplate = contentChild<TemplateRef<unknown>>('nexticon');
 
   private readonly indicatorButtons = viewChildren<ElementRef<HTMLButtonElement>>('indicatorButton');

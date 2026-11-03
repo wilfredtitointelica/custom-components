@@ -49,13 +49,13 @@ export class IntTreeSelect implements ControlValueAccessor {
   static readonly designer = 'Gabriela Javier';
 
   /**
-   * Id del input interno; lo usa un <label for> externo.
+   * Id del input interno; lo usa un `<label for>` externo.
    * @defaultValue 'int-tree-select-N' (autogenerado)
    */
   readonly inputId = input<string>(`int-tree-select-${nextId++}`);
   /** Nodos del árbol del panel. */
   readonly options = input<IntTreeNode[]>([]);
-  /** Modo de selección: 'single', 'multiple' o 'checkbox'. */
+  /** Modo de selección: `single`, `multiple` o `checkbox`. */
   readonly selectionMode = input<IntTreeSelectionMode>('single');
   /** Texto del disparador cuando no hay selección. */
   readonly placeholder = input<string>();
@@ -73,13 +73,13 @@ export class IntTreeSelect implements ControlValueAccessor {
   readonly filterBy = input('label');
   /** Texto que se muestra cuando no hay nodos. */
   readonly emptyMessage = input('No results found');
-  /** Alto máximo del árbol. Por defecto 252px, 7 filas (Figma 15195:17805); PrimeNG usa 400px. */
+  /** Alto máximo del árbol. Por defecto `252px`, 7 filas (Figma 15195:17805); PrimeNG usa `400px`. */
   readonly scrollHeight = input('252px');
-  /** En modo checkbox, un padre se marca cuando todos sus hijos lo están. */
+  /** En modo `checkbox`, un padre se marca cuando todos sus hijos lo están. */
   readonly propagateSelectionUp = input(true, { transform: booleanAttribute });
   /** En modo checkbox, marcar un padre marca todos sus hijos. */
   readonly propagateSelectionDown = input(true, { transform: booleanAttribute });
-  /** Clase extra del panel (la base de conocimientos la usa junto con appendTo="body"). */
+  /** Clase extra del panel (la base de conocimientos la usa junto con `appendTo="body"`). */
   readonly panelStyleClass = input<string>();
   /** Índice de tabulación del disparador. */
   readonly tabindex = input(0);
@@ -92,7 +92,7 @@ export class IntTreeSelect implements ControlValueAccessor {
    * (.prTreeselect--labelAsToggle del Style Guide).
    */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: se pasa al árbol; los hijos sin sangría (.prTreeselect--childrenAligned del Style Guide). */
+  /** int-* extension: se pasa al árbol; los hijos sin sangría (`.prTreeselect--childrenAligned` del Style Guide). */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
 
   /** Se emite al seleccionar un nodo. */
@@ -116,7 +116,7 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** Se emite cuando el disparador pierde el foco. */
   readonly onBlur = output<FocusEvent>();
 
-  /** Template #value: reemplaza el texto del disparador; recibe { $implicit: value, placeholder }. */
+  /** Template `value`: reemplaza el texto del disparador; recibe `{ $implicit: value, placeholder }`. */
   protected readonly valueTemplate = contentChild<TemplateRef<{ $implicit: IntTreeSelection; placeholder?: string }>>('value');
 
   protected readonly focusInput = viewChild.required<ElementRef<HTMLInputElement>>('focusInput');

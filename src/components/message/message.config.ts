@@ -12,7 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'message',
-  variants: ['basic', 'severity', 'icon', 'simple', 'sizes', 'closable', 'template'],
+  variants: ['basic', 'severity', 'icon', 'simple', 'sizes', 'closable'],
   uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

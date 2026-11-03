@@ -111,7 +111,8 @@
 
     &--disabled {
       color: var(--int-tree-view-node-disabled-color);
-      cursor: default;
+      cursor: not-allowed;
+      user-select: none;
     }
   }
 

@@ -38,7 +38,7 @@ export class IntStepper {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
-  /** Valor del paso activo (two-way con [(value)]). */
+  /** Valor del paso activo (two-way con `[(value)]`). */
   readonly value = model<unknown>();
   /**
    * int-* extension: apariencia. 'progressive' mantiene los pasos anteriores en color activo (.prStepper--progressive
@@ -108,12 +108,12 @@ export class IntStep {
   private readonly stepList = inject(IntStepList, { optional: true });
   private readonly stepItem = inject(forwardRef(() => IntStepItem), { optional: true });
 
-  /** Valor del paso; lo asocia con su panel. En un int-step-item toma el valor del item. */
+  /** Valor del paso; lo asocia con su panel. En un `int-step-item` toma el valor del item. */
   readonly value = model<unknown>();
   /** Deshabilita el paso: no se puede activar con un clic (modo wizard de la base de conocimientos). */
   readonly disabled = input(false, { transform: booleanAttribute });
 
-  /** Template #content: reemplaza la cabecera del paso; recibe { activateCallback, value, active }. */
+  /** Template `content`: reemplaza la cabecera del paso; recibe `{ activateCallback, value, active }`. */
   protected readonly contentTemplate = contentChild<TemplateRef<IntStepContentContext>>('content');
 
   /** In a step item the step takes the value of its item when it has none of its own (PrimeNG StepItem). */
@@ -176,10 +176,10 @@ export class IntStepPanel {
   private readonly stepper = inject(IntStepper);
   private readonly stepItem = inject(forwardRef(() => IntStepItem), { optional: true });
 
-  /** Valor del panel; lo asocia con su paso. En un int-step-item toma el valor del item. */
+  /** Valor del panel; lo asocia con su paso. En un `int-step-item` toma el valor del item. */
   readonly value = model<unknown>();
 
-  /** Template #content: contenido del panel; recibe { activateCallback, value, active }. */
+  /** Template `content`: contenido del panel; recibe `{ activateCallback, value, active }`. */
   protected readonly contentTemplate = contentChild<TemplateRef<IntStepContentContext>>('content');
 
   /** In a step item the panel takes the value of its item when it has none of its own. */
@@ -215,7 +215,7 @@ export class IntStepPanel {
 export class IntStepItem {
   private readonly stepper = inject(IntStepper);
 
-  /** Valor del paso en el layout vertical; lo comparten su int-step y su int-step-panel. */
+  /** Valor del paso en el layout vertical; lo comparten su `int-step` y su `int-step-panel`. */
   readonly value = model<unknown>();
 
   readonly isActive = computed(() => this.stepper.isStepActive(this.value()));

@@ -42,7 +42,7 @@ export class IntSlider implements ControlValueAccessor {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
-  /** Si es true, el handle y la barra se animan al hacer clic sobre el track. */
+  /** Si es `true`, el handle y la barra se animan al hacer clic sobre el track. */
   readonly animate = input(false, { transform: booleanAttribute });
   /**
    * Valor mínimo.
@@ -61,7 +61,7 @@ export class IntSlider implements ControlValueAccessor {
   readonly orientation = input<IntSliderOrientation>('horizontal');
   /** Salto con el que aumenta o disminuye el valor. */
   readonly step = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
-  /** Si es true, se eligen dos límites (inicio y fin) y el modelo es un arreglo. */
+  /** Si es `true`, se eligen dos límites (inicio y fin) y el modelo es un arreglo. */
   readonly range = input(false, { transform: booleanAttribute });
   /** Etiqueta accesible de los handles. */
   readonly ariaLabel = input<string>();
@@ -72,7 +72,7 @@ export class IntSlider implements ControlValueAccessor {
    * @defaultValue 0
    */
   readonly tabindex = input(0, { transform: numberAttribute });
-  /** Si es true, el handle recibe el foco al cargar. */
+  /** Si es `true`, el handle recibe el foco al cargar. */
   readonly autofocus = input(false, { transform: booleanAttribute });
   /** Marca el control como obligatorio. */
   readonly required = input(false, { transform: booleanAttribute });
@@ -239,6 +239,9 @@ export class IntSlider implements ControlValueAccessor {
 
   /** Same keys as PrimeNG onKeyDown: arrows ±step, PageUp/PageDown ±10 (or ±step), Home/End to min/max. */
   protected onKeyDown(event: KeyboardEvent, index = 0): void {
+    if (this.isDisabled()) {
+      return;
+    }
     this.handleIndex.set(index);
     switch (event.code) {
       case 'ArrowDown':
@@ -429,7 +432,7 @@ export class IntSlider implements ControlValueAccessor {
     }
   }
 
-  /** ControlValueAccessor: escribe el valor del formulario (número, o [inicio, fin] con range). */
+  /** ControlValueAccessor: escribe el valor del formulario (número, o `[inicio, fin]` con `range`). */
   writeValue(value: unknown): void {
     if (this.range()) this.values.set(Array.isArray(value) ? [...value] : [0, 0]);
     else this.value.set(typeof value === 'number' ? value : 0);

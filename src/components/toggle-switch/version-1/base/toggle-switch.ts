@@ -48,11 +48,11 @@ export class IntToggleSwitch implements ControlValueAccessor {
   /** Índice de tabulación del input interno. */
   readonly tabindex = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   /**
-   * Id del input interno; lo usa un <label for> externo.
+   * Id del input interno; lo usa un `<label for>` externo.
    * @defaultValue 'int-toggle-switch-N' (autogenerado)
    */
   readonly inputId = input<string>(`int-toggle-switch-${nextId++}`);
-  /** Si es true, el valor no se puede cambiar. */
+  /** Si es `true`, el valor no se puede cambiar. */
   readonly readonly = input(false, { transform: booleanAttribute });
   /** Valor que se escribe en el modelo cuando el switch está encendido. */
   readonly trueValue = input<unknown>(true);
@@ -64,7 +64,7 @@ export class IntToggleSwitch implements ControlValueAccessor {
   readonly size = input<'small' | 'large'>();
   /** Id del elemento que etiqueta al switch. */
   readonly ariaLabelledBy = input<string>();
-  /** Si es true, el input recibe el foco al cargar. */
+  /** Si es `true`, el input recibe el foco al cargar. */
   readonly autofocus = input(false, { transform: booleanAttribute });
   /** Nombre del input interno dentro del formulario. */
   readonly name = input<string>();
@@ -88,7 +88,7 @@ export class IntToggleSwitch implements ControlValueAccessor {
   /** Se emite cuando cambia el valor por un clic o el teclado. */
   readonly onChange = output<IntToggleSwitchChangeEvent>();
 
-  /** Template #handle: contenido dentro del handle; recibe { checked }. */
+  /** Template `handle`: contenido dentro del handle; recibe `{ checked }`. */
   protected readonly handleTemplate = contentChild<TemplateRef<IntToggleSwitchHandleContext>>('handle');
   private readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
 

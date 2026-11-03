@@ -54,13 +54,13 @@ export class IntTreeView {
   /** Nodos del árbol. */
   readonly value = input<IntTreeNode[]>([]);
   /**
-   * Modo de selección: 'single', 'multiple' o 'checkbox'. Por defecto 'single', como se validó para el proyecto
+   * Modo de selección: `single`, `multiple` o `checkbox`. Por defecto `single`, como se validó para el proyecto
    * (PrimeNG no tiene: solo lectura).
    */
   readonly selectionMode = input<IntTreeSelectionMode>('single');
   /** Nodo o nodos seleccionados (two-way con [(selection)]). */
   readonly selection = model<IntTreeSelection>();
-  /** En modo checkbox, un padre se marca cuando todos sus hijos lo están. */
+  /** En modo `checkbox`, un padre se marca cuando todos sus hijos lo están. */
   readonly propagateSelectionUp = input(true, { transform: booleanAttribute });
   /** En modo checkbox, marcar un padre marca todos sus hijos. */
   readonly propagateSelectionDown = input(true, { transform: booleanAttribute });
@@ -75,7 +75,7 @@ export class IntTreeView {
    * (.prTreeselect--labelAsToggle del Style Guide). No aplica con checkbox.
    */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: los hijos se muestran sin sangría (.prTreeselect--childrenAligned del Style Guide). */
+  /** int-* extension: los hijos se muestran sin sangría (`.prTreeselect--childrenAligned` del Style Guide). */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
 
   /** Se emite al seleccionar un nodo. */
@@ -87,7 +87,7 @@ export class IntTreeView {
   /** Se emite al colapsar un nodo. */
   readonly onNodeCollapse = output<IntTreeNodeEvent>();
 
-  /** Template #node: contenido de cada nodo; recibe { $implicit: node }. */
+  /** Template `node`: contenido de cada nodo; recibe `{ $implicit: node }`. */
   readonly nodeTemplate = contentChild<TemplateRef<{ $implicit: IntTreeNode }>>('node');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -102,7 +102,7 @@ export class IntTreeView {
     return classes.join(' ');
   });
 
-  /** Indica si el modo de selección es 'checkbox'. */
+  /** Indica si el modo de selección es `checkbox`. */
   isCheckboxMode(): boolean {
     return this.selectionMode() === 'checkbox';
   }
@@ -112,7 +112,7 @@ export class IntTreeView {
     return node.leaf === false ? false : !(node.children && node.children.length);
   }
 
-  /** Posición del nodo en la selección (por key o por referencia); -1 si no está. */
+  /** Posición del nodo en la selección (por `key` o por referencia); `-1` si no está. */
   findIndexInSelection(node: IntTreeNode): number {
     const selection = this.selection();
     if (!this.selectionMode() || !selection) return -1;
