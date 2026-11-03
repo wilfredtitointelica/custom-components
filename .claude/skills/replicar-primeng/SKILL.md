@@ -415,7 +415,7 @@ efecto aislado es una variante) solo si cumple las tres:
 2. **Ningún input existente** (de PrimeNG o extensión ya creada) ni combinación de ellos lo logra.
 3. Es **reutilizable** fuera de ese caso (no es el diseño de una sola pantalla).
 
-Ejemplo, card: `.prCard--data` y `--noBg` cumplen las tres → `flat`; `--group` → `tinted`. Los formatos
+Ejemplo, card: `.prCard--data` y `--noBg` cumplen las tres → `flat`. `--group` no: su fondo (`--i-color-secondary-50`) no se distingue del de la card, así que es una card básica + helpers. Los formatos
 `mini`, `option` y `version` no: se logran con `compact`, `selectable` y `contentGap` → composiciones
 (`multi-select`, `option-picker`, `version-picker`). El caso completo (KPI, fila de métricas) sigue
 siendo composición aunque use la propiedad nueva. Si un caso queda en duda (cumple 1 y 2 pero no está
@@ -428,7 +428,7 @@ Figma no crea variantes ni composiciones: solo sirve para revisar cómo se ven.
   `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG, salvo que ese título no diga
   qué muestra: la sección "Advanced" de la card de PrimeNG demuestra los templates, así que aquí es
   `template` / "Template" (el nombre que PrimeNG usa en los demás componentes para esa sección).
-- Propiedad nueva `int-*`: slug y título del input (`flat`, `tinted`).
+- Propiedad nueva `int-*`: slug y título del input (`flat`).
 - Composiciones (casos de la base de conocimientos): slug del modificador o del título (`minimal`,
   `export`, `kpi`), título como en la base de conocimientos. No hay variante `combinations`: las
   combinaciones son las composiciones.
@@ -455,7 +455,7 @@ descripción los nombres de la API (inputs, outputs, templates, valores, clases)
 
 Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la
 documentación de PrimeNG y después las propiedades nuevas (`npm run order:variants -- <id> basic icon
-image … flat tinted`); composiciones en el orden de la base de conocimientos
+image … flat`); composiciones en el orden de la base de conocimientos
 (`npm run order:variants -- <id> --compositions minimal export`).
 
 ---
@@ -509,7 +509,7 @@ Reglas:
   el contenido (KPI, fila de métricas, badge) o se logra combinando inputs existentes, no es API: es una
   **composición** en `compositions/<slug>/` (skill `crear-composicion`). Ej.: los formatos `mini`,
   `option`, `version`, `data` y `group` de card son `<int-card compact selectable>`,
-  `<int-card selectable contentGap="small">`, `<int-card flat>` y `<int-card tinted>` + helpers.
+  `<int-card selectable contentGap="small">`, `<int-card flat>` y `<int-card>` + helpers.
 - **Outputs de extensión con la convención de PrimeNG**: `onX` (`onSelect`, no `select`). Nunca el nombre
   de un evento nativo del DOM (`select`, `click`, `change`, `focus`, `close`…): `(select)="…"` sobre el
   `<int-*>` escucharía también el evento nativo, que burbujea desde un `<input>` interno y se dispara

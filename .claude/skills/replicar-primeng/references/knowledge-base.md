@@ -85,7 +85,7 @@ fuera de ese caso. Con duda en la tercera, se pregunta. Para cada candidato, la 
 | Lo que lo distingue es el **contenido** (KPI, fila de métricas, badge) o se logra combinando inputs que ya existen | **nada en la API**: es una **composición** en `compositions/<slug>/` (skill `crear-composicion`, tab Compositions) | `.prCard--data` → `<int-card flat>` + helpers; `mini`/`version` → `<int-card compact selectable>` |
 | Corresponde a un input de PrimeNG (`severity`, `variant`, `size`, `raised`…) | ese input, con sus valores | `.prButton--outlined` → `variant="outlined"` |
 | Cambia el **contenedor** y se **excluye** con otros (no tiene sentido llevar dos a la vez) | un valor de **un** input tipado `appearance` (tipo exportado `Int<Id>Appearance`) | `.prMessage--inline`, `--banner` → `appearance="inline" \| "banner"` |
-| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg`, `--group` → `compact`, `outlined`, `flat`, `tinted` |
+| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg` → `compact`, `outlined`, `flat` |
 | Tiene una escala de valores (gap, tamaño) | un input tipado con esos valores | `content-gap-small/medium/large` → `contentGap="small"` |
 
 - Duda sobre si dos se excluyen: mira si la base de conocimientos, el SCSS `.pr*` o Figma los muestra

@@ -1,9 +1,0 @@
-/*——————————————————————————————————————————————————————————*\
- * MODIFIERS ( --modifier ) · Tinted
-\*——————————————————————————————————————————————————————————*/
-
-// knowledgeBase: .prCard--group · light background instead of the card one (e.g. a row of metrics).
-.int-card--tinted {
-  --int-card-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: —
-  --int-card-body-padding: var(--i-spacing-container-lg) var(--i-spacing-container-xl); // SG: 14px 16px ⚠️ · Aura: —
-}

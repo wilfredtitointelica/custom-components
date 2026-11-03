@@ -21,7 +21,6 @@ export default {
     'compact',
     'outlined',
     'flat',
-    'tinted',
     'selectable',
     'content-gap',
     'stretch-content',

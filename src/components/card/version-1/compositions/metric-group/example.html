@@ -1,11 +1,11 @@
 <!--
   title: Metric Group
-  description: Varias métricas en una fila, separadas por divisores. Con fondo tenue usa `tinted`; sin fondo usa `flat` y el espaciado lo ponen los helpers del contenido.
+  description: Varias métricas en una fila, separadas por divisores. Con fondo es una card básica; sin fondo usa `flat` y el espaciado lo ponen los helpers del contenido.
 -->
 <div class="u-display-flex u-flex-column u-gap-xl">
   <div class="u-display-flex u-flex-column u-gap-md">
     <p class="u-m-0 u-text-md u-bold">With background</p>
-    <int-card tinted>
+    <int-card>
       <ng-container *ngTemplateOutlet="metricRow" />
     </int-card>
   </div>
