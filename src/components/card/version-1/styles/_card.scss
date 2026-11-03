@@ -109,7 +109,7 @@
   }
 
   &__subtitle {
-    color: var(--int-card-subtitle-color);
+    // color: var(--int-card-subtitle-color);
   }
 
   // knowledgeBase: the #content slot is a flex column; hidden when nothing is projected.
@@ -162,13 +162,15 @@
   }
 }
 
-// Doubled block so the disabled border wins over the border shorthand of _card.outlined.scss.
+// Doubled block so the disabled border wins over the border shorthand of _card.outlined.scss and over
+// the hover/active of .int-card--selectable. No pointer-events: none, it would hide the not-allowed
+// cursor; activate() already ignores clicks and keys while disabled.
 .int-card.int-card--disabled {
   border-color: var(--int-card-disabled-border-color);
   background: var(--int-card-disabled-background);
   color: var(--int-card-disabled-color);
-  cursor: default;
-  pointer-events: none;
+  cursor: not-allowed;
+  user-select: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

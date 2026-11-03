@@ -317,6 +317,9 @@ Guía para el maquetador cuando implemente (patrón completo en `_demo_/version-
   es una **composición** (`compositions/`) con la API que ya hay. Ej.: `int-card` no tiene `mini` ni
   `data`: son `<int-card compact selectable>` y `<int-card flat>` + helpers.
 - Los estados nativos (`:disabled`, `:checked`) no son variantes de estilo: van en el módulo base.
+- Todo `disabled` no se puede seleccionar ni activar: `cursor: not-allowed`, `user-select: none`, sin
+  hover ni active, y la base ignora clic y teclado en el handler (`if (this.disabled()) return;`). Nunca
+  `pointer-events: none`: ocultaría el cursor (`check:component` lo avisa).
 - La base no importa nada de la documentación (`core/`, `service/`, `variants/`, `compositions/`): así se puede extraer a npm.
 
 ### 3.4 `version-1/base/chip.html`
@@ -582,6 +585,7 @@ componente no se crea un input `width`/`height`: las variantes usan `[style]` so
 - [ ] Variante `basic` creada con `npm run new:variant` (cabecera con título y descripción, sin ejemplo); se preguntó si crear otra.
 - [ ] `styles/_index.scss` solo con `@use` (modificadores con `as <id>-<mod>`, y solo los que existen).
 - [ ] Módulo base de estilos con la plantilla completa (TOKENS, BLOCK, ELEMENTS, MODIFIERS, SKELETON) y **sin CSS**.
+- [ ] Si hay `disabled`: `cursor: not-allowed` + `user-select: none`, sin `pointer-events: none`, sin hover/active, handlers que lo ignoran.
 - [ ] `<id>.config.ts` sin títulos ni descripciones; importado una vez en `inventory.ts`.
 - [ ] Id en una categoría de `CATALOG_GROUPS` y su ícono en `CATALOG_ICONS` (`catalog-groups.ts`).
 - [ ] Menú y página muestran exactamente las carpetas de `variants/`; anclas `#<id>-<slug>` y pestañas HTML / TS funcionando.

@@ -82,6 +82,9 @@ src/components/<id>/version-N/
 - Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se
   agrega como input y la base resuelve `tabindex`, `role`, `aria-*` y teclado. Las variantes no ponen
   `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>`.
+- Todo `disabled` no se puede seleccionar ni activar: `cursor: not-allowed` y `user-select: none`, sin
+  hover ni active, y la base ignora clic y teclado en el handler. Nunca `pointer-events: none`
+  (ocultaría el cursor `not-allowed`).
 - Las adaptaciones de comportamiento que documenta la base de conocimientos (opción *All* fija en un
   select, iconos de orden propios en una tabla…) se implementan nativas como extensión
   `/** int-* extension */`; no se vuelve al comportamiento de PrimeNG.

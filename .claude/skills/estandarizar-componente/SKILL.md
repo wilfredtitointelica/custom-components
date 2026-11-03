@@ -99,6 +99,7 @@ git log --oneline -3 -- src/components/<id>/
 | input | `compact`, `outlined` (se suman a otros) | Conserva | booleanos | knowledge-base.md 2b |
 | estilo | `.chip .close { color: #2351B3 }` | Alinea | `.int-chip__remove-icon` + `--int-chip-remove-icon-color: var(--i-…)` | Base de conocimientos (Intelica.knowledgeBase) `.prChip` |
 | token | `--chip-gap: 6px` | Alinea | `--int-chip-gap: var(--i-spacing-gap-xs)` | Base de conocimientos (Intelica.knowledgeBase) |
+| estado | `.chip--disabled { pointer-events: none; cursor: default }` | Alinea | `cursor: not-allowed; user-select: none` + handler que ignora clic/teclado | `replicar-primeng` 3.3 |
 | animación | sin transición | Agrega | 3.6 | PrimeNG |
 | teclado | sin `Backspace` | Agrega | 3.7 | PrimeNG |
 | dependencia | checkbox copiado a mano | Agrega | provisional `dep:checkbox` / `<int-checkbox>` | 1.6 |
@@ -169,7 +170,9 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
 8. **Interacción**: lo que falte de 3.6 (animaciones, ripple, `prefers-reduced-motion`) y de 3.7
    (tab stops, foco, teclas, `:focus-visible`). Si el maquetador conectó estado o ARIA en las variantes
    (`[attr.aria-disabled]`, `[attr.tabindex]`, `role`, `(keydown.*)` sobre el `<int-*>`), se mueve a la
-   base: un input (`disabled`…) y el host resuelve `tabindex`, ARIA y teclado.
+   base: un input (`disabled`…) y el host resuelve `tabindex`, ARIA y teclado. Un `disabled` con
+   `pointer-events: none` o `cursor: default` se alinea: `cursor: not-allowed` + `user-select: none`,
+   sin hover/active, y el handler sale con `if (this.disabled()) return;`.
 9. **Adaptaciones de comportamiento**: lo que el maquetador cambió respecto a PrimeNG porque el
    proyecto lo necesita (y la base de conocimientos lo documenta: *All* fija, iconos de orden propios…)
    se **conserva** como extensión `/** int-* extension */`, implementado nativo en la base. No se

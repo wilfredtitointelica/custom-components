@@ -91,7 +91,9 @@ Cada fila se implementa igual (misma tecla, misma condición, mismo `preventDefa
   autocomplete) o *roving tabindex* (`tabindex="0"` en el activo, `-1` en el resto: tabs, tree, menu).
 - **Elementos nativos primero**: `<button type="button">`, `<input>`; si PrimeNG usa un `<span>`/`<div>`
   con `role`, se mantiene su rol, `tabindex` y teclas (Enter **y** Space para `role="button"`).
-- **Deshabilitado**: `tabindex="-1"` (o `disabled` nativo), `aria-disabled="true"`, sin handlers activos.
+- **Deshabilitado**: `tabindex="-1"` (o `disabled` nativo), `aria-disabled="true"`, handlers que salen
+  sin hacer nada (`if (this.disabled()) return;`). En CSS `cursor: not-allowed` y `user-select: none`,
+  nunca `pointer-events: none` (el cursor no se vería).
 - **Gestión de foco**:
   - Al cerrar un overlay con teclado o selección, el foco vuelve al trigger.
   - Modales: `cdkTrapFocus` + `cdkTrapFocusAutoCapture` (`@angular/cdk/a11y`), foco inicial como

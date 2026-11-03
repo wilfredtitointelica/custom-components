@@ -582,6 +582,10 @@ Reglas:
     `var(--int-<id>-…)`. Mantener propiedades lógicas (`padding-inline`, `margin-inline-start`) como PrimeNG.
   - Estados (`:hover`, `:focus-visible`, `:disabled`, `[aria-disabled]`) en el módulo base. El foco
     visible con `:focus-visible` y tokens `--i-control-outline-*` (3.7).
+  - **Todo `disabled`** (clase `--disabled`, `:disabled`, `[aria-disabled="true"]`): `cursor: not-allowed`
+    y `user-select: none`, y su regla gana sobre `:hover`/`:active` (sin cambio de borde ni fondo).
+    **Sin `pointer-events: none`** (ocultaría el cursor): la base ignora clic y teclado en el handler
+    (`if (this.disabled()) return;`), aunque PrimeNG use `pointer-events: none` en `.p-disabled`.
   - Animaciones (`--enter`/`--leave`, `@keyframes int-<id>-*`, ink del ripple) y el bloque
     `@media (prefers-reduced-motion: reduce)` en el módulo base (3.6).
   - Modificadores de la base de conocimientos (Intelica.knowledgeBase, `.pr<Nombre>--minimal` → `.int-<id>--minimal`): un módulo por grupo, igual
@@ -718,7 +722,9 @@ Todo lo que PrimeNG permite con teclado se permite igual; detalle en
   línea a línea de los handlers de PrimeNG; cada fila se implementa con la misma condición y el mismo
   `preventDefault`.
 - **`tabindex`**: un tab stop por widget compuesto; `aria-activedescendant` o *roving tabindex* según
-  lo use PrimeNG; `-1` (o `disabled` nativo) + `aria-disabled` cuando está deshabilitado.
+  lo use PrimeNG; `-1` (o `disabled` nativo) + `aria-disabled` cuando está deshabilitado, y cada
+  handler (`click`, `keydown.enter`, `keydown.space`…) sale con `if (this.disabled()) return;` (el CSS
+  no usa `pointer-events: none`, 3.3).
 - **Foco**: vuelve al trigger al cerrar un overlay; modales con `cdkTrapFocus`, foco inicial como
   PrimeNG y restaurado al cerrar; `Escape` cierra donde PrimeNG lo hace; la opción activa se mantiene
   visible (`scrollIntoView({ block: 'nearest' })`).
@@ -860,6 +866,9 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 - ❌ Agregar ripple a un componente cuya plantilla de PrimeNG no usa `pRipple`.
 - ❌ Dejar sin teclado algo que PrimeNG maneja con teclado, más de un tab stop por widget compuesto,
   `outline: none` sin foco visible alternativo o perder el foco al cerrar un overlay/modal.
+- ❌ Un `disabled` con `pointer-events: none`, `cursor: default`/`pointer`, texto seleccionable o
+  hover/active visibles: va `cursor: not-allowed` + `user-select: none` y la base ignora clic y teclado
+  (3.3; `check:component` lo avisa).
 - ❌ Leer solo el nodo del link de Figma: se recorre su frame padre (ejes y formatos).
 - ❌ Esperar a otro maquetador, copiar su réplica o editar su componente: se usa un provisional marcado
   `dep:<id> provisional` y se declara en `requires` (base) o `uses` (solo variantes).

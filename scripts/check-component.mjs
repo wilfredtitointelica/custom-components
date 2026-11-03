@@ -323,6 +323,18 @@ function checkVersion(component, version, report, deps) {
       }
       if (/@keyframes/.test(code)) animates = true;
 
+      // Disabled: not-allowed cursor, no text selection; pointer-events: none would hide that cursor.
+      for (const match of code.matchAll(/([^{};]*disabled[^{};]*)\{([^{}]*)\}/g)) {
+        const at = `${path}:${lineOf(code, match.index + match[0].search(/\S/))}`;
+        const body = match[2];
+        if (/pointer-events\s*:\s*none/.test(body))
+          report.warn(at, 'disabled with pointer-events: none: it hides the cursor, ignore clicks in the handler');
+        if (/cursor\s*:/.test(body) && !/cursor\s*:\s*not-allowed/.test(body))
+          report.warn(at, 'disabled cursor must be not-allowed');
+        if (/cursor\s*:\s*not-allowed/.test(body) && !/user-select\s*:\s*none/.test(body))
+          report.warn(at, 'disabled without user-select: none');
+      }
+
       // Tokens: every --int-* is an alias of a --i-* and documents where its value comes from.
       source.split('\n').forEach((text, i) => {
         const token = /^\s*(--int-[\w-]+)\s*:\s*([^;]+);/.exec(text);
