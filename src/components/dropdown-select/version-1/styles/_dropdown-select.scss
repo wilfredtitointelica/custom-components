@@ -116,7 +116,8 @@
     background: int.field(background-disabled);
     color: int.field(color-disabled);
     border-color: transparent;
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
   // Same grey as the disabled text (Figma).
   &--disabled &__icon {

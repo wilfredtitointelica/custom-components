@@ -155,13 +155,9 @@ int-button {
     background: var(--i-button-primary-disabled-background);
     border-color: transparent;
     color: var(--i-button-primary-disabled-color);
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
-}
-
-// Anchors ignore the disabled attribute natively.
-a.int-button[disabled] {
-  pointer-events: none;
 }
 
 /*——————————————————————————————————————————————————————————*\

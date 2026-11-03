@@ -25,7 +25,6 @@ export default {
     'number-states',
     'checkbox-binary',
     'checkbox-group',
-    'checkbox-select-all',
     'checkbox-validation',
     'checkbox-sizes-states',
     'radio-group',

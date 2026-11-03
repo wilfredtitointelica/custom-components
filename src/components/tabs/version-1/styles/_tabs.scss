@@ -99,7 +99,8 @@
     color: var(--i-color-secondary-400);
     background: var(--i-color-secondary-200);
     border-bottom-color: var(--i-color-secondary-400);
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
 }
 

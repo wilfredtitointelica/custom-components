@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   ViewEncapsulation,
   booleanAttribute,
   computed,
+  inject,
   input,
 } from '@angular/core';
 
@@ -34,6 +36,7 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
     '[class]': 'modifiers()',
     '[attr.disabled]': 'isDisabled() ? "" : null',
     '[attr.aria-disabled]': 'isDisabled() || null',
+    '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.aria-label]': 'ariaLabel() ?? (labelOnHover() ? label() : null) ?? null',
   },
@@ -71,6 +74,24 @@ export class IntButton {
   readonly labelOnHover = input(false, { transform: booleanAttribute });
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+  /** Anchors ignore the disabled attribute natively: the base blocks their navigation and clicks. */
+  protected readonly isAnchor = this.host.tagName === 'A';
+
+  constructor() {
+    // Capture on the host runs before any (click) bound on it. No pointer-events: none in the SCSS,
+    // it would hide the not-allowed cursor.
+    if (this.isAnchor)
+      this.host.addEventListener(
+        'click',
+        (event) => {
+          if (!this.isDisabled()) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        },
+        { capture: true },
+      );
+  }
   protected readonly iconOnly = computed(() => !!(this.icon() || this.loading()) && !this.label());
 
   /** BEM modifiers on the host: int-button--<severity|variant|size|icon-pos> plus boolean flags. */

@@ -167,6 +167,7 @@ export class IntListBox extends IntBaseControl<unknown> {
 
   /** Keyboard contract shared with Dropdown-select (WAI-ARIA listbox pattern). */
   handleKeydown(event: KeyboardEvent): void {
+    if (this.isDisabled()) return;
     const options = this.visibleOptions();
     switch (event.key) {
       case 'ArrowDown':

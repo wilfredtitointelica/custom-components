@@ -103,9 +103,19 @@
   &--invalid {
     border-color: int.field(border-invalid);
   }
+  // No pointer-events: none, it would hide the not-allowed cursor; selectOption() and handleKeydown()
+  // already ignore clicks and keys while disabled.
   &--disabled {
     opacity: 0.6;
-    pointer-events: none;
+    cursor: not-allowed;
+    user-select: none;
+  }
+  &--disabled &__option {
+    cursor: not-allowed;
+    user-select: none;
+  }
+  &--disabled &__option:hover:not(.int-list-box__option--selected) {
+    background: int.option-token(background);
   }
   // Inside Dropdown-select: no frame, the overlay panel draws it.
   &--embedded {

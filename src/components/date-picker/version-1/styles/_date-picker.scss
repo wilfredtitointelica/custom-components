@@ -221,7 +221,8 @@
   &__cell--disabled {
     background: transparent;
     color: var(--int-date-picker-disabled-color);
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
   &__cell--today.int-date-picker__cell--disabled {
     border-color: var(--int-date-picker-disabled-color);

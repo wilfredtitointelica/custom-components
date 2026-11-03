@@ -10,11 +10,14 @@ import { IntButton } from './button';
     <button intButton icon="icon icon-download" ariaLabel="Download"></button>
     <button intButton icon="icon icon-help" label="About this" labelOnHover></button>
     <button intButton icon="icon icon-settings" variant="text" size="small" ariaLabel="Settings"></button>
+    <a intButton variant="link" href="#docs" label="Docs" [disabled]="linkDisabled()" (click)="linkClicks = linkClicks + 1; $event.preventDefault()"></a>
   `,
 })
 class Host {
   loading = signal(false);
+  linkDisabled = signal(true);
   clicks = 0;
+  linkClicks = 0;
 }
 
 describe('IntButton', () => {
@@ -65,5 +68,23 @@ describe('IntButton', () => {
     expect(settings.classList).toContain('int-button--icon-only');
     expect(settings.classList).toContain('int-button--small');
     expect(settings.getAttribute('aria-label')).toBe('Settings');
+  });
+
+  it('blocks clicks and navigation on a disabled anchor', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(link.getAttribute('aria-disabled')).toBe('true');
+    expect(link.getAttribute('tabindex')).toBe('-1');
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    link.dispatchEvent(event);
+    expect(event.defaultPrevented).toBeTrue();
+    expect(fixture.componentInstance.linkClicks).toBe(0);
+
+    fixture.componentInstance.linkDisabled.set(false);
+    fixture.detectChanges();
+    expect(link.hasAttribute('tabindex')).toBeFalse();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    expect(fixture.componentInstance.linkClicks).toBe(1);
   });
 });

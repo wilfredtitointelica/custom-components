@@ -41,7 +41,8 @@
     }
     &:disabled {
       color: var(--i-icon-color-disabled);
-      cursor: default;
+      cursor: not-allowed;
+      user-select: none;
     }
   }
 

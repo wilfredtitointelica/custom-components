@@ -106,7 +106,8 @@ $field-defaults: (
     background: field(background-disabled);
     color: field(color-disabled);
     border-color: transparent;
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
 }
 
@@ -189,6 +190,7 @@ $option-defaults: (
   }
   &.#{$element}--disabled {
     color: var(--i-text-color-disabled);
-    cursor: default;
+    cursor: not-allowed;
+    user-select: none;
   }
 }
