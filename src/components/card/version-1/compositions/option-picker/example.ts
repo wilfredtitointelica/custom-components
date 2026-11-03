@@ -13,7 +13,7 @@ interface Option {
 
 const OPTIONS: readonly Option[] = [
   { id: 'report', icon: 'icon-file', title: 'Report', description: 'Generate a PDF report', disabled: false },
-  { id: 'dashboard', icon: 'icon-dashboard', title: 'Dashboard', description: 'Open the live dashboard', disabled: false },
+  { id: 'dashboard', icon: 'icon-dashboards', title: 'Dashboard', description: 'Open the live dashboard', disabled: false },
   { id: 'export', icon: 'icon-download', title: 'Export', description: 'Download the raw data', disabled: false },
   { id: 'share', icon: 'icon-shared', title: 'Share', description: 'Not available yet', disabled: true },
 ];

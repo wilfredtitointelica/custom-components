@@ -1,6 +1,6 @@
 <!--
   title: Multi Select
-  description: Cards `compact` y `selectable` para marcar varias: cada una se marca o desmarca con clic o Enter/Espacio (`selected`, `onSelect`); pasa el mouse para ver el hover. La última está deshabilitada (`disabled`). Como la card es un botón, su contenido no lleva botones ni links.
+  description: Cards `compact` y `selectable` para marcar varias: cada una se marca o desmarca con clic o Enter/Espacio (`selected`, `onSelect`); pasa el mouse para ver el hover. Fila con el icono del tema, título y descripción; la seleccionada se marca con el borde y el fondo de `selected`. La última está deshabilitada (`disabled`). Como la card es un botón, su contenido no lleva botones ni links.
 -->
 <div class="u-display-flex u-flex-wrap u-gap-lg">
   @for (item of items; track item.id) {
@@ -13,13 +13,15 @@
         [disabled]="item.disabled"
         (onSelect)="toggle(item.id)"
       >
-        <div class="u-display-flex u-align-items-center u-gap-xs">
-          <i class="icon icon-chart" aria-hidden="true"></i>
-          <span class="u-text-lg u-bold u-flex-grow-1 u-text-nowrap">{{ item.title }}</span>
-          <i class="icon icon-nav-diagonal" aria-hidden="true"></i>
+        <div class="u-display-flex u-align-items-center u-gap-sm">
+          <span class="u-display-flex u-p-2 u-radius-md u-background-surface">
+            <i class="icon icon--md icon-chart" aria-hidden="true"></i>
+          </span>
+          <div class="u-display-flex u-flex-column u-flex-grow-1">
+            <span class="u-text-md u-bold u-text-nowrap">{{ item.title }}</span>
+            <span class="u-text-sm u-text-nowrap">{{ item.description }}</span>
+          </div>
         </div>
-        <span class="u-text-md">{{ item.description }}</span>
-        <span class="u-text-sm"><span class="u-bold">{{ item.label }}</span> {{ item.date }}</span>
       </int-card>
     </div>
   }

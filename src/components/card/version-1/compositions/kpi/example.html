@@ -1,79 +1,101 @@
 <!--
   title: KPI
-  description: Card `flat` con un KPI armado con helpers: título, icono de alerta, moneda y valor. El segundo bloque alinea el monto a la derecha (money right). El icono de alerta muestra un tooltip al pasar el mouse o con el foco (provisional hasta que `int-tooltip` esté listo).
+  description: Card `flat` con un KPI armado con helpers: título, icono de alerta, moneda y valor. Tres alineaciones: *Default* centra título y monto; *Money left* los alinea a la izquierda y *Money right* (`.prCard--moneyRight`) a la derecha, dentro del bloque centrado en la card. El icono de alerta muestra un tooltip al pasar el mouse o con el foco (provisional hasta que `int-tooltip` esté listo).
 -->
 <div class="u-display-flex u-flex-column u-gap-xl">
-  <div class="u-display-flex u-flex-column u-gap-md">
-    <p class="u-m-0 u-text-md u-bold">Default</p>
-    <div class="u-display-flex u-flex-wrap u-gap-xl">
-      @for (kpi of kpis; track kpi.title) {
-        <int-card flat>
-          <div class="u-display-flex u-justify-content-center u-align-items-center u-gap-xs u-px-1">
-            <span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
-            @if (kpi.alert) {
-              <ng-container *ngTemplateOutlet="alert; context: { $implicit: kpi, key: 'default' }" />
-            }
-          </div>
-          <div class="u-display-flex u-justify-content-center u-gap-xs">
-            <span class="u-text-sm u-bold">{{ kpi.currency }}</span>
-            <span class="u-text-2xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ kpi.amount }}</span>
-          </div>
-        </int-card>
-      }
-    </div>
-  </div>
+	<div class="u-display-flex u-flex-column u-gap-md">
+		<p class="u-m-0 u-text-md u-bold">Default</p>
+		<div class="u-display-flex u-flex-wrap u-gap-xl">
+			@for (kpi of kpis; track kpi.title) {
+			<int-card flat>
+				<div class="u-display-flex u-flex-column u-gap-sm">
+					<div class="u-display-flex u-justify-content-center u-align-items-center u-gap-xs">
+						<span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
+						@if (kpi.alert) {
+						<ng-container *ngTemplateOutlet="alert; context: { $implicit: kpi, key: 'default' }" />
+						}
+					</div>
+					<div class="u-display-flex u-justify-content-center">
+						<span class="u-text-sm u-bold u-text-lineHeight-cap">{{ kpi.currency }}</span>
+						<span class="u-text-2xl u-bold u-text-lineHeight-cap u-text-nowrap">{{ kpi.amount }}</span>
+					</div>
+				</div>
+			</int-card>
+			}
+		</div>
+	</div>
 
-  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+	<div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
 
-  <div class="u-display-flex u-flex-column u-gap-md">
-    <p class="u-m-0 u-text-md u-bold">Money right</p>
-    <div class="u-display-flex u-flex-wrap u-gap-xl">
-      @for (kpi of kpis; track kpi.title) {
-        <int-card flat>
-          <div class="u-display-inline-flex u-flex-column u-mx-auto">
-            <div class="u-display-flex u-align-items-center u-gap-xs u-px-1">
-              <span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
-              @if (kpi.alert) {
-                <ng-container *ngTemplateOutlet="alert; context: { $implicit: kpi, key: 'right' }" />
-              }
-            </div>
-            <div class="u-display-flex u-justify-content-right u-gap-xs">
-              <span class="u-text-sm u-bold">{{ kpi.currency }}</span>
-              <span class="u-text-2xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ kpi.amount }}</span>
-            </div>
-          </div>
-        </int-card>
-      }
-    </div>
-  </div>
+	<div class="u-display-flex u-flex-column u-gap-md">
+		<p class="u-m-0 u-text-md u-bold">Money left</p>
+		<div class="u-display-flex u-flex-wrap u-gap-xl">
+			@for (kpi of kpis; track kpi.title) {
+			<int-card flat>
+				<div class="u-display-inline-flex u-flex-column u-gap-sm u-mx-auto">
+					<div class="u-display-flex u-align-items-center u-gap-xs">
+						<span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
+						@if (kpi.alert) {
+						<ng-container *ngTemplateOutlet="alert; context: { $implicit: kpi, key: 'left' }" />
+						}
+					</div>
+					<div class="u-display-flex">
+						<span class="u-text-sm u-bold u-text-lineHeight-cap">{{ kpi.currency }}</span>
+						<span class="u-text-2xl u-bold u-text-lineHeight-cap u-text-nowrap">{{ kpi.amount }}</span>
+					</div>
+				</div>
+			</int-card>
+			}
+		</div>
+	</div>
+
+	<div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+	<div class="u-display-flex u-flex-column u-gap-md">
+		<p class="u-m-0 u-text-md u-bold">Money right</p>
+		<div class="u-display-flex u-flex-wrap u-gap-xl">
+			@for (kpi of kpis; track kpi.title) {
+			<int-card flat>
+				<div class="u-display-inline-flex u-flex-column u-gap-sm u-mx-auto">
+					<div class="u-display-flex u-justify-content-end u-align-items-center u-gap-xs">
+						<span class="u-text-sm u-text-nowrap">{{ kpi.title }}</span>
+						@if (kpi.alert) {
+						<ng-container *ngTemplateOutlet="alert; context: { $implicit: kpi, key: 'right' }" />
+						}
+					</div>
+					<div class="u-display-flex u-justify-content-end">
+						<span class="u-text-sm u-bold u-text-lineHeight-cap">{{ kpi.currency }}</span>
+						<span class="u-text-2xl u-bold u-text-lineHeight-cap u-text-nowrap">{{ kpi.amount }}</span>
+					</div>
+				</div>
+			</int-card>
+			}
+		</div>
+	</div>
 </div>
 
 <!-- Alert icon with its tooltip (knowledgeBase tooltip.md: <span> trigger wrapping an icon--sm, position top). -->
 <ng-template #alert let-kpi let-key="key">
-  <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
-  <span
-    class="u-relative u-display-inline-flex u-flex-column u-align-items-center"
-    tabindex="0"
-    [attr.aria-describedby]="tooltipId(key, kpi)"
-    data-dep="tooltip"
-    (mouseenter)="open.set(tooltipId(key, kpi))"
-    (mouseleave)="open.set(null)"
-    (focus)="open.set(tooltipId(key, kpi))"
-    (blur)="open.set(null)"
-  >
-    <!-- Zero-size anchor: its end-justified column puts the tooltip right above the icon. -->
-    <span class="u-display-flex u-flex-column u-justify-content-end u-align-items-center">
-      @if (open() === tooltipId(key, kpi)) {
-        <span
-          class="u-absolute u-mb-1 u-p-3 u-radius-sm u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-shadow-sm u-text-xs u-color-primary u-text-nowrap"
-          role="tooltip"
-          [id]="tooltipId(key, kpi)"
-        >
-          {{ kpi.alert }}
-        </span>
-      }
-    </span>
-    <i class="icon icon--sm icon-alert icon--error" aria-hidden="true"></i>
-  </span>
-  <!-- /dep:tooltip -->
+	<!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
+	<span
+		class="u-relative u-display-inline-flex u-flex-column u-align-items-center"
+		tabindex="0"
+		[attr.aria-describedby]="tooltipId(key, kpi)"
+		data-dep="tooltip"
+		(mouseenter)="open.set(tooltipId(key, kpi))"
+		(mouseleave)="open.set(null)"
+		(focus)="open.set(tooltipId(key, kpi))"
+		(blur)="open.set(null)"
+	>
+		<!-- Zero-size anchor: its end-justified column puts the tooltip right above the icon. -->
+		<span class="u-display-flex u-flex-column u-justify-content-end u-align-items-center">
+			@if (open() === tooltipId(key, kpi)) {
+			<span class="u-absolute u-mb-1 u-p-3 u-radius-sm u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-shadow-sm u-text-xs u-color-primary u-text-nowrap" role="tooltip" [id]="tooltipId(key, kpi)">
+				{{ kpi.alert }}
+			</span>
+			}
+		</span>
+		<i class="icon icon--sm icon-alert icon--error" aria-hidden="true"></i>
+	</span>
+	<!-- /dep:tooltip -->
 </ng-template>
