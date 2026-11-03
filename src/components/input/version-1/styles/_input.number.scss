@@ -69,22 +69,32 @@
     }
   }
 
-  // Horizontal: [-][ input ][+]
-  &.int-input--horizontal .int-input__field {
-    border-radius: 0;
-    text-align: center;
-  }
-  &.int-input--horizontal .int-input__button {
-    width: int.field(height);
+  // Horizontal: [- value +] as one field box (Figma counter); the host carries border and states.
+  &.int-input--horizontal {
+    box-sizing: border-box;
     border: var(--i-border-width-sm) solid int.field(border);
-    background: var(--i-background-default);
-  }
-  .int-input__button--decrement {
-    border-right-width: 0;
-    border-radius: int.field(radius) 0 0 int.field(radius);
-  }
-  .int-input__button--increment {
-    border-left-width: 0;
-    border-radius: 0 int.field(radius) int.field(radius) 0;
+    border-radius: int.field(radius);
+    background: int.field(background);
+    transition: border-color var(--i-motion-base);
+    @include int.field-states(int-input, '&:focus-within');
+
+    .int-input__field {
+      min-height: calc(#{int.field(height)} - 2 * var(--i-border-width-sm));
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      text-align: center;
+    }
+    .int-input__button {
+      width: int.field(height);
+      color: var(--i-icon-color-default);
+
+      &:not(:disabled):hover {
+        background: transparent;
+      }
+      &:disabled {
+        color: var(--i-icon-color-disabled);
+      }
+    }
   }
 }

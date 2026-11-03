@@ -18,6 +18,7 @@ import { IntInput } from './input';
  * @example
  * <input intInputText [(ngModel)]="name" placeholder="Name" />
  * <input intInputText intSize="small" [invalid]="nameInvalid" />
+ * <input intInputText success value="Verified" />
  */
 @Directive({
   selector: 'input[intInputText], textarea[intInputText]',
@@ -28,6 +29,7 @@ import { IntInput } from './input';
     '[class.int-input--large]': 'intSize() === "large"',
     '[class.int-input--fluid]': 'fluid()',
     '[class.int-input--invalid]': 'isInvalid()',
+    '[class.int-input--success]': 'success() && !isInvalid()',
     '[attr.aria-invalid]': 'isInvalid() || null',
   },
 })
@@ -36,6 +38,11 @@ export class IntInputText implements DoCheck {
   readonly intSize = input<IntSize | undefined>(undefined);
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly fluid = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: estado de éxito (borde y texto verdes, Style Guide `.prInputtext--success`).
+   * Si el control también es inválido, gana el estado inválido.
+   */
+  readonly success = input(false, { transform: booleanAttribute });
 
   protected readonly textarea =
     inject<ElementRef<HTMLElement>>(ElementRef).nativeElement.tagName === 'TEXTAREA';

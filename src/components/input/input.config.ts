@@ -16,6 +16,7 @@ export default {
     'basic',
     'text-sizes',
     'text-validation',
+    'text-helper-text',
     'text-disabled-fluid-textarea',
     'number-decimal',
     'number-currency',

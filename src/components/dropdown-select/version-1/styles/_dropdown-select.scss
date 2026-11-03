@@ -118,6 +118,10 @@
     border-color: transparent;
     cursor: default;
   }
+  // Same grey as the disabled text (Figma).
+  &--disabled &__icon {
+    color: int.field(color-disabled);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

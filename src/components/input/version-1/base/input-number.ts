@@ -46,6 +46,9 @@ export interface IntInputNumberInputEvent {
     '[class.int-input--fluid]': 'fluid()',
     '[class.int-input--small]': 'size() === "small"',
     '[class.int-input--large]': 'size() === "large"',
+    // States on the host too: the horizontal layout draws the field box on the host.
+    '[class.int-input--invalid]': 'isInvalid()',
+    '[class.int-input--disabled]': 'isDisabled()',
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

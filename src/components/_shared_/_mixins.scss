@@ -53,6 +53,8 @@ $field-defaults: (
   border-focus: var(--i-color-primary-900),
   border-invalid: var(--i-border-error),
   color-invalid: var(--i-text-color-error),
+  border-success: var(--i-border-success),
+  color-success: var(--i-text-color-success),
   background-disabled: var(--i-background-disabled),
   color-disabled: var(--i-text-color-disabled),
   icon-color: var(--i-icon-color-secondary),
@@ -90,6 +92,10 @@ $field-defaults: (
   #{$focus-selector} {
     outline: none;
     border-color: field(border-focus);
+  }
+  &.#{$block}--success {
+    border-color: field(border-success);
+    color: field(color-success);
   }
   &.#{$block}--invalid {
     border-color: field(border-invalid);

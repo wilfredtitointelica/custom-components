@@ -61,4 +61,13 @@ describe('IntInputNumber', () => {
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     expect(control.value).toBe(9);
   });
+
+  it('puts the disabled state on the host so the horizontal box can style it', () => {
+    const { fixture, control } = setup();
+    const host: HTMLElement = fixture.nativeElement.querySelector('int-inputnumber');
+    expect(host.classList).not.toContain('int-input--disabled');
+    control.disable();
+    fixture.detectChanges();
+    expect(host.classList).toContain('int-input--disabled');
+  });
 });

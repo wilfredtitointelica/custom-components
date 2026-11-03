@@ -43,6 +43,9 @@
   &.int-input--invalid::placeholder {
     color: int.field(color-invalid);
   }
+  &.int-input--success::placeholder {
+    color: int.field(color-success);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

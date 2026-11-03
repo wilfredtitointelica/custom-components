@@ -6,10 +6,14 @@ import { IntInputText } from './input-text';
 
 @Component({
   imports: [IntInputText, ReactiveFormsModule],
-  template: `<input intInputText intSize="small" [formControl]="control" />`,
+  template: `
+    <input intInputText intSize="small" [formControl]="control" />
+    <input intInputText success [invalid]="forceInvalid" />
+  `,
 })
 class Host {
   control = new FormControl('', Validators.required);
+  forceInvalid = false;
 }
 
 describe('IntInputText', () => {
@@ -25,5 +29,17 @@ describe('IntInputText', () => {
     fixture.detectChanges();
     expect(input.classList).toContain('int-input--invalid');
     expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('applies the success modifier unless the field is invalid', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const input: HTMLInputElement = fixture.nativeElement.querySelectorAll('input')[1];
+    expect(input.classList).toContain('int-input--success');
+
+    fixture.componentInstance.forceInvalid = true;
+    fixture.detectChanges();
+    expect(input.classList).not.toContain('int-input--success');
+    expect(input.classList).toContain('int-input--invalid');
   });
 });

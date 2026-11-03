@@ -1,0 +1,22 @@
+<!--
+  title: Text · Helper text
+  description: Texto de ayuda bajo el campo, alineado a la derecha y del color del estado: error con invalid y éxito con success.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-sm">
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <input intInputText invalid value="Text here" aria-label="Error" aria-describedby="input-helper-error" />
+    <!-- dep:message provisional · replace with <int-message severity="error" variant="simple"> when message is done -->
+    <small id="input-helper-error" data-dep="message" class="u-display-flex u-justify-content-end u-text-xs u-color-error">
+      Helper text
+    </small>
+    <!-- /dep:message -->
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <input intInputText success value="Text here" aria-label="Success" aria-describedby="input-helper-success" />
+    <!-- dep:message provisional · replace with <int-message severity="success" variant="simple"> when message is done -->
+    <small id="input-helper-success" data-dep="message" class="u-display-flex u-justify-content-end u-text-xs u-color-trend-positive">
+      Helper text
+    </small>
+    <!-- /dep:message -->
+  </div>
+</div>
