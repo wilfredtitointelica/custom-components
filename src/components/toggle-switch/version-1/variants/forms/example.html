@@ -5,7 +5,7 @@
 <form class="u-display-flex u-flex-column u-gap-md" (ngSubmit)="submitted.set(true)">
   <div class="u-display-flex u-flex-column u-gap-xs">
     <div class="u-display-flex u-align-items-center u-gap-sm">
-      <int-toggle-switch name="terms" inputId="terms" [(ngModel)]="accepted" required [invalid]="showError()" />
+      <int-toggle-switch [(ngModel)]="accepted" name="terms" inputId="terms" required [invalid]="showError()" />
       <label for="terms" class="u-text-md u-color-body">Acepto los términos</label>
     </div>
     @if (showError()) {

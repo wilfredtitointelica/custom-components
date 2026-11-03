@@ -12,7 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'confirm-dialog-modal',
-  variants: ['basic', 'severity', 'detail', 'only-accept', 'image', 'template'],
   requires: ['dialog-modal', 'button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;
