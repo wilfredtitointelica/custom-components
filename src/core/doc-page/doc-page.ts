@@ -25,7 +25,6 @@ import { parseDocHtml } from '../../service/doc-html';
 import { NavigationState } from '../../service/navigation-state';
 import { DocApiView } from './doc-api';
 import { DocApiToc } from './doc-api-toc';
-import { DocTabs } from './doc-tabs';
 import { InlineCode } from '../inline-code/inline-code';
 import { CodePanel } from '../toggle-code/code-panel';
 import { VersionPicker } from './version-picker';
@@ -106,7 +105,6 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
     StatusChip,
     DesignerBadge,
     DocApiView,
-    DocTabs,
     DocApiToc,
     InlineCode,
   ],

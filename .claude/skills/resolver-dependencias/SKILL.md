@@ -64,7 +64,10 @@ inconsistencia: un provisional en la base sin `<dep>` en `requires`, uno en una 
    (mismos nombres que PrimeNG). Borra ambos comentarios marcadores y el atributo `data-dep="<dep>"`
    (el componente real no lo lleva; así deja de resaltarse con **Scan dependencies**).
 3. **TS**: importa `Int<Dep>` y agrégalo a `imports`; borra el código marcado
-   `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…).
+   `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…). En un overlay
+   provisional (tooltip, popover) eso es el `signal` de abierto, el id por instancia y sus
+   `(mouseenter)`/`(focus)`…; el `<ng-template>` + `NgTemplateOutlet` se quita si solo existía para
+   repetir el provisional. El trigger conserva el patrón de la base de conocimientos (`<span>` + icono).
    - Base (`requires`): `../../../<dep>/version-N/base/<dep>` desde `base/<id>.ts`.
    - Variante o composición (`uses`): `../../../../<dep>/version-N/base/<dep>` desde
      `variants/<slug>/example.ts` o `compositions/<slug>/example.ts` (misma profundidad).

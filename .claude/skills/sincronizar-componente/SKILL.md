@@ -60,6 +60,8 @@ hizo fuera del repo: sugerir `/estandarizar-componente <id>` y parar.
 3. Leer el caso `.pr` actual de la base de conocimientos (Intelica.knowledgeBase, `Desarrollo/Estandares/Diseño/components/<nombre>.md`,
    con el MCP `knowledgeBaseMcp` o el repo local, ver `knowledge-base.md`) y su SCSS en el Style Guide:
    la base de conocimientos (Intelica.knowledgeBase) puede haber cambiado desde la réplica, y eso **sí** se aplica (estado 📘).
+   En `badge`, `tag` y `chip` se leen los archivos de su fila en `knowledge-base.md` 1b (conceptos
+   equivocados) y solo los casos que le tocan.
 4. Comparar **cada valor de Figma** con su token, usando el comentario `// Figma: <valor> (<variable>)`
    como huella de lo que se vio la última vez, y el origen del token (`// knowledgeBase:`, `// SG:` o sin origen).
    Con `figma-frame:`, el comentario lleva el eje (`[Size=Small]`, `[State=Hover]`) y se compara con la

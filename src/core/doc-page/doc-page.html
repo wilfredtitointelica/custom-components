@@ -4,21 +4,14 @@
 @let tab = nav.activeTab();
 
 <header class="doc-header">
-  <!-- Title row: Variants | API | Compositions at its end. They switch the whole page, so they come
-       first, before the chips bar (which then shows the API sections when that tab is open).
-       ?tab=api|compositions; a #variant fragment opens the tab of that example. -->
+  <!-- The Variants | API | Compositions tabs live in the sticky top bar (components-page), so they stay
+       in view while scrolling. ?tab=api|compositions; a #variant fragment opens the tab of that example. -->
   <div class="doc-title-row">
     <div>
       <p class="doc-eyebrow">Component</p>
       <!-- Title and description: header comment of version-N/base/<id>.html of the selected version. -->
       <h1 class="doc-title">{{ version?.title ?? current.name }}</h1>
     </div>
-    <app-doc-tabs
-      [active]="tab"
-      [componentId]="current.id"
-      [path]="current.path"
-      [hasCompositions]="current.compositions.length > 0"
-    />
   </div>
   @if (version?.description ?? current.description; as description) {
     <p class="doc-description"><app-inline-code [text]="description" /></p>

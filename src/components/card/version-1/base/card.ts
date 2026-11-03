@@ -33,7 +33,6 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
     '[class.int-card--compact]': 'compact()',
     '[class.int-card--outlined]': 'outlined()',
     '[class.int-card--flat]': 'flat()',
-    '[class.int-card--tinted]': 'tinted()',
     '[class.int-card--stretch-content]': 'stretchContent()',
     '[class.int-card--content-gap-none]': "contentGap() === 'none'",
     '[class.int-card--content-gap-small]': "contentGap() === 'small'",
@@ -53,7 +52,7 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
 })
 export class IntCard {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 
@@ -73,8 +72,6 @@ export class IntCard {
    * conocimientos); el contenido decide su espaciado. Se usa para KPIs y grupos de métricas.
    */
   readonly flat = input(false, { transform: booleanAttribute });
-  /** int-* extension: fondo tenue en lugar del de la card (`.prCard--group` de la base de conocimientos). */
-  readonly tinted = input(false, { transform: booleanAttribute });
   /** int-* extension: el cuerpo y el contenido llenan el alto de la card, para centrar un estado vacío o de error. */
   readonly stretchContent = input(false, { transform: booleanAttribute });
   /** int-* extension: separación entre los bloques del template `content`; sin él, la de por defecto (6px). */

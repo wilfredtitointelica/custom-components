@@ -96,6 +96,9 @@ formato · contenido · estado · `[style]` · eventos. Además:
 - Solo inputs que ya existen en la base. Si falta uno, se para y se propone la variante.
 - Otros `int-*` que use el caso van en `uses` de `<id>.config.ts`; si aún no están en `done`, con su
   provisional `dep:<id> provisional`.
+- Un overlay del caso (tooltip en un icono de alerta, popover) que aún no está en `done` se maqueta
+  visible y funcionando como lo muestra la base de conocimientos, con `data-dep`, nunca solo el icono:
+  `replicar-primeng` 1.6, "Overlays provisionales" (ej. `card/version-1/compositions/kpi`).
 
 ## Qué NO hacer
 
