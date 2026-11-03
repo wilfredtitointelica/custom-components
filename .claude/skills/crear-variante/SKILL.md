@@ -1,10 +1,14 @@
 ---
 name: crear-variante
-description: Crea una variante (ejemplo de documentación) de un componente int-* en Intelica Components. Pregunta el componente, el título y la descripción de la variante, genera version-N/variants/<slug>/example.ts + example.html y la deja visible en el menú y en la página. Úsalo cuando el usuario diga "crea una variante", "agrega la variante X a <componente>", "nuevo ejemplo de <componente>" o /crear-variante.
+description: Crea una variante (ejemplo de documentación) de un componente int-* en Intelica Components. Pregunta el componente, el título y la descripción de la variante, genera version-N/variants/<slug>/example.ts + example.html y la deja visible en el menú y en la página. Úsalo cuando el usuario diga "crea una variante", "agrega la variante X a <componente>", "nuevo ejemplo de <componente>" o /crear-variante. Para un caso de uso armado con la API (KPI, selector de versión…) usar crear-composicion.
 argument-hint: "[componente] [título de la variante]"
 ---
 
 # Crear una variante
+
+> Solo para **Variants** (`variants/<slug>/`): un input, estado o slot de la API. Un caso real de la
+> base de conocimientos armado con la API + helpers (KPI, selector de versión) es una **composición**:
+> skill `crear-composicion` (`compositions/<slug>/`, tab Compositions).
 
 Genera la carpeta `src/components/<componente>/version-<N>/variants/<slug>/` con un `example.ts` y un
 `example.html` mínimos, listos para que el maquetador escriba el ejemplo. Sustituye a copiar y
@@ -44,7 +48,9 @@ o en el mensaje no se vuelve a preguntar; lo que falte se pregunta en el chat, *
 2. **Título** de la variante: el nombre visible tal como aparece en la referencia (Excel/Figma):
    `Basic`, `Icons + Border`, `Raised`.
 3. **Descripción** de la variante: una línea (`Raised buttons display a shadow to indicate
-   elevation.`). Puede quedar vacía si el usuario no la tiene.
+   elevation.`). Puede quedar vacía si el usuario no la tiene. Los nombres de la API van entre comillas
+   invertidas, como en PrimeNG ("Propiedad `outlined`: borde en lugar de sombra."); la página los muestra
+   como código. Los templates sin `#` (`header`, no `#header`).
 
 La versión es la más reciente (`version-N` mayor), salvo que el usuario pida otra.
 Cuando se llama desde `crear-componente`, el componente ya se conoce: solo se preguntan título y descripción.

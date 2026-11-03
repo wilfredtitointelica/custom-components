@@ -26,8 +26,8 @@ export function apiBlocks(api: DocApi | undefined): DocApiBlock[] {
 export const apiBlockId = (componentId: string, key: string) => `${componentId}-api-${key}`;
 
 /**
- * Jump buttons to each block of the API tab, in the sticky chips bar (in place of the variants,
- * status, Figma and dependencies chips, which only matter to Features). Same outlined style as the
+ * Jump buttons to each block of the API tab, in the sticky chips bar (in place of the count,
+ * Figma and dependencies chips, which only matter to Variants and Compositions). Same outlined style as the
  * other actions of the bar, so they read as clickable.
  */
 @Component({

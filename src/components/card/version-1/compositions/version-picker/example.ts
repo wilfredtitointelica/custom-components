@@ -16,11 +16,11 @@ const VERSIONS: readonly Version[] = [
 ];
 
 @Component({
-  selector: 'card-version-example',
+  selector: 'card-version-picker-example',
   templateUrl: './example.html',
   imports: [IntCard],
 })
-export class CardVersionExample {
+export class CardVersionPickerExample {
   readonly versions = VERSIONS;
   readonly chosen = signal('v12');
 }

@@ -6,6 +6,9 @@ argument-hint: "[componente] [variante]"
 
 # Eliminar una variante
 
+> También elimina una **composición** (`version-N/compositions/<slug>/`): el script detecta la carpeta
+> por el slug y limpia su entrada de la lista `compositions` del config.
+
 Borra la carpeta `src/components/<componente>/version-<N>/variants/<slug>/` (en una versión o en
 todas) con `npm run remove`, que además:
 - quita su entrada de `variants` en `<id>.config.ts` si ya no queda en ninguna versión;

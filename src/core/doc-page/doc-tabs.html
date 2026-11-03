@@ -1,4 +1,4 @@
-@for (item of tabs; track item.key) {
+@for (item of tabs(); track item.key) {
   @let selected = active() === item.key;
   <a
     class="doc-tab"
@@ -8,7 +8,7 @@
     [attr.aria-controls]="selected ? componentId() + '-panel-' + item.key : null"
     [attr.tabindex]="selected ? 0 : -1"
     [routerLink]="path()"
-    [queryParams]="{ tab: item.key === 'api' ? 'api' : null }"
+    [queryParams]="{ tab: item.key === 'variants' ? null : item.key }"
     queryParamsHandling="merge"
   >
     {{ item.label }}

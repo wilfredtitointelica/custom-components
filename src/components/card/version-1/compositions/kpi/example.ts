@@ -16,10 +16,10 @@ const KPIS: readonly Kpi[] = [
 ];
 
 @Component({
-  selector: 'card-data-example',
+  selector: 'card-kpi-example',
   templateUrl: './example.html',
   imports: [IntCard],
 })
-export class CardDataExample {
+export class CardKpiExample {
   readonly kpis = KPIS;
 }

@@ -7,6 +7,8 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - Variants are the version-N/variants/<slug>/ folders, detected automatically ("basic" first).
  * - variants (optional): only to order them or hide one ({ name, hidden: true }); an entry without a
  *   folder is not documented.
+ * - Compositions are the version-N/compositions/<slug>/ folders (Compositions tab); compositions
+ *   (optional) orders or hides them the same way.
  * - hidden: true at the root hides the whole component.
  * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
@@ -15,16 +17,15 @@ export default {
   uses: ['button', 'badge'],
   variants: [
     'basic',
-    'advanced',
+    'template',
     'compact',
     'outlined',
+    'flat',
+    'tinted',
+    'selectable',
     'content-gap',
     'stretch-content',
-    'data',
-    'group',
-    'mini',
-    'option',
-    'version',
   ],
+  compositions: ['kpi', 'metric-group', 'multi-select', 'option-picker', 'version-picker'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

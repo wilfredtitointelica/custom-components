@@ -4,19 +4,24 @@
 @let tab = nav.activeTab();
 
 <header class="doc-header">
-  <!-- Title row: Features | API at its end. They switch the whole page, so they come first, before
-       the chips bar (which then shows the API sections when that tab is open). ?tab=api; a #variant
-       fragment always opens Features. -->
+  <!-- Title row: Variants | API | Compositions at its end. They switch the whole page, so they come
+       first, before the chips bar (which then shows the API sections when that tab is open).
+       ?tab=api|compositions; a #variant fragment opens the tab of that example. -->
   <div class="doc-title-row">
     <div>
       <p class="doc-eyebrow">Component</p>
       <!-- Title and description: header comment of version-N/base/<id>.html of the selected version. -->
       <h1 class="doc-title">{{ version?.title ?? current.name }}</h1>
     </div>
-    <app-doc-tabs [active]="tab" [componentId]="current.id" [path]="current.path" />
+    <app-doc-tabs
+      [active]="tab"
+      [componentId]="current.id"
+      [path]="current.path"
+      [hasCompositions]="current.compositions.length > 0"
+    />
   </div>
   @if (version?.description ?? current.description; as description) {
-    <p class="doc-description">{{ description }}</p>
+    <p class="doc-description"><app-inline-code [text]="description" /></p>
   }
   <!-- Intro content projected by the component page (description, usage notes…). -->
   <div class="doc-intro"><ng-content /></div>
@@ -33,25 +38,31 @@
       Version {{ current.versions[0].number }}
     </span>
   }
-  <!-- Features: variants, status, Figma and dependencies. API: only the version (the API depends on
-       it) and the jump buttons to its blocks, which take their place. -->
+  <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts.
+       Right after the version and in every tab, so it never moves when the tab changes. -->
+  <app-status-chip [status]="version?.status" />
+  <!-- Variants / Compositions: count of its examples, Figma and dependencies. API: the jump buttons
+       to its blocks take their place. -->
   @if (tab !== 'api') {
     <span class="doc-chip">
       <i class="pi pi-clone" aria-hidden="true"></i>
-      @switch (current.variants.length) {
-        @case (0) {
-          No variants defined yet
-        }
-        @case (1) {
-          1 variant
-        }
-        @default {
-          {{ current.variants.length }} variants
+      @if (tab === 'compositions') {
+        {{ current.compositions.length }}
+        {{ current.compositions.length === 1 ? 'composition' : 'compositions' }}
+      } @else {
+        @switch (current.variants.length) {
+          @case (0) {
+            No variants defined yet
+          }
+          @case (1) {
+            1 variant
+          }
+          @default {
+            {{ current.variants.length }} variants
+          }
         }
       }
     </span>
-    <!-- Status of the selected version: static `status` property of the class in version-N/base/<id>.ts. -->
-    <app-status-chip [status]="version?.status" />
     @let deps = dependencies();
     <!-- Splits the read-only chips from the actions; only when there is at least one action. -->
     @if (version?.figma || deps.count) {
@@ -173,97 +184,112 @@
     }
   </div>
 } @else {
+  <!-- Variants: variants/<slug>/ folders. Compositions: compositions/<slug>/ folders. Same sections. -->
   <div
     class="doc-tab-panel"
     role="tabpanel"
-    [id]="current.id + '-panel-features'"
-    [attr.aria-labelledby]="current.id + '-tab-features'"
+    [id]="current.id + '-panel-' + tab"
+    [attr.aria-labelledby]="current.id + '-tab-' + tab"
   >
-    @for (variant of current.variants; track variant.id) {
-      <section
-        class="doc-section"
-        [id]="variant.id"
-        [class.doc-is-active]="nav.activeVariantId() === variant.id"
-        [attr.aria-labelledby]="variant.id + '-title'"
-      >
-        @let codeVisible = code.isVisible(variant.id);
-        <div class="doc-section-head">
-          <h2 class="doc-section-title" [id]="variant.id + '-title'">
-            <a [routerLink]="current.path" [fragment]="variant.id" queryParamsHandling="preserve">
-              {{ variant.name }}
-              <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
-            </a>
-          </h2>
-          <!-- Code of this variant only; the top-bar switch shows/hides all of them. -->
-          <button
-            type="button"
-            class="doc-code-button"
-            [class.doc-is-on]="codeVisible"
-            [attr.aria-pressed]="codeVisible"
-            [attr.aria-controls]="variant.id + '-code'"
-            [title]="(codeVisible ? 'Hide' : 'Show') + ' code of ' + variant.name"
-            (click)="code.toggle(variant.id)"
-          >
-            <i class="pi pi-code" aria-hidden="true"></i>
-            Code
-          </button>
-        </div>
-
-        @if (variant.description) {
-          <p class="doc-section-description">{{ variant.description }}</p>
-        }
-
-        <!-- Example of the selected version: version-N/variants/<slug>/example.ts, detected by folder.
-         An example.html that is empty or only has comments is still pending. -->
-        @let example = examples.value()?.get(variant.slug);
-        <!-- While scanning: dependencies still provisional in this example (requires ones live in the base). -->
-        @if (scanning() && example?.provisionalDeps?.length) {
-          <p class="doc-scan-tags">
-            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
-            Por resolver:
-            @for (dep of example!.provisionalDeps; track dep) {
-              <code class="doc-scan-tag">dep:{{ dep }}</code>
-            }
-          </p>
-        }
-        <div class="doc-preview">
-          @if (example && !example.pending) {
-            <ng-container *ngComponentOutlet="example.component" />
-          } @else if (!examples.isLoading()) {
-            <div class="doc-placeholder">
-              <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
-              <p>Preview pending</p>
-              <code
-                >{{ version?.folder ?? 'version-1' }}/variants/{{ variant.slug }}/{{
-                  example ? 'example.html' : ''
-                }}</code
-              >
-            </div>
-          }
-        </div>
-
-        @if (codeVisible) {
-          <app-code-panel
-            [id]="variant.id + '-code'"
-            [label]="current.name + ' · ' + variant.name"
-            [sources]="example?.sources"
-            [source]="{
-              path: current.path,
-              variantId: variant.id,
-              version: current.versions.length > 1 ? version?.number : undefined,
-            }"
-          />
-        }
-      </section>
-    } @empty {
-      <section class="doc-section" [id]="current.id">
-        <div class="doc-preview">
-          <div class="doc-placeholder">
-            <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
-            <p>No variants defined yet for this component.</p>
-          </div>
-        </div>
-      </section>
-    }
+    <ng-container
+      *ngTemplateOutlet="
+        sections;
+        context: { $implicit: tab === 'compositions' ? current.compositions : current.variants }
+      "
+    />
   </div>
 }
+
+<ng-template #sections let-items>
+  @for (variant of asVariants(items); track variant.id) {
+    <section
+      class="doc-section"
+      [id]="variant.id"
+      [class.doc-is-active]="nav.activeVariantId() === variant.id"
+      [attr.aria-labelledby]="variant.id + '-title'"
+    >
+      @let codeVisible = code.isVisible(variant.id);
+      <div class="doc-section-head">
+        <h2 class="doc-section-title" [id]="variant.id + '-title'">
+          <a
+            [routerLink]="current.path"
+            [fragment]="variant.id"
+            [queryParams]="{ tab: null }"
+            queryParamsHandling="merge"
+          >
+            {{ variant.name }}
+            <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+          </a>
+        </h2>
+        <!-- Code of this variant only; the top-bar switch shows/hides all of them. -->
+        <button
+          type="button"
+          class="doc-code-button"
+          [class.doc-is-on]="codeVisible"
+          [attr.aria-pressed]="codeVisible"
+          [attr.aria-controls]="variant.id + '-code'"
+          [title]="(codeVisible ? 'Hide' : 'Show') + ' code of ' + variant.name"
+          (click)="code.toggle(variant.id)"
+        >
+          <i class="pi pi-code" aria-hidden="true"></i>
+          Code
+        </button>
+      </div>
+
+      @if (variant.description) {
+        <p class="doc-section-description"><app-inline-code [text]="variant.description" /></p>
+      }
+
+      <!-- Example of the selected version: version-N/variants/<slug>/example.ts, detected by folder.
+         An example.html that is empty or only has comments is still pending. -->
+      @let example = examples.value()?.get(variant.slug);
+      <!-- While scanning: dependencies still provisional in this example (requires ones live in the base). -->
+      @if (scanning() && example?.provisionalDeps?.length) {
+        <p class="doc-scan-tags">
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          Por resolver:
+          @for (dep of example!.provisionalDeps; track dep) {
+            <code class="doc-scan-tag">dep:{{ dep }}</code>
+          }
+        </p>
+      }
+      <div class="doc-preview">
+        @if (example && !example.pending) {
+          <ng-container *ngComponentOutlet="example.component" />
+        } @else if (!examples.isLoading()) {
+          <div class="doc-placeholder">
+            <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+            <p>Preview pending</p>
+            <code
+              >{{ version?.folder ?? 'version-1' }}/{{
+                variant.kind === 'composition' ? 'compositions' : 'variants'
+              }}/{{ variant.slug }}/{{ example ? 'example.html' : '' }}</code
+            >
+          </div>
+        }
+      </div>
+
+      @if (codeVisible) {
+        <app-code-panel
+          [id]="variant.id + '-code'"
+          [label]="current.name + ' · ' + variant.name"
+          [sources]="example?.sources"
+          [source]="{
+            path: current.path,
+            variantId: variant.id,
+            version: current.versions.length > 1 ? version?.number : undefined,
+          }"
+        />
+      }
+    </section>
+  } @empty {
+    <section class="doc-section" [id]="current.id">
+      <div class="doc-preview">
+        <div class="doc-placeholder">
+          <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+          <p>No variants defined yet for this component.</p>
+        </div>
+      </div>
+    </section>
+  }
+</ng-template>

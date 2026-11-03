@@ -1,7 +1,10 @@
-import { Component, computed, input, ViewEncapsulation } from '@angular/core';
-
-/** Visual variants of int-demo, slugs from demo.config.ts. "basic" is the base block. */
-export type IntDemoVariant = 'basic' | 'outlined';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
 
 /** <int-demo> · version 2: header with icon and counter, accent bar on top. */
 @Component({
@@ -10,7 +13,12 @@ export type IntDemoVariant = 'basic' | 'outlined';
   styleUrl: '../styles/_index.scss',
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
-  host: { style: 'display: contents' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // The root class lives on the host; each modifier is an input that sets its int-demo--* class.
+  host: {
+    class: 'int-demo',
+    '[class.int-demo--outlined]': 'outlined()',
+  },
 })
 export class IntDemo {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -18,13 +26,13 @@ export class IntDemo {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = '';
 
-  readonly variant = input<IntDemoVariant>('basic');
+  // JSDoc of the public API in Spanish: it is the Descripción column of the API tab of the page.
+  /** Título del bloque, en el encabezado junto al icono y al contador. */
   readonly title = input('');
-  /** PrimeIcons class, e.g. "pi-wallet". */
-  readonly icon = input('pi-list');
+  /** Clase del icono del Style Guide (`icon-*`), p. ej. `icon-file`. */
+  readonly icon = input('icon-file');
+  /** Filas de la lista, en orden; el contador del encabezado muestra cuántas son. */
   readonly items = input<readonly string[]>([]);
-
-  protected readonly classes = computed(() =>
-    this.variant() === 'basic' ? 'int-demo' : `int-demo int-demo--${this.variant()}`,
-  );
+  /** Borde visible en lugar de la sombra (modificador `int-demo--outlined`); la barra de acento se mantiene. */
+  readonly outlined = input(false, { transform: booleanAttribute });
 }

@@ -7,7 +7,7 @@ argument-hint: "[componente] [N]"
 # Eliminar una versión
 
 Borra `src/components/<componente>/version-<N>/` completa con `npm run remove`, que además:
-- quita de `variants` en `<id>.config.ts` las variantes que **solo** existían en esa versión;
+- quita de `variants` (y de `compositions`) en `<id>.config.ts` los ejemplos que **solo** existían en esa versión;
 - regenera `src/generated/` (el desplegable de versiones deja de mostrarla y `ng serve` no falla).
 
 **Las demás versiones no se renumeran**: si se borra `version-2` de 1-2-3, quedan 1 y 3, así los

@@ -6,8 +6,11 @@ argument-hint: "[componente]"
 
 # Crear una versión
 
+> La versión nueva copia también `compositions/` (casos de uso del tab Compositions), si la versión
+> anterior la tiene.
+
 Abre `src/components/<componente>/version-<N+1>/` como **copia exacta de la última versión**
-(`version-<N>`, la de número mayor): `base/`, `variants/` y `styles/`. La copia es el punto de partida
+(`version-<N>`, la de número mayor): `base/`, `variants/`, `compositions/` (si existe) y `styles/`. La copia es el punto de partida
 para que el maquetador cambie la implementación; `version-<N>` no se toca y sigue publicada.
 
 > Siempre se parte de la **última versión**, nunca de una anterior ni de otro componente.

@@ -15,10 +15,10 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
-import { NgComponentOutlet, ViewportScroller } from '@angular/common';
+import { NgComponentOutlet, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { DocExampleCode, DocExampleSource } from '../../service/catalog.model';
+import { CatalogVariant, DocExampleCode, DocExampleSource } from '../../service/catalog.model';
 import { CodeVisibility } from '../../service/code-visibility';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { parseDocHtml } from '../../service/doc-html';
@@ -26,12 +26,13 @@ import { NavigationState } from '../../service/navigation-state';
 import { DocApiView } from './doc-api';
 import { DocApiToc } from './doc-api-toc';
 import { DocTabs } from './doc-tabs';
+import { InlineCode } from '../inline-code/inline-code';
 import { CodePanel } from '../toggle-code/code-panel';
 import { VersionPicker } from './version-picker';
 import { DesignerBadge } from '../designer-badge/designer-badge';
 import { StatusChip } from '../status-chip/status-chip';
 
-/** A rendered example: the component exported by variants/<slug>/example.ts and its code. */
+/** A rendered example: the component exported by variants|compositions/<slug>/example.ts and its code. */
 interface DocExample {
   readonly component: Type<unknown>;
   readonly sources: DocExampleCode;
@@ -44,6 +45,21 @@ interface DocExample {
 /** `data-dep="<id>"`: root element of a provisional marked `dep:<id> provisional` (skill replicar-primeng). */
 const PROVISIONAL_DEP = /\bdata-dep="([a-z0-9-]+)"/g;
 
+/** `<int-<id>`: a finished int-* component used in an example template. */
+const INT_TAG = /<int-([a-z0-9-]+)/g;
+
+/**
+ * IDs of the int-* components the given examples contain, real (`<int-button>`) or provisional
+ * (`data-dep="button"`), read from their example.html of the selected version.
+ */
+function usedDependencies(
+  exampleHtml: Readonly<Record<string, string>> | undefined,
+  examples: readonly CatalogVariant[],
+): ReadonlySet<string> {
+  const html = examples.map((example) => exampleHtml?.[example.slug] ?? '').join('\n');
+  return new Set([...html.matchAll(PROVISIONAL_DEP), ...html.matchAll(INT_TAG)].map((m) => m[1]));
+}
+
 /** The Angular component exported by an example module (whatever its class name). */
 function toExample({ slug, module, sources }: DocExampleSource): [string, DocExample][] {
   const component = Object.values(module).find(
@@ -51,7 +67,7 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
       typeof value === 'function' && reflectComponentType(value as Type<unknown>) !== null,
   );
   if (!component) {
-    console.warn(`[doc-page] variants/${slug}/example.ts does not export a component.`);
+    console.warn(`[doc-page] ${slug}/example.ts does not export a component.`);
     return [];
   }
   // The code panel shows example.html without its documentation header.
@@ -77,11 +93,13 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
  * variant (<id>.config.ts + detected folders) with the example of the selected version, found by
  * convention in version-N/variants/<slug>/ (see scripts/generate-docs.mjs). Nothing is registered by hand.
  * The API tab (?tab=api) shows the inputs, outputs, templates and tokens extracted from that version's base.
+ * The Compositions tab (?tab=compositions) renders the version-N/compositions/<slug>/ folders the same way.
  */
 @Component({
   selector: 'app-doc-page',
   imports: [
     NgComponentOutlet,
+    NgTemplateOutlet,
     RouterLink,
     CodePanel,
     VersionPicker,
@@ -90,6 +108,7 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
     DocApiView,
     DocTabs,
     DocApiToc,
+    InlineCode,
   ],
   templateUrl: './doc-page.html',
   styleUrl: './doc-page.scss',
@@ -112,11 +131,19 @@ export class DocPage {
 
   /**
    * int-* components it depends on, for the "Dependencies" popover: `requires` (composed by the base)
-   * and `uses` (only inside variant templates), with the status of their latest version. A missing one
+   * and `uses` (only inside example templates), with the status of their latest version. A missing one
    * is not created yet; not done = a provisional marked `dep:<id> provisional` stands in for it.
+   * `requires` applies to every tab; `uses` only lists the ones the examples of the open tab contain
+   * (Variants: variants, Compositions: compositions), so a tab never hints at another tab's examples.
    */
   protected readonly dependencies = computed(() => {
-    const { requires, uses } = this.component();
+    const { requires, uses: declared } = this.component();
+    const compositions = this.nav.activeTab() === 'compositions';
+    const used = usedDependencies(
+      this.nav.activeVersion()?.exampleHtml,
+      compositions ? this.component().compositions : this.component().variants,
+    );
+    const uses = declared.filter((id) => used.has(id));
     const toItem = (id: string) => {
       const dependency = this.catalog.find(id);
       return {
@@ -136,12 +163,17 @@ export class DocPage {
       {
         kind: 'optional',
         title: 'Opcionales',
-        hint: 'Se usan dentro de los templates de las variantes; quien consume el componente decide.',
+        hint: `Se usan dentro de los templates de ${compositions ? 'las composiciones' : 'las variantes'}; quien consume el componente decide.`,
         items: uses.map(toItem),
       },
     ].filter((group) => group.items.length > 0);
     return { groups, count: requires.length + uses.length };
   });
+
+  /** Types the $implicit of the #sections template (variants or compositions). */
+  protected asVariants(items: readonly CatalogVariant[]): readonly CatalogVariant[] {
+    return items;
+  }
 
   /** Entries of the API tab of the selected version (0 = still in template state: placeholder). */
   protected readonly apiCount = computed(() =>
@@ -191,6 +223,20 @@ export class DocPage {
       if (this.examples.isLoading() || !this.examples.hasValue()) return;
       const variantId = untracked(() => this.nav.activeVariantId());
       if (variantId) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+    });
+
+    // A link to an example of the other tab (a composition from Variants, a variant from Compositions)
+    // switches the tab: the router tried to scroll before that section existed, so scroll once the new
+    // tab is rendered.
+    let renderedTab = untracked(() => this.nav.activeTab());
+    effect(() => {
+      const tab = this.nav.activeTab();
+      if (tab === renderedTab) return;
+      renderedTab = tab;
+      const variantId = untracked(() => this.nav.activeVariantId());
+      if (variantId && this.examples.hasValue()) {
+        afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+      }
     });
 
     // Scan: only the first provisional of each dependency per preview is outlined, with the total

@@ -1,7 +1,8 @@
 // Hides or shows again a component, a variant or a version in the documentation site, without
 // deleting any code. Only <id>.config.ts changes:
 //   component → `hidden: true`                    out of the menu, routes, search, gallery and Status
-//   variant   → `{ name: '<slug>', hidden: true }` in `variants` (keeps its position in the list)
+//   variant   → `{ name: '<slug>', hidden: true }` in `variants` (keeps its position in the list); a
+//               composition (compositions/<slug>/) goes the same way in `compositions`, detected by slug
 //   version   → `hiddenVersions: [N]`             out of the version picker; ?version=N opens the latest
 // `list` prints what is hidden now (all components, or one).
 //
@@ -17,6 +18,8 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 import {
   COMPONENTS_DIR,
+  EXAMPLE_KINDS,
+  exampleKind,
   findComponent,
   isDefaultOrder,
   readHiddenVersions,
@@ -44,13 +47,17 @@ function fail(message) {
 const HIDDEN_COMPONENT = /^[ \t]*hidden\s*:\s*true\b/m;
 const [action, kind, componentArg, target] = process.argv.slice(2);
 
-/** What is hidden in one component: { component, variants: [slug], versions: [N] }. */
+/** What is hidden in one component: { component, variants: [{ slug, list }], versions: [N] }. */
 function hiddenIn(component) {
   if (!existsSync(component.config)) return { component: false, variants: [], versions: [] };
   const source = readFileSync(component.config, 'utf8');
   return {
     component: HIDDEN_COMPONENT.test(source),
-    variants: (readVariantEntries(source)?.entries ?? []).filter((e) => e.hidden).map((e) => e.slug),
+    variants: EXAMPLE_KINDS.flatMap((list) =>
+      (readVariantEntries(source, list)?.entries ?? [])
+        .filter((e) => e.hidden)
+        .map((e) => ({ slug: e.slug, list })),
+    ),
     versions: readHiddenVersions(source),
   };
 }
@@ -65,13 +72,14 @@ if (action === 'list') {
         .map((entry) => findComponent(entry.name));
   const rows = components.flatMap((component) => {
     const hidden = hiddenIn(component);
-    const folders = variantVersions(component);
     return [
       ...(hidden.component ? [`| Component | ${component.id} | — |`] : []),
       ...hidden.versions.map((n) => `| Version | ${component.id} | version ${n} |`),
-      ...hidden.variants.map((slug) => {
-        const title = folders.has(slug) ? variantTitle(component, slug, folders.get(slug)) : '(no folder)';
-        return `| Variant | ${component.id} | ${slug} · ${title} |`;
+      ...hidden.variants.map(({ slug, list }) => {
+        const folders = variantVersions(component, list);
+        const title = folders.has(slug) ? variantTitle(component, slug, folders.get(slug), list) : '(no folder)';
+        const type = list === 'compositions' ? 'Composition' : 'Variant';
+        return `| ${type} | ${component.id} | ${slug} · ${title} |`;
       }),
     ];
   });
@@ -102,10 +110,12 @@ if (kind === 'component') {
 if (kind === 'variant') {
   const slug = target;
   if (!slug) fail(USAGE);
-  const folders = variantVersions(component);
+  // variants/ or compositions/: the folder (and config list) that holds the slug.
+  const list = exampleKind(component, slug) ?? 'variants';
+  const folders = variantVersions(component, list);
   if (!folders.has(slug)) fail(`Variant "${slug}" not found in ${component.id} (variants: ${[...folders.keys()].join(', ')}).`);
   what = `${component.id} › ${slug}`;
-  const entries = readVariantEntries(source)?.entries ?? [];
+  const entries = readVariantEntries(source, list)?.entries ?? [];
   const entry = entries.find((e) => e.slug === slug);
   if (Boolean(entry?.hidden) === hide) fail(`${what} is already ${hide ? 'hidden' : 'visible'}.`);
 
@@ -132,7 +142,7 @@ if (kind === 'variant') {
     });
     texts = isDefaultOrder(shown) ? [] : shown.map((e) => e.text);
   }
-  updated = writeVariantEntries(source, texts);
+  updated = writeVariantEntries(source, texts, list);
 }
 
 if (kind === 'version') {

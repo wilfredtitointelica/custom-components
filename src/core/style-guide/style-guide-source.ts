@@ -38,3 +38,12 @@ export function readStyleGuideSources(): StyleGuideSource[] | null {
 export function isColor(value: string): boolean {
   return !!value && !NOT_A_COLOR.test(value) && CSS.supports('color', value);
 }
+
+/** Value with its var() references replaced by what :root computes; null if it is not a color. */
+export function resolveColor(value: string, root: CSSStyleDeclaration): string | null {
+  let resolved = value;
+  for (let i = 0; i < 5 && resolved.includes('var('); i++) {
+    resolved = resolved.replace(/var\((--[\w-]+)\)/g, (_, name: string) => root.getPropertyValue(name).trim() || '?');
+  }
+  return isColor(resolved) ? resolved : null;
+}

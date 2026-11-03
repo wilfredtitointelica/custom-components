@@ -5,9 +5,9 @@ import { filter } from 'rxjs';
 
 import { ComponentCatalog, findVersion, VERSION_QUERY_PARAM } from './component-catalog';
 
-/** Query parameter that selects the tab of a documentation page: /components/<id>?tab=api. */
+/** Query parameter that selects the tab of a documentation page: /components/<id>?tab=api|compositions. */
 export const TAB_QUERY_PARAM = 'tab';
-export type DocTab = 'features' | 'api';
+export type DocTab = 'variants' | 'api' | 'compositions';
 
 /** Derives the current selection (section, component, variant) from the URL. The URL is the only source of truth. */
 @Injectable({ providedIn: 'root' })
@@ -56,12 +56,24 @@ export class NavigationState {
     return component && findVersion(component, this.urlTree().queryParams[VERSION_QUERY_PARAM]);
   });
 
-  /** Tab of the documentation page: ?tab=api, unless the fragment points at a variant (features). */
-  readonly activeTab = computed<DocTab>(() =>
-    this.urlTree().queryParams[TAB_QUERY_PARAM] === 'api' && !this.activeVariantId()
-      ? 'api'
-      : 'features',
-  );
+  /**
+   * Tab of the documentation page: a fragment pointing at an example opens its tab (variants or
+   * compositions); otherwise ?tab=api or ?tab=compositions, and Variants by default.
+   */
+  readonly activeTab = computed<DocTab>(() => {
+    const variantId = this.activeVariantId();
+    if (variantId) {
+      return this.catalog.findVariant(variantId)?.kind === 'composition'
+        ? 'compositions'
+        : 'variants';
+    }
+    const tab = this.urlTree().queryParams[TAB_QUERY_PARAM];
+    if (tab === 'api') return 'api';
+    // A component without compositions has no such tab: the link falls back to Variants.
+    const componentId = this.componentId();
+    const hasCompositions = !!componentId && !!this.catalog.find(componentId)?.compositions.length;
+    return tab === 'compositions' && hasCompositions ? 'compositions' : 'variants';
+  });
 
   /** Selected variant: the fragment, only when it belongs to the open component. */
   readonly activeVariantId = computed(() => {

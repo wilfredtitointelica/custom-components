@@ -28,10 +28,11 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 
 | Tema | Regla |
 |---|---|
-| Estructura | Cada `version-N/` tiene **solo** `base/`, `variants/` y `styles/`. |
+| Estructura | Cada `version-N/` tiene **solo** `base/`, `variants/`, `styles/` y, si hace falta, `compositions/`. |
 | `base/` | El componente reutilizable (`<id>.ts` + `<id>.html`). Debe poder extraerse a una librería npm: no importa nada de `core/`, `service/` ni de `variants/`. |
 | `variants/` | Un ejemplo de documentación por carpeta: `variants/<slug>/example.ts` + `example.html`. **Se detectan solos**: no se importan ni se registran en ningún lado. Todo componente nuevo trae `variants/basic/`. |
 | Crear variantes | Siempre con `npm run new:variant` (o `/crear-variante`), nunca copiando la de otro componente. |
+| `compositions/` | Opcional. Casos reales de la base de conocimientos armados con la API + helpers `u-*` (KPI, selector de versión): `compositions/<slug>/example.ts` + `example.html`, en el tab **Compositions**. No agregan API. Se crean con `npm run new:composition` (o `/crear-composicion`). Un slug es único entre `variants/` y `compositions/`. |
 | `styles/` | SCSS del componente con `_index.scss` como punto de entrada (luego se moverán al repo StyleGuides). Sin subcarpetas. |
 | Variantes visuales | Son **propiedades + modificadores BEM** del mismo componente (`severity="secondary"` → `.int-button--secondary`). Nunca se copia el componente ni la base. |
 | Ejemplo ≠ modificador | Una carpeta de `variants/` es una **sección de la documentación**, no un modificador. Un ejemplo `severity/` puede pintar todos los valores de `severity` juntos. |
@@ -66,12 +67,14 @@ src/components/
         ├── base/
         │   ├── button.ts           ← <int-button>: inputs, lógica, modificadores BEM
         │   └── button.html         ← cabecera (título + descripción del componente) + estructura
-        ├── variants/               ← ejemplos de la documentación (detectados por carpeta)
+        ├── variants/               ← ejemplos de la documentación, tab Variants (detectados por carpeta)
         │   ├── basic/              ← siempre: se crea con el componente (vacía hasta que el maquetador la escriba)
         │   │   ├── example.ts      ← componente del ejemplo: imports + datos de demostración
         │   │   └── example.html    ← cabecera (título + descripción de la variante) + uso de <int-button>
         │   ├── severity/
         │   └── disabled/
+        ├── compositions/           ← opcional: casos de uso armados con la API + helpers, tab Compositions
+        │   └── <slug>/             ← misma forma que una variante (example.ts + example.html)
         └── styles/
             ├── _index.scss         ← punto de entrada: solo @use
             ├── _button.scss        ← base (plantilla: tokens, bloque, elementos, modificadores, skeleton)
@@ -82,7 +85,8 @@ src/generated/                      ← AUTOGENERADO y en .gitignore: no editar 
 └── examples/<id>.version-N.ts      ← chunk lazy por versión: componentes de ejemplo + su código
 ```
 
-Cómo funciona la detección: `scripts/generate-docs.mjs` recorre `version-N/variants/<slug>/` y
+Cómo funciona la detección: `scripts/generate-docs.mjs` recorre `version-N/variants/<slug>/` (y
+`version-N/compositions/<slug>/`, tab Compositions, con la misma forma) y
 escribe `src/generated/`, que **importa** los archivos (`base/<id>.html`, `example.html`,
 `example.ts`) como texto: no copia su contenido. Por eso:
 - **Editar** un `example.html` / `example.ts` o una cabecera se refleja al instante con `npm start` o
@@ -171,6 +175,8 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - Variants are the version-N/variants/<slug>/ folders, detected automatically ("basic" first).
  * - variants (optional): only to order them or hide one ({ name, hidden: true }); an entry without a
  *   folder is not documented.
+ * - Compositions are the version-N/compositions/<slug>/ folders (Compositions tab); compositions
+ *   (optional) orders or hides them the same way.
  * - hidden: true at the root hides the whole component.
  * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
@@ -302,12 +308,19 @@ Guía para el maquetador cuando implemente (patrón completo en `_demo_/version-
   ```
 - Si el bloque BEM vive en el elemento raíz de la plantilla, agregar `host: { style: 'display: contents' }`.
 - Booleanos como atributo (`<int-chip disabled>`): `input(false, { transform: booleanAttribute })`.
-- Formatos visuales que se excluyen entre sí → **un** input tipado (`appearance`, o el nombre de PrimeNG
-  si existe: `severity`, `variant`, `size`): `<int-card appearance="data">`. Un booleano por formato
-  solo si se combina con otros (`compact`, `outlined`). Nunca un booleano estético con nombre que suene
-  a dato (`data`, `group`, `items`).
+- Formatos visuales del contenedor que se excluyen entre sí → **un** input tipado (`appearance`, o el
+  nombre de PrimeNG si existe: `severity`, `variant`, `size`): `<int-tag severity="success">`. Un
+  booleano por formato solo si se combina con otros (`compact`, `outlined`, `flat`). Nunca un booleano
+  estético con nombre que suene a dato (`data`, `group`, `items`).
+- Antes de crear un formato, mirar qué cambia: si es el **contenedor** (borde, sombra, fondo, padding) y
+  ningún modificador existente lo cubre, es input; si es el **contenido** (KPI, fila de métricas, badge),
+  es una **composición** (`compositions/`) con la API que ya hay. Ej.: `int-card` no tiene `mini` ni
+  `data`: son `<int-card compact selectable>` y `<int-card flat>` + helpers.
 - Los estados nativos (`:disabled`, `:checked`) no son variantes de estilo: van en el módulo base.
-- La base no importa nada de la documentación (`core/`, `service/`, `variants/`): así se puede extraer a npm.
+- Todo `disabled` no se puede seleccionar ni activar: `cursor: not-allowed`, `user-select: none`, sin
+  hover ni active, y la base ignora clic y teclado en el handler (`if (this.disabled()) return;`). Nunca
+  `pointer-events: none`: ocultaría el cursor (`check:component` lo avisa).
+- La base no importa nada de la documentación (`core/`, `service/`, `variants/`, `compositions/`): así se puede extraer a npm.
 
 ### 3.4 `version-1/base/chip.html`
 
@@ -381,6 +394,11 @@ Reglas del ejemplo (lo que se ve en la pestaña HTML / TS de la documentación e
 - El HTML (debajo de la cabecera) es código que un consumidor podría copiar: sin clases de la documentación ni estilos inline. La cabecera no se muestra en la pestaña HTML.
   Excepción: el tamaño del propio componente va con `[style]` sobre el `<int-*>`, como PrimeNG
   (`<int-card [style]="{ width: '25rem' }">`), sin crear un input `width`/`height` en la base.
+- Atributos del `<int-*>` siempre en este orden: formato (`appearance`, `compact`, `outlined`…),
+  contenido (`header`, `subheader`…), estado (`selectable`, `[selected]`, `[disabled]`), `[style]`,
+  eventos (`(onSelect)`).
+- Sin helpers `u-*` sobre el `<int-*>`: su lugar en la fila del padre va en un `<div>` envoltorio
+  (`<div class="u-display-flex u-flex-grow-1 u-flex-basis-0"><int-card …>`) y el componente lo llena.
 - Un ejemplo puede mostrar varios valores juntos (sección "Severity" con los 4 botones), como PrimeNG.
 
 ### 3.6 `version-1/styles/_index.scss`
@@ -501,7 +519,7 @@ Si el ejemplo necesita un modificador visual nuevo (maquetador):
 1. Agregar el valor al tipo del input en `base/<id>.ts` (`'primary' | 'secondary' | 'outlined'`).
 2. Crear `styles/_<id>.<mod>.scss` con `.int-<id>--<mod>` y agregar `@use '<id>.<mod>' as <id>-<mod>;` en `_index.scss`.
 
-La pestaña **API** de la página (junto a *Features*) se genera sola desde `base/<id>.ts`
+La pestaña **API** de la página (junto a *Variants*) se genera sola desde `base/<id>.ts`
 (`scripts/extract-api.mjs`): cada `input`/`output`/método público/`contentChild('nombre')` que agregue el
 maquetador debe llevar su JSDoc `/** … */` en español (las extensiones a PrimeNG empiezan por `int-* extension:`),
 y los tokens salen del `:root` de `styles/_<id>.scss`. Mientras la base es plantilla, la pestaña muestra
@@ -515,7 +533,7 @@ componente no se crea un input `width`/`height`: las variantes usan `[style]` so
 
 1. Generarla con `npm run new:version -- <id> [--title "…"] [--description "…"]` (o con Claude:
    `/crear-version`, skill `.claude/skills/crear-version/SKILL.md`). Copia la **última** versión
-   completa (`base/`, `variants/` y `styles/`) a `version-N+1/` y regenera la documentación; no se copia
+   completa (`base/`, `variants/`, `compositions/` y `styles/`) a `version-N+1/` y regenera la documentación; no se copia
    a mano. `version-N` no se borra mientras se use. El maquetador cambia lo necesario en la nueva; el
    título o la descripción de `version-N+1/base/<id>.html` mandan en el menú (versión más reciente).
 2. La carpeta y sus ejemplos se detectan solos: "Version 1" pasa a ser un desplegable que abre por
@@ -558,13 +576,16 @@ componente no se crea un input `width`/`height`: las variantes usan `[style]` so
 
 - [ ] Selector y clases con `int-` + kebab-case.
 - [ ] BEM: bloque, `__elemento`, `--modificador`; skeleton `.sk-<id>`.
-- [ ] `version-N/` solo con `base/`, `variants/` y `styles/`.
+- [ ] `version-N/` solo con `base/`, `variants/`, `styles/` y (opcional) `compositions/`.
+- [ ] Cada ejemplo en su carpeta: un input, estado o slot → `variants/`; un caso de uso armado con la
+      API + helpers → `compositions/`. Ningún input que solo exista para un caso de contenido.
 - [ ] `base/` sin dependencias de la documentación; `styleUrl: '../styles/_index.scss'`.
 - [ ] `base/<id>.ts` con `static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';` (la página muestra "Pending") y `static readonly designer = '<Nombre>';`.
 - [ ] Se preguntaron título y descripción; están en la cabecera de `base/<id>.html`.
 - [ ] Variante `basic` creada con `npm run new:variant` (cabecera con título y descripción, sin ejemplo); se preguntó si crear otra.
 - [ ] `styles/_index.scss` solo con `@use` (modificadores con `as <id>-<mod>`, y solo los que existen).
 - [ ] Módulo base de estilos con la plantilla completa (TOKENS, BLOCK, ELEMENTS, MODIFIERS, SKELETON) y **sin CSS**.
+- [ ] Si hay `disabled`: `cursor: not-allowed` + `user-select: none`, sin `pointer-events: none`, sin hover/active, handlers que lo ignoran.
 - [ ] `<id>.config.ts` sin títulos ni descripciones; importado una vez en `inventory.ts`.
 - [ ] Id en una categoría de `CATALOG_GROUPS` y su ícono en `CATALOG_ICONS` (`catalog-groups.ts`).
 - [ ] Menú y página muestran exactamente las carpetas de `variants/`; anclas `#<id>-<slug>` y pestañas HTML / TS funcionando.

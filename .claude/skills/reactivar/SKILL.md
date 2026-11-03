@@ -6,6 +6,9 @@ argument-hint: "[componente|variante|version] [componente] [slug|N]"
 
 # Reactivar lo oculto
 
+> Una **composición** oculta se reactiva igual que una variante (`show variant <id> <slug>`); `list`
+> la muestra con tipo `Composition`.
+
 Deshace `/ocultar`: quita la marca del config y el elemento vuelve al menú, la búsqueda, la galería y
 la página. La variante vuelve **a la misma posición** que tenía.
 

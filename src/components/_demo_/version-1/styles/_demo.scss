@@ -4,19 +4,48 @@
 
 :root {
   --NOTE-DEMO: 'int-demo ( Custom )';
+
+  // --- root ---
+  --int-demo-background: var(--i-card-background); // SG: --i-card-background
+  --int-demo-color: var(--i-text-color-default); // SG: --i-text-color-default
+  --int-demo-shadow: var(--i-card-box-shadow); // SG: --i-card-box-shadow
+  --int-demo-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (8px)
+  --int-demo-font-family: var(--i-typography-font-family-base); // SG: --i-typography-font-family-base
+  --int-demo-padding: var(--i-spacing-container-xl); // SG: --i-spacing-container-xl (16px)
+  --int-demo-gap: var(--i-spacing-container-lg); // SG: --i-spacing-container-lg (12px)
+
+  // --- elements ---
+  --int-demo-title-font-size: var(--i-card-title-font-size); // SG: --i-card-title-font-size
+  --int-demo-title-font-weight: var(--i-typography-font-weight-bold); // SG: --i-typography-font-weight-bold
+  --int-demo-item-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md (8px)
+  --int-demo-item-font-size: var(--i-text-body-size-md); // SG: --i-text-body-size-md
+  --int-demo-item-divider: var(--i-line); // SG: --i-line (1px solid grey-200)
+
+  // --- skeleton ---
+  --int-demo-skeleton-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50
+  --int-demo-skeleton-min-height: var(--i-sizing-xl); // SG: --i-sizing-xl
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The size comes from the consumer ([style]="{ width: '…' }" on <int-demo>), never from the block.
 .int-demo {
-  width: min(100%, 320px);
-  padding: 20px;
-  border-radius: var(--doc-radius-md);
-  background: var(--doc-surface);
-  color: var(--doc-ink);
-  font-family: var(--doc-font-sans);
+  display: flex;
+  flex-direction: column;
+  gap: var(--int-demo-gap);
+  padding: var(--int-demo-padding);
+  border-radius: var(--int-demo-border-radius);
+  background: var(--int-demo-background);
+  box-shadow: var(--int-demo-shadow);
+  color: var(--int-demo-color);
+  font-family: var(--int-demo-font-family);
+
+  // Alone in a flex wrapper (the consumer's layout cell), the block fills it.
+  &:only-child {
+    flex-grow: 1;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,9 +54,9 @@
 
 .int-demo {
   &__title {
-    margin: 0 0 12px;
-    font-size: 1rem;
-    font-weight: 600;
+    margin: 0;
+    font-size: var(--int-demo-title-font-size);
+    font-weight: var(--int-demo-title-font-weight);
   }
 
   &__list {
@@ -37,9 +66,9 @@
   }
 
   &__item {
-    padding: 8px 0;
-    border-top: 1px solid var(--doc-outline-variant);
-    font-size: 0.875rem;
+    padding-block: var(--int-demo-item-padding);
+    border-block-start: var(--int-demo-item-divider);
+    font-size: var(--int-demo-item-font-size);
   }
 }
 
@@ -52,4 +81,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-demo {
+  min-block-size: var(--int-demo-skeleton-min-height);
+  border-radius: var(--int-demo-border-radius);
+  background: var(--int-demo-skeleton-background);
 }
