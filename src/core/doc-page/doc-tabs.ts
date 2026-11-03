@@ -4,8 +4,8 @@ import { RouterLink } from '@angular/router';
 import { DocTab } from '../../service/navigation-state';
 
 /**
- * Variants | API | Compositions tabs of a documentation page, at the end of the title row: they switch the whole
- * page, so they come before the chips bar. Each tab is a link that sets ?tab=api|compositions or removes it;
+ * Variants | API | Compositions tabs of a documentation page, centered in the sticky top bar (components-page):
+ * they switch the whole page, so they stay in view while scrolling. Each tab is a link that sets ?tab=api|compositions or removes it;
  * doc-page renders the panel of the active one, with the id `<componentId>-panel-<key>`.
  * Roving tabindex: arrows, Home and End move between them.
  */

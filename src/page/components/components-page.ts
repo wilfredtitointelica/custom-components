@@ -3,6 +3,7 @@ import { ViewportScroller } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 import { BrandMark } from '../../core/brand-mark/brand-mark';
+import { DocTabs } from '../../core/doc-page/doc-tabs';
 import { StyleGuideButton } from '../../core/style-guide/style-guide-button';
 import { ToggleCode } from '../../core/toggle-code/toggle-code';
 import { ComponentCatalog } from '../../service/component-catalog';
@@ -20,14 +21,14 @@ const ANCHOR_GAP = 16;
 /** Catalog shell: navigation drawer + content pane with a sticky top app bar. */
 @Component({
   selector: 'app-components-page',
-  imports: [RouterOutlet, RouterLink, ComponentNav, StyleGuideButton, ToggleCode, BrandMark],
+  imports: [RouterOutlet, RouterLink, ComponentNav, StyleGuideButton, ToggleCode, BrandMark, DocTabs],
   templateUrl: './components-page.html',
   styleUrl: './components-page.scss',
   host: { '(document:keydown.escape)': 'drawerOpen.set(false)' },
 })
 export class ComponentsPage {
   private readonly catalog = inject(ComponentCatalog);
-  private readonly nav = inject(NavigationState);
+  protected readonly nav = inject(NavigationState);
   private readonly topbar = viewChild.required<ElementRef<HTMLElement>>('topbar');
 
   protected readonly drawerOpen = signal(false);

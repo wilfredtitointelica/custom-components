@@ -1,4 +1,4 @@
-// Segmented control at the end of the title row.
+// Segmented control centered in the top bar.
 :host {
   display: inline-flex;
   flex: none;
@@ -11,7 +11,7 @@
 .doc-tab {
   display: inline-flex;
   align-items: center;
-  height: 36px;
+  height: 32px;
   padding: 0 20px;
   border-radius: 999px;
   color: var(--doc-ink-muted);
@@ -40,5 +40,28 @@
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
+  }
+}
+
+// Compact top bar (primary background): tighter tabs on a translucent track.
+@media (max-width: 839px) {
+  :host {
+    gap: 2px;
+    padding: 3px;
+    background: rgb(255 255 255 / 0.16);
+  }
+
+  .doc-tab {
+    height: 30px;
+    padding: 0 12px;
+    color: rgb(255 255 255 / 0.85);
+
+    &:hover {
+      color: #fff;
+    }
+
+    &[aria-selected='true'] {
+      color: var(--doc-ink);
+    }
   }
 }

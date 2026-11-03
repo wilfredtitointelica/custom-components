@@ -78,7 +78,7 @@
 }
 
 .doc-breadcrumb {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
 
   ol {
@@ -121,6 +121,16 @@
     color: var(--doc-ink);
     font-weight: 500;
   }
+}
+
+// Same flex basis as the breadcrumb: the tabs between them stay centered in the bar.
+.doc-topbar-actions {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
 }
 
 .doc-content {
@@ -225,6 +235,20 @@
     display: inline-flex;
     margin-right: 8px;
     --doc-brand-h: 28px;
+  }
+
+  .doc-topbar-actions {
+    flex: none;
+    gap: 4px;
+  }
+
+  /* On a component page the tabs take the middle: the page title already names it. */
+  .doc-topbar:has(.doc-tabs) .doc-breadcrumb {
+    display: none;
+  }
+
+  .doc-topbar .doc-tabs {
+    margin-inline: auto;
   }
 
   /* Only the last level fits on a phone. */

@@ -50,8 +50,21 @@
         </ol>
       </nav>
 
-      <app-toggle-code />
-      <app-style-guide-button />
+      <!-- Variants | API | Compositions of the component page: in the sticky bar, centered, so they stay in
+           view while scrolling. Same tab state as the page (?tab=…, NavigationState.activeTab). -->
+      @if (component(); as current) {
+        <app-doc-tabs
+          [active]="nav.activeTab()"
+          [componentId]="current.id"
+          [path]="current.path"
+          [hasCompositions]="current.compositions.length > 0"
+        />
+      }
+
+      <div class="doc-topbar-actions">
+        <app-toggle-code />
+        <app-style-guide-button />
+      </div>
     </header>
 
     <main id="main-content" class="doc-content" tabindex="-1">
