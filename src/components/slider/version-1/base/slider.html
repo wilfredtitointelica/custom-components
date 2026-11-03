@@ -1,6 +1,75 @@
 <!--
   title: Slider
-  description:
+  description: Slider is a component to provide input with a drag handle.
   figma:
 -->
-int-slider
+<!-- Range bar: from the start (single value) or between both handles (range) -->
+<span class="int-slider__range" [style]="rangeStyle()"></span>
+
+@if (!range()) {
+  <!-- Single handle: the only tab stop -->
+  <span
+    #sliderHandle
+    class="int-slider__handle"
+    [class.int-slider__handle--dragging]="dragging()"
+    [style]="handleStyle()"
+    role="slider"
+    [attr.tabindex]="isDisabled() ? null : tabindex()"
+    [attr.aria-valuemin]="min()"
+    [attr.aria-valuenow]="value()"
+    [attr.aria-valuemax]="max()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-orientation]="orientation()"
+    (touchstart)="onDragStart($event)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    (mousedown)="onMouseDown($event)"
+    (keydown)="onKeyDown($event)"
+    (blur)="onTouched()"
+  ></span>
+} @else {
+  <!-- Range: one tab stop per handle; the active one stays on top -->
+  <span
+    #sliderHandleStart
+    class="int-slider__handle"
+    [class.int-slider__handle--active]="handleIndex() === 0"
+    [class.int-slider__handle--dragging]="dragging()"
+    [style]="startHandleStyle()"
+    role="slider"
+    [attr.tabindex]="isDisabled() ? null : tabindex()"
+    [attr.aria-valuemin]="min()"
+    [attr.aria-valuenow]="values()[0]"
+    [attr.aria-valuemax]="max()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-orientation]="orientation()"
+    (keydown)="onKeyDown($event, 0)"
+    (mousedown)="onMouseDown($event, 0)"
+    (touchstart)="onDragStart($event, 0)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    (blur)="onTouched()"
+  ></span>
+  <span
+    #sliderHandleEnd
+    class="int-slider__handle"
+    [class.int-slider__handle--active]="handleIndex() === 1"
+    [class.int-slider__handle--dragging]="dragging()"
+    [style]="endHandleStyle()"
+    role="slider"
+    [attr.tabindex]="isDisabled() ? null : tabindex()"
+    [attr.aria-valuemin]="min()"
+    [attr.aria-valuenow]="values()[1]"
+    [attr.aria-valuemax]="max()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-orientation]="orientation()"
+    (keydown)="onKeyDown($event, 1)"
+    (mousedown)="onMouseDown($event, 1)"
+    (touchstart)="onDragStart($event, 1)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    (blur)="onTouched()"
+  ></span>
+}

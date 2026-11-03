@@ -2,8 +2,38 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// No .prSlider in the knowledge base or Style Guide and no Figma design: each token is the Style Guide token closest
+// to the PrimeNG default theme value.
 :root {
   --NOTE-SLIDER: 'int-slider ( Custom )';
+
+  // --- track ---
+  --int-slider-track-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
+  --int-slider-track-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md, no knowledgeBase/Figma value
+  --int-slider-track-size: var(--i-spacing-50); // SG: --i-spacing-50 (4px, no 3px token), no knowledgeBase/Figma value
+  --int-slider-vertical-min-height: var(--i-sizing-1000); // SG: --i-sizing-1000 (96px, no 100px token), no knowledgeBase/Figma value
+
+  // --- range ---
+  --int-slider-range-background: var(--i-color-primary-600); // SG: --i-color-primary-600, no knowledgeBase/Figma value
+
+  // --- handle ---
+  --int-slider-handle-size: var(--i-sizing-sm); // SG: --i-sizing-sm, no knowledgeBase/Figma value
+  --int-slider-handle-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
+  --int-slider-handle-hover-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
+  --int-slider-handle-content-size: var(--i-sizing-xs); // SG: --i-sizing-xs, no knowledgeBase/Figma value
+  --int-slider-handle-content-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50, no knowledgeBase/Figma value
+  --int-slider-handle-content-hover-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50, no knowledgeBase/Figma value
+  --int-slider-handle-content-shadow: var(--i-shadow-depth-1); // SG: --i-shadow-depth-1, no knowledgeBase/Figma value
+
+  // --- focus ---
+  --int-slider-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm, no knowledgeBase/Figma value
+  --int-slider-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color, no knowledgeBase/Figma value
+  --int-slider-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25, no knowledgeBase/Figma value
+
+  // --- states and motion ---
+  --int-slider-disabled-opacity: var(--i-opacity-semi); // SG: --i-opacity-semi, no knowledgeBase/Figma value
+  --int-slider-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-slider-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,6 +41,10 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-slider {
+  position: relative;
+  display: block;
+  background: var(--int-slider-track-background);
+  border-radius: var(--int-slider-track-border-radius);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +52,136 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-slider {
+  &__range {
+    position: absolute;
+    display: block;
+    background: var(--int-slider-range-background);
+    border-radius: var(--int-slider-track-border-radius);
+  }
+
+  &__handle {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-slider-handle-size);
+    height: var(--int-slider-handle-size);
+    background: var(--int-slider-handle-background);
+    border-radius: 50%;
+    outline-color: transparent;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    transition:
+      background var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      outline-color var(--int-slider-transition-duration) var(--int-slider-transition-easing);
+
+    // Inner circle of the handle, same as PrimeNG ::before.
+    &::before {
+      content: '';
+      display: block;
+      width: var(--int-slider-handle-content-size);
+      height: var(--int-slider-handle-content-size);
+      background: var(--int-slider-handle-content-background);
+      border-radius: 50%;
+      box-shadow: var(--int-slider-handle-content-shadow);
+      transition: background var(--int-slider-transition-duration) var(--int-slider-transition-easing);
+    }
+
+    &:focus-visible {
+      outline: var(--int-slider-focus-ring-width) solid var(--int-slider-focus-ring-color);
+      outline-offset: var(--int-slider-focus-ring-offset);
+    }
+
+    // The handle being moved stays above the other one in range mode.
+    &--active {
+      z-index: 1;
+    }
+
+    &--dragging {
+      cursor: grabbing;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-slider {
+.int-slider:not(.int-slider--disabled) .int-slider__handle:hover {
+  background: var(--int-slider-handle-hover-background);
+
+  &::before {
+    background: var(--int-slider-handle-content-hover-background);
+  }
+}
+
+.int-slider--horizontal {
+  height: var(--int-slider-track-size);
+
+  .int-slider__range {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    height: 100%;
+  }
+
+  .int-slider__handle {
+    inset-block-start: 50%;
+    margin-block-start: calc(var(--int-slider-handle-size) / -2);
+    margin-inline-start: calc(var(--int-slider-handle-size) / -2);
+  }
+}
+
+.int-slider--vertical {
+  width: var(--int-slider-track-size);
+  min-height: var(--int-slider-vertical-min-height);
+
+  .int-slider__range {
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    width: 100%;
+  }
+
+  .int-slider__handle {
+    inset-inline-start: 50%;
+    margin-inline-start: calc(var(--int-slider-handle-size) / -2);
+    margin-block-end: calc(var(--int-slider-handle-size) / -2);
+  }
+}
+
+// Removed while dragging (see classes()), so the handle follows the pointer and only bar clicks animate.
+.int-slider--animate {
+  .int-slider__range {
+    transition:
+      inset-inline-start var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      bottom var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      width var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      height var(--int-slider-transition-duration) var(--int-slider-transition-easing);
+  }
+
+  .int-slider__handle {
+    transition:
+      background var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      outline-color var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      inset-inline-start var(--int-slider-transition-duration) var(--int-slider-transition-easing),
+      bottom var(--int-slider-transition-duration) var(--int-slider-transition-easing);
+  }
+}
+
+// PrimeNG .p-disabled: faded and without pointer interaction.
+.int-slider--disabled {
+  opacity: var(--int-slider-disabled-opacity);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // Same specificity as the --animate rules, so this one (later) wins.
+  .int-slider .int-slider__range,
+  .int-slider .int-slider__handle,
+  .int-slider .int-slider__handle::before {
+    transition-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +189,8 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-slider {
+  display: block;
+  height: var(--int-slider-track-size);
+  background: var(--int-slider-track-background);
+  border-radius: var(--int-slider-track-border-radius);
 }
