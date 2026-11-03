@@ -333,6 +333,28 @@ tratamiento que arriba, pero en el `example.html`/`example.ts` de la variante:
 
 Un id va en `requires` **o** en `uses`, nunca en los dos: si la base lo compone, es `requires`.
 
+**Overlays provisionales (tooltip, popover, menú).** Si el caso de la base de conocimientos tiene un
+overlay (icono de alerta o info con tooltip, "+N more" con popover) y ese `int-*` no está en `done`, el
+provisional **no se omite ni se deja solo el icono**: se maqueta visible y funcionando como lo presenta
+su `.md` de la base de conocimientos (`components/tooltip.md`…), para que se entienda el caso y el Scan
+lo encuentre:
+- **Trigger** con el patrón de la base de conocimientos (tooltip: `<span>` que envuelve un
+  `<i class="icon icon--sm icon-*">`), con `data-dep="<id>"`, `tabindex="0"` y `aria-describedby`.
+- **Panel** solo con helpers `.u-*` que se acerquen a sus tokens `--i-<id>-*` (tooltip: `u-background-white`,
+  bordes `u-b*-1`, `u-radius-sm`, `u-p-3`, `u-shadow-sm`, `u-text-xs`, `u-color-primary`) y `role="tooltip"`
+  (o el rol que PrimeNG le da). Sin `style` inline ni SCSS en el ejemplo; sin flecha si los helpers no
+  la permiten.
+- **Posición sin offsets**: el trigger `u-relative u-display-inline-flex u-flex-column u-align-items-center`
+  y, antes del icono, un ancla vacía `u-display-flex u-flex-column u-justify-content-end u-align-items-center`
+  (mide 0) con el panel `u-absolute u-mb-1` dentro: queda centrado justo encima del icono (posición `top`).
+- **Mostrar/ocultar** como PrimeNG (hover y foco): un `signal` en el `example.ts` con
+  `(mouseenter)`/`(mouseleave)`/`(focus)`/`(blur)` en el trigger, marcado
+  `// TODO(dep:<id> provisional)`. Si el mismo trigger se repite (en un `@for` o en dos bloques), un
+  `<ng-template>` con `NgTemplateOutlet` y un id por instancia.
+- El id va en `uses` (o `requires` si es la base) aunque el componente aún no tenga carpeta; si no
+  existe, el informe sugiere `/crear-componente`.
+Ejemplo de referencia: `card/version-1/compositions/kpi` (icono de alerta de Chargebacks).
+
 ---
 
 ## 2. Fase 2 · Planificación

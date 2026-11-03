@@ -100,6 +100,10 @@ en `requires` (lo usa la base) o `uses` (solo una variante) de `<id>.config.ts`:
 <!-- /dep:checkbox -->
 ```
 
+Un overlay (tooltip, popover) que aún no está en `done` también se maqueta visible y funcionando como lo
+muestra la base de conocimientos, con `data-dep` para el Scan (nunca solo el icono): ver
+`replicar-primeng` 1.6, "Overlays provisionales".
+
 ## Antes de subir
 
 ```bash
