@@ -2,8 +2,23 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// The knowledge base (.ptDragDrop) and Style Guide (dragdrop.scss) have no drag-drop styles yet and there is no Figma
+// design: the drop zone takes the values of the knowledge base .prCard--version.
 :root {
   --NOTE-DRAG-AND-DROP: 'int-drag-and-drop ( Custom )';
+
+  // --- drop zone (knowledgeBase .prCard--version) ---
+  --int-drag-and-drop-padding: var(--i-spacing-container-lg); // knowledgeBase: .prCard--version body padding 12px
+  --int-drag-and-drop-background: var(--i-background-default); // knowledgeBase: .prCard --i-card-background
+  --int-drag-and-drop-border-width: var(--i-border-width-sm); // knowledgeBase: .prCard--version border 1px
+  --int-drag-and-drop-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200
+  --int-drag-and-drop-border-radius: var(--i-border-radius-lg); // knowledgeBase: .prCard--version radius lg
+  --int-drag-and-drop-enter-border-color: var(--i-color-primary-600); // knowledgeBase: .prCard--version hover/active border primary-600
+
+  // --- states and motion ---
+  --int-drag-and-drop-disabled-opacity: var(--i-opacity-semi); // SG: --i-opacity-semi, no knowledgeBase/Figma value
+  --int-drag-and-drop-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-drag-and-drop-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,20 +26,45 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-drag-and-drop {
+  display: block;
+  padding: var(--int-drag-and-drop-padding);
+  background: var(--int-drag-and-drop-background);
+  border: var(--int-drag-and-drop-border-width) solid var(--int-drag-and-drop-border-color);
+  border-radius: var(--int-drag-and-drop-border-radius);
+  transition: border-color var(--int-drag-and-drop-duration) var(--int-drag-and-drop-easing);
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
-.int-drag-and-drop {
+// Host of [intDraggable]: it can live outside the drop zone, so it is styled on its own.
+.int-drag-and-drop__draggable {
+  cursor: move;
+
+  // With dragHandle only the handle starts the drag.
+  &--handle {
+    cursor: default;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-drag-and-drop {
+// A draggable is over the zone (PrimeNG p-draggable-enter).
+.int-drag-and-drop--enter {
+  border-color: var(--int-drag-and-drop-enter-border-color);
+}
+
+.int-drag-and-drop--disabled {
+  opacity: var(--int-drag-and-drop-disabled-opacity);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-drag-and-drop {
+    transition-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
