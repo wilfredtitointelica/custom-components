@@ -13,6 +13,18 @@ y `crear-componente/SKILL.md`); esto es lo mínimo para no salirse de ellas.
 3. **Style Guide** (`Intelica.Style.Guide.New`): CSS de las clases `.pr*`, tokens `--i-*`, helpers `.u-*`.
 4. **Figma**: solo referencia visual. No define variantes ni valores.
 
+### Conceptos de la base de conocimientos que se corrigen
+
+Algunos componentes de la base de conocimientos se armaron sobre un concepto equivocado. Al leerla, gana
+el concepto de PrimeNG y cada caso se construye en el componente que le corresponde, aunque esté
+documentado en otro archivo (reparto completo en `replicar-primeng/references/knowledge-base.md`, 1b):
+
+| Caso de la base de conocimientos | Se construye en |
+|---|---|
+| `badge.md`: valor numérico / contador, `p-overlaybadge` sobre botón o icono (un badge **indica una cantidad**, como en PrimeNG) | `int-badge` |
+| `badge.md`: etiqueta de estado con texto (+ icono): severidades, Caution (`prBadge--yellow`), Disabled, badge en celda de tabla | `int-tag` |
+| `badge.md` "con X" y `pills.md` (`.prPillTag`, filtro aplicado) | `int-chip` (`removable`) |
+
 ## Estructura de un componente
 
 ```
@@ -48,6 +60,10 @@ src/components/<id>/version-N/
   `int-* extension:` (marca fija, en inglés). El resto de comentarios del código sigue en inglés. La pestaña **API** de la página se genera de ese
   JSDoc y del `:root` de `styles/_<id>.scss` (`scripts/extract-api.mjs`).
 - En el JSDoc y en las descripciones de variantes y composiciones, los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
+- Ese texto (JSDoc, cabeceras de `base/<id>.html` y de los `example.html`) es la documentación visible:
+  describe con la API `int-*` y los helpers `u-*`, **nunca nombra clases del Style Guide** (`.prCard--compact`,
+  `.prCard--moneyRight`…). El origen en la base de conocimientos va solo en los comentarios del SCSS
+  (`// knowledgeBase: .prCard--compact · …`). `check:component` lo avisa.
 - El título de una variante dice lo que muestra: como en PrimeNG, salvo que su nombre no lo diga
   (la sección "Advanced" de card muestra los templates → "Template").
 - Nada de `primeng`, `@primeuix`, `@angular/animations`, `any`, `::ng-deep`, clases `p-*` ni clases del
@@ -99,6 +115,10 @@ en `requires` (lo usa la base) o `uses` (solo una variante) de `<id>.config.ts`:
 <input type="checkbox" class="int-multi-select__checkbox" data-dep="checkbox" />
 <!-- /dep:checkbox -->
 ```
+
+Un overlay (tooltip, popover) que aún no está en `done` también se maqueta visible y funcionando como lo
+muestra la base de conocimientos, con `data-dep` para el Scan (nunca solo el icono): ver
+`replicar-primeng` 1.6, "Overlays provisionales".
 
 ## Antes de subir
 

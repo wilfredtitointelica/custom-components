@@ -148,7 +148,7 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
 ```html
 <!--
   title: Chip
-  description: Chips represent entities using icons, labels and images.
+  description: Los chips representan entidades con iconos, etiquetas e imágenes.
   figma:
 -->
 ```
@@ -157,6 +157,12 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
   bajo el título). Cada versión tiene la suya; el menú usa la de la versión más reciente.
 - Variante → cabecera de `version-N/variants/<slug>/example.html` (título y descripción de la sección).
 - `description:` puede quedar vacío y continuar en varias líneas.
+- El título cambia con el tab, como PrimeNG: "Card" en Variants, "Card API" y "Card Compositions".
+  La descripción bajo el título también: Variants muestra `description:` y API / Compositions un texto
+  genérico, igual para todos los componentes. **No se escriben al crear el componente.** Si el
+  maquetador quiere un texto propio, agrega después en `base/<id>.html`, debajo de `description:`,
+  `description-api:`, `description-compositions:` o `description-variants:` (opcionales).
+  `npm run new:version` las conserva.
 - `figma:` va **solo en `base/<id>.html`**, siempre, debajo de `description:` y **vacío** si aún no hay
   diseño: indica que el componente puede tener un "Link to selection" de Figma como referencia. La
   página muestra un chip "Figma" que lo abre; lo usan `/replicar-primeng` y `/sincronizar-componente`, y
@@ -329,7 +335,7 @@ Se entrega **exactamente así**: la cabecera con lo respondido en 3.0 y el nombr
 ```html
 <!--
   title: Chip
-  description: Chips represent entities using icons, labels and images.
+  description: Los chips representan entidades con iconos, etiquetas e imágenes.
   figma:
 -->
 int-chip

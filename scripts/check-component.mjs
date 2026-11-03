@@ -165,6 +165,9 @@ function checkVersion(component, version, report, deps) {
     for (const [kind, members] of Object.entries(groups))
       for (const member of members.filter((m) => !m.description))
         report.warn(rel(baseTs), `${kind} "${member.name}" without JSDoc: the API tab shows no description`);
+    for (const [kind, members] of Object.entries(groups))
+      for (const member of members.filter((m) => /\bpr[A-Z]\w*/.test(m.description ?? '')))
+        report.warn(rel(baseTs), `${kind} "${member.name}": its JSDoc names a Style Guide class (.pr*), shown in the API tab`);
 
     // (select)="…" on <int-*> also listens to the native DOM event of that name (it bubbles from inner
     // inputs), so outputs follow PrimeNG: onSelect, onChange, onClick…
@@ -227,6 +230,9 @@ function checkVersion(component, version, report, deps) {
       const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
       if (inExamples(file) && /\b(title|description):.*primeng/i.test(header))
         report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');
+      // The page shows the header: name the int-* API or the u-* helpers, never a Style Guide class.
+      if (/\bpr[A-Z]\w*/.test(header))
+        report.warn(path, 'the header names a Style Guide class (.pr*): describe it with the int-* API or u-* helpers');
       // Sizing a component goes as PrimeNG ([style]="{ width: '25rem' }" on <int-*>); content uses u-* helpers.
       const contentMarkup = markup.replace(/<int-[a-z-]+\b[^>]*>/g, (tag) =>
         tag.replace(/\s\[style\]="[^"]*"/, ''),

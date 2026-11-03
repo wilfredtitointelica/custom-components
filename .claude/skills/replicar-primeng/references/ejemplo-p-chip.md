@@ -7,17 +7,18 @@ Recorrido de referencia para `Replica p-chip de PrimeNG v20`. Los datos salen de
 
 ## Fase 1 · Inspección
 
-**Componente destino (siempre se pregunta)**: no existe `src/components/chip/`; el candidato es `pill`
-("Pill"). Pregunta: "¿En qué componente replico `p-chip`? Sugerencia: `pill` (version-1)".
+**Componente destino (siempre se pregunta)**: el candidato es `chip` ("Chip"). Pregunta: "¿En qué
+componente replico `p-chip`? Sugerencia: `chip` (version-1)".
 
-- Responde `chip` → no existe: "Créalo primero con `/crear-componente` y vuelve a pedir la réplica
+- Responde `chip` → se revisa `chip/version-1` (1.2). Lo que esté en plantilla se completa; si algo está
+  customizado, se lista y se pregunta: completar solo la plantilla, forzar o cancelar.
+- Responde un id que no existe → "Créalo primero con `/crear-componente` y vuelve a pedir la réplica
   con `/replicar-primeng p-chip`". Fin.
-- Responde `pill` → se revisa `pill/version-1` (1.2). Lo que esté en plantilla se completa con el id
-  `pill` (selector `int-pill`, clases `.int-pill__*`; no se renombra). Si algo está customizado, se lista
-  y se pregunta: completar solo la plantilla, forzar o cancelar.
 
-El resto del ejemplo usa `chip` como id, como si `/crear-componente chip` ya se hubiera ejecutado y
-todo estuviera en plantilla.
+**Base de conocimientos**: `chip.md` + `pills.md` (`.prPillTag`, filtro aplicado) + el caso "con X" de
+`badge.md` (knowledge-base.md, 1b). El resto de `badge.md` va a `int-badge` / `int-tag`.
+
+El resto del ejemplo supone que todo está en plantilla.
 
 **Inventario**
 
@@ -138,7 +139,7 @@ export class IntChip {
 ```html
 <!--
   title: Chip
-  description: Chip represents people using icons, labels and images.
+  description: Chip representa personas con iconos, etiquetas e imágenes.
   figma:
 -->
 <!-- Free content goes first, as in PrimeNG (template usage). -->

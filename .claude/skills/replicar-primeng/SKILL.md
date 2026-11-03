@@ -96,7 +96,8 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    `p-inputtext`/`p-checkbox`/`p-radiobutton`/`p-textarea` → `input`, `p-tree` → `tree-view`,
    `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `date-picker`,
    `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-inputotp` → `input-otp`,
-   `p-progressbar` → `progress-bar`, `p-tag`/`p-chip` ↔ `pill`.
+   `p-progressbar` → `progress-bar`, `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`,
+   `p-chip` → `chip`.
 2. Pregunta, en un solo mensaje:
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
      defecto la más reciente). Aunque el candidato parezca obvio, se confirma.
@@ -178,6 +179,8 @@ Procedimiento completo en [references/knowledge-base.md](references/knowledge-ba
 
 1. Busca `Desarrollo/Estandares/Diseño/components/<nombre>.md` con el MCP `knowledgeBaseMcp`; si no
    conecta, léelo del repo local `C:\christian\repos\Intelica.knowledgeBase` sin preguntar.
+   Si el componente está en los **conceptos equivocados** (references/knowledge-base.md, 1b: `badge`,
+   `tag`, `chip`), lee también los otros archivos de su fila y toma solo los casos que le tocan.
 2. Lee **solo** los casos `.pr*` (clase raíz, tokens, estilos base, estados, modificadores
    `.pr<Nombre>--*`, paneles, HTML/TS de uso, props frecuentes, notas). Ignora `.pt*`, `.ly*`, `.gr*`,
    `patterns/`, `guardrails.md` y cualquier otro archivo.
@@ -244,12 +247,13 @@ de mayor prioridad y la diferencia se reporta. Procedimiento completo en
 5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
    vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
    antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
-   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
+   cabecera: no se agregan `description-api:` / `description-compositions:` / `description-variants:`
+   (la página usa un texto genérico; solo el maquetador los escribe si quiere uno propio). La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
    comparar después:
    ```html
    <!--
      title: Chip
-     description: Chip represents people using icons, labels and images.
+     description: Chip representa personas con iconos, etiquetas e imágenes.
      figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
      figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
@@ -338,6 +342,28 @@ atributos de formulario).
 
 Un id va en `requires` **o** en `uses`, nunca en los dos: si la base lo compone, es `requires`.
 
+**Overlays provisionales (tooltip, popover, menú).** Si el caso de la base de conocimientos tiene un
+overlay (icono de alerta o info con tooltip, "+N more" con popover) y ese `int-*` no está en `done`, el
+provisional **no se omite ni se deja solo el icono**: se maqueta visible y funcionando como lo presenta
+su `.md` de la base de conocimientos (`components/tooltip.md`…), para que se entienda el caso y el Scan
+lo encuentre:
+- **Trigger** con el patrón de la base de conocimientos (tooltip: `<span>` que envuelve un
+  `<i class="icon icon--sm icon-*">`), con `data-dep="<id>"`, `tabindex="0"` y `aria-describedby`.
+- **Panel** solo con helpers `.u-*` que se acerquen a sus tokens `--i-<id>-*` (tooltip: `u-background-white`,
+  bordes `u-b*-1`, `u-radius-sm`, `u-p-3`, `u-shadow-sm`, `u-text-xs`, `u-color-primary`) y `role="tooltip"`
+  (o el rol que PrimeNG le da). Sin `style` inline ni SCSS en el ejemplo; sin flecha si los helpers no
+  la permiten.
+- **Posición sin offsets**: el trigger `u-relative u-display-inline-flex u-flex-column u-align-items-center`
+  y, antes del icono, un ancla vacía `u-display-flex u-flex-column u-justify-content-end u-align-items-center`
+  (mide 0) con el panel `u-absolute u-mb-1` dentro: queda centrado justo encima del icono (posición `top`).
+- **Mostrar/ocultar** como PrimeNG (hover y foco): un `signal` en el `example.ts` con
+  `(mouseenter)`/`(mouseleave)`/`(focus)`/`(blur)` en el trigger, marcado
+  `// TODO(dep:<id> provisional)`. Si el mismo trigger se repite (en un `@for` o en dos bloques), un
+  `<ng-template>` con `NgTemplateOutlet` y un id por instancia.
+- El id va en `uses` (o `requires` si es la base) aunque el componente aún no tenga carpeta; si no
+  existe, el informe sugiere `/crear-componente`.
+Ejemplo de referencia: `card/version-1/compositions/kpi` (icono de alerta de Chargebacks).
+
 ---
 
 ## 2. Fase 2 · Planificación
@@ -395,7 +421,7 @@ efecto aislado es una variante) solo si cumple las tres:
 2. **Ningún input existente** (de PrimeNG o extensión ya creada) ni combinación de ellos lo logra.
 3. Es **reutilizable** fuera de ese caso (no es el diseño de una sola pantalla).
 
-Ejemplo, card: `.prCard--data` y `--noBg` cumplen las tres → `flat`; `--group` → `tinted`. Los formatos
+Ejemplo, card: `.prCard--data` y `--noBg` cumplen las tres → `flat`. `--group` no: su fondo (`--i-color-secondary-50`) no se distingue del de la card, así que es una card básica + helpers. Los formatos
 `mini`, `option` y `version` no: se logran con `compact`, `selectable` y `contentGap` → composiciones
 (`multi-select`, `option-picker`, `version-picker`). El caso completo (KPI, fila de métricas) sigue
 siendo composición aunque use la propiedad nueva. Si un caso queda en duda (cumple 1 y 2 pero no está
@@ -408,7 +434,7 @@ Figma no crea variantes ni composiciones: solo sirve para revisar cómo se ven.
   `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG, salvo que ese título no diga
   qué muestra: la sección "Advanced" de la card de PrimeNG demuestra los templates, así que aquí es
   `template` / "Template" (el nombre que PrimeNG usa en los demás componentes para esa sección).
-- Propiedad nueva `int-*`: slug y título del input (`flat`, `tinted`).
+- Propiedad nueva `int-*`: slug y título del input (`flat`).
 - Composiciones (casos de la base de conocimientos): slug del modificador o del título (`minimal`,
   `export`, `kpi`), título como en la base de conocimientos. No hay variante `combinations`: las
   combinaciones son las composiciones.
@@ -428,14 +454,21 @@ npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué obs
 npm run new:composition -- <id> "<Título>" --description "<el caso y con qué API se arma>"
 ```
 
-**Idioma de las descripciones:** si la documentación de PrimeNG trae la descripción (como la del
-componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
-se escribe **en español**. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
+**Idioma de las descripciones:** todas van **en español**, también la del componente. Si la
+documentación de PrimeNG trae la descripción, se traduce fiel ("Card is a flexible container
+component." → "Card es un componente contenedor flexible."); si no la trae (lo habitual en las
+variantes), se redacta. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
 descripción los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
+
+**Sin clases del Style Guide en la documentación:** el JSDoc (tab API) y las descripciones de la
+cabecera y de variantes y composiciones describen con la API `int-*` y los helpers `u-*`; nunca nombran
+el caso `.pr*` del que salen (❌ "borde visible (`.prCard--outlined` de la base de conocimientos)",
+✅ "borde visible en lugar de la sombra"). Ese origen va solo en el comentario del SCSS
+(`// knowledgeBase: .prCard--outlined · …`). `npm run check:component` lo avisa.
 
 Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la
 documentación de PrimeNG y después las propiedades nuevas (`npm run order:variants -- <id> basic icon
-image … flat tinted`); composiciones en el orden de la base de conocimientos
+image … flat`); composiciones en el orden de la base de conocimientos
 (`npm run order:variants -- <id> --compositions minimal export`).
 
 ---
@@ -489,7 +522,7 @@ Reglas:
   el contenido (KPI, fila de métricas, badge) o se logra combinando inputs existentes, no es API: es una
   **composición** en `compositions/<slug>/` (skill `crear-composicion`). Ej.: los formatos `mini`,
   `option`, `version`, `data` y `group` de card son `<int-card compact selectable>`,
-  `<int-card selectable contentGap="small">`, `<int-card flat>` y `<int-card tinted>` + helpers.
+  `<int-card selectable contentGap="small">`, `<int-card flat>` y `<int-card>` + helpers.
 - **Outputs de extensión con la convención de PrimeNG**: `onX` (`onSelect`, no `select`). Nunca el nombre
   de un evento nativo del DOM (`select`, `click`, `change`, `focus`, `close`…): `(select)="…"` sobre el
   `<int-*>` escucharía también el evento nativo, que burbujea desde un `<input>` interno y se dispara

@@ -33,7 +33,6 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
     '[class.int-card--compact]': 'compact()',
     '[class.int-card--outlined]': 'outlined()',
     '[class.int-card--flat]': 'flat()',
-    '[class.int-card--tinted]': 'tinted()',
     '[class.int-card--stretch-content]': 'stretchContent()',
     '[class.int-card--content-gap-none]': "contentGap() === 'none'",
     '[class.int-card--content-gap-small]': "contentGap() === 'small'",
@@ -53,7 +52,7 @@ export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
 })
 export class IntCard {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 
@@ -64,17 +63,15 @@ export class IntCard {
   readonly subheader = input<string>();
   /** int-* extension: alto fijo del template `header` (cualquier medida CSS, p. ej. '240px'); la imagen lo llena. */
   readonly headerHeight = input<string>();
-  /** int-* extension: menos padding, separación y radio, y texto más pequeño (`.prCard--compact` de la base de conocimientos). */
+  /** int-* extension: menos padding, separación y radio, y texto más pequeño, para paneles laterales y espacios chicos. */
   readonly compact = input(false, { transform: booleanAttribute });
-  /** int-* extension: borde visible en lugar de la sombra (`.prCard--outlined` de la base de conocimientos). */
+  /** int-* extension: borde visible en lugar de la sombra. */
   readonly outlined = input(false, { transform: booleanAttribute });
   /**
-   * int-* extension: sin fondo, sombra ni padding (`.prCard--data` y `.prCard--noBg` de la base de
-   * conocimientos); el contenido decide su espaciado. Se usa para KPIs y grupos de métricas.
+   * int-* extension: sin fondo, sombra ni padding; el contenido decide su espaciado con helpers `u-*`.
+   * Se usa para KPIs y grupos de métricas.
    */
   readonly flat = input(false, { transform: booleanAttribute });
-  /** int-* extension: fondo tenue en lugar del de la card (`.prCard--group` de la base de conocimientos). */
-  readonly tinted = input(false, { transform: booleanAttribute });
   /** int-* extension: el cuerpo y el contenido llenan el alto de la card, para centrar un estado vacío o de error. */
   readonly stretchContent = input(false, { transform: booleanAttribute });
   /** int-* extension: separación entre los bloques del template `content`; sin él, la de por defecto (6px). */

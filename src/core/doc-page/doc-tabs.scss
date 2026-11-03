@@ -1,7 +1,11 @@
-// Segmented control at the end of the title row.
+// Segmented control centered in the top bar.
+// Equal-width tabs: every column takes the width of the widest label.
 :host {
-  display: inline-flex;
+  display: inline-grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
   flex: none;
+  width: var(--doc-topbar-center-w); // same as the Icon Lab search
   gap: 4px;
   padding: 4px;
   border-radius: 999px;
@@ -11,8 +15,9 @@
 .doc-tab {
   display: inline-flex;
   align-items: center;
-  height: 36px;
-  padding: 0 20px;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
   border-radius: 999px;
   color: var(--doc-ink-muted);
   font-size: 0.875rem;
@@ -40,5 +45,29 @@
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
+  }
+}
+
+// Compact top bar (primary background): tighter tabs on a translucent track.
+@media (max-width: 839px) {
+  :host {
+    width: auto;
+    gap: 2px;
+    padding: 3px;
+    background: rgb(255 255 255 / 0.16);
+  }
+
+  .doc-tab {
+    height: 30px;
+    padding: 0 12px;
+    color: rgb(255 255 255 / 0.85);
+
+    &:hover {
+      color: #fff;
+    }
+
+    &[aria-selected='true'] {
+      color: var(--doc-ink);
+    }
   }
 }

@@ -101,6 +101,12 @@ export interface DocExampleSource {
 export interface DocMeta {
   readonly title?: string;
   readonly description?: string;
+  /** `description-variants:` line (base/<id>.html only): description of the Variants tab (fallback: description). */
+  readonly descriptionVariants?: string;
+  /** `description-api:` line (base/<id>.html only): description of the API tab (fallback: a generic text). */
+  readonly descriptionApi?: string;
+  /** `description-compositions:` line (base/<id>.html only): description of the Compositions tab (fallback: a generic text). */
+  readonly descriptionCompositions?: string;
   /** Figma "Link to selection" of the version's design (base/<id>.html only; empty = none yet). */
   readonly figma?: string;
   /**

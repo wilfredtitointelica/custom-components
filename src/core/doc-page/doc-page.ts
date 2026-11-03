@@ -22,10 +22,9 @@ import { CatalogVariant, DocExampleCode, DocExampleSource } from '../../service/
 import { CodeVisibility } from '../../service/code-visibility';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { parseDocHtml } from '../../service/doc-html';
-import { NavigationState } from '../../service/navigation-state';
+import { DocTab, NavigationState } from '../../service/navigation-state';
 import { DocApiView } from './doc-api';
 import { DocApiToc } from './doc-api-toc';
-import { DocTabs } from './doc-tabs';
 import { InlineCode } from '../inline-code/inline-code';
 import { CodePanel } from '../toggle-code/code-panel';
 import { VersionPicker } from './version-picker';
@@ -106,7 +105,6 @@ function toExample({ slug, module, sources }: DocExampleSource): [string, DocExa
     StatusChip,
     DesignerBadge,
     DocApiView,
-    DocTabs,
     DocApiToc,
     InlineCode,
   ],
@@ -186,6 +184,37 @@ export class DocPage {
   /** Sticky row of chips (version, variants, status, Figma, dependencies, designer). */
   private readonly meta = viewChild.required<ElementRef<HTMLElement>>('meta');
 
+  /** Suffix of the page title for each tab: "Card" (Variants), "Card API", "Card Compositions". */
+  protected readonly tabTitle: Readonly<Record<DocTab, string>> = {
+    variants: '',
+    api: 'API',
+    compositions: 'Compositions',
+  };
+
+  /**
+   * Description under the title for the open tab: description-variants|api|compositions: of the selected
+   * version's header. Variants falls back to description:, API and Compositions to a generic text.
+   */
+  protected readonly tabDescription = computed(() => {
+    const current = this.component();
+    const version = this.nav.activeVersion();
+    const name = version?.title ?? current.name;
+    switch (this.nav.activeTab()) {
+      case 'api':
+        return (
+          version?.descriptionApi ??
+          `La API define las propiedades, eventos, templates y tokens CSS del componente ${name}.`
+        );
+      case 'compositions':
+        return (
+          version?.descriptionCompositions ??
+          `Las composiciones son casos de uso reales armados con la API de ${name} y los helpers \`u-*\`.`
+        );
+      default:
+        return version?.descriptionVariants ?? version?.description ?? current.description;
+    }
+  });
+
   /** The Dependencies popover is open (aria-expanded of its chip). */
   protected readonly dependenciesOpen = signal(false);
 
@@ -227,15 +256,18 @@ export class DocPage {
 
     // A link to an example of the other tab (a composition from Variants, a variant from Compositions)
     // switches the tab: the router tried to scroll before that section existed, so scroll once the new
-    // tab is rendered.
+    // tab is rendered. Any other tab switch (the top bar tabs) starts the new tab from the top of the
+    // page, with the title in view, whatever the old tab's scroll left.
     let renderedTab = untracked(() => this.nav.activeTab());
     effect(() => {
       const tab = this.nav.activeTab();
       if (tab === renderedTab) return;
       renderedTab = tab;
       const variantId = untracked(() => this.nav.activeVariantId());
-      if (variantId && this.examples.hasValue()) {
-        afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+      if (variantId) {
+        if (this.examples.hasValue()) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+      } else {
+        afterNextRender(() => scroller.scrollToPosition([0, 0], { behavior: 'instant' }), { injector });
       }
     });
 

@@ -32,6 +32,31 @@ reporta si se contradicen.
 
 Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase): se verifican en el Style Guide (prioridad 3).
 
+## 1b. Conceptos equivocados: reparto de casos entre componentes
+
+Algunos archivos de la base de conocimientos agrupan bajo un nombre casos que en PrimeNG son componentes
+distintos. Gana el concepto de PrimeNG: cada caso se construye en su componente, aunque esté documentado
+en otro archivo. Al replicar, estandarizar o sincronizar uno de estos componentes se leen **todos** los
+archivos de su fila y se toman solo los casos que le tocan.
+
+**Badge.** `badge.md` abarca visualmente badges, tags y chips. En PrimeNG un badge **indica una cantidad**
+(notificaciones, contador); una etiqueta de estado es un tag y un elemento que se quita es un chip.
+
+| Caso | Archivos de la KB | Componente | Cómo |
+|---|---|---|---|
+| Valor numérico / contador; `p-overlaybadge` sobre botón o icono | `badge.md` (secciones "Badge sobre botón", tamaños) | `int-badge` | API de `p-badge` / `p-overlaybadge`; severidades de `.prBadge` solo para el contador |
+| Etiqueta de estado con texto (+ icono de 12px): Info, Success, Warning, Danger, Default, Caution (`prBadge--yellow`), Disabled (`prBadge--disabled`); badge en celda de tabla | `badge.md` (estados, "Variante con ícono", "Uso sin ícono", "Badge en celda de tabla") + `tag.md` | `int-tag` | API de `p-tag` (`value`, `severity`, `icon`); Caution y Disabled son valores de `severity` o candidatos a propiedad (2b); la celda de tabla es una composición |
+| Badge "con X" / filtro aplicado (`.prPillTag` sobre `p-tag`) | `badge.md` ("Regla de identificación") + `pills.md` + `chip.md` | `int-chip` | API de `p-chip` (`removable`, `onRemove`); el filtro aplicado es una composición |
+
+- Los estilos `.prBadge*` y `.prPillTag` se leen como referencia visual del caso y se traducen a los
+  tokens del componente destino (`--int-tag-*`, `--int-chip-*`), con `// knowledgeBase: badge.md · <token>`.
+- La nota de `badge.md` "`p-chip` no existe en el DS — no usar" no aplica en este repo.
+- `int-pill` no recibe casos de `badge.md` ni de `pills.md`. La forma "pill" es el input `rounded` de
+  `p-tag`: va en `int-tag` como propiedad `rounded` (+ variante), no como componente aparte. Qué pasa con
+  `int-pill` está por decidir.
+- En la tabla de la fase 1 (sección 2), los casos que se van a otro componente se listan con su destino
+  ("→ `int-tag`") y no se implementan en el componente que se está replicando.
+
 ## 2. Qué extraer (tabla en el chat, en la fase 1)
 
 | Sección de la base de conocimientos (Intelica.knowledgeBase) | Qué es | Destino en `int-<id>` |
@@ -60,7 +85,7 @@ fuera de ese caso. Con duda en la tercera, se pregunta. Para cada candidato, la 
 | Lo que lo distingue es el **contenido** (KPI, fila de métricas, badge) o se logra combinando inputs que ya existen | **nada en la API**: es una **composición** en `compositions/<slug>/` (skill `crear-composicion`, tab Compositions) | `.prCard--data` → `<int-card flat>` + helpers; `mini`/`version` → `<int-card compact selectable>` |
 | Corresponde a un input de PrimeNG (`severity`, `variant`, `size`, `raised`…) | ese input, con sus valores | `.prButton--outlined` → `variant="outlined"` |
 | Cambia el **contenedor** y se **excluye** con otros (no tiene sentido llevar dos a la vez) | un valor de **un** input tipado `appearance` (tipo exportado `Int<Id>Appearance`) | `.prMessage--inline`, `--banner` → `appearance="inline" \| "banner"` |
-| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg`, `--group` → `compact`, `outlined`, `flat`, `tinted` |
+| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg` → `compact`, `outlined`, `flat` |
 | Tiene una escala de valores (gap, tamaño) | un input tipado con esos valores | `content-gap-small/medium/large` → `contentGap="small"` |
 
 - Duda sobre si dos se excluyen: mira si la base de conocimientos, el SCSS `.pr*` o Figma los muestra
