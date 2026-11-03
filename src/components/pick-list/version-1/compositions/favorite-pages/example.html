@@ -1,0 +1,25 @@
+<!--
+  title: Favorite Pages
+  description: Caso del modal de páginas favoritas: `dragdrop` y `[showTransferControls]="false"` para pasar páginas de ida y vuelta y reordenarlas arrastrando, sin botones; el template `item` numera cada página y marca con estrella las favoritas, y los encabezados cuentan las páginas.
+-->
+<int-pick-list
+  dragdrop
+  [showTransferControls]="false"
+  [(source)]="availablePages"
+  [(target)]="favoritePages"
+  sourceHeader="Available pages | {{ availablePages.length }} pages"
+  targetHeader="Favorites | {{ favoritePages.length }} pages"
+  [style]="{ width: '34rem' }"
+>
+  <ng-template #item let-page let-index="index">
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <span class="u-flex-grow-1">{{ index + 1 }}. {{ page }}</span>
+      <i
+        class="icon"
+        [class.icon-favorites-on]="isFavorite(page)"
+        [class.icon-favorites-off]="!isFavorite(page)"
+        aria-hidden="true"
+      ></i>
+    </div>
+  </ng-template>
+</int-pick-list>

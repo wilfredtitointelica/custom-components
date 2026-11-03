@@ -1,0 +1,17 @@
+<!--
+  title: Filter
+  description: Con `filterBy` cada lista muestra un buscador; el texto se busca en los campos indicados (`name`) y los botones de mover todo solo pasan los items visibles.
+-->
+<int-pick-list
+  dragdrop
+  filterBy="name"
+  [(source)]="source"
+  [(target)]="target"
+  sourceHeader="Available"
+  targetHeader="Selected"
+  sourceFilterPlaceholder="Search by name"
+  targetFilterPlaceholder="Search by name"
+  [style]="{ width: '36rem' }"
+>
+  <ng-template #item let-page>{{ page.name }}</ng-template>
+</int-pick-list>

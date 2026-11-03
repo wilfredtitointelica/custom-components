@@ -7,7 +7,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   { name: 'Entrada de texto', ids: ['input', 'password', 'input-otp', 'search', 'search-dropdown'] },
   {
     name: 'Selección',
-    ids: ['dropdown-select', 'multi-select', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'date-picker'],
+    ids: ['dropdown-select', 'multi-select', 'tree-select', 'list-box', 'pick-list', 'toggle-switch', 'slider', 'date-picker'],
   },
   { name: 'Navegación', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
@@ -37,6 +37,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   'multi-select': 'pi-list-check',
   'tree-select': 'pi-sitemap',
   'list-box': 'pi-list',
+  'pick-list': 'pi-arrow-right-arrow-left',
   'toggle-switch': 'pi-circle-on',
   slider: 'pi-sliders-h',
   'date-picker': 'pi-calendar',

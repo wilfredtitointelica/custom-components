@@ -1,0 +1,15 @@
+<!--
+  title: Template
+  description: Con el template `item` cada fila muestra su propio contenido (ícono, nombre y detalle).
+-->
+<int-pick-list dragdrop [(source)]="source" [(target)]="target" sourceHeader="Available pages" targetHeader="Favorites" [style]="{ width: '40rem' }">
+  <ng-template #item let-page let-selected="selected">
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <i class="icon {{ page.icon }} u-text-lg" aria-hidden="true"></i>
+      <div class="u-display-flex u-flex-column">
+        <span>{{ page.name }}</span>
+        <span class="u-text-sm" [class.u-color-grey-500]="!selected">{{ page.module }}</span>
+      </div>
+    </div>
+  </ng-template>
+</int-pick-list>

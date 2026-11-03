@@ -20,6 +20,7 @@ import search from './search/search.config';
 import stepper from './stepper/stepper.config';
 import treeSelect from './tree-select/tree-select.config';
 import dragAndDrop from './drag-and-drop/drag-and-drop.config';
+import pickList from './pick-list/pick-list.config';
 import table from './table/table.config';
 import fileDrop from './file-drop/file-drop.config';
 import carousel from './carousel/carousel.config';
@@ -69,6 +70,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   stepper,
   treeSelect,
   dragAndDrop,
+  pickList,
   table,
   fileDrop,
   carousel,
