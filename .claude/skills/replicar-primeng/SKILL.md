@@ -96,7 +96,8 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    `p-inputtext`/`p-checkbox`/`p-radiobutton`/`p-textarea` → `input`, `p-tree` → `tree-view`,
    `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `date-picker`,
    `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-inputotp` → `input-otp`,
-   `p-progressbar` → `progress-bar`, `p-tag`/`p-chip` ↔ `pill`.
+   `p-progressbar` → `progress-bar`, `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`,
+   `p-chip` → `chip`.
 2. Pregunta, en un solo mensaje:
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
      defecto la más reciente). Aunque el candidato parezca obvio, se confirma.
@@ -178,6 +179,8 @@ Procedimiento completo en [references/knowledge-base.md](references/knowledge-ba
 
 1. Busca `Desarrollo/Estandares/Diseño/components/<nombre>.md` con el MCP `knowledgeBaseMcp`; si no
    conecta, léelo del repo local `C:\christian\repos\Intelica.knowledgeBase` sin preguntar.
+   Si el componente está en los **conceptos equivocados** (references/knowledge-base.md, 1b: `badge`,
+   `tag`, `chip`), lee también los otros archivos de su fila y toma solo los casos que le tocan.
 2. Lee **solo** los casos `.pr*` (clase raíz, tokens, estilos base, estados, modificadores
    `.pr<Nombre>--*`, paneles, HTML/TS de uso, props frecuentes, notas). Ignora `.pt*`, `.ly*`, `.gr*`,
    `patterns/`, `guardrails.md` y cualquier otro archivo.

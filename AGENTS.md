@@ -13,6 +13,18 @@ y `crear-componente/SKILL.md`); esto es lo mínimo para no salirse de ellas.
 3. **Style Guide** (`Intelica.Style.Guide.New`): CSS de las clases `.pr*`, tokens `--i-*`, helpers `.u-*`.
 4. **Figma**: solo referencia visual. No define variantes ni valores.
 
+### Conceptos de la base de conocimientos que se corrigen
+
+Algunos componentes de la base de conocimientos se armaron sobre un concepto equivocado. Al leerla, gana
+el concepto de PrimeNG y cada caso se construye en el componente que le corresponde, aunque esté
+documentado en otro archivo (reparto completo en `replicar-primeng/references/knowledge-base.md`, 1b):
+
+| Caso de la base de conocimientos | Se construye en |
+|---|---|
+| `badge.md`: valor numérico / contador, `p-overlaybadge` sobre botón o icono (un badge **indica una cantidad**, como en PrimeNG) | `int-badge` |
+| `badge.md`: etiqueta de estado con texto (+ icono): severidades, Caution (`prBadge--yellow`), Disabled, badge en celda de tabla | `int-tag` |
+| `badge.md` "con X" y `pills.md` (`.prPillTag`, filtro aplicado) | `int-chip` (`removable`) |
+
 ## Estructura de un componente
 
 ```

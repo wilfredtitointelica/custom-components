@@ -59,6 +59,9 @@ git log --oneline -3 -- src/components/<id>/
    inputs/outputs, estilos, ejemplos y datos de demo.
 3. **Lee las fuentes**: PrimeNG (`replicar-primeng` 1.3: API, plantilla, CSS, animaciones, teclado) y
    el caso `.pr` de la base de conocimientos (Intelica.knowledgeBase, 1.3b, MCP `knowledgeBaseMcp` o repo local).
+   En `badge`, `tag` y `chip` se aplica el reparto de conceptos equivocados (`knowledge-base.md` 1b): un
+   caso que el maquetador puso en el componente equivocado (un "badge" de estado, un badge con X) se
+   reporta como **Mueve** al componente que le corresponde.
 4. **Tipo de trabajo**:
 
 | Tipo | Cómo se detecta | Qué se hace |
