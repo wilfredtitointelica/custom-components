@@ -1,6 +1,6 @@
 <!--
   title: Metric Group
-  description: Varias métricas en una fila, separadas por divisores. Con fondo es una card básica; sin fondo usa `flat` y el espaciado lo ponen los helpers del contenido.
+  description: Varias métricas en una fila, separadas por divisores y con el mismo ancho; un texto largo pasa a la siguiente línea. Con fondo es una card básica; sin fondo usa `flat` y el espaciado lo ponen los helpers del contenido.
 -->
 <div class="u-display-flex u-flex-column u-gap-xl">
   <div class="u-display-flex u-flex-column u-gap-md">
@@ -26,16 +26,16 @@
   <div class="u-display-flex u-justify-content-around u-align-items-center">
     @for (metric of metrics; track metric.label; let first = $first) {
       @if (!first) {
-        <div class="u-divider-vertical u-align-self-stretch" aria-hidden="true"></div>
+        <div class="u-divider-vertical u-auto-height u-align-self-stretch" aria-hidden="true"></div>
       }
-      <div class="u-display-flex u-justify-content-center u-gap-lg">
-        <div class="u-display-flex u-flex-column u-justify-content-center">
-          <span class="u-text-lg u-bold u-text-nowrap">{{ metric.label }}</span>
-          <span class="u-text-sm u-text-nowrap">{{ metric.date }}</span>
+      <div class="u-display-flex u-flex-grow-1 u-flex-basis-0 u-justify-content-center u-align-items-center u-gap-sm">
+        <div class="u-display-flex u-flex-column u-text-right">
+          <span class="u-text-lg u-text-lineHeight-lg u-bold">{{ metric.label }}</span>
+          <span class="u-text-sm u-text-lineHeight-sm">{{ metric.date }}</span>
         </div>
-        <div class="u-display-flex u-gap-xs" [class]="metric.color">
-          <span class="u-text-sm u-bold">{{ metric.currency }}</span>
-          <span class="u-text-3xl u-bold u-text-lineHeight-tight u-text-nowrap">{{ metric.value }}</span>
+        <div class="u-display-flex" [class]="metric.color">
+          <span class="u-text-sm u-bold u-text-lineHeight-cap">{{ metric.currency }}</span>
+          <span class="u-text-3xl u-bold u-text-lineHeight-cap u-text-nowrap">{{ metric.value }}</span>
         </div>
       </div>
     }

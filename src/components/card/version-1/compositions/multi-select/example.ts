@@ -6,15 +6,13 @@ interface Item {
   id: string;
   title: string;
   description: string;
-  label: string;
-  date: string;
   disabled: boolean;
 }
 
 const ITEMS: readonly Item[] = [
-  { id: 'fees', title: 'Fee report', description: 'Monthly fees by brand', label: 'Updated:', date: 'Jan 12', disabled: false },
-  { id: 'volume', title: 'Volume', description: 'Transactions by region', label: 'Updated:', date: 'Jan 10', disabled: false },
-  { id: 'archive', title: 'Archive', description: 'Reports from last year', label: 'Updated:', date: 'Dec 31', disabled: true },
+  { id: 'fees', title: 'Fee report', description: 'Monthly fees by brand', disabled: false },
+  { id: 'volume', title: 'Volume', description: 'Transactions by region', disabled: false },
+  { id: 'archive', title: 'Archive', description: 'Reports from last year', disabled: true },
 ];
 
 @Component({
