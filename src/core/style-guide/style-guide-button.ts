@@ -21,7 +21,7 @@ import { StyleGuideDialog } from './style-guide-dialog';
       (click)="ready() && dialog()?.open()"
     >
       <i class="pi pi-folder" aria-hidden="true"></i>
-      <span class="doc-sg-trigger-label">STYLEGUIDES</span>
+      <span class="doc-sg-trigger-label">REPO SG</span>
     </button>
     @if (!ready()) {
       <span id="doc-sg-reason" role="tooltip" class="doc-sg-tooltip">
