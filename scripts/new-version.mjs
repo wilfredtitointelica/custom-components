@@ -1,5 +1,5 @@
 // Opens a new implementation version of a component: copies the latest
-// src/components/<component>/version-<N>/ (base/, variants/ and styles/) to version-<N+1>/.
+// src/components/<component>/version-<N>/ (base/, variants/, compositions/ and styles/) to version-<N+1>/.
 //   base/<id>.ts   → the "· version N" doc comment becomes "· version N+1"; the static `status` resets to 'pending'
 //   base/<id>.html → header kept as is, unless --title / --description are given
 // The copy is the starting point: the maquetador changes base/ and styles/ in the new version, and
@@ -101,10 +101,14 @@ if (title !== undefined || description !== undefined) {
   writeFileSync(targetHtml, HEADER.test(html) ? html.replace(HEADER, header) : `${header}\n${html}`);
 }
 
-const examples = existsSync(join(targetDir, 'variants'))
-  ? readdirSync(join(targetDir, 'variants'), { withFileTypes: true }).filter((e) => e.isDirectory()).length
-  : 0;
-console.log(`[new-version] Created ${toPosix(targetDir)}/ from version-${latest} (${examples} variants copied)`);
+const count = (folder) =>
+  existsSync(join(targetDir, folder))
+    ? readdirSync(join(targetDir, folder), { withFileTypes: true }).filter((e) => e.isDirectory()).length
+    : 0;
+console.log(
+  `[new-version] Created ${toPosix(targetDir)}/ from version-${latest} ` +
+    `(${count('variants')} variants and ${count('compositions')} compositions copied)`,
+);
 console.log(`[new-version] Page: /components/${id}?version=${next}`);
 
 // Register the new folder in src/generated/ (a running ng serve picks it up).

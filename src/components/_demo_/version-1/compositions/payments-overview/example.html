@@ -1,0 +1,12 @@
+<!--
+  title: Payments Overview
+  description: Dos bloques lado a lado, uno con `outlined`, para comparar pagos por estado: el layout lo ponen los helpers en un envoltorio por bloque.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-demo title="Pending payments" [items]="pending" [style]="{ width: '18rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-demo outlined title="Scheduled payments" [items]="scheduled" [style]="{ width: '18rem' }" />
+  </div>
+</div>

@@ -9,8 +9,10 @@
 //   node scripts/order-variants.mjs <component> <slug> <slug>… → set the order (every visible variant, once)
 //   npm run order:variants -- demo
 //   npm run order:variants -- demo basic outlined
+//   npm run order:variants -- card --compositions kpi metric-group   → same, for the compositions list
 //
-// <component> is the ID or the folder (button, demo, _demo_).
+// <component> is the ID or the folder (button, demo, _demo_). --compositions orders the `compositions`
+// list (version-N/compositions/<slug>/ folders, Compositions tab) instead of `variants`.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 import {
@@ -27,16 +29,19 @@ function fail(message) {
   process.exit(1);
 }
 
-const [componentArg, ...order] = process.argv.slice(2);
-if (!componentArg) fail('Usage: npm run order:variants -- <component> [<slug> <slug>…]');
+const args = process.argv.slice(2);
+/** Example folder and config list: variants (Variants tab) or compositions (Compositions tab). */
+const kind = args.includes('--compositions') ? 'compositions' : 'variants';
+const [componentArg, ...order] = args.filter((arg) => arg !== '--compositions');
+if (!componentArg) fail('Usage: npm run order:variants -- <component> [--compositions] [<slug> <slug>…]');
 
 const component = findComponent(componentArg);
 if (!component) fail(`Component "${componentArg}" not found in src/components/.`);
 if (!existsSync(component.config)) fail(`Missing config: ${toPosix(component.config)}`);
 
 const source = readFileSync(component.config, 'utf8');
-const entries = readVariantEntries(source)?.entries ?? [];
-const folders = variantVersions(component);
+const entries = readVariantEntries(source, kind)?.entries ?? [];
+const folders = variantVersions(component, kind);
 
 /** Visible order, as src/service/component-catalog.ts resolves it. */
 function currentOrder() {
@@ -48,12 +53,13 @@ function currentOrder() {
 }
 
 function printTable(slugs) {
-  console.log(`\n${component.id} · ${slugs.length} variant(s)\n`);
+  const noun = kind === 'compositions' ? 'composition(s)' : 'variant(s)';
+  console.log(`\n${component.id} · ${slugs.length} ${noun}\n`);
   console.log('| # | Slug | Title | Versions |');
   console.log('|---|---|---|---|');
   slugs.forEach((slug, i) => {
     const versions = folders.get(slug);
-    console.log(`| ${i + 1} | ${slug} | ${variantTitle(component, slug, versions)} | ${versions.join(', ')} |`);
+    console.log(`| ${i + 1} | ${slug} | ${variantTitle(component, slug, versions, kind)} | ${versions.join(', ')} |`);
   });
   const hidden = entries.filter((e) => e.hidden).map((e) => e.slug);
   if (hidden.length) console.log(`\nHidden (kept as they are): ${hidden.join(', ')}`);
@@ -78,12 +84,12 @@ const texts = [
   ...order.map((slug) => entries.find((e) => !e.hidden && e.slug === slug && !e.text.match(/^['"`]/))?.text ?? `'${slug}'`),
   ...entries.filter((e) => e.hidden).map((e) => e.text),
 ];
-const updated = writeVariantEntries(source, texts);
+const updated = writeVariantEntries(source, texts, kind);
 if (updated === source) {
   console.log(`[order-variants] ${toPosix(component.config)} already has this order.`);
 } else {
   writeFileSync(component.config, updated);
-  console.log(`[order-variants] ${toPosix(component.config)} → variants: ${order.join(', ')}`);
+  console.log(`[order-variants] ${toPosix(component.config)} → ${kind}: ${order.join(', ')}`);
 }
 // No regeneration needed: the config is a normal import, ng serve reloads it.
 printTable(order);

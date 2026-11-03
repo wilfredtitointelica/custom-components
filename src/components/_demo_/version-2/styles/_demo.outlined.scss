@@ -2,10 +2,12 @@
  * MODIFIERS ( --modifier ) · Outlined
 \*——————————————————————————————————————————————————————————*/
 
+// outlined input · visible border instead of the shadow; the accent bar on top stays.
 .int-demo--outlined {
-  border: 1px solid var(--doc-outline);
-  border-top: 4px solid var(--doc-accent);
-  background: transparent;
+  --int-demo-outlined-border: var(--i-line); // SG: --i-line (1px solid grey-200)
+
+  border-inline: var(--int-demo-outlined-border);
+  border-block-end: var(--int-demo-outlined-border);
   box-shadow: none;
 
   .int-demo__header {

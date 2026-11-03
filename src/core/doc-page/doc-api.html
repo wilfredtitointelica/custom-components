@@ -68,7 +68,9 @@
                 <td>
                   <code class="doc-api-default">{{ item.default ?? 'undefined' }}</code>
                 </td>
-                <td class="doc-api-description">{{ item.description || '—' }}</td>
+                <td class="doc-api-description">
+                  <app-inline-code [text]="item.description || '—'" />
+                </td>
               </tr>
             }
           </tbody>
@@ -114,7 +116,9 @@
                 <td>
                   <code class="doc-api-type">{{ item.type }}</code>
                 </td>
-                <td class="doc-api-description">{{ item.description || '—' }}</td>
+                <td class="doc-api-description">
+                  <app-inline-code [text]="item.description || '—'" />
+                </td>
               </tr>
             }
           </tbody>
@@ -168,7 +172,9 @@
                 <td>
                   <code class="doc-api-type">{{ item.context ?? '—' }}</code>
                 </td>
-                <td class="doc-api-description">{{ item.description || '—' }}</td>
+                <td class="doc-api-description">
+                  <app-inline-code [text]="item.description || '—'" />
+                </td>
               </tr>
             }
           </tbody>
@@ -207,7 +213,9 @@
                     }}</span>
                   }
                 </td>
-                <td class="doc-api-description">{{ item.description || '—' }}</td>
+                <td class="doc-api-description">
+                  <app-inline-code [text]="item.description || '—'" />
+                </td>
               </tr>
             }
           </tbody>

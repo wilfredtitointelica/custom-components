@@ -13,8 +13,6 @@ import {
 
 /** Gap between the #content blocks: none 0 · small 4px · (default 6px) · medium 12px · large 16px. */
 export type IntCardContentGap = 'none' | 'small' | 'medium' | 'large';
-/** Visual formats of the knowledge base; they exclude each other (compact / outlined / noBg add up). */
-export type IntCardAppearance = 'mini' | 'option' | 'version' | 'data' | 'group';
 
 /**
  * <int-card> · version 1. Replica of PrimeNG v20 p-card without PrimeNG at runtime.
@@ -34,17 +32,13 @@ export type IntCardAppearance = 'mini' | 'option' | 'version' | 'data' | 'group'
     class: 'int-card',
     '[class.int-card--compact]': 'compact()',
     '[class.int-card--outlined]': 'outlined()',
-    '[class.int-card--no-bg]': 'noBg()',
+    '[class.int-card--flat]': 'flat()',
+    '[class.int-card--tinted]': 'tinted()',
     '[class.int-card--stretch-content]': 'stretchContent()',
     '[class.int-card--content-gap-none]': "contentGap() === 'none'",
     '[class.int-card--content-gap-small]': "contentGap() === 'small'",
     '[class.int-card--content-gap-medium]': "contentGap() === 'medium'",
     '[class.int-card--content-gap-large]': "contentGap() === 'large'",
-    '[class.int-card--mini]': "appearance() === 'mini'",
-    '[class.int-card--option]': "appearance() === 'option'",
-    '[class.int-card--version]': "appearance() === 'version'",
-    '[class.int-card--data]': "appearance() === 'data'",
-    '[class.int-card--group]': "appearance() === 'group'",
     '[class.int-card--selectable]': 'selectable()',
     '[class.int-card--selected]': 'selectable() && selected()',
     '[class.int-card--disabled]': 'disabled()',
@@ -64,56 +58,55 @@ export class IntCard {
   static readonly designer = 'Christian Abanto';
 
   // JSDoc of the public API in Spanish: it is the Descripción column of the API tab of the page.
-  /** Título de la card; una plantilla #title tiene prioridad. */
+  /** Título de la card; el template `title` tiene prioridad. */
   readonly header = input<string>();
-  /** Subtítulo de la card; una plantilla #subtitle tiene prioridad. */
+  /** Subtítulo de la card; el template `subtitle` tiene prioridad. */
   readonly subheader = input<string>();
-  /** int-* extension: alto fijo del #header (cualquier medida CSS, p. ej. '240px'); la imagen lo llena. */
+  /** int-* extension: alto fijo del template `header` (cualquier medida CSS, p. ej. '240px'); la imagen lo llena. */
   readonly headerHeight = input<string>();
-  /** int-* extension: menos padding, separación y radio, y texto más pequeño (.prCard--compact de la base de conocimientos). */
+  /** int-* extension: menos padding, separación y radio, y texto más pequeño (`.prCard--compact` de la base de conocimientos). */
   readonly compact = input(false, { transform: booleanAttribute });
-  /** int-* extension: borde visible en lugar de la sombra (.prCard--outlined de la base de conocimientos). */
+  /** int-* extension: borde visible en lugar de la sombra (`.prCard--outlined` de la base de conocimientos). */
   readonly outlined = input(false, { transform: booleanAttribute });
-  /** int-* extension: sin fondo ni sombra (se usa con appearance="group"). */
-  readonly noBg = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: sin fondo, sombra ni padding (`.prCard--data` y `.prCard--noBg` de la base de
+   * conocimientos); el contenido decide su espaciado. Se usa para KPIs y grupos de métricas.
+   */
+  readonly flat = input(false, { transform: booleanAttribute });
+  /** int-* extension: fondo tenue en lugar del de la card (`.prCard--group` de la base de conocimientos). */
+  readonly tinted = input(false, { transform: booleanAttribute });
   /** int-* extension: el cuerpo y el contenido llenan el alto de la card, para centrar un estado vacío o de error. */
   readonly stretchContent = input(false, { transform: booleanAttribute });
-  /** int-* extension: separación entre los bloques de #content; sin él, la de por defecto (6px). */
+  /** int-* extension: separación entre los bloques del template `content`; sin él, la de por defecto (6px). */
   readonly contentGap = input<IntCardContentGap>();
-  /**
-   * int-* extension: formato visual de la base de conocimientos: mini (compacta con borde), option
-   * (elegir una opción), version (elegir una versión), data (KPI sin sombra ni padding) o group
-   * (métricas en fila con divisores); sin él, la card estándar.
-   */
-  readonly appearance = input<IntCardAppearance>();
 
   /**
-   * int-* extension: la card funciona como botón de alternar (appearance mini, option y version de la
-   * base de conocimientos). Agrega role="button", parada de tabulación, aria-pressed y Enter/Espacio.
-   * Como es un botón, no debe contener otros botones ni links (p. ej. acciones en #footer).
+   * int-* extension: la card funciona como botón de alternar (cards mini, option y version de la base de
+   * conocimientos; lleva el borde de `outlined`). Agrega `role="button"`, parada de tabulación, `aria-pressed` y
+   * Enter/Espacio. Como es un botón, no debe contener otros botones ni links (p. ej. acciones en el template `footer`).
    */
   readonly selectable = input(false, { transform: booleanAttribute });
-  /** int-* extension: estado presionado de una card selectable (aria-pressed). Lo controla quien la usa. */
+  /** int-* extension: estado presionado de una card `selectable` (`aria-pressed`). Lo controla quien la usa. */
   readonly selected = input(false, { transform: booleanAttribute });
-  /** int-* extension: deshabilita una card selectable (sin tabulación, sin onSelect, aria-disabled). */
+  /** int-* extension: deshabilita una card `selectable` (sin tabulación, sin `onSelect`, `aria-disabled`). */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** int-* extension: se emite con clic, Enter o Espacio cuando la card es selectable y está habilitada. */
+  /** int-* extension: se emite con clic, Enter o Espacio cuando la card es `selectable` y está habilitada. */
   readonly onSelect = output<Event>();
 
   // Templates by reference, same names as PrimeNG (direct children only, like p-card).
-  /** Imagen o gráfico arriba de la card; su alto es headerHeight. */
+  /** Imagen o gráfico arriba de la card; su alto es `headerHeight`. */
   protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header', {
     descendants: false,
   });
-  /** Título personalizado; tiene prioridad sobre header. */
+  /** Título personalizado; tiene prioridad sobre `header`. */
   protected readonly titleTemplate = contentChild<TemplateRef<unknown>>('title', {
     descendants: false,
   });
-  /** Subtítulo personalizado; tiene prioridad sobre subheader. */
+  /** Subtítulo personalizado; tiene prioridad sobre `subheader`. */
   protected readonly subtitleTemplate = contentChild<TemplateRef<unknown>>('subtitle', {
     descendants: false,
   });
-  /** Cuerpo de la card, después del contenido proyectado; sus bloques se separan con contentGap. */
+  /** Cuerpo de la card, después del contenido proyectado; sus bloques se separan con `contentGap`. */
   protected readonly contentTemplate = contentChild<TemplateRef<unknown>>('content', {
     descendants: false,
   });

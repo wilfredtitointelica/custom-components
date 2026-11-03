@@ -1,7 +1,9 @@
 # Base de conocimientos (Intelica.knowledgeBase): casos `.pr`
 
-La base de conocimientos (Intelica.knowledgeBase) es la **fuente de las variantes, los casos de uso y las maquetas
-HTML** de cada componente PrimeNG customizado. Sus casos `.pr*` son la referencia autoritativa de
+La base de conocimientos (Intelica.knowledgeBase) es la **fuente de las composiciones (casos de uso) y
+las maquetas HTML** de cada componente PrimeNG customizado: documenta PrimeNG y **combinaciones** de su
+API, así que cada caso es por defecto una composición (`compositions/<slug>/`), salvo los **candidatos a
+propiedad** (sección 2b), que agregan un input. Sus casos `.pr*` son la referencia autoritativa de
 implementación y estilos (prioridad 2, detrás de PrimeNG; SKILL.md "Orden de prioridad").
 
 ## 1. Dónde leer
@@ -37,42 +39,49 @@ Para tokens y helpers no se usa la base de conocimientos (Intelica.knowledgeBase
 | Clase raíz `.prChip` | estilos del DS sobre `<p-chip>` | el bloque `int-chip` ya los lleva: la base **es** el caso `.pr`; el consumidor no agrega clase |
 | Variables CSS / Estilos base (`gap`, `padding`, `color`…) | valores del caso base | `--int-<id>-*: var(--i-*)` con el token que indica la base de conocimientos (Intelica.knowledgeBase); comentario `// knowledgeBase: <token> · Aura: <valor>` |
 | Estados (`:hover`, `:focus-visible`, `[aria-expanded]`…) | estilos de estado | módulo base `_<id>.scss` |
-| Modificadores `.prSelect--minimal` | variante visual | `.int-select--minimal` en `_select.minimal.scss` + variante `minimal`. Se activa con un input, según cómo se combina (sección 2b) |
+| Modificadores `.prSelect--minimal` | caso visual | composición `minimal` con la API existente; solo si es **candidato a propiedad** (2b): `.int-select--minimal` en `_select.minimal.scss`, activado por un input (2b) + variante que lo muestra aislado |
 | Paneles / overlays (`panelStyleClass="prSelectPanelExport"`) | estilos del overlay de un caso | mismo input de PrimeNG (`panelStyleClass`) + clase `int-select-panel--export` en el módulo del grupo |
-| Bloque **HTML** de uso | maqueta del caso | `example.html` de la variante: `p-<x>` → `int-<x>`, sin la clase `.pr*` (ya es la base), modificador traducido y contenido de templates con helpers `.u-*` (SKILL.md 3.5) |
-| Bloque **TS** (opciones, handlers) | datos y lógica de la demo | `example.ts` de la variante (constante tipada, `signal()` si cambia) |
-| Props frecuentes | inputs habituales en el proyecto | se muestran en las variantes; **no** cambian los defaults de PrimeNG |
-| Reglas ("`appendTo="body"` obligatorio") | restricciones de uso | se aplican en el `example.html` y se citan en la descripción de la variante |
+| Bloque **HTML** de uso | maqueta del caso | `example.html` de la composición: `p-<x>` → `int-<x>`, sin la clase `.pr*` (ya es la base), modificador traducido y contenido de templates con helpers `.u-*` (SKILL.md 3.5) |
+| Bloque **TS** (opciones, handlers) | datos y lógica de la demo | `example.ts` de la composición (constante tipada, `signal()` si cambia) |
+| Props frecuentes | inputs habituales en el proyecto | se muestran en las composiciones; **no** cambian los defaults de PrimeNG |
+| Reglas ("`appendTo="body"` obligatorio") | restricciones de uso | se aplican en el `example.html` y se citan en la descripción de la composición |
 | **Adaptaciones** (JS/CSS que cambia el comportamiento natural de PrimeNG: la opción *All* fija en un select, iconos de orden propios en una tabla…) | lo que el proyecto necesitó y PrimeNG no daba | se implementa **de forma nativa** en el componente como extensión `/** int-* extension */` (input, template o lógica en la base), sin copiar el parche. Ver sección 4 |
 | Notas | límites de lo documentado | "Diferencias" / "Limitaciones" del informe |
 
-## 2b. Cómo se activa cada modificador (columna "Activación" de la tabla)
+## 2b. Candidatos a propiedad y cómo se activan (columna "Activación" de la tabla)
 
-Antes de escribir la base, agrupa los modificadores `.pr<Nombre>--*` que solo cambian el aspecto:
+Por defecto un modificador `.pr<Nombre>--*` **no agrega API**: es una composición. Es **candidato a
+propiedad** solo si cumple las tres (SKILL.md 2.4): cambia el **contenedor** (borde, sombra, fondo,
+padding, radio, densidad), **ningún input existente** ni combinación lo logra, y es **reutilizable**
+fuera de ese caso. Con duda en la tercera, se pregunta. Para cada candidato, la activación:
 
 | Si el modificador… | Se activa con | Ejemplo |
 |---|---|---|
+| Lo que lo distingue es el **contenido** (KPI, fila de métricas, badge) o se logra combinando inputs que ya existen | **nada en la API**: es una **composición** en `compositions/<slug>/` (skill `crear-composicion`, tab Compositions) | `.prCard--data` → `<int-card flat>` + helpers; `mini`/`version` → `<int-card compact selectable>` |
 | Corresponde a un input de PrimeNG (`severity`, `variant`, `size`, `raised`…) | ese input, con sus valores | `.prButton--outlined` → `variant="outlined"` |
-| Se **excluye** con otros (no tiene sentido llevar dos a la vez: formatos, layouts de la card) | un valor de **un** input tipado `appearance` (tipo exportado `Int<Id>Appearance`) | `.prCard--data`, `--group`, `--mini` → `appearance="data" \| "group" \| "mini"` |
-| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg` → `compact`, `outlined`, `noBg` |
+| Cambia el **contenedor** y se **excluye** con otros (no tiene sentido llevar dos a la vez) | un valor de **un** input tipado `appearance` (tipo exportado `Int<Id>Appearance`) | `.prMessage--inline`, `--banner` → `appearance="inline" \| "banner"` |
+| Se **suma** a cualquier otro (densidad, borde, fondo) | un booleano con `booleanAttribute` | `.prCard--compact`, `--outlined`, `--noBg`, `--group` → `compact`, `outlined`, `flat`, `tinted` |
 | Tiene una escala de valores (gap, tamaño) | un input tipado con esos valores | `content-gap-small/medium/large` → `contentGap="small"` |
 
 - Duda sobre si dos se excluyen: mira si la base de conocimientos, el SCSS `.pr*` o Figma los muestra
   juntos alguna vez. Si nunca aparecen juntos y pisan las mismas propiedades (borde, padding, sombra),
   se excluyen.
 - Nunca un booleano estético con nombre de dato (`data`, `group`, `items`, `list`): parece pedir un array.
-- La clase CSS no cambia (`.int-card--data`); solo cambia cómo se activa:
-  `'[class.int-card--data]': "appearance() === 'data'"` en el `host`.
+- La clase CSS sigue el valor (`.int-message--banner`); solo cambia cómo se activa:
+  `'[class.int-message--banner]': "appearance() === 'banner'"` en el `host`.
 
-## 3. Variantes que salen de la base de conocimientos (Intelica.knowledgeBase)
+## 3. Composiciones (y variantes) que salen de la base de conocimientos (Intelica.knowledgeBase)
 
-- Cada **modificador** y cada **caso con título propio** (p. ej. "Variante Export") → una variante.
-- Cada **vista alternativa** que la base de conocimientos (Intelica.knowledgeBase) muestra con contenido distinto en los templates (`#item` con
-  avatar, `#selectedItem` con bandera…) → una variante de composición, maquetada con helpers `.u-*`.
+- Cada **modificador**, cada **caso con título propio** (p. ej. "Variante Export", card KPI) y cada
+  **vista alternativa** con contenido distinto en los templates (`#item` con avatar, `#selectedItem` con
+  bandera…) → una **composición** (`compositions/<slug>/`, tab Compositions, skill `crear-composicion`),
+  maquetada con la API + helpers `.u-*`.
+- Solo un **candidato a propiedad** aprobado (2b) agrega además un input y **una variante** que muestra
+  ese input aislado (`variants/<slug>/`, tab Variants). El caso completo sigue siendo composición.
 - Si el caso necesita un input o un comportamiento que PrimeNG no tiene y la base de conocimientos lo
   resolvió con una **adaptación**, se implementa como extensión `int-*` sin preguntar (sección 4). Solo
   se pregunta (SKILL.md 2.2) si no queda claro qué hace la adaptación o si contradice otra.
-- Lo que solo aparece en Figma y no en la base de conocimientos (Intelica.knowledgeBase) **no** genera variante: va a "Solo en Figma" del informe.
+- Lo que solo aparece en Figma y no en la base de conocimientos (Intelica.knowledgeBase) **no** genera variante ni composición: va a "Solo en Figma" del informe.
 
 ## 4. Conflictos
 

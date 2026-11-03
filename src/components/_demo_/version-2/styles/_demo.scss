@@ -4,21 +4,59 @@
 
 :root {
   --NOTE-DEMO: 'int-demo ( Custom )';
+
+  // --- root ---
+  --int-demo-background: var(--i-card-background); // SG: --i-card-background
+  --int-demo-color: var(--i-text-color-default); // SG: --i-text-color-default
+  --int-demo-shadow: var(--i-card-box-shadow); // SG: --i-card-box-shadow
+  --int-demo-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (8px)
+  --int-demo-font-family: var(--i-typography-font-family-base); // SG: --i-typography-font-family-base
+  --int-demo-accent-width: var(--i-border-width-lg); // SG: --i-border-width-lg
+  --int-demo-accent-color: var(--i-color-primary-600); // SG: --i-color-primary-600
+
+  // --- header ---
+  --int-demo-header-padding: var(--i-spacing-container-lg) var(--i-spacing-container-xl); // SG: 12px 16px
+  --int-demo-header-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm (8px)
+  --int-demo-header-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50
+  --int-demo-icon-color: var(--i-color-primary-600); // SG: --i-color-primary-600
+  --int-demo-title-font-size: var(--i-card-title-font-size); // SG: --i-card-title-font-size
+  --int-demo-title-font-weight: var(--i-typography-font-weight-bold); // SG: --i-typography-font-weight-bold
+  --int-demo-count-padding: var(--i-spacing-gap-xs) var(--i-spacing-container-md); // SG: 4px 8px
+  --int-demo-count-radius: var(--i-border-radius-full); // SG: --i-border-radius-full
+  --int-demo-count-background: var(--i-color-primary-100); // SG: --i-color-primary-100
+  --int-demo-count-color: var(--i-color-primary-900); // SG: --i-color-primary-900
+  --int-demo-count-font-size: var(--i-text-body-size-xs); // SG: --i-text-body-size-xs
+
+  // --- list ---
+  --int-demo-list-padding: var(--i-spacing-container-sm) var(--i-spacing-container-xl); // SG: 6px 16px
+  --int-demo-item-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md (8px)
+  --int-demo-item-font-size: var(--i-text-body-size-md); // SG: --i-text-body-size-md
+  --int-demo-item-divider: var(--i-line); // SG: --i-line (1px solid grey-200)
+
+  // --- skeleton ---
+  --int-demo-skeleton-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50
+  --int-demo-skeleton-min-height: var(--i-sizing-xl); // SG: --i-sizing-xl
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The size comes from the consumer ([style]="{ width: '…' }" on <int-demo>), never from the block.
 .int-demo {
-  width: min(100%, 320px);
-  overflow: hidden;
-  border-top: 4px solid var(--doc-accent);
-  border-radius: var(--doc-radius-md);
-  background: var(--doc-surface);
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
-  color: var(--doc-ink);
-  font-family: var(--doc-font-sans);
+  display: flex;
+  flex-direction: column;
+  border-block-start: var(--int-demo-accent-width) solid var(--int-demo-accent-color);
+  border-radius: var(--int-demo-border-radius);
+  background: var(--int-demo-background);
+  box-shadow: var(--int-demo-shadow);
+  color: var(--int-demo-color);
+  font-family: var(--int-demo-font-family);
+
+  // Alone in a flex wrapper (the consumer's layout cell), the block fills it.
+  &:only-child {
+    flex-grow: 1;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -26,48 +64,49 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-demo {
+  // The block never clips (overlays inside would be cut): the header rounds its own top corners.
   &__header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 16px 20px;
-    background: var(--doc-surface-low);
+    gap: var(--int-demo-header-gap);
+    padding: var(--int-demo-header-padding);
+    border-start-start-radius: var(--int-demo-border-radius);
+    border-start-end-radius: var(--int-demo-border-radius);
+    background: var(--int-demo-header-background);
   }
 
   &__icon {
-    color: var(--doc-accent-text);
+    color: var(--int-demo-icon-color);
   }
 
   &__title {
-    flex: 1;
+    flex-grow: 1;
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: var(--int-demo-title-font-size);
+    font-weight: var(--int-demo-title-font-weight);
   }
 
   &__count {
-    min-width: 24px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: var(--doc-accent-container);
-    color: var(--doc-on-accent-container);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
+    padding: var(--int-demo-count-padding);
+    border-radius: var(--int-demo-count-radius);
+    background: var(--int-demo-count-background);
+    color: var(--int-demo-count-color);
+    font-size: var(--int-demo-count-font-size);
+    font-weight: var(--int-demo-title-font-weight);
   }
 
   &__list {
     margin: 0;
-    padding: 4px 20px 12px;
+    padding: var(--int-demo-list-padding);
     list-style: none;
   }
 
   &__item {
-    padding: 10px 0;
-    font-size: 0.875rem;
+    padding-block: var(--int-demo-item-padding);
+    font-size: var(--int-demo-item-font-size);
 
     & + & {
-      border-top: 1px dashed var(--doc-outline-variant);
+      border-block-start: var(--int-demo-item-divider);
     }
   }
 }
@@ -81,4 +120,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-demo {
+  min-block-size: var(--int-demo-skeleton-min-height);
+  border-radius: var(--int-demo-border-radius);
+  background: var(--int-demo-skeleton-background);
 }

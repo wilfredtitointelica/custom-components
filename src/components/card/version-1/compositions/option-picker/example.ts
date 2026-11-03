@@ -19,11 +19,11 @@ const OPTIONS: readonly Option[] = [
 ];
 
 @Component({
-  selector: 'card-option-example',
+  selector: 'card-option-picker-example',
   templateUrl: './example.html',
   imports: [IntCard],
 })
-export class CardOptionExample {
+export class CardOptionPickerExample {
   readonly options = OPTIONS;
   /** Single choice: only one option is pressed. */
   readonly chosen = signal('report');

@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 
 import { IntCard } from '../../base/card';
 
-interface MiniItem {
+interface Item {
   id: string;
   title: string;
   description: string;
@@ -11,18 +11,18 @@ interface MiniItem {
   disabled: boolean;
 }
 
-const ITEMS: readonly MiniItem[] = [
+const ITEMS: readonly Item[] = [
   { id: 'fees', title: 'Fee report', description: 'Monthly fees by brand', label: 'Updated:', date: 'Jan 12', disabled: false },
   { id: 'volume', title: 'Volume', description: 'Transactions by region', label: 'Updated:', date: 'Jan 10', disabled: false },
   { id: 'archive', title: 'Archive', description: 'Reports from last year', label: 'Updated:', date: 'Dec 31', disabled: true },
 ];
 
 @Component({
-  selector: 'card-mini-example',
+  selector: 'card-multi-select-example',
   templateUrl: './example.html',
   imports: [IntCard],
 })
-export class CardMiniExample {
+export class CardMultiSelectExample {
   readonly items = ITEMS;
   /** Ids of the pressed cards: each card toggles on its own. */
   readonly selected = signal<ReadonlySet<string>>(new Set(['fees']));

@@ -28,6 +28,7 @@ export const SKILLS_SECTIONS: readonly SkillSection[] = [
   { id: 'skill-cheatsheet', name: 'Resumen rápido', group: 'intro' },
   { id: 'skill-component', name: 'Crear un componente', group: 'structure' },
   { id: 'skill-variant', name: 'Crear una variante', group: 'structure' },
+  { id: 'skill-composition', name: 'Crear una composición', group: 'structure', badge: 'New' },
   { id: 'skill-version', name: 'Crear una versión', group: 'structure' },
   { id: 'skill-visibility', name: 'Ocultar y reactivar', group: 'structure' },
   { id: 'skill-order', name: 'Ordenar variantes', group: 'structure' },

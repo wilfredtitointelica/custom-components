@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { IntCard } from '../../base/card';
 
 @Component({
-  selector: 'card-advanced-example',
+  selector: 'card-tinted-example',
   templateUrl: './example.html',
   imports: [IntCard],
 })
-export class CardAdvancedExample {}
+export class CardTintedExample {}

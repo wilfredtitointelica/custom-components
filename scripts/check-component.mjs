@@ -87,7 +87,9 @@ function checkVersion(component, version, report, deps) {
   const files = walk(root);
   const rel = (path) => toPosix(path);
   const inBase = (path) => path.includes(`${join(root, 'base')}`);
-  const inVariants = (path) => path.includes(`${join(root, 'variants')}`);
+  // Examples: variants/ (Variants tab) and compositions/ (Compositions tab) follow the same rules.
+  const inExamples = (path) =>
+    path.includes(`${join(root, 'variants')}`) || path.includes(`${join(root, 'compositions')}`);
 
   // --- structure ---
   const required = [
@@ -109,6 +111,19 @@ function checkVersion(component, version, report, deps) {
       );
     if (name.endsWith('.css')) report.error(rel(file), 'use .scss, not .css');
   }
+  // A slug is the #<id>-<slug> anchor of the page: unique across variants/ and compositions/.
+  const exampleSlugs = (folder) =>
+    existsSync(join(root, folder))
+      ? readdirSync(join(root, folder), { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => entry.name)
+      : [];
+  const variantFolders = new Set(exampleSlugs('variants'));
+  for (const slug of exampleSlugs('compositions').filter((slug) => variantFolders.has(slug)))
+    report.error(
+      rel(join(root, 'compositions', slug)),
+      `"${slug}" also exists in variants/: a slug is unique across variants/ and compositions/`,
+    );
   if (existsSync(join(root, 'variants', 'default')))
     report.error(
       rel(join(root, 'variants', 'default')),
@@ -183,10 +198,10 @@ function checkVersion(component, version, report, deps) {
         report.error(path, 'imports @angular/animations: use animate.enter / animate.leave + CSS');
       if (/:\s*any\b|<any>|\bas any\b|as unknown as/.test(stripComments(source)))
         report.error(path, 'uses any / as unknown as');
-      if (inBase(file) && /from\s+['"][^'"]*\/(core|service|variants)\//.test(source))
+      if (inBase(file) && /from\s+['"][^'"]*\/(core|service|variants|compositions)\//.test(source))
         report.error(
           path,
-          'the base imports core/, service/ or variants/ (it is extracted to npm alone)',
+          'the base imports core/, service/, variants/ or compositions/ (it is extracted to npm alone)',
         );
       for (const match of source.matchAll(
         /from\s+['"](?:\.\.\/){3}([\w-]+)\/version-\d+\/base\//g,
@@ -194,7 +209,7 @@ function checkVersion(component, version, report, deps) {
         const dep = match[1];
         if (inBase(file) && !deps.requires.includes(dep))
           report.error(path, `imports int-${dep} but "${dep}" is not in requires`);
-        if (inVariants(file) && !deps.requires.includes(dep) && !deps.uses.includes(dep))
+        if (inExamples(file) && !deps.requires.includes(dep) && !deps.uses.includes(dep))
           report.error(path, `imports int-${dep} but "${dep}" is not in requires / uses`);
       }
     }
@@ -210,17 +225,17 @@ function checkVersion(component, version, report, deps) {
       const markup = source.replace(/<!--[\s\S]*?-->/g, (block) => block.replace(/[^\n]/g, ' '));
       if (/<p-[a-z]/.test(markup)) report.error(path, 'uses <p-*> PrimeNG components');
       const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
-      if (inVariants(file) && /\b(title|description):.*primeng/i.test(header))
+      if (inExamples(file) && /\b(title|description):.*primeng/i.test(header))
         report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');
       // Sizing a component goes as PrimeNG ([style]="{ width: '25rem' }" on <int-*>); content uses u-* helpers.
       const contentMarkup = markup.replace(/<int-[a-z-]+\b[^>]*>/g, (tag) =>
         tag.replace(/\s\[style\]="[^"]*"/, ''),
       );
-      if (inVariants(file) && /\sstyle="|\[style(\.|\]=)/.test(contentMarkup))
+      if (inExamples(file) && /\sstyle="|\[style(\.|\]=)/.test(contentMarkup))
         report.error(path, 'inline style in a variant: use u-* helpers ([style] only on <int-*> to size it)');
       if (/animate\.(enter|leave)/.test(markup)) animates = true;
       // State and a11y belong to the component (an input + host bindings), not to whoever uses it.
-      if (inVariants(file))
+      if (inExamples(file))
         for (const tag of markup.matchAll(/<int-[a-z-]+\b[^>]*>/g)) {
           const wiring = tag[0].match(
             /\[attr\.(aria-[a-z]+|tabindex)\]|\srole="|\(keydown\.[a-z]+\)/g,
@@ -337,7 +352,7 @@ function checkVersion(component, version, report, deps) {
       const at = `${path}:${lineOf(source, match.index)}`;
       if (inBase(file) && !deps.requires.includes(dep))
         report.error(at, `provisional dep:${dep} in the base but "${dep}" is not in requires`);
-      if (inVariants(file) && !deps.uses.includes(dep) && !deps.requires.includes(dep))
+      if (inExamples(file) && !deps.uses.includes(dep) && !deps.requires.includes(dep))
         report.error(at, `provisional dep:${dep} in a variant but "${dep}" is not in uses`);
       if (file.endsWith('.html') && source.slice(match.index - 10, match.index).includes('<!--')) {
         const end = source.indexOf(`<!-- /dep:${dep} -->`, match.index);

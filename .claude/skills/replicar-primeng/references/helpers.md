@@ -54,7 +54,7 @@ Para cada capa del contenido de un template en una variante:
 Ejemplo, card de datos:
 
 ```html
-<int-card class="int-card--data">
+<int-card flat>
   <div class="u-display-flex u-flex-column u-gap-xs">
     <div class="int-card__metric u-display-flex u-align-items-center u-gap-xs u-px-1">
       <span class="u-text-sm u-color-body">Total fees</span>
@@ -67,9 +67,9 @@ Ejemplo, card de datos:
 ```
 
 ```scss
-// _card.data.scss · only what helpers cannot express: the hover state of the metric row
-.int-card--data .int-card__metric:hover {
-  background-color: var(--int-card-data-metric-hover-background);
+// _card.flat.scss · only what helpers cannot express: the hover state of the metric row
+.int-card--flat .int-card__metric:hover {
+  background-color: var(--int-card-flat-metric-hover-background);
 }
 ```
 

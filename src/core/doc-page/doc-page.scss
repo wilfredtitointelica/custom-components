@@ -8,7 +8,7 @@
 
 /* Page header (M3 display / headline scale) */
 
-// Title on the left, Features | API tabs at the end (below it on narrow screens).
+// Title on the left, Variants | API tabs at the end (below it on narrow screens).
 .doc-title-row {
   display: flex;
   flex-wrap: wrap;
@@ -358,6 +358,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 20px 0;
+  margin-bottom: 4px;
   background: var(--doc-surface);
 }
 

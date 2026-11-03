@@ -1,7 +1,8 @@
 // Removes a variant, a version or a whole component, and cleans what points to it, so the build never
 // imports a folder that no longer exists:
 //   variant   → version-<N>/variants/<slug>/ (one version or all); its entry in `variants` of
-//               <id>.config.ts when no version has that folder anymore
+//               <id>.config.ts when no version has that folder anymore. A composition
+//               (compositions/<slug>/, list `compositions`) is removed the same way: its folder is detected.
 //   version   → version-<N>/ (never the only one: remove the component instead); config entries of the
 //               variants that only lived there. Versions are not renumbered (links ?version=N keep working)
 //   component → src/components/<dir>/, its import and entry in src/components/inventory.ts, and its ID in
@@ -21,7 +22,9 @@ import { join } from 'node:path';
 
 import {
   COMPONENTS_DIR,
+  EXAMPLE_KINDS,
   ROOT,
+  exampleKind,
   findComponent,
   isDefaultOrder,
   readHiddenVersions,
@@ -71,32 +74,41 @@ if (!component) fail(`Component "${componentArg}" not found in src/components/.`
 const folders = [];
 const rewrites = [];
 
-/** Config entries of variants that no longer have a folder in any version once `removed` is gone. */
+/**
+ * Config entries of variants and compositions that no longer have a folder in any version once
+ * `removed` is gone. Both lists are cleaned in one rewrite of the config.
+ */
 function planConfigCleanup(removedSlugs) {
   if (!existsSync(component.config)) return;
   const source = readFileSync(component.config, 'utf8');
-  const entries = readVariantEntries(source)?.entries;
-  if (!entries) return;
-  const kept = entries.filter((e) => !removedSlugs.includes(e.slug));
-  if (kept.length === entries.length) return;
-  rewrites.push({
-    file: component.config,
-    content: writeVariantEntries(source, isDefaultOrder(kept) ? [] : kept.map((e) => e.text)),
-    note: `variants: remove ${removedSlugs.filter((s) => entries.some((e) => e.slug === s)).join(', ')}`,
-  });
+  let content = source;
+  const notes = [];
+  for (const list of EXAMPLE_KINDS) {
+    const entries = readVariantEntries(content, list)?.entries;
+    if (!entries) continue;
+    const kept = entries.filter((e) => !removedSlugs.includes(e.slug));
+    if (kept.length === entries.length) continue;
+    content = writeVariantEntries(content, isDefaultOrder(kept) ? [] : kept.map((e) => e.text), list);
+    notes.push(`${list}: remove ${removedSlugs.filter((s) => entries.some((e) => e.slug === s)).join(', ')}`);
+  }
+  if (content !== source) rewrites.push({ file: component.config, content, note: notes.join(' · ') });
 }
 
-/** Slugs whose only folders are inside the ones being removed. */
+/** Slugs (variants and compositions) whose only folders are inside the ones being removed. */
 function orphanedSlugs(isRemoved) {
-  return [...variantVersions(component)]
-    .filter(([slug, versions]) => versions.every((v) => isRemoved(slug, v)))
-    .map(([slug]) => slug);
+  return EXAMPLE_KINDS.flatMap((list) =>
+    [...variantVersions(component, list)]
+      .filter(([slug, versions]) => versions.every((v) => isRemoved(slug, v)))
+      .map(([slug]) => slug),
+  );
 }
 
 if (kind === 'variant') {
   const slug = target;
   if (!slug) fail(USAGE);
-  const versionsOf = variantVersions(component).get(slug);
+  // variants/ or compositions/: the folder that holds the slug.
+  const list = exampleKind(component, slug) ?? 'variants';
+  const versionsOf = variantVersions(component, list).get(slug);
   if (!versionsOf) {
     const available = [...variantVersions(component).keys()].join(', ') || 'none';
     fail(`Variant "${slug}" not found in ${component.id} (variants: ${available}).`);
@@ -114,7 +126,7 @@ if (kind === 'variant') {
   } else if (versionsOf.length === 1) targets = versionsOf;
   else fail(`"${slug}" exists in versions ${versionsOf.join(', ')}: pass --version <N> or --all.`);
 
-  for (const n of targets) folders.push(join(component.path, `version-${n}`, 'variants', slug));
+  for (const n of targets) folders.push(join(component.path, `version-${n}`, list, slug));
   planConfigCleanup(orphanedSlugs((s, v) => s === slug && targets.includes(v)));
 }
 

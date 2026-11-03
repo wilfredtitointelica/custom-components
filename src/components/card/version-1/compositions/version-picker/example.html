@@ -1,12 +1,13 @@
 <!--
-  title: Version
-  description: appearance="version" (modificador int-card--version): tarjeta con borde para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla (clic o Enter/Espacio). La más reciente lleva el badge "Latest version". Como la card es un botón, su contenido no lleva botones ni links.
+  title: Version Picker
+  description: Cards `compact` y `selectable` para elegir una versión; el borde cambia al pasar el mouse y al seleccionarla (clic o Enter/Espacio). La más reciente lleva el badge "Latest version". Como la card es un botón, su contenido no lleva botones ni links.
 -->
 <div class="u-display-flex u-flex-wrap u-gap-lg">
   @for (version of versions; track version.id) {
     <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
       <int-card
-        appearance="version"
+        compact
+        contentGap="none"
         selectable
         [selected]="chosen() === version.id"
         (onSelect)="chosen.set(version.id)"

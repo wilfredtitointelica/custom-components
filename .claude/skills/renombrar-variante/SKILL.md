@@ -6,6 +6,10 @@ argument-hint: "[componente] [variante] [nuevo título]"
 
 # Renombrar una variante
 
+> También renombra una **composición** (`version-N/compositions/<slug>/`): el script detecta la carpeta
+> por el slug y actualiza la lista `compositions` del config. El slug nuevo no puede existir en
+> `variants/` ni en `compositions/`.
+
 El título de una variante es la cabecera `title:` de su `example.html`, y el **slug** (nombre de la
 carpeta y parte de la URL) se deriva de él: `Raised Shadow` → `raised-shadow` →
 `/components/<id>#<id>-raised-shadow`.

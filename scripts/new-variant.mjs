@@ -1,14 +1,17 @@
 // Scaffolds a documentation example: src/components/<component>/version-<N>/variants/<slug>/
+// (Variants tab) or, with --composition, version-<N>/compositions/<slug>/ (Compositions tab):
 //   example.ts   → one component that imports the base (Int<Id>) and nothing else
 //   example.html → header comment with the title and description, and an empty body: the page shows
 //                  "Preview pending" until the maquetador writes the example below the header
 // The folder is registered by scripts/generate-docs.mjs, which this script runs at the end, so the new
 // section shows up even with a plain `ng serve`: no import or registration needed.
 //
-//   node scripts/new-variant.mjs <component> "<Title>" [--description "<Description>"] [--version <N>]
+//   node scripts/new-variant.mjs <component> "<Title>" [--description "<Description>"] [--version <N>] [--composition]
 //   npm run new:variant -- accordion "Icons + Border" --description "Icon and border together."
+//   npm run new:composition -- card "KPI" --description "Metric with currency and amount."
 //
 // <component> is the ID or the folder (button, demo, _demo_). Without --version, the latest version-N.
+// A slug is unique across variants/ and compositions/ (it is the #<id>-<slug> anchor of the page).
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -40,19 +43,26 @@ function parseArgs(argv) {
   const positional = [];
   let version;
   let description = '';
+  let composition = false;
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--version') version = Number(argv[++i]);
+    else if (argv[i] === '--composition') composition = true;
     else if (argv[i] === '--description') description = (argv[++i] ?? '').trim();
     else positional.push(argv[i]);
   }
   const [component, ...name] = positional;
   if (!component || !name.length) {
-    fail('Usage: npm run new:variant -- <component> "<Title>" [--description "<Description>"] [--version <N>]');
+    fail(
+      'Usage: npm run new:variant -- <component> "<Title>" [--description "<Description>"] [--version <N>] [--composition]',
+    );
   }
-  return { component, name: name.join(' ').trim(), description, version };
+  return { component, name: name.join(' ').trim(), description, version, composition };
 }
 
-const { component, name, description, version } = parseArgs(process.argv.slice(2));
+const { component, name, description, version, composition } = parseArgs(process.argv.slice(2));
+/** Parent folder of the example: variants/ (Variants tab) or compositions/ (Compositions tab). */
+const kind = composition ? 'compositions' : 'variants';
+const other = composition ? 'variants' : 'compositions';
 
 // Component folder: exact name, or the ID wrapped in underscores (reference folders such as _demo_).
 const dir = readdirSync(COMPONENTS_DIR, { withFileTypes: true })
@@ -80,8 +90,10 @@ if (!baseClass) fail(`No exported class in ${relative(ROOT, baseFile)}`);
 
 const slug = toSlug(name);
 if (!slug) fail(`"${name}" does not produce a valid folder name.`);
-const exampleDir = join(versionDir, 'variants', slug);
+const exampleDir = join(versionDir, kind, slug);
 if (existsSync(exampleDir)) fail(`${relative(ROOT, exampleDir).replace(/\\/g, '/')}/ already exists.`);
+const otherDir = join(versionDir, other, slug);
+if (existsSync(otherDir)) fail(`${relative(ROOT, otherDir).replace(/\\/g, '/')}/ already exists (same slug).`);
 
 mkdirSync(exampleDir, { recursive: true });
 writeFileSync(

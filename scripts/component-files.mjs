@@ -1,7 +1,8 @@
 // Helpers shared by order-variants.mjs and remove.mjs: locate a component folder, its version-N/ folders
 // and variants/<slug>/ examples, and read/rewrite the `variants` list of its <id>.config.ts (order and
 // hidden variants only, see VariantDefinition in src/service/catalog.model.ts). The rest of the config
-// file is never touched.
+// file is never touched. Compositions work the same way: the helpers take a `kind` ('variants' |
+// 'compositions'), which is both the example folder of each version and the list of the config.
 import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -51,25 +52,34 @@ export function findComponent(component) {
   };
 }
 
-/** Example folders of one version (variants/<slug>/ with an example.ts, as generate-docs.mjs reads them). */
-export const variantSlugs = (component, version) => {
-  const variantsDir = join(component.path, `version-${version}`, 'variants');
-  return subfolders(variantsDir).filter((slug) => existsSync(join(variantsDir, slug, 'example.ts')));
+/** Example folders of a version: variants/ (Variants tab) and compositions/ (Compositions tab). */
+export const EXAMPLE_KINDS = ['variants', 'compositions'];
+
+/** Example folders of one version (<kind>/<slug>/ with an example.ts, as generate-docs.mjs reads them). */
+export const variantSlugs = (component, version, kind = 'variants') => {
+  const kindDir = join(component.path, `version-${version}`, kind);
+  return subfolders(kindDir).filter((slug) => existsSync(join(kindDir, slug, 'example.ts')));
 };
 
 /** slug → versions that have that example folder, for every version of the component. */
-export function variantVersions(component) {
+export function variantVersions(component, kind = 'variants') {
   const map = new Map();
   for (const version of component.versions) {
-    for (const slug of variantSlugs(component, version)) map.set(slug, [...(map.get(slug) ?? []), version]);
+    for (const slug of variantSlugs(component, version, kind)) {
+      map.set(slug, [...(map.get(slug) ?? []), version]);
+    }
   }
   return map;
 }
 
+/** Folder that holds this slug in some version ('variants' | 'compositions'), or undefined. */
+export const exampleKind = (component, slug) =>
+  EXAMPLE_KINDS.find((kind) => variantVersions(component, kind).has(slug));
+
 /** `title:` of the header comment of example.html (latest version that has it). */
-export function variantTitle(component, slug, versions) {
+export function variantTitle(component, slug, versions, kind = 'variants') {
   for (const version of [...versions].reverse()) {
-    const file = join(component.path, `version-${version}`, 'variants', slug, 'example.html');
+    const file = join(component.path, `version-${version}`, kind, slug, 'example.html');
     if (!existsSync(file)) continue;
     const title = /<!--[\s\S]*?^\s*title:[ \t]*(.*)$/m.exec(readFileSync(file, 'utf8'))?.[1]?.trim();
     if (title) return title;
@@ -83,8 +93,8 @@ export function variantTitle(component, slug, versions) {
  * Entries of `variants: [ … ]` (null when the config has no such list). Each entry keeps its original
  * text, so objects ({ name, hidden: true }) are rewritten exactly as they were.
  */
-export function readVariantEntries(source) {
-  const key = /^([ \t]*)variants\s*:\s*\[/m.exec(source);
+export function readVariantEntries(source, list = 'variants') {
+  const key = new RegExp(`^([ \\t]*)${list}\\s*:\\s*\\[`, 'm').exec(source);
   if (!key) return null;
   const open = key.index + key[0].length - 1;
   const items = [];
@@ -118,7 +128,7 @@ export function readVariantEntries(source) {
     }
     current += char;
   }
-  if (close < 0) throw new Error('Unclosed `variants: [` in the config.');
+  if (close < 0) throw new Error(`Unclosed "${list}: [" in the config.`);
   items.push(current);
 
   const entries = items
@@ -142,22 +152,27 @@ export function readVariantEntries(source) {
   return { entries, indent: key[1], start: lineStart, end };
 }
 
-/** Rewrites (or inserts after `id:`, or removes when empty) the `variants` list with these entry texts. */
-export function writeVariantEntries(source, texts) {
-  const current = readVariantEntries(source);
+/**
+ * Rewrites (or inserts, or removes when empty) the `variants` list (or `compositions`) with these entry
+ * texts. A new `variants` goes after `id:`; a new `compositions`, after `variants` (or `id:`).
+ */
+export function writeVariantEntries(source, texts, list = 'variants') {
+  const current = readVariantEntries(source, list);
   const indent = current?.indent ?? '  ';
   const newline = source.includes('\r\n') ? '\r\n' : '\n';
-  const inline = `${indent}variants: [${texts.join(', ')}],`;
+  const inline = `${indent}${list}: [${texts.join(', ')}],`;
   const property = !texts.length
     ? ''
     : inline.length <= 100 && !texts.some((text) => text.includes('\n'))
       ? `${inline}${newline}`
-      : `${indent}variants: [${newline}${texts.map((text) => `${indent}  ${text},${newline}`).join('')}${indent}],${newline}`;
+      : `${indent}${list}: [${newline}${texts.map((text) => `${indent}  ${text},${newline}`).join('')}${indent}],${newline}`;
 
   if (current) return source.slice(0, current.start) + property + source.slice(current.end);
   if (!property) return source;
+  const variants = list !== 'variants' && readVariantEntries(source);
+  if (variants) return source.slice(0, variants.end) + property + source.slice(variants.end);
   const idLine = /^[ \t]*id\s*:.*\r?\n/m.exec(source);
-  if (!idLine) throw new Error('No `id:` line found in the config to insert `variants` after.');
+  if (!idLine) throw new Error(`No "id:" line found in the config to insert "${list}" after.`);
   const at = idLine.index + idLine[0].length;
   return source.slice(0, at) + property + source.slice(at);
 }

@@ -72,9 +72,13 @@ git log --oneline -3 -- src/components/<id>/
    PrimeNG; lo que PrimeNG no tiene y la base de conocimientos (Intelica.knowledgeBase) respalda se marca `/** int-* extension: … */`.
    Cada input/output/template/método público queda con su JSDoc en español (si viene en inglés se traduce; el prefijo `int-* extension:` no): es lo que muestra la pestaña **API** de
    la página (`scripts/extract-api.mjs`; `check:component` avisa si falta).
-   Booleanos de formato que solo ponen una clase y se excluyen entre sí (`mini`, `data`, `group`…) se
-   agrupan en un input tipado `appearance` (o el nombre de PrimeNG si existe: `severity`, `variant`,
-   `size`); siguen como booleanos solo los que se suman (`compact`, `outlined`).
+   Cada formato o booleano estético del maquetador que viene de un caso de la base de conocimientos se
+   trata como **combinación** (la base documenta PrimeNG + combinaciones de su API): por defecto **se quita
+   de la API** y su variante pasa a **composición** (`compositions/<slug>/`, skill `crear-composicion`).
+   Solo se conserva como input si es **candidato a propiedad** (`replicar-primeng` 2.4): cambia el
+   contenedor, ningún input existente lo logra y es reutilizable (en card: `flat`, `tinted` sí; `mini`,
+   `data`, `group` no). Los candidatos que se conservan y se excluyen entre sí van en un input tipado
+   `appearance` (o el nombre de PrimeNG: `severity`, `variant`, `size`); los que se suman, booleanos.
    Un output de extensión va con `onX` como PrimeNG; si el maquetador lo nombró como un evento nativo
    (`select`, `click`, `change`…) se renombra (`select` → `onSelect`), igual que sus `(select)` en las variantes.
    Un input solo para dimensionar el componente (`width`, `height`) se quita y las variantes pasan a
@@ -88,7 +92,10 @@ git log --oneline -3 -- src/components/<id>/
 | archivo | `chip.component.ts` | Renombra | `base/chip.ts` | convención (tabla 0) |
 | clase / selector | `ChipComponent` · `app-chip` | Renombra | `IntChip` · `int-chip` | convención |
 | input | `closable` | Renombra | `removable` | PrimeNG |
-| input | `data`, `group`, `mini` (booleanos que se excluyen) | Alinea | `appearance="data" \| "group" \| "mini"` + variantes con `appearance="…"` | `replicar-primeng` knowledge-base.md 2b |
+| input | `data`, `group`, `mini` (casos de la base de conocimientos: combinaciones) | Quita | composiciones `compositions/kpi/`… con `flat`, `tinted`, `compact selectable` + helpers | `replicar-primeng` 2.4 / knowledge-base.md 2b |
+| input | `noBg` (cambia el contenedor, nada existente lo logra, reutilizable) | Conserva como candidato | `flat` + variante `flat` | `replicar-primeng` 2.4 |
+| variante | `variants/data/` (caso de la base de conocimientos) | Mueve | `compositions/kpi/` | `replicar-primeng` 2.4 |
+| input | `inline`, `banner` (cambian el contenedor y se excluyen) | Alinea | `appearance="inline" \| "banner"` + variantes con `appearance="…"` | knowledge-base.md 2b |
 | input | `compact`, `outlined` (se suman a otros) | Conserva | booleanos | knowledge-base.md 2b |
 | estilo | `.chip .close { color: #2351B3 }` | Alinea | `.int-chip__remove-icon` + `--int-chip-remove-icon-color: var(--i-…)` | Base de conocimientos (Intelica.knowledgeBase) `.prChip` |
 | token | `--chip-gap: 6px` | Alinea | `--int-chip-gap: var(--i-spacing-gap-xs)` | Base de conocimientos (Intelica.knowledgeBase) |
@@ -116,6 +123,8 @@ Muestra el mapa de API y la tabla de adaptación, y pregunta **solo**:
 - Booleanos estéticos de los que no se puede deducir si se excluyen o se suman (ni la base de
   conocimientos, ni el SCSS `.pr*`, ni Figma los muestran juntos o separados): ¿van a `appearance` o
   quedan como booleanos?
+- Formatos que cumplen "cambia el contenedor" y "nada existente lo logra" pero no queda claro si son
+  reutilizables: ¿propiedad (input + variante) o composición?
 - Si es wrapper: confirmar que se pasa a `/replicar-primeng` en modo forzar.
 
 Sin respuesta no se escribe nada.
@@ -125,9 +134,9 @@ Sin respuesta no se escribe nada.
 Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservando lo que ya cumple:
 
 1. **Archivos**: `git mv` a la estructura del proyecto (`base/<id>.ts`, `base/<id>.html`,
-   `styles/_index.scss`, `styles/_<id>.scss`, `styles/_<id>.<grupo>.scss`, `variants/<slug>/`); `.css` →
-   `.scss`. Lo que falte se crea con los scripts (`npm run new:variant`), nunca a mano. `variants/basic/`
-   siempre existe.
+   `styles/_index.scss`, `styles/_<id>.scss`, `styles/_<id>.<grupo>.scss`, `variants/<slug>/`,
+   `compositions/<slug>/`); `.css` → `.scss`. Lo que falte se crea con los scripts (`npm run new:variant`,
+   `npm run new:composition`), nunca a mano. `variants/basic/` siempre existe.
 2. **Base TS** (3.1): `Int<Id>`, selector `int-<id>`, `status`/`designer` como primeras líneas, Signals,
    OnPush, API con los nombres y defaults de PrimeNG, `ControlValueAccessor` si PrimeNG lo tiene. Los
    mocks del maquetador salen de la base al `example.ts` de la variante que los usa.
@@ -142,9 +151,16 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
 5. **Cabecera**: si hay link de Figma, `figma:` y `figma-frame:` (1.5).
 6. **Dependencias** (1.6): lo que el maquetador copió o imitó de otro componente → `int-*` real si está
    en `done`, o provisional marcado `dep:<id> provisional` + `data-dep`, y el id en `requires` (base) o
-   `uses` (variantes) del config.
-7. **Variantes** (2.4, 3.4, 3.5): las que corresponden a la base de conocimientos (Intelica.knowledgeBase) o a PrimeNG se reubican con su slug; el
-   contenido de los templates con helpers `.u-*`; con 3 o más, `npm run order:variants`. Además, como
+   `uses` (variantes o composiciones) del config.
+7. **Variantes y composiciones** (2.4, 3.4, 3.5): cada ejemplo del maquetador se clasifica (`AGENTS.md`,
+   "Variant o Composition"): si muestra **una** característica de PrimeNG o una propiedad nueva aprobada,
+   es variante (`variants/<slug>/`); si reproduce un caso de la base de conocimientos (Intelica.knowledgeBase)
+   o combina varios inputs (KPI, selector, fila de métricas), es composición (`compositions/<slug>/`): por
+   defecto, todo caso de la base de conocimientos es composición. Cada uno se reubica con su slug. Pasar una variante a composición (o al revés):
+   `npm run move -- <id> <slug> --to composition` (dry run; con `--yes` aplica). Mueve la carpeta en todas
+   las versiones que la tienen, conserva slug, clase y selector (la URL no cambia) y pasa su entrada de
+   `variants` a `compositions` del config. El contenido de los templates con helpers
+   `.u-*`; con 3 o más, `npm run order:variants` (y `-- <id> --compositions` para las composiciones). Además, como
    en `replicar-primeng` 3.1/3.3/3.4/3.7: iconos `pi pi-*` → `icon icon-*` del Style Guide cuando hay
    equivalente (una sola familia), atributos del `<int-*>` en el orden fijo (formato · contenido ·
    estado · `[style]` · eventos), reglas SCSS repetidas entre módulos → una vez en el modificador común,

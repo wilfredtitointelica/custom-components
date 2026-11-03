@@ -6,6 +6,9 @@ argument-hint: "[componente|variante|version] [componente] [slug|N]"
 
 # Ocultar (sin borrar)
 
+> Una **composición** (`version-N/compositions/<slug>/`) se oculta igual que una variante
+> (`hide variant <id> <slug>`): el script detecta la carpeta por el slug y escribe en `compositions`.
+
 Ocultar no toca el código: solo escribe en `src/components/<id>/<id>.config.ts`. Se deshace con
 `/reactivar`.
 

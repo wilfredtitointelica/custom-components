@@ -1,0 +1,27 @@
+<!--
+  title: Selectable
+  description: Propiedad `selectable`: la card funciona como botón de alternar con el borde de `outlined`. Estados normal, seleccionada (`selected`) y deshabilitada (`disabled`); emite `onSelect`. Pasa el mouse para ver el hover y usa Tab y Enter/Espacio para seleccionarla.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-card
+      header="Selectable"
+      subheader="Click to toggle"
+      selectable
+      [selected]="selected()"
+      (onSelect)="selected.set(!selected())"
+    >
+      <p class="u-m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </int-card>
+  </div>
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-card header="Normal" subheader="Not selected" selectable>
+      <p class="u-m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </int-card>
+  </div>
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-card header="Disabled" subheader="Not available" selectable disabled>
+      <p class="u-m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </int-card>
+  </div>
+</div>

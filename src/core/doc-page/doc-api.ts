@@ -1,6 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
 import { DocApi, DocApiToken } from '../../service/catalog.model';
+import { InlineCode } from '../inline-code/inline-code';
 import { apiBlockId } from './doc-api-toc';
 
 /** Tokens of one `// --- group ---` of the :root, in source order. */
@@ -16,6 +17,7 @@ interface TokenGroup {
  */
 @Component({
   selector: 'app-doc-api',
+  imports: [InlineCode],
   templateUrl: './doc-api.html',
   styleUrl: './doc-api.scss',
 })

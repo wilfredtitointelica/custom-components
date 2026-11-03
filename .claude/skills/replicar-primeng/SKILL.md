@@ -16,7 +16,7 @@ Referencias de esta skill (léelas cuando la fase lo pida, no antes):
 - [references/ejemplo-p-chip.md](references/ejemplo-p-chip.md): recorrido completo con `p-chip`
   (inventario, plan, archivos y variantes esperadas).
 - [references/knowledge-base.md](references/knowledge-base.md): cómo leer los casos `.pr` de la base de
-  conocimientos (variantes, maquetas HTML, estilos) y traducirlos a `int-*`.
+  conocimientos (composiciones, candidatos a propiedad, maquetas HTML, estilos) y traducirlos a `int-*`.
 - [references/interaccion.md](references/interaccion.md): animaciones y transiciones (overlays, modales,
   ripple, movimiento reducido) y accesibilidad por teclado (tab stops, foco, teclas, ARIA).
 - [references/figma.md](references/figma.md): cómo usar un link de Figma como guía visual y comparar
@@ -44,7 +44,7 @@ informe):
 | # | Fuente | Qué aporta | Dónde |
 |---|---|---|---|
 | 1 | **PrimeNG v20** | Implementación y comportamiento original: API, estructura de elementos, estados, teclado, ARIA, eventos, animaciones | `node_modules/primeng`, `@primeuix/styles`, `@primeuix/themes` (1.3) |
-| 2 | **Base de conocimientos (Intelica.knowledgeBase)** | Casos `.pr*`: estilos autoritativos, maquetas HTML, **variantes y casos de uso** existentes. Se ignoran `.pt*`, `.ly*`, `.gr*` y los demás archivos | MCP `knowledgeBaseMcp` o `C:\christian\repos\Intelica.knowledgeBase` (1.3b) |
+| 2 | **Base de conocimientos (Intelica.knowledgeBase)** | Casos `.pr*`: estilos autoritativos, maquetas HTML y **casos de uso** existentes (combinaciones de la API de PrimeNG: van como composiciones, salvo candidatos a propiedad, 2.4). Se ignoran `.pt*`, `.ly*`, `.gr*` y los demás archivos | MCP `knowledgeBaseMcp` o `C:\christian\repos\Intelica.knowledgeBase` (1.3b) |
 | 3 | **Style Guide** | CSS real de las clases `.pr*` (para reproducirlo), tokens `--i-*` y helpers `.u-*` | `C:\christian\repos\Intelica.Style.Guide.New\IntelicaStyleGuide\src\assets\css` |
 | 4 | **Figma** | Solo guía visual: comparar y detectar diferencias. No define variantes, casos de uso ni valores | MCP de Figma, si hay link (1.5) |
 
@@ -184,10 +184,13 @@ Procedimiento completo en [references/knowledge-base.md](references/knowledge-ba
 3. Complementa con el SCSS real del caso en el Style Guide (`assets/css/components/<nombre>/`) para lo
    que la base de conocimientos (Intelica.knowledgeBase) no detalla.
 4. Muestra en el chat la **tabla de la base de conocimientos (Intelica.knowledgeBase)** (references/knowledge-base.md, sección 2): cada caso →
-   destino en `int-<id>` (token, módulo de estilo, variante, `example.html`). Cada modificador estético
-   lleva además su **activación** (references/knowledge-base.md, 2b): input de PrimeNG, valor de
-   `appearance` (si se excluye con otros), booleano (si se suma) o input con escala.
-5. Las **variantes y casos de uso** salen de aquí y de la API de PrimeNG (2.4), nunca de Figma.
+   destino en `int-<id>` (token, módulo de estilo, composición, `example.html`). La base de conocimientos
+   documenta PrimeNG y **combinaciones** de su API: cada caso es, por defecto, una **composición**
+   (`compositions/<slug>/`). Solo un **candidato a propiedad** (references/knowledge-base.md, 2b) se
+   vuelve input: input de PrimeNG que ya existe, valor de `appearance` (si se excluye con otros),
+   booleano (si se suma) o input con escala; cada candidato se marca en la tabla con su justificación.
+5. Las **variantes** salen de la API (PrimeNG + propiedades nuevas) y las **composiciones** de los casos
+   de la base de conocimientos (2.4), nunca de Figma.
 6. Si no hay archivo para el componente, sigue con Style Guide + PrimeNG y anótalo en el informe.
 
 ### 1.4 Inventario de la API (obligatorio, antes de planificar)
@@ -203,8 +206,8 @@ Escríbelo en el chat como tabla. Separa lo público de lo interno:
 | A11y | roles, `aria-*`, `tabindex`, foco | | | quién recibe el foco y cuándo vuelve |
 | Teclado | tecla por elemento | | | tabla completa en [interaccion.md](references/interaccion.md) 2.1 |
 | Animación | overlay, modal, plegable, ripple | duración · curva | | origen en PrimeNG y token `--i-motion-*` (3.6) |
-| Caso `.pr` (base de conocimientos (Intelica.knowledgeBase)) | `.prSelect--minimal`, "Variante Export"… | | | modificador / variante / input de PrimeNG (1.3b) |
-| Formato estético | `.prCard--data`, `--compact`… | `appearance` / `boolean` | — | `appearance="data"` si se excluye con otros; booleano si se suma (knowledge-base.md 2b) |
+| Caso `.pr` (base de conocimientos (Intelica.knowledgeBase)) | `.prSelect--minimal`, "Variante Export"… | | | composición por defecto; input (PrimeNG o propiedad nueva) + variante solo si es candidato a propiedad (2.4) |
+| Formato estético | `.prCard--data`, `--compact`… | `appearance` / `boolean` / composición | — | si cambia el contenedor y ningún modificador lo cubre: `appearance` si se excluye con otros, booleano si se suma; si cambia el contenido: composición (`.prCard--data` → `<int-card flat>` + helpers en `compositions/kpi/`) (knowledge-base.md 2b) |
 | Forms | `ControlValueAccessor`, `ngModel` | | | si hereda de `BaseEditableHolder`/`BaseInput` |
 | Dependencias | CDK, iconos, overlays, servicios | | | se reemplaza por… |
 | Componentes compuestos | `p-checkbox`, `p-chip`, `p-button`… usados en la plantilla | | | `int-*` equivalente + su estado (1.6) |
@@ -314,7 +317,7 @@ tratamiento que arriba, pero en el `example.html`/`example.ts` de la variante:
 
 | | `requires` | `uses` |
 |---|---|---|
-| Dónde se usa | `base/<id>.html` / `.ts` (lo compone el componente) | solo `variants/<slug>/example.*` |
+| Dónde se usa | `base/<id>.html` / `.ts` (lo compone el componente) | solo `variants/<slug>/example.*` o `compositions/<slug>/example.*` |
 | Si está en `done` | `import Int<Dep>` en la base | `import Int<Dep>` en el `example.ts` |
 | Si no está en `done` | provisional marcado en la base | provisional marcado en el `example.html` (marcado nativo + helpers `.u-*`, sin SCSS) |
 | En el config | `requires: ['checkbox']` | `uses: ['button', 'badge']` |
@@ -342,8 +345,10 @@ Decide y muestra, sin pedir confirmación salvo lo indicado en 2.2:
 2. **Funcionalidades**: cada fila del inventario → implementada / descartada (con motivo).
 3. **Dependencias eliminadas** y su reemplazo (p. ej. `TimesCircleIcon` → `pi pi-times-circle`;
    `DomHandler` → API del DOM; `ConnectedOverlay` → `@angular/cdk/overlay`).
-4. **Variantes** (2.4) con su origen (PrimeNG / base de conocimientos (Intelica.knowledgeBase)) y **módulos de estilo** (3.3).
-   Si hay formatos excluyentes, los valores de `appearance` y los booleanos que se suman (1.3b).
+4. **Variantes** (2.4: secciones de PrimeNG + una por propiedad nueva), **composiciones** (2.4: casos
+   de la base de conocimientos) y **módulos de estilo** (3.3). Los **candidatos a propiedad** (1.3b) en
+   una tabla: caso · qué cambia del contenedor · por qué ningún input existente lo cubre · input propuesto
+   (`appearance`, booleano o escala).
 5. **Animaciones** (3.6): cada efecto con su token de duración/curva, y si lleva ripple.
 6. **Teclado** (3.7): resumen de la tabla de teclas y el modelo de foco (activedescendant / roving / trap).
 7. **Validaciones** que se ejecutarán (fase 4).
@@ -364,46 +369,69 @@ Lo que solo aparece en Figma **no** se pregunta: se reporta en "Solo en Figma".
 
 Todo lo demás (nombres, variantes, tokens, módulos) se resuelve inspeccionando. No preguntes por cada variante.
 
-### 2.4 Variantes de documentación
+### 2.4 Variantes y composiciones de documentación
 
-Una variante = una **sección de documentación** que demuestra una característica real de la API o un
-caso de uso del proyecto. Dos orígenes, y solo esos:
+Dos tabs, dos orígenes, y solo esos:
 
-1. **Base de conocimientos (Intelica.knowledgeBase)** (1.3b): cada modificador `.pr<Nombre>--*`, cada caso con título propio
-   ("Variante Export") y cada **vista alternativa** con otro contenido en los templates. Su
-   `example.html` parte de la maqueta HTML de la base de conocimientos (Intelica.knowledgeBase), traducida (references/knowledge-base.md, sección 2),
-   con el contenido de los templates en helpers `.u-*` (3.5).
-2. **PrimeNG v20**: las secciones de su documentación oficial (Basic, Icon, Image, Template, Disabled,
-   Sizes, Severity, Forms, Accessibility…), pero **solo** las que correspondan a inputs/outputs/templates
-   del inventario.
+| | Variante (`variants/<slug>/`, tab Variants) | Composición (`compositions/<slug>/`, tab Compositions) |
+|---|---|---|
+| Origen | **API**: secciones de la documentación de PrimeNG v20 (Basic, Icon, Image, Template, Disabled, Sizes, Severity, Forms, Accessibility…) que correspondan al inventario, y **una por cada propiedad nueva** `int-*` (candidato aprobado) | **Base de conocimientos** (1.3b): cada modificador `.pr<Nombre>--*`, cada caso con título propio ("Variante Export", card KPI) y cada **vista alternativa** con otro contenido en los templates |
+| Muestra | **una** característica, con contenido mínimo | el caso real, armado con la API + helpers `.u-*` |
+| Script | `npm run new:variant` | `npm run new:composition` (skill `crear-composicion`) |
 
-Figma no crea variantes: solo sirve para revisar cómo se ven las que salen de 1 y 2.
+La base de conocimientos documenta PrimeNG y **combinaciones** de su API, así que sus casos no son
+variantes: son composiciones. Su `example.html` parte de la maqueta HTML de la base de conocimientos,
+traducida (references/knowledge-base.md, sección 2), con el contenido de los templates en helpers `.u-*` (3.5).
+
+**Candidato a propiedad.** Un caso de la base de conocimientos se convierte en input (y entonces su
+efecto aislado es una variante) solo si cumple las tres:
+
+1. Cambia el **contenedor** del componente (borde, sombra, fondo, padding, radio, densidad), no el contenido.
+2. **Ningún input existente** (de PrimeNG o extensión ya creada) ni combinación de ellos lo logra.
+3. Es **reutilizable** fuera de ese caso (no es el diseño de una sola pantalla).
+
+Ejemplo, card: `.prCard--data` y `--noBg` cumplen las tres → `flat`; `--group` → `tinted`. Los formatos
+`mini`, `option` y `version` no: se logran con `compact`, `selectable` y `contentGap` → composiciones
+(`multi-select`, `option-picker`, `version-picker`). El caso completo (KPI, fila de métricas) sigue
+siendo composición aunque use la propiedad nueva. Si un caso queda en duda (cumple 1 y 2 pero no está
+claro 3), se pregunta (2.2) con AskUserQuestion: ¿propiedad o composición?
+
+Figma no crea variantes ni composiciones: solo sirve para revisar cómo se ven.
 
 - `basic` siempre (ya existe: la crea `crear-componente`).
 - Una carpeta por característica: `icon`, `image`, `removable`, `template`, `disabled`, `severity`,
-  `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG.
-- Casos de la base de conocimientos (Intelica.knowledgeBase): slug del modificador o del título (`minimal`, `export`), título como en la base de conocimientos (Intelica.knowledgeBase).
-- `combinations` solo si revela algo que las otras no (interacción entre atributos, conflictos de estilo).
+  `sizes`, `forms`, `filter`… Slug kebab-case, título como en PrimeNG, salvo que ese título no diga
+  qué muestra: la sección "Advanced" de la card de PrimeNG demuestra los templates, así que aquí es
+  `template` / "Template" (el nombre que PrimeNG usa en los demás componentes para esa sección).
+- Propiedad nueva `int-*`: slug y título del input (`flat`, `tinted`).
+- Composiciones (casos de la base de conocimientos): slug del modificador o del título (`minimal`,
+  `export`, `kpi`), título como en la base de conocimientos. No hay variante `combinations`: las
+  combinaciones son las composiciones.
 - `accessibility` si PrimeNG la documenta: describe teclas y ARIA de la tabla de teclado (3.7).
 - Nunca carpetas para atributos que no existen en PrimeNG v20 ni en la base de conocimientos (Intelica.knowledgeBase), ni para extensiones propias
   sin marcarlas.
+- Una variante existente que es un caso de la base de conocimientos se pasa a composición con
+  `npm run move -- <id> <slug> --to composition --yes` (conserva slug y URL), no se recrea.
 - Variantes existentes (vienen del Excel/Figma): **no se borran ni renombran**. Si están en plantilla
   y corresponden a una característica, se completan; si están customizadas, se aplica 1.2 (no se
   tocan salvo que se fuerce). Las que falten se crean.
 
-Cada variante se crea con el script (nunca a mano ni copiando otra):
+Cada variante y cada composición se crea con el script (nunca a mano ni copiando otra):
 
 ```bash
 npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué observar>"
+npm run new:composition -- <id> "<Título>" --description "<el caso y con qué API se arma>"
 ```
 
 **Idioma de las descripciones:** si la documentación de PrimeNG trae la descripción (como la del
 componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
-se escribe **en español**. Los títulos siguen como en PrimeNG.
+se escribe **en español**. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
+descripción los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
 
-Con 3 o más variantes, aplica `ordenar-variantes` siguiendo el orden de la documentación de PrimeNG y
-después los casos de la base de conocimientos (Intelica.knowledgeBase, `npm run order:variants -- <id> basic icon image … minimal export`), sin
-preguntar posición.
+Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la
+documentación de PrimeNG y después las propiedades nuevas (`npm run order:variants -- <id> basic icon
+image … flat tinted`); composiciones en el orden de la base de conocimientos
+(`npm run order:variants -- <id> --compositions minimal export`).
 
 ---
 
@@ -448,10 +476,15 @@ Reglas:
   (`booleanAttribute`, `numberAttribute`). Lo que se agregue y no exista en PrimeNG se comenta como
   `/** int-* extension: … */`.
 - **Formatos visuales de extensión en un input tipado**: los formatos de la base de conocimientos que
-  solo ponen un modificador y se excluyen entre sí van en **un** input (`appearance`, o el nombre de
+  cambian el **contenedor** y se excluyen entre sí van en **un** input (`appearance`, o el nombre de
   PrimeNG si existe: `severity`, `variant`, `size`), con su tipo exportado
-  (`IntCardAppearance = 'mini' | 'data' | …`) y `[class.int-<id>--x]: "appearance() === 'x'"` en el
-  host. Un booleano por formato solo si se suma a otros (`compact`, `outlined`, `noBg`).
+  (`IntTagSeverity = 'success' | 'warn' | …`) y `[class.int-<id>--x]: "severity() === 'x'"` en el
+  host. Un booleano por formato solo si se suma a otros (`compact`, `outlined`, `flat`).
+- **Antes de crear un formato, compararlo con los modificadores que ya hay.** Si lo que lo distingue es
+  el contenido (KPI, fila de métricas, badge) o se logra combinando inputs existentes, no es API: es una
+  **composición** en `compositions/<slug>/` (skill `crear-composicion`). Ej.: los formatos `mini`,
+  `option`, `version`, `data` y `group` de card son `<int-card compact selectable>`,
+  `<int-card selectable contentGap="small">`, `<int-card flat>` y `<int-card tinted>` + helpers.
 - **Outputs de extensión con la convención de PrimeNG**: `onX` (`onSelect`, no `select`). Nunca el nombre
   de un evento nativo del DOM (`select`, `click`, `change`, `focus`, `close`…): `(select)="…"` sobre el
   `<int-*>` escucharía también el evento nativo, que burbujea desde un `<input>` interno y se dispara
@@ -583,7 +616,8 @@ cabecera). Completar:
   el contenido sigue con helpers. Un alto de un elemento interno que el consumidor no alcanza (el
   `#header` de la card) sí es input de la base (`headerHeight`).
 - Descripción de la cabecera: qué demuestra, qué atributos usa, qué observar (estado, teclado, evento)
-  y limitaciones. Una o dos frases, en español cuando la redactas tú (ver 2.4).
+  y limitaciones. Una o dos frases, en español cuando la redactas tú (ver 2.4), con los nombres de la
+  API entre comillas invertidas: "Propiedad `outlined` (modificador `int-card--outlined`)…".
 - `example.ts`: un solo componente exportado; datos de demostración como constante tipada en el mismo
   archivo (`const MOCK_ITEMS: readonly Item[] = […]`) expuesta en la clase; `signal()` solo si el ejemplo
   la modifica (p. ej. lista de chips que se eliminan con `onRemove`). Sin servicios, HTTP ni `*.mock.ts`.
@@ -598,7 +632,7 @@ cabecera). Completar:
   ```
   Avatares, banderas o logos de ejemplo, igual: helper de fondo + icono `icon icon-*` o iniciales.
 - **Orden de atributos del `<int-*>`**, igual en todas las variantes: formato (`appearance`, `compact`,
-  `outlined`…), contenido (`header`, `subheader`, `headerHeight`…), estado (`selectable`, `[selected]`,
+  `outlined`, `flat`…), contenido (`header`, `subheader`, `headerHeight`…), estado (`selectable`, `[selected]`,
   `[disabled]`), `[style]` y eventos (`(onSelect)`). Si son más de tres, uno por línea. Los
   comentarios de código que citan PrimeNG para trazabilidad (`// same as p-card`) sí se mantienen.
   `check:component` da error ante una URL de PrimeNG y aviso si la cabecera menciona PrimeNG.
@@ -640,7 +674,7 @@ muestra, acercarse a Figma). Detalle, catálogo y tabla de traducción en
   padre (repartir ancho, igualar alto) va en un envoltorio:
   ```html
   <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
-    <int-card appearance="mini" selectable …>…</int-card>
+    <int-card compact selectable …>…</int-card>
   </div>
   ```
   Un componente contenedor (card, panel) llena ese envoltorio desde su SCSS, solo cuando es su único
@@ -748,9 +782,11 @@ Revisión manual (lista corta, en el informe):
   anillo de foco visible solo con teclado.
 - Animaciones: entrada y salida visibles en overlays/modales, ripple al pulsar (si aplica) y nada
   animado con movimiento reducido activo (DevTools → Rendering → `prefers-reduced-motion`).
-- Cada caso `.pr` de la tabla de la base de conocimientos (Intelica.knowledgeBase, 1.3b) terminó en un token, un módulo o una variante.
+- Cada caso `.pr` de la tabla de la base de conocimientos (Intelica.knowledgeBase, 1.3b) terminó en un token, un módulo, una composición o (candidato aprobado) un input + variante.
 - Ningún par de booleanos estéticos se excluye entre sí: si dos no pueden ir juntos, son valores de
   `appearance` (knowledge-base.md 2b).
+- Ningún valor de `appearance` ni booleano estético que solo cambie el contenido: esos casos son
+  composiciones (`compositions/`), no API.
 - Visual: `npm start` → `http://localhost:4321/components/<id>`; para comparar con PrimeNG, montar
   temporalmente el `p-<nombre>` en una variante **sin guardarlo** o comparar con la demo oficial. Los
   tokens `--i-*` solo existen con el Style Guide levantado (`localhost:8080`); sin él el componente queda
@@ -769,7 +805,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
    respetaron o se forzaron.
 2. Archivos creados / modificados (rutas como enlaces).
 3. Funcionalidades implementadas (tabla del inventario con ✅ / ➖ descartado + motivo).
-4. Variantes generadas con su enlace `/components/<id>#<id>-<slug>`.
+4. Variantes y composiciones generadas con su enlace `/components/<id>#<id>-<slug>`, y la tabla de
+   candidatos a propiedad (aprobados → input; descartados → composición, con el motivo).
 5. Dependencias externas que siguen (`@angular/cdk`, `primeicons`…) y por qué; y **componentes
    `int-*` requeridos y opcionales** (1.6, `requires` / `uses`): estado, diseñador a cargo, real o
    provisional, y "cuando esté done: `/resolver-dependencias <dep>`".
@@ -789,6 +826,9 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 ---
 
 ## 6. Qué NO hacer
+
+- ❌ Crear una variante por cada caso de la base de conocimientos: son combinaciones de la API y van como
+  composiciones (2.4). Solo un candidato a propiedad que cumple las tres condiciones agrega input + variante.
 
 - ❌ Importar, envolver o delegar en PrimeNG (`primeng/*`, `@primeuix/*`, `p-*`, `pTemplate`, `pBind`).
 - ❌ Empezar sin preguntar el componente destino, o crear el componente desde esta skill (se sugiere
@@ -835,8 +875,10 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   PrimeFlex/Tailwind en vez de helpers `.u-*`; usar helpers en la base o inventar clases `u-*` (3.5).
 - ❌ Nombrar un output como un evento nativo del DOM (`select`, `click`, `change`…): se usa `onX`,
   como PrimeNG (`onSelect`) (3.1).
-- ❌ Un booleano por cada formato visual excluyente (`<int-card data>`, `<int-card group>`): confunde
-  con un dato y mezcla estética con comportamiento; va en un input `appearance="data"` (3.1).
+- ❌ Un booleano por cada formato visual excluyente (`<int-tag success>`, `<int-tag warn>`): confunde
+  con un dato y mezcla estética con comportamiento; va en un input tipado (`severity="success"`) (3.1).
+- ❌ Un input o modificador para un formato que solo cambia el contenido (`appearance="data"` en card):
+  es una composición en `compositions/<slug>/` con la API que ya existe (3.1).
 - ❌ Crear un input `width`/`height` en la base solo para dimensionar el componente: la variante usa
   `[style]="{ width: '25rem' }"` sobre el `<int-*>`, como PrimeNG (3.4).
 - ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,

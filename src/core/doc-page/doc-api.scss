@@ -35,7 +35,7 @@
   scroll-margin-top: calc(var(--doc-topbar-h) + var(--doc-meta-h) + 16px);
 }
 
-// Same box as .doc-section-head + .doc-section-title of the Features tab (20px padding, 32px tall like
+// Same box as .doc-section-head + .doc-section-title of the Variants tab (20px padding, 32px tall like
 // its Code button, line-height 1.3), so the first heading does not jump when switching tabs.
 // Sticky right below the chips bar while its block scrolls, like the variant heads, painted with the
 // pane background so the table scrolls under it.
