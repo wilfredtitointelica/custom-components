@@ -32,6 +32,18 @@ describe('parseDocHtml', () => {
     });
   });
 
+  it('reads the description of each tab apart from the description', () => {
+    const html = parseDocHtml(
+      '<!--\n  title: Card\n  description: Card is a container.\n  description-api: Inputs of Card.\n  description-compositions: Use cases\n    of Card.\n  description-variants:\n-->\nint-card',
+    );
+    expect(html.meta).toEqual({
+      title: 'Card',
+      description: 'Card is a container.',
+      descriptionApi: 'Inputs of Card.',
+      descriptionCompositions: 'Use cases of Card.',
+    });
+  });
+
   it('omits empty header values', () => {
     expect(parseDocHtml('<!--\n  title: Basic\n  description:\n-->\n').meta).toEqual({ title: 'Basic' });
   });

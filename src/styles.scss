@@ -70,11 +70,19 @@
   --doc-rail-w: 96px;
   --doc-drawer-w: 300px;
   --doc-topbar-h: 64px;
+  --doc-topbar-center-w: 396px; // centered control of the top bar: doc tabs, Icon Lab search
   --doc-bottombar-h: 0px;
   --doc-pane-gap: 16px;
   --doc-content-max: 1200px;
 
   color-scheme: light;
+}
+
+/* Medium: narrower centered control, leaving room for what sits on both sides of it. */
+@media (min-width: 840px) and (max-width: 1199px) {
+  :root {
+    --doc-topbar-center-w: 348px;
+  }
 }
 
 /* Compact (< 840px): the rail becomes a bottom navigation bar. */

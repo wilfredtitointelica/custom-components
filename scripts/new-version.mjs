@@ -90,14 +90,22 @@ if (title !== undefined || description !== undefined) {
   const html = readFileSync(targetHtml, 'utf8');
   const current = HEADER.exec(html)?.[1] ?? '';
   // Same layout the documentation reads: "title:" on one line, "description:" up to the next key or
-  // the end, optional "figma:" link kept as is (copied from the previous version).
+  // the end; the tab descriptions (description-variants|api|compositions:), "figma:" and "figma-frame:"
+  // are kept as is (copied from the previous version).
+  const field = (key) =>
+    new RegExp(`^\\s*${key}:([\\s\\S]*?)(?=^\\s*[\\w-]+:|$(?![\\s\\S]))`, 'm').exec(current)?.[1].trim();
   const newTitle = title ?? /title:(.*)/.exec(current)?.[1].trim() ?? '';
-  const newDescription =
-    description ?? /description:([\s\S]*?)(?=^\s*figma:|$(?![\s\S]))/m.exec(current)?.[1].trim() ?? '';
-  const figma = /^\s*figma:(.*)$/m.exec(current)?.[1].trim();
+  const newDescription = description ?? field('description') ?? '';
+  const kept = ['description-variants', 'description-api', 'description-compositions']
+    .map((key) => [key, field(key)])
+    .filter(([, value]) => value)
+    .map(([key, value]) => `  ${key}: ${value}\n`)
+    .join('');
+  const figma = field('figma');
+  const figmaFrame = field('figma-frame');
   const header =
-    `<!--\n  title: ${newTitle}\n  description:${newDescription && ` ${newDescription}`}\n` +
-    `  figma:${figma ? ` ${figma}` : ''}\n-->`;
+    `<!--\n  title: ${newTitle}\n  description:${newDescription && ` ${newDescription}`}\n${kept}` +
+    `  figma:${figma ? ` ${figma}` : ''}\n${figmaFrame ? `  figma-frame: ${figmaFrame}\n` : ''}-->`;
   writeFileSync(targetHtml, HEADER.test(html) ? html.replace(HEADER, header) : `${header}\n${html}`);
 }
 

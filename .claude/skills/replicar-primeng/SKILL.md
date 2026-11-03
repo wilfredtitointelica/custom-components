@@ -247,7 +247,8 @@ de mayor prioridad y la diferencia se reporta. Procedimiento completo en
 5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
    vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
    antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
-   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
+   cabecera: no se agregan `description-api:` / `description-compositions:` / `description-variants:`
+   (la página usa un texto genérico; solo el maquetador los escribe si quiere uno propio). La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
    comparar después:
    ```html
    <!--

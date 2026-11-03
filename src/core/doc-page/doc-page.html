@@ -9,11 +9,13 @@
   <div class="doc-title-row">
     <div>
       <p class="doc-eyebrow">Component</p>
-      <!-- Title and description: header comment of version-N/base/<id>.html of the selected version. -->
-      <h1 class="doc-title">{{ version?.title ?? current.name }}</h1>
+      <!-- Title and description: header comment of version-N/base/<id>.html of the selected version,
+           named after the open tab ("Card API"; Variants keeps the bare name) with that tab's
+           description (description-<tab>:). -->
+      <h1 class="doc-title">{{ version?.title ?? current.name }}@if (tabTitle[tab]) { {{ tabTitle[tab] }}}</h1>
     </div>
   </div>
-  @if (version?.description ?? current.description; as description) {
+  @if (tabDescription(); as description) {
     <p class="doc-description"><app-inline-code [text]="description" /></p>
   }
   <!-- Intro content projected by the component page (description, usage notes…). -->
