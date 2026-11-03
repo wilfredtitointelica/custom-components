@@ -2,12 +2,18 @@ import { Component, computed, input } from '@angular/core';
 
 import { DocApi, DocApiToken } from '../../service/catalog.model';
 import { InlineCode } from '../inline-code/inline-code';
+import { resolveColor } from '../style-guide/style-guide-source';
 import { apiBlockId } from './doc-api-toc';
+
+/** A token with the color its value resolves to on :root (null when it is not a color). */
+interface ResolvedToken extends DocApiToken {
+  readonly color: string | null;
+}
 
 /** Tokens of one `// --- group ---` of the :root, in source order. */
 interface TokenGroup {
   readonly name?: string;
-  readonly tokens: readonly DocApiToken[];
+  readonly tokens: readonly ResolvedToken[];
 }
 
 /**
@@ -37,12 +43,15 @@ export class DocApiView {
     );
   });
 
-  protected readonly tokenGroups = computed(() =>
-    (this.api()?.tokens ?? []).reduce<TokenGroup[]>((groups, token) => {
+  /** Color tokens get a swatch, like the color helpers of the Style Guide dialog. */
+  protected readonly tokenGroups = computed(() => {
+    const root = getComputedStyle(document.documentElement);
+    return (this.api()?.tokens ?? []).reduce<TokenGroup[]>((groups, raw) => {
+      const token = { ...raw, color: resolveColor(raw.value, root) };
       const last = groups.at(-1);
       if (last && last.name === token.group)
         return [...groups.slice(0, -1), { ...last, tokens: [...last.tokens, token] }];
       return [...groups, { name: token.group, tokens: [token] }];
-    }, []),
-  );
+    }, []);
+  });
 }

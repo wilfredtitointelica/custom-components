@@ -259,6 +259,9 @@
                     <code class="doc-api-name">{{ token.name }}</code>
                   </td>
                   <td>
+                    @if (token.color) {
+                      <span class="doc-api-swatch" [style.background]="token.color" aria-hidden="true"></span>
+                    }
                     <code class="doc-api-type">{{ token.value }}</code>
                   </td>
                   <td class="doc-api-source">{{ token.source ?? '—' }}</td>

@@ -163,6 +163,17 @@
   color: var(--doc-primary);
 }
 
+// Swatch of a color token, like the color helpers of the Style Guide dialog.
+.doc-api-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: 4px;
+  vertical-align: -2px;
+}
+
 .doc-api-description {
   color: var(--doc-ink);
 }
