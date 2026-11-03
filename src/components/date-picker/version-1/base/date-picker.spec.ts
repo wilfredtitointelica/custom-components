@@ -43,7 +43,7 @@ describe('IntDatePicker', () => {
       fixture.detectChanges();
     };
     const day = (n: number) =>
-      Array.from(overlay.querySelectorAll<HTMLElement>('.int-date-picker__cell--day:not(.int-date-picker__cell--other-month)')).find(
+      Array.from(overlay.querySelectorAll<HTMLElement>('.int-date-picker__cell--day')).find(
         (d) => d.textContent?.trim() === String(n),
       )!;
     return { fixture, input, overlay, open, day, control: fixture.componentInstance.control };
@@ -118,14 +118,71 @@ describe('IntDatePicker', () => {
     expect(control.value).toBeNull();
   });
 
-  it('pages the year view by 12 years (2026 → 2026–2037)', () => {
+  it('pages the year view by decade, as PrimeNG (2026 → 2020 - 2029)', () => {
     const { fixture, overlay, open } = setup('single', 'month');
     open();
     overlay.querySelector<HTMLElement>('.int-date-picker__title-button')!.click();
     fixture.detectChanges();
     const years = Array.from(overlay.querySelectorAll('.int-date-picker__cell')).map((c) => c.textContent?.trim());
-    expect(years.length).toBe(12);
-    expect([years[0], years[11]]).toEqual(['2026', '2037']);
-    expect(overlay.querySelector('.int-date-picker__decade')?.textContent?.trim()).toBe('2026 - 2037');
+    expect(years.length).toBe(10);
+    expect([years[0], years[9]]).toEqual(['2020', '2029']);
+    expect(overlay.querySelector('.int-date-picker__decade')?.textContent?.trim()).toBe('2020 - 2029');
+  });
+
+  it('leaves days of other months blank', () => {
+    const { overlay, open } = setup();
+    open();
+    // October 2026 has 31 days: no 1-6 of November after them.
+    const days = Array.from(overlay.querySelectorAll('.int-date-picker__cell--day')).map((d) => d.textContent?.trim());
+    expect(days.length).toBe(31);
+  });
+
+  it('hides the previous arrow when the previous month is before minDate', () => {
+    const { overlay, open } = setup();
+    open();
+    const [prev, next] = Array.from(overlay.querySelectorAll<HTMLButtonElement>('.int-date-picker__nav'));
+    expect(prev.disabled).toBeTrue();
+    expect(next.disabled).toBeFalse();
+  });
+
+  it('paints every month of a month range as selected', () => {
+    const { fixture, overlay, open, control } = setup('range', 'month');
+    control.setValue([new Date(2026, 9, 1), new Date(2026, 11, 1)]);
+    open();
+    fixture.detectChanges();
+    const nov = overlay.querySelectorAll<HTMLElement>('.int-date-picker__cell')[10];
+    expect(nov.classList).toContain('int-date-picker__cell--in-range');
+  });
+});
+
+@Component({
+  imports: [IntDatePicker],
+  template: `
+    <int-date-picker inline selectionMode="range" numberOfMonths="2" [maxDate]="maxDate">
+      <ng-template #footer><button type="button" class="preset">Preset</button></ng-template>
+    </int-date-picker>
+  `,
+})
+class MonthsHost {
+  maxDate = new Date();
+}
+
+describe('IntDatePicker · numberOfMonths and footer', () => {
+  it('shows two months, with the next arrow only on the last one and hidden at maxDate', () => {
+    const fixture = TestBed.createComponent(MonthsHost);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelectorAll('.int-date-picker__month').length).toBe(2);
+    expect(el.querySelectorAll('.int-date-picker__calendar').length).toBe(2);
+    const navs = el.querySelectorAll<HTMLButtonElement>('.int-date-picker__nav');
+    expect(navs.length).toBe(2);
+    // Opens on the current month: the second one is next month, already after maxDate.
+    expect(navs[1].disabled).toBeTrue();
+  });
+
+  it('renders the footer template', () => {
+    const fixture = TestBed.createComponent(MonthsHost);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.int-date-picker__footer .preset')).not.toBeNull();
   });
 });

@@ -37,6 +37,7 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
     '[attr.disabled]': 'isDisabled() ? "" : null',
     '[attr.aria-disabled]': 'isDisabled() || null',
     '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : null',
+    '[attr.aria-pressed]': 'active() ?? null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.aria-label]': 'ariaLabel() ?? (labelOnHover() ? label() : null) ?? null',
   },
@@ -72,6 +73,11 @@ export class IntButton {
    * the accessible name.
    */
   readonly labelOnHover = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: mantiene el aspecto presionado (`active`) y marca `aria-pressed`, p. ej. el rango
+   * predefinido elegido en el pie de `int-date-picker`.
+   */
+  readonly active = input<boolean | undefined>(undefined);
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
@@ -102,6 +108,7 @@ export class IntButton {
     if (this.rounded()) modifiers.push('rounded');
     if (this.fluid()) modifiers.push('fluid');
     if (this.labelOnHover()) modifiers.push('label-on-hover');
+    if (this.active()) modifiers.push('active');
     if (this.loading()) modifiers.push('loading');
     if (this.iconOnly()) modifiers.push('icon-only');
     return modifiers.map((modifier) => `int-button--${modifier}`).join(' ');

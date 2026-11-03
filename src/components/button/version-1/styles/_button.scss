@@ -143,7 +143,9 @@ int-button {
     border-color: var(--int-button-hover-border);
     color: var(--int-button-hover-color);
   }
-  &:not([disabled]):active {
+  // Pressed look; --active keeps it (toggle / chosen option, aria-pressed).
+  &:not([disabled]):active,
+  &--active:not([disabled]) {
     background: var(--int-button-active-background);
     border-color: var(--int-button-active-border);
     color: var(--int-button-active-color);

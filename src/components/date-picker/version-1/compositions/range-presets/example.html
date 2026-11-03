@@ -1,0 +1,32 @@
+<!--
+  title: Range presets
+  description: Rango de dos meses (`numberOfMonths`) con rangos predefinidos en el template `footer`: cada botón fija el valor y el elegido queda `active`.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-date-picker
+    selectionMode="range"
+    numberOfMonths="2"
+    dateFormat="dd M, yy"
+    placeholder="dd mm, yyyy - dd mm, yyyy"
+    [maxDate]="today"
+    showIcon
+    ariaLabel="Period"
+    [style]="{ width: '18rem' }"
+    [ngModel]="range()"
+    (ngModelChange)="pick($event)"
+  >
+    <ng-template #footer>
+      @for (preset of presets; track preset.id) {
+        <button
+          type="button"
+          intButton
+          severity="secondary"
+          [label]="preset.label"
+          [active]="selected() === preset.id"
+          (click)="apply(preset.id)"
+        ></button>
+      }
+    </ng-template>
+  </int-date-picker>
+  <p class="u-m-0 u-text-sm">Value: {{ range() | json }}</p>
+</div>

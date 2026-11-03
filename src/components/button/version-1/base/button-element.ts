@@ -47,6 +47,8 @@ export class IntButtonElement {
   readonly ariaLabel = input<string | undefined>(undefined);
   /** int-* extension: label hidden until hover or keyboard focus (Figma button-help). */
   readonly labelOnHover = input(false, { transform: booleanAttribute });
+  /** int-* extension: mantiene el aspecto presionado y marca `aria-pressed`. */
+  readonly active = input<boolean | undefined>(undefined);
   /** Native `type` of the inner button. */
   readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly autofocus = input(false, { transform: booleanAttribute });

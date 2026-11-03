@@ -10,7 +10,7 @@ import { IntDatePicker, IntDatePickerValue } from '../../base/date-picker';
   imports: [IntDatePicker, FormsModule, JsonPipe],
 })
 export class DatePickerMonthPickerExample {
-  private readonly today = new Date();
+  readonly today = new Date();
   month: IntDatePickerValue = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
   monthRange: IntDatePickerValue = null;
 }
