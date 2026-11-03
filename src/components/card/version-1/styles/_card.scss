@@ -62,6 +62,12 @@
   font-family: var(--int-card-font-family);
   font-size: var(--int-card-font-size);
   line-height: var(--int-card-line-height);
+
+  // Alone in a flex wrapper (the consumer's layout cell), the card fills it; siblings in a row keep
+  // their own size. Layout helpers go on that wrapper, never on <int-card>.
+  &:only-child {
+    flex-grow: 1;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -145,6 +151,11 @@
   &:focus-visible {
     outline: var(--int-card-focus-ring-width) solid var(--int-card-focus-ring-color);
     outline-offset: var(--int-card-focus-ring-offset);
+  }
+
+  // Selectable cards sit side by side (mini, option, version): the body fills a stretched card.
+  .int-card__body {
+    flex-grow: 1;
   }
 }
 

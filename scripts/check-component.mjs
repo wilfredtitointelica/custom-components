@@ -236,6 +236,12 @@ function checkVersion(component, version, report, deps) {
               `${path}:${lineOf(markup, tag.index)}`,
               'u-overflow-* on <int-*>: clip the inner element in the component SCSS (e.g. __header), not the block',
             );
+          // The tag stays clean: its place in the parent layout goes on a wrapper div.
+          else if (/\sclass="[^"]*\bu-[a-z]/.test(tag[0]))
+            report.warn(
+              `${path}:${lineOf(markup, tag.index)}`,
+              'u-* helpers on <int-*>: put the layout helpers on a wrapper <div>',
+            );
         }
       for (const match of markup.matchAll(/\sclass="([^"]*)"/g)) {
         // Interpolated parts ({{ item.icon }}) are data, not class names.

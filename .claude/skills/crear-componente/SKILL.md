@@ -381,6 +381,11 @@ Reglas del ejemplo (lo que se ve en la pestaña HTML / TS de la documentación e
 - El HTML (debajo de la cabecera) es código que un consumidor podría copiar: sin clases de la documentación ni estilos inline. La cabecera no se muestra en la pestaña HTML.
   Excepción: el tamaño del propio componente va con `[style]` sobre el `<int-*>`, como PrimeNG
   (`<int-card [style]="{ width: '25rem' }">`), sin crear un input `width`/`height` en la base.
+- Atributos del `<int-*>` siempre en este orden: formato (`appearance`, `compact`, `outlined`…),
+  contenido (`header`, `subheader`…), estado (`selectable`, `[selected]`, `[disabled]`), `[style]`,
+  eventos (`(onSelect)`).
+- Sin helpers `u-*` sobre el `<int-*>`: su lugar en la fila del padre va en un `<div>` envoltorio
+  (`<div class="u-display-flex u-flex-grow-1 u-flex-basis-0"><int-card …>`) y el componente lo llena.
 - Un ejemplo puede mostrar varios valores juntos (sección "Severity" con los 4 botones), como PrimeNG.
 
 ### 3.6 `version-1/styles/_index.scss`

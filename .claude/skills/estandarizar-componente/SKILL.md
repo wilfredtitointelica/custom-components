@@ -79,6 +79,8 @@ git log --oneline -3 -- src/components/<id>/
    (`select`, `click`, `change`…) se renombra (`select` → `onSelect`), igual que sus `(select)` en las variantes.
    Un input solo para dimensionar el componente (`width`, `height`) se quita y las variantes pasan a
    `[style]="{ width: '…' }"` sobre el `<int-*>`.
+   Helpers `u-*` sobre un `<int-*>` (`class="u-flex-grow-1 u-flex-basis-0"`) pasan a un `<div>`
+   envoltorio; si es un contenedor (card, panel), su SCSS lo llena con `:only-child { flex-grow: 1 }`.
 6. **Tabla de adaptación** (en el chat), una fila por pieza:
 
 | Pieza | Hoy (maquetador) | Acción | Destino | Fuente que decide |
@@ -142,7 +144,12 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
    en `done`, o provisional marcado `dep:<id> provisional` + `data-dep`, y el id en `requires` (base) o
    `uses` (variantes) del config.
 7. **Variantes** (2.4, 3.4, 3.5): las que corresponden a la base de conocimientos (Intelica.knowledgeBase) o a PrimeNG se reubican con su slug; el
-   contenido de los templates con helpers `.u-*`; con 3 o más, `npm run order:variants`.
+   contenido de los templates con helpers `.u-*`; con 3 o más, `npm run order:variants`. Además, como
+   en `replicar-primeng` 3.1/3.3/3.4/3.7: iconos `pi pi-*` → `icon icon-*` del Style Guide cuando hay
+   equivalente (una sola familia), atributos del `<int-*>` en el orden fijo (formato · contenido ·
+   estado · `[style]` · eventos), reglas SCSS repetidas entre módulos → una vez en el modificador común,
+   y acciones (botones, links) dentro de una card `selectable` → fuera de la card o se quita `selectable`
+   (se pregunta en 3).
 8. **Interacción**: lo que falte de 3.6 (animaciones, ripple, `prefers-reduced-motion`) y de 3.7
    (tab stops, foco, teclas, `:focus-visible`). Si el maquetador conectó estado o ARIA en las variantes
    (`[attr.aria-disabled]`, `[attr.tabindex]`, `role`, `(keydown.*)` sobre el `<int-*>`), se mueve a la

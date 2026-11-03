@@ -481,8 +481,10 @@ Reglas:
   `setDisabledState`, `onTouched` en blur. Mismo nombre de valor que PrimeNG (`value`, `ngModel`).
 - Templates proyectables: `contentChild<TemplateRef<Ctx>>('nombre')` + `NgTemplateOutlet`, con el mismo
   nombre de referencia que PrimeNG (`#removeicon`, `#item`) y un tipo para el contexto.
-- Iconos: `primeicons` (`pi pi-*`, cargado en `src/styles.scss`) o la fuente `incontrol-icons` del Style
-  Guide. Nunca `primeng/icons`. Si PrimeNG pinta un SVG propio sin equivalente, copiar el `path` en línea.
+- Iconos: primero la fuente `incontrol-icons` del Style Guide (`icon icon-*`, tamaño con
+  `icon--xs/sm/md/lg/xl`); `primeicons` (`pi pi-*`) solo si no hay equivalente, y se anota en el informe.
+  Una sola familia en la base y sus variantes: no mezclar `pi` e `icon` en el mismo componente. Nunca
+  `primeng/icons`. Si PrimeNG pinta un SVG propio sin equivalente, copiar el `path` en línea.
 - Overlays, foco atrapado, posiciones, listas virtuales: `@angular/cdk` (ya instalado) en vez de
   reimplementar o importar utilidades de PrimeNG. Cada uso de CDK se justifica en un comentario.
 - Animaciones: `animate.enter` / `animate.leave` (Angular 20.2+) y transiciones CSS, nunca
@@ -556,6 +558,9 @@ Reglas:
   solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. También un grupo por
   **formato de contenido** de una variante (`_card.data.scss` → `.int-card--data &__<elem>`), pero solo
   con estados visuales u otra cosa no estructural que ningún helper cubre (3.5); la estructura va con helpers.
+- **Sin reglas repetidas entre módulos**: si varios formatos necesitan lo mismo (mini, option y version
+  estiran el `__body`), la regla va una vez en el modificador que comparten (`.int-card--selectable`) o
+  en el bloque, no copiada en cada `_<id>.<grupo>.scss`.
 - Del Style Guide solo se consumen tokens `--i-*`: ningún selector ni CSS copiado de sus clases
   (`.prCard`, `.pt*`, `.ly*`, `.gr*`…).
 - Prohibido: clases `p-*`, clases sueltas (`.icon`, `.active`), `::ng-deep`, selectores de etiqueta
@@ -587,11 +592,14 @@ cabecera). Completar:
   (`primefaces.org/cdn/primeng/...`), ni "como la demo de PrimeNG" en la cabecera. Una imagen de demo
   se reemplaza por un **placeholder con fondo del Style Guide**:
   ```html
-  <div class="u-display-flex u-justify-content-center u-align-items-center u-py-5 u-background-surface u-color-grey-500 u-text-5xl" role="img" aria-label="Card image">
-    <i class="pi pi-image" aria-hidden="true"></i>
+  <div class="u-display-flex u-justify-content-center u-align-items-center u-py-5 u-background-surface u-color-grey-500" role="img" aria-label="Card image">
+    <i class="icon icon-image icon--lg" aria-hidden="true"></i>
   </div>
   ```
-  Avatares, banderas o logos de ejemplo, igual: helper de fondo + icono `pi` o iniciales. Los
+  Avatares, banderas o logos de ejemplo, igual: helper de fondo + icono `icon icon-*` o iniciales.
+- **Orden de atributos del `<int-*>`**, igual en todas las variantes: formato (`appearance`, `compact`,
+  `outlined`…), contenido (`header`, `subheader`, `headerHeight`…), estado (`selectable`, `[selected]`,
+  `[disabled]`), `[style]` y eventos (`(onSelect)`). Si son más de tres, uno por línea. Los
   comentarios de código que citan PrimeNG para trazabilidad (`// same as p-card`) sí se mantienen.
   `check:component` da error ante una URL de PrimeNG y aviso si la cabecera menciona PrimeNG.
 
@@ -627,6 +635,17 @@ muestra, acercarse a Figma). Detalle, catálogo y tabla de traducción en
   (`u-display-flex u-flex-column u-gap-xl`, filas con `u-gap-lg`/`u-gap-xl` y `u-flex-wrap`), y alinea
   los bordes entre grupos (`u-full-width`, `u-px-*` igual al padding del componente). Nada debe quedar
   pegado ni centrado a medio ancho por accidente: revisa la captura antes de dar la variante por buena.
+- 🔒 **El `<int-*>` no lleva helpers.** `class="u-*"` va en el contenido o en un `<div>` envoltorio,
+  nunca en la etiqueta del componente: así la etiqueta solo muestra su API. Su lugar en la fila del
+  padre (repartir ancho, igualar alto) va en un envoltorio:
+  ```html
+  <div class="u-display-flex u-flex-grow-1 u-flex-basis-0">
+    <int-card appearance="mini" selectable …>…</int-card>
+  </div>
+  ```
+  Un componente contenedor (card, panel) llena ese envoltorio desde su SCSS, solo cuando es su único
+  hijo, para no cambiar las filas de hermanos: `.int-<id>:only-child { flex-grow: 1; }`. El tamaño fijo
+  sigue con `[style]="{ width: '…' }"` (3.4). `check:component` avisa si ve `u-*` sobre un `<int-*>`.
 - 🔒 **Overflow: el bloque no recorta.** Ni `.int-<id>` en su SCSS ni el `<int-*>` en una variante
   (`<int-card class="u-overflow-hidden">` ❌) llevan `overflow: hidden/auto/clip`: un select, datepicker,
   popover o dialog abierto dentro quedaría cortado (y obligaría a `appendTo="body"`). Aunque PrimeNG
@@ -680,6 +699,9 @@ Todo lo que PrimeNG permite con teclado se permite igual; detalle en
   (`Enter`/`Space`). La variante solo escribe `<int-card [disabled]="item.disabled">`; nunca
   `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>` (`check:component` lo
   avisa).
+- **Un componente que se vuelve botón (`role="button"`, `selectable`) no contiene otros interactivos**
+  (botones, links, inputs): un botón dentro de otro no es accesible. Se dice en el JSDoc del input y en
+  la descripción de sus variantes, y ninguna variante selectable lleva acciones en sus templates.
 
 ---
 
@@ -819,6 +841,12 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
   `[style]="{ width: '25rem' }"` sobre el `<int-*>`, como PrimeNG (3.4).
 - ❌ Usar del Style Guide algo que no sean tokens `--i-*` y helpers `.u-*` (`.prCard`, `.pt*`, `.ly*`,
   `.gr*`, `row`/`col-*`) o copiar su CSS.
+- ❌ Mezclar `pi pi-*` e `icon icon-*` en un componente, o usar `pi` cuando el Style Guide tiene el
+  icono (3.1).
+- ❌ Copiar la misma regla en varios módulos de modificador (3.3), o poner botones/links dentro de un
+  componente `selectable` (3.7).
+- ❌ Poner helpers `u-*` sobre un `<int-*>` (`<int-card class="u-flex-grow-1 …">`): van en un `<div>`
+  envoltorio y el componente lo llena (3.5).
 - ❌ Poner `overflow` en el bloque `.int-<id>` o un helper `u-overflow-*` sobre un `<int-*>`: recorta
   los overlays que se abren dentro; el recorte va en el `__elemento` que lo necesita (3.5).
 - ❌ Poner estructura (flex, gap, padding…) en un modificador de contenido cuando la resuelve un helper:

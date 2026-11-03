@@ -50,11 +50,21 @@ src/components/<id>/version-N/
 - Contenido dentro de los templates de las variantes: helpers `.u-*`, nunca `style` inline. Única
   excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`
   (sin crear inputs `width`/`height` en la base para eso).
+- La etiqueta `<int-*>` no lleva helpers `u-*`: su lugar en el layout del padre va en un `<div>`
+  envoltorio (`<div class="u-display-flex u-flex-grow-1 u-flex-basis-0"><int-card …>`), que el
+  componente llena (`.int-<id>:only-child { flex-grow: 1 }`).
 - El bloque no recorta: sin `overflow` en `.int-<id>` ni `u-overflow-*` sobre un `<int-*>` (cortaría
   selects, datepickers, popovers abiertos dentro). Si hace falta recortar, va en el `__elemento` dentro
   del SCSS del componente (p. ej. `.int-card__header { overflow: hidden }`).
 - Sin rastros de PrimeNG en lo visible: nada de imágenes, logos o URLs de `primefaces.org`. Una imagen de
-  ejemplo es un placeholder con fondo del Style Guide (`u-background-surface` + icono `pi pi-image`).
+  ejemplo es un placeholder con fondo del Style Guide (`u-background-surface` + icono `icon icon-image`).
+- Iconos del Style Guide (`icon icon-*` + `icon--xs…xl`); `pi pi-*` solo si no hay equivalente, y nunca
+  las dos familias en el mismo componente.
+- Atributos del `<int-*>` siempre en el mismo orden: formato (`appearance`, `compact`…), contenido
+  (`header`…), estado (`selectable`, `[selected]`, `[disabled]`), `[style]`, eventos.
+- Una regla que comparten varios modificadores va una sola vez (en el modificador común o el bloque),
+  no repetida en cada `_<id>.<grupo>.scss`.
+- Un componente que se vuelve botón (`selectable`, `role="button"`) no contiene botones, links ni inputs.
 - Estado y accesibilidad viven en el componente: si falta un estado (p. ej. `disabled` en card), se
   agrega como input y la base resuelve `tabindex`, `role`, `aria-*` y teclado. Las variantes no ponen
   `[attr.aria-*]`, `[attr.tabindex]`, `role` ni `(keydown.*)` sobre un `<int-*>`.

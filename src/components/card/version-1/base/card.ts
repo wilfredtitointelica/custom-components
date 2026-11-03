@@ -90,6 +90,7 @@ export class IntCard {
   /**
    * int-* extension: la card funciona como botón de alternar (appearance mini, option y version de la
    * base de conocimientos). Agrega role="button", parada de tabulación, aria-pressed y Enter/Espacio.
+   * Como es un botón, no debe contener otros botones ni links (p. ej. acciones en #footer).
    */
   readonly selectable = input(false, { transform: booleanAttribute });
   /** int-* extension: estado presionado de una card selectable (aria-pressed). Lo controla quien la usa. */
