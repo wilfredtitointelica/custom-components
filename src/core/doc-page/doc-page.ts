@@ -203,12 +203,12 @@ export class DocPage {
       case 'api':
         return (
           version?.descriptionApi ??
-          `API defines helper props, events, templates and CSS tokens for the ${name} component.`
+          `La API define las propiedades, eventos, templates y tokens CSS del componente ${name}.`
         );
       case 'compositions':
         return (
           version?.descriptionCompositions ??
-          `Compositions are real use cases built with the ${name} API and the u-* helpers.`
+          `Las composiciones son casos de uso reales armados con la API de ${name} y los helpers \`u-*\`.`
         );
       default:
         return version?.descriptionVariants ?? version?.description ?? current.description;

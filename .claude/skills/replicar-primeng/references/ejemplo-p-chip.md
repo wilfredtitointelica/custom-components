@@ -139,7 +139,7 @@ export class IntChip {
 ```html
 <!--
   title: Chip
-  description: Chip represents people using icons, labels and images.
+  description: Chip representa personas con iconos, etiquetas e imágenes.
   figma:
 -->
 <!-- Free content goes first, as in PrimeNG (template usage). -->

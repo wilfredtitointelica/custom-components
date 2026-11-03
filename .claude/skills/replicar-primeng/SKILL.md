@@ -253,7 +253,7 @@ de mayor prioridad y la diferencia se reporta. Procedimiento completo en
    ```html
    <!--
      title: Chip
-     description: Chip represents people using icons, labels and images.
+     description: Chip representa personas con iconos, etiquetas e imágenes.
      figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
      figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
@@ -449,9 +449,10 @@ npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué obs
 npm run new:composition -- <id> "<Título>" --description "<el caso y con qué API se arma>"
 ```
 
-**Idioma de las descripciones:** si la documentación de PrimeNG trae la descripción (como la del
-componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
-se escribe **en español**. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
+**Idioma de las descripciones:** todas van **en español**, también la del componente. Si la
+documentación de PrimeNG trae la descripción, se traduce fiel ("Card is a flexible container
+component." → "Card es un componente contenedor flexible."); si no la trae (lo habitual en las
+variantes), se redacta. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
 descripción los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
 
 Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la

@@ -148,7 +148,7 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
 ```html
 <!--
   title: Chip
-  description: Chips represent entities using icons, labels and images.
+  description: Los chips representan entidades con iconos, etiquetas e imágenes.
   figma:
 -->
 ```
@@ -335,7 +335,7 @@ Se entrega **exactamente así**: la cabecera con lo respondido en 3.0 y el nombr
 ```html
 <!--
   title: Chip
-  description: Chips represent entities using icons, labels and images.
+  description: Los chips representan entidades con iconos, etiquetas e imágenes.
   figma:
 -->
 int-chip
