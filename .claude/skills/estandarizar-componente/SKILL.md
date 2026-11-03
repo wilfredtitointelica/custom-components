@@ -74,7 +74,9 @@ git log --oneline -3 -- src/components/<id>/
    acción (`igual`, `renombrar`, `extensión int-*`, `quitar`). Los nombres siempre terminan como
    PrimeNG; lo que PrimeNG no tiene y la base de conocimientos (Intelica.knowledgeBase) respalda se marca `/** int-* extension: … */`.
    Cada input/output/template/método público queda con su JSDoc en español (si viene en inglés se traduce; el prefijo `int-* extension:` no): es lo que muestra la pestaña **API** de
-   la página (`scripts/extract-api.mjs`; `check:component` avisa si falta).
+   la página (`scripts/extract-api.mjs`; `check:component` avisa si falta). Ni el JSDoc ni las
+   descripciones nombran clases del Style Guide (`.prCard--compact`): se describen con la API `int-*` y
+   los helpers `u-*`; el origen `.pr*` queda solo en el comentario del SCSS.
    Cada formato o booleano estético del maquetador que viene de un caso de la base de conocimientos se
    trata como **combinación** (la base documenta PrimeNG + combinaciones de su API): por defecto **se quita
    de la API** y su variante pasa a **composición** (`compositions/<slug>/`, skill `crear-composicion`).

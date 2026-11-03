@@ -455,6 +455,12 @@ component." → "Card es un componente contenedor flexible."); si no la trae (lo
 variantes), se redacta. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
 descripción los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
 
+**Sin clases del Style Guide en la documentación:** el JSDoc (tab API) y las descripciones de la
+cabecera y de variantes y composiciones describen con la API `int-*` y los helpers `u-*`; nunca nombran
+el caso `.pr*` del que salen (❌ "borde visible (`.prCard--outlined` de la base de conocimientos)",
+✅ "borde visible en lugar de la sombra"). Ese origen va solo en el comentario del SCSS
+(`// knowledgeBase: .prCard--outlined · …`). `npm run check:component` lo avisa.
+
 Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la
 documentación de PrimeNG y después las propiedades nuevas (`npm run order:variants -- <id> basic icon
 image … flat`); composiciones en el orden de la base de conocimientos
