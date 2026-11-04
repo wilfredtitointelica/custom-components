@@ -1,6 +1,22 @@
 <!--
   title: Tag
   description: Los tags categorizan contenido con una etiqueta corta.
-  figma:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2461-2277&t=praSDC84iM8fhCvv-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2275
 -->
-int-tag
+<!-- Free content goes first, as in PrimeNG. -->
+<ng-content />
+
+<!-- Icon: the #icon template wins over the icon input. -->
+@if (iconTemplate(); as template) {
+  <span class="int-tag__icon">
+    <ng-container [ngTemplateOutlet]="template" />
+  </span>
+} @else if (icon()) {
+  <span [class]="iconClass()" aria-hidden="true"></span>
+}
+
+<!-- PrimeNG always renders the label; here it is skipped without a value so the gap does not leave a hole. -->
+@if (hasValue()) {
+  <span class="int-tag__label">{{ value() }}</span>
+}

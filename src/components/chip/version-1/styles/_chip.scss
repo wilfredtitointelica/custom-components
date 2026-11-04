@@ -4,13 +4,80 @@
 
 :root {
   --NOTE-CHIP: 'int-chip ( Custom )';
+
+  // --- root ---
+  --int-chip-background: var(--i-color-primary-100); // knowledgeBase: --i-color-primary-100 · Figma: #DDE6F8 (badge/filter/background) · Aura: {surface.100}
+  --int-chip-color: var(--i-color-primary-400); // knowledgeBase: --i-color-primary-400 · Figma: #5D86DF (badge/filter/text) · Aura: {surface.800}
+  --int-chip-border-width: var(--i-border-width-sm); // knowledgeBase: pills.md · 1px · Figma: 1px (badge/border/width/sm) [State=Filter hover] · Aura: —
+  --int-chip-border-color: var(--i-color-primary-100); // knowledgeBase: pills.md · --i-color-primary-100 (same as the background) · Figma: no stroke [State=Filter] · Aura: —
+  --int-chip-border-radius: var(--i-border-radius-full); // knowledgeBase: pills.md · --i-border-radius-full · Figma: 1000px (badge/border/radius/full) · Aura: 16px
+  --int-chip-padding-y: var(--i-spacing-container-sm); // knowledgeBase: --i-spacing-container-sm · Figma: 6px (badge/padding/y/sm) · Aura: 0.5rem
+  --int-chip-padding-x: var(--i-spacing-container-md); // knowledgeBase: --i-spacing-container-md · Figma: 8px (badge/padding/x/md) · Aura: 0.75rem
+  --int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (badge/gap/xs) · Aura: 0.5rem
+  --int-chip-font-family: var(--i-typography-font-family-base); // Figma: Lato (badge/font/fontfamily) · Aura: inherit
+  --int-chip-font-size: var(--i-typography-font-size-xs); // knowledgeBase: --i-typography-font-size-xs · Figma: 10px · Aura: inherit
+  --int-chip-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: Regular (400) · Figma: Regular · Aura: inherit
+  --int-chip-line-height: var(--i-typography-lineHeight-xs); // knowledgeBase: --i-typography-lineHeight-sm ⚠️ · Figma: 12px (badge/font/lineheight/xs) · Aura: inherit
+  --int-chip-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast 150ms · Aura: {transition.duration} 0.2s
+
+  // --- hover (removable chip: applied filter) ---
+  --int-chip-hover-border-color: var(--i-color-primary-600); // knowledgeBase: pills.md · --i-color-primary-600 · Figma: #0A1733 ⚠️ (badge/filter/hover/border) · Aura: —
+  --int-chip-hover-color: var(--i-color-primary-600); // knowledgeBase: pills.md · --i-color-primary-600 · Figma: #5D86DF ⚠️ (badge/filter/hover/text) · Aura: —
+
+  // --- icon, image and remove icon ---
+  --int-chip-icon-size: var(--i-icon-size-xs); // knowledgeBase: pills.md · --i-icon-size-xs · Figma: 12px · Aura: 1rem
+  --int-chip-image-size: calc(var(--i-sizing-md) - var(--i-spacing-container-sm)); // SG: 24px chip − 6px, the image fits the 24px height · Aura: 2rem
+  --int-chip-remove-icon-size: var(--i-icon-size-xs); // knowledgeBase: pills.md · --i-icon-size-xs · Figma: 12px (icon-cancel) · Aura: 1rem
+
+  // --- focus ring (remove icon) ---
+  --int-chip-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: 1px · Aura: {focus.ring.width} 1px
+  --int-chip-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-chip-focus-ring-offset: var(--i-border-width-sm); // knowledgeBase: pills.md · 1px · Aura: {focus.ring.offset} 2px
+  --int-chip-focus-ring-radius: var(--i-border-radius-sm); // knowledgeBase: pills.md · --i-border-radius-sm · Aura: 50%
+
+  // --- disabled ---
+  --int-chip-disabled-background: var(--i-color-neutral-200); // knowledgeBase: badge.md · disabled state --i-color-neutral-200 · Aura: {disabled.opacity} 0.6
+  --int-chip-disabled-color: var(--i-color-neutral-400); // knowledgeBase: badge.md · disabled state --i-color-neutral-400 · Aura: {disabled.opacity} 0.6
+
+  // --- skeleton ---
+  --int-chip-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+  --int-chip-skeleton-width: var(--i-sizing-2xl); // SG: --i-sizing-2xl
+  --int-chip-skeleton-height: var(--i-sizing-md); // knowledgeBase: --i-spacing-container-2xl 24px · Figma: 24px
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: .prChip + pills.md .prPillTag (applied filter) · Figma: Badge [State=Filter]
 .int-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--int-chip-gap);
+  // Figma draws the stroke inside the box: the padding absorbs the border so the chip stays 24px high.
+  padding-block: calc(var(--int-chip-padding-y) - var(--int-chip-border-width));
+  padding-inline: calc(var(--int-chip-padding-x) - var(--int-chip-border-width));
+  border: var(--int-chip-border-width) solid var(--int-chip-border-color);
+  border-radius: var(--int-chip-border-radius);
+  background: var(--int-chip-background);
+  color: var(--int-chip-color);
+  font-family: var(--int-chip-font-family);
+  font-size: var(--int-chip-font-size);
+  font-weight: var(--int-chip-font-weight);
+  line-height: var(--int-chip-line-height);
+  white-space: nowrap;
+  transition: border-color var(--int-chip-transition-duration);
+
+  // PrimeNG: .p-chip:has(.p-chip-image) halves the vertical padding.
+  &:has(.int-chip__image) {
+    padding-block: calc(var(--int-chip-padding-y) / 2 - var(--int-chip-border-width));
+  }
+
+  // knowledgeBase: pills.md · hover of the applied filter · Figma: [State=Filter hover].
+  &:not(.int-chip--disabled):has(.int-chip__remove-icon):hover {
+    border-color: var(--int-chip-hover-border-color);
+    color: var(--int-chip-hover-color);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +85,69 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-chip {
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--int-chip-icon-size);
+    height: var(--int-chip-icon-size);
+    font-size: var(--int-chip-icon-size);
+  }
+
+  &__image {
+    flex-shrink: 0;
+    width: var(--int-chip-image-size);
+    height: var(--int-chip-image-size);
+    margin-inline-start: calc(-1 * var(--int-chip-padding-y));
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__remove-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--int-chip-remove-icon-size);
+    height: var(--int-chip-remove-icon-size);
+    font-size: var(--int-chip-remove-icon-size);
+    color: currentColor;
+    border-radius: var(--int-chip-focus-ring-radius);
+    cursor: pointer;
+    outline-color: transparent;
+    transition: outline-color var(--int-chip-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-chip-focus-ring-width) solid var(--int-chip-focus-ring-color);
+      outline-offset: var(--int-chip-focus-ring-offset);
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-chip {
+// Disabled: gray colors of the Style Guide instead of PrimeNG's opacity. No pointer-events: none, so the
+// not-allowed cursor shows; close() ignores the click.
+.int-chip--disabled {
+  border-color: var(--int-chip-disabled-background);
+  background: var(--int-chip-disabled-background);
+  color: var(--int-chip-disabled-color);
+  cursor: not-allowed;
+  user-select: none;
+
+  .int-chip__remove-icon {
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-chip,
+  .int-chip__remove-icon {
+    transition: none;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +155,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-chip {
+  display: inline-block;
+  width: var(--int-chip-skeleton-width);
+  height: var(--int-chip-skeleton-height);
+  border-radius: var(--int-chip-border-radius);
+  background: var(--int-chip-skeleton-background);
 }

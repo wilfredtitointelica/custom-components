@@ -1,0 +1,9 @@
+<!--
+  title: Applied Filter
+  description: Filtros aplicados de una barra de filtros: chips `removable` con el valor del filtro. Al pasar el mouse el borde se oscurece; quitar uno con clic, `Enter` o `Backspace` emite `onRemove` y la lista se actualiza.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  @for (filter of filters(); track filter.id) {
+    <int-chip [label]="filter.label" removable (onRemove)="remove(filter.id)" />
+  }
+</div>

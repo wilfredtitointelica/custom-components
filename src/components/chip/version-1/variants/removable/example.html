@@ -1,0 +1,10 @@
+<!--
+  title: Removable
+  description: El input `removable` muestra la acción de quitar; al hacer clic o pulsar `Enter` o `Backspace` sobre ella emite `onRemove` y oculta el chip. `removeIcon` cambia su icono.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-md">
+  @for (chip of chips(); track chip.id) {
+    <int-chip [label]="chip.label" removable (onRemove)="remove(chip.id)" />
+  }
+  <int-chip label="Custom icon" removable removeIcon="icon icon-remove" />
+</div>
