@@ -47,7 +47,7 @@ export class IntStepper {
   readonly variant = input<IntStepperVariant>();
 
   readonly id = `int-stepper-${nextId++}`;
-  /** Step items present means vertical layout, as in PrimeNG. */
+  /** Pasos `int-step-item`: si hay alguno, el stepper usa el layout vertical, como en PrimeNG. */
   readonly stepItems = contentChildren(forwardRef(() => IntStepItem));
 
   protected readonly classes = computed(() => {
