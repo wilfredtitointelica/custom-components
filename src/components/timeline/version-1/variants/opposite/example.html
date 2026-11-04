@@ -1,0 +1,10 @@
+<!--
+  title: Opposite
+  description: El template `opposite` agrega contenido del otro lado de la línea, por ejemplo la fecha de cada evento. Sin él, esa columna no ocupa espacio.
+-->
+<int-timeline [value]="events">
+  <ng-template #opposite let-event>
+    <span class="u-color-secondary">{{ event.date }}</span>
+  </ng-template>
+  <ng-template #content let-event>{{ event.status }}</ng-template>
+</int-timeline>

@@ -30,6 +30,7 @@
   --doc-success-container: #d6f2e1;
   --doc-on-success-container: #0b3d21;
   --doc-success-on-dark: #5fd08f;
+  --doc-success-glow: rgb(30 142 78 / 0.22); /* Scan: int-* of a resolved dependency */
   /* "Sin conexión" of the external connections (rail button, dialog and toasts) */
   --doc-danger: #c62828;
   --doc-danger-container: #fbdcdc;
@@ -225,6 +226,22 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
  * or table that repeats it shows a single indicator. Global because the previews are the examples' own
  * views, outside the doc page's encapsulation.
  */
+// Label pinned to the top-right corner of a scanned element; each rule sets its text and color.
+%doc-scan-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: #ffffff;
+  font: 700 10px/14px var(--doc-font-sans);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transform: translate(35%, -70%);
+  pointer-events: none;
+}
+
 .doc-is-scanning .doc-preview [data-dep-scan] {
   position: relative;
   outline: 2px dashed var(--doc-scan);
@@ -234,20 +251,25 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
 
   // Name of the pending dependency (not shown on void elements such as <input> or <img>).
   &::after {
+    @extend %doc-scan-label;
     content: 'dep:' attr(data-dep-scan);
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    padding: 1px 6px;
-    border-radius: 999px;
     background: var(--doc-scan);
-    color: #ffffff;
-    font: 700 10px/14px var(--doc-font-sans);
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    transform: translate(35%, -70%);
-    pointer-events: none;
+  }
+}
+
+// Real int-* of a resolved dependency (done): DocPage marks the first one per preview with
+// data-dep-done="<id> ×<total>". Same dashed, pulsing outline as a provisional, in green.
+.doc-is-scanning .doc-preview [data-dep-done] {
+  position: relative;
+  outline: 2px dashed var(--doc-success);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--doc-success-glow);
+  animation: doc-scan-pulse 1.6s ease-in-out infinite;
+
+  &::after {
+    @extend %doc-scan-label;
+    content: 'dep:' attr(data-dep-done) ' ✓';
+    background: var(--doc-success);
   }
 }
 

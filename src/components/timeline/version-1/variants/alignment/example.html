@@ -1,0 +1,15 @@
+<!--
+  title: Alignment
+  description: El input `align` ubica el contenido respecto de la línea: `left`, `right` o `alternate` en el layout vertical.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-xl">
+  <int-timeline [value]="events" [style]="{ width: '15rem' }">
+    <ng-template #content let-event>{{ event.status }}</ng-template>
+  </int-timeline>
+  <int-timeline align="right" [value]="events" [style]="{ width: '15rem' }">
+    <ng-template #content let-event>{{ event.status }}</ng-template>
+  </int-timeline>
+  <int-timeline align="alternate" [value]="events" [style]="{ width: '15rem' }">
+    <ng-template #content let-event>{{ event.status }}</ng-template>
+  </int-timeline>
+</div>

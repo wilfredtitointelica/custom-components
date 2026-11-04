@@ -1,0 +1,24 @@
+// int-timeline · disabled (int-* extension). The timeline is not interactive: disabled only greys it out
+// and blocks text selection, with the not-allowed cursor of every disabled state.
+// Doubled block so the grey wins over the marker and guide colors of _timeline.layout.scss.
+
+.int-timeline.int-timeline--disabled {
+  color: var(--int-timeline-disabled-color);
+  cursor: not-allowed;
+  user-select: none;
+
+  // Text colored by u-color-* helpers inside the templates turns grey too
+  .int-timeline__event-opposite *,
+  .int-timeline__event-content * {
+    color: inherit;
+  }
+
+  .int-timeline__event-marker {
+    background: var(--int-timeline-disabled-marker-background);
+  }
+
+  .int-timeline__event-connector,
+  .int-timeline__event-content::before {
+    background: var(--int-timeline-disabled-line-color);
+  }
+}

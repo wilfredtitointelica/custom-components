@@ -1,2 +1,5 @@
-// int-timeline · entry point. Add one `@use 'timeline.<variant>' as timeline-<variant>;` per variant module.
+// int-timeline · entry point. Add one `@use 'timeline.<group>' as timeline-<group>;` per modifier module.
 @use 'timeline';
+@use 'timeline.align' as timeline-align;
+@use 'timeline.layout' as timeline-layout;
+@use 'timeline.disabled' as timeline-disabled;

@@ -1,0 +1,10 @@
+<!--
+  title: Milestones
+  description: Fechas clave de un proceso en fila: `layout="horizontal"` con el template `content` (fecha y título con helpers `u-*`).
+-->
+<int-timeline layout="horizontal" [value]="milestones" [style]="{ width: '55rem' }">
+  <ng-template #content let-milestone>
+    <span class="u-color-secondary">{{ milestone.date }}</span>
+    <span class="u-bold u-color-body">{{ milestone.title }}</span>
+  </ng-template>
+</int-timeline>

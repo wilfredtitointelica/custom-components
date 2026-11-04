@@ -1,0 +1,10 @@
+<!--
+  title: Event list
+  description: Lista vertical de eventos con título y descripción en el template `content`, sin columna `opposite`.
+-->
+<int-timeline [value]="entries">
+  <ng-template #content let-entry>
+    <span class="u-bold">{{ entry.title }}</span>
+    <span>{{ entry.description }}</span>
+  </ng-template>
+</int-timeline>

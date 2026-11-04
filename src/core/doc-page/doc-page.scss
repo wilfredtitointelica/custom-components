@@ -122,21 +122,36 @@
   @include doc-action-trail;
 }
 
+// Palette of Detect and Scan (and of the scan tags of each section): fuchsia while a dependency is
+// pending, green (Done) once all of them are resolved.
+.doc-deps-group-actions,
+.doc-scan-tags {
+  --doc-deps-color: var(--doc-scan);
+  --doc-deps-container: var(--doc-scan-container);
+  --doc-on-deps-container: var(--doc-on-scan-container);
+
+  &.doc-is-resolved {
+    --doc-deps-color: var(--doc-success);
+    --doc-deps-container: var(--doc-success-container);
+    --doc-on-deps-container: var(--doc-on-success-container);
+  }
+}
+
 /* Dependencies button + popover (anchored below the button; without anchor positioning the UA centers it) */
 .doc-deps-trigger {
   anchor-name: --doc-deps;
 
   // Same palette as the Scan toggle: both actions belong to "Dependencies".
   &[aria-expanded='true'] {
-    border-color: var(--doc-scan);
-    background: var(--doc-scan-container);
+    border-color: var(--doc-deps-color);
+    background: var(--doc-deps-container);
 
     .doc-deps-caret {
       transform: rotate(180deg);
     }
 
     .doc-deps-count {
-      background: var(--doc-scan);
+      background: var(--doc-deps-color);
       color: var(--doc-surface);
     }
   }
@@ -149,8 +164,8 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: var(--doc-scan-container);
-  color: var(--doc-on-scan-container);
+  background: var(--doc-deps-container);
+  color: var(--doc-on-deps-container);
   font-size: 0.6875rem;
   font-weight: 700;
 }
@@ -274,10 +289,10 @@
   font-size: 0.75rem;
 }
 
-/* Scan toggle (outlines provisionals; the outline itself is the global [data-dep] rule of styles.scss) */
+/* Scan toggle (outlines provisionals and resolved int-*; the outlines are global rules of styles.scss) */
 .doc-scan-toggle[aria-pressed='true'] {
-  border-color: var(--doc-scan);
-  background: var(--doc-scan-container);
+  border-color: var(--doc-deps-color);
+  background: var(--doc-deps-container);
 }
 
 .doc-scan-switch {
@@ -302,7 +317,7 @@
   }
 
   [aria-pressed='true'] > & {
-    background: var(--doc-scan);
+    background: var(--doc-deps-color);
 
     &::after {
       transform: translateX(12px);
@@ -310,7 +325,8 @@
   }
 }
 
-// Section line while scanning: "Por resolver: dep:button dep:badge".
+// Section line while scanning: "Por resolver: dep:button dep:badge" (fuchsia) and "Resueltas: card"
+// (green), the same colors as the outlines of the preview.
 .doc-scan-tags {
   display: flex;
   flex-wrap: wrap;
@@ -321,16 +337,16 @@
   font-size: 0.75rem;
 
   .pi {
-    color: var(--doc-scan);
+    color: var(--doc-deps-color);
   }
 }
 
 .doc-scan-tag {
   padding: 2px 8px;
-  border: 1px dashed var(--doc-scan);
+  border: 1px dashed var(--doc-deps-color);
   border-radius: 999px;
-  background: var(--doc-scan-container);
-  color: var(--doc-on-scan-container);
+  background: var(--doc-deps-container);
+  color: var(--doc-on-deps-container);
   font-size: 0.6875rem;
   font-weight: 600;
 }
