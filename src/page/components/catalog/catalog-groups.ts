@@ -16,11 +16,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   },
   {
     name: 'Comunicación',
-<<<<<<< HEAD
-    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progress-bar'],
-=======
-    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'pill', 'progressbar'],
->>>>>>> b416ce94d5fbcf9986726dfe7fca13d31496dc75
+    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar'],
   },
 ];
 
@@ -65,12 +61,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   badge: 'pi-hashtag',
   chip: 'pi-user',
   tag: 'pi-bookmark',
-<<<<<<< HEAD
-  'progress-bar': 'pi-chart-bar',
-=======
-  pill: 'pi-tag',
   progressbar: 'pi-chart-bar',
->>>>>>> b416ce94d5fbcf9986726dfe7fca13d31496dc75
 };
 
 export const DEFAULT_ICON = 'pi-box';

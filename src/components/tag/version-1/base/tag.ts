@@ -22,7 +22,6 @@ export type IntTagSize = 'small' | 'large';
  */
 @Component({
   selector: 'int-tag',
-  imports: [NgTemplateOutlet],
   templateUrl: './tag.html',
   styleUrl: '../styles/_index.scss',
   imports: [NgTemplateOutlet],
