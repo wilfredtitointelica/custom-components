@@ -1,0 +1,21 @@
+// int-progressbar · severity (int-* extension). Only the value color changes; the color input still wins
+// because it sets the same token inline on the value element.
+// knowledgeBase: .prProgressbar--in-progress · --completed · --error · Figma: Bar base [Graph=Success/Warning/Alert]
+
+.int-progressbar {
+  &--info {
+    --int-progressbar-value-background: var(--int-progressbar-info-value-background); // knowledgeBase: .prProgressbar--in-progress · Aura: —
+  }
+
+  &--success {
+    --int-progressbar-value-background: var(--int-progressbar-success-value-background); // knowledgeBase: .prProgressbar--completed · Figma: Graph=Success · Aura: —
+  }
+
+  &--warn {
+    --int-progressbar-value-background: var(--int-progressbar-warn-value-background); // knowledgeBase: threshold warning · Figma: Graph=Warning · Aura: —
+  }
+
+  &--danger {
+    --int-progressbar-value-background: var(--int-progressbar-danger-value-background); // knowledgeBase: .prProgressbar--error · Figma: Graph=Alert · Aura: —
+  }
+}

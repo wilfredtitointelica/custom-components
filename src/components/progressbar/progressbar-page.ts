@@ -8,8 +8,8 @@ import { DocPage } from '../../core/doc-page/doc-page';
  * automatically: nothing is registered here. Optional intro content goes inside <app-doc-page>.
  */
 @Component({
-  selector: 'app-progress-bar-page',
+  selector: 'app-progressbar-page',
   imports: [DocPage],
-  template: `<app-doc-page componentId="progress-bar" />`,
+  template: `<app-doc-page componentId="progressbar" />`,
 })
-export class ProgressBarPage {}
+export class ProgressbarPage {}

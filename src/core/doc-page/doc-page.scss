@@ -374,7 +374,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 20px 0;
-  margin-bottom: 4px;
+  //margin-bottom: 4px;
   background: var(--doc-surface);
 }
 
@@ -464,6 +464,8 @@
   padding: 56px 48px;
   border-radius: var(--doc-radius-xl);
   background: var(--doc-surface-low);
+  // The examples render with the Style Guide font (Lato), not the documentation one.
+  font-family: var(--doc-font-component);
 }
 
 /* Active variant: a thin rail in the left gutter, outside the preview so it never competes with the example */
@@ -501,6 +503,7 @@
   display: grid;
   justify-items: center;
   gap: 8px;
+  font-family: var(--doc-font-sans);
   color: var(--doc-ink-muted);
   text-align: center;
 

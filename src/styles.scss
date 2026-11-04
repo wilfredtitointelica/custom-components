@@ -59,6 +59,8 @@
   /* Type */
   --doc-font-sans: 'Roboto', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
   --doc-font-mono: 'Roboto Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  /* int-* examples use the Style Guide body font (Lato), as in the projects that consume them */
+  --doc-font-component: var(--i-text-body-family, 'Lato'), 'Segoe UI', system-ui, Arial, sans-serif;
 
   /* Shape & motion */
   --doc-radius-sm: 8px;
@@ -142,6 +144,11 @@ body.doc-body {
   font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Overlays of the int-* components (CDK) mount on <body>, outside the preview: same font as the examples. */
+.cdk-overlay-container {
+  font-family: var(--doc-font-component);
 }
 
 /* The page does not scroll behind the expanded code viewer (modal dialog of app-code-panel) or the Style Guide one. */
