@@ -1,0 +1,20 @@
+// int-breadcrumb · disabled (int-* extension). The base marks every item as disabled (grey links and pills,
+// aria-disabled, tabindex -1); this module greys what is not an item: separators and #item / #separator content.
+
+.int-breadcrumb--disabled {
+  cursor: not-allowed;
+  user-select: none;
+
+  .int-breadcrumb__separator,
+  .int-breadcrumb__home-item {
+    color: var(--int-breadcrumb-disabled-color);
+  }
+
+  // Home link and content of the templates, also when it uses u-color-* / u-pointer helpers
+  .int-breadcrumb__separator *,
+  .int-breadcrumb__home-item *,
+  .int-breadcrumb__item * {
+    color: var(--int-breadcrumb-disabled-color);
+    cursor: not-allowed;
+  }
+}

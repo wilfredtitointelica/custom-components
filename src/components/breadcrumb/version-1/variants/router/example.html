@@ -1,0 +1,8 @@
+<!--
+  title: Router
+  description: Los items con `routerLink` navegan con el router de Angular (también aceptan `queryParams`, `fragment` y el resto de opciones de `routerLink`). Los que no tienen enlace no navegan: ejecutan `command` y emiten `onItemClick`.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-breadcrumb [model]="items" [home]="home" homeAriaLabel="Home" (onItemClick)="lastClicked.set($event.item.label ?? 'Home')" />
+  <span class="u-text-sm u-color-grey-500">Last click: {{ lastClicked() }}</span>
+</div>

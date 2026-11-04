@@ -1,0 +1,17 @@
+<!--
+  title: Template
+  description: Con los templates `item` y `separator` se reemplazan el contenido de cada item y el icono de los separadores. El template `item` recibe el item como `$implicit` y también se usa para `home`.
+-->
+<int-breadcrumb [model]="items" [home]="home">
+  <ng-template #item let-item>
+    <a class="u-display-flex u-align-items-center u-gap-xs u-color-primary u-pointer">
+      <i [class]="item.icon" aria-hidden="true"></i>
+      @if (item.label) {
+        <span class="u-text-sm">{{ item.label }}</span>
+      }
+    </a>
+  </ng-template>
+  <ng-template #separator>
+    <span class="u-color-primary">/</span>
+  </ng-template>
+</int-breadcrumb>

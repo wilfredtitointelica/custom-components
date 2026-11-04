@@ -1,6 +1,208 @@
 <!--
   title: Breadcrumb
-  description:
-  figma:
+  description: Breadcrumb muestra la ubicación de la página actual dentro de la jerarquía de navegación.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2309-5130&t=praSDC84iM8fhCvv-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2309-5130
 -->
-int-breadcrumb
+
+<nav [class]="classes()" [style]="style()">
+  <ol class="int-breadcrumb__list">
+    <!-- Home item: the #item template replaces its link -->
+    @if (home(); as home) {
+      @if (home.visible !== false) {
+        <li class="int-breadcrumb__home-item" [class]="home.styleClass" [attr.id]="home.id" [style]="home.style">
+          @if (itemTemplate(); as template) {
+            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: home }" />
+          } @else {
+            <ng-container [ngTemplateOutlet]="link" [ngTemplateOutletContext]="{ $implicit: home, isHome: true }" />
+          }
+        </li>
+      }
+    }
+    @if (model() && home()) {
+      <ng-container [ngTemplateOutlet]="separator" />
+    }
+
+    <!-- Model items, each followed by a separator except the last one. Items have no id: tracked by position -->
+    @for (item of model(); track $index; let last = $last; let i = $index) {
+      @if (item.visible !== false) {
+        @if (item.items) {
+          <!-- int-* extension: collapsed links behind a "…" pill (knowledge base popover trigger) -->
+          @let panelId = uid + '-panel-' + i;
+          <!-- dep:popover provisional · replace with <int-popover> when popover is done -->
+          <li
+            class="int-breadcrumb__item int-breadcrumb__item--collapsed"
+            [class]="item.styleClass"
+            [class.int-breadcrumb__item--expanded]="expanded() === item"
+            [class.int-breadcrumb__item--disabled]="disabled() || item.disabled"
+            [attr.id]="item.id"
+            [style]="item.style"
+            data-dep="popover"
+          >
+            <button
+              #trigger
+              type="button"
+              class="int-breadcrumb__item-trigger"
+              aria-haspopup="menu"
+              [attr.aria-expanded]="expanded() === item"
+              [attr.aria-controls]="panelId"
+              [attr.aria-label]="item.title ?? null"
+              [attr.aria-disabled]="disabled() || item.disabled || null"
+              [attr.tabindex]="disabled() || item.disabled ? -1 : null"
+              [attr.title]="item.title ?? null"
+              [attr.data-p-id]="item.automationId"
+              (click)="toggle(item)"
+              (keydown)="onTriggerKeydown($event, item, panelId)"
+              (keydown.escape)="onTriggerEscape(trigger)"
+            >
+              {{ item.label || '…' }}
+            </button>
+
+            <!-- Collapsed links: a menu, focus moves with the arrows (one tab stop: the trigger) -->
+            @if (expanded() === item) {
+              <div
+                class="int-breadcrumb__panel"
+                role="menu"
+                [id]="panelId"
+                animate.enter="int-breadcrumb__panel--enter"
+                animate.leave="int-breadcrumb__panel--leave"
+                (keydown)="onPanelKeydown($event, panelId, trigger)"
+              >
+                @for (child of item.items; track $index) {
+                  @if (child.visible !== false) {
+                    <ng-container
+                      [ngTemplateOutlet]="panelLink"
+                      [ngTemplateOutletContext]="{ $implicit: child, trigger: trigger }"
+                    />
+                  }
+                }
+              </div>
+            }
+          </li>
+          <!-- /dep:popover -->
+        } @else {
+          <li
+            class="int-breadcrumb__item"
+            [class]="item.styleClass"
+            [class.int-breadcrumb__item--disabled]="disabled() || item.disabled"
+            [attr.id]="item.id"
+            [style]="item.style"
+          >
+            @if (itemTemplate(); as template) {
+              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: item }" />
+            } @else {
+              <ng-container [ngTemplateOutlet]="link" [ngTemplateOutletContext]="{ $implicit: item, isHome: false }" />
+            }
+          </li>
+        }
+        @if (!last) {
+          <ng-container [ngTemplateOutlet]="separator" />
+        }
+      }
+    }
+  </ol>
+</nav>
+
+<!-- Separator: the #separator template replaces the arrow icon -->
+<ng-template #separator>
+  <li class="int-breadcrumb__separator" aria-hidden="true">
+    @if (separatorTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="int-breadcrumb__separator-icon icon icon-arrow-right icon--xs"></i>
+    }
+  </li>
+</ng-template>
+
+<!-- Item link: routerLink when the item has one (same two branches as PrimeNG), href otherwise -->
+<ng-template #link let-item let-isHome="isHome">
+  @if (item.routerLink) {
+    <a
+      class="int-breadcrumb__item-link"
+      [routerLink]="item.routerLink"
+      routerLinkActive="int-breadcrumb__item-link--active"
+      [routerLinkActiveOptions]="item.routerLinkActiveOptions || { exact: false }"
+      [queryParams]="item.queryParams"
+      [fragment]="item.fragment"
+      [queryParamsHandling]="item.queryParamsHandling"
+      [preserveFragment]="item.preserveFragment ?? false"
+      [skipLocationChange]="item.skipLocationChange ?? false"
+      [replaceUrl]="item.replaceUrl ?? false"
+      [state]="item.state"
+      [target]="item.target"
+      [attr.aria-label]="isHome ? homeAriaLabel() : null"
+      [attr.aria-disabled]="disabled() || item.disabled || null"
+      [attr.title]="item.title"
+      [attr.tabindex]="disabled() || item.disabled ? '-1' : item.tabindex || '0'"
+      [attr.data-p-id]="item.automationId"
+      (click)="onClick($event, item)"
+    >
+      <ng-container [ngTemplateOutlet]="linkContent" [ngTemplateOutletContext]="{ $implicit: item, isHome: isHome }" />
+    </a>
+  } @else {
+    <a
+      class="int-breadcrumb__item-link"
+      [attr.href]="item.url || null"
+      [attr.target]="item.target"
+      [attr.aria-label]="isHome ? homeAriaLabel() : null"
+      [attr.aria-disabled]="disabled() || item.disabled || null"
+      [attr.title]="item.title"
+      [attr.tabindex]="disabled() || item.disabled ? '-1' : item.tabindex || '0'"
+      [attr.data-p-id]="item.automationId"
+      (click)="onClick($event, item)"
+    >
+      <ng-container [ngTemplateOutlet]="linkContent" [ngTemplateOutletContext]="{ $implicit: item, isHome: isHome }" />
+    </a>
+  }
+</ng-template>
+
+<!-- Link content: icon (the home item falls back to the house icon) and label. PrimeNG's badge is not replicated -->
+<ng-template #linkContent let-item let-isHome="isHome">
+  @if (item.icon) {
+    <span class="int-breadcrumb__item-icon" [class]="[item.icon, item.iconClass]" [style]="item.iconStyle" aria-hidden="true"></span>
+  } @else if (isHome) {
+    <i class="int-breadcrumb__item-icon icon icon-home icon--sm" aria-hidden="true"></i>
+  }
+  @if (item.label) {
+    @if (item.escape !== false) {
+      <span class="int-breadcrumb__item-label">{{ item.label }}</span>
+    } @else {
+      <span class="int-breadcrumb__item-label" [innerHTML]="item.label"></span>
+    }
+  }
+</ng-template>
+
+<!-- int-* extension: link of a collapsed list, same branches as the item link -->
+<ng-template #panelLink let-child let-trigger="trigger">
+  @if (child.routerLink) {
+    <a
+      class="int-breadcrumb__panel-link"
+      role="menuitem"
+      tabindex="-1"
+      [routerLink]="child.routerLink"
+      [queryParams]="child.queryParams"
+      [fragment]="child.fragment"
+      [target]="child.target"
+      [attr.aria-disabled]="child.disabled || null"
+      [attr.title]="child.title"
+      [attr.data-p-id]="child.automationId"
+      (click)="onPanelClick($event, child, trigger)"
+    >
+      <ng-container [ngTemplateOutlet]="linkContent" [ngTemplateOutletContext]="{ $implicit: child, isHome: false }" />
+    </a>
+  } @else {
+    <a
+      class="int-breadcrumb__panel-link"
+      role="menuitem"
+      tabindex="-1"
+      [attr.href]="child.url || null"
+      [attr.target]="child.target"
+      [attr.aria-disabled]="child.disabled || null"
+      [attr.title]="child.title"
+      [attr.data-p-id]="child.automationId"
+      (click)="onPanelClick($event, child, trigger)"
+    >
+      <ng-container [ngTemplateOutlet]="linkContent" [ngTemplateOutletContext]="{ $implicit: child, isHome: false }" />
+    </a>
+  }
+</ng-template>

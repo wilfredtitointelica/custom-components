@@ -12,5 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'breadcrumb',
+  variants: ['basic', 'template', 'router', 'collapsed', 'disabled'],
+  requires: ['popover'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

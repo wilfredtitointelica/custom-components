@@ -1,0 +1,134 @@
+// int-breadcrumb · collapsed item (int-* extension): an item with `items` shows a "…" pill that opens
+// the list of its links. knowledgeBase: .breadcrumb-popover-trigger pill.
+
+:root {
+
+  // TODO(dep:popover provisional): temporary panel until int-popover is done, with the global tokens of the
+  // u-background-white, u-b*-1, u-radius-lg and u-shadow-md helpers (the base cannot use helpers).
+  --int-breadcrumb-panel-background: var(--i-color-secondary-50); // SG: u-background-white · Figma: #FCFCFC (dropdown/color/background) · Aura: {overlay.popover.background}
+  --int-breadcrumb-panel-border: var(--i-line); // SG: u-b*-1 · Figma: 1px (dropdown/border/width/sm) · Aura: {overlay.popover.border.color}
+  --int-breadcrumb-panel-border-radius: var(--i-border-radius-lg); // SG: u-radius-lg · Figma: 8px (dropdown/border/radius/lg) · Aura: {overlay.popover.border.radius}
+  --int-breadcrumb-panel-padding: var(--i-spacing-container-xs); // Figma: 4px (dropdown/padding/xs) · Aura: {list.padding} 0.25rem
+  --int-breadcrumb-panel-min-width: var(--i-sizing-1000); // SG: --i-sizing-1000 · Figma: ~128px (dropdown) ⚠️ · Aura: —
+  --int-breadcrumb-panel-shadow: var(--i-shadow-depth-3); // SG: u-shadow-md · Figma: shadow.300 · Aura: {overlay.popover.shadow}
+  --int-breadcrumb-panel-offset: var(--i-spacing-gap-xs); // Figma: 4px · Aura: —
+  --int-breadcrumb-panel-link-padding-y: var(--i-spacing-75); // Figma: 6px (select/padding/y/sm) · Aura: {list.option.padding} 0.5rem
+  --int-breadcrumb-panel-link-padding-x: var(--i-spacing-container-md); // Figma: 8px (select/padding/x/md) · Aura: {list.option.padding} 0.75rem
+  --int-breadcrumb-panel-link-hover-background: var(--i-background-hover); // SG: --i-background-hover · Aura: {list.option.focus.background}
+  --int-breadcrumb-panel-link-border-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm · Aura: {list.option.border.radius}
+  --int-breadcrumb-panel-duration: var(--i-motion-duration-fast); // Aura: 0.12s (connected overlay enter)
+  --int-breadcrumb-panel-easing: var(--i-motion-ease-out); // Aura: cubic-bezier(0, 0, 0.2, 1)
+}
+
+.int-breadcrumb__item--collapsed {
+  position: relative;
+  display: flex;
+
+  // Same pill as the current page
+  .int-breadcrumb__item-trigger {
+    display: flex;
+    align-items: center;
+    block-size: var(--int-breadcrumb-current-height);
+    padding: var(--int-breadcrumb-current-padding-y) var(--int-breadcrumb-current-padding-x);
+    border: 0;
+    border-radius: var(--int-breadcrumb-current-border-radius);
+    outline-color: transparent;
+    background: var(--int-breadcrumb-current-background);
+    color: var(--int-breadcrumb-item-color);
+    font-family: inherit;
+    font-size: var(--int-breadcrumb-item-font-size);
+    font-weight: var(--int-breadcrumb-current-font-weight);
+    line-height: var(--int-breadcrumb-current-line-height);
+    cursor: pointer;
+    transition: color var(--int-breadcrumb-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-breadcrumb-focus-ring-width) solid var(--int-breadcrumb-focus-ring-color);
+      outline-offset: var(--int-breadcrumb-focus-ring-offset);
+    }
+
+    &:not([aria-disabled='true']):hover {
+      color: var(--int-breadcrumb-item-hover-color);
+    }
+
+    &[aria-disabled='true'] {
+      background: var(--int-breadcrumb-disabled-background);
+      color: var(--int-breadcrumb-disabled-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  // TODO(dep:popover provisional): list under the pill
+  .int-breadcrumb__panel {
+    position: absolute;
+    inset-block-start: calc(100% + var(--int-breadcrumb-panel-offset));
+    inset-inline-start: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: var(--int-breadcrumb-panel-min-width);
+    padding: var(--int-breadcrumb-panel-padding);
+    border: var(--int-breadcrumb-panel-border);
+    border-radius: var(--int-breadcrumb-panel-border-radius);
+    background: var(--int-breadcrumb-panel-background);
+    box-shadow: var(--int-breadcrumb-panel-shadow);
+    transform-origin: top;
+
+    &--enter {
+      animation: int-breadcrumb-panel-enter var(--int-breadcrumb-panel-duration) var(--int-breadcrumb-panel-easing);
+    }
+
+    &--leave {
+      animation: int-breadcrumb-panel-leave var(--int-breadcrumb-panel-duration) linear forwards;
+    }
+  }
+
+  .int-breadcrumb__panel-link {
+    display: flex;
+    align-items: center;
+    gap: var(--int-breadcrumb-item-gap);
+    padding: var(--int-breadcrumb-panel-link-padding-y) var(--int-breadcrumb-panel-link-padding-x);
+    border-radius: var(--int-breadcrumb-panel-link-border-radius);
+    outline: 0;
+    color: var(--int-breadcrumb-item-color);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    .int-breadcrumb__item-label {
+      padding-block: 0;
+      font-size: var(--int-breadcrumb-current-font-size);
+      line-height: var(--int-breadcrumb-current-line-height);
+    }
+
+    // Focus moves with the arrows: the focused link is highlighted like the hovered one
+    &:not([aria-disabled='true']):is(:hover, :focus-visible) {
+      background: var(--int-breadcrumb-panel-link-hover-background);
+    }
+
+    &[aria-disabled='true'] {
+      cursor: not-allowed;
+      user-select: none;
+
+      .int-breadcrumb__item-label,
+      .int-breadcrumb__item-icon {
+        color: var(--int-breadcrumb-disabled-color);
+      }
+    }
+  }
+}
+
+// Same as .p-connected-overlay-enter/leave: fade + scaleY(0.8) in, fade out
+@keyframes int-breadcrumb-panel-enter {
+  from {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+}
+
+@keyframes int-breadcrumb-panel-leave {
+  to {
+    opacity: 0;
+  }
+}
