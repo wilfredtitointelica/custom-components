@@ -1,5 +1,6 @@
 <!--
   title: Severity
+<<<<<<< HEAD
   description: severity aplica el color de intención; sin severity se usa el estilo por defecto (secondary).
 -->
 <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
@@ -9,4 +10,17 @@
   <int-tag value="Pending" severity="warn" />
   <int-tag value="Rejected" severity="danger" />
   <int-tag value="Contrast" severity="contrast" />
+=======
+  description: El input `severity` define el color: `secondary`, `info`, `success`, `warn`, `danger` y `contrast`, y `caution` como extensión `int-*`. Sin `severity` el tag es primario.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-md">
+  <int-tag value="Primary" />
+  <int-tag severity="secondary" value="Secondary" />
+  <int-tag severity="info" value="Info" />
+  <int-tag severity="success" value="Success" />
+  <int-tag severity="caution" value="Caution" />
+  <int-tag severity="warn" value="Warn" />
+  <int-tag severity="danger" value="Danger" />
+  <int-tag severity="contrast" value="Contrast" />
+>>>>>>> b416ce94d5fbcf9986726dfe7fca13d31496dc75
 </div>

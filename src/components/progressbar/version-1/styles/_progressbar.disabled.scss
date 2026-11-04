@@ -1,0 +1,22 @@
+// int-progressbar · disabled (int-* extension). Loaded after the severities so it wins over their colors;
+// the base drops the color / labelColor inputs while disabled. Not interactive, but text stays unselectable.
+// knowledgeBase: badge.md · disabled neutrals (progressbar.md has no disabled state).
+
+.int-progressbar--disabled {
+  --int-progressbar-value-background: var(--int-progressbar-disabled-value-background); // knowledgeBase: badge.md · disabled · Aura: —
+  background: var(--int-progressbar-disabled-background);
+  cursor: not-allowed;
+  user-select: none;
+
+  // Indeterminate: the sweep stops and a static bar covers the track, as with reduced motion.
+  &.int-progressbar--indeterminate .int-progressbar__value {
+    &::before,
+    &::after {
+      animation: none;
+    }
+
+    &::before {
+      inset-inline-end: 0;
+    }
+  }
+}

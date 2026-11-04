@@ -296,7 +296,10 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
    y `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por el provisional.
    El elemento raíz del provisional lleva **`data-dep="<id>"`** (los comentarios desaparecen al compilar):
    con él el botón **Scan dependencies** de la página lo resalta con un contorno fucsia y la sección muestra
-   "Por resolver: dep:<id>". Si el provisional son varios elementos hermanos, cada uno lleva el atributo.
+   "Por resolver: dep:<id>". Un `<int-<id>>` real de una dependencia ya `done` se resalta igual pero en
+   verde (`dep:<id> ✓`, "Resueltas: dep:<id>"); Detect y Scan se pintan en fucsia mientras quede una
+   dependencia pendiente y en verde cuando todas están resueltas. Si el provisional son varios elementos
+   hermanos, cada uno lleva el atributo.
    Dentro de un `@for` (checkbox por opción, botón por fila) se marca igual cada repetición: el scan
    resalta solo la primera de cada dependencia por ejemplo y muestra el total (`dep:checkbox ×20`).
    Preferir un elemento contenedor (no un `<input>` suelto) para que se vea la etiqueta `dep:<id>`.

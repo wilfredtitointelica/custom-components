@@ -1,4 +1,7 @@
 <!--
   title: Basic
-  description:
+  description: El input `value` recibe la lista de eventos y el template `content` define qué se muestra en cada uno.
 -->
+<int-timeline [value]="events">
+  <ng-template #content let-event>{{ event.status }}</ng-template>
+</int-timeline>

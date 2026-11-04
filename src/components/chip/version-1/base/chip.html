@@ -1,6 +1,35 @@
 <!--
   title: Chip
   description: Los chips representan entidades con iconos, etiquetas e imágenes.
-  figma:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2259
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2461-2277
 -->
-int-chip
+<!-- Free content goes first, as in PrimeNG (template usage). -->
+<ng-content />
+
+<!-- The image takes precedence over the icon. -->
+@if (image()) {
+  <img class="int-chip__image" [src]="image()" [alt]="alt()" (error)="onImageError.emit($event)" />
+} @else if (icon()) {
+  <span [class]="iconClass()" aria-hidden="true"></span>
+}
+
+@if (label()) {
+  <div class="int-chip__label">{{ label() }}</div>
+}
+
+<!-- Remove action: focusable unless disabled; Enter/Backspace handled in onKeydown. -->
+@if (removable()) {
+  <span
+    role="button"
+    [class]="removeIconClass()"
+    [attr.tabindex]="disabled() ? -1 : 0"
+    [attr.aria-label]="removeAriaLabel()"
+    (click)="close($event)"
+    (keydown)="onKeydown($event)"
+  >
+    @if (removeIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    }
+  </span>
+}

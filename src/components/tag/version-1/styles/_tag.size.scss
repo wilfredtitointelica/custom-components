@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // int-tag · size (int-* extension, Figma). Medium (no size) keeps the :root tokens.
 .int-tag {
   &--small {
@@ -12,5 +13,35 @@
     --int-tag-padding-x: var(--i-badge-padding-x-xl); // SG: --i-badge-padding-x-xl · Figma: 16px
     --int-tag-font-size: var(--i-badge-font-size-lg); // SG: --i-badge-font-size-lg · Figma: 16px
     --int-tag-icon-size: var(--i-sizing-sm); // SG: --i-sizing-sm (no icon alias) · Figma: 20px
+=======
+// int-tag · size="small | large" (int-* extension; without a value the tag is medium).
+// knowledgeBase: badge.md · sizes Small / Large · Figma: Badge [Size=Small | Large].
+
+.int-tag {
+  &--small {
+    padding-block: calc(var(--int-tag-small-padding-y) - var(--int-tag-border-width));
+    padding-inline: calc(var(--int-tag-small-padding-x) - var(--int-tag-border-width));
+    font-size: var(--int-tag-small-font-size);
+    line-height: var(--int-tag-small-line-height);
+
+    .int-tag__icon {
+      width: var(--int-tag-small-icon-size);
+      height: var(--int-tag-small-icon-size);
+      font-size: var(--int-tag-small-icon-size);
+    }
+  }
+
+  &--large {
+    padding-block: calc(var(--int-tag-large-padding-y) - var(--int-tag-border-width));
+    padding-inline: calc(var(--int-tag-large-padding-x) - var(--int-tag-border-width));
+    font-size: var(--int-tag-large-font-size);
+    line-height: var(--int-tag-large-line-height);
+
+    .int-tag__icon {
+      width: var(--int-tag-large-icon-size);
+      height: var(--int-tag-large-icon-size);
+      font-size: var(--int-tag-large-icon-size);
+    }
+>>>>>>> b416ce94d5fbcf9986726dfe7fca13d31496dc75
   }
 }

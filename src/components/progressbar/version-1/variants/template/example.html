@@ -1,0 +1,9 @@
+<!--
+  title: Template
+  description: El template `content` reemplaza la etiqueta y recibe el valor como contexto (`$implicit`).
+-->
+<int-progressbar [value]="50" [style]="{ width: '40rem' }">
+  <ng-template #content let-value>
+    <span>{{ value }}/100</span>
+  </ng-template>
+</int-progressbar>

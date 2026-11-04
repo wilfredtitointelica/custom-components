@@ -1,2 +1,4 @@
-// int-breadcrumb · entry point. Add one `@use 'breadcrumb.<variant>' as breadcrumb-<variant>;` per variant module.
+// int-breadcrumb · entry point. Add one `@use 'breadcrumb.<group>' as breadcrumb-<group>;` per modifier module.
 @use 'breadcrumb';
+@use 'breadcrumb.collapsed' as breadcrumb-collapsed;
+@use 'breadcrumb.disabled' as breadcrumb-disabled;

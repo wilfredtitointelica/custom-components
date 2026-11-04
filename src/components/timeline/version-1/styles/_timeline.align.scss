@@ -1,0 +1,81 @@
+// int-timeline · align="left|right|alternate|top|bottom" (same rules as @primeuix/styles).
+// Physical left/right on purpose: the block forces direction: ltr, like PrimeNG.
+
+.int-timeline {
+  &--left {
+    .int-timeline__event-opposite {
+      text-align: right;
+    }
+
+    .int-timeline__event-content {
+      text-align: left;
+    }
+  }
+
+  &--right {
+    .int-timeline__event {
+      flex-direction: row-reverse;
+    }
+
+    .int-timeline__event-opposite {
+      text-align: left;
+    }
+
+    .int-timeline__event-content {
+      text-align: right;
+    }
+  }
+
+  // Vertical alternate: even events mirror the row
+  &--vertical#{&}--alternate {
+    .int-timeline__event:nth-child(odd) {
+      .int-timeline__event-opposite {
+        text-align: right;
+      }
+
+      .int-timeline__event-content {
+        text-align: left;
+      }
+    }
+
+    .int-timeline__event:nth-child(even) {
+      flex-direction: row-reverse;
+
+      .int-timeline__event-opposite {
+        text-align: left;
+      }
+
+      .int-timeline__event-content {
+        text-align: right;
+      }
+    }
+  }
+
+  // Horizontal alternate: even events put the content above the line. A 1fr · auto · 1fr grid (instead of
+  // PrimeNG's column-reverse) gives both sides the same height, so the line stays aligned across events
+  // even when the opposite side is empty.
+  &--horizontal#{&}--alternate .int-timeline__event {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr);
+
+    .int-timeline__event-opposite {
+      align-self: end;
+    }
+
+    &:nth-child(even) .int-timeline__event-opposite {
+      grid-row: 3;
+      align-self: start;
+    }
+
+    &:nth-child(even) .int-timeline__event-content {
+      grid-row: 1;
+      justify-content: flex-end;
+    }
+  }
+
+  // Higher specificity than the horizontal layout rule that sets the event column
+  &--horizontal#{&}--bottom .int-timeline__event {
+    flex-direction: column-reverse;
+  }
+}

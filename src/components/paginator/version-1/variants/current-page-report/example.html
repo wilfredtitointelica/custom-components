@@ -1,0 +1,12 @@
+<!--
+  title: Current Page Report
+  description: Con `showCurrentPageReport` se muestra el texto de `currentPageReportTemplate`, que admite `{currentPage}`, `{totalPages}`, `{rows}`, `{first}`, `{last}` y `{totalRecords}`.
+-->
+<int-paginator
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+  [showCurrentPageReport]="true"
+  [showPageLinks]="false"
+  [showFirstLastIcon]="false"
+  [totalRecords]="120"
+  [rows]="10"
+/>

@@ -1,0 +1,21 @@
+<!--
+  title: Disabled
+  description: Con `disabled` se deshabilitan todos los controles (botones, enlaces de página, selector de filas y campo de página) y los textos se ven en gris; no reciben foco con `Tab` ni emiten `onPageChange`. Sin `disabled`, los controles solo se deshabilitan cuando no hay páginas.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <int-paginator
+    [totalRecords]="120"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [disabled]="true"
+  />
+
+  <int-paginator
+    [showJumpToPageInput]="true"
+    [showPageLinks]="false"
+    [showFirstLastIcon]="false"
+    [totalRecords]="120"
+    [rows]="10"
+    [disabled]="true"
+  />
+</div>

@@ -4,13 +4,87 @@
 
 :root {
   --NOTE-PAGINATOR: 'int-paginator ( Custom )';
+
+  // --- root ---
+  --int-paginator-background: transparent; // knowledgeBase: transparent · Aura: {content.background}
+  --int-paginator-color: var(--i-color-primary-900); // knowledgeBase: --i-color-primary-900 · Figma: #0A1733 (pagination/color/text) · Aura: {content.color}
+  --int-paginator-padding: var(--i-spacing-container-none); // knowledgeBase: padding 0 · Aura: 0.5rem 1rem
+  --int-paginator-border-radius: var(--i-border-radius-none); // knowledgeBase: border-radius 0 · Aura: {content.border.radius}
+  --int-paginator-gap: var(--i-spacing-gap-sm); // Figma: 8px (space/100, page container) · knowledgeBase: u-gap-xs (prev/next skeleton) ⚠️ · Aura: 0.25rem
+  --int-paginator-font-family: var(--i-typography-font-family-base); // Figma: Lato (pagination/font/fontfamily) · Aura: inherit
+  --int-paginator-font-size: var(--i-typography-font-size-md); // SG: 14px · Figma: 14px (pagination/font/size/md) · Aura: inherit
+  --int-paginator-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (pagination/font/lineheight/md) · Aura: inherit
+  --int-paginator-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast ⚠️ 150ms · Aura: {transition.duration} 0.2s
+
+  // --- navigation and page buttons ---
+  --int-paginator-nav-button-background: transparent; // knowledgeBase: transparent · Figma: #FCFCFC (pagination/color/background) ⚠️ · Aura: transparent
+  --int-paginator-nav-button-color: var(--i-color-primary-900); // knowledgeBase: --i-color-primary-900 · Figma: #0A1733 (icon) · Aura: {text.muted.color}
+  --int-paginator-nav-button-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background) · knowledgeBase: background none ⚠️ · Aura: {content.hover.background}
+  --int-paginator-nav-button-size: var(--i-sizing-md); // knowledgeBase: min-width auto + padding 4px · Figma: 24px · Aura: 2.5rem
+  --int-paginator-nav-button-padding: var(--i-spacing-container-xs); // knowledgeBase: 4px · Figma: 4px (pagination/padding/x/xs) · Aura: 0
+  --int-paginator-nav-button-border-radius: var(--i-border-radius-lg); // knowledgeBase: 8px · Figma: 8px (pagination/border/radius/lg) · Aura: 50%
+  --int-paginator-nav-button-selected-background: var(--i-color-primary-100); // knowledgeBase: --i-color-primary-100 · Aura: {highlight.background}
+  --int-paginator-nav-button-selected-color: var(--i-color-primary-900); // knowledgeBase: --i-color-primary-900 · Aura: {highlight.color}
+  --int-paginator-nav-button-focus-background: var(--i-color-secondary-100); // knowledgeBase: --i-color-secondary-100 · Aura: —
+  --int-paginator-nav-button-disabled-background: var(--i-color-secondary-200); // knowledgeBase: #d8dae4 (color/grey/200) · Figma: #D9D9E3 (pagination/color/disabled/background) · Aura: —
+  --int-paginator-nav-button-disabled-opacity: var(--i-opacity-semi); // knowledgeBase: --p-disabled-opacity ⚠️ 0.5 · Aura: {disabled.opacity} 0.6
+
+  // --- focus ring ---
+  --int-paginator-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: 1px · Aura: {focus.ring.width} 1px
+  --int-paginator-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-paginator-focus-ring-offset: var(--i-spacing-container-none); // knowledgeBase: no offset · Aura: {focus.ring.offset} 2px
+
+
+  // --- jump to page input ---
+  --int-paginator-jtp-input-width: var(--i-sizing-xl); // Figma: 40px · Aura: jumpToPageInput.maxWidth 2.5rem
+  --int-paginator-jtp-input-height: var(--i-sizing-md); // Figma: 24px · Aura: —
+  --int-paginator-jtp-input-padding-y: var(--i-spacing-container-2xs); // knowledgeBase: 2px · Figma: 2px (pagination/padding/y/2xs) · Aura: —
+  --int-paginator-jtp-input-padding-x: var(--i-spacing-container-md); // knowledgeBase: 0 · Figma: 8px (pagination/padding/x/md) · Aura: —
+  --int-paginator-jtp-input-margin-x: var(--i-spacing-container-xs); // knowledgeBase: 4px · Aura: —
+  --int-paginator-jtp-input-border-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm) · Aura: {form.field.border.radius}
+  --int-paginator-jtp-input-border-width: var(--i-border-width-sm); // Figma: 1px (pagination/border/width/sm) · Aura: 1px
+  --int-paginator-jtp-input-border-color: var(--i-line-border-color); // SG: --i-line-border-color (same border as the table paginator composition) · knowledgeBase: --i-color-secondary-600 ⚠️ · Figma: #636B8C (pagination/color/border) ⚠️ · Aura: {form.field.border.color}
+  --int-paginator-jtp-input-background: var(--i-color-secondary-50); // knowledgeBase: --i-color-secondary-50 · Figma: #FCFCFC (pagination/color/background) · Aura: {form.field.background}
+  --int-paginator-jtp-input-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: bold · Figma: Lato Bold · Aura: inherit
+  --int-paginator-jtp-input-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (pagination/color/hover/border) · Aura: {form.field.hover.border.color}
+  --int-paginator-jtp-input-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background) · Aura: —
+  --int-paginator-jtp-input-focus-background: var(--i-color-secondary-100); // knowledgeBase: --i-color-secondary-100 · Aura: —
+  --int-paginator-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Figma: #9CA3BA (pagination/color/disabled/text) · Aura: {disabled.opacity}
+  --int-paginator-disabled-border-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Figma: #9CA3BA (pagination/color/disabled/border) · Aura: —
+  --int-paginator-disabled-background: var(--i-background-disabled); // SG: --i-background-disabled · Figma: #D9D9E3 (pagination/color/disabled/background) · Aura: —
+
+  // --- rows per page / jump to page select (provisional; gap, padding, radius and background reuse the tokens above) ---
+  --int-paginator-dropdown-label-min-width: var(--i-sizing-lg); // Figma: 32px (value width) · Aura: —
+  --int-paginator-dropdown-list-border-color: var(--i-color-secondary-600); // knowledgeBase: --i-color-secondary-600 (select overlay) · Figma: #636B8C (pagination/color/border) · Aura: {select.overlay.border.color}
+  --int-paginator-dropdown-list-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300 · Aura: {select.overlay.shadow}
+
+  // --- ripple ---
+  --int-paginator-ripple-background: var(--i-shadow-color-medium); // SG: nearest translucent token ⚠️ rgba(36, 38, 51, 0.1) · Aura: {ripple.background} rgba(0, 0, 0, 0.1)
+  --int-paginator-ripple-duration: var(--i-motion-duration-slow); // SG: --i-motion-duration-slow ⚠️ 500ms · Aura: 0.4s
+  --int-paginator-ripple-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: linear
+
+  // --- skeleton ---
+  --int-paginator-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: .prPaginator · transparent, no border or radius, padding 0, primary-900 text.
 .int-paginator {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--int-paginator-gap);
+  padding: var(--int-paginator-padding);
+  border-radius: var(--int-paginator-border-radius);
+  background: var(--int-paginator-background);
+  color: var(--int-paginator-color);
+  font-family: var(--int-paginator-font-family);
+  font-size: var(--int-paginator-font-size);
+  line-height: var(--int-paginator-line-height);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +92,224 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-paginator {
+  &__content-start {
+    margin-inline-end: auto;
+  }
+
+  &__content-end {
+    margin-inline-start: auto;
+  }
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    gap: var(--int-paginator-gap);
+  }
+
+  // Same rule as .p-paginator-page/-first/-prev/-next/-last; size and padding from the knowledge base prev/next.
+  &__first,
+  &__prev,
+  &__next,
+  &__last,
+  &__page {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--int-paginator-nav-button-size);
+    block-size: var(--int-paginator-nav-button-size);
+    margin: 0;
+    padding: var(--int-paginator-nav-button-padding);
+    // Clips the ripple ink inside the button.
+    overflow: hidden;
+    border: 0 none;
+    border-radius: var(--int-paginator-nav-button-border-radius);
+    outline-color: transparent;
+    background: var(--int-paginator-nav-button-background);
+    color: var(--int-paginator-nav-button-color);
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background var(--int-paginator-transition-duration),
+      color var(--int-paginator-transition-duration),
+      outline-color var(--int-paginator-transition-duration);
+
+    &:not(:disabled):hover {
+      // Figma: the hover text keeps the default color (pagination/color/hover/text #0A1733).
+      background: var(--int-paginator-nav-button-hover-background);
+    }
+
+    &:focus-visible {
+      outline: var(--int-paginator-focus-ring-width) solid var(--int-paginator-focus-ring-color);
+      outline-offset: var(--int-paginator-focus-ring-offset);
+      background: var(--int-paginator-nav-button-focus-background);
+    }
+
+    // knowledgeBase: grey background and 8px radius; no hover, not selectable.
+    &:disabled {
+      opacity: var(--int-paginator-nav-button-disabled-opacity);
+      background: var(--int-paginator-nav-button-disabled-background);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  &__first-icon,
+  &__prev-icon,
+  &__next-icon,
+  &__last-icon {
+    display: inline-flex;
+  }
+
+  &__first:dir(rtl),
+  &__prev:dir(rtl),
+  &__next:dir(rtl),
+  &__last:dir(rtl) {
+    transform: rotate(180deg);
+  }
+
+  &__page--selected,
+  &__page--selected:not(:disabled):hover {
+    background: var(--int-paginator-nav-button-selected-background);
+    color: var(--int-paginator-nav-button-selected-color);
+  }
+
+  // TODO(dep:input provisional) knowledgeBase: centered bold number input; shape from Figma.
+  &__input {
+    box-sizing: border-box;
+    inline-size: var(--int-paginator-jtp-input-width);
+    block-size: var(--int-paginator-jtp-input-height);
+    margin-inline: var(--int-paginator-jtp-input-margin-x);
+    padding: var(--int-paginator-jtp-input-padding-y) var(--int-paginator-jtp-input-padding-x);
+    border: var(--int-paginator-jtp-input-border-width) solid var(--int-paginator-jtp-input-border-color);
+    border-radius: var(--int-paginator-jtp-input-border-radius);
+    background: var(--int-paginator-jtp-input-background);
+    color: inherit;
+    font: inherit;
+    font-weight: var(--int-paginator-jtp-input-font-weight);
+    text-align: center;
+    appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+    }
+
+    &:not(:disabled):hover {
+      border-color: var(--int-paginator-jtp-input-hover-border-color);
+      background: var(--int-paginator-jtp-input-hover-background);
+    }
+
+    &:focus-visible {
+      outline: 0;
+      border-color: var(--int-paginator-focus-ring-color);
+      background: var(--int-paginator-jtp-input-focus-background);
+    }
+  }
+
+  &__input:disabled {
+    border-color: var(--int-paginator-disabled-border-color);
+    background: var(--int-paginator-disabled-background);
+  }
+
+  // TODO(dep:dropdown-select provisional) trigger "10 ^" and a list that opens upwards (Figma).
+  &__dropdown {
+    position: relative;
+    display: inline-flex;
+  }
+
+  &__dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--int-paginator-gap);
+    border-radius: var(--int-paginator-jtp-input-border-radius);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__dropdown-label {
+    min-inline-size: var(--int-paginator-dropdown-label-min-width);
+    text-align: end;
+  }
+
+  &__dropdown-list {
+    position: absolute;
+    inset-block-end: 100%;
+    inset-inline-end: 0;
+    z-index: 1;
+    margin-block-end: var(--int-paginator-nav-button-padding);
+    padding: var(--int-paginator-nav-button-padding);
+    overflow-y: auto;
+    border: var(--int-paginator-jtp-input-border-width) solid var(--int-paginator-dropdown-list-border-color);
+    border-radius: var(--int-paginator-nav-button-border-radius);
+    background: var(--int-paginator-jtp-input-background);
+    box-shadow: var(--int-paginator-dropdown-list-shadow);
+  }
+
+  &__dropdown-option {
+    padding-inline: var(--int-paginator-nav-button-padding);
+    border-radius: var(--int-paginator-jtp-input-border-radius);
+    text-align: end;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--int-paginator-nav-button-hover-background);
+    }
+  }
+
+  &__dropdown-trigger:focus-visible,
+  &__dropdown-option:focus-visible {
+    outline: var(--int-paginator-focus-ring-width) solid var(--int-paginator-focus-ring-color);
+  }
+
+  &__input:disabled,
+  &__dropdown--disabled &__dropdown-trigger {
+    color: var(--int-paginator-disabled-color);
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  // Ripple ink (PrimeNG .p-ink): grows from the press point and fades out.
+  &__ink {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--int-paginator-ripple-background);
+    transform: scale(0); // Aura: scale(0)
+    pointer-events: none;
+
+    &--active {
+      animation: int-paginator-ripple var(--int-paginator-ripple-duration) var(--int-paginator-ripple-easing);
+    }
+  }
+}
+
+@keyframes int-paginator-ripple {
+  100% {
+    opacity: 0; // Aura: opacity 0
+    transform: scale(2.5); // Aura: scale(2.5)
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-paginator,
+  .int-paginator * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-paginator {
+// int-* extension: disabled paginator. Each control is disabled natively; the texts turn grey (Figma: Disabled).
+.int-paginator--disabled {
+  color: var(--int-paginator-disabled-color);
+  cursor: not-allowed;
+  user-select: none;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +317,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-paginator {
+  block-size: var(--int-paginator-nav-button-size);
+  border-radius: var(--int-paginator-nav-button-border-radius);
+  background: var(--int-paginator-skeleton-background);
 }

@@ -4,13 +4,59 @@
 
 :root {
   --NOTE-TIMELINE: 'int-timeline ( Custom )';
+
+  // --- root ---
+  --int-timeline-color: var(--i-text-color-default); // Figma: #0A1733 (timeline/color/body) · Aura: inherit
+  --int-timeline-font-family: var(--i-typography-font-family-base); // Figma: Lato (timeline/font/fontFamily) · Aura: inherit
+  --int-timeline-font-size: var(--i-text-body-size-sm); // Figma: 12px (timeline/font/size/sm) · knowledgeBase: --i-timeline-event-content-size 14px ⚠️ · Aura: inherit
+  --int-timeline-line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (timeline/font/lineHeight/sm) · Aura: inherit
+
+  // --- event ---
+  --int-timeline-event-min-height: var(--i-spacing-1000); // Figma: 80px (step pitch) · Aura: 5rem
+  --int-timeline-content-gap: var(--i-spacing-gap-xs); // knowledgeBase: --p-timeline-event-content-gap · Figma: 4px (space/050) · Aura: —
+  --int-timeline-vertical-content-padding-x: var(--i-spacing-container-xs); // Figma: 4px (text-container x) · Aura: 1rem
+
+  // --- marker ---
+  --int-timeline-marker-size: var(--i-sizing-xs); // Figma: 16px (ellipse) · knowledgeBase: --i-timeline-event-marker-size 17px ⚠️ · Aura: 1.125rem
+  --int-timeline-marker-border-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Aura: 50%
+  --int-timeline-marker-background: var(--i-color-primary-900); // Figma: #0A1733 (timeline/color/dot) · knowledgeBase: --i-timeline-event-marker-background ⚠️ · Aura: {primary.color}
+
+  // --- connector (vertical line between markers) ---
+  --int-timeline-connector-size: var(--i-border-width-sm); // knowledgeBase: 1px · Figma: 1px (line) · Aura: 2px
+  --int-timeline-connector-color: var(--i-color-primary-900); // Figma: #0A1733 (timeline/color/line) · knowledgeBase: --i-timeline-event-marker-background ⚠️ · Aura: {content.border.color}
+
+  // --- horizontal layout (knowledge base: dashed line with end dots and a guide to the content) ---
+  --int-timeline-horizontal-marker-background: var(--i-color-primary-600); // knowledgeBase: --i-timeline-event-marker-background (primary-600) · Figma: #2A52C5 (color/blue/600) · Aura: {primary.color}
+  --int-timeline-horizontal-line-color: var(--i-color-neutral-300); // knowledgeBase: --i-timeline-event-separator-color (neutral-300) · Figma: #BABECF (color/grey/300)
+  --int-timeline-horizontal-line-width: var(--i-border-width-sm); // SG: 1px · Figma: 1px (Vector 7500)
+  --int-timeline-horizontal-dot-size: var(--i-spacing-75); // knowledgeBase: --i-timeline-event-separator-dot-size (spacing-75) · Figma: 6px
+  --int-timeline-horizontal-guide-width: var(--i-border-width-sm); // SG: 1px · Figma: 1px (Vector 7499)
+  --int-timeline-horizontal-guide-height: 22px; // var(--i-sizing-2xs); // Figma: 12px (Vector 7499) · SG: 1.375rem ⚠️
+  --int-timeline-horizontal-guide-color: var(--i-color-primary-600); // knowledgeBase: --i-timeline-event-marker-background (primary-600) · Figma: #2A52C5 (color/blue/600)
+
+  // --- disabled (int-* extension: no source has it; greys of the SG disabled controls) ---
+  --int-timeline-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled (color/grey/400, as --i-textarea-disabled-color) · Aura: —
+  --int-timeline-disabled-marker-background: var(--i-color-neutral-300); // SG: --i-color-neutral-300 (as the horizontal line) · Aura: —
+  --int-timeline-disabled-line-color: var(--i-color-neutral-300); // SG: --i-color-neutral-300 (connector and guide) · Aura: —
+
+  // --- skeleton ---
+  --int-timeline-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Events stack in a column (as @primeuix/styles); the horizontal layout turns it into a row.
 .int-timeline {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  direction: ltr;
+  color: var(--int-timeline-color);
+  font-family: var(--int-timeline-font-family);
+  font-size: var(--int-timeline-font-size);
+  line-height: var(--int-timeline-line-height);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,18 +64,67 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-timeline {
+  &__event {
+    display: flex;
+    position: relative;
+    min-block-size: var(--int-timeline-event-min-height);
+
+    &:last-child {
+      min-block-size: 0;
+    }
+  }
+
+  &__event-opposite {
+    flex: 1;
+  }
+
+  // knowledgeBase: content blocks (date, status, title) in a column, 4px apart
+  &__event-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--int-timeline-content-gap);
+  }
+
+  // Marker on top of the connector that grows to the next event
+  &__event-separator {
+    display: flex;
+    position: relative;
+    flex: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // knowledgeBase: solid dot, without the border and inner dot of Aura
+  &__event-marker {
+    display: inline-flex;
+    position: relative;
+    align-self: baseline;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--int-timeline-marker-size);
+    block-size: var(--int-timeline-marker-size);
+    border-radius: var(--int-timeline-marker-border-radius);
+    background: var(--int-timeline-marker-background);
+  }
+
+  &__event-connector {
+    flex-grow: 1;
+    background: var(--int-timeline-connector-color);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-timeline {
-}
+// One module per group: _timeline.align.scss, _timeline.layout.scss and _timeline.disabled.scss.
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-timeline {
+  min-block-size: var(--int-timeline-event-min-height);
+  background: var(--int-timeline-skeleton-background);
 }

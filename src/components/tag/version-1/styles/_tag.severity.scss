@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // int-tag · severity. Maps the Intelica badge tokens (--i-badge-*) to the PrimeNG severities;
 // secondary (the default) keeps the :root tokens.
 .int-tag {
@@ -26,5 +27,53 @@
     --int-tag-background: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.950}
     --int-tag-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {surface.0}
     --int-tag-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: none
+=======
+// int-tag · severity="success | secondary | info | warn | danger | contrast | caution".
+// knowledgeBase: badge.md · .prBadge states (p-badge-secondary → Default, p-badge-info, p-badge-success,
+// p-badge-warn, p-badge-danger, .prBadge--yellow → Caution) · Figma: Badge [State=…]. contrast: PrimeNG only.
+// The icon takes the text color (currentColor), as in the knowledge base.
+
+.int-tag {
+  &--secondary {
+    border-color: var(--int-tag-secondary-border-color);
+    background: var(--int-tag-secondary-background);
+    color: var(--int-tag-secondary-color);
+  }
+
+  &--info {
+    border-color: var(--int-tag-info-border-color);
+    background: var(--int-tag-info-background);
+    color: var(--int-tag-info-color);
+  }
+
+  &--success {
+    border-color: var(--int-tag-success-border-color);
+    background: var(--int-tag-success-background);
+    color: var(--int-tag-success-color);
+  }
+
+  &--caution {
+    border-color: var(--int-tag-caution-border-color);
+    background: var(--int-tag-caution-background);
+    color: var(--int-tag-caution-color);
+  }
+
+  &--warn {
+    border-color: var(--int-tag-warn-border-color);
+    background: var(--int-tag-warn-background);
+    color: var(--int-tag-warn-color);
+  }
+
+  &--danger {
+    border-color: var(--int-tag-danger-border-color);
+    background: var(--int-tag-danger-background);
+    color: var(--int-tag-danger-color);
+  }
+
+  &--contrast {
+    border-color: var(--int-tag-contrast-border-color);
+    background: var(--int-tag-contrast-background);
+    color: var(--int-tag-contrast-color);
+>>>>>>> b416ce94d5fbcf9986726dfe7fca13d31496dc75
   }
 }

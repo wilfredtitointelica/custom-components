@@ -1,0 +1,10 @@
+<!--
+  title: Severity
+  description: El input `severity` (extensión `int-*`) colorea la barra según el estado: `info` (en progreso), `success` (completado), `warn` y `danger` (error). El input `color` lo pisa.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-progressbar severity="info" [value]="45" [style]="{ width: '40rem' }" />
+  <int-progressbar severity="success" [value]="100" [style]="{ width: '40rem' }" />
+  <int-progressbar severity="warn" [value]="60" [style]="{ width: '40rem' }" />
+  <int-progressbar severity="danger" [value]="30" [style]="{ width: '40rem' }" />
+</div>

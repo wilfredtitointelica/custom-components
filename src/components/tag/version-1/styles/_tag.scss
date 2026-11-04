@@ -3,50 +3,199 @@
 \*——————————————————————————————————————————————————————————*/
 
 :root {
-  --NOTE-TAG: 'int-tag ( PrimeNG v20 p-tag )';
+  --NOTE-TAG: 'int-tag ( Custom )';
 
-  // --- root ---
-  --int-tag-background: var(--i-badge-primary-background); // SG: --i-badge-primary-background · Aura: {surface.100} (secondary)
-  --int-tag-color: var(--i-badge-primary-color); // SG: --i-badge-primary-color · Aura: {surface.600} (secondary)
-  --int-tag-border-color: var(--i-badge-primary-border); // SG: --i-badge-primary-border · Aura: none
-  --int-tag-border-width: var(--i-badge-border-width-sm); // SG: --i-badge-border-width-sm · Aura: none
-  --int-tag-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Aura: {content.border.radius}
-  --int-tag-rounded-radius: var(--i-badge-border-radius-full); // SG: --i-badge-border-radius-full · Aura: {border.radius.xl}
-  // Medium (no size); small / large in _tag.size.scss.
-  --int-tag-height: var(--i-sizing-lg); // SG: --i-sizing-lg · Figma: 32px (Hug) · Aura: auto
-  --int-tag-padding-y: var(--i-spacing-container-md); // SG: --i-spacing-container-md · Figma: 8px · Aura: 0.25rem
-  --int-tag-padding-x: var(--i-badge-padding-x-lg); // SG: --i-badge-padding-x-lg · Figma: 12px · Aura: 0.5rem
-  --int-tag-gap: var(--i-badge-gap-xs); // SG: --i-badge-gap-xs · Aura: 0.25rem
-  --int-tag-font-family: var(--i-badge-font-fontFamily); // SG: --i-badge-font-fontFamily · Aura: inherit
-  --int-tag-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Figma: 14px · Aura: 0.875rem
-  --int-tag-font-weight: var(--i-badge-font-weight); // SG: --i-badge-font-weight · Aura: 700
+  // --- root (medium) ---
+  --int-tag-font-family: var(
+    --i-typography-font-family-base
+  ); // Figma: Lato (badge/font/fontfamily) · Aura: inherit
+  --int-tag-font-weight: var(
+    --i-typography-font-weight-regular
+  ); // knowledgeBase: badge.md · --i-typography-font-weight-regular · Figma: Regular · Aura: 700
+  --int-tag-font-size: var(
+    --i-typography-font-size-sm
+  ); // knowledgeBase: badge.md · --i-typography-font-size-sm · Figma: 12px [Size=Medium] · Aura: 0.875rem
+  --int-tag-line-height: var(
+    --i-typography-lineHeight-sm
+  ); // knowledgeBase: badge.md · --i-typography-lineHeight-sm · Figma: 16px (badge/font/lineheight/sm) [Size=Medium] · Aura: —
+  --int-tag-padding-y: var(
+    --i-spacing-container-md
+  ); // knowledgeBase: badge.md · --i-spacing-container-md · Figma: 8px (badge/padding/y/md) [Size=Medium] · Aura: 0.25rem
+  --int-tag-padding-x: var(
+    --i-spacing-container-lg
+  ); // knowledgeBase: badge.md · --i-spacing-container-lg · Figma: 12px (badge/padding/x/lg) [Size=Medium] · Aura: 0.5rem
+  --int-tag-gap: var(
+    --i-spacing-gap-xs
+  ); // knowledgeBase: badge.md · --i-spacing-gap-xs · Figma: 4px (badge/gap/xs) · Aura: 0.25rem
+  --int-tag-border-width: var(
+    --i-border-width-sm
+  ); // knowledgeBase: badge.md · --i-border-width-sm · Figma: 1px (badge/border/width/sm) · Aura: —
+  --int-tag-border-radius: var(
+    --i-border-radius-full
+  ); // knowledgeBase: badge.md · --i-border-radius-full · Figma: 1000px (badge/border/radius/full) · Aura: {content.border.radius} 6px (rounded: {border.radius.xl})
+  --int-tag-icon-size: var(
+    --i-icon-size-sm
+  ); // knowledgeBase: badge.md · 12px icon ⚠️ · Figma: 16px [Size=Medium] · Aura: 0.75rem
 
-  // --- icon ---
-  --int-tag-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Figma: 16px · Aura: 0.75rem
+  // --- primary (no severity) ---
+  --int-tag-background: var(
+    --i-color-primary-100
+  ); // knowledgeBase: badge.md · --i-color-primary-100 · Aura: {primary.100}
+  --int-tag-border-color: var(
+    --i-color-primary-900
+  ); // knowledgeBase: badge.md · --i-color-primary-900 · Aura: —
+  --int-tag-color: var(
+    --i-color-primary-900
+  ); // knowledgeBase: badge.md · --i-color-primary-900 · Aura: {primary.700}
+
+  // --- severity: secondary (Default) ---
+  --int-tag-secondary-background: var(
+    --i-color-secondary-50
+  ); // knowledgeBase: badge.md · --i-color-secondary-50 · Figma: #FCFCFC (badge/color/background) · Aura: {surface.100}
+  --int-tag-secondary-border-color: var(
+    --i-color-secondary-600
+  ); // knowledgeBase: badge.md · --i-color-secondary-600 · Figma: #636B8C (badge/color/border) · Aura: —
+  --int-tag-secondary-color: var(
+    --i-color-primary-900
+  ); // knowledgeBase: badge.md · --i-color-primary-900 · Figma: #0A1733 (badge/color/text) · Aura: {surface.600}
+
+  // --- severity: info ---
+  --int-tag-info-background: var(
+    --i-color-primary-100
+  ); // knowledgeBase: badge.md · --i-color-primary-100 · Figma: #DDE6F8 (badge/color/info/background) · Aura: {sky.100}
+  --int-tag-info-border-color: var(
+    --i-color-primary-900
+  ); // knowledgeBase: badge.md · --i-color-primary-900 · Figma: #0A1733 (badge/color/info/border) · Aura: —
+  --int-tag-info-color: var(
+    --i-color-primary-900
+  ); // knowledgeBase: badge.md · --i-color-primary-900 · Figma: #0A1733 (badge/color/info/text) · Aura: {sky.700}
+
+  // --- severity: success ---
+  --int-tag-success-background: var(
+    --i-color-success-50
+  ); // knowledgeBase: badge.md · --i-color-success-50 · Figma: #F2FAF5 (badge/color/success/background) · Aura: {green.100}
+  --int-tag-success-border-color: var(
+    --i-color-success-800
+  ); // knowledgeBase: badge.md · --i-color-success-800 · Figma: #126629 (badge/color/success/border) · Aura: —
+  --int-tag-success-color: var(
+    --i-color-success-800
+  ); // knowledgeBase: badge.md · --i-color-success-800 · Figma: #126629 (badge/color/success/text) · Aura: {green.700}
+
+  // --- severity: caution (int-* extension) ---
+  --int-tag-caution-background: var(
+    --i-color-yellow-50
+  ); // knowledgeBase: badge.md · --i-color-yellow-50 · Figma: #FFFBF5 ⚠️ (badge/color/caution/background) · Aura: —
+  --int-tag-caution-border-color: var(
+    --i-color-yellow-900
+  ); // knowledgeBase: badge.md · --i-color-yellow-900 · Figma: #D7AE0A (badge/color/caution/border) · Aura: —
+  --int-tag-caution-color: var(
+    --i-color-yellow-900
+  ); // knowledgeBase: badge.md · --i-color-yellow-900 · Figma: #D7AE0A (badge/color/caution/text) · Aura: —
+
+  // --- severity: warn ---
+  --int-tag-warn-background: var(
+    --i-color-warning-100
+  ); // knowledgeBase: badge.md · --i-color-warning-100 · Figma: #FFF8ED (badge/color/warning/background) · Aura: {orange.100}
+  --int-tag-warn-border-color: var(
+    --i-color-warning-800
+  ); // knowledgeBase: badge.md · --i-color-warning-800 · Figma: #C27E00 ⚠️ (badge/color/warning/border) · Aura: —
+  --int-tag-warn-color: var(
+    --i-color-warning-700
+  ); // knowledgeBase: badge.md · --i-color-warning-700 · Figma: #8F5D00 ⚠️ (badge/color/warning/text) · Aura: {orange.700}
+
+  // --- severity: danger (Error) ---
+  --int-tag-danger-background: var(
+    --i-color-error-50
+  ); // knowledgeBase: badge.md · --i-color-error-50 · Figma: #FCEDED (badge/color/error/background) · Aura: {red.100}
+  --int-tag-danger-border-color: var(
+    --i-color-error-700
+  ); // knowledgeBase: badge.md · --i-color-error-700 · Figma: #960D0D (badge/color/error/border) · Aura: —
+  --int-tag-danger-color: var(
+    --i-color-error-700
+  ); // knowledgeBase: badge.md · --i-color-error-700 · Figma: #960D0D (badge/color/error/text) · Aura: {red.700}
+
+  // --- severity: contrast (PrimeNG only) ---
+  --int-tag-contrast-background: var(
+    --i-color-primary-900
+  ); // SG: --i-color-primary-900 · Aura: {surface.950}
+  --int-tag-contrast-border-color: var(
+    --i-color-primary-900
+  ); // SG: --i-color-primary-900 · Aura: —
+  --int-tag-contrast-color: var(
+    --i-text-color-accent
+  ); // SG: --i-text-color-accent · Aura: {surface.0}
+
+  // --- disabled (int-* extension) ---
+  --int-tag-disabled-background: var(
+    --i-color-neutral-200
+  ); // knowledgeBase: badge.md · --i-color-neutral-200 · Figma: #D9D9E3 (badge/color/disabled/background) · Aura: —
+  --int-tag-disabled-border-color: var(
+    --i-color-neutral-400
+  ); // knowledgeBase: badge.md · --i-color-neutral-400 · Figma: #9CA3BA (badge/color/disabled/border) · Aura: —
+  --int-tag-disabled-color: var(
+    --i-color-neutral-400
+  ); // knowledgeBase: badge.md · --i-color-neutral-400 · Figma: #9CA3BA (badge/color/disabled/text) · Aura: —
+
+  // --- size: small (int-* extension) ---
+  --int-tag-small-font-size: var(
+    --i-typography-font-size-xs
+  ); // knowledgeBase: badge.md · --i-typography-font-size-xs · Figma: 10px [Size=Small] · Aura: —
+  --int-tag-small-line-height: var(
+    --i-typography-lineHeight-xs
+  ); // knowledgeBase: badge.md · --i-typography-lineHeight-xs · Figma: 12px (badge/font/lineheight/xs) [Size=Small] · Aura: —
+  --int-tag-small-padding-y: var(
+    --i-spacing-container-sm
+  ); // knowledgeBase: badge.md · --i-spacing-container-sm · Figma: 6px (badge/padding/y/sm) [Size=Small] · Aura: —
+  --int-tag-small-padding-x: var(
+    --i-spacing-container-md
+  ); // knowledgeBase: badge.md · --i-spacing-container-md · Figma: 8px (badge/padding/x/md) [Size=Small] · Aura: —
+  --int-tag-small-icon-size: var(
+    --i-icon-size-xs
+  ); // knowledgeBase: badge.md · 12px icon · Figma: 12px [Size=Small] · Aura: —
+
+  // --- size: large (int-* extension) ---
+  --int-tag-large-font-size: var(
+    --i-typography-font-size-md
+  ); // knowledgeBase: badge.md · --i-typography-font-size-md (xl) · Figma: 14px [Size=Large] · Aura: —
+  --int-tag-large-line-height: var(
+    --i-typography-lineHeight-md
+  ); // knowledgeBase: badge.md · --i-typography-lineHeight-md (xl) · Figma: 20px (badge/font/lineheight/md) [Size=Large] · Aura: —
+  --int-tag-large-padding-y: var(
+    --i-spacing-container-md
+  ); // knowledgeBase: badge.md · --i-spacing-container-md · Figma: 8px (badge/padding/y/md) [Size=Large] · Aura: —
+  --int-tag-large-padding-x: var(
+    --i-spacing-container-xl
+  ); // knowledgeBase: badge.md · --i-spacing-container-xl (xl) · Figma: 16px (badge/padding/x/xl) [Size=Large] · Aura: —
+  --int-tag-large-icon-size: var(--i-icon-size-sm); // Figma: 16px [Size=Large] · Aura: —
+
+  // --- skeleton ---
+  --int-tag-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+  --int-tag-skeleton-width: var(--i-sizing-2xl); // SG: --i-sizing-2xl
+  --int-tag-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg · Figma: 32px [Size=Medium]
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: badge.md · .prBadge (status label) · Figma: Badge [State=Default…Disabled]
 .int-tag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--int-tag-gap);
-  box-sizing: border-box;
-  height: var(--int-tag-height);
-  padding: var(--int-tag-padding-y) var(--int-tag-padding-x);
+  // Figma draws the stroke inside the box: the padding absorbs the border so the heights stay 24/32/36.
+  padding-block: calc(var(--int-tag-padding-y) - var(--int-tag-border-width));
+  padding-inline: calc(var(--int-tag-padding-x) - var(--int-tag-border-width));
   border: var(--int-tag-border-width) solid var(--int-tag-border-color);
-  border-radius: var(--int-tag-radius);
+  border-radius: var(--int-tag-border-radius);
   background: var(--int-tag-background);
   color: var(--int-tag-color);
   font-family: var(--int-tag-font-family);
   font-size: var(--int-tag-font-size);
   font-weight: var(--int-tag-font-weight);
-  line-height: 1;
+  line-height: var(--int-tag-line-height);
   white-space: nowrap;
-  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -57,6 +206,10 @@
   &__icon {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--int-tag-icon-size);
+    height: var(--int-tag-icon-size);
     font-size: var(--int-tag-icon-size);
   }
 }
@@ -65,12 +218,8 @@
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-// Severities live in _tag.severity.scss.
-.int-tag {
-  &--rounded {
-    border-radius: var(--int-tag-rounded-radius);
-  }
-}
+// Severity: _tag.severity.scss · size: _tag.size.scss · disabled: _tag.disabled.scss.
+// rounded: no rule, the tag is already a pill (knowledgeBase: badge.md · --i-border-radius-full).
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
@@ -78,8 +227,8 @@
 
 .sk-tag {
   display: inline-block;
-  width: 4rem;
-  height: var(--int-tag-height);
-  border-radius: var(--int-tag-radius);
-  background: var(--i-background-disabled);
+  width: var(--int-tag-skeleton-width);
+  height: var(--int-tag-skeleton-height);
+  border-radius: var(--int-tag-border-radius);
+  background: var(--int-tag-skeleton-background);
 }

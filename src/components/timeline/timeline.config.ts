@@ -12,5 +12,8 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'timeline',
+  variants: ['basic', 'alignment', 'opposite', 'template', 'horizontal', 'disabled'],
+  compositions: ['milestones', 'event-list'],
+  uses: ['card'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

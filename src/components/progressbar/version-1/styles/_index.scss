@@ -1,0 +1,4 @@
+// int-progressbar · entry point. Add one `@use 'progressbar.<group>' as progressbar-<group>;` per modifier module.
+@use 'progressbar';
+@use 'progressbar.severity' as progressbar-severity;
+@use 'progressbar.disabled' as progressbar-disabled;

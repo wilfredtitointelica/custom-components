@@ -1,0 +1,8 @@
+<!--
+  title: Accessibility
+  description: El host lleva `role="progressbar"` con `aria-valuemin`, `aria-valuemax` y `aria-valuenow` (este último se omite en `indeterminate`). Se etiqueta con los inputs `ariaLabel` o `ariaLabelledBy`; no recibe foco ni usa teclado.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <span id="progressbar-accessibility-label" class="u-text-sm u-color-body">Uploading files</span>
+  <int-progressbar ariaLabelledBy="progressbar-accessibility-label" [value]="40" [style]="{ width: '40rem' }" />
+</div>

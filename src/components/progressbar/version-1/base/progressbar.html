@@ -1,0 +1,27 @@
+<!--
+  title: ProgressBar
+  description: ProgressBar es un indicador del estado de un proceso.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=12801-8217&t=praSDC84iM8fhCvv-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=12801-8217
+-->
+<!-- The color input goes through the value token, so the indeterminate pseudo-elements pick it up too. -->
+@if (determinate()) {
+  <!-- Determinate: the value bar grows to the value; the label sits centered inside it. -->
+  <div [class]="valueClass()" [style.width]="width()" [style.--int-progressbar-value-background]="valueColor()">
+    <div class="int-progressbar__label" [style.--int-progressbar-label-color]="labelTextColor()">
+      @if (contentTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="context()" />
+      } @else if (showValue() && labelVisible()) {
+        <div>{{ value() }}{{ unit() }}</div>
+      }
+    </div>
+  </div>
+
+  <!-- int-* extension: reference line at the threshold percentage. -->
+  @if (hasThreshold()) {
+    <div class="int-progressbar__marker" [style.inset-inline-start.%]="threshold()" aria-hidden="true"></div>
+  }
+} @else {
+  <!-- Indeterminate: two pseudo-elements sweep across the track. -->
+  <div [class]="valueClass()" [style.--int-progressbar-value-background]="valueColor()"></div>
+}
