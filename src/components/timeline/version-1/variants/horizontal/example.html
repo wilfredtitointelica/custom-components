@@ -1,0 +1,15 @@
+<!--
+  title: Horizontal
+  description: Con `layout="horizontal"` los eventos van en fila sobre una línea punteada; `align` acepta `top`, `bottom` o `alternate`.
+-->
+<div class="u-display-flex u-flex-column u-gap-2xl">
+	<int-timeline layout="horizontal" align="top" [value]="years" [style]="{ width: '40rem' }">
+		<ng-template #content let-year>{{ year }}</ng-template>
+	</int-timeline>
+	<int-timeline layout="horizontal" align="bottom" [value]="years" [style]="{ width: '40rem' }">
+		<ng-template #content let-year>{{ year }}</ng-template>
+	</int-timeline>
+	<int-timeline layout="horizontal" align="alternate" [value]="years" [style]="{ width: '40rem' }">
+		<ng-template #content let-year>{{ year }}</ng-template>
+	</int-timeline>
+</div>

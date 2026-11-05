@@ -1,2 +1,5 @@
-// int-tag · entry point. Add one `@use 'tag.<variant>' as tag-<variant>;` per variant module.
+// int-tag · entry point. Add one `@use 'tag.<group>' as tag-<group>;` per modifier module.
 @use 'tag';
+@use 'tag.severity' as tag-severity;
+@use 'tag.size' as tag-size;
+@use 'tag.disabled' as tag-disabled;

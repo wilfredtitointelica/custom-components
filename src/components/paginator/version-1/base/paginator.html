@@ -1,6 +1,218 @@
 <!--
   title: Paginator
-  description:
-  figma:
+  description: Paginator es un componente genérico para mostrar contenido en formato paginado.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2827&p=f&t=YfIILMQ73S0VgZVt-0
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2828
 -->
-int-paginator
+
+<!-- Same order as p-paginator: start content, report, first, prev, pages, jump dropdown, next, last, jump input, rows per page, end content -->
+@if (templateLeft(); as template) {
+  <div class="int-paginator__content-start">
+    <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: state() }" />
+  </div>
+}
+
+@if (showCurrentPageReport()) {
+  <span class="int-paginator__current">{{ currentPageReport() }}</span>
+}
+
+@if (showFirstLastIcon()) {
+  <button
+    type="button"
+    class="int-paginator__first"
+    aria-label="First Page"
+    [disabled]="isFirstPage() || inactive()"
+    (pointerdown)="onPointerDown($event)"
+    (click)="changePage(0)"
+  >
+    <span class="int-paginator__first-icon">
+      @if (firstPageLinkIconTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" />
+      } @else {
+        <i class="icon icon-arrow-left-double icon--sm" aria-hidden="true"></i>
+      }
+    </span>
+  </button>
+}
+
+<button
+  type="button"
+  class="int-paginator__prev"
+  aria-label="Previous Page"
+  [disabled]="isFirstPage() || inactive()"
+  (pointerdown)="onPointerDown($event)"
+  (click)="changePage(page() - 1)"
+>
+  <span class="int-paginator__prev-icon">
+    @if (previousPageLinkIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="icon icon-arrow-left icon--sm" aria-hidden="true"></i>
+    }
+  </span>
+</button>
+
+<!-- Page links: the selected one carries aria-current="page" -->
+@if (showPageLinks()) {
+  <span class="int-paginator__pages">
+    @for (link of pageLinks(); track link.value) {
+      <button
+        type="button"
+        class="int-paginator__page"
+        [class.int-paginator__page--selected]="link.value === page()"
+        [disabled]="disabled()"
+        [attr.aria-label]="link.value + 1"
+        [attr.aria-current]="link.value === page() ? 'page' : null"
+        (pointerdown)="onPointerDown($event)"
+        (click)="changePage(link.value)"
+      >
+        {{ link.label }}
+      </button>
+    }
+  </span>
+}
+
+<!-- Jump to page: the trigger shows the current page report, like the selectedItem of p-paginator -->
+@if (showJumpToPageDropdown()) {
+  <ng-container
+    [ngTemplateOutlet]="dropdown"
+    [ngTemplateOutletContext]="{
+      key: 'jtp',
+      items: pageItems(),
+      value: page(),
+      label: 'Jump to Page Dropdown',
+      text: currentPageReport(),
+    }"
+  />
+}
+
+<button
+  type="button"
+  class="int-paginator__next"
+  aria-label="Next Page"
+  [disabled]="isLastPage() || inactive()"
+  (pointerdown)="onPointerDown($event)"
+  (click)="changePage(page() + 1)"
+>
+  <span class="int-paginator__next-icon">
+    @if (nextPageLinkIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="icon icon-arrow-right icon--sm" aria-hidden="true"></i>
+    }
+  </span>
+</button>
+
+@if (showFirstLastIcon()) {
+  <button
+    type="button"
+    class="int-paginator__last"
+    aria-label="Last Page"
+    [disabled]="isLastPage() || inactive()"
+    (pointerdown)="onPointerDown($event)"
+    (click)="changePage(pageCount() - 1)"
+  >
+    <span class="int-paginator__last-icon">
+      @if (lastPageLinkIconTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" />
+      } @else {
+        <i class="icon icon-arrow-right-double icon--sm" aria-hidden="true"></i>
+      }
+    </span>
+  </button>
+}
+
+@if (showJumpToPageInput()) {
+  <!-- dep:input provisional · replace with <int-input> (number) when input is done -->
+  <span class="int-paginator__jtp-input" data-dep="input">
+    <input
+      type="number"
+      class="int-paginator__input"
+      inputmode="numeric"
+      aria-label="Jump to Page Input"
+      min="1"
+      [max]="pageCount()"
+      [value]="currentPage()"
+      [disabled]="inactive()"
+      (change)="onJumpToPageInputChange($event)"
+    />
+  </span>
+  <!-- /dep:input -->
+}
+
+@if (rowsPerPageOptions()) {
+  <ng-container
+    [ngTemplateOutlet]="dropdown"
+    [ngTemplateOutletContext]="{
+      key: 'rpp',
+      items: rowsPerPageItems(),
+      value: rowsState(),
+      label: 'Rows per page',
+      text: rowsLabel(),
+    }"
+  />
+}
+
+@if (templateRight(); as template) {
+  <div class="int-paginator__content-end">
+    <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: state() }" />
+  </div>
+}
+
+<!-- dep:dropdown-select provisional · replace with <int-dropdown-select> when dropdown-select is done -->
+<!-- Combobox trigger ("10 ^") and a listbox that opens upwards with the other options, as in the design -->
+<ng-template #dropdown let-key="key" let-items="items" let-value="value" let-label="label" let-text="text">
+  @let open = openDropdown() === key;
+  @let listId = uid + '-' + key;
+  <span
+    class="int-paginator__dropdown"
+    [class.int-paginator__dropdown--open]="open"
+    [class.int-paginator__dropdown--disabled]="inactive()"
+    data-dep="dropdown-select"
+  >
+    <span
+      #trigger
+      class="int-paginator__dropdown-trigger"
+      role="combobox"
+      aria-haspopup="listbox"
+      [attr.aria-label]="label"
+      [attr.aria-expanded]="open"
+      [attr.aria-controls]="listId"
+      [attr.aria-disabled]="inactive() || null"
+      [attr.tabindex]="inactive() ? -1 : 0"
+      (click)="toggleDropdown(key)"
+      (keydown)="onTriggerKeydown($event, key)"
+    >
+      <span class="int-paginator__dropdown-label">{{ text }}</span>
+      <i class="icon icon--sm" [class]="open ? 'icon-arrow-up' : 'icon-arrow-down'" aria-hidden="true"></i>
+    </span>
+
+    @if (open) {
+      <div
+        class="int-paginator__dropdown-list"
+        role="listbox"
+        [id]="listId"
+        [attr.aria-label]="label"
+        [style.max-block-size]="dropdownScrollHeight()"
+        (keydown)="onListKeydown($event, trigger)"
+      >
+        @for (item of items; track item.value) {
+          @if (item.value !== value) {
+            <div
+              class="int-paginator__dropdown-option"
+              role="option"
+              tabindex="-1"
+              aria-selected="false"
+              (click)="selectOption(key, item.value, trigger)"
+              (keydown.enter)="selectOption(key, item.value, trigger)"
+              (keydown.space)="$event.preventDefault(); selectOption(key, item.value, trigger)"
+            >
+              {{ item.label }}
+            </div>
+          }
+        }
+      </div>
+    }
+  </span>
+</ng-template>
+<!-- /dep:dropdown-select -->

@@ -1,0 +1,18 @@
+<!--
+  title: Template
+  description: Los templates `marker` y `content` personalizan el marcador (un icono) y el contenido de cada evento (una `int-card`).
+-->
+<int-timeline align="alternate" [value]="events">
+  <ng-template #marker let-event>
+    <span class="u-display-flex u-align-items-center u-justify-content-center u-p-1 u-radius-xl u-background-surface u-color-body">
+      <i class="icon {{ event.icon }} icon--sm" aria-hidden="true"></i>
+    </span>
+  </ng-template>
+  <ng-template #content let-event>
+    <div class="u-px-3 u-pb-4">
+      <int-card [header]="event.status" [subheader]="event.date">
+        <p class="u-m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis.</p>
+      </int-card>
+    </div>
+  </ng-template>
+</int-timeline>

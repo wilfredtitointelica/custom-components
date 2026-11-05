@@ -1,4 +1,11 @@
 <!--
   title: Basic
-  description:
+  description: Paginador con `totalRecords`, `rows`, `first` y `rowsPerPageOptions`; `onPageChange` devuelve el estado nuevo (`page`, `first`, `rows`, `pageCount`).
 -->
+<int-paginator
+  [totalRecords]="120"
+  [rows]="rows()"
+  [first]="first()"
+  [rowsPerPageOptions]="[10, 20, 30]"
+  (onPageChange)="onPageChange($event)"
+/>

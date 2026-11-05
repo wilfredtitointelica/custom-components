@@ -1,0 +1,15 @@
+<!--
+  title: Threshold Progress Bar
+  description: Valor actual frente a un mínimo: fila de etiquetas con helpers `u-*` sobre una barra fina con `threshold`, `severity` según el estado y `showValue` en `false`.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+	@for (row of rows; track row.label) {
+	<div class="u-display-flex u-flex-column u-gap-xs">
+		<div class="u-display-flex u-justify-content-between u-full-width u-text-sm u-text-lineHeight-cap u-color-body">
+			<span>{{ row.current }}%</span>
+			<span>min {{ row.minimum }}%</span>
+		</div>
+		<int-progressbar [severity]="row.severity" [value]="row.current" [showValue]="false" [threshold]="row.minimum" [style]="{ width: '40rem', height: '8px' }" />
+	</div>
+	}
+</div>

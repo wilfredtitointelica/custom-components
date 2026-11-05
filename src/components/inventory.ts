@@ -38,7 +38,7 @@ import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
 import inputOtp from './input-otp/input-otp.config';
 import password from './password/password.config';
-import progressBar from './progress-bar/progress-bar.config';
+import progressbar from './progressbar/progressbar.config';
 import demo from './_demo_/demo.config';
 
 /**
@@ -88,5 +88,5 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   paginator,
   inputOtp,
   password,
-  progressBar,
+  progressbar,
 ];

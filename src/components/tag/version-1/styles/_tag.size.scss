@@ -1,0 +1,30 @@
+// int-tag · size="small | large" (int-* extension; without a value the tag is medium).
+// knowledgeBase: badge.md · sizes Small / Large · Figma: Badge [Size=Small | Large].
+
+.int-tag {
+  &--small {
+    padding-block: calc(var(--int-tag-small-padding-y) - var(--int-tag-border-width));
+    padding-inline: calc(var(--int-tag-small-padding-x) - var(--int-tag-border-width));
+    font-size: var(--int-tag-small-font-size);
+    line-height: var(--int-tag-small-line-height);
+
+    .int-tag__icon {
+      width: var(--int-tag-small-icon-size);
+      height: var(--int-tag-small-icon-size);
+      font-size: var(--int-tag-small-icon-size);
+    }
+  }
+
+  &--large {
+    padding-block: calc(var(--int-tag-large-padding-y) - var(--int-tag-border-width));
+    padding-inline: calc(var(--int-tag-large-padding-x) - var(--int-tag-border-width));
+    font-size: var(--int-tag-large-font-size);
+    line-height: var(--int-tag-large-line-height);
+
+    .int-tag__icon {
+      width: var(--int-tag-large-icon-size);
+      height: var(--int-tag-large-icon-size);
+      font-size: var(--int-tag-large-icon-size);
+    }
+  }
+}

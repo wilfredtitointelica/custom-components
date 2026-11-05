@@ -12,5 +12,14 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'paginator',
+  variants: [
+    'basic',
+    'current-page-report',
+    'template',
+    'custom-content',
+    'accessibility',
+    'disabled',
+  ],
+  requires: ['dropdown-select', 'input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -4,13 +4,60 @@
 
 :root {
   --NOTE-BREADCRUMB: 'int-breadcrumb ( Custom )';
+
+  // --- root ---
+  --int-breadcrumb-padding: var(--i-spacing-container-none); // knowledgeBase: padding 0 · Figma: 0 (breadcrumb/padding/x/none) · Aura: 1rem
+  --int-breadcrumb-background: transparent; // knowledgeBase: transparent · Aura: {content.background}
+  --int-breadcrumb-gap: var(--i-spacing-gap-sm); // knowledgeBase: 8px · Figma: 8px (breadcrumb/gap/sm) · Aura: 0.5rem
+  --int-breadcrumb-font-family: var(--i-typography-font-family-base); // Figma: Lato (breadcrumb/font/fontFamily) · Aura: inherit
+  --int-breadcrumb-transition-duration: var(--i-motion-duration-fast); // knowledgeBase: 0.2s ⚠️ · Aura: {transition.duration} 0.2s
+
+  // --- item ---
+  --int-breadcrumb-item-color: var(--i-color-primary-900); // knowledgeBase: --i-color-primary-900 (text, icon and current page) · Figma: #0A1733 (breadcrumb/color/text) · Aura: {text.muted.color}
+  --int-breadcrumb-item-hover-color: var(--i-color-primary-400); // knowledgeBase: --i-color-primary-400 · Figma: #5D86DF (breadcrumb/color/hoverText) · Aura: {text.color}
+  --int-breadcrumb-item-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-typography-font-size-sm · Figma: 12px (breadcrumb/font/size/sm) · Aura: inherit
+  --int-breadcrumb-item-line-height: var(--i-typography-lineHeight-sm); // knowledgeBase: 16px · Figma: 16px (breadcrumb/font/lineHeight/sm) · Aura: inherit
+  --int-breadcrumb-item-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: 400 · Figma: 400 (breadcrumb/font/weightLink) · Aura: inherit
+  --int-breadcrumb-item-padding-y: var(--i-spacing-container-xs); // knowledgeBase: 4px 0 · Figma: 4px (text, 16px in a 24px row) · Aura: —
+  --int-breadcrumb-item-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Aura: {navigation.item.gap} 0.5rem
+  --int-breadcrumb-item-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Aura: {content.border.radius} 6px
+
+  // --- focus ring ---
+  --int-breadcrumb-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: 1px · Aura: {focus.ring.width} 1px
+  --int-breadcrumb-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-breadcrumb-focus-ring-offset: calc(-1 * (var(--i-spacing-25) + var(--i-border-width-sm))); // knowledgeBase: -3px · Aura: {focus.ring.offset} 2px
+
+  // --- separator ---
+  --int-breadcrumb-separator-color: var(--i-color-primary-900); // knowledgeBase: --i-color-primary-900 · Figma: #0A1733 (icon/primary/default) · Aura: {navigation.item.icon.color}
+
+  // --- current page (last item: pill) ---
+  --int-breadcrumb-current-background: var(--i-color-primary-100); // knowledgeBase: --i-color-primary-100 · Figma: #DDE6F8 (breadcrumb/color/background) · Aura: —
+  --int-breadcrumb-current-padding-y: var(--i-spacing-container-2xs); // knowledgeBase: 2px · Figma: 2px (breadcrumb/padding/y/2xs) · Aura: —
+  --int-breadcrumb-current-padding-x: var(--i-spacing-container-md); // knowledgeBase: 8px · Figma: 8px (breadcrumb/padding/x/md) · Aura: —
+  --int-breadcrumb-current-border-radius: var(--i-border-radius-full); // knowledgeBase: 1000px · Figma: 1000 (breadcrumb/border/radius/full) · Aura: —
+  --int-breadcrumb-current-height: var(--i-sizing-md); // knowledgeBase: 24px · Figma: 24px · Aura: —
+  --int-breadcrumb-current-font-size: var(--i-typography-font-size-md); // knowledgeBase: --i-typography-font-size-md · Figma: 14px (breadcrumb/font/size/md) · Aura: —
+  --int-breadcrumb-current-line-height: var(--i-typography-lineHeight-md); // knowledgeBase: 20px · Figma: 20px (breadcrumb/font/lineHeight/md) · Aura: —
+  --int-breadcrumb-current-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: 700 · Figma: 700 (breadcrumb/font/weightCurrent) · Aura: —
+
+  // --- disabled item ---
+  --int-breadcrumb-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Aura: {disabled.opacity} 0.6
+  --int-breadcrumb-disabled-background: var(--i-background-disabled); // SG: --i-background-disabled (pill of the current page and of "…") · Aura: —
+
+  // --- skeleton ---
+  --int-breadcrumb-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: .prBreadcrumb · no padding, transparent. Without PrimeNG's overflow-x: auto, so the list
+// of a collapsed item is not clipped (see _breadcrumb.collapsed.scss).
 .int-breadcrumb {
+  padding: var(--int-breadcrumb-padding);
+  background: var(--int-breadcrumb-background);
+  font-family: var(--int-breadcrumb-font-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +65,127 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-breadcrumb {
+  &__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--int-breadcrumb-gap);
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &__separator {
+    display: flex;
+    align-items: center;
+    color: var(--int-breadcrumb-separator-color);
+  }
+
+  &__separator-icon:dir(rtl) {
+    transform: rotate(180deg);
+  }
+
+  &__item-link {
+    display: flex;
+    align-items: center;
+    gap: var(--int-breadcrumb-item-gap);
+    border-radius: var(--int-breadcrumb-item-border-radius);
+    outline-color: transparent;
+    color: var(--int-breadcrumb-item-color);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color var(--int-breadcrumb-transition-duration),
+      outline-color var(--int-breadcrumb-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-breadcrumb-focus-ring-width) solid var(--int-breadcrumb-focus-ring-color);
+      outline-offset: var(--int-breadcrumb-focus-ring-offset);
+    }
+
+    &:not([aria-disabled='true']):hover {
+      .int-breadcrumb__item-label {
+        color: var(--int-breadcrumb-item-hover-color);
+      }
+
+      .int-breadcrumb__item-icon {
+        color: var(--int-breadcrumb-item-hover-color);
+      }
+    }
+  }
+
+  &__item-label {
+    padding-block: var(--int-breadcrumb-item-padding-y);
+    font-size: var(--int-breadcrumb-item-font-size);
+    font-weight: var(--int-breadcrumb-item-font-weight);
+    line-height: var(--int-breadcrumb-item-line-height);
+    transition: inherit;
+  }
+
+  &__item-icon {
+    color: var(--int-breadcrumb-item-color);
+    transition: inherit;
+  }
+
+  // knowledgeBase: the last item is the current page, drawn as a pill; without a link it is not clickable
+  &__item:last-child:not(.int-breadcrumb__item--collapsed) {
+    display: flex;
+    align-items: center;
+    block-size: var(--int-breadcrumb-current-height);
+    padding: var(--int-breadcrumb-current-padding-y) var(--int-breadcrumb-current-padding-x);
+    border-radius: var(--int-breadcrumb-current-border-radius);
+    background: var(--int-breadcrumb-current-background);
+
+    .int-breadcrumb__item-label {
+      padding-block: 0;
+      color: var(--int-breadcrumb-item-color);
+      font-size: var(--int-breadcrumb-current-font-size);
+      font-weight: var(--int-breadcrumb-current-font-weight);
+      line-height: var(--int-breadcrumb-current-line-height);
+    }
+
+    .int-breadcrumb__item-link:not([href]) {
+      cursor: default;
+    }
+
+    // Disabled current page: grey pill, like the Style Guide disabled controls
+    &.int-breadcrumb__item--disabled {
+      background: var(--int-breadcrumb-disabled-background);
+
+      .int-breadcrumb__item-label {
+        color: var(--int-breadcrumb-disabled-color);
+      }
+
+      .int-breadcrumb__item-link {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Disabled item: no navigation (the base ignores the click), grey, without hover
+  &__item--disabled .int-breadcrumb__item-link {
+    cursor: not-allowed;
+    user-select: none;
+
+    .int-breadcrumb__item-label,
+    .int-breadcrumb__item-icon {
+      color: var(--int-breadcrumb-disabled-color);
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-breadcrumb {
+// One module per group: _breadcrumb.collapsed.scss (items with `items`) and _breadcrumb.disabled.scss (`disabled` input), both int-* extensions.
+
+@media (prefers-reduced-motion: reduce) {
+  .int-breadcrumb,
+  .int-breadcrumb * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +193,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-breadcrumb {
+  block-size: var(--int-breadcrumb-current-height);
+  border-radius: var(--int-breadcrumb-current-border-radius);
+  background: var(--int-breadcrumb-skeleton-background);
 }

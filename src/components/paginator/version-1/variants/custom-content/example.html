@@ -1,0 +1,12 @@
+<!--
+  title: Custom Content
+  description: `templateLeft` y `templateRight` agregan contenido a los lados del paginador; reciben el estado (`page`, `first`, `rows`, `pageCount`, `totalRecords`) como `$implicit`.
+-->
+<int-paginator [totalRecords]="120" [rows]="10" [templateLeft]="left" [templateRight]="right" />
+
+<ng-template #left let-state>
+  <span class="u-text-md u-text-nowrap">Page {{ state.page + 1 }} of {{ state.pageCount }}</span>
+</ng-template>
+<ng-template #right let-state>
+  <span class="u-text-md u-text-nowrap">{{ state.totalRecords }} records</span>
+</ng-template>

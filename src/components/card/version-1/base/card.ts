@@ -63,13 +63,13 @@ export class IntCard {
   readonly subheader = input<string>();
   /** int-* extension: alto fijo del template `header` (cualquier medida CSS, p. ej. '240px'); la imagen lo llena. */
   readonly headerHeight = input<string>();
-  /** int-* extension: menos padding, separación y radio, y texto más pequeño (`.prCard--compact` de la base de conocimientos). */
+  /** int-* extension: menos padding, separación y radio, y texto más pequeño, para paneles laterales y espacios chicos. */
   readonly compact = input(false, { transform: booleanAttribute });
-  /** int-* extension: borde visible en lugar de la sombra (`.prCard--outlined` de la base de conocimientos). */
+  /** int-* extension: borde visible en lugar de la sombra. */
   readonly outlined = input(false, { transform: booleanAttribute });
   /**
-   * int-* extension: sin fondo, sombra ni padding (`.prCard--data` y `.prCard--noBg` de la base de
-   * conocimientos); el contenido decide su espaciado. Se usa para KPIs y grupos de métricas.
+   * int-* extension: sin fondo, sombra ni padding; el contenido decide su espaciado con helpers `u-*`.
+   * Se usa para KPIs y grupos de métricas.
    */
   readonly flat = input(false, { transform: booleanAttribute });
   /** int-* extension: el cuerpo y el contenido llenan el alto de la card, para centrar un estado vacío o de error. */

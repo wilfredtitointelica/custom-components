@@ -1,0 +1,10 @@
+// int-tag · disabled (int-* extension). Loaded after the severities so it wins over their colors.
+// knowledgeBase: badge.md · .prBadge--disabled · Figma: Badge [State=Disabled].
+
+.int-tag--disabled {
+  border-color: var(--int-tag-disabled-border-color);
+  background: var(--int-tag-disabled-background);
+  color: var(--int-tag-disabled-color);
+  cursor: not-allowed;
+  user-select: none;
+}

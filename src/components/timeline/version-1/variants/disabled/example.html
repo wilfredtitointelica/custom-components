@@ -1,0 +1,19 @@
+<!--
+  title: Disabled
+  description: Con el input `disabled` todo el timeline se muestra en gris: marcadores, línea y textos, también los que llevan helpers `u-color-*`. Se ve igual en `layout="vertical"` y `layout="horizontal"`.
+-->
+<div class="u-display-flex u-flex-column u-gap-2xl">
+	<int-timeline [value]="events" disabled>
+		<ng-template #opposite let-event>
+			<span class="u-normal">{{ event.date }}</span>
+		</ng-template>
+		<ng-template #content let-event>{{ event.status }}</ng-template>
+	</int-timeline>
+
+	<int-timeline layout="horizontal" [value]="events" disabled [style]="{ width: '40rem' }">
+		<ng-template #content let-event>
+			<span class="u-normal">{{ event.date }}</span>
+			<span class="u-bold">{{ event.status }}</span>
+		</ng-template>
+	</int-timeline>
+</div>

@@ -1,0 +1,10 @@
+<!--
+  title: Color
+  description: El input `color` asigna a la barra un color propio (hexadecimal o `var(--i-color-…)`) en lugar del color por defecto. El input `labelColor` (extensión `int-*`) cambia el color del texto, que por defecto es claro.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-progressbar [value]="40" [style]="{ width: '40rem' }" />
+  <int-progressbar color="#738fe1" [value]="55" [style]="{ width: '40rem' }" />
+  <int-progressbar color="var(--i-color-teal-500)" [value]="70" [style]="{ width: '40rem' }" />
+  <int-progressbar color="#f7d54d" labelColor="#0a1733" [value]="85" [style]="{ width: '40rem' }" />
+</div>

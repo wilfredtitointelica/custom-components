@@ -22,7 +22,7 @@ import { CatalogVariant, DocExampleCode, DocExampleSource } from '../../service/
 import { CodeVisibility } from '../../service/code-visibility';
 import { ComponentCatalog } from '../../service/component-catalog';
 import { parseDocHtml } from '../../service/doc-html';
-import { NavigationState } from '../../service/navigation-state';
+import { DocTab, NavigationState } from '../../service/navigation-state';
 import { DocApiView } from './doc-api';
 import { DocApiToc } from './doc-api-toc';
 import { InlineCode } from '../inline-code/inline-code';
@@ -49,14 +49,16 @@ const INT_TAG = /<int-([a-z0-9-]+)/g;
 
 /**
  * IDs of the int-* components the given examples contain, real (`<int-button>`) or provisional
- * (`data-dep="button"`), read from their example.html of the selected version.
+ * (`data-dep="button"`), read from their example.html of the selected version. `provisional` keeps
+ * the ones still waiting for their dependency.
  */
 function usedDependencies(
   exampleHtml: Readonly<Record<string, string>> | undefined,
   examples: readonly CatalogVariant[],
-): ReadonlySet<string> {
+): { all: ReadonlySet<string>; provisional: ReadonlySet<string> } {
   const html = examples.map((example) => exampleHtml?.[example.slug] ?? '').join('\n');
-  return new Set([...html.matchAll(PROVISIONAL_DEP), ...html.matchAll(INT_TAG)].map((m) => m[1]));
+  const provisional = new Set([...html.matchAll(PROVISIONAL_DEP)].map((m) => m[1]));
+  return { all: new Set([...provisional, ...[...html.matchAll(INT_TAG)].map((m) => m[1])]), provisional };
 }
 
 /** The Angular component exported by an example module (whatever its class name). */
@@ -133,6 +135,8 @@ export class DocPage {
    * is not created yet; not done = a provisional marked `dep:<id> provisional` stands in for it.
    * `requires` applies to every tab; `uses` only lists the ones the examples of the open tab contain
    * (Variants: variants, Compositions: compositions), so a tab never hints at another tab's examples.
+   * A dependency is pending (fuchsia) while it is not created, not done or still provisional in the
+   * examples; otherwise it is resolved (green). `state` is pending as soon as one of them is.
    */
   protected readonly dependencies = computed(() => {
     const { requires, uses: declared } = this.component();
@@ -141,14 +145,16 @@ export class DocPage {
       this.nav.activeVersion()?.exampleHtml,
       compositions ? this.component().compositions : this.component().variants,
     );
-    const uses = declared.filter((id) => used.has(id));
+    const uses = declared.filter((id) => used.all.has(id));
     const toItem = (id: string) => {
       const dependency = this.catalog.find(id);
+      const status = dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined;
       return {
         id,
         name: dependency?.name ?? id,
         path: dependency?.path,
-        status: dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined,
+        status,
+        pending: status !== 'done' || used.provisional.has(id),
       };
     };
     const groups = [
@@ -165,8 +171,20 @@ export class DocPage {
         items: uses.map(toItem),
       },
     ].filter((group) => group.items.length > 0);
-    return { groups, count: requires.length + uses.length };
+    const items = groups.flatMap((group) => group.items);
+    return {
+      groups,
+      count: requires.length + uses.length,
+      state: items.some((item) => item.pending) ? ('pending' as const) : ('resolved' as const),
+      resolvedIds: items.filter((item) => !item.pending).map((item) => item.id),
+    };
   });
+
+  /** Resolved dependencies an example uses as a real `<int-*>` (the "Resueltas" line while scanning). */
+  protected resolvedIn(example: DocExample | undefined): string[] {
+    const tags = new Set([...(example?.sources.html ?? '').matchAll(INT_TAG)].map((m) => m[1]));
+    return this.dependencies().resolvedIds.filter((id) => tags.has(id));
+  }
 
   /** Types the $implicit of the #sections template (variants or compositions). */
   protected asVariants(items: readonly CatalogVariant[]): readonly CatalogVariant[] {
@@ -183,6 +201,37 @@ export class DocPage {
 
   /** Sticky row of chips (version, variants, status, Figma, dependencies, designer). */
   private readonly meta = viewChild.required<ElementRef<HTMLElement>>('meta');
+
+  /** Suffix of the page title for each tab: "Card" (Variants), "Card API", "Card Compositions". */
+  protected readonly tabTitle: Readonly<Record<DocTab, string>> = {
+    variants: '',
+    api: 'API',
+    compositions: 'Compositions',
+  };
+
+  /**
+   * Description under the title for the open tab: description-variants|api|compositions: of the selected
+   * version's header. Variants falls back to description:, API and Compositions to a generic text.
+   */
+  protected readonly tabDescription = computed(() => {
+    const current = this.component();
+    const version = this.nav.activeVersion();
+    const name = version?.title ?? current.name;
+    switch (this.nav.activeTab()) {
+      case 'api':
+        return (
+          version?.descriptionApi ??
+          `La API define las propiedades, eventos, templates y tokens CSS del componente ${name}.`
+        );
+      case 'compositions':
+        return (
+          version?.descriptionCompositions ??
+          `Las composiciones son casos de uso reales armados con la API de ${name} y los helpers \`u-*\`.`
+        );
+      default:
+        return version?.descriptionVariants ?? version?.description ?? current.description;
+    }
+  });
 
   /** The Dependencies popover is open (aria-expanded of its chip). */
   protected readonly dependenciesOpen = signal(false);
@@ -225,27 +274,32 @@ export class DocPage {
 
     // A link to an example of the other tab (a composition from Variants, a variant from Compositions)
     // switches the tab: the router tried to scroll before that section existed, so scroll once the new
-    // tab is rendered.
+    // tab is rendered. Any other tab switch (the top bar tabs) starts the new tab from the top of the
+    // page, with the title in view, whatever the old tab's scroll left.
     let renderedTab = untracked(() => this.nav.activeTab());
     effect(() => {
       const tab = this.nav.activeTab();
       if (tab === renderedTab) return;
       renderedTab = tab;
       const variantId = untracked(() => this.nav.activeVariantId());
-      if (variantId && this.examples.hasValue()) {
-        afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+      if (variantId) {
+        if (this.examples.hasValue()) afterNextRender(() => scroller.scrollToAnchor(variantId), { injector });
+      } else {
+        afterNextRender(() => scroller.scrollToPosition([0, 0], { behavior: 'instant' }), { injector });
       }
     });
 
-    // Scan: only the first provisional of each dependency per preview is outlined, with the total
-    // (a list of 20 checkboxes or a table with a button per row shows one indicator, not 20). Previews
-    // can re-render (pagination, filters…), so the marks are refreshed while scanning is on.
+    // Scan: only the first provisional (fuchsia) or real int-* of a resolved dependency (green) per
+    // preview is outlined, with the total (a list of 20 checkboxes or a table with a button per row shows
+    // one indicator, not 20). Previews can re-render (pagination, filters…), so the marks are refreshed
+    // while scanning is on.
     effect((onCleanup) => {
       if (!this.scanning() || !this.examples.hasValue()) return;
+      const resolved = this.dependencies().resolvedIds;
       let frame = 0;
       const mark = () => {
         cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => markProvisionals(host));
+        frame = requestAnimationFrame(() => markDependencies(host, resolved));
       };
       const observer = new MutationObserver(mark);
       afterNextRender(
@@ -258,31 +312,48 @@ export class DocPage {
       onCleanup(() => {
         observer.disconnect();
         cancelAnimationFrame(frame);
-        clearProvisionalMarks(host);
+        clearDependencyMarks(host);
       });
     });
   }
 }
 
-/** Attribute read by the global scan rule of src/styles.scss; its value is the label ("checkbox ×12"). */
+/**
+ * Attributes read by the global scan rules of src/styles.scss; their value is the label ("checkbox ×12"):
+ * a provisional still waiting (fuchsia) and a real int-* of a resolved dependency (green).
+ */
 const SCAN_MARK = 'data-dep-scan';
+const DONE_MARK = 'data-dep-done';
 
-/** Marks the first [data-dep] of each dependency inside every preview, with how many there are. */
-function markProvisionals(host: HTMLElement): void {
+/** Marks the first element of a dependency with how many there are; clears the mark from the rest. */
+function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement[]): void {
+  if (!first) return;
+  const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
+  if (first.getAttribute(attribute) !== label) first.setAttribute(attribute, label);
+  for (const element of rest) element.removeAttribute(attribute);
+}
+
+/**
+ * Inside every preview, marks the first [data-dep] of each pending dependency and the first <int-<id>>
+ * of each resolved one. The page's own component is never a dependency, so it is never marked.
+ */
+function markDependencies(host: HTMLElement, resolved: readonly string[]): void {
   for (const preview of host.querySelectorAll<HTMLElement>('.doc-preview')) {
     const byDep = new Map<string, HTMLElement[]>();
     for (const element of preview.querySelectorAll<HTMLElement>('[data-dep]')) {
       const dep = element.dataset['dep'] ?? '';
       byDep.set(dep, [...(byDep.get(dep) ?? []), element]);
     }
-    for (const [dep, [first, ...rest]] of byDep) {
-      const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
-      if (first.getAttribute(SCAN_MARK) !== label) first.setAttribute(SCAN_MARK, label);
-      for (const element of rest) element.removeAttribute(SCAN_MARK);
+    for (const [dep, elements] of byDep) markFirst(SCAN_MARK, dep, elements);
+    for (const id of resolved) {
+      markFirst(DONE_MARK, id, [...preview.querySelectorAll<HTMLElement>(`int-${id}`)]);
     }
   }
 }
 
-function clearProvisionalMarks(host: HTMLElement): void {
-  for (const element of host.querySelectorAll(`[${SCAN_MARK}]`)) element.removeAttribute(SCAN_MARK);
+function clearDependencyMarks(host: HTMLElement): void {
+  for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}]`)) {
+    element.removeAttribute(SCAN_MARK);
+    element.removeAttribute(DONE_MARK);
+  }
 }

@@ -41,9 +41,9 @@
 
       @if (iconSource(); as source) {
         <span class="doc-icon-source">
-          Consume repo
+          Consume de
           <span class="doc-icon-source-repo" tabindex="0" aria-describedby="doc-icon-source-tip">
-            <strong>{{ source === 'styleguide' ? 'STYLEGUIDES' : 'ACTUAL' }}</strong>
+            <strong>{{ source === 'styleguide' ? 'REPO SG' : 'REPO ACTUAL' }}</strong>
             <span id="doc-icon-source-tip" class="doc-icon-source-tip" role="tooltip">
               @if (source === 'styleguide') {
                 Repo <code>Intelica.Style.Guide.New</code>: la fuente y las marcas vienen de su bundle publicado.

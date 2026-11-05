@@ -1,0 +1,26 @@
+<!--
+  title: Table Cell
+  description: Tag de estado dentro de una celda de tabla, centrado con helpers. La `severity` sale de cada fila, así el estado cambia con los datos. La tabla es provisional hasta que `int-table` esté listo.
+-->
+<!-- dep:table provisional · replace with <int-table> when table is done -->
+<table class="u-full-width" data-dep="table">
+  <thead>
+    <tr>
+      <th class="u-p-3 u-text-sm u-bold u-text-left">Transaction</th>
+      <th class="u-p-3 u-text-sm u-bold u-text-center">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows; track row.id) {
+      <tr>
+        <td class="u-p-3 u-text-sm">{{ row.id }}</td>
+        <td class="u-p-3 u-text-center">
+          <div class="u-display-flex u-justify-content-center">
+            <int-tag size="small" [severity]="row.severity" rounded [value]="row.status" />
+          </div>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+<!-- /dep:table -->

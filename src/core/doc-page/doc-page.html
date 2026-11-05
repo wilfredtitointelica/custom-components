@@ -9,11 +9,13 @@
   <div class="doc-title-row">
     <div>
       <p class="doc-eyebrow">Component</p>
-      <!-- Title and description: header comment of version-N/base/<id>.html of the selected version. -->
-      <h1 class="doc-title">{{ version?.title ?? current.name }}</h1>
+      <!-- Title and description: header comment of version-N/base/<id>.html of the selected version,
+           named after the open tab ("Card API"; Variants keeps the bare name) with that tab's
+           description (description-<tab>:). -->
+      <h1 class="doc-title">{{ version?.title ?? current.name }}@if (tabTitle[tab]) { {{ tabTitle[tab] }}}</h1>
     </div>
   </div>
-  @if (version?.description ?? current.description; as description) {
+  @if (tabDescription(); as description) {
     <p class="doc-description"><app-inline-code [text]="description" /></p>
   }
   <!-- Intro content projected by the component page (description, usage notes…). -->
@@ -74,8 +76,14 @@
       @if (version?.figma) {
         <span class="doc-meta-divider" aria-hidden="true"></span>
       }
-      <!-- "Dependencies:" label + its two actions: Detect (popover) and Scan (outline provisionals). -->
-      <div class="doc-meta-group" role="group" aria-labelledby="doc-deps-label">
+      <!-- "Dependencies:" label + its two actions: Detect (popover) and Scan (outline where they are used).
+         Green when every dependency is resolved, fuchsia while one is pending. -->
+      <div
+        class="doc-meta-group doc-deps-group-actions"
+        [class.doc-is-resolved]="deps.state === 'resolved'"
+        role="group"
+        aria-labelledby="doc-deps-label"
+      >
         <span id="doc-deps-label" class="doc-meta-label">Dependencies:</span>
         <button
           type="button"
@@ -135,13 +143,14 @@
             </section>
           }
         </div>
-        <!-- Scan: outlines every provisional still waiting for its dependency (global [data-dep] rule). -->
+        <!-- Scan: outlines the provisionals still waiting (fuchsia) and the real int-* of resolved
+           dependencies (green); global [data-dep-scan] / [data-dep-done] rules. -->
         <button
           type="button"
           class="doc-action doc-scan-toggle"
           aria-label="Scan dependencies"
           [attr.aria-pressed]="scanning()"
-          title="Highlight the provisionals that are waiting for their dependency"
+          title="Highlight where the dependencies are used: pending provisionals and finished components"
           (click)="scanning.set(!scanning())"
         >
           Scan
@@ -236,15 +245,28 @@
       <!-- Example of the selected version: version-N/variants/<slug>/example.ts, detected by folder.
          An example.html that is empty or only has comments is still pending. -->
       @let example = examples.value()?.get(variant.slug);
-      <!-- While scanning: dependencies still provisional in this example (requires ones live in the base). -->
-      @if (scanning() && example?.provisionalDeps?.length) {
-        <p class="doc-scan-tags">
-          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
-          Por resolver:
-          @for (dep of example!.provisionalDeps; track dep) {
-            <code class="doc-scan-tag">dep:{{ dep }}</code>
-          }
-        </p>
+      <!-- While scanning: dependencies still provisional in this example (requires ones live in the base)
+         and resolved ones it uses as a real int-*. -->
+      @if (scanning()) {
+        @if (example?.provisionalDeps?.length) {
+          <p class="doc-scan-tags">
+            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+            Por resolver:
+            @for (dep of example!.provisionalDeps; track dep) {
+              <code class="doc-scan-tag">dep:{{ dep }}</code>
+            }
+          </p>
+        }
+        @let resolved = resolvedIn(example);
+        @if (resolved.length) {
+          <p class="doc-scan-tags doc-is-resolved">
+            <i class="pi pi-check-circle" aria-hidden="true"></i>
+            Resueltas:
+            @for (dep of resolved; track dep) {
+              <code class="doc-scan-tag">dep:{{ dep }}</code>
+            }
+          </p>
+        }
       }
       <div class="doc-preview">
         @if (example && !example.pending) {

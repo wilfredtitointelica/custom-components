@@ -247,12 +247,13 @@ de mayor prioridad y la diferencia se reporta. Procedimiento completo en
 5. **Guarda los links** en la cabecera de `version-N/base/<id>.html`: `figma:` (el link del usuario;
    vacía por defecto; si falta, se agrega debajo de `description:`; si ya tenía otro link, se pregunta
    antes de reemplazarlo) y `figma-frame:` (el frame recorrido). Son los únicos cambios permitidos en la
-   cabecera. La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
+   cabecera: no se agregan `description-api:` / `description-compositions:` / `description-variants:`
+   (la página usa un texto genérico; solo el maquetador los escribe si quiere uno propio). La página muestra un chip "Figma" que abre el diseño, y `/sincronizar-componente` los usa para
    comparar después:
    ```html
    <!--
      title: Chip
-     description: Chip represents people using icons, labels and images.
+     description: Chip representa personas con iconos, etiquetas e imágenes.
      figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
      figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
@@ -295,7 +296,10 @@ Cada maquetador replica su componente, pero algunos componen otros (`p-multisele
    y `// TODO(dep:checkbox provisional)` en el TS/SCSS que solo existe por el provisional.
    El elemento raíz del provisional lleva **`data-dep="<id>"`** (los comentarios desaparecen al compilar):
    con él el botón **Scan dependencies** de la página lo resalta con un contorno fucsia y la sección muestra
-   "Por resolver: dep:<id>". Si el provisional son varios elementos hermanos, cada uno lleva el atributo.
+   "Por resolver: dep:<id>". Un `<int-<id>>` real de una dependencia ya `done` se resalta igual pero en
+   verde (`dep:<id> ✓`, "Resueltas: dep:<id>"); Detect y Scan se pintan en fucsia mientras quede una
+   dependencia pendiente y en verde cuando todas están resueltas. Si el provisional son varios elementos
+   hermanos, cada uno lleva el atributo.
    Dentro de un `@for` (checkbox por opción, botón por fila) se marca igual cada repetición: el scan
    resalta solo la primera de cada dependencia por ejemplo y muestra el total (`dep:checkbox ×20`).
    Preferir un elemento contenedor (no un `<input>` suelto) para que se vea la etiqueta `dep:<id>`.
@@ -448,10 +452,17 @@ npm run new:variant -- <id> "<Título>" --description "<qué demuestra, qué obs
 npm run new:composition -- <id> "<Título>" --description "<el caso y con qué API se arma>"
 ```
 
-**Idioma de las descripciones:** si la documentación de PrimeNG trae la descripción (como la del
-componente), se copia tal cual. Si no la trae (lo habitual en las variantes) y hay que redactarla,
-se escribe **en español**. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
+**Idioma de las descripciones:** todas van **en español**, también la del componente. Si la
+documentación de PrimeNG trae la descripción, se traduce fiel ("Card is a flexible container
+component." → "Card es un componente contenedor flexible."); si no la trae (lo habitual en las
+variantes), se redacta. Los títulos siguen como en PrimeNG (con la salvedad de arriba). En toda
 descripción los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
+
+**Sin clases del Style Guide en la documentación:** el JSDoc (tab API) y las descripciones de la
+cabecera y de variantes y composiciones describen con la API `int-*` y los helpers `u-*`; nunca nombran
+el caso `.pr*` del que salen (❌ "borde visible (`.prCard--outlined` de la base de conocimientos)",
+✅ "borde visible en lugar de la sombra"). Ese origen va solo en el comentario del SCSS
+(`// knowledgeBase: .prCard--outlined · …`). `npm run check:component` lo avisa.
 
 Con 3 o más, aplica `ordenar-variantes` sin preguntar posición: variantes en el orden de la
 documentación de PrimeNG y después las propiedades nuevas (`npm run order:variants -- <id> basic icon

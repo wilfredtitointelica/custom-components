@@ -1,0 +1,15 @@
+<!--
+  title: Template
+  description: El contenido proyectado va antes de la imagen, el icono y el texto, y el template `removeicon` reemplaza al icono de quitar.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-md">
+  <int-chip>
+    <span class="u-bold">Region:</span>
+    <span>Europe</span>
+  </int-chip>
+  <int-chip label="Custom remove icon" removable>
+    <ng-template #removeicon>
+      <i class="icon icon-remove" aria-hidden="true"></i>
+    </ng-template>
+  </int-chip>
+</div>

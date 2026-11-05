@@ -1,0 +1,14 @@
+<!--
+  title: Image
+  description: El input `image` muestra una imagen circular antes del texto, con `alt` como texto alternativo; tiene prioridad sobre `icon`. Si la imagen no carga se emite `onImageError`: el segundo chip lo usa para cambiar a un icono.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-md">
+  <int-chip image="brand/incontrol-isotype.svg" alt="Incontrol" label="Incontrol" />
+  <int-chip
+    [image]="imageFailed() ? undefined : 'brand/missing-image.png'"
+    icon="icon icon-image"
+    alt="Missing image"
+    label="Fallback"
+    (onImageError)="imageFailed.set(true)"
+  />
+</div>

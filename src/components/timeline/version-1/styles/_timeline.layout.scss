@@ -1,0 +1,89 @@
+// int-timeline · layout="vertical|horizontal".
+
+// knowledgeBase: .prTimeline vertical · 1px connector
+.int-timeline--vertical {
+  .int-timeline__event-opposite,
+  .int-timeline__event-content {
+    padding-inline: var(--int-timeline-vertical-content-padding-x);
+  }
+
+  .int-timeline__event-connector {
+    inline-size: var(--int-timeline-connector-size);
+  }
+}
+
+// knowledgeBase: .prTimeline horizontal · events in a row over a dashed line with a dot at each end;
+// no connector, centered marker and a short guide from the marker to the content.
+.int-timeline--horizontal {
+  flex-direction: row;
+
+  .int-timeline__event {
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-block-size: auto;
+  }
+
+  .int-timeline__event-opposite,
+  .int-timeline__event-content {
+    padding: 0;
+    text-align: center;
+  }
+
+  .int-timeline__event-content::before {
+    content: '';
+    display: block;
+    margin-inline: auto;
+    inline-size: var(--int-timeline-horizontal-guide-width);
+    block-size: var(--int-timeline-horizontal-guide-height);
+    background: var(--int-timeline-horizontal-guide-color);
+  }
+
+  // Line and end dots are absolute: the separator centers them on the marker (align-items: center)
+  .int-timeline__event-separator {
+    flex-direction: row;
+    color: var(--int-timeline-horizontal-line-color);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      border-block-end: var(--int-timeline-horizontal-line-width) dashed currentColor;
+    }
+
+    &::after {
+      content: '';
+      display: none;
+      position: absolute;
+      inline-size: var(--int-timeline-horizontal-dot-size);
+      block-size: var(--int-timeline-horizontal-dot-size);
+      border-radius: var(--int-timeline-marker-border-radius);
+      background: currentColor;
+    }
+  }
+
+  .int-timeline__event:first-child .int-timeline__event-separator::after {
+    display: block;
+    inset-inline-start: 0;
+  }
+
+  .int-timeline__event:last-child .int-timeline__event-separator::after {
+    display: block;
+    inset-inline-end: 0;
+  }
+
+  .int-timeline__event-marker {
+    margin-inline: auto;
+    background: var(--int-timeline-horizontal-marker-background);
+  }
+
+  .int-timeline__event-connector {
+    display: none;
+  }
+
+  // Content above the line (bottom, or even events in alternate): the guide goes under the text
+  &.int-timeline--bottom .int-timeline__event-content::before,
+  &.int-timeline--alternate .int-timeline__event:nth-child(even) .int-timeline__event-content::before {
+    order: 1;
+  }
+}

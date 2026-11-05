@@ -1,0 +1,17 @@
+<!--
+  title: Template
+  description: Los templates `previouspagelinkicon`, `nextpagelinkicon`, `firstpagelinkicon` y `lastpagelinkicon` reemplazan los iconos; `showJumpToPageInput` y `showJumpToPageDropdown` agregan el salto de página.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <int-paginator [showJumpToPageInput]="true" [showPageLinks]="false" [totalRecords]="120" [rows]="10">
+    <ng-template #firstpagelinkicon><i class="icon icon-arrow-left-double icon--sm" aria-hidden="true"></i></ng-template>
+    <ng-template #previouspagelinkicon><i class="icon icon-arrow-left icon--sm" aria-hidden="true"></i></ng-template>
+    <ng-template #nextpagelinkicon><i class="icon icon-arrow-right icon--sm" aria-hidden="true"></i></ng-template>
+    <ng-template #lastpagelinkicon><i class="icon icon-arrow-right-double icon--sm" aria-hidden="true"></i></ng-template>
+  </int-paginator>
+
+  <int-paginator [showJumpToPageDropdown]="true" [showPageLinks]="false" [showFirstLastIcon]="false" [totalRecords]="120" [rows]="10">
+    <ng-template #previouspagelinkicon><i class="icon icon-arrow-left-double icon--sm" aria-hidden="true"></i></ng-template>
+    <ng-template #nextpagelinkicon><i class="icon icon-arrow-right-double icon--sm" aria-hidden="true"></i></ng-template>
+  </int-paginator>
+</div>

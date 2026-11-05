@@ -1,0 +1,9 @@
+<!--
+  title: Disabled
+  description: El input `disabled` (extensión `int-*`) muestra un proceso pausado o no disponible: colores neutros que pisan a `severity`, `color` y `labelColor`, `aria-disabled` en el host y, en `indeterminate`, la animación detenida.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-progressbar [value]="50" [disabled]="true" [style]="{ width: '40rem' }" />
+  <int-progressbar severity="success" [value]="65" [threshold]="75" [disabled]="true" [style]="{ width: '40rem' }" />
+  <int-progressbar mode="indeterminate" [disabled]="true" [style]="{ width: '40rem', height: '6px' }" />
+</div>

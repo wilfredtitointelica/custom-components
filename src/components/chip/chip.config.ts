@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'chip',
+  variants: ['basic', 'icon', 'image', 'template', 'removable', 'disabled'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

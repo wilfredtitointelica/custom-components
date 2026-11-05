@@ -1,0 +1,15 @@
+<!--
+  title: Template
+  description: El contenido proyectado va antes del icono y del valor, y el template `icon` reemplaza al input `icon`.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-md">
+  <int-tag severity="secondary">
+    <span class="u-bold">Region:</span>
+    <span>Europe</span>
+  </int-tag>
+  <int-tag severity="success" value="Verified">
+    <ng-template #icon>
+      <i class="icon icon-success" aria-hidden="true"></i>
+    </ng-template>
+  </int-tag>
+</div>

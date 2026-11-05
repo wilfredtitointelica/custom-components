@@ -26,7 +26,11 @@ Hay dos tipos de dependencia, con el mismo marcador:
 | `uses` (solo el contenido de un ejemplo: el botón del `#footer` de card, el badge de su composición Version Picker) | `variants/<slug>/example.html` o `compositions/<slug>/example.html` (marcado nativo + helpers `.u-*`) | el `example.ts` de ese ejemplo, **nunca** la base |
 
 La página de cada componente lista ambas en **Dependencies: Detect** (popover "Requeridas" /
-"Opcionales", con estado y enlace).
+"Opcionales", con estado y enlace). Detect y **Scan** se pintan en **fucsia** mientras una dependencia
+no existe, no está en `done` o sigue con provisional (`data-dep`), y en **verde** cuando todas están
+resueltas. Con Scan encendido, cada ejemplo marca el primer provisional de cada dependencia en fucsia
+(`dep:<id> ×n`, "Por resolver") y el primer `<int-<id>>` real de una dependencia resuelta en verde
+(`dep:<id> ✓`, "Resueltas").
 
 ---
 
@@ -62,7 +66,7 @@ inconsistencia: un provisional en la base sin `<dep>` en `requires`, uno en una 
 2. **HTML**: cambia el bloque entre `<!-- dep:<dep> provisional … -->` y `<!-- /dep:<dep> -->` por
    `<int-<dep>>` con los mismos datos, eventos y ARIA que tenía el provisional, usando la API real
    (mismos nombres que PrimeNG). Borra ambos comentarios marcadores y el atributo `data-dep="<dep>"`
-   (el componente real no lo lleva; así deja de resaltarse con **Scan dependencies**).
+   (el componente real no lo lleva; con **Scan dependencies** pasa de fucsia a verde, `dep:<dep> ✓`).
 3. **TS**: importa `Int<Dep>` y agrégalo a `imports`; borra el código marcado
    `TODO(dep:<dep> provisional)` que ya no se usa (handlers del input nativo…). En un overlay
    provisional (tooltip, popover) eso es el `signal` de abierto, el id por instancia y sus

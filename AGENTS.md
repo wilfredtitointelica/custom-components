@@ -60,6 +60,10 @@ src/components/<id>/version-N/
   `int-* extension:` (marca fija, en inglés). El resto de comentarios del código sigue en inglés. La pestaña **API** de la página se genera de ese
   JSDoc y del `:root` de `styles/_<id>.scss` (`scripts/extract-api.mjs`).
 - En el JSDoc y en las descripciones de variantes y composiciones, los nombres de la API (inputs, outputs, templates, valores, clases) van **entre comillas invertidas**, como los escribe PrimeNG: "Se personaliza con los templates `header`, `title` y `footer`"; la página los muestra como código. Los templates se nombran sin `#` (`header`, no `#header`).
+- Ese texto (JSDoc, cabeceras de `base/<id>.html` y de los `example.html`) es la documentación visible:
+  describe con la API `int-*` y los helpers `u-*`, **nunca nombra clases del Style Guide** (`.prCard--compact`,
+  `.prCard--moneyRight`…). El origen en la base de conocimientos va solo en los comentarios del SCSS
+  (`// knowledgeBase: .prCard--compact · …`). `check:component` lo avisa.
 - El título de una variante dice lo que muestra: como en PrimeNG, salvo que su nombre no lo diga
   (la sección "Advanced" de card muestra los templates → "Template").
 - Nada de `primeng`, `@primeuix`, `@angular/animations`, `any`, `::ng-deep`, clases `p-*` ni clases del
