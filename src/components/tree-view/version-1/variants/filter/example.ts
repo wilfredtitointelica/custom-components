@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
-import { IntTreeNode, IntTreeView } from '../../base/tree-view';
+import { IntTreeNode, IntTreeSelection, IntTreeView } from '../../base/tree-view';
 
 function createNodes(): IntTreeNode[] {
   return [
@@ -49,6 +49,7 @@ function createNodes(): IntTreeNode[] {
   imports: [IntTreeView],
 })
 export class TreeViewFilterExample {
-  readonly lenientNodes = createNodes();
   readonly strictNodes = createNodes();
+  readonly checkboxNodes = createNodes();
+  readonly checked = signal<IntTreeSelection>([]);
 }

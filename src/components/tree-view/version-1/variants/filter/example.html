@@ -1,8 +1,8 @@
 <!--
   title: Filter
-  description: Con `filter` aparece un buscador arriba del árbol que compara el campo de `filterBy` (por defecto `label`) y abre los padres de los resultados. En `filterMode` `lenient` (por defecto) un padre que coincide muestra todos sus hijos; en `strict` solo los que coinciden.
+  description: Con `filter` aparece un buscador arriba del árbol que compara el campo de `filterBy` (por defecto `label`) y abre los padres de los resultados. En `filterMode` `lenient` (por defecto) un padre que coincide muestra todos sus hijos; en `strict` solo los que coinciden. El árbol con `selectionMode` `checkbox` usa el modo `lenient`; marcar un padre mientras se filtra marca solo los hijos visibles.
 -->
 <div class="u-display-flex u-flex-wrap u-gap-xl">
-  <int-tree-view [value]="lenientNodes" filter filterPlaceholder="Lenient filter" ariaLabel="Lenient filter" [style]="{ width: '18rem' }" />
   <int-tree-view [value]="strictNodes" filter filterMode="strict" filterPlaceholder="Strict filter" ariaLabel="Strict filter" [style]="{ width: '18rem' }" />
+  <int-tree-view [value]="checkboxNodes" selectionMode="checkbox" [(selection)]="checked" filter filterPlaceholder="Filter with checkbox" ariaLabel="Filter with checkbox" [style]="{ width: '18rem' }" />
 </div>

@@ -80,11 +80,11 @@ export class IntTreeView {
   /** Id del elemento que etiqueta al árbol. */
   readonly ariaLabelledBy = input<string>();
   /**
-   * int-* extension: un clic en la fila de un padre lo expande o colapsa en vez de seleccionarlo
-   * (.prTreeselect--labelAsToggle del Style Guide). No aplica con checkbox.
+   * int-* extension: un clic en la fila de un padre lo expande o colapsa en vez de seleccionarlo. No aplica con
+   * `checkbox`.
    */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: los hijos se muestran sin sangría (`.prTreeselect--childrenAligned` del Style Guide). */
+  /** int-* extension: los hijos se muestran sin sangría. */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
   /** Muestra un buscador arriba del árbol que filtra los nodos. */
   readonly filter = input(false, { transform: booleanAttribute });
