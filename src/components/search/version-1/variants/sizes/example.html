@@ -1,0 +1,9 @@
+<!--
+  title: Sizes
+  description: Con `size` el campo pasa a `small` (24px, el buscador compacto de los paneles desplegables) o `large` (40px); sin valor queda en el tamaño normal de 32px.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-search size="small" placeholder="Small" ariaLabel="Small" [style]="{ width: '15rem' }" />
+  <int-search placeholder="Normal" ariaLabel="Normal" [style]="{ width: '15rem' }" />
+  <int-search size="large" placeholder="Large" ariaLabel="Large" [style]="{ width: '15rem' }" />
+</div>

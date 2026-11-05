@@ -12,5 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'search',
+  variants: ['basic', 'sizes', 'clear', 'invalid', 'disabled'],
+  requires: ['input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

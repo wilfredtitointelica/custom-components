@@ -1,0 +1,8 @@
+<!--
+  title: Invalid
+  description: Con `invalid` el borde, el texto y los íconos toman el color de error.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-lg">
+  <int-search placeholder="Search" ariaLabel="Search" invalid [style]="{ width: '15rem' }" />
+  <int-search [(ngModel)]="value" placeholder="Search" ariaLabel="Search" showClear invalid [style]="{ width: '15rem' }" />
+</div>
