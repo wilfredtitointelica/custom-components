@@ -18,11 +18,12 @@ export default {
     'checkbox',
     'controlled',
     'template',
+    'filter',
     'disabled',
     'label-as-toggle',
     'children-aligned',
   ],
-  requires: ['input'],
+  requires: ['input', 'search'],
   uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -1,6 +1,6 @@
 import {
-  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef, inject, input,
-  model, OnInit, output, signal, TemplateRef, ViewEncapsulation,
+  afterNextRender, booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef,
+  inject, input, model, OnInit, output, signal, TemplateRef, viewChild, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
@@ -30,10 +30,19 @@ export interface IntTreeNodeEvent {
   node: IntTreeNode;
 }
 
+/** Filter mode, same values as PrimeNG Tree filterMode. */
+export type IntTreeFilterMode = 'lenient' | 'strict';
+
+/** Payload of onFilter, same shape as PrimeNG TreeFilterEvent. */
+export interface IntTreeFilterEvent {
+  filter: string;
+  filteredValue: IntTreeNode[] | null;
+}
+
 /**
  * <int-tree-view> · version 1. Replica of PrimeNG v20 p-tree without PrimeNG at runtime.
- * Tree is used to display hierarchical data. Scope: what the knowledge base, the Style Guide and Figma define; filter
- * (TreeSelect only), context menu, drag and drop, lazy loading, virtual scroll and metaKeySelection are left out.
+ * Tree is used to display hierarchical data. Scope: what the knowledge base, the Style Guide and Figma define plus the
+ * filter of PrimeNG; context menu, drag and drop, lazy loading, virtual scroll and metaKeySelection are left out.
  */
 @Component({
   selector: 'int-tree-view',
@@ -77,6 +86,24 @@ export class IntTreeView {
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
   /** int-* extension: los hijos se muestran sin sangría (`.prTreeselect--childrenAligned` del Style Guide). */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
+  /** Muestra un buscador arriba del árbol que filtra los nodos. */
+  readonly filter = input(false, { transform: booleanAttribute });
+  /**
+   * Campo o campos del nodo (separados por coma) que compara el buscador.
+   * @defaultValue 'label'
+   */
+  readonly filterBy = input('label');
+  /**
+   * `lenient`: un padre que coincide muestra todos sus hijos; `strict`: solo se muestran los hijos que coinciden.
+   * @defaultValue 'lenient'
+   */
+  readonly filterMode = input<IntTreeFilterMode>('lenient');
+  /** Placeholder del buscador. */
+  readonly filterPlaceholder = input<string>();
+  /** Idioma con el que se pasa a minúsculas el texto al comparar (por ejemplo `tr`). */
+  readonly filterLocale = input<string>();
+  /** Si es `true`, el buscador recibe el foco al cargar. */
+  readonly filterInputAutoFocus = input(false, { transform: booleanAttribute });
 
   /** Se emite al seleccionar un nodo. */
   readonly onNodeSelect = output<IntTreeNodeEvent>();
@@ -86,13 +113,49 @@ export class IntTreeView {
   readonly onNodeExpand = output<IntTreeNodeEvent>();
   /** Se emite al colapsar un nodo. */
   readonly onNodeCollapse = output<IntTreeNodeEvent>();
+  /** Se emite al escribir en el buscador, con el texto y los nodos filtrados (`null` si el texto está vacío). */
+  readonly onFilter = output<IntTreeFilterEvent>();
 
   /** Template `node`: contenido de cada nodo; recibe `{ $implicit: node }`. */
   readonly nodeTemplate = contentChild<TemplateRef<{ $implicit: IntTreeNode }>>('node');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly filterInput = viewChild<ElementRef<HTMLInputElement>>('filterInput');
   /** Bumped when a node is expanded or its partial state changes: nodes keep PrimeNG's mutable flags. */
   readonly revision = signal(0);
+  /** Text typed in the filter. */
+  protected readonly filterValue = signal('');
+
+  /**
+   * Same rules as PrimeNG _filter: a match is kept, and a parent with matching descendants is copied with only those
+   * children and expanded. In strict mode a matching parent also keeps only its matching children. null = no filter.
+   */
+  protected readonly filteredNodes = computed<IntTreeNode[] | null>(() => {
+    const query = this.normalize(this.filterValue());
+    if (!query) return null;
+    const fields = this.filterBy().split(',').map(field => field.trim());
+    const strict = this.filterMode() === 'strict';
+    const matches = (node: IntTreeNode) =>
+      fields.some(field => this.normalize(String(this.resolveField(node, field) ?? '')).includes(query));
+    const walk = (nodes: IntTreeNode[]): IntTreeNode[] =>
+      nodes.flatMap(node => {
+        const self = matches(node);
+        if (self && (!strict || this.isLeaf(node))) return [node];
+        const children = walk(node.children ?? []);
+        if (children.length) return [{ ...node, children, expanded: true }];
+        return self ? [{ ...node, children: [] }] : [];
+      });
+    return walk(this.value());
+  });
+
+  /** Nodes rendered at the root: the filtered ones while filtering, as PrimeNG getRootNode. */
+  readonly rootNodes = computed(() => this.filteredNodes() ?? this.value());
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.filter() && this.filterInputAutoFocus()) this.filterInput()?.nativeElement.focus();
+    });
+  }
 
   protected readonly classes = computed(() => {
     const classes = ['int-tree-view'];
@@ -185,6 +248,31 @@ export class IntTreeView {
     if (node.parent) this.propagateUp(node.parent, select);
   }
 
+  /** Limpia el texto del buscador y vuelve a mostrar todos los nodos. */
+  resetFilter(): void {
+    this.filterValue.set('');
+    const input = this.filterInput()?.nativeElement;
+    if (input) input.value = '';
+  }
+
+  protected onFilterInput(event: Event): void {
+    this.filterValue.set((event.target as HTMLInputElement).value);
+    this.onFilter.emit({ filter: this.filterValue(), filteredValue: this.filteredNodes() });
+  }
+
+  /** Lower case without accents, as PrimeNG removeAccents + toLocaleLowerCase(filterLocale). */
+  private normalize(text: string): string {
+    return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase(this.filterLocale());
+  }
+
+  /** Field of the node by name or dot path (data.name), as PrimeNG resolveFieldData. */
+  private resolveField(node: IntTreeNode, field: string): unknown {
+    return field.split('.').reduce<unknown>(
+      (value, key) => (value && typeof value === 'object' ? (value as Record<string, unknown>)[key] : undefined),
+      node,
+    );
+  }
+
   /** Visible rows in screen order, for the keyboard (roving tabindex as PrimeNG). */
   private visibleNodes(): IntTreeNode[] {
     const rows: IntTreeNode[] = [];
@@ -192,7 +280,7 @@ export class IntTreeView {
       rows.push(node);
       if (node.expanded && node.children) walk(node.children);
     });
-    walk(this.value());
+    walk(this.rootNodes());
     return rows;
   }
 

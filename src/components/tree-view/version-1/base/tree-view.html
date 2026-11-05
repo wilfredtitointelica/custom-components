@@ -4,8 +4,27 @@
   figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15191-16637
   figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2649
 -->
-<!-- Root list of the tree (PrimeNG p-tree-root-children) -->
-@if (value().length) {
+<!-- Filter (filter): field with search icon above the tree, as the p-iconfield of p-tree -->
+@if (filter()) {
+  <!-- dep:search provisional · replace with <int-search size="small"> when search is done -->
+  <div class="int-tree-view__filter" data-dep="search">
+    <input
+      #filterInput
+      type="text"
+      class="int-tree-view__filter-input"
+      autocomplete="off"
+      [attr.placeholder]="filterPlaceholder()"
+      [attr.aria-label]="filterPlaceholder() || 'Search'"
+      (keydown.enter)="$event.preventDefault()"
+      (input)="onFilterInput($event)"
+    />
+    <i class="int-tree-view__filter-icon icon icon-search icon--xs" aria-hidden="true"></i>
+  </div>
+  <!-- /dep:search -->
+}
+
+<!-- Root list of the tree (PrimeNG p-tree-root-children); the filtered nodes while filtering -->
+@if (rootNodes().length) {
   <ul
     class="int-tree-view__root"
     role="tree"
@@ -13,8 +32,8 @@
     [attr.aria-labelledby]="ariaLabelledBy()"
     [attr.aria-multiselectable]="selectionMode() === 'multiple' || selectionMode() === 'checkbox' ? true : null"
   >
-    @for (node of value(); track node.key ?? $index; let index = $index) {
-      <int-tree-view-node [node]="node" [index]="index" [setSize]="value().length" />
+    @for (node of rootNodes(); track node.key ?? $index; let index = $index) {
+      <int-tree-view-node [node]="node" [index]="index" [setSize]="rootNodes().length" />
     }
   </ul>
 } @else {

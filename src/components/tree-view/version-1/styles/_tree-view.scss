@@ -42,6 +42,22 @@
 
   // --- empty message ---
   --int-tree-view-empty-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs, no knowledgeBase/Figma value
+
+  // --- filter (TODO(dep:search provisional) same values as int-search size small until it is done) ---
+  --int-tree-view-filter-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm, no knowledgeBase/Figma value
+  --int-tree-view-filter-height: var(--i-sizing-md); // SG: .p-tree-filter-input height 24px · Figma: 24px (input-search-bar-dropdown)
+  --int-tree-view-filter-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-filter-input padding 4px · Figma: 4px (input/padding/y/xs)
+  --int-tree-view-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px · Figma: 8px (input/padding/x/md)
+  --int-tree-view-filter-font-size: var(--i-typography-font-size-sm); // SG: .p-tree-filter-input 12px · Figma: 12px (input/font/size/sm)
+  --int-tree-view-filter-border-width: var(--i-border-width-sm); // knowledgeBase: .prInputtext --i-border-width-sm · Figma: 1px (input/border/width/sm)
+  --int-tree-view-filter-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Figma: 6px (input/border/radius/md)
+  --int-tree-view-filter-background: var(--i-background-default); // knowledgeBase: .prInputtext --i-background-default · Figma: #fcfcfc (input/color/background)
+  --int-tree-view-filter-border-color: var(--i-border-default); // knowledgeBase: .prInputtext --i-border-default · Figma: #d9d9e3 (input/color/border)
+  --int-tree-view-filter-placeholder-color: var(--i-color-secondary-400); // knowledgeBase: .prInputtext --i-color-secondary-400 · Figma: #9ca3ba (input/color/text)
+  --int-tree-view-filter-hover-border-color: var(--i-border-hover); // knowledgeBase: .prInputtext --i-border-hover · Figma: #5d86df (input/color/hover/border)
+  --int-tree-view-filter-focus-border-color: var(--i-color-primary-900); // knowledgeBase: .prInputtext --i-color-primary-900
+  --int-tree-view-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon 12px · Figma: 12px (icon-search)
+  --int-tree-view-filter-icon-color: var(--i-color-primary-base); // knowledgeBase: .prIconfield p-inputicon --i-color-primary-base
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -165,6 +181,48 @@
   &__empty-message {
     padding: var(--int-tree-view-empty-padding);
   }
+
+  &__filter {
+    position: relative;
+    margin-block-end: var(--int-tree-view-filter-gap);
+  }
+
+  // TODO(dep:search provisional) same look as int-search size small until it is done.
+  &__filter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--int-tree-view-filter-height);
+    padding: var(--int-tree-view-filter-padding-y) var(--int-tree-view-filter-padding-x);
+    padding-inline-end: calc(var(--int-tree-view-filter-padding-x) * 2 + var(--int-tree-view-filter-icon-size));
+    font: inherit;
+    font-size: var(--int-tree-view-filter-font-size);
+    color: inherit;
+    background: var(--int-tree-view-filter-background);
+    border: var(--int-tree-view-filter-border-width) solid var(--int-tree-view-filter-border-color);
+    border-radius: var(--int-tree-view-filter-border-radius);
+    transition: border-color var(--int-tree-view-transition-duration);
+
+    &::placeholder {
+      color: var(--int-tree-view-filter-placeholder-color);
+    }
+
+    &:hover {
+      border-color: var(--int-tree-view-filter-hover-border-color);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--int-tree-view-filter-focus-border-color);
+    }
+  }
+
+  &__filter-icon {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: var(--int-tree-view-filter-padding-x);
+    color: var(--int-tree-view-filter-icon-color);
+    transform: translateY(-50%);
+  }
 }
 
 // Checkbox mode (Figma Selected / Selected hover, Style Guide multiselect): a checked row keeps the text color and
@@ -186,7 +244,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .int-tree-view__node-content,
-  .int-tree-view__toggle-icon {
+  .int-tree-view__toggle-icon,
+  .int-tree-view__filter-input {
     transition-duration: 0s;
   }
 }
