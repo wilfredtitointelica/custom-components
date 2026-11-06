@@ -507,18 +507,147 @@ code {
   }
 }
 
-.doc-previous-version {
+/* "Requiere": compact trigger in the cell + popover with the full list (same overlay look as the
+   filter menu, src/page/components/status/filter-menu.scss). */
+.doc-requires-trigger {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-right: 12px;
-  color: var(--doc-ink-muted);
-  font-family: var(--doc-font-mono);
+  max-width: 100%;
+  height: 28px;
+  padding: 0 8px 0 10px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: 999px;
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font: inherit;
   font-size: 0.75rem;
-  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 
   &:hover {
-    color: var(--doc-ink);
+    border-color: var(--doc-outline);
+    background: var(--doc-state-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent-ring);
+    outline-offset: 2px;
+  }
+
+  &[aria-expanded='true'] {
+    border-color: var(--doc-accent);
+
+    .doc-requires-arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Some requirement is not done: orange outline, same accent as the open state.
+  &.doc-is-blocked:not([aria-expanded='true']) {
+    border-color: var(--doc-accent-container);
+  }
+}
+
+.doc-requires-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.doc-requires-label {
+  color: var(--doc-ink-muted);
+}
+
+// Round state icon: hourglass (some pending) or check (all done).
+.doc-requires-state {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--doc-accent-container);
+  color: var(--doc-on-accent-container);
+
+  &.doc-is-done {
+    background: var(--doc-success-container);
+    color: var(--doc-on-success-container);
+  }
+
+  .pi {
+    font-size: 0.625rem;
+  }
+}
+
+.doc-requires-arrow {
+  color: var(--doc-ink-muted);
+  font-size: 0.5625rem;
+  transition: transform 0.2s;
+}
+
+.doc-requires-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 260px;
+  max-width: 360px;
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid var(--doc-outline-variant);
+  border-radius: var(--doc-radius-md);
+  background: var(--doc-surface);
+  box-shadow:
+    0 8px 24px rgb(23 55 94 / 0.12),
+    0 2px 6px rgb(23 55 94 / 0.08);
+}
+
+.doc-requires-menu-title {
+  margin: 4px 10px 6px;
+  color: var(--doc-ink-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.doc-requires-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  padding: 4px 10px;
+  border-radius: var(--doc-radius-sm);
+  color: var(--doc-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    outline: 0;
+    background: var(--doc-state-hover);
+  }
+
+  &.doc-is-missing {
+    color: var(--doc-ink-muted);
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.doc-requires-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .doc-component-id {
+    margin-left: 6px;
   }
 }
 

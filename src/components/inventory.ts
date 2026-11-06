@@ -36,7 +36,7 @@ import tag from './tag/tag.config';
 import searchDropdown from './search-dropdown/search-dropdown.config';
 import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
-import inputOtp from './input-otp/input-otp.config';
+import inputotp from './inputotp/inputotp.config';
 import password from './password/password.config';
 import progressbar from './progressbar/progressbar.config';
 import demo from './_demo_/demo.config';
@@ -86,7 +86,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   searchDropdown,
   breadcrumb,
   paginator,
-  inputOtp,
+  inputotp,
   password,
   progressbar,
 ];

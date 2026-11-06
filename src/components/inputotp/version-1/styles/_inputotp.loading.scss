@@ -1,0 +1,37 @@
+// int-inputotp · loading (int-* extension) · Figma: Property 1=Loading, a spinning ring in every cell.
+.int-inputotp {
+  &--loading {
+    cursor: progress;
+    user-select: none;
+  }
+
+  // The loading cell is a span with the cell box: centers the loader instead of the character.
+  &__input--loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__loader {
+    box-sizing: border-box;
+    inline-size: var(--int-inputotp-loader-size);
+    block-size: var(--int-inputotp-loader-size);
+    border: var(--int-inputotp-loader-border-width) solid var(--int-inputotp-loader-track-color);
+    border-block-start-color: var(--int-inputotp-loader-color);
+    border-radius: 50%;
+    animation: int-inputotp-spin var(--int-inputotp-loader-duration) linear infinite;
+  }
+}
+
+@keyframes int-inputotp-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+// Reduced motion: a slower turn keeps the "busy" cue without fast movement.
+@media (prefers-reduced-motion: reduce) {
+  .int-inputotp__loader {
+    animation-duration: calc(var(--int-inputotp-loader-duration) * 3);
+  }
+}

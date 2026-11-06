@@ -12,5 +12,25 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'toast',
+  variants: [
+    'basic',
+    'severity',
+    'position',
+    'multiple',
+    'sticky',
+    'template',
+    'headless',
+    'responsive',
+    'animation',
+  ],
+  compositions: [
+    'con-titulo',
+    'sin-titulo',
+    'con-accion',
+    'descarga-de-archivo',
+    'ancho-automatico',
+    'ancho-limitado',
+  ],
+  uses: ['button', 'progressbar'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

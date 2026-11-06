@@ -1,0 +1,49 @@
+// int-inputotp · grouped (int-* extension) · joined cells; separatorAt splits them into groups.
+.int-inputotp {
+  &--grouped {
+    gap: 0;
+  }
+
+  // Cells overlap their shared border; the hovered or focused one is raised so its four sides stay visible.
+  &--grouped &__input {
+    position: relative;
+    border-radius: var(--int-inputotp-grouped-inner-radius);
+
+    & + .int-inputotp__input {
+      margin-inline-start: calc(var(--int-inputotp-input-border-width) * -1);
+    }
+
+    // Same as the PrimeNG sample: joined cells keep the default border with a value; only the focused
+    // one turns dark, so the group does not read as a row of dark boxes.
+    &--value {
+      border-color: var(--int-inputotp-input-border-color);
+    }
+
+    &:enabled:hover,
+    &:focus-visible {
+      z-index: 2;
+    }
+  }
+
+  // Outer corners of each group: first cell, cell after a separator, last cell, cell before a separator.
+  &--grouped &__input:first-child,
+  &--grouped &__separator + &__input {
+    border-start-start-radius: var(--int-inputotp-input-border-radius);
+    border-end-start-radius: var(--int-inputotp-input-border-radius);
+  }
+
+  &--grouped &__input:last-child,
+  &--grouped &__input:has(+ .int-inputotp__separator) {
+    border-start-end-radius: var(--int-inputotp-input-border-radius);
+    border-end-end-radius: var(--int-inputotp-input-border-radius);
+  }
+
+  &--grouped &__separator {
+    padding-inline: var(--int-inputotp-grouped-separator-spacing);
+  }
+
+  // Underlined cells have no corners: the joined line runs along the whole group.
+  &--grouped#{&}--underlined &__input {
+    border-radius: var(--int-inputotp-underlined-border-radius);
+  }
+}

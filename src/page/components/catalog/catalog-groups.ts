@@ -4,7 +4,7 @@
  */
 export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: readonly string[] }[] = [
   { name: 'Acciones', ids: ['button', 'file-upload', 'file-drop', 'drag-and-drop'] },
-  { name: 'Entrada de texto', ids: ['input', 'password', 'input-otp', 'search', 'search-dropdown'] },
+  { name: 'Entrada de texto', ids: ['input', 'password', 'inputotp', 'search', 'search-dropdown'] },
   {
     name: 'Selección',
     ids: ['dropdown-select', 'multi-select', 'tree-select', 'list-box', 'pick-list', 'toggle-switch', 'slider', 'date-picker'],
@@ -30,7 +30,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   'drag-and-drop': 'pi-arrows-alt',
   input: 'pi-pen-to-square',
   password: 'pi-lock',
-  'input-otp': 'pi-key',
+  inputotp: 'pi-key',
   search: 'pi-search',
   'search-dropdown': 'pi-search-plus',
   'dropdown-select': 'pi-chevron-circle-down',
