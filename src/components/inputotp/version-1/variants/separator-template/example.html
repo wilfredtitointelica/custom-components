@@ -1,0 +1,9 @@
+<!--
+  title: Separator Template
+  description: El template `separator` reemplaza la línea de cada separador de `separatorAt` y recibe su posición (`$implicit`). Es decorativo: se oculta a los lectores de pantalla.
+-->
+<int-inputotp integerOnly [length]="6" separatorAt="2,4" [(ngModel)]="value">
+	<ng-template #separator>
+		<span class="u-text-lg u-color-primary">·</span>
+	</ng-template>
+</int-inputotp>

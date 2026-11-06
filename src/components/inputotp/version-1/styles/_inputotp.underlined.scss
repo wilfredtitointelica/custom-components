@@ -1,0 +1,9 @@
+// int-inputotp · variant="underlined" (int-* extension) · only the bottom line of each cell.
+.int-inputotp {
+  // Side borders are removed by width, so hover, focus, value and states keep recoloring the line only.
+  &--underlined &__input {
+    border-width: 0 0 var(--int-inputotp-underlined-border-width);
+    border-radius: var(--int-inputotp-underlined-border-radius);
+    background: transparent;
+  }
+}

@@ -1,0 +1,50 @@
+<!--
+  title: InputOTP
+  description: InputOtp se usa para ingresar contraseñas de un solo uso.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=4272-651&t=7q2ochxrzsqC6ypl-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=4272-651
+-->
+<!-- One cell per character: the input template replaces the default cell, as in p-inputotp -->
+@for (i of cells(); track i) {
+  @if (loading()) {
+    <!-- int-* extension: loading cell (Figma: Loading), replaces the input while the code is checked -->
+    <span class="int-inputotp__input int-inputotp__input--loading" aria-hidden="true">
+      <span class="int-inputotp__loader"></span>
+    </span>
+  } @else if (inputTemplate(); as template) {
+    <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="templateContexts()[i]" />
+  } @else {
+    <!-- dep:input provisional · replace with <int-input> when input is done -->
+    <input
+      [class]="inputClass()"
+      [class.int-inputotp__input--value]="!!tokens()[i]"
+      data-dep="input"
+      [type]="mask() ? 'password' : 'text'"
+      [value]="tokens()[i] || ''"
+      [attr.maxlength]="i === 0 ? length() : 1"
+      [attr.inputmode]="integerOnly() ? 'numeric' : 'text'"
+      [attr.name]="name()"
+      [attr.tabindex]="tabindex()"
+      [attr.required]="required() ? '' : null"
+      [attr.aria-invalid]="invalid() || null"
+      [readOnly]="readonly()"
+      [disabled]="isDisabled()"
+      (input)="onInput($event, i)"
+      (focus)="onInputFocus($event)"
+      (blur)="onInputBlur($event)"
+      (paste)="onPaste($event)"
+      (keydown)="onKeyDown($event)"
+    />
+    <!-- /dep:input -->
+  }
+  <!-- int-* extension: separator after the cells listed in separatorAt; the separator template replaces the line -->
+  @if (separators().has(i + 1)) {
+    <span class="int-inputotp__separator" aria-hidden="true">
+      @if (separatorTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: i + 1 }" />
+      } @else {
+        <span class="int-inputotp__separator-line"></span>
+      }
+    </span>
+  }
+}

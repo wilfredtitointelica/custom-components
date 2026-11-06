@@ -1,0 +1,11 @@
+<!--
+  title: Security PIN
+  description: PIN de 4 dígitos con celdas de línea inferior: `variant="underlined"` con `mask` e `integerOnly`, debajo de un título y una indicación maquetados con helpers.
+-->
+<div class="u-display-flex u-flex-column u-align-items-center u-gap-md">
+  <div class="u-display-flex u-flex-column u-align-items-center u-gap-xs">
+    <span class="u-heading-xl u-bold u-color-body">Enter your PIN</span>
+    <span class="u-text-md u-color-grey-500">Use the 4-digit PIN of your account.</span>
+  </div>
+  <int-inputotp variant="underlined" mask integerOnly [(ngModel)]="value" />
+</div>
