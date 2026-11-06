@@ -157,20 +157,50 @@
               }
             </td>
             <td><app-status-chip [status]="row.status" size="sm" /></td>
-            <!-- `requires` of <id>.config.ts: components to finish first (not created = no link). -->
+            <!-- `requires` of <id>.config.ts: compact trigger + popover with the full list, so the cell
+                 never truncates (not created = no link). -->
             <td>
-              @for (required of row.requires; track required.id) {
-                @if (required.path; as path) {
-                  <a class="doc-previous-version" [routerLink]="path" [title]="'Requires ' + required.name">
-                    {{ required.name }}
-                    <app-status-chip [status]="required.status" size="sm" />
-                  </a>
-                } @else {
-                  <span class="doc-previous-version doc-muted" [title]="required.id + ' is not created yet'">
-                    {{ required.id }} · not created
+              @if (row.requires.length) {
+                <button
+                  type="button"
+                  class="doc-requires-trigger"
+                  [class.doc-is-blocked]="row.requiresPending"
+                  [cdkMenuTriggerFor]="requiresMenu"
+                  [attr.aria-label]="'Requiere ' + row.requires.length + ', ' + (row.requiresPending ? row.requiresPending + ' sin terminar' : 'todos terminados') + ', ver lista'"
+                >
+                  <!-- done / total + one state icon: the count appears once and always fits the cell. -->
+                  <span class="doc-requires-state" [class.doc-is-done]="!row.requiresPending" aria-hidden="true">
+                    <i class="pi {{ row.requiresPending ? 'pi-hourglass' : 'pi-check' }}"></i>
                   </span>
-                }
-              } @empty {
+                  <span class="doc-requires-count">{{ row.requires.length - row.requiresPending }}/{{ row.requires.length }}</span>
+                  <span class="doc-requires-label">listos</span>
+                  <i class="pi pi-chevron-down doc-requires-arrow" aria-hidden="true"></i>
+                </button>
+
+                <ng-template #requiresMenu>
+                  <div class="doc-requires-menu" cdkMenu>
+                    <p class="doc-requires-menu-title" aria-hidden="true">{{ row.component.name }} requiere</p>
+                    @for (required of row.requires; track required.id) {
+                      @if (required.path; as path) {
+                        <a class="doc-requires-item" cdkMenuItem [routerLink]="path">
+                          <span class="doc-requires-name">
+                            {{ required.name }}
+                            <span class="doc-component-id">{{ required.id }}</span>
+                          </span>
+                          <app-status-chip [status]="required.status" size="sm" />
+                        </a>
+                      } @else {
+                        <span class="doc-requires-item doc-is-missing" cdkMenuItem [cdkMenuItemDisabled]="true">
+                          <span class="doc-requires-name">
+                            {{ required.id }}
+                            <span class="doc-component-id">no creado</span>
+                          </span>
+                        </span>
+                      }
+                    }
+                  </div>
+                </ng-template>
+              } @else {
                 <span class="doc-muted">—</span>
               }
             </td>

@@ -1,6 +1,46 @@
 <!--
   title: Toast
-  description:
-  figma:
+  description: Toast se usa para mostrar mensajes en una capa superpuesta.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2708-5260&t=7q2ochxrzsqC6ypl-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2708-5147
 -->
-int-toast
+<!-- One message per item, same as p-toastItem; the timer pauses while the pointer is over it. -->
+@for (item of items(); track item.uid) {
+  <div
+    [class]="item.messageClass"
+    [attr.id]="item.message.id"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    [attr.data-uid]="item.uid"    animate.enter="int-toast__message--enter"
+    (animate.leave)="leave($event)"
+    (mouseenter)="pause(item)"
+    (mouseleave)="resume(item)"
+  >
+    <!-- #headless replaces the whole message, close button included. -->
+    @if (headlessTemplate(); as headless) {
+      <ng-container [ngTemplateOutlet]="headless" [ngTemplateOutletContext]="{ $implicit: item.message, closeFn: item.closeFn }" />
+    } @else {
+      <div [class]="item.contentClass">
+        <!-- #message replaces icon and text; the close button stays. -->
+        @if (messageTemplate(); as template) {
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: item.message }" />
+        } @else {
+          <span [class]="item.iconClass" aria-hidden="true"></span>
+          <div class="int-toast__message-text">
+            <!-- PrimeNG always renders the summary; skipped when empty so the detail aligns with the icon. -->
+            @if (item.message.summary) {
+              <div class="int-toast__summary">{{ item.message.summary }}</div>
+            }
+            <div class="int-toast__detail">{{ item.message.detail }}</div>
+          </div>
+        }
+        @if (item.message.closable !== false) {
+          <button type="button" class="int-toast__close-button" [attr.aria-label]="closeAriaLabel()" (click)="item.closeFn($event)">
+            <span [class]="item.closeIconClass" aria-hidden="true"></span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+}

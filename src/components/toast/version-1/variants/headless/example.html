@@ -1,0 +1,29 @@
+<!--
+  title: Headless
+  description: El template `headless` reemplaza todo el mensaje, botón de cerrar incluido; recibe el mensaje y `closeFn` para cerrarlo. Aquí, con `severity` `contrast`, arma una carga de archivos con `int-progressbar` y dos acciones.
+-->
+<int-toast position="top-center" (onClose)="stop()">
+  <ng-template #headless let-message let-closeFn="closeFn">
+    <div class="u-display-flex u-flex-column u-gap-md u-p-4">
+      <div class="u-display-flex u-align-items-center u-gap-sm">
+        <i class="icon icon-upload" aria-hidden="true"></i>
+        <span class="u-bold u-text-md">{{ message.summary }}</span>
+      </div>
+      <div class="u-display-flex u-flex-column u-gap-sm">
+        <int-progressbar severity="info" [value]="progress()" [showValue]="false" ariaLabel="Upload progress" [style]="{ height: '0.25rem' }" />
+        <span class="u-bold u-text-sm">{{ progress() }}% uploaded</span>
+      </div>
+      <div class="u-display-flex u-justify-content-end u-gap-sm">
+        <!-- dep:button provisional · replace with <int-button> when button is done -->
+        <span class="u-px-3 u-py-1 u-radius-lg u-background-white u-color-primary u-text-sm u-bold u-pointer" role="button" tabindex="0" data-dep="button" (click)="restart()" (keydown.enter)="restart()" (keydown.space)="$event.preventDefault(); restart()">Another Upload?</span>
+        <span class="u-px-3 u-py-1 u-radius-lg u-background-white u-color-primary u-text-sm u-bold u-pointer" role="button" tabindex="0" data-dep="button" (click)="closeFn($event)" (keydown.enter)="closeFn($event)" (keydown.space)="closeFn($event)">Cancel</span>
+        <!-- /dep:button -->
+      </div>
+    </div>
+  </ng-template>
+</int-toast>
+<div class="u-display-flex u-flex-wrap u-gap-md">
+  <!-- dep:button provisional · replace with <int-button> when button is done -->
+  <button type="button" class="u-px-3 u-py-2 u-radius-lg u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-text-md u-pointer" data-dep="button" (click)="show()">Show</button>
+  <!-- /dep:button -->
+</div>

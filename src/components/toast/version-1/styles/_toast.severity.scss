@@ -1,0 +1,58 @@
+// int-toast · severity of each message ({ severity } in IntMessageService.add), same values as PrimeNG.
+// The message color paints the icon and the close button; summary and detail keep --int-toast-content-color.
+
+:root {
+  // --- info (default) ---
+  --int-toast-info-background: var(--i-background-info); // knowledgeBase: --i-toast-message-info-background → --i-background-info · Figma: #DDE6F8 ⚠️ (toast/color/info/background) · Aura: {blue.50}
+  --int-toast-info-border-color: var(--i-border-info); // knowledgeBase: --i-toast-message-info-border-color → --i-border-info · Figma: #1B3E88 (toast/color/info/border) · Aura: {blue.200}
+  --int-toast-info-color: var(--i-border-info); // knowledgeBase: --i-toast-message-info-color → --i-border-info · Figma: #1B3E88 (toast/color/info/icon) · Aura: {blue.600}
+  --int-toast-info-close-button-hover-background: var(--i-color-primary-200); // knowledgeBase: --i-toast-message-info-close-button-hover-background → --i-color-primary-200 · Aura: {blue.100}
+
+  // --- success ---
+  --int-toast-success-background: var(--i-background-success); // knowledgeBase: --i-toast-message-success-background → --i-background-success · Figma: #F2FAF5 (toast/color/success/background) · Aura: {green.50}
+  --int-toast-success-border-color: var(--i-border-success); // knowledgeBase: --i-toast-message-success-border-color → --i-border-success · Figma: #126629 (toast/color/success/border) · Aura: {green.200}
+  --int-toast-success-color: var(--i-border-success); // knowledgeBase: --i-toast-message-success-color → --i-border-success · Figma: #126629 (toast/color/success/icon) · Aura: {green.600}
+  --int-toast-success-close-button-hover-background: var(--i-color-success-200); // knowledgeBase: --i-toast-message-success-close-button-hover-background → --i-color-success-200 · Aura: {green.100}
+
+  // --- warn ---
+  --int-toast-warn-background: var(--i-background-warning); // knowledgeBase: --i-toast-message-warn-background → --i-background-warning · Figma: #FFF8ED (toast/color/warning/background) · Aura: {yellow.50}
+  --int-toast-warn-border-color: var(--i-border-warning); // knowledgeBase: --i-toast-message-warn-border-color → --i-border-warning · Figma: #C27E00 (toast/color/warning/border) · Aura: {yellow.200}
+  --int-toast-warn-color: var(--i-border-warning); // knowledgeBase: --i-toast-message-warn-color → --i-border-warning · Figma: #C27E00 (toast/color/warning/icon) · Aura: {yellow.600}
+  --int-toast-warn-close-button-hover-background: var(--i-color-warning-300); // knowledgeBase: --i-toast-message-warn-close-button-hover-background → --i-color-warning-300 · Aura: {yellow.100}
+
+  // --- error ---
+  --int-toast-error-background: var(--i-background-error); // knowledgeBase: --i-toast-message-error-background → --i-background-error · Figma: #FCEDED (toast/color/error/background) · Aura: {red.50}
+  --int-toast-error-border-color: var(--i-border-error); // knowledgeBase: --i-toast-message-error-border-color → --i-border-error · Figma: #960D0D (toast/color/error/border) · Aura: {red.200}
+  --int-toast-error-color: var(--i-border-error); // knowledgeBase: --i-toast-message-error-color → --i-border-error · Figma: #960D0D (toast/color/error/icon) · Aura: {red.600}
+  --int-toast-error-close-button-hover-background: var(--i-color-error-100); // knowledgeBase: --i-toast-message-error-close-button-hover-background → --i-color-error-100 · Aura: {red.100}
+
+  // --- secondary (Loading) ---
+  --int-toast-secondary-background: var(--i-color-secondary-50); // knowledgeBase: --i-toast-message-secondary-background → --i-color-secondary-50 · Figma: #FCFCFC (toast/color/default/background) · Aura: {surface.100}
+  --int-toast-secondary-border-color: var(--i-color-secondary-600); // knowledgeBase: --i-toast-message-secondary-border-color → --i-color-secondary-600 · Figma: #0A1733 ⚠️ (toast/color/default/border) · Aura: {surface.200}
+  --int-toast-secondary-color: var(--i-color-secondary-600); // knowledgeBase: --i-toast-message-secondary-color → --i-color-secondary-600 · Figma: #7D85A6 ⚠️ (loading/color/loader) · Aura: {surface.600}
+  --int-toast-secondary-close-button-hover-background: var(--i-color-secondary-200); // knowledgeBase: --i-toast-message-secondary-close-button-hover-background → --i-color-secondary-200 · Aura: {surface.200}
+
+  // --- contrast (PrimeNG only, no case in the knowledge base) ---
+  --int-toast-contrast-background: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.900}
+  --int-toast-contrast-border-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.950}
+  --int-toast-contrast-color: var(--i-text-color-accent); // SG: --i-text-color-accent · Aura: {surface.50}
+  --int-toast-contrast-close-button-hover-background: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {surface.800}
+}
+
+// One rule per severity: the variables of the message point to that severity's tokens.
+@each $severity in (info, success, warn, error, secondary, contrast) {
+  .int-toast__message--#{$severity} {
+    border-color: var(--int-toast-#{$severity}-border-color);
+    background-color: var(--int-toast-#{$severity}-background);
+    color: var(--int-toast-#{$severity}-color);
+
+    .int-toast__close-button:hover {
+      background-color: var(--int-toast-#{$severity}-close-button-hover-background);
+    }
+  }
+}
+
+// Contrast: dark background, so the text takes the message color too.
+.int-toast__message--contrast .int-toast__message-text {
+  color: var(--int-toast-contrast-color);
+}
