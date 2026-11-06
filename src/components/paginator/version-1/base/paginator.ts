@@ -1,13 +1,18 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  afterNextRender,
+  afterRenderEffect,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
+  DestroyRef,
+  DOCUMENT,
   effect,
   ElementRef,
   inject,
+  Injector,
   input,
   linkedSignal,
   numberAttribute,
@@ -15,8 +20,15 @@ import {
   signal,
   TemplateRef,
   untracked,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+
+/**
+ * Target of the selects' lists, same values as PrimeNG's appendTo: 'self', 'body' or an element (a
+ * template variable such as [appendTo]="container").
+ */
+export type IntPaginatorAppendTo = 'self' | 'body' | HTMLElement | ElementRef<HTMLElement>;
 
 /** Option of rowsPerPageOptions: a number, or { showAll: 'All' } to add an option with every record. */
 export type IntPaginatorRowsPerPageOption = number | { showAll: string };
@@ -108,6 +120,12 @@ export class IntPaginator {
   readonly rowsPerPageOptions = input<readonly IntPaginatorRowsPerPageOption[]>();
   /** Alto máximo de la lista de los selectores; si las opciones no caben, la lista hace scroll. */
   readonly dropdownScrollHeight = input('200px');
+  /**
+   * Dónde se inserta la lista de los selectores: `self` (por defecto, sobre el selector), `body` o un
+   * elemento (variable de template, p. ej. `[appendTo]="container"`), para que ningún contenedor la
+   * recorte ni la tape.
+   */
+  readonly appendTo = input<IntPaginatorAppendTo>('self');
   /** Muestra un selector para saltar a cualquier página. */
   readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
   /** Muestra un campo numérico para saltar a cualquier página. */
@@ -223,6 +241,26 @@ export class IntPaginator {
   });
 
   constructor() {
+    // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
+    // the node with node.remove(), so closing the list still works from the target.
+    afterRenderEffect(() => {
+      const list = this.listRef()?.nativeElement;
+      const target = this.overlayTarget();
+      if (!list || !target) return;
+      if (list.parentElement !== target) target.appendChild(list);
+      this.alignList();
+    });
+
+    // Keep the appended list attached to its select while the page or a container scrolls.
+    const realign = () => this.alignList();
+    const view = this.document.defaultView;
+    view?.addEventListener('scroll', realign, true);
+    view?.addEventListener('resize', realign);
+    inject(DestroyRef).onDestroy(() => {
+      view?.removeEventListener('scroll', realign, true);
+      view?.removeEventListener('resize', realign);
+    });
+
     // Same as PrimeNG updateFirst: when totalRecords shrinks below the offset, go back one page.
     effect(() => {
       const total = this.totalRecords();
@@ -265,6 +303,17 @@ export class IntPaginator {
   /** Unique prefix for the ids that link each trigger with its list (aria-controls). */
   protected readonly uid = `int-paginator-${nextId++}`;
   protected readonly openDropdown = signal<IntPaginatorDropdown | null>(null);
+  private readonly document = inject(DOCUMENT);
+  private readonly injector = inject(Injector);
+  /** List of the open select (one at a time). */
+  private readonly listRef = viewChild<ElementRef<HTMLElement>>('list');
+  /** Element the open list is moved to; null with appendTo="self" (it stays above its select). */
+  protected readonly overlayTarget = computed<HTMLElement | null>(() => {
+    const appendTo = this.appendTo();
+    if (!appendTo || appendTo === 'self') return null;
+    if (appendTo === 'body') return this.document.body;
+    return appendTo instanceof ElementRef ? appendTo.nativeElement : appendTo;
+  });
   protected readonly rowsLabel = computed(
     () => this.rowsPerPageItems().find((item) => item.value === this.rowsState())?.label ?? String(this.rowsState()),
   );
@@ -280,8 +329,8 @@ export class IntPaginator {
     if (['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) {
       event.preventDefault();
       this.openDropdown.set(key);
-      // The list is created in this change detection; focus once it is in the DOM.
-      queueMicrotask(() => this.options()[0]?.focus());
+      // Focus once the list is rendered and, with appendTo, already moved (moving a node blurs it).
+      afterNextRender({ read: () => this.options()[0]?.focus() }, { injector: this.injector });
     } else if (event.key === 'Escape') {
       this.openDropdown.set(null);
     }
@@ -320,8 +369,35 @@ export class IntPaginator {
 
   protected onDocumentPointerDown(event: PointerEvent): void {
     if (!this.openDropdown()) return;
+    const target = event.target as Node;
     const open = this.host.nativeElement.querySelector('.int-paginator__dropdown--open');
-    if (!open?.contains(event.target as Node)) this.openDropdown.set(null);
+    if (!open?.contains(target) && !this.listRef()?.nativeElement.contains(target)) this.openDropdown.set(null);
+  }
+
+  // Above the select, end-aligned with it, as with appendTo="self". Coordinates are relative to the
+  // list's containing block: the page, or a positioned target.
+  private alignList(): void {
+    const list = this.listRef()?.nativeElement;
+    const anchor = this.host.nativeElement.querySelector('.int-paginator__dropdown--open');
+    const view = this.document.defaultView;
+    if (!list || !anchor || !view || !this.overlayTarget()) return;
+    const rect = anchor.getBoundingClientRect();
+    const origin = this.containingBlockOrigin(list, view);
+    list.style.left = `${rect.right - list.offsetWidth - origin.left}px`;
+    list.style.top = `${rect.top - list.offsetHeight - origin.top}px`;
+  }
+
+  /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */
+  private containingBlockOrigin(element: HTMLElement, view: Window): { left: number; top: number } {
+    const parent = element.offsetParent;
+    if (!(parent instanceof HTMLElement) || parent === this.document.body) {
+      return { left: -view.scrollX, top: -view.scrollY };
+    }
+    const rect = parent.getBoundingClientRect();
+    return {
+      left: rect.left + parent.clientLeft - parent.scrollLeft,
+      top: rect.top + parent.clientTop - parent.scrollTop,
+    };
   }
 
   private closeDropdown(trigger: HTMLElement): void {
@@ -330,7 +406,9 @@ export class IntPaginator {
   }
 
   private options(): HTMLElement[] {
-    return [...this.host.nativeElement.querySelectorAll<HTMLElement>('.int-paginator__dropdown-option')];
+    // From the list itself: with appendTo it is no longer inside the host.
+    const list = this.listRef()?.nativeElement;
+    return list ? [...list.querySelectorAll<HTMLElement>('.int-paginator__dropdown-option')] : [];
   }
 
   // --- Ripple (PrimeNG puts its ripple directive on every navigation and page button) ---

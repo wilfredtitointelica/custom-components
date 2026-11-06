@@ -22,6 +22,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+/**
+ * Target of the overlay, same values as PrimeNG's appendTo: 'self', 'body' or an element (a template
+ * variable such as [appendTo]="container").
+ */
+export type IntPasswordAppendTo = 'self' | 'body' | HTMLElement | ElementRef<HTMLElement>;
+
 /** Strength levels of the meter, same names as PrimeNG's p-password-meter-<strength> classes. */
 export type IntPasswordStrength = 'weak' | 'medium' | 'strong';
 
@@ -52,7 +58,7 @@ const METER_WIDTH: Record<IntPasswordStrength, string> = { weak: '33.33%', mediu
 })
 export class IntPassword implements ControlValueAccessor {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 
@@ -120,10 +126,11 @@ export class IntPassword implements ControlValueAccessor {
   /** int-* extension: muestra el campo con borde, texto e icono de éxito. `invalid` tiene prioridad. */
   readonly success = input(false, { transform: booleanAttribute });
   /**
-   * Dónde se inserta el panel del medidor: `self` (por defecto, debajo del campo) o `body`, para que
-   * ningún contenedor lo recorte ni lo tape.
+   * Dónde se inserta el panel del medidor: `self` (por defecto, debajo del campo), `body` o un elemento
+   * (variable de template, p. ej. `[appendTo]="container"`), para que ningún contenedor lo recorte ni lo
+   * tape.
    */
-  readonly appendTo = input<'self' | 'body'>('self');
+  readonly appendTo = input<IntPasswordAppendTo>('self');
   /**
    * int-* extension: el campo es de solo lectura (atributo nativo `readonly`): se ve habilitado y se
    * puede enfocar, pero no se edita; no abre el medidor ni muestra el icono de borrar.
@@ -169,6 +176,14 @@ export class IntPassword implements ControlValueAccessor {
   protected readonly overlayVisible = signal(false);
   /** Disabled by the forms API (setDisabledState), combined with the disabled input. */
   private readonly formDisabled = signal(false);
+
+  /** Element the overlay is moved to; null with appendTo="self" (it stays below the input). */
+  protected readonly overlayTarget = computed<HTMLElement | null>(() => {
+    const appendTo = this.appendTo();
+    if (!appendTo || appendTo === 'self') return null;
+    if (appendTo === 'body') return this.document.body;
+    return appendTo instanceof ElementRef ? appendTo.nativeElement : appendTo;
+  });
 
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
   protected readonly filled = computed(() => !!this.value());
@@ -238,16 +253,17 @@ export class IntPassword implements ControlValueAccessor {
       if (this.autofocus() && !this.displayOnly()) this.inputRef()?.nativeElement.focus();
     });
 
-    // appendTo="body": same as PrimeNG's appendOverlay + absolutePosition. Angular removes the node with
-    // node.remove(), so the leave animation and the cleanup still work from the body.
+    // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
+    // the node with node.remove(), so the leave animation and the cleanup still work from the target.
     afterRenderEffect(() => {
       const overlay = this.overlayRef()?.nativeElement;
-      if (!overlay || this.appendTo() !== 'body') return;
-      if (overlay.parentElement !== this.document.body) this.document.body.appendChild(overlay);
+      const target = this.overlayTarget();
+      if (!overlay || !target) return;
+      if (overlay.parentElement !== target) target.appendChild(overlay);
       this.alignOverlay();
     });
 
-    // Keep the body overlay attached to the input while the page or a container scrolls.
+    // Keep the appended overlay attached to the input while the page or a container scrolls.
     const realign = () => this.alignOverlay();
     const view = this.document.defaultView;
     view?.addEventListener('scroll', realign, true);
@@ -259,17 +275,32 @@ export class IntPassword implements ControlValueAccessor {
   }
 
   // Below the input, or above it when there is no room below (same as PrimeNG's absolutePosition).
+  // Coordinates are relative to the overlay's containing block: the page, or a positioned target.
   private alignOverlay(): void {
     const overlay = this.overlayRef()?.nativeElement;
-    const target = this.inputRef()?.nativeElement;
+    const anchor = this.inputRef()?.nativeElement;
     const view = this.document.defaultView;
-    if (!overlay || !target || !view || this.appendTo() !== 'body') return;
-    const rect = target.getBoundingClientRect();
+    if (!overlay || !anchor || !view || !this.overlayTarget()) return;
+    const rect = anchor.getBoundingClientRect();
     const flip = rect.bottom + overlay.offsetHeight > view.innerHeight && rect.top > overlay.offsetHeight;
+    const origin = this.containingBlockOrigin(overlay, view);
     overlay.classList.toggle('int-password__overlay--top', flip);
     overlay.style.minWidth = `${rect.width}px`;
-    overlay.style.left = `${rect.left + view.scrollX}px`;
-    overlay.style.top = `${(flip ? rect.top - overlay.offsetHeight : rect.bottom) + view.scrollY}px`;
+    overlay.style.left = `${rect.left - origin.left}px`;
+    overlay.style.top = `${(flip ? rect.top - overlay.offsetHeight : rect.bottom) - origin.top}px`;
+  }
+
+  /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */
+  private containingBlockOrigin(element: HTMLElement, view: Window): { left: number; top: number } {
+    const parent = element.offsetParent;
+    if (!(parent instanceof HTMLElement) || parent === this.document.body) {
+      return { left: -view.scrollX, top: -view.scrollY };
+    }
+    const rect = parent.getBoundingClientRect();
+    return {
+      left: rect.left + parent.clientLeft - parent.scrollLeft,
+      top: rect.top + parent.clientTop - parent.scrollTop,
+    };
   }
 
   protected onInput(event: Event): void {
