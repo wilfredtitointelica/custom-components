@@ -12,5 +12,24 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'password',
+  variants: [
+    'basic',
+    'meter',
+    'locale',
+    'toggle-mask',
+    'clear-icon',
+    'template',
+    'filled',
+    'sizes',
+    'fluid',
+    'invalid',
+    'disabled',
+    'accessibility',
+    'success',
+    'readonly',
+  ],
+  compositions: ['helper-text', 'template-driven-form'],
+  requires: ['input'],
+  uses: ['message', 'button', 'toast'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

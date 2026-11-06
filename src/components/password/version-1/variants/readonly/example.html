@@ -1,0 +1,20 @@
+<!--
+  title: Readonly
+  description: Con `readonly` el campo usa el atributo nativo: se ve habilitado y se puede enfocar, pero no se edita. Con `displayOnly` no hay `input`: un elemento con la misma apariencia muestra el valor enmascarado y no se enfoca. En los dos no se abre el medidor ni aparece el icono de borrar; el icono de mostrar/ocultar sigue funcionando.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+	<div class="u-display-flex u-flex-column u-gap-xs">
+		<p class="u-m-0 u-text-md u-bold">
+			readonly
+			<span class="u-text-xs u-normal u-color-grey-500">( input nativo de solo lectura )</span>
+		</p>
+		<int-password toggleMask showClear [readonly]="true" [style]="{ width: '20rem' }" [(ngModel)]="value" />
+	</div>
+	<div class="u-display-flex u-flex-column u-gap-xs">
+		<p class="u-m-0 u-text-md u-bold">
+			displayOnly
+			<span class="u-text-xs u-normal u-color-grey-500">( un span que simula el input )</span>
+		</p>
+		<int-password toggleMask showClear [displayOnly]="true" [style]="{ width: '20rem' }" [(ngModel)]="value" />
+	</div>
+</div>

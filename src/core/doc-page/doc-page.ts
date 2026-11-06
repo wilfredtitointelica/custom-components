@@ -324,12 +324,20 @@ export class DocPage {
  */
 const SCAN_MARK = 'data-dep-scan';
 const DONE_MARK = 'data-dep-done';
+/** Set on a marked element that already has its own position (fixed, absolute…), so the scan keeps it. */
+const POSITIONED_MARK = 'data-dep-positioned';
 
 /** Marks the first element of a dependency with how many there are; clears the mark from the rest. */
 function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement[]): void {
   if (!first) return;
   const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
-  if (first.getAttribute(attribute) !== label) first.setAttribute(attribute, label);
+  if (first.getAttribute(attribute) !== label) {
+    // Read before marking: once marked, the scan rule would make a static element relative.
+    if (!first.hasAttribute(SCAN_MARK) && !first.hasAttribute(DONE_MARK)) {
+      first.toggleAttribute(POSITIONED_MARK, getComputedStyle(first).position !== 'static');
+    }
+    first.setAttribute(attribute, label);
+  }
   for (const element of rest) element.removeAttribute(attribute);
 }
 
@@ -355,5 +363,6 @@ function clearDependencyMarks(host: HTMLElement): void {
   for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}]`)) {
     element.removeAttribute(SCAN_MARK);
     element.removeAttribute(DONE_MARK);
+    element.removeAttribute(POSITIONED_MARK);
   }
 }

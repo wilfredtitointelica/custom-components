@@ -1,0 +1,13 @@
+<!--
+  title: Locale
+  description: Los textos del medidor se cambian con `promptLabel`, `weakLabel`, `mediumLabel` y `strongLabel`.
+-->
+<int-password
+  promptLabel="Choose a password"
+  weakLabel="Too simple"
+  mediumLabel="Average complexity"
+  strongLabel="Complex password"
+  appendTo="body"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="value"
+/>

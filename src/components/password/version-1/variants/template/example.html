@@ -1,0 +1,18 @@
+<!--
+  title: Template
+  description: El panel se personaliza con los templates `header`, `content` y `footer`; aquí el `footer` lista los requisitos de la contraseña.
+-->
+<int-password appendTo="body" [style]="{ width: '20rem' }" [(ngModel)]="value">
+  <ng-template #header>
+    <p class="u-m-0 u-mb-3 u-text-md u-bold">Pick a password</p>
+  </ng-template>
+  <ng-template #footer>
+    <div class="u-divider-horizontal u-my-3" aria-hidden="true"></div>
+    <ul class="u-m-0 u-ps-5 u-display-flex u-flex-column u-gap-xs u-text-sm">
+      <li>At least one lowercase</li>
+      <li>At least one uppercase</li>
+      <li>At least one numeric</li>
+      <li>Minimum 8 characters</li>
+    </ul>
+  </ng-template>
+</int-password>

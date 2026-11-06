@@ -1,0 +1,11 @@
+<!--
+  title: Success
+  description: Con `success` el campo muestra el borde, el texto y el icono de éxito (contraseña validada). Si también está `invalid`, gana el error.
+-->
+<int-password
+  success
+  toggleMask
+  [feedback]="false"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="value"
+/>
