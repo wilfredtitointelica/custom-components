@@ -1,0 +1,12 @@
+<!--
+  title: Clear Icon
+  description: Con `showClear` aparece un icono para borrar la selección cuando hay valor (emite `onClear`).
+-->
+<int-multiselect
+  optionLabel="name"
+  placeholder="Select Cities"
+  [options]="cities"
+  [showClear]="true"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

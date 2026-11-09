@@ -1,0 +1,15 @@
+<!--
+  title: Selected Items Label
+  description: Texto del campo armado con el template `selecteditems`: todos, el nombre de la única opción o la cantidad. Sin selección el template queda vacío y se ve el `placeholder`.
+-->
+<int-multiselect
+  optionLabel="name"
+  optionValue="id"
+  placeholder="All Brands"
+  [options]="brands"
+  [filter]="false"
+  [style]="{ width: '15rem' }"
+  [(ngModel)]="selected"
+>
+  <ng-template #selecteditems>{{ selectionLabel }}</ng-template>
+</int-multiselect>

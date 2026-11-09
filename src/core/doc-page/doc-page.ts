@@ -266,6 +266,29 @@ export class DocPage {
       observer.observe(this.meta().nativeElement);
       destroyRef.onDestroy(() => observer.disconnect());
     });
+
+    // A variant head only gets its background (and z-index) while it is stuck: at rest it stays
+    // transparent and below the previous preview, so an open overlay (select, datepicker…) is not cut.
+    // It is stuck once its section's top has scrolled above the head's sticky offset.
+    afterNextRender(() => {
+      let frame = 0;
+      const update = (): void => {
+        frame = 0;
+        for (const head of host.querySelectorAll<HTMLElement>('.doc-section-head')) {
+          const top = parseFloat(getComputedStyle(head).top) || 0;
+          const sectionTop = head.parentElement?.getBoundingClientRect().top ?? 0;
+          head.classList.toggle('doc-is-stuck', sectionTop < top - 0.5);
+        }
+      };
+      const schedule = (): void => {
+        frame ||= requestAnimationFrame(update);
+      };
+      document.addEventListener('scroll', schedule, { capture: true, passive: true });
+      destroyRef.onDestroy(() => {
+        document.removeEventListener('scroll', schedule, { capture: true });
+        cancelAnimationFrame(frame);
+      });
+    });
     effect(() => {
       if (this.examples.isLoading() || !this.examples.hasValue()) return;
       const variantId = untracked(() => this.nav.activeVariantId());

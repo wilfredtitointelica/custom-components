@@ -1,0 +1,389 @@
+<!--
+  title: MultiSelect
+  description:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2650&t=7q2ochxrzsqC6ypl-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2650
+-->
+<!-- Hidden combobox: the only tab stop of the field; options are announced with aria-activedescendant -->
+<div class="int-multiselect__hidden-accessible">
+  <input
+    #focusInput
+    role="combobox"
+    readonly
+    [attr.id]="inputId()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="overlayOpen()"
+    [attr.aria-controls]="overlayOpen() ? listId() : null"
+    [attr.aria-activedescendant]="focused() ? focusedOptionId() : null"
+    [attr.aria-disabled]="isDisabled()"
+    [attr.aria-invalid]="invalid() || null"
+    [attr.tabindex]="isDisabled() ? -1 : tabindex()"
+    [attr.name]="name()"
+    [attr.required]="required() ? '' : null"
+    [disabled]="isDisabled()"
+    [value]="modelValue() ?? ''"
+    (focus)="onInputFocus($event)"
+    (blur)="onInputBlur($event)"
+    (keydown)="onKeyDown($event)"
+  />
+</div>
+
+<!-- Label: comma separated labels, chips or the selecteditems template; placeholder when empty -->
+<div
+  class="int-multiselect__label-container"
+  (mouseenter)="tooltipVisible.set(!!tooltip())"
+  (mouseleave)="tooltipVisible.set(focused() && !!tooltip())"
+>
+  <div
+    class="int-multiselect__label"
+    [class.int-multiselect__label--placeholder]="isPlaceholder()"
+    [class.int-multiselect__label--empty]="isLabelEmpty()"
+  >
+    @if (selectedItemsTemplate(); as template) {
+      <ng-container
+        [ngTemplateOutlet]="template"
+        [ngTemplateOutletContext]="{ $implicit: selectedOptions(), removeChip }"
+      />
+      @if (!filled()) {
+        {{ placeholder() || 'empty' }}
+      }
+    } @else if (display() === 'chip') {
+      @if (filled() && chipSelectedItems().length === maxSelectedLabels()) {
+        {{ selectedItemsText() }}
+      } @else {
+        @for (item of chipSelectedItems(); track $index) {
+          <div class="int-multiselect__chip-item">
+            <int-chip
+              class="int-multiselect__chip"
+              [label]="getLabelByValue(item)"
+              [removable]="!isDisabled() && !readonly()"
+              [removeIcon]="chipIcon()"
+              (onRemove)="removeOption(item, $event)"
+            >
+              @if (chipIconTemplate() ?? removeTokenIconTemplate(); as template) {
+                <ng-template #removeicon>
+                  <ng-container
+                    [ngTemplateOutlet]="template"
+                    [ngTemplateOutletContext]="{ class: 'int-multiselect__chip-icon' }"
+                  />
+                </ng-template>
+              }
+            </int-chip>
+          </div>
+        }
+      }
+      @if (!filled()) {
+        {{ placeholder() || 'empty' }}
+      }
+    } @else {
+      {{ label() || 'empty' }}
+    }
+  </div>
+
+  <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
+  @if (tooltipVisible() && tooltip()) {
+    <span
+      class="int-multiselect__tooltip"
+      [class]="'int-multiselect__tooltip--' + tooltipPosition() + ' ' + (tooltipStyleClass() ?? '')"
+      role="tooltip"
+      data-dep="tooltip"
+    >
+      {{ tooltip() }}
+    </span>
+  }
+  <!-- /dep:tooltip -->
+</div>
+
+<!-- Clear icon: the clearicon template replaces the default icon -->
+@if (isVisibleClearIcon()) {
+  <span class="int-multiselect__clear-icon" aria-hidden="true" (click)="clear($event)">
+    @if (clearIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="int-multiselect__clear-glyph icon icon-cancel"></i>
+    }
+  </span>
+}
+
+<!-- Dropdown: loading icon while loading, dropdown icon otherwise -->
+<div class="int-multiselect__dropdown">
+  @if (loading()) {
+    @if (loadingIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <span
+        class="int-multiselect__loading-icon"
+        [class]="loadingIcon() ?? 'icon icon-loading'"
+        aria-hidden="true"
+      ></span>
+    }
+  } @else if (dropdownIconTemplate(); as template) {
+    <span class="int-multiselect__dropdown-icon" aria-hidden="true">
+      <ng-container [ngTemplateOutlet]="template" />
+    </span>
+  } @else {
+    <span
+      class="int-multiselect__dropdown-icon"
+      [class]="dropdownIcon() ?? 'icon icon-arrow-down'"
+      aria-hidden="true"
+    ></span>
+  }
+</div>
+
+<!-- Overlay, below the field or moved to the body or an element (appendTo) -->
+@if (overlayOpen()) {
+  <div
+    #overlay
+    [attr.id]="listId()"
+    [class]="overlayClass()"
+    [style]="panelStyle()"
+    animate.enter="int-multiselect__overlay--enter"
+    animate.leave="int-multiselect__overlay--leave"
+    (mouseenter)="panelHover.set(true)"
+    (mouseleave)="panelHover.set(false)"
+  >
+    <!-- Focus trap sentinels (PrimeNG's first/last hidden focusable elements) -->
+    <span
+      class="int-multiselect__hidden-accessible"
+      role="presentation"
+      tabindex="0"
+      data-hidden-focusable="first"
+      (focus)="onFirstHiddenFocus($event)"
+    ></span>
+
+    @if (headerTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    }
+
+    @if (showHeader()) {
+      <div class="int-multiselect__header">
+        @if (filterTemplate(); as template) {
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ options: filterOptions }" />
+        } @else {
+          <!-- Select all (int-* extension: label and indeterminate state, as the knowledge base asks) -->
+          @if (showToggleAll() && !selectionLimit()) {
+            <label class="int-multiselect__toggle-all">
+              <ng-container
+                [ngTemplateOutlet]="checkbox"
+                [ngTemplateOutletContext]="{
+                  checked: allSelected(),
+                  partial: partialSelected(),
+                  header: true,
+                  label: toggleAllAriaLabel(),
+                }"
+              />
+              @if (toggleAllLabel()) {
+                <span class="int-multiselect__toggle-all-label">{{ toggleAllLabel() }}</span>
+              }
+            </label>
+          }
+
+          @if (filter()) {
+            <!-- dep:input provisional · replace with <int-input> (icon field) when input is done -->
+            <span class="int-multiselect__filter-container" data-dep="input">
+              <input
+                #filterInput
+                class="int-multiselect__filter"
+                type="text"
+                role="searchbox"
+                [attr.autocomplete]="autocomplete()"
+                [attr.aria-owns]="listId()"
+                [attr.aria-activedescendant]="focusedOptionId()"
+                [attr.placeholder]="filterPlaceHolder()"
+                [attr.aria-label]="ariaFilterLabel()"
+                [disabled]="isDisabled()"
+                [value]="filterText() ?? ''"
+                (input)="onFilterInputChange($event)"
+                (keydown)="onFilterKeyDown($event)"
+                (click)="onFilterClick($event)"
+                (blur)="onFilterBlur()"
+              />
+              <span class="int-multiselect__filter-icon" aria-hidden="true">
+                @if (filterIconTemplate(); as template) {
+                  <ng-container [ngTemplateOutlet]="template" />
+                } @else {
+                  <i class="int-multiselect__search-icon icon icon-search"></i>
+                }
+              </span>
+            </span>
+            <!-- /dep:input -->
+          }
+        }
+      </div>
+    }
+
+    <!-- List: every option, or only the rendered ones with virtualScroll (CDK viewport) -->
+    @if (virtualScroll()) {
+      <cdk-virtual-scroll-viewport
+        class="int-multiselect__list-container"
+        [itemSize]="virtualScrollItemSize() ?? 0"
+        [style.height]="scrollHeight()"
+        (scrolledIndexChange)="onLazyScroll()"
+      >
+        <ul
+          #list
+          class="int-multiselect__list int-multiselect__list--virtual"
+          role="listbox"
+          aria-multiselectable="true"
+          aria-label="Option List"
+        >
+          <ng-container *cdkVirtualFor="let option of visibleOptions(); let i = index">
+            @if (loading() && loaderTemplate(); as template) {
+              <li class="int-multiselect__option" [style.height.px]="virtualScrollItemSize()">
+                <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ options: { index: i } }" />
+              </li>
+            } @else {
+              <ng-container [ngTemplateOutlet]="row" [ngTemplateOutletContext]="{ $implicit: option, index: i }" />
+            }
+          </ng-container>
+          <ng-container [ngTemplateOutlet]="empty" />
+        </ul>
+      </cdk-virtual-scroll-viewport>
+    } @else {
+      <div class="int-multiselect__list-container" [style.max-height]="scrollHeight() || 'auto'">
+        <ul #list class="int-multiselect__list" role="listbox" aria-multiselectable="true" aria-label="Option List">
+          @for (option of visibleOptions(); track $index) {
+            <ng-container [ngTemplateOutlet]="row" [ngTemplateOutletContext]="{ $implicit: option, index: $index }" />
+          }
+          <ng-container [ngTemplateOutlet]="empty" />
+        </ul>
+      </div>
+    }
+
+    @if (footerTemplate(); as template) {
+      <div class="int-multiselect__footer">
+        <ng-container [ngTemplateOutlet]="template" />
+      </div>
+    }
+
+    <span
+      class="int-multiselect__hidden-accessible"
+      role="presentation"
+      tabindex="0"
+      data-hidden-focusable="last"
+      (focus)="onLastHiddenFocus($event)"
+    ></span>
+  </div>
+}
+
+<!-- One row of the list: a group label or an option (PrimeNG's li[pMultiSelectItem]) -->
+<ng-template #row let-option let-i="index">
+  @if (isOptionGroup(option)) {
+    <li class="int-multiselect__option-group" [attr.id]="optionId(i)" role="option">
+      @if (groupTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: option.optionGroup }" />
+      } @else {
+        <span>{{ getOptionGroupLabel(option.optionGroup) }}</span>
+      }
+    </li>
+  } @else {
+    <li
+      class="int-multiselect__option"
+      [class.int-multiselect__option--selected]="isSelected(option) && highlightOnSelect()"
+      [class.int-multiselect__option--focus]="focusedOptionIndex() === i"
+      [class.int-multiselect__option--disabled]="isOptionDisabled(option)"
+      [attr.id]="optionId(i)"
+      role="option"
+      [attr.aria-label]="getOptionLabel(option)"
+      [attr.aria-setsize]="ariaSetSize()"
+      [attr.aria-posinset]="getAriaPosInset(i)"
+      [attr.aria-selected]="isSelected(option)"
+      [attr.aria-checked]="isSelected(option)"
+      [attr.aria-disabled]="isOptionDisabled(option) || null"
+      [attr.data-selected]="isSelected(option)"
+      [style.height.px]="virtualScroll() ? virtualScrollItemSize() : null"
+      (click)="onOptionClick($event, option, i)"
+      (mouseenter)="onOptionMouseEnter(i)"
+    >
+      <ng-container
+        [ngTemplateOutlet]="checkbox"
+        [ngTemplateOutletContext]="{
+          checked: isSelected(option),
+          partial: false,
+          header: false,
+          label: getOptionLabel(option),
+          disabled: isOptionDisabled(option),
+        }"
+      />
+      @if (itemTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: option }" />
+      } @else {
+        <span>{{ getOptionLabel(option) || 'empty' }}</span>
+      }
+    </li>
+  }
+</ng-template>
+
+<!-- Empty message: emptyfilter (or empty) template while filtering, empty template otherwise -->
+<ng-template #empty>
+  @if (isEmpty()) {
+    <li class="int-multiselect__empty-message" role="option">
+      @if (hasFilter()) {
+        @if (emptyFilterTemplate() ?? emptyTemplate(); as template) {
+          <ng-container [ngTemplateOutlet]="template" />
+        } @else {
+          {{ emptyFilterMessageLabel() }}
+        }
+      } @else if (emptyTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" />
+      } @else {
+        {{ emptyMessageLabel() }}
+      }
+    </li>
+  }
+</ng-template>
+
+<!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
+<!-- Header checkbox: focusable, toggles all. Option checkbox: tabindex -1, the option handles the click -->
+<ng-template #checkbox let-checked="checked" let-partial="partial" let-header="header" let-label="label" let-disabled="disabled">
+  <span
+    class="int-multiselect__checkbox"
+    [class.int-multiselect__checkbox--checked]="checked"
+    [class.int-multiselect__checkbox--partial]="partial"
+    [class.int-multiselect__checkbox--disabled]="disabled || (header && isDisabled())"
+    data-dep="checkbox"
+  >
+    @if (header) {
+      <input
+        type="checkbox"
+        class="int-multiselect__checkbox-input"
+        [checked]="checked"
+        [indeterminate]="partial"
+        [disabled]="isDisabled()"
+        [attr.aria-label]="label"
+        [attr.aria-checked]="partial ? 'mixed' : checked"
+        (change)="onToggleAll($event)"
+        (click)="$event.stopPropagation()"
+      />
+    } @else {
+      <input
+        type="checkbox"
+        class="int-multiselect__checkbox-input"
+        tabindex="-1"
+        [checked]="checked"
+        [disabled]="disabled"
+        [attr.aria-label]="label"
+      />
+    }
+    <span class="int-multiselect__checkbox-box">
+      @if (header ? headerCheckboxIconTemplate() : itemCheckboxIconTemplate(); as template) {
+        <ng-container
+          [ngTemplateOutlet]="template"
+          [ngTemplateOutletContext]="{
+            $implicit: checked,
+            checked,
+            partialSelected: partial,
+            class: 'int-multiselect__checkbox-icon',
+          }"
+        />
+      } @else if (checked) {
+        <i class="int-multiselect__checkbox-icon icon icon-check" aria-hidden="true"></i>
+      } @else if (partial) {
+        <span class="int-multiselect__checkbox-dash" aria-hidden="true"></span>
+      }
+    </span>
+  </span>
+</ng-template>
+<!-- /dep:checkbox -->

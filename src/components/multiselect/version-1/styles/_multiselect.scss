@@ -1,0 +1,697 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-MULTISELECT: 'int-multiselect ( Custom )';
+
+  // --- field ---
+  --int-multiselect-height: var(--i-sizing-lg); // knowledgeBase: --i-sizing-lg 32px · Aura: auto
+  --int-multiselect-padding-x: var(--i-spacing-container-md); // SG: .prMultiselect label 8px · Aura: {form.field.padding.x} 0.75rem
+  --int-multiselect-padding-y: var(--i-spacing-container-sm); // SG: .prMultiselect label 6px · Aura: {form.field.padding.y} 0.5rem
+  --int-multiselect-background: var(--i-form-field-background); // knowledgeBase: background form-field · Aura: {form.field.background}
+  --int-multiselect-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 1px
+  --int-multiselect-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
+  --int-multiselect-border-radius: var(--i-border-radius-lg); // knowledgeBase: border-radius lg · Aura: {form.field.border.radius}
+  --int-multiselect-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {form.field.color}
+  --int-multiselect-placeholder-color: var(--i-form-field-placeholder); // SG: --i-form-field-placeholder · Aura: {form.field.placeholder.color}
+  --int-multiselect-font-size: var(--i-form-field-size); // SG: --i-form-field-size 14px · Aura: 1rem
+  --int-multiselect-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (select/font/lineHeight/md) · Aura: normal
+  --int-multiselect-hover-border-color: var(--i-color-primary-400); // SG: .prMultiselect:hover primary-400 · knowledgeBase: hover primary-900 ⚠️ · Aura: {form.field.hover.border.color}
+  --int-multiselect-hover-icon-color: var(--i-color-primary-400); // SG: .prMultiselect:hover .p-multiselect-dropdown .icon primary-400 · Aura: —
+  --int-multiselect-focus-border-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · SG: primary-900 ⚠️ · Aura: {primary.color}
+  --int-multiselect-open-border-color: var(--i-color-primary-900); // SG: focus primary-900 (open without hover, as in the app) · knowledgeBase: open secondary-400 ⚠️ · Aura: —
+  --int-multiselect-icon-color: var(--i-color-primary-900); // SG: .p-multiselect-dropdown .icon primary-900 · Aura: {form.field.icon.color}
+  --int-multiselect-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size} 1rem
+  --int-multiselect-clear-icon-size: var(--i-icon-size-xs); // SG: 12px, as in the app clear button · Aura: {icon.size} 1rem ⚠️
+  --int-multiselect-clear-icon-color: var(--i-color-primary-900); // SG: primary-900 · Aura: {form.field.icon.color}
+  --int-multiselect-dropdown-width: var(--i-sizing-lg); // SG: 32px, square with the field · Aura: {multiselect.dropdown.width} 2.5rem
+  --int-multiselect-transition-duration: var(--i-motion-duration-fast); // SG: 150ms ⚠️ · Aura: {transition.duration} 0.2s
+  --int-multiselect-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out · Aura: ease
+  --int-multiselect-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms · Aura: —
+  --int-multiselect-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out · Aura: —
+  --int-multiselect-chip-gap: var(--i-spacing-gap-xs); // SG: 4px · Aura: calc({padding.y} / 2)
+
+  // --- states ---
+  --int-multiselect-invalid-color: var(--i-color-error-700); // knowledgeBase: error-700 · Aura: {form.field.invalid.border.color}
+  --int-multiselect-success-color: var(--i-color-success-800); // knowledgeBase: .prMultiselect--success success-800 · Aura: —
+  --int-multiselect-disabled-background: var(--i-color-secondary-200); // knowledgeBase: secondary-200 · Aura: {form.field.disabled.background}
+  --int-multiselect-disabled-color: var(--i-text-color-disabled); // SG: --i-button-secondary-disabled-color → --i-text-color-disabled · Aura: {form.field.disabled.color}
+  --int-multiselect-disabled-icon-color: var(--i-color-secondary-400); // SG: secondary-400 · Aura: —
+  --int-multiselect-filled-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as int-password) · Aura: {form.field.filled.background}
+
+  // --- sizes ---
+  --int-multiselect-sm-height: var(--i-sizing-md); // SG: 24px (same as int-password) · Aura: {form.field.sm.padding.y}
+  --int-multiselect-sm-font-size: var(--i-typography-font-size-sm); // SG: 12px · Aura: {form.field.sm.font.size}
+  --int-multiselect-lg-height: var(--i-sizing-500); // SG: 40px · Aura: {form.field.lg.padding.y}
+  --int-multiselect-lg-font-size: var(--i-typography-font-size-lg); // SG: 16px · Aura: {form.field.lg.font.size}
+
+  // --- overlay ---
+  --int-multiselect-overlay-offset: var(--i-spacing-gap-xs); // SG: 4px · Aura: overlay gutter
+  --int-multiselect-overlay-background: var(--i-color-secondary-50); // SG: .p-multiselect-overlay secondary-50 · knowledgeBase: fondo blanco · Aura: {overlay.select.background}
+  --int-multiselect-overlay-border-color: transparent; // knowledgeBase: borde transparent · Aura: {overlay.select.border.color}
+  --int-multiselect-overlay-border-radius: var(--i-border-radius-lg); // Figma: 8px (select/border/radius/lg) · Aura: {overlay.select.border.radius} 6px
+  --int-multiselect-overlay-shadow: var(--i-shadow-depth-2); // knowledgeBase: shadow · SG: composed --i-shadow-* ⚠️ · Aura: {overlay.select.shadow}
+  --int-multiselect-overlay-enter-duration: var(--i-motion-duration-fast); // SG: 150ms ⚠️ · Aura: .12s
+  --int-multiselect-overlay-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
+  --int-multiselect-overlay-leave-duration: var(--i-motion-duration-fast); // SG: 150ms ⚠️ · Aura: .1s
+  --int-multiselect-overlay-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal ⚠️ · Aura: linear
+  --int-multiselect-list-padding: var(--i-spacing-container-xs); // SG: 4px · Aura: {list.padding} 0.25rem
+  --int-multiselect-list-gap: var(--i-spacing-25); // SG: 2px · Aura: {list.gap} 2px
+
+  // --- option ---
+  --int-multiselect-option-padding-x: var(--i-spacing-container-md); // Figma: 8px (select/padding/x/md) · Aura: {list.option.padding} 0.75rem
+  --int-multiselect-option-padding-y: var(--i-spacing-container-sm); // Figma: 6px (select/padding/y/sm) · Aura: {list.option.padding} 0.5rem
+  --int-multiselect-option-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (select/gap/sm) · Aura: 0.5rem
+  --int-multiselect-option-border-radius: var(--i-border-radius-sm); // SG: no override → Aura {list.option.border.radius} {border.radius.sm} 4px · Figma: 8px (select/border/radius/lg) ⚠️
+  --int-multiselect-option-focus-background: var(--i-color-secondary-100); // knowledgeBase: hover secondary-100 · Figma: #F2F2F5 (select/color/hover/background) · Aura: {surface.100}
+  --int-multiselect-option-transition-duration: var(--i-motion-duration-base); // SG: 300ms, soft hover fade ⚠️ · Aura: {transition.duration} 0.2s
+  --int-multiselect-option-disabled-color: var(--i-color-secondary-400); // SG: secondary-400 · Figma: #9CA3BA (select/color/disabled/text) · Aura: —
+  --int-multiselect-group-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Aura: inherit
+  --int-multiselect-group-font-weight: var(--i-typography-font-weight-bold); // SG: bold · Aura: {list.option.group.font.weight} 600
+  --int-multiselect-group-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Aura: {list.option.group.padding}
+
+  // --- header (select all + filter) ---
+  --int-multiselect-header-margin-x: var(--i-spacing-50); // SG: 4px · Aura: {list.header.padding}
+  --int-multiselect-filter-height: var(--i-sizing-md); // SG: --i-sizing-md 24px · Aura: auto
+  --int-multiselect-filter-font-size: var(--i-form-field-size-sm); // SG: 12px · Aura: inherit
+  --int-multiselect-filter-padding-x: var(--i-spacing-container-md); // SG: 8px · Aura: {form.field.padding.x}
+  --int-multiselect-filter-padding-y: var(--i-spacing-container-xs); // SG: 4px · Aura: {form.field.padding.y}
+  --int-multiselect-filter-hover-border-color: var(--i-color-primary-400); // SG: primary-400 · Aura: {form.field.hover.border.color}
+  --int-multiselect-filter-focus-border-color: var(--i-color-primary-900); // SG: .p-multiselect-filter:focus primary-900 · Aura: {form.field.focus.border.color}
+  --int-multiselect-filter-border-radius: var(--i-border-radius-md); // SG: no override → Aura {form.field.border.radius} {border.radius.md} 6px
+  --int-multiselect-filter-icon-size: var(--i-sizing-2xs); // SG: 12px · Aura: {icon.size}
+  --int-multiselect-filter-icon-color: var(--i-color-primary-900); // SG: .p-multiselect-filter-container .p-icon primary-900 · Aura: {form.field.icon.color}
+
+  // --- scrollbar (list) ---
+  --int-multiselect-scrollbar-width: var(--i-scrollbar-width); // SG: 8px · Aura: —
+  --int-multiselect-scrollbar-thumb-color: var(--i-scrollbar-thumb-color); // SG: neutral-400 · Aura: —
+  --int-multiselect-scrollbar-thumb-inset: var(--i-scrollbar-border-witdh); // SG: 2px · Aura: —
+  --int-multiselect-scrollbar-thumb-radius: var(--i-scrollbar-border-radius); // SG: full · Aura: —
+
+  // --- checkbox (TODO(dep:checkbox provisional)) ---
+  --int-multiselect-checkbox-size: var(--i-sizing-xs); // SG: 16px · Figma: 16px (checkbox/sizing/xs) · Aura: {checkbox.width} 1.25rem
+  --int-multiselect-checkbox-border-radius: var(--i-border-radius-sm); // Figma: 4px (checkbox/border/radius/sm) · Aura: {checkbox.border.radius}
+  --int-multiselect-checkbox-background: var(--i-color-secondary-50); // Figma: #FCFCFC (checkbox/color/unchecked) · Aura: {form.field.background}
+  --int-multiselect-checkbox-border-color: var(--i-color-secondary-200); // knowledgeBase: unchecked secondary-200 · SG: primary-600 ⚠️ · Figma: #D9D9E3 (checkbox/color/border) · Aura: {form.field.border.color}
+  --int-multiselect-checkbox-checked-background: var(--i-color-primary-700); // knowledgeBase: checked primary-700 · Figma: #1B3E88 (checkbox/color/background) · Aura: {primary.color}
+  --int-multiselect-checkbox-icon-color: var(--i-color-primary-50); // Figma: #EEF2FC (checkbox/color/icon) · Aura: {primary.contrast.color}
+  --int-multiselect-checkbox-icon-size: var(--i-typography-font-size-xs); // SG: 10px, fits the 16px box (the .icon class would force 16px) · Aura: {checkbox.icon.size} 0.875rem
+  --int-multiselect-checkbox-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 [State=Hover] (checkbox/color/hover/background) · knowledgeBase: primary-600 ⚠️ · Aura: —
+  --int-multiselect-checkbox-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 [State=Hover] (checkbox/color/hover/border) · Aura: {form.field.hover.border.color}
+  --int-multiselect-checkbox-disabled-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (checkbox/color/disabled/background, border) · SG: secondary-300 ⚠️ · Aura: {form.field.disabled.background}
+  --int-multiselect-checkbox-disabled-icon-color: var(--i-color-secondary-400); // Figma: #9CA3BA (checkbox/color/disabled/icon) · Aura: —
+
+  // --- tooltip (TODO(dep:tooltip provisional)) ---
+  --int-multiselect-tooltip-background: var(--i-background-default); // SG: --i-background-default · Aura: {tooltip.background}
+  --int-multiselect-tooltip-border-color: var(--i-border-default); // SG: --i-border-default · Aura: —
+  --int-multiselect-tooltip-padding: var(--i-spacing-container-md); // SG: 8px · Aura: {tooltip.padding} 0.5rem 0.75rem
+  --int-multiselect-tooltip-font-size: var(--i-typography-font-size-sm); // SG: 12px · Aura: inherit
+
+  // --- skeleton ---
+  --int-multiselect-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// knowledgeBase: .prMultiselect over .p-multiselect. The overlay (appendTo="self") is positioned against it.
+.int-multiselect {
+  display: inline-flex;
+  position: relative;
+  box-sizing: border-box;
+  block-size: var(--int-multiselect-height);
+  border: var(--int-multiselect-border-width) solid var(--int-multiselect-border-color);
+  border-radius: var(--int-multiselect-border-radius);
+  background: var(--int-multiselect-background);
+  color: var(--int-multiselect-color);
+  font-size: var(--int-multiselect-font-size);
+  line-height: var(--int-multiselect-line-height);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing),
+    border-color var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing);
+
+  // SG: .prMultiselect:hover, border and arrow; wins over focus and open. invalid / success keep their color.
+  // Field + panel: --hover covers the panel when it is appended to the body.
+  &:not(&--disabled, &--invalid, &--success):is(:hover, &--hover) {
+    border-color: var(--int-multiselect-hover-border-color);
+  }
+
+  &:not(&--disabled, &--invalid, &--success):is(:hover, &--hover) &__dropdown {
+    color: var(--int-multiselect-hover-icon-color);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-multiselect {
+  // Same as .p-hidden-accessible: reachable by the keyboard and screen readers, never painted.
+  &__hidden-accessible {
+    position: absolute;
+    inline-size: var(--i-border-width-sm);
+    block-size: var(--i-border-width-sm);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  &__label-container {
+    display: flex;
+    position: relative;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  // Same as .p-multiselect-label: one line, a long value or placeholder ends in an ellipsis.
+  // Block (not flex) so text-overflow applies to the text.
+  &__label {
+    display: block;
+    flex: 1 1 auto;
+    align-self: center;
+    min-inline-size: 0;
+    padding-block: var(--int-multiselect-padding-y);
+    padding-inline: var(--int-multiselect-padding-x) var(--int-multiselect-padding-y);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--placeholder {
+      color: var(--int-multiselect-placeholder-color);
+    }
+
+    &--empty {
+      visibility: hidden;
+    }
+  }
+
+  // display="chip": chips in a row (same as .p-multiselect-display-chip). Half the padding only once
+  // there are chips (.p-multiselect-label:has(.p-chip)): the placeholder keeps the field padding.
+  // The placeholder alone stays a block, so it truncates too.
+  &--chip &__label:has(&__chip-item) {
+    display: flex;
+    align-items: center;
+    gap: var(--int-multiselect-chip-gap);
+    padding-inline: calc(var(--int-multiselect-padding-x) / 2);
+  }
+
+  &__chip-item {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  &__clear-icon,
+  &__dropdown {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--int-multiselect-icon-color);
+    font-size: var(--int-multiselect-icon-size);
+  }
+
+  &__clear-icon {
+    padding-inline: var(--int-multiselect-chip-gap);
+    cursor: pointer;
+  }
+
+  // Wins over the 16px and color of the Style Guide .icon class.
+  &__clear-icon &__clear-glyph {
+    color: var(--int-multiselect-clear-icon-color);
+    font-size: var(--int-multiselect-clear-icon-size);
+  }
+
+  &__dropdown {
+    inline-size: var(--int-multiselect-dropdown-width);
+  }
+
+  // knowledgeBase: the arrow turns -180deg while the panel is open.
+  &__dropdown-icon {
+    display: inline-flex;
+    transition: rotate var(--int-multiselect-arrow-duration) var(--int-multiselect-arrow-easing);
+  }
+
+  &--open &__dropdown-icon {
+    rotate: -180deg; // knowledgeBase: rotate -180deg
+  }
+
+  &__loading-icon {
+    animation: int-multiselect-spin calc(var(--i-motion-duration-slow) * 2) linear infinite;
+  }
+
+  // .p-multiselect-overlay, positioned below the field as appendTo="self".
+  &__overlay {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    min-inline-size: 100%;
+    margin-block-start: var(--int-multiselect-overlay-offset);
+    border: var(--int-multiselect-border-width) solid var(--int-multiselect-overlay-border-color);
+    border-radius: var(--int-multiselect-overlay-border-radius);
+    background: var(--int-multiselect-overlay-background);
+    box-shadow: var(--int-multiselect-overlay-shadow);
+    color: var(--int-multiselect-color);
+    font-size: var(--int-multiselect-font-size);
+    line-height: var(--int-multiselect-line-height);
+    cursor: default;
+    transform-origin: top;
+
+    &--enter {
+      animation: int-multiselect-overlay-enter var(--int-multiselect-overlay-enter-duration)
+        var(--int-multiselect-overlay-enter-easing);
+    }
+
+    &--leave {
+      animation: int-multiselect-overlay-leave var(--int-multiselect-overlay-leave-duration)
+        var(--int-multiselect-overlay-leave-easing) forwards;
+    }
+
+    &--appended {
+      z-index: 1000; // Aura: zIndex.overlay 1000
+    }
+
+    &--top {
+      margin-block-start: calc(-1 * var(--int-multiselect-overlay-offset));
+      transform-origin: bottom;
+    }
+  }
+
+  // knowledgeBase: the filter goes above the "All" row (SG: flex-wrap: wrap-reverse).
+  &__header {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: var(--int-multiselect-list-gap);
+    margin-inline: var(--int-multiselect-header-margin-x);
+    padding-block-start: var(--int-multiselect-list-padding);
+  }
+
+  // The row box is shared with &__option.
+  &__toggle-all {
+    flex: 1 1 100%;
+
+    &:hover {
+      background: var(--int-multiselect-option-focus-background);
+    }
+  }
+
+  &__filter-container {
+    display: flex;
+    position: relative;
+    flex: 1 1 100%;
+    align-items: center;
+  }
+
+  // TODO(dep:input provisional): the filter field until int-input is done.
+  &__filter {
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: var(--int-multiselect-filter-height);
+    padding-block: var(--int-multiselect-filter-padding-y);
+    padding-inline: var(--int-multiselect-filter-padding-x)
+      calc(var(--int-multiselect-filter-padding-x) * 2 + var(--int-multiselect-filter-icon-size));
+    border: var(--int-multiselect-border-width) solid var(--int-multiselect-border-color);
+    border-radius: var(--int-multiselect-filter-border-radius);
+    outline-color: transparent;
+    background: var(--int-multiselect-background);
+    color: var(--int-multiselect-color);
+    font: inherit;
+    font-size: var(--int-multiselect-filter-font-size);
+
+    &::placeholder {
+      color: var(--int-multiselect-placeholder-color);
+    }
+
+    &:enabled:hover {
+      border-color: var(--int-multiselect-filter-hover-border-color);
+    }
+
+    // The border is the focus indicator of the text field (SG: .p-multiselect-filter:focus).
+    &:enabled:focus-visible {
+      border-color: var(--int-multiselect-filter-focus-border-color);
+      outline: none;
+    }
+  }
+
+  &__filter-icon {
+    display: flex;
+    position: absolute;
+    inset-inline-end: var(--int-multiselect-filter-padding-x);
+    color: var(--int-multiselect-filter-icon-color);
+    font-size: var(--int-multiselect-filter-icon-size);
+    pointer-events: none;
+  }
+
+  // Wins over the 16px of the Style Guide .icon class.
+  &__filter-icon &__search-icon {
+    font-size: var(--int-multiselect-filter-icon-size);
+  }
+
+  // Thin Style Guide scrollbar (thumb inset on a transparent track), not the one inherited from the page.
+  &__list-container {
+    overflow: auto;
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+
+    &::-webkit-scrollbar {
+      inline-size: var(--int-multiselect-scrollbar-width);
+      block-size: var(--int-multiselect-scrollbar-width);
+    }
+
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border: var(--int-multiselect-scrollbar-thumb-inset) solid transparent;
+      border-radius: var(--int-multiselect-scrollbar-thumb-radius);
+      background: var(--int-multiselect-scrollbar-thumb-color) padding-box;
+    }
+
+    // Firefox (no ::-webkit-scrollbar).
+    @supports not selector(::-webkit-scrollbar) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--int-multiselect-scrollbar-thumb-color) transparent;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-multiselect-list-gap);
+    margin: 0;
+    padding: var(--int-multiselect-list-padding);
+    padding-top: var(--int-multiselect-list-gap);
+    list-style: none;
+
+    // virtualScroll: every row measures exactly virtualScrollItemSize, so the CDK math holds.
+    &--virtual {
+      gap: 0;
+    }
+  }
+
+  // Same as .p-multiselect-option, with the knowledge base and Figma states.
+  &__option,
+  &__toggle-all {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    align-items: center;
+    gap: var(--int-multiselect-option-gap);
+    padding-block: var(--int-multiselect-option-padding-y);
+    padding-inline: var(--int-multiselect-option-padding-x);
+    overflow: hidden;
+    border-radius: var(--int-multiselect-option-border-radius);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--int-multiselect-option-transition-duration) var(--int-multiselect-transition-easing);
+  }
+
+  &__option {
+    &--focus {
+      background: var(--int-multiselect-option-focus-background);
+    }
+
+    &--disabled {
+      background: transparent;
+      color: var(--int-multiselect-option-disabled-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  &__option-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-multiselect-chip-gap);
+    padding: var(--int-multiselect-group-padding);
+    font-size: var(--int-multiselect-group-font-size);
+    font-weight: var(--int-multiselect-group-font-weight);
+
+    &::after {
+      content: '';
+      border-block-end: var(--i-line);
+    }
+  }
+
+  &__empty-message {
+    padding-block: var(--int-multiselect-option-padding-y);
+    padding-inline: var(--int-multiselect-option-padding-x);
+  }
+
+
+  // TODO(dep:checkbox provisional): native checkbox + painted box until int-checkbox is done.
+  &__checkbox {
+    display: inline-flex;
+    position: relative;
+    flex: 0 0 var(--int-multiselect-checkbox-size);
+    inline-size: var(--int-multiselect-checkbox-size);
+    block-size: var(--int-multiselect-checkbox-size);
+  }
+
+  &__checkbox-input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  &__checkbox-box {
+    display: flex;
+    box-sizing: border-box;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    // The box never grows with its mark.
+    min-inline-size: 0;
+    overflow: hidden;
+    border: var(--int-multiselect-border-width) solid var(--int-multiselect-checkbox-border-color);
+    border-radius: var(--int-multiselect-checkbox-border-radius);
+    background: var(--int-multiselect-checkbox-background);
+    color: var(--int-multiselect-checkbox-icon-color);
+    font-size: var(--int-multiselect-checkbox-icon-size);
+    transition:
+      background var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing),
+      border-color var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing);
+  }
+
+  // Beats the Style Guide .icon (font-size 16px, 1em box), which would fill the whole checkbox.
+  &__checkbox-box &__checkbox-icon {
+    font-size: var(--int-multiselect-checkbox-icon-size);
+  }
+
+  // The check and the dash fade in when they appear, along with the box colour.
+  &__checkbox-icon,
+  &__checkbox-dash {
+    animation: int-multiselect-check-enter var(--int-multiselect-transition-duration)
+      var(--int-multiselect-transition-easing);
+  }
+
+  &__checkbox-dash {
+    inline-size: calc(var(--int-multiselect-checkbox-size) / 2);
+    border-block-start: var(--int-multiselect-border-width) solid currentColor;
+  }
+
+  &__checkbox--checked &__checkbox-box,
+  &__checkbox--partial &__checkbox-box {
+    border-color: var(--int-multiselect-checkbox-checked-background);
+    background: var(--int-multiselect-checkbox-checked-background);
+  }
+
+  // Figma: State=Hover on the row (or the focused option), only while unchecked: a checked box stays blue.
+  &__option--focus &__checkbox:not(&__checkbox--checked, &__checkbox--partial) &__checkbox-box,
+  &__toggle-all:hover &__checkbox:not(&__checkbox--checked, &__checkbox--partial) &__checkbox-box {
+    border-color: var(--int-multiselect-checkbox-hover-border-color);
+    background: var(--int-multiselect-checkbox-hover-background);
+  }
+
+  &__checkbox--disabled &__checkbox-box,
+  &__option--disabled &__checkbox-box {
+    border-color: var(--int-multiselect-checkbox-disabled-color);
+    background: var(--int-multiselect-checkbox-disabled-color);
+    color: var(--int-multiselect-checkbox-disabled-icon-color);
+  }
+
+  // SG: .p-checkbox-input:focus-visible → outline on the box.
+  &__checkbox-input:focus-visible + &__checkbox-box {
+    outline: var(--int-multiselect-border-width) solid var(--int-multiselect-focus-border-color);
+  }
+
+  // TODO(dep:tooltip provisional): the tooltip panel until int-tooltip is done.
+  &__tooltip {
+    position: absolute;
+    z-index: 1000; // Aura: zIndex.tooltip
+    padding: var(--int-multiselect-tooltip-padding);
+    border: var(--int-multiselect-border-width) solid var(--int-multiselect-tooltip-border-color);
+    border-radius: var(--int-multiselect-checkbox-border-radius);
+    background: var(--int-multiselect-tooltip-background);
+    box-shadow: var(--int-multiselect-overlay-shadow);
+    font-size: var(--int-multiselect-tooltip-font-size);
+    white-space: nowrap;
+    pointer-events: none;
+
+    &--right {
+      inset-inline-start: 100%;
+      margin-inline-start: var(--int-multiselect-overlay-offset);
+    }
+
+    &--left {
+      inset-inline-end: 100%;
+      margin-inline-end: var(--int-multiselect-overlay-offset);
+    }
+
+    &--top {
+      inset-block-end: 100%;
+      margin-block-end: var(--int-multiselect-overlay-offset);
+    }
+
+    &--bottom {
+      inset-block-start: 100%;
+      margin-block-start: var(--int-multiselect-overlay-offset);
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-multiselect {
+  &--focus:not(&--disabled) {
+    border-color: var(--int-multiselect-focus-border-color);
+  }
+
+  // knowledgeBase: open wins over focus (hover wins over both, as in the app).
+  &--open:not(&--disabled) {
+    border-color: var(--int-multiselect-open-border-color);
+  }
+
+  // .p-variant-filled
+  &--filled {
+    background: var(--int-multiselect-filled-background);
+  }
+
+  // .p-multiselect-sm / -lg
+  &--small {
+    block-size: var(--int-multiselect-sm-height);
+    font-size: var(--int-multiselect-sm-font-size);
+  }
+
+  &--large {
+    block-size: var(--int-multiselect-lg-height);
+    font-size: var(--int-multiselect-lg-font-size);
+  }
+
+  &--small &__label {
+    padding-block: 0;
+  }
+
+  // .p-multiselect-fluid
+  &--fluid {
+    display: flex;
+    inline-size: 100%;
+  }
+
+  // SG: readonly-multiselect: no pointer and no arrow.
+  &--readonly,
+  &--readonly &__label-container {
+    cursor: default;
+  }
+
+  &--readonly &__dropdown {
+    visibility: hidden;
+  }
+
+  &:is(&--invalid, &--success) {
+    border-color: var(--int-multiselect-state-color);
+  }
+
+  &:is(&--invalid, &--success) &__dropdown,
+  &:is(&--invalid, &--success) &__label--placeholder {
+    color: var(--int-multiselect-state-color);
+  }
+
+  &--invalid {
+    --int-multiselect-state-color: var(--int-multiselect-invalid-color); // knowledgeBase: invalid error-700 · Aura: {form.field.invalid.border.color}
+  }
+
+  &--success {
+    --int-multiselect-state-color: var(--int-multiselect-success-color); // knowledgeBase: .prMultiselect--success success-800 · Aura: —
+  }
+
+  &--disabled,
+  &--disabled &__label-container {
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  &--disabled {
+    border-color: transparent;
+    background: var(--int-multiselect-disabled-background);
+    color: var(--int-multiselect-disabled-color);
+  }
+
+  &--disabled &__label--placeholder {
+    color: var(--int-multiselect-disabled-color);
+  }
+
+  &--disabled &__dropdown {
+    color: var(--int-multiselect-disabled-icon-color);
+  }
+}
+
+// Same as .p-connected-overlay-enter/leave: fade + scaleY(0.8) in, fade out
+@keyframes int-multiselect-overlay-enter {
+  from {
+    opacity: 0; // Aura: opacity 0
+    transform: scaleY(0.8); // Aura: scaleY(0.8)
+  }
+}
+
+@keyframes int-multiselect-overlay-leave {
+  to {
+    opacity: 0; // Aura: opacity 0
+  }
+}
+
+// Check mark entering the box: fade + grow.
+@keyframes int-multiselect-check-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+// Same as .pi-spin.
+@keyframes int-multiselect-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-multiselect,
+  .int-multiselect *,
+  .int-multiselect__overlay,
+  .int-multiselect__overlay * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-multiselect {
+  block-size: var(--int-multiselect-height);
+  border-radius: var(--int-multiselect-border-radius);
+  background: var(--int-multiselect-skeleton-background);
+}

@@ -1,0 +1,16 @@
+<!--
+  title: Accessibility
+  description: El campo es un `combobox` con un solo tab stop: las flechas recorren las opciones (`aria-activedescendant`), `Enter`/`Space` seleccionan, `Escape` cierra y `Tab` entra al panel. `ariaLabelledBy` o `ariaLabel` lo etiquetan.
+-->
+<div class="u-display-flex u-flex-column u-gap-xs">
+  <span id="multi-select-accessibility-label" class="u-text-sm u-bold">Cities</span>
+  <int-multiselect
+    ariaLabelledBy="multi-select-accessibility-label"
+    ariaFilterLabel="Search cities"
+    optionLabel="name"
+    placeholder="Select Cities"
+    [options]="cities"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="selected"
+  />
+</div>
