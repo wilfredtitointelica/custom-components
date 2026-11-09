@@ -1,7 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { IntTable } from '../../base/table';
+import { IntSearch } from '../../../../search/version-1/base/search';
 
 interface Fee {
   name: string;
@@ -18,10 +20,10 @@ const FEES: readonly Fee[] = [
 @Component({
   selector: 'table-template-example',
   templateUrl: './example.html',
-  imports: [IntTable, DecimalPipe],
+  imports: [IntTable, IntSearch, FormsModule, DecimalPipe],
 })
 export class TableTemplateExample {
   protected readonly fees = FEES;
-  /** Text of the provisional search field in the caption. */
+  /** Text of the search field in the caption. */
   protected readonly searchText = signal('');
 }

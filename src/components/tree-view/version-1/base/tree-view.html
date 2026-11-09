@@ -4,23 +4,16 @@
   figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15191-16637
   figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2649
 -->
-<!-- Filter (filter): field with search icon above the tree, as the p-iconfield of p-tree -->
+<!-- Filter (filter): int-search above the tree, as the p-iconfield of p-tree -->
 @if (filter()) {
-  <!-- dep:search provisional · replace with <int-search size="small"> when search is done -->
-  <div class="int-tree-view__filter" data-dep="search">
-    <input
-      #filterInput
-      type="text"
-      class="int-tree-view__filter-input"
-      autocomplete="off"
-      [attr.placeholder]="filterPlaceholder()"
-      [attr.aria-label]="filterPlaceholder() || 'Search'"
-      (keydown.enter)="$event.preventDefault()"
-      (input)="onFilterInput($event)"
-    />
-    <i class="int-tree-view__filter-icon icon icon-search icon--xs" aria-hidden="true"></i>
-  </div>
-  <!-- /dep:search -->
+  <int-search
+    class="int-tree-view__filter"
+    size="small"
+    [placeholder]="filterPlaceholder()"
+    [ariaLabel]="filterPlaceholder() || 'Search'"
+    [ngModel]="filterValue()"
+    (ngModelChange)="onFilterChange($event)"
+  />
 }
 
 <!-- Root list of the tree (PrimeNG p-tree-root-children); the filtered nodes while filtering -->

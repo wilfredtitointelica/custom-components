@@ -44,7 +44,7 @@ const PANEL_POSITIONS: ConnectedPosition[] = [
 })
 export class IntTreeSelect implements ControlValueAccessor {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
@@ -88,11 +88,11 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** Id del elemento que etiqueta al disparador. */
   readonly ariaLabelledBy = input<string>();
   /**
-   * int-* extension: se pasa al árbol; un clic en la fila de un padre lo expande o colapsa
-   * (.prTreeselect--labelAsToggle del Style Guide).
+   * int-* extension: se pasa al árbol; un clic en la fila de un padre lo expande o colapsa en vez de
+   * seleccionarlo.
    */
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
-  /** int-* extension: se pasa al árbol; los hijos sin sangría (`.prTreeselect--childrenAligned` del Style Guide). */
+  /** int-* extension: se pasa al árbol; los hijos se muestran sin sangría. */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
 
   /** Se emite al seleccionar un nodo. */

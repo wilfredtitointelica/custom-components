@@ -1,8 +1,11 @@
 import {
-  afterNextRender, booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef,
-  inject, input, model, OnInit, output, signal, TemplateRef, viewChild, ViewEncapsulation,
+  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef,
+  inject, input, model, OnInit, output, signal, TemplateRef, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { IntSearch } from '../../../search/version-1/base/search';
 
 /** Node of the tree, same shape as PrimeNG TreeNode (the fields int-tree-view uses). */
 export interface IntTreeNode<T = unknown> {
@@ -48,7 +51,7 @@ export interface IntTreeFilterEvent {
   selector: 'int-tree-view',
   templateUrl: './tree-view.html',
   styleUrl: '../styles/_index.scss',
-  imports: [forwardRef(() => IntTreeViewNode)],
+  imports: [forwardRef(() => IntTreeViewNode), IntSearch, FormsModule],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,7 +59,7 @@ export interface IntTreeFilterEvent {
 })
 export class IntTreeView {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
@@ -102,8 +105,6 @@ export class IntTreeView {
   readonly filterPlaceholder = input<string>();
   /** Idioma con el que se pasa a minúsculas el texto al comparar (por ejemplo `tr`). */
   readonly filterLocale = input<string>();
-  /** Si es `true`, el buscador recibe el foco al cargar. */
-  readonly filterInputAutoFocus = input(false, { transform: booleanAttribute });
 
   /** Se emite al seleccionar un nodo. */
   readonly onNodeSelect = output<IntTreeNodeEvent>();
@@ -120,7 +121,6 @@ export class IntTreeView {
   readonly nodeTemplate = contentChild<TemplateRef<{ $implicit: IntTreeNode }>>('node');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly filterInput = viewChild<ElementRef<HTMLInputElement>>('filterInput');
   /** Bumped when a node is expanded or its partial state changes: nodes keep PrimeNG's mutable flags. */
   readonly revision = signal(0);
   /** Text typed in the filter. */
@@ -150,12 +150,6 @@ export class IntTreeView {
 
   /** Nodes rendered at the root: the filtered ones while filtering, as PrimeNG getRootNode. */
   readonly rootNodes = computed(() => this.filteredNodes() ?? this.value());
-
-  constructor() {
-    afterNextRender(() => {
-      if (this.filter() && this.filterInputAutoFocus()) this.filterInput()?.nativeElement.focus();
-    });
-  }
 
   protected readonly classes = computed(() => {
     const classes = ['int-tree-view'];
@@ -251,12 +245,10 @@ export class IntTreeView {
   /** Limpia el texto del buscador y vuelve a mostrar todos los nodos. */
   resetFilter(): void {
     this.filterValue.set('');
-    const input = this.filterInput()?.nativeElement;
-    if (input) input.value = '';
   }
 
-  protected onFilterInput(event: Event): void {
-    this.filterValue.set((event.target as HTMLInputElement).value);
+  protected onFilterChange(value: string): void {
+    this.filterValue.set(value);
     this.onFilter.emit({ filter: this.filterValue(), filteredValue: this.filteredNodes() });
   }
 

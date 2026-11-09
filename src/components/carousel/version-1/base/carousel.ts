@@ -50,7 +50,7 @@ let nextId = 0;
 })
 export class IntCarousel<T = unknown> {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
@@ -80,7 +80,7 @@ export class IntCarousel<T = unknown> {
   readonly showNavigators = input(true, { transform: booleanAttribute });
   /**
    * int-* extension: formato visual. 'more' muestra flechas compactas y un contador debajo del contenido, sin
-   * indicadores (.prCarousel--more de la base de conocimientos).
+   * indicadores.
    */
   readonly appearance = input<IntCarouselAppearance>();
   /** int-* extension: texto del contador del formato 'more'; {page} y {total} se reemplazan. */

@@ -34,15 +34,15 @@ let nextId = 0;
 })
 export class IntStepper {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
   /** Valor del paso activo (two-way con `[(value)]`). */
   readonly value = model<unknown>();
   /**
-   * int-* extension: apariencia. 'progressive' mantiene los pasos anteriores en color activo (.prStepper--progressive
-   * de la base de conocimientos); 'descriptive' es el stepper descriptive de Figma.
+   * int-* extension: apariencia. `progressive` mantiene los pasos anteriores en color activo; `descriptive` acomoda
+   * los pasos uno al lado del otro para dibujarlos con el template `content` (badge, título y descripción).
    */
   readonly variant = input<IntStepperVariant>();
 

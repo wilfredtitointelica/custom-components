@@ -6,17 +6,15 @@
   <int-table [style]="{ width: '40rem' }" [value]="fees">
     <ng-template #caption>
       <div class="u-display-flex u-align-items-center u-justify-content-end u-gap-sm u-full-width u-pb-2">
-        <!-- dep:search provisional · replace with <int-search> when search is done -->
-        <input
-          type="text"
-          class="u-px-2 u-py-1 u-radius-lg u-background-white u-text-md"
-          data-dep="search"
+        <!-- Fixed width of the knowledge base search in a table caption (ptSearch--fixedWidth, 240px by default) -->
+        <int-search
+          [style]="{ width: '240px' }"
           placeholder="Search text here"
-          aria-label="Search"
-          [value]="searchText()"
-          (input)="searchText.set($any($event.target).value)"
+          ariaLabel="Search"
+          showClear
+          [ngModel]="searchText()"
+          (ngModelChange)="searchText.set($event)"
         />
-        <!-- /dep:search -->
         <!-- dep:dropdown-select provisional · replace with <int-dropdown-select> when dropdown-select is done -->
         <button
           type="button"

@@ -94,7 +94,7 @@ let nextId = 0;
 })
 export class IntConfirmDialogModal implements OnDestroy {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Gabriela Javier';
 
@@ -106,7 +106,7 @@ export class IntConfirmDialogModal implements OnDestroy {
   readonly message = input<string>();
   /** Clase del ícono por defecto; `null` quita el ícono. Sin valor se usa el ícono de la severidad. */
   readonly icon = input<string | null>();
-  /** int-* extension: severidad por defecto (colorea título e ícono, `.prConfirmDialog--*` de la base de conocimientos); `confirm()` la reemplaza. */
+  /** int-* extension: severidad por defecto (colorea título e ícono); `confirm()` la reemplaza. */
   readonly severity = input<IntConfirmSeverity>('default');
   /** Texto del botón de aceptar. */
   readonly acceptLabel = input<string>('Yes');
