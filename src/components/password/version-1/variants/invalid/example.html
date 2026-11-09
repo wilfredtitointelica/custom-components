@@ -1,0 +1,12 @@
+<!--
+  title: Invalid
+  description: Con `invalid` el campo muestra el borde, el texto y el icono de error, también al pasar el puntero o con foco.
+-->
+<int-password
+  toggleMask
+  placeholder="Password"
+  [feedback]="false"
+  [invalid]="!value"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="value"
+/>

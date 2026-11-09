@@ -1,0 +1,11 @@
+<!--
+  title: Disabled
+  description: Con `disabled` el campo no se puede editar ni enfocar, y los iconos no responden.
+-->
+<int-password
+  toggleMask
+  placeholder="Disabled"
+  [disabled]="true"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="value"
+/>

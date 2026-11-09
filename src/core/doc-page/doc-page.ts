@@ -266,6 +266,29 @@ export class DocPage {
       observer.observe(this.meta().nativeElement);
       destroyRef.onDestroy(() => observer.disconnect());
     });
+
+    // A variant head only gets its background (and z-index) while it is stuck: at rest it stays
+    // transparent and below the previous preview, so an open overlay (select, datepicker…) is not cut.
+    // It is stuck once its section's top has scrolled above the head's sticky offset.
+    afterNextRender(() => {
+      let frame = 0;
+      const update = (): void => {
+        frame = 0;
+        for (const head of host.querySelectorAll<HTMLElement>('.doc-section-head')) {
+          const top = parseFloat(getComputedStyle(head).top) || 0;
+          const sectionTop = head.parentElement?.getBoundingClientRect().top ?? 0;
+          head.classList.toggle('doc-is-stuck', sectionTop < top - 0.5);
+        }
+      };
+      const schedule = (): void => {
+        frame ||= requestAnimationFrame(update);
+      };
+      document.addEventListener('scroll', schedule, { capture: true, passive: true });
+      destroyRef.onDestroy(() => {
+        document.removeEventListener('scroll', schedule, { capture: true });
+        cancelAnimationFrame(frame);
+      });
+    });
     effect(() => {
       if (this.examples.isLoading() || !this.examples.hasValue()) return;
       const variantId = untracked(() => this.nav.activeVariantId());
@@ -324,12 +347,20 @@ export class DocPage {
  */
 const SCAN_MARK = 'data-dep-scan';
 const DONE_MARK = 'data-dep-done';
+/** Set on a marked element that already has its own position (fixed, absolute…), so the scan keeps it. */
+const POSITIONED_MARK = 'data-dep-positioned';
 
 /** Marks the first element of a dependency with how many there are; clears the mark from the rest. */
 function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement[]): void {
   if (!first) return;
   const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
-  if (first.getAttribute(attribute) !== label) first.setAttribute(attribute, label);
+  if (first.getAttribute(attribute) !== label) {
+    // Read before marking: once marked, the scan rule would make a static element relative.
+    if (!first.hasAttribute(SCAN_MARK) && !first.hasAttribute(DONE_MARK)) {
+      first.toggleAttribute(POSITIONED_MARK, getComputedStyle(first).position !== 'static');
+    }
+    first.setAttribute(attribute, label);
+  }
   for (const element of rest) element.removeAttribute(attribute);
 }
 
@@ -355,5 +386,6 @@ function clearDependencyMarks(host: HTMLElement): void {
   for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}]`)) {
     element.removeAttribute(SCAN_MARK);
     element.removeAttribute(DONE_MARK);
+    element.removeAttribute(POSITIONED_MARK);
   }
 }

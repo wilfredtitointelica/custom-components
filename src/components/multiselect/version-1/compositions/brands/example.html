@@ -1,0 +1,14 @@
+<!--
+  title: Brands
+  description: Filtro de marcas: `display` en `chip`, sin campo de filtro (`filter` en `false`) y `placeholder` "All Brands".
+-->
+<int-multiselect
+  display="chip"
+  optionLabel="name"
+  optionValue="id"
+  placeholder="All Brands"
+  [options]="brands"
+  [filter]="false"
+  [style]="{ width: '22rem' }"
+  [(ngModel)]="selected"
+/>

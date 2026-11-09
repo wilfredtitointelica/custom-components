@@ -1,0 +1,24 @@
+<!--
+  title: Template
+  description: Los templates `item`, `header` y `footer` personalizan cada opción y el panel.
+-->
+<int-multiselect
+  optionLabel="name"
+  placeholder="Select Countries"
+  [options]="countries"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+>
+  <ng-template #item let-country>
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <span class="u-text-xs u-bold u-color-grey-500">{{ country.code }}</span>
+      <span>{{ country.name }}</span>
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <div class="u-px-3 u-pt-2 u-text-sm u-bold">Available Countries</div>
+  </ng-template>
+  <ng-template #footer>
+    <div class="u-px-3 u-py-2 u-text-sm u-color-grey-500">{{ selected.length }} selected</div>
+  </ng-template>
+</int-multiselect>

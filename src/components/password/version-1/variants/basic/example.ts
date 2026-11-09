@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { IntPassword } from '../../base/password';
 
 @Component({
   selector: 'password-basic-example',
   templateUrl: './example.html',
-  imports: [IntPassword],
+  imports: [IntPassword, FormsModule],
 })
-export class PasswordBasicExample {}
+export class PasswordBasicExample {
+  value = '';
+}

@@ -1,0 +1,12 @@
+<!--
+  title: Success
+  description: int-* extension `success`: borde, icono y placeholder de éxito. `invalid` tiene prioridad.
+-->
+<int-multiselect
+  success
+  optionLabel="name"
+  placeholder="Select Cities"
+  [options]="cities"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

@@ -249,8 +249,13 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
   pointer-events: none;
 }
 
-.doc-is-scanning .doc-preview [data-dep-scan] {
+// Only static elements become the label's containing block: a fixed or absolute one (int-toast, an
+// overlay) keeps its own position. DocPage flags those with data-dep-positioned before marking them.
+.doc-is-scanning .doc-preview :is([data-dep-scan], [data-dep-done]):not([data-dep-positioned]) {
   position: relative;
+}
+
+.doc-is-scanning .doc-preview [data-dep-scan] {
   outline: 2px dashed var(--doc-scan);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px var(--doc-scan-glow);
@@ -267,7 +272,6 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
 // Real int-* of a resolved dependency (done): DocPage marks the first one per preview with
 // data-dep-done="<id> ×<total>". Same dashed, pulsing outline as a provisional, in green.
 .doc-is-scanning .doc-preview [data-dep-done] {
-  position: relative;
   outline: 2px dashed var(--doc-success);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px var(--doc-success-glow);

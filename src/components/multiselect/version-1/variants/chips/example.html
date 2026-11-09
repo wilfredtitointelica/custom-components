@@ -1,0 +1,13 @@
+<!--
+  title: Chips
+  description: Con `display` en `chip` cada opción seleccionada se muestra como un chip que se puede quitar (emite `onRemove`).
+-->
+<int-multiselect
+  display="chip"
+  optionLabel="name"
+  placeholder="Select Cities"
+  [options]="cities"
+  [maxSelectedLabels]="3"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

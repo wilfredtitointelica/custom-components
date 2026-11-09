@@ -1,0 +1,28 @@
+<!--
+  title: Template Driven Form
+  description: Contraseña obligatoria dentro de un formulario: `required` con `ngModel`, e `invalid` cuando el campo se tocó o el formulario se envió; el mensaje de error y el botón de envío van debajo. Al enviar una contraseña válida, un `int-toast` confirma el envío.
+-->
+<int-toast />
+<form #exampleForm="ngForm" class="u-display-flex u-flex-column u-align-items-center u-gap-md" (ngSubmit)="onSubmit(exampleForm)">
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <int-password
+      name="password"
+      #passwordModel="ngModel"
+      required
+      [feedback]="false"
+      [invalid]="!!passwordModel.invalid && (!!passwordModel.touched || exampleForm.submitted)"
+      [style]="{ width: '20rem' }"
+      [(ngModel)]="value"
+    />
+    @if (passwordModel.invalid && (passwordModel.touched || exampleForm.submitted)) {
+      <!-- dep:message provisional · replace with <int-message severity="error" size="small" variant="simple"> when message is done -->
+      <span class="u-msg-error" data-dep="message">Password is required.</span>
+      <!-- /dep:message -->
+    }
+  </div>
+  <!-- dep:button provisional · replace with <int-button> when button is done -->
+  <button type="submit" class="u-px-3 u-py-2 u-radius-lg u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-text-md u-pointer" data-dep="button">
+    Submit
+  </button>
+  <!-- /dep:button -->
+</form>

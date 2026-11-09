@@ -25,7 +25,7 @@ import table from './table/table.config';
 import fileDrop from './file-drop/file-drop.config';
 import carousel from './carousel/carousel.config';
 import message from './message/message.config';
-import multiSelect from './multi-select/multi-select.config';
+import multiselect from './multiselect/multiselect.config';
 import timeline from './timeline/timeline.config';
 import toast from './toast/toast.config';
 import treeTable from './tree-table/tree-table.config';
@@ -75,7 +75,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   fileDrop,
   carousel,
   message,
-  multiSelect,
+  multiselect,
   timeline,
   toast,
   treeTable,

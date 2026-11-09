@@ -1,0 +1,14 @@
+<!--
+  title: Accessibility
+  description: El campo se etiqueta con `inputId` y un `<label for>`, o con `ariaLabel` / `ariaLabelledBy`. `Tab` entra y sale del campo (abre y cierra el medidor) y `Escape` cierra el medidor. Los iconos de mostrar/ocultar y borrar se usan con el puntero.
+-->
+<div class="u-display-flex u-flex-column u-gap-xs">
+  <label for="password-accessibility" class="u-text-md u-bold">Password</label>
+  <int-password
+    inputId="password-accessibility"
+    toggleMask
+    appendTo="body"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="value"
+  />
+</div>
