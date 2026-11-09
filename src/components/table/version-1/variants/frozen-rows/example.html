@@ -1,0 +1,26 @@
+<!--
+  title: Frozen Rows
+  description: `frozenValue` con el template `frozenbody` fija filas arriba del cuerpo, como la fila Total; solo se usa cuando el diseño la muestra.
+-->
+<int-table [style]="{ width: '40rem' }" [value]="fees" [frozenValue]="totals">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+      <th><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region</div></th>
+      <th class="u-text-right"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #frozenbody let-total>
+    <tr>
+      <td class="u-text-left" colspan="2">{{ total.label }}</td>
+      <td class="u-text-right">{{ total.amount }}</td>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-left">{{ fee.name }}</td>
+      <td class="u-text-center">{{ fee.region }}</td>
+      <td class="u-text-right">{{ fee.amount }}</td>
+    </tr>
+  </ng-template>
+</int-table>

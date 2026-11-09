@@ -1,0 +1,30 @@
+<!--
+  title: Reorder
+  description: Con `reorderableColumns`, las cabeceras con `intReorderableColumn` se arrastran sobre otra para mover la columna; `onColReorder` avisa el nuevo orden. Solo funciona con mouse.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-table [style]="{ width: '40rem' }" [value]="fees" [columns]="cols" reorderableColumns (onColReorder)="reorder($event)">
+    <ng-template #header let-columns>
+      <tr>
+        @for (col of columns; track col.field) {
+          <th [class]="col.align" intReorderableColumn>
+            <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
+              <i class="icon icon-drag icon--xs u-color-secondary" aria-hidden="true"></i>
+              {{ col.header }}
+            </div>
+          </th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #body let-fee let-columns="columns">
+      <tr>
+        @for (col of columns; track col.field) {
+          <td [class]="col.align">{{ fee[col.field] }}</td>
+        }
+      </tr>
+    </ng-template>
+  </int-table>
+  @if (order()) {
+    <p class="u-text-sm u-color-secondary">New order: {{ order() }}</p>
+  }
+</div>

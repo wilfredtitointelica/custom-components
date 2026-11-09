@@ -1,0 +1,76 @@
+<!--
+  title: Cell Content
+  description: Reglas de contenido de celda de la tabla del proyecto: texto largo truncado a la izquierda, texto corto y fechas al centro, importes a la derecha (lo único que va a la derecha), contenido en dos líneas, link, marca, estado y tendencia. La misma alineación va en el `th` y el `td` de cada columna.
+-->
+<int-table [value]="fees" [tableStyle]="{ 'table-layout': 'fixed' }" [style]="{ width: '46rem' }">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="14%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Description</div></th>
+      <th width="10%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Code</div></th>
+      <th class="u-text-left" width="11%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Product</div></th>
+      <th width="12%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Date</div></th>
+      <th class="u-text-right" width="18%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount</div></th>
+      <th width="10%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Link</div></th>
+      <th width="8%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Brand</div></th>
+      <th width="8%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Status</div></th>
+      <th class="u-text-right" width="9%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">QoQ</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-left u-text-ellipsis" [title]="fee.description">{{ fee.description }}</td>
+      <td class="u-text-center">{{ fee.code }}</td>
+      <td class="u-text-left">
+        <div class="u-display-flex u-flex-column">
+          <strong>{{ fee.product }}</strong>
+          <span>{{ fee.productSub }}</span>
+        </div>
+      </td>
+      <td class="u-text-center">{{ fee.date | date: 'dd MMM, y' }}</td>
+      <td class="u-text-right">USD {{ fee.amount | number: '1.2-2' }}</td>
+      <td class="u-text-center">
+        <a class="u-text-link" [attr.href]="'#' + fee.code" (click)="$event.preventDefault()">Detail</a>
+      </td>
+      <td class="u-text-center">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
+          @switch (fee.brand) {
+            @case ('visa') {
+              <i class="icon icon-visa icon--outlined" aria-label="Visa"></i>
+            }
+            @case ('mastercard') {
+              <i class="icon icon-mastercard icon--outlined" aria-label="Mastercard"></i>
+            }
+            @case ('amex') {
+              <i class="icon icon-amex icon--outlined" aria-label="American Express"></i>
+            }
+          }
+        </div>
+      </td>
+      <td class="u-text-center">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
+          @switch (fee.status) {
+            @case ('success') {
+              <i class="icon icon-input-success icon--success" aria-label="Success"></i>
+            }
+            @case ('error') {
+              <i class="icon icon-input-error icon--error" aria-label="Error"></i>
+            }
+            @case ('disabled') {
+              <i class="icon icon-clock icon--disabled" aria-label="Disabled"></i>
+            }
+          }
+        </div>
+      </td>
+      <td class="u-text-right">
+        <div
+          class="u-display-flex u-align-items-center u-justify-content-end u-gap-xs"
+          [class.u-color-trend-positive]="fee.trend === 'up'"
+          [class.u-color-trend-negative]="fee.trend === 'down'"
+        >
+          <i class="icon" [class.icon-nav-up]="fee.trend === 'up'" [class.icon-nav-down]="fee.trend === 'down'" aria-hidden="true"></i>
+          {{ fee.change }}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</int-table>
