@@ -1,5 +1,5 @@
 import {
-  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, Directive, ElementRef, inject, input,
+  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, DestroyRef, Directive, ElementRef, inject, input,
   linkedSignal, numberAttribute, output, signal, TemplateRef, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
@@ -26,6 +26,21 @@ export interface IntTableColumnReorderEvent {
   dragIndex: number;
   dropIndex: number;
   columns: unknown[];
+}
+
+/** Text match modes of PrimeNG's FilterService that the global filter resolves. */
+export type IntTableFilterMatchMode = 'contains' | 'startsWith' | 'endsWith' | 'equals';
+
+/** Value and match mode of a filter, same shape as PrimeNG FilterMetadata. */
+export interface IntTableFilterMetadata {
+  value: string;
+  matchMode: IntTableFilterMatchMode;
+}
+
+/** Payload of onFilter, same shape as PrimeNG TableFilterEvent (only the global filter). */
+export interface IntTableFilterEvent {
+  filters: { global?: IntTableFilterMetadata };
+  filteredValue: unknown[];
 }
 
 /** Context of the #header and #emptymessage templates. */
@@ -64,6 +79,28 @@ function resolveField(data: unknown, field: string): unknown {
   return value;
 }
 
+/** Lower case without accents, as PrimeNG FilterService (removeAccents + toLocaleLowerCase). */
+function normalize(value: unknown, locale?: string): string {
+  return String(value).normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase(locale);
+}
+
+/** Text constraints of PrimeNG's FilterService used by the global filter. */
+function matches(mode: IntTableFilterMatchMode, value: unknown, filter: string, locale?: string): boolean {
+  if (value == null) return false;
+  const text = normalize(value, locale);
+  const query = normalize(filter, locale);
+  switch (mode) {
+    case 'startsWith':
+      return text.startsWith(query);
+    case 'endsWith':
+      return text.endsWith(query);
+    case 'equals':
+      return text === query;
+    default:
+      return text.includes(query);
+  }
+}
+
 /** Same comparison as PrimeNG sortSingle: nulls first, strings with localeCompare, the rest with < and >. */
 function compareValues(value1: unknown, value2: unknown): number {
   if (value1 == null && value2 != null) return -1;
@@ -84,7 +121,7 @@ function reorderIndex(element: HTMLElement): number {
 /**
  * <int-table> · version 1. Replica of PrimeNG v20 p-table without PrimeNG at runtime.
  * DataTable displays data in tabular format. Scope: what the knowledge base documents or the projects use (caption,
- * empty message, single sort, compact size, scroll, striped rows and the Total frozen row) plus the column reorder of
+ * empty message, global filter of the caption search, single sort, compact size, scroll, striped rows and the Total frozen row) plus the column reorder of
  * Figma. Left out because no project uses them: dynamic columns, gridlines, row selection and expansion, column resize,
  * loading, footer and summary. The paginator goes below the table (int-paginator), the checkbox column is cell content
  * and loading data is shown with a skeleton of the table, as the knowledge base does.
@@ -98,7 +135,7 @@ function reorderIndex(element: HTMLElement): number {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Same root as PrimeNG: p-table puts its root classes on the host element.
-  host: { '[class]': 'classes()' },
+  host: { '[class]': 'classes()', '[style.--int-table-sticky-top]': 'stickyTop()' },
 })
 export class IntTable {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -153,7 +190,30 @@ export class IntTable {
   readonly scrollable = input(false, { transform: booleanAttribute });
   /** Alto máximo del área con scroll (`400px`) o `flex` para ocupar el alto del contenedor. */
   readonly scrollHeight = input<string>();
+  /**
+   * int-* extension: la cabecera (y las filas de `frozenbody`, como la fila Total) queda fija bajo el header del
+   * dashboard al desplazar la página. Ningún contenedor de la tabla debe tener `overflow`.
+   */
+  readonly stickyHeader = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: distancia desde arriba a la que se pega la cabecera con `stickyHeader` (longitud CSS, p. ej.
+   * `'7.5rem'`), para cuando hay otros elementos fijos encima; dentro de un modal, popover o tooltip es `'0'`. Por
+   * defecto, el alto del header del dashboard.
+   */
+  readonly stickyTop = input<string>();
 
+  /** Campos en los que busca `filterGlobal()`; sin ellos usa el `field` de cada columna de `columns`. */
+  readonly globalFilterFields = input<readonly string[]>();
+  /**
+   * Milisegundos de espera antes de filtrar, mientras se escribe.
+   * @defaultValue 300
+   */
+  readonly filterDelay = input(300, { transform: numberAttribute });
+  /** Idioma con el que se pasa a minúsculas el texto al comparar (por ejemplo `tr`). */
+  readonly filterLocale = input<string>();
+
+  /** Se emite al filtrar, con el filtro aplicado y las filas que quedan. */
+  readonly onFilter = output<IntTableFilterEvent>();
   /** Se emite al ordenar una columna, con el campo y el orden. */
   readonly onSort = output<IntTableSortMeta>();
   /** Con `customSort`, se emite para que quien usa la tabla ordene `data`. */
@@ -169,7 +229,7 @@ export class IntTable {
   protected readonly bodyTemplate = contentChild<TemplateRef<IntTableBodyContext>>('body');
   /** Template `frozenbody`: filas de `frozenValue`, arriba del cuerpo. */
   protected readonly frozenBodyTemplate = contentChild<TemplateRef<IntTableBodyContext>>('frozenbody');
-  /** Template `emptymessage`: fila que se muestra cuando no hay datos. */
+  /** Template `emptymessage`: fila que se muestra cuando no hay datos o el filtro no encuentra coincidencias. */
   protected readonly emptyMessageTemplate = contentChild<TemplateRef<IntTableColumnsContext>>('emptymessage');
   /** Template `sorticon`: reemplaza el ícono de orden; recibe el orden (`0`, `1` o `-1`). */
   readonly sortIconTemplate = contentChild<TemplateRef<IntTableSortIconContext>>('sorticon');
@@ -182,6 +242,21 @@ export class IntTable {
 
   /** Rows on screen: a sorted copy of value (PrimeNG sorts value in place). customSort sets it after sortFunction. */
   protected readonly processedData = linkedSignal(() => this.sortRows([...(this.value() ?? [])]));
+
+  /** Global filter applied by filterGlobal(), after filterDelay. */
+  private readonly globalFilter = signal<IntTableFilterMetadata | null>(null);
+  private filterTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  /** Rows on screen: the sorted rows that match the global filter. */
+  protected readonly filteredData = computed(() => {
+    const filter = this.globalFilter();
+    const rows = this.processedData();
+    if (!filter) return rows;
+    const fields = this.globalFilterFields() ?? this.columnFields();
+    return rows.filter((row) =>
+      fields.some((field) => matches(filter.matchMode, resolveField(row, field), filter.value, this.filterLocale())),
+    );
+  });
 
   /** Columns in their current order: a copy of columns, reordered by dragging the headers. */
   protected readonly orderedColumns = linkedSignal(() => [...(this.columns() ?? [])]);
@@ -198,6 +273,7 @@ export class IntTable {
     if (this.rowHover()) classes.push('int-table--hoverable');
     if (this.scrollable()) classes.push('int-table--scrollable');
     if (this.scrollable() && this.scrollHeight() === 'flex') classes.push('int-table--flex-scrollable');
+    if (this.stickyHeader()) classes.push('int-table--sticky-header');
     return classes.join(' ');
   });
 
@@ -207,6 +283,21 @@ export class IntTable {
     const scrollHeight = this.scrollHeight();
     return scrollHeight && scrollHeight !== 'flex' ? scrollHeight : null;
   });
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.filterTimeout));
+  }
+
+  /** Filtra las filas que contienen el texto en alguno de los campos de `globalFilterFields` (o de `columns`). */
+  filterGlobal(value: unknown, matchMode: IntTableFilterMatchMode = 'contains'): void {
+    clearTimeout(this.filterTimeout);
+    const text = value == null ? '' : String(value).trim();
+    this.filterTimeout = setTimeout(() => {
+      const filter = text ? { value: text, matchMode } : null;
+      this.globalFilter.set(filter);
+      this.onFilter.emit({ filters: filter ? { global: filter } : {}, filteredValue: this.filteredData() });
+    }, this.filterDelay());
+  }
 
   /** True when the field is the one the table is sorted by. */
   isSorted(field: string | undefined): boolean {
@@ -234,6 +325,13 @@ export class IntTable {
   protected trackRow(index: number, row: unknown): unknown {
     const dataKey = this.dataKey();
     return dataKey ? resolveField(row, dataKey) : index;
+  }
+
+  /** Field of each column of columns, used by the global filter when globalFilterFields is not set. */
+  private columnFields(): string[] {
+    return (this.columns() ?? [])
+      .map((column) => (column && typeof column === 'object' ? (column as { field?: unknown }).field : undefined))
+      .filter((field): field is string => typeof field === 'string');
   }
 
   private sortRows(rows: unknown[]): unknown[] {

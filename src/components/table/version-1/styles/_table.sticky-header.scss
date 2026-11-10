@@ -1,0 +1,41 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --int-table-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --sticky-header )
+\*——————————————————————————————————————————————————————————*/
+
+// int-table--sticky-header (stickyHeader, int-* extension): the header, and the frozen rows below it (Total row),
+// stick below the dashboard header while the page scrolls. knowledgeBase: .prTable--stickyHeader
+.int-table--sticky-header {
+  // Redeclared on the block so --i-dashboard-layout-header-height is read from the table's context;
+  // stickyTop sets the token inline on the host and wins.
+  --int-table-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height
+
+  // The container must not scroll, or the header would stick to it instead of the page (knowledgeBase).
+  .int-table__table-container {
+    overflow: visible;
+  }
+
+  .int-table__thead {
+    position: sticky;
+    inset-block-start: var(--int-table-sticky-top);
+    z-index: 2;
+  }
+
+  // Total row: right below the header.
+  .int-table__tbody--frozen {
+    position: sticky;
+    inset-block-start: calc(var(--int-table-sticky-top) + var(--int-table-header-height));
+    z-index: 1;
+  }
+
+  &.int-table--small .int-table__tbody--frozen {
+    inset-block-start: calc(var(--int-table-sticky-top) + var(--int-table-sm-header-height));
+  }
+}

@@ -1,0 +1,40 @@
+<!--
+  title: Filter
+  description: El buscador del `caption` filtra la tabla: llama a `filterGlobal()` con el texto y la tabla deja las filas que lo contienen en alguno de los campos de `globalFilterFields`. Si no hay coincidencias se muestra el template `emptymessage`.
+-->
+<int-table #dt [style]="{ width: '40rem' }" [value]="fees" [globalFilterFields]="['name', 'code', 'region']">
+  <ng-template #caption>
+    <div class="u-display-flex u-align-items-center u-justify-content-end u-full-width u-pb-2">
+      <!-- Fixed width of the knowledge base search in a table caption (ptSearch--fixedWidth, 240px by default) -->
+      <int-search
+        [style]="{ width: '240px' }"
+        placeholder="Search text here"
+        ariaLabel="Search"
+        showClear
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event); dt.filterGlobal($event, 'contains')"
+      />
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="40%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+      <th width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Code</div></th>
+      <th width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region</div></th>
+      <th class="u-text-right" width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-left">{{ fee.name }}</td>
+      <td class="u-text-center">{{ fee.code }}</td>
+      <td class="u-text-center">{{ fee.region }}</td>
+      <td class="u-text-right">{{ fee.amount }}</td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td class="u-text-center" colspan="4">No fees found.</td>
+    </tr>
+  </ng-template>
+</int-table>

@@ -13,6 +13,8 @@ interface Column {
   field: keyof Fee;
   header: string;
   align: string;
+  /** Width of the column header, as the knowledge base: every th has a percentage. */
+  width: string;
 }
 
 const FEES: readonly Fee[] = [
@@ -23,10 +25,10 @@ const FEES: readonly Fee[] = [
 ];
 
 const COLUMNS: readonly Column[] = [
-  { field: 'name', header: 'Fee Name', align: 'u-text-left' },
-  { field: 'code', header: 'Fee Code', align: 'u-text-center' },
-  { field: 'region', header: 'Region', align: 'u-text-center' },
-  { field: 'amount', header: 'Amount USD', align: 'u-text-right' },
+  { field: 'name', header: 'Fee Name', align: 'u-text-left', width: '40%' },
+  { field: 'code', header: 'Fee Code', align: 'u-text-center', width: '20%' },
+  { field: 'region', header: 'Region', align: 'u-text-center', width: '20%' },
+  { field: 'amount', header: 'Amount USD', align: 'u-text-right', width: '20%' },
 ];
 
 @Component({

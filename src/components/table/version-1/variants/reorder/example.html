@@ -7,7 +7,7 @@
     <ng-template #header let-columns>
       <tr>
         @for (col of columns; track col.field) {
-          <th [class]="col.align" intReorderableColumn>
+          <th [class]="col.align" [attr.width]="col.width" intReorderableColumn>
             <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
               <i class="icon icon-drag icon--xs u-color-secondary" aria-hidden="true"></i>
               {{ col.header }}

@@ -33,6 +33,7 @@
   --int-table-body-color: var(--i-color-primary-900); // SG: --i-datatable-body-cell-text-color · Figma: #0A1733 (table/color/text)
   --int-table-body-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px (table/font/size/sm)
   --int-table-row-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-datatable-body-cell-hover-background
+  --int-table-row-selected-background: var(--i-color-primary-50); // knowledgeBase: --i-datatable-body-cell-selected-background (row with its checkbox checked)
   --int-table-striped-odd-background: var(--i-color-neutral-50); // knowledgeBase: zebra (SG #fcfcfc) · Figma: #FCFCFC (table/color/background)
   --int-table-striped-even-background: var(--i-color-neutral-100); // knowledgeBase: zebra (SG #f2f2f5) · Figma: #F2F2F5 (table/color/intersection)
 
@@ -40,6 +41,10 @@
   --int-table-frozen-border-width: var(--i-border-width-sm); // knowledgeBase: fixedRow border 1px
   --int-table-frozen-border-color: var(--i-color-primary-900); // knowledgeBase: fixedRow border primary-900
   --int-table-frozen-font-size: var(--i-typography-font-size-md); // knowledgeBase: --i-datatable-body-frozen-cell-text-size 14px
+
+  // --- active row (knowledgeBase prTable__body--activeRow: left border of the cell) ---
+  --int-table-active-border-width: var(--i-border-width-md); // knowledgeBase: prTable__body--activeRow border 2px
+  --int-table-active-border-color: var(--i-border-accent); // knowledgeBase: prTable__body--activeRow --i-border-accent
 
   // --- focus and reorder ---
   --int-table-focus-ring-width: var(--i-border-width-sm); // SG: outline 1px
@@ -145,6 +150,11 @@
     outline: var(--int-table-focus-ring-width) solid var(--int-table-focus-ring-color);
   }
 
+  // --- active row: the consumer marks the cell of the current row (knowledgeBase prTable__body--activeRow) ---
+  &__cell--active {
+    border-inline-start: var(--int-table-active-border-width) solid var(--int-table-active-border-color);
+  }
+
   // --- frozen rows (Total row) ---
   &__tbody--frozen > tr > td {
     border-bottom: var(--int-table-frozen-border-width) solid var(--int-table-frozen-border-color);
@@ -186,6 +196,11 @@
   // --- row hover ---
   &--hoverable .int-table__tbody:not(.int-table__tbody--frozen) > tr:hover > td {
     background: var(--int-table-row-hover-background);
+  }
+
+  // --- row with its checkbox checked (knowledgeBase checkbox column): wins over stripes and hover ---
+  & .int-table__tbody:not(.int-table__tbody--frozen) > tr:has(input[type='checkbox']:checked) > td {
+    background: var(--int-table-row-selected-background);
   }
 
   // --- scrollable: sticky header (p-datatable-scrollable-table) ---

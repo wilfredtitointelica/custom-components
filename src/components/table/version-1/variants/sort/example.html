@@ -5,20 +5,20 @@
 <int-table [style]="{ width: '40rem' }" [value]="fees" sortField="amount" [sortOrder]="-1">
   <ng-template #header>
     <tr>
-      <th class="u-text-left" intSortableColumn="name">
+      <th class="u-text-left" intSortableColumn="name" width="40%">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name <int-sort-icon field="name" /></div>
       </th>
-      <th intSortableColumn="code">
+      <th intSortableColumn="code" width="20%">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
           Fee Code <int-sort-icon field="code" />
         </div>
       </th>
-      <th intSortableColumn="date">
+      <th intSortableColumn="date" width="20%">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
           Effective Date <int-sort-icon field="date" />
         </div>
       </th>
-      <th class="u-text-right" intSortableColumn="amount">
+      <th class="u-text-right" intSortableColumn="amount" width="20%">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
           Amount USD <int-sort-icon field="amount" />
         </div>

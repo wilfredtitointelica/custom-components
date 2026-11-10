@@ -12,7 +12,17 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'table',
-  uses: ['search', 'dropdown-select', 'paginator'],
-  variants: ['basic', 'template', 'size', 'sort', 'scroll', 'frozen-rows', 'reorder'],
+  uses: ['search', 'dropdown-select', 'paginator', 'multiselect', 'input'],
+  variants: [
+    'basic',
+    'template',
+    'filter',
+    'size',
+    'sort',
+    'scroll',
+    'sticky-header',
+    'frozen-rows',
+    'reorder',
+  ],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -41,7 +41,7 @@
 
     <tbody role="rowgroup" class="int-table__tbody">
       @if (bodyTemplate(); as bodyTemplate) {
-        @for (row of processedData(); track trackRow($index, row); let rowIndex = $index) {
+        @for (row of filteredData(); track trackRow($index, row); let rowIndex = $index) {
           <ng-container
             *ngTemplateOutlet="
               bodyTemplate;
@@ -50,7 +50,7 @@
           />
         }
       }
-      @if (!processedData().length && emptyMessageTemplate(); as emptyMessageTemplate) {
+      @if (!filteredData().length && emptyMessageTemplate(); as emptyMessageTemplate) {
         <ng-container *ngTemplateOutlet="emptyMessageTemplate; context: { $implicit: orderedColumns() }" />
       }
     </tbody>
