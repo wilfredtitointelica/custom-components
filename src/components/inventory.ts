@@ -28,7 +28,7 @@ import message from './message/message.config';
 import multiselect from './multiselect/multiselect.config';
 import timeline from './timeline/timeline.config';
 import toast from './toast/toast.config';
-import treeTable from './tree-table/tree-table.config';
+import treetable from './treetable/treetable.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
 import chip from './chip/chip.config';
@@ -78,7 +78,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   multiselect,
   timeline,
   toast,
-  treeTable,
+  treetable,
   card,
   badge,
   chip,

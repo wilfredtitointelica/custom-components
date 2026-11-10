@@ -1,0 +1,42 @@
+<!--
+  title: Checkbox con propagación
+  description: Columna de checkbox solo en los padres, con `selectionMode="checkbox"`: marcar un padre marca sus hijos y la cabecera marca todo.
+-->
+<int-treetable selectionMode="checkbox" dataKey="key" [value]="fees" [(selectionKeys)]="selectionKeys">
+  <ng-template #header>
+    <tr>
+      <th width="6%"></th>
+      <th class="u-text-center" width="6%">
+        <span class="u-display-inline-flex u-justify-content-center u-inherit-width">
+          <int-treetable-header-checkbox />
+        </span>
+      </th>
+      <th class="u-text-left" width="64%">Name</th>
+      <th class="u-text-right" width="24%">Amount USD</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          <int-treetable-toggler [rowNode]="rowNode" />
+        </div>
+      </td>
+      <!-- Only parents show the checkbox; the children follow their parent -->
+      <td class="u-text-center">
+        @if (rowNode.level === 0) {
+          <div class="u-display-flex u-justify-content-center">
+            <int-treetable-checkbox [value]="rowNode" />
+          </div>
+        }
+      </td>
+      <td class="u-text-left">
+        <div class="u-display-flex u-flex-column">
+          <span>{{ rowData.code }}</span>
+          <span>{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-right">{{ rowData.amount }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>

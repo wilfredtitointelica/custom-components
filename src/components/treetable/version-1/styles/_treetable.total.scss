@@ -1,0 +1,12 @@
+// int-treetable__total-row: total row at the end of the header template (p-treetable has no frozen rows).
+// Bold, bigger text and a dark bottom border; no zebra nor hover. knowledgeBase: .fixedRow (table.md)
+.int-treetable__total-row > td {
+  block-size: var(--int-treetable-total-height);
+  padding-block: 0;
+  padding-inline: var(--int-treetable-body-cell-padding);
+  border-block-end: var(--int-treetable-total-border-width) solid var(--int-treetable-total-border-color);
+  background: var(--int-treetable-header-cell-background);
+  color: var(--int-treetable-header-cell-color);
+  font-size: var(--int-treetable-total-font-size);
+  font-weight: var(--int-treetable-header-cell-font-weight);
+}

@@ -16,9 +16,9 @@ import { StyleGuideCodeSwitch } from './style-guide-code-switch';
 import { StyleGuideHelperRule } from './style-guide-helper-rule';
 import { readStyleGuideSources } from './style-guide-source';
 import { StyleGuideTokenTable } from './style-guide-token-table';
-import { readStyleTokens, StyleToken, TokenFile, TokenGroup } from './style-guide-tokens';
+import { readScrollbarTokens, readStyleTokens, StyleToken, TokenFile, TokenGroup } from './style-guide-tokens';
 
-type StyleGuideTab = 'tokens' | 'helpers';
+type StyleGuideTab = 'tokens' | 'helpers' | 'scrollbar';
 
 /** Entry of the side menu: a token file or a helper category (scrolls to its section). */
 interface NavItem {
@@ -33,12 +33,37 @@ interface NavGroup {
   readonly items: readonly NavItem[];
 }
 
-const TABS: readonly StyleGuideTab[] = ['tokens', 'helpers'];
+const TABS: readonly StyleGuideTab[] = ['tokens', 'helpers', 'scrollbar'];
+/** Sections of the Scrollbar tab (side menu). */
+const SCROLLBAR_SECTIONS: readonly { readonly id: string; readonly label: string }[] = [
+  { id: 'anatomy', label: 'Anatomía' },
+  { id: 'preview', label: 'Vista previa' },
+  { id: 'tokens', label: 'Tokens' },
+];
 const GROUPS: readonly { readonly id: TokenGroup; readonly label: string }[] = [
   { id: 'main', label: 'Main' },
   { id: 'custom', label: 'Custom' },
   { id: 'draft', label: 'Draft' },
 ];
+/** Parts of the scrollbar drawn in the Anatomy section, with the tokens of base/_scroll-bar.scss they use. */
+const SCROLLBAR_PARTS = [
+  { id: 'track', name: 'Track', tokens: ['--i-scrollbar-track-color'], description: 'Fondo del carril.' },
+  {
+    id: 'thumb',
+    name: 'Thumb',
+    tokens: ['--i-scrollbar-thumb-color', '--i-scrollbar-thumb-color-hover'],
+    description: 'Barra que se arrastra; mide al menos el 50 % del carril (min-height).',
+  },
+  { id: 'width', name: 'Ancho', tokens: ['--i-scrollbar-width'], description: 'Ancho de la barra vertical y alto de la horizontal.' },
+  {
+    id: 'border',
+    name: 'Borde',
+    tokens: ['--i-scrollbar-border-witdh'],
+    description: 'Borde del thumb con el color del track: lo separa del carril.',
+  },
+  { id: 'radius', name: 'Radio', tokens: ['--i-scrollbar-border-radius'], description: 'Esquinas del thumb.' },
+  { id: 'corner', name: 'Esquina', tokens: [], description: 'Cruce de las dos barras: transparente.' },
+] as const;
 const REFRESH_DEBOUNCE_MS = 150;
 
 /**
@@ -55,20 +80,31 @@ const REFRESH_DEBOUNCE_MS = 150;
 })
 export class StyleGuideDialog {
   protected readonly tabs = TABS;
+  protected readonly scrollbarParts = SCROLLBAR_PARTS;
+  protected readonly scrollbarRows = Array.from({ length: 14 }, (_, i) => i + 1);
   protected readonly tab = signal<StyleGuideTab>('tokens');
   /** Null when the bundle's sources could not be read. */
   protected readonly files = signal<readonly TokenFile[] | null>([]);
   protected readonly helpers = signal<readonly HelperCategory[] | null>([]);
+  /** Tokens of base/_scroll-bar.scss (Scrollbar tab). */
+  protected readonly scrollbarTokens = signal<readonly StyleToken[] | null>([]);
   protected readonly copied = signal<string | null>(null);
   /** Helpers tab, Properties switch: on, the blocks with their properties; off, only the class names (no dot, no braces). */
   protected readonly showCode = signal(true);
 
   /** Each tab keeps its own search and active menu entry. */
-  private readonly queries = { tokens: signal(''), helpers: signal('') };
-  private readonly actives = { tokens: signal<string | null>(null), helpers: signal<string | null>(null) };
+  private readonly queries = { tokens: signal(''), helpers: signal(''), scrollbar: signal('') };
+  private readonly actives = {
+    tokens: signal<string | null>(null),
+    helpers: signal<string | null>(null),
+    scrollbar: signal<string | null>(SCROLLBAR_SECTIONS[0].id),
+  };
   protected readonly query = computed(() => this.queries[this.tab()]());
   protected readonly active = computed(() => this.actives[this.tab()]());
-  protected readonly unreadable = computed(() => (this.tab() === 'tokens' ? this.files() : this.helpers()) === null);
+  protected readonly unreadable = computed(() => {
+    const tab = this.tab();
+    return (tab === 'tokens' ? this.files() : tab === 'helpers' ? this.helpers() : this.scrollbarTokens()) === null;
+  });
 
   /** Files with the tokens that match the search (name, value, resolved value or note). */
   protected readonly visibleFiles = computed(() => {
@@ -92,6 +128,11 @@ export class StyleGuideDialog {
       : this.visibleCategories().reduce((sum, category) => sum + category.rules.length, 0),
   );
   protected readonly navGroups = computed<readonly NavGroup[]>(() => {
+    if (this.tab() === 'scrollbar') {
+      const count = this.scrollbarTokens()?.length ?? 0;
+      const items = SCROLLBAR_SECTIONS.map(({ id, label }) => ({ id, label, count: id === 'tokens' ? count : 1 }));
+      return [{ id: 'scrollbar', label: 'base/_scroll-bar.scss', items }];
+    }
     if (this.tab() === 'helpers') {
       // "Helpers Colors" → "Colors": under Categories of the Helpers tab the prefix is implied.
       const items = this.visibleCategories().map(({ id, title, rules }) => ({
@@ -116,6 +157,7 @@ export class StyleGuideDialog {
   private readonly scrolls: Record<StyleGuideTab, { nav: number; content: number }> = {
     tokens: { nav: 0, content: 0 },
     helpers: { nav: 0, content: 0 },
+    scrollbar: { nav: 0, content: 0 },
   };
   private readonly injector = inject(Injector);
   private readonly clipboard = inject(ClipboardHistory);
@@ -160,6 +202,7 @@ export class StyleGuideDialog {
     const helpers = readStyleHelpers(sources);
     this.files.set(files);
     this.helpers.set(helpers);
+    this.scrollbarTokens.set(readScrollbarTokens(sources));
     keepActive(this.actives.tokens, files);
     keepActive(this.actives.helpers, helpers);
   }

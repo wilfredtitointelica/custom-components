@@ -12,7 +12,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   { name: 'Navegación', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
     name: 'Contención',
-    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'tree-table', 'tree-view', 'timeline'],
+    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'treetable', 'tree-view', 'timeline'],
   },
   {
     name: 'Comunicación',
@@ -51,7 +51,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   'confirm-dialog-modal': 'pi-question-circle',
   carousel: 'pi-images',
   table: 'pi-table',
-  'tree-table': 'pi-objects-column',
+  treetable: 'pi-objects-column',
   'tree-view': 'pi-sitemap',
   timeline: 'pi-history',
   alertas: 'pi-exclamation-circle',

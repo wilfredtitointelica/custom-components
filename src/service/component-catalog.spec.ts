@@ -290,7 +290,7 @@ describe('Component catalog', () => {
     expect(catalog.searchByName('TREE').map((c) => c.id)).toEqual([
       'tree-view',
       'tree-select',
-      'tree-table',
+      'treetable',
     ]);
     expect(catalog.searchByName('basic')).toEqual([]); // variant names are not searched
     expect(catalog.searchByName('  ').length).toBe(CATALOG.length);

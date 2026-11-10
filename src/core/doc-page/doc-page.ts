@@ -267,6 +267,27 @@ export class DocPage {
       destroyRef.onDestroy(() => observer.disconnect());
     });
 
+    // The variant heads stick below the chips row too: publish their height as --doc-section-head-h, so an
+    // example can stick a int-* below the whole stack (treetable stickyTop). All heads are the same
+    // height; the first one is measured once the examples are rendered.
+    let headObserver: ResizeObserver | undefined;
+    destroyRef.onDestroy(() => headObserver?.disconnect());
+    effect(() => {
+      if (!this.examples.hasValue()) return;
+      afterNextRender(
+        () => {
+          const head = host.querySelector<HTMLElement>('.doc-section-head');
+          if (!head) return;
+          headObserver?.disconnect();
+          headObserver = new ResizeObserver(([entry]) =>
+            host.style.setProperty('--doc-section-head-h', `${entry.borderBoxSize[0].blockSize}px`),
+          );
+          headObserver.observe(head);
+        },
+        { injector },
+      );
+    });
+
     // A variant head only gets its background (and z-index) while it is stuck: at rest it stays
     // transparent and below the previous preview, so an open overlay (select, datepicker…) is not cut.
     // It is stuck once its section's top has scrolled above the head's sticky offset.
@@ -349,10 +370,24 @@ const SCAN_MARK = 'data-dep-scan';
 const DONE_MARK = 'data-dep-done';
 /** Set on a marked element that already has its own position (fixed, absolute…), so the scan keeps it. */
 const POSITIONED_MARK = 'data-dep-positioned';
+/**
+ * Outline without label ("scan" | "done") on the other elements of the dependency in its first table
+ * row: a button repeated per row shows up once, in the first row, instead of in every row.
+ */
+const ROW_MARK = 'data-dep-row';
 
-/** Marks the first element of a dependency with how many there are; clears the mark from the rest. */
+/**
+ * Marks the first element of a dependency with how many there are, outlines the others in its first
+ * table row and clears the mark from the rest.
+ */
 function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement[]): void {
   if (!first) return;
+  const row = [first, ...rest].map((element) => element.closest('tbody tr')).find(Boolean);
+  const kind = attribute === SCAN_MARK ? 'scan' : 'done';
+  for (const element of rest) {
+    if (row && element.closest('tbody tr') === row) element.setAttribute(ROW_MARK, kind);
+    else if (element.getAttribute(ROW_MARK) === kind) element.removeAttribute(ROW_MARK);
+  }
   const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
   if (first.getAttribute(attribute) !== label) {
     // Read before marking: once marked, the scan rule would make a static element relative.
@@ -383,9 +418,10 @@ function markDependencies(host: HTMLElement, resolved: readonly string[]): void 
 }
 
 function clearDependencyMarks(host: HTMLElement): void {
-  for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}]`)) {
+  for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}], [${ROW_MARK}]`)) {
     element.removeAttribute(SCAN_MARK);
     element.removeAttribute(DONE_MARK);
     element.removeAttribute(POSITIONED_MARK);
+    element.removeAttribute(ROW_MARK);
   }
 }
