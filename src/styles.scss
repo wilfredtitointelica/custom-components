@@ -284,6 +284,22 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
   }
 }
 
+// The other provisionals / int-* of the dependency in its first table row (data-dep-row): same outline,
+// without label (the first one already carries "×<total>").
+.doc-is-scanning .doc-preview [data-dep-row='scan'] {
+  outline: 2px dashed var(--doc-scan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--doc-scan-glow);
+  animation: doc-scan-pulse 1.6s ease-in-out infinite;
+}
+
+.doc-is-scanning .doc-preview [data-dep-row='done'] {
+  outline: 2px dashed var(--doc-success);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--doc-success-glow);
+  animation: doc-scan-pulse 1.6s ease-in-out infinite;
+}
+
 @keyframes doc-scan-pulse {
   50% {
     box-shadow: 0 0 0 10px transparent;

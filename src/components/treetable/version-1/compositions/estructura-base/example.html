@@ -1,0 +1,67 @@
+<!--
+  title: Estructura base
+  description: Columna de toggler, marca, nombre como link de dos líneas y acciones, con alineación por tipo de contenido y orden en las columnas que lo permiten.
+-->
+<int-treetable [value]="fees">
+  <ng-template #header>
+    <tr>
+      <!-- Column without title (toggler): the empty cell keeps the header height -->
+      <th width="6%"></th>
+      <th class="u-text-center" ttSortableColumn="brand" width="10%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Brand
+          <int-treetable-sort-icon field="brand" />
+        </span>
+      </th>
+      <th class="u-text-left" ttSortableColumn="code" width="50%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Name
+          <int-treetable-sort-icon field="code" />
+        </span>
+      </th>
+      <th class="u-text-right" ttSortableColumn="amount" width="24%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Amount USD
+          <int-treetable-sort-icon field="amount" />
+        </span>
+      </th>
+      <th class="u-text-center" width="10%">Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          <int-treetable-toggler [rowNode]="rowNode" />
+        </div>
+      </td>
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          @switch (rowData.brand) {
+            @case ('visa') { <i class="icon icon-visa" aria-label="Visa"></i> }
+            @case ('mastercard') { <i class="icon icon-mastercard" aria-label="Mastercard"></i> }
+            @case ('amex') { <i class="icon icon-amex" aria-label="Amex"></i> }
+          }
+        </div>
+      </td>
+      <!-- Code and description are one clickable area: a single link -->
+      <td class="u-text-left">
+        <a class="u-text-link u-display-flex u-flex-column" href="#" (click)="$event.preventDefault()">
+          <span>{{ rowData.code }}</span>
+          <span>{{ rowData.name }}</span>
+        </a>
+      </td>
+      <td class="u-text-right">{{ rowData.amount }}</td>
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          <!-- dep:button provisional · replace with <int-button> when button is done -->
+          <!-- Text button (no border): a span, since no helper removes the native button border -->
+          <span class="u-display-inline-flex u-p-1 u-radius-md u-color-body u-pointer" role="button" tabindex="0" aria-label="Settings" data-dep="button">
+            <i class="icon icon-settings" aria-hidden="true"></i>
+          </span>
+          <!-- /dep:button -->
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</int-treetable>

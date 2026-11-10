@@ -1,0 +1,25 @@
+<!--
+  title: Accessibility
+  description: Cada fila es `role="row"` con `aria-level` y `aria-expanded`; un solo tab stop recorre las filas con ↑ ↓, expande con → y contrae con ←.
+-->
+<int-treetable selectionMode="single" dataKey="name" [value]="files">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="50%">Name</th>
+      <th width="25%">Size</th>
+      <th width="25%">Type</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+      <td class="u-text-left">
+        <div class="u-display-flex u-align-items-center u-gap-xs">
+          <int-treetable-toggler [rowNode]="rowNode" />
+          <span class="u-text-ellipsis">{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-center">{{ rowData.size }} kb</td>
+      <td class="u-text-center">{{ rowData.type }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>

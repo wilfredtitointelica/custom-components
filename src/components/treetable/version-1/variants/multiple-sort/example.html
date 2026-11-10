@@ -1,0 +1,40 @@
+<!--
+  title: Multiple Sort
+  description: Con `sortMode="multiple"`, Ctrl o ⌘ + clic suma columnas al orden; el icono muestra su posición.
+-->
+<int-treetable sortMode="multiple" [value]="files">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" ttSortableColumn="name" width="50%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Name
+          <int-treetable-sort-icon field="name" />
+        </span>
+      </th>
+      <th ttSortableColumn="size" width="25%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Size
+          <int-treetable-sort-icon field="size" />
+        </span>
+      </th>
+      <th ttSortableColumn="type" width="25%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Type
+          <int-treetable-sort-icon field="type" />
+        </span>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-left">
+        <div class="u-display-flex u-align-items-center u-gap-xs">
+          <int-treetable-toggler [rowNode]="rowNode" />
+          <span class="u-text-ellipsis">{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-center">{{ rowData.size }} kb</td>
+      <td class="u-text-center">{{ rowData.type }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>

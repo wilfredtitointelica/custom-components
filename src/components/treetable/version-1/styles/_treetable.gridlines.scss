@@ -1,0 +1,8 @@
+// int-treetable--gridlines (showGridlines): a border on every cell. Only what changes from the base.
+.int-treetable--gridlines {
+  .int-treetable__thead > tr > th,
+  .int-treetable__tbody > tr > td,
+  .int-treetable__tfoot > tr > td {
+    border: var(--int-treetable-header-cell-border-width) solid var(--int-treetable-gridline-color);
+  }
+}

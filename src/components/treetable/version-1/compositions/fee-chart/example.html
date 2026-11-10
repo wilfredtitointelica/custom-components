@@ -1,0 +1,229 @@
+<!--
+  title: Fee Chart
+  description: Tabla de fees con título y acciones en el template `caption`, fila de total al final del template `header`, columnas ordenables y paginador a la derecha con filas por página y número de página en `paginatorleft`.
+-->
+<int-treetable paginator [value]="fees" [rows]="rows()" [first]="first()" [showPageLinks]="false" [showFirstLastIcon]="false" (onPage)="onPage($event)">
+	<!-- Title on the left, search and download on the right -->
+	<ng-template #caption>
+		<div class="u-display-flex u-align-items-center u-justify-content-between u-gap-md u-full-width">
+			<span class="u-text-lg u-bold">Fee Chart</span>
+			<div class="u-display-flex u-align-items-center u-gap-sm">
+				<!-- dep:search provisional · replace with <int-search> when search is done -->
+				<!-- The input is the box; the icon is absolute, so the flex end of the wrapper places it on the right -->
+				<div class="u-relative u-display-flex u-align-items-center u-justify-content-end" data-dep="search">
+					<input
+						type="text"
+						size="22"
+						class="u-full-width u-ps-3 u-pe-5 u-py-2 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-text-sm u-color-body"
+						placeholder="Search by Institution"
+						aria-label="Search by Institution"
+					/>
+					<i class="icon icon-search u-absolute u-me-2 u-color-body" aria-hidden="true"></i>
+				</div>
+				<!-- /dep:search -->
+				<!-- dep:button provisional · replace with <int-button> when button is done -->
+				<button type="button" class="u-display-inline-flex u-p-2 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-color-body u-pointer" aria-label="Download" data-dep="button">
+					<i class="icon icon-download" aria-hidden="true"></i>
+				</button>
+				<!-- /dep:button -->
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #header>
+		<tr>
+			<th width="3%"></th>
+			<th ttSortableColumn="brand" width="6%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Brand
+					<int-treetable-sort-icon field="brand" />
+				</span>
+			</th>
+			<th ttSortableColumn="institution" width="10%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Institution
+					<int-treetable-sort-icon field="institution" />
+				</span>
+			</th>
+			<th ttSortableColumn="business" width="7%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Business
+					<int-treetable-sort-icon field="business" />
+				</span>
+			</th>
+			<th ttSortableColumn="service" width="17%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Service
+					<int-treetable-sort-icon field="service" />
+				</span>
+			</th>
+			<th ttSortableColumn="lastBilling" width="8%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Last Billing Date
+					<int-treetable-sort-icon field="lastBilling" />
+				</span>
+			</th>
+			<th width="7%">Fee Code</th>
+			<th width="11%">Fee Name</th>
+			<th width="7%">Consecutive Billing</th>
+			<th ttSortableColumn="amount" width="9%">
+				<span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+					Amount (EUR)
+					<int-treetable-sort-icon field="amount" />
+				</span>
+			</th>
+			<th width="8%">Regional Adoption Rate</th>
+			<th width="7%">Steps to Opt-Out</th>
+		</tr>
+		<!-- Total: last row of the header, so sorting never moves it. colspan up to the amount column -->
+		@if (fees.length) {
+		<tr class="int-treetable__total-row">
+			<td colspan="9">Total</td>
+			<td class="u-text-right">{{ total.toLocaleString("en-US", { minimumFractionDigits: 2 }) }}</td>
+			<td></td>
+			<td></td>
+		</tr>
+		}
+	</ng-template>
+
+	<ng-template #body let-rowNode let-rowData="rowData">
+		<tr [ttRow]="rowNode">
+			<td class="u-text-center">
+				<div class="u-display-flex u-justify-content-center">
+					<int-treetable-toggler [rowNode]="rowNode" />
+				</div>
+			</td>
+			@if (rowNode.level === 0) {
+			<td class="u-text-center">
+				<div class="u-display-flex u-justify-content-center">
+					@if (rowData.brand === 'visa') {
+					<i class="icon icon-visa" aria-label="Visa"></i>
+					} @else {
+					<i class="icon icon-mastercard" aria-label="Mastercard"></i>
+					}
+				</div>
+			</td>
+			<td class="u-text-center">{{ rowData.institution }}</td>
+			<td class="u-text-center">{{ rowData.business }}</td>
+			<td class="u-text-left">
+				<div class="u-display-flex u-align-items-center u-justify-content-between u-gap-sm">
+					<a class="u-text-link" href="#" (click)="$event.preventDefault()">{{ rowData.service }}</a>
+					<!-- dep:button provisional · replace with <int-button> when button is done -->
+					<!-- Text button (no border): a span, since no helper removes the native button border -->
+					<span class="u-display-inline-flex u-p-1 u-radius-md u-color-body u-pointer" role="button" tabindex="0" aria-label="Open in a new tab" data-dep="button">
+						<i class="icon icon-external-link icon--xs" aria-hidden="true"></i>
+					</span>
+					<!-- /dep:button -->
+				</div>
+			</td>
+			<td class="u-text-center">{{ rowData.lastBilling }}</td>
+			} @else {
+			<!-- Fee rows keep every cell so the columns stay aligned -->
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			}
+			<td class="u-text-center">{{ rowData.feeCode }}</td>
+			<td class="u-text-left">{{ rowData.feeName }}</td>
+			<td class="u-text-center">{{ rowData.consecutiveBilling }}</td>
+			<td class="u-text-right">{{ rowData.amount.toLocaleString("en-US", { minimumFractionDigits: 2 }) }}</td>
+			<td class="u-text-center">{{ rowData.adoptionRate }}</td>
+			<td class="u-text-center">
+				@if (rowNode.level === 0) {
+				<div class="u-display-flex u-justify-content-center">
+					<!-- dep:button provisional · replace with <int-button> when button is done -->
+					<!-- Text button (no border): a span, since no helper removes the native button border -->
+					<span
+						class="u-display-inline-flex u-p-1 u-radius-md"
+						role="button"
+						[class.u-color-body]="rowData.optOut"
+						[class.u-pointer]="rowData.optOut"
+						[class.u-color-grey-500]="!rowData.optOut"
+						[attr.tabindex]="rowData.optOut ? 0 : -1"
+						[attr.aria-disabled]="!rowData.optOut"
+						aria-label="Steps to opt-out"
+						data-dep="button"
+					>
+						<i class="icon icon-settings" aria-hidden="true"></i>
+					</span>
+					<!-- /dep:button -->
+				</div>
+				}
+			</td>
+		</tr>
+	</ng-template>
+
+	<!-- Rows per page and page number, next to the arrows (the paginator sits at the end) -->
+	<ng-template #paginatorleft>
+		<div class="u-display-flex u-align-items-center u-gap-lg u-text-md">
+			<div class="u-display-flex u-align-items-center u-gap-lg">
+				<span class="u-text-nowrap" id="fee-chart-rows-label">Rows per page:</span>
+
+				<!-- dep:dropdown-select provisional · replace with <int-dropdown-select> when dropdown-select is done -->
+				<span class="u-relative u-display-inline-flex u-flex-column u-align-items-center" data-dep="dropdown-select">
+					<!-- Empty anchor (0 height): the list grows upwards from it, centered on the trigger -->
+					<span class="u-display-flex u-flex-column u-justify-content-end u-align-items-center">
+						@if (rowsOpen()) {
+						<div
+							class="u-absolute u-mb-1 u-px-1 u-py-1 u-radius-lg u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-shadow-md u-text-right"
+							role="listbox"
+							id="fee-chart-rows-list"
+							aria-labelledby="fee-chart-rows-label"
+						>
+							@for (size of otherPageSizes(); track size) {
+							<div
+								class="u-px-1 u-pointer"
+								role="option"
+								tabindex="0"
+								[attr.aria-selected]="false"
+								(click)="selectRowsPerPage(size, trigger)"
+								(keydown.enter)="selectRowsPerPage(size, trigger)"
+								(keydown.space)="$event.preventDefault(); selectRowsPerPage(size, trigger)"
+								(keydown.escape)="closeRows(trigger)"
+							>
+								{{ size }}
+							</div>
+							}
+						</div>
+						}
+					</span>
+					<span
+						#trigger
+						class="u-display-flex u-align-items-center u-gap-sm u-pointer"
+						role="combobox"
+						tabindex="0"
+						aria-haspopup="listbox"
+						aria-controls="fee-chart-rows-list"
+						aria-labelledby="fee-chart-rows-label"
+						[attr.aria-expanded]="rowsOpen()"
+						(click)="toggleRows()"
+						(keydown)="onRowsTriggerKeydown($event)"
+					>
+						<span class="u-text-right">{{ rows() }}</span>
+						<i class="icon icon--sm" [class]="rowsOpen() ? 'icon-arrow-up' : 'icon-arrow-down'" aria-hidden="true"></i>
+					</span>
+				</span>
+				<!-- /dep:dropdown-select -->
+			</div>
+
+			<div class="u-display-flex u-align-items-center u-gap-sm">
+				<span>Page</span>
+				<!-- dep:input provisional · replace with <int-input> (number) when input is done -->
+				<input
+					type="text"
+					inputmode="numeric"
+					size="2"
+					class="u-px-3 u-radius-sm u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-white u-text-md u-bold u-text-center u-color-body"
+					aria-label="Page"
+					data-dep="input"
+					[value]="currentPage()"
+					(change)="onPageSelect($event)"
+				/>
+				<!-- /dep:input -->
+				<span class="u-text-nowrap">of {{ totalPages() }}</span>
+			</div>
+		</div>
+	</ng-template>
+</int-treetable>

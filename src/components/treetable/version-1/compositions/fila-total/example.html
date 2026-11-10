@@ -1,0 +1,46 @@
+<!--
+  title: Fila Total
+  description: Fila de total al final del template `header`: el orden no la mueve y se marca con un borde inferior.
+-->
+<int-treetable [value]="fees">
+  <ng-template #header>
+    <tr>
+      <th width="6%"></th>
+      <th class="u-text-left" ttSortableColumn="code" width="60%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Name
+          <int-treetable-sort-icon field="code" />
+        </span>
+      </th>
+      <th class="u-text-right" ttSortableColumn="amount" width="34%">
+        <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+          Amount USD
+          <int-treetable-sort-icon field="amount" />
+        </span>
+      </th>
+    </tr>
+    <!-- Total row: last row of the header, so sorting never moves it. colspan + one cell per column left -->
+    @if (fees.length) {
+      <tr class="int-treetable__total-row">
+        <td colspan="2">Total</td>
+        <td class="u-text-right">{{ total }}</td>
+      </tr>
+    }
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          <int-treetable-toggler [rowNode]="rowNode" />
+        </div>
+      </td>
+      <td class="u-text-left">
+        <div class="u-display-flex u-flex-column">
+          <span class="u-bold">{{ rowData.code }}</span>
+          <span>{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-right">{{ rowData.amount }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>

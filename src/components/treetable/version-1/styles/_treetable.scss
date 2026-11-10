@@ -1,0 +1,389 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// The --i-datatable-* tokens of the knowledge base are not in the Style Guide bundle: each --int-* points
+// to the global token they resolve to, and the knowledge base token stays in the comment.
+:root {
+  --NOTE-TREETABLE: 'int-treetable ( Custom )';
+
+  // --- header cell ---
+  --int-treetable-header-cell-background: var(--i-color-secondary-50); // knowledgeBase: --i-datatable-cell-background → --i-color-neutral-50 · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
+  --int-treetable-header-cell-color: var(--i-color-primary-900); // knowledgeBase: --i-datatable-header-cell-text-color → --i-color-primary-900 · Figma: #0A1733 (table/color/text) · Aura: {content.color}
+  --int-treetable-header-cell-hover-background: var(--i-color-secondary-50); // knowledgeBase: --i-datatable-header-cell-hover-background → --i-color-neutral-50 · Aura: {content.hover.background}
+  --int-treetable-header-cell-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-header-cell-text-size · Figma: 12px (table/font/size/sm) · Aura: inherit
+  --int-treetable-header-cell-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: --i-datatable-header-cell-text-weight · Figma: Lato Bold · Aura: 600
+  --int-treetable-header-cell-padding: var(--i-spacing-100); // knowledgeBase: --i-datatable-header-cell-padding-x (SG applies it to every side) · Aura: 0.75rem 1rem
+  --int-treetable-header-cell-height: var(--i-sizing-800); // Figma: 64px (column-header) · SG: 60px ⚠️ · Aura: —
+  --int-treetable-header-cell-gap: var(--i-spacing-gap-sm); // knowledgeBase: --i-datatable-header-cell-gap · Aura: 0.5rem
+  --int-treetable-header-cell-border-width: var(--i-border-width-sm); // knowledgeBase: --i-datatable-header-cell-border-width · Figma: 1px divider · Aura: 0 0 1px 0
+  --int-treetable-header-cell-border-color: var(--i-color-neutral-300); // knowledgeBase: --i-datatable-header-cell-border-color · Aura: {content.border.color}
+
+  // --- sort icon ---
+  --int-treetable-sort-icon-color: var(--i-color-secondary-600); // knowledgeBase: --i-datatable-sort-icon-color · Aura: {text.muted.color}
+  --int-treetable-sort-icon-selected-color: var(--i-color-primary-600); // knowledgeBase: --i-datatable-sort-icon-selected-color · Aura: {highlight.color}
+  --int-treetable-sort-icon-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-sort-icon-size · Figma: 12px (icon resizer) · Aura: 0.875rem
+
+  // --- row / body cell ---
+  --int-treetable-row-background: var(--i-color-secondary-50); // SG: #fcfcfc (odd rows) · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
+  --int-treetable-row-striped-background: var(--i-color-secondary-100); // SG: #f2f2f5 (even rows) · Figma: #F2F2F5 (table/color/intersection) · Aura: —
+  --int-treetable-row-color: var(--i-color-primary-900); // knowledgeBase: --i-datatable-body-cell-text-color · Figma: #0A1733 (table/color/text) · Aura: {content.color}
+  --int-treetable-row-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-datatable-body-cell-hover-background · Aura: {content.hover.background}
+  --int-treetable-row-selected-background: var(--i-color-primary-50); // knowledgeBase: --i-datatable-body-cell-selected-background · Aura: {highlight.background}
+  --int-treetable-body-cell-padding: var(--i-spacing-100); // knowledgeBase: --i-datatable-body-cell-padding-x / -y · Figma: 8px (table/padding/md) · Aura: 0.75rem 1rem
+  --int-treetable-body-cell-height: var(--i-sizing-600); // knowledgeBase: --i-datatable-body-cell-height · Figma: 48px · Aura: —
+  --int-treetable-body-cell-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px · Aura: inherit
+  --int-treetable-gridline-color: var(--i-color-secondary-200); // knowledgeBase: --i-datatable-body-cell-border-color → neutral-200 · Aura: {treetable.border.color}
+  --int-treetable-transition-duration: var(--i-motion-duration-fast); // SG: 0.3s (sort icon) · Aura: {transition.duration} 0.2s
+
+  // --- focus ---
+  --int-treetable-focus-ring-width: var(--i-border-width-sm); // SG: 1px · Aura: {focus.ring.width}
+  --int-treetable-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color · Aura: {focus.ring.color}
+
+  // --- toggler ---
+  --int-treetable-toggler-size: var(--i-sizing-md); // SG: 24px button · Aura: 1.75rem ⚠️
+  --int-treetable-toggler-color: var(--i-color-primary-900); // knowledgeBase: treetable toggler --i-color-primary-900 · Aura: {text.muted.color}
+  --int-treetable-toggler-icon-size: var(--i-typography-font-size-lg); // SG: --i-typography-font-size-lg · Aura: 1rem
+  --int-treetable-toggler-border-radius: 50%; // Aura: 50%
+  --int-treetable-indent: var(--i-spacing-200); // Aura: 16px per level (inline style of PrimeNG)
+  --int-treetable-toggle-duration: var(--i-motion-duration-fast); // knowledgeBase: rotate 0.2s · Aura: —
+  --int-treetable-toggle-easing: var(--i-motion-ease-in-out); // knowledgeBase: cubic-bezier(0.4, 0, 0.2, 1) · Aura: —
+
+  // --- total row ---
+  --int-treetable-total-border-color: var(--i-color-primary-900); // knowledgeBase: fixedRow border primary-900 · Figma: #0A1733 (table/color/border) · Aura: —
+  --int-treetable-total-border-width: var(--i-border-width-sm); // knowledgeBase: 1px · Figma: 1px (table/border/width/sm) · Aura: —
+  --int-treetable-total-font-size: var(--i-typography-font-size-md); // knowledgeBase: --i-datatable-body-frozen-cell-text-size · Figma: 14px (table/font/size/md) · Aura: —
+  --int-treetable-total-height: var(--i-sizing-600); // knowledgeBase: 48px · Figma: 48px · Aura: —
+
+  // --- loading ---
+  --int-treetable-mask-background: color-mix(in srgb, var(--i-color-secondary-50) 70%, transparent); // SG: — · Aura: {mask.background} rgba(0,0,0,.4) ⚠️ light mask of the Style Guide surface
+  --int-treetable-loading-icon-size: var(--i-sizing-400); // Aura: 2rem
+  --int-treetable-spin-duration: calc(var(--i-motion-duration-slow) * 2); // Aura: pi-spin 2s ⚠️ 1s
+
+  // --- sticky header ---
+  --int-treetable-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height · Aura: —
+
+  // --- checkbox (TODO(dep:checkbox provisional)) ---
+  --int-treetable-checkbox-size: var(--i-sizing-xs); // SG: 16px · knowledgeBase: checkbox 16px · Aura: {checkbox.width} 1.25rem
+  --int-treetable-checkbox-border-radius: var(--i-border-radius-sm); // knowledgeBase: 4px · Aura: {checkbox.border.radius}
+  --int-treetable-checkbox-background: var(--i-color-secondary-50); // SG: unchecked #FCFCFC · Aura: {form.field.background}
+  --int-treetable-checkbox-border-color: var(--i-color-secondary-200); // knowledgeBase: unchecked secondary-200 · Aura: {form.field.border.color}
+  --int-treetable-checkbox-checked-background: var(--i-color-primary-700); // knowledgeBase: checked primary-700 · Aura: {primary.color}
+  --int-treetable-checkbox-icon-color: var(--i-color-primary-50); // SG: #EEF2FC · Aura: {primary.contrast.color}
+  --int-treetable-checkbox-icon-size: var(--i-typography-font-size-xs); // SG: 10px inside the 16px box · Aura: 0.875rem
+  --int-treetable-checkbox-hover-border-color: var(--i-color-primary-600); // SG: hover border · Aura: {form.field.hover.border.color}
+  --int-treetable-checkbox-disabled-color: var(--i-color-secondary-200); // SG: disabled background / border · Aura: {form.field.disabled.background}
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// No overflow on the block: menus and selects opened in a cell must not be clipped.
+.int-treetable {
+  position: relative;
+  display: block;
+  color: var(--int-treetable-row-color);
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-treetable {
+  &__header {
+    padding-block-end: var(--int-treetable-body-cell-padding);
+  }
+
+  &__footer {
+    padding-block-start: var(--int-treetable-body-cell-padding);
+  }
+
+  // The paginator of a table always sits at the end (knowledge base: table paginator). Its templateLeft
+  // stays next to the arrows instead of being pushed to the start.
+  & &__paginator {
+    justify-content: flex-end;
+    padding-block: var(--int-treetable-body-cell-padding);
+  }
+
+  &__paginator > .int-paginator__content-start {
+    margin-inline-end: 0;
+  }
+
+  &__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  // --- header cells ---
+  &__thead > tr > th {
+    block-size: var(--int-treetable-header-cell-height);
+    padding: var(--int-treetable-header-cell-padding);
+    border-block-end: var(--int-treetable-header-cell-border-width) solid var(--int-treetable-header-cell-border-color);
+    background: var(--int-treetable-header-cell-background);
+    color: var(--int-treetable-header-cell-color);
+    font-size: var(--int-treetable-header-cell-font-size);
+    font-weight: var(--int-treetable-header-cell-font-weight);
+    text-align: center;
+    transition: background-color var(--int-treetable-transition-duration);
+  }
+
+  &__sortable-column {
+    cursor: pointer;
+    user-select: none;
+
+    &:not(.int-treetable__sortable-column--sorted):hover {
+      background: var(--int-treetable-header-cell-hover-background);
+    }
+  }
+
+  &__sort-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--int-treetable-header-cell-gap);
+    color: var(--int-treetable-sort-icon-color);
+    font-size: var(--int-treetable-sort-icon-size);
+    vertical-align: middle;
+    transition: color var(--int-treetable-transition-duration);
+
+  }
+
+  // Beats the Style Guide .icon font-size (16px).
+  &__sort-icon &__sort-arrow {
+    font-size: inherit;
+  }
+
+  &__sortable-column--sorted &__sort-icon {
+    color: var(--int-treetable-sort-icon-selected-color);
+  }
+
+  // TODO(dep:badge provisional): position in multiple sort until int-badge is done.
+  &__sort-badge {
+    min-inline-size: var(--int-treetable-checkbox-size);
+    border-radius: var(--i-border-radius-full);
+    background: var(--int-treetable-sort-icon-selected-color);
+    color: var(--int-treetable-checkbox-icon-color);
+    font-size: var(--int-treetable-checkbox-icon-size);
+    text-align: center;
+  }
+
+  // --- body cells, zebra as the Style Guide ---
+  &__tbody > tr > td {
+    block-size: var(--int-treetable-body-cell-height);
+    padding: var(--int-treetable-body-cell-padding);
+    background: var(--int-treetable-row-background);
+    font-size: var(--int-treetable-body-cell-font-size);
+    text-align: start;
+    transition: background-color var(--int-treetable-transition-duration);
+  }
+
+  &__tbody > tr:nth-child(even) > td {
+    background: var(--int-treetable-row-striped-background);
+  }
+
+  &--hoverable-rows &__tbody > tr {
+    cursor: pointer;
+  }
+
+  &__tbody > tr:hover > td {
+    background: var(--int-treetable-row-hover-background);
+  }
+
+  // A checked row checkbox marks the row as selected too (knowledge base).
+  &__tbody > tr:is(.int-treetable__row--selected, :has(.int-treetable__checkbox--checked)) > td {
+    background: var(--int-treetable-row-selected-background);
+  }
+
+  &__tfoot > tr > td {
+    padding: var(--int-treetable-body-cell-padding);
+    background: var(--int-treetable-header-cell-background);
+    font-size: var(--int-treetable-body-cell-font-size);
+    font-weight: var(--int-treetable-header-cell-font-weight);
+  }
+
+  // --- focus: rows and sortable headers, keyboard only ---
+  &__row:focus-visible,
+  &__sortable-column:focus-visible {
+    outline: var(--int-treetable-focus-ring-width) solid var(--int-treetable-focus-ring-color);
+    outline-offset: calc(var(--int-treetable-focus-ring-width) * -1);
+  }
+
+  &__row:focus-visible &__toggler {
+    outline: var(--int-treetable-focus-ring-width) solid var(--int-treetable-focus-ring-color);
+  }
+
+  // --- toggler: the arrow rotates instead of swapping icons (Style Guide adaptation) ---
+  &__toggler {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--int-treetable-toggler-size);
+    block-size: var(--int-treetable-toggler-size);
+    padding: 0;
+    border: 0;
+    border-radius: var(--int-treetable-toggler-border-radius);
+    background: transparent;
+    color: var(--int-treetable-toggler-color);
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__toggler &__toggler-icon {
+    font-size: var(--int-treetable-toggler-icon-size);
+    transition: transform var(--int-treetable-toggle-duration) var(--int-treetable-toggle-easing);
+  }
+
+  &__toggler--expanded &__toggler-icon {
+    transform: rotate(90deg); // knowledgeBase: icon-arrow-right rotated 90deg when expanded
+  }
+
+  // --- loading mask ---
+  &__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  &__mask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 100%;
+    background: var(--int-treetable-mask-background);
+  }
+
+  &__loading-icon {
+    font-size: var(--int-treetable-loading-icon-size);
+
+    &--spin {
+      animation: int-treetable-spin var(--int-treetable-spin-duration) linear infinite;
+    }
+  }
+
+  // --- checkbox (TODO(dep:checkbox provisional)): native input + painted box until int-checkbox is done ---
+  &__checkbox {
+    position: relative;
+    display: inline-flex;
+    inline-size: var(--int-treetable-checkbox-size);
+    block-size: var(--int-treetable-checkbox-size);
+    vertical-align: middle;
+  }
+
+  &__checkbox-input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &__checkbox-box {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: var(--i-border-width-sm) solid var(--int-treetable-checkbox-border-color);
+    border-radius: var(--int-treetable-checkbox-border-radius);
+    background: var(--int-treetable-checkbox-background);
+    color: var(--int-treetable-checkbox-icon-color);
+  }
+
+  &__checkbox-box &__checkbox-icon {
+    font-size: var(--int-treetable-checkbox-icon-size);
+  }
+
+  &__checkbox-dash {
+    inline-size: calc(var(--int-treetable-checkbox-size) / 2);
+    block-size: var(--i-border-width-md);
+    background: currentColor;
+  }
+
+  &__checkbox:hover:not(&__checkbox--checked, &__checkbox--partial, &__checkbox--disabled) &__checkbox-box,
+  &__checkbox-input:focus-visible + &__checkbox-box {
+    border-color: var(--int-treetable-checkbox-hover-border-color);
+  }
+
+  &__checkbox--checked &__checkbox-box,
+  &__checkbox--partial &__checkbox-box {
+    border-color: var(--int-treetable-checkbox-checked-background);
+    background: var(--int-treetable-checkbox-checked-background);
+  }
+
+  &__checkbox--disabled {
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  &__checkbox--disabled &__checkbox-input {
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  &__checkbox--disabled &__checkbox-box {
+    border-color: var(--int-treetable-checkbox-disabled-color);
+    background: var(--int-treetable-checkbox-disabled-color);
+  }
+}
+
+@keyframes int-treetable-spin {
+  to {
+    transform: rotate(360deg); // Aura: pi-spin
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-treetable {
+  &--auto-layout &__wrapper {
+    overflow-x: auto;
+  }
+
+  &--auto-layout &__table {
+    table-layout: auto;
+  }
+
+  // scrollable: the wrapper scrolls (max-height from scrollHeight) and the header stays on top.
+  &--scrollable &__wrapper {
+    overflow: auto;
+  }
+
+  &--scrollable &__thead {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+  }
+
+  &--flex-scrollable {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+  }
+
+  &--flex-scrollable &__wrapper {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-treetable,
+  .int-treetable * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-treetable {
+  display: block;
+  inline-size: 100%;
+  block-size: calc(var(--int-treetable-header-cell-height) + var(--int-treetable-body-cell-height) * 5);
+  background: var(--int-treetable-row-striped-background);
+}

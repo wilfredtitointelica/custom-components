@@ -1,0 +1,7 @@
+// int-treetable--sticky-header (stickyHeader, int-* extension): the header sticks below the dashboard
+// header while the page scrolls. knowledgeBase: .prTable--stickyHeader
+.int-treetable--sticky-header .int-treetable__thead {
+  position: sticky;
+  inset-block-start: var(--int-treetable-sticky-top);
+  z-index: 1;
+}

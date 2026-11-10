@@ -1,0 +1,102 @@
+<!--
+  title: TreeTable
+  description:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=4351-2899&t=6TgTdZCjJe19Qt24-4
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=5236-12461
+-->
+
+<!-- Loading mask over the whole table -->
+@if (loading() && showLoader()) {
+  <div class="int-treetable__loading">
+    <div class="int-treetable__mask">
+      @if (loadingIconTemplate(); as template) {
+        <span class="int-treetable__loading-icon">
+          <ng-container [ngTemplateOutlet]="template" />
+        </span>
+      } @else {
+        <i class="int-treetable__loading-icon int-treetable__loading-icon--spin" [class]="loadingIcon() ?? 'icon icon-loading'" aria-hidden="true"></i>
+      }
+    </div>
+  </div>
+}
+
+<!-- Caption (PrimeNG's p-treetable-header) -->
+@if (captionTemplate(); as template) {
+  <div class="int-treetable__header">
+    <ng-container [ngTemplateOutlet]="template" />
+  </div>
+}
+
+@if (showTopPaginator()) {
+  <ng-container [ngTemplateOutlet]="paginatorTemplate" [ngTemplateOutletContext]="{ position: 'top' }" />
+}
+
+<!-- One table for both modes: with scrollable the wrapper scrolls and the thead sticks to its top -->
+<div class="int-treetable__wrapper" #wrapper [style.max-height]="wrapperMaxHeight()">
+  <table role="treegrid" class="int-treetable__table" [class]="tableStyleClass() ?? ''" [style]="tableStyle() ?? null">
+    @if (colGroupTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: columns() }" />
+    }
+    <thead role="rowgroup" class="int-treetable__thead">
+      @if (headerTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: columns() }" />
+      }
+    </thead>
+    <tbody role="rowgroup" class="int-treetable__tbody">
+      <!-- One body template per visible node; hidden children are not rendered -->
+      @if (bodyTemplate(); as template) {
+        @for (row of rowsToRender(); track trackRow($index, row)) {
+          <ng-container
+            [ngTemplateOutlet]="template"
+            [ngTemplateOutletContext]="{ $implicit: row, node: row.node, rowData: row.node.data, columns: columns() }"
+          />
+        }
+      }
+      @if (isEmpty()) {
+        @if (emptyMessageTemplate(); as template) {
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: columns() }" />
+        }
+      }
+    </tbody>
+    <tfoot role="rowgroup" class="int-treetable__tfoot">
+      @if (footerTemplate(); as template) {
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: columns() }" />
+      }
+    </tfoot>
+  </table>
+</div>
+
+@if (showBottomPaginator()) {
+  <ng-container [ngTemplateOutlet]="paginatorTemplate" [ngTemplateOutletContext]="{ position: 'bottom' }" />
+}
+
+<!-- Summary (PrimeNG's p-treetable-footer) -->
+@if (summaryTemplate(); as template) {
+  <div class="int-treetable__footer">
+    <ng-container [ngTemplateOutlet]="template" />
+  </div>
+}
+
+<!-- Paginator of the root nodes, top and / or bottom -->
+<ng-template #paginatorTemplate let-position="position">
+  <int-paginator
+    class="int-treetable__paginator"
+    [class]="'int-treetable__paginator--' + position + ' ' + (paginatorStyleClass() ?? '')"
+    [rows]="currentRows()"
+    [first]="currentFirst()"
+    [totalRecords]="currentTotalRecords()"
+    [pageLinkSize]="pageLinks()"
+    [alwaysShow]="alwaysShowPaginator()"
+    [rowsPerPageOptions]="rowsPerPageOptions()"
+    [templateLeft]="paginatorLeftTemplate()"
+    [templateRight]="paginatorRightTemplate()"
+    [appendTo]="paginatorDropdownAppendTo()"
+    [currentPageReportTemplate]="currentPageReportTemplate()"
+    [showFirstLastIcon]="showFirstLastIcon()"
+    [showCurrentPageReport]="showCurrentPageReport()"
+    [showJumpToPageDropdown]="showJumpToPageDropdown()"
+    [showPageLinks]="showPageLinks()"
+    [locale]="paginatorLocale()"
+    (onPageChange)="onPageChange($event)"
+  />
+</ng-template>

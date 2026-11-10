@@ -1,0 +1,5 @@
+// int-treetable · entry point. Add one `@use 'treetable.<variant>' as treetable-<variant>;` per variant module.
+@use 'treetable';
+@use 'treetable.gridlines' as treetable-gridlines;
+@use 'treetable.sticky-header' as treetable-sticky-header;
+@use 'treetable.total' as treetable-total;

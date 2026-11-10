@@ -1,0 +1,25 @@
+<!--
+  title: Loading
+  description: Con `loading` se muestra una máscara con el icono de carga sobre la tabla; `loadingIcon` cambia el icono.
+-->
+<int-treetable [value]="files" [loading]="true">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="50%">Name</th>
+      <th width="25%">Size</th>
+      <th width="25%">Type</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-left">
+        <div class="u-display-flex u-align-items-center u-gap-xs">
+          <int-treetable-toggler [rowNode]="rowNode" />
+          <span class="u-text-ellipsis">{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-center">{{ rowData.size }} kb</td>
+      <td class="u-text-center">{{ rowData.type }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>
