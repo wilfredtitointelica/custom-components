@@ -267,6 +267,27 @@ export class DocPage {
       destroyRef.onDestroy(() => observer.disconnect());
     });
 
+    // The variant heads stick below the chips row too: publish their height as --doc-section-head-h, so an
+    // example can stick a int-* below the whole stack (treetable stickyTop). All heads are the same
+    // height; the first one is measured once the examples are rendered.
+    let headObserver: ResizeObserver | undefined;
+    destroyRef.onDestroy(() => headObserver?.disconnect());
+    effect(() => {
+      if (!this.examples.hasValue()) return;
+      afterNextRender(
+        () => {
+          const head = host.querySelector<HTMLElement>('.doc-section-head');
+          if (!head) return;
+          headObserver?.disconnect();
+          headObserver = new ResizeObserver(([entry]) =>
+            host.style.setProperty('--doc-section-head-h', `${entry.borderBoxSize[0].blockSize}px`),
+          );
+          headObserver.observe(head);
+        },
+        { injector },
+      );
+    });
+
     // A variant head only gets its background (and z-index) while it is stuck: at rest it stays
     // transparent and below the previous preview, so an open overlay (select, datepicker…) is not cut.
     // It is stuck once its section's top has scrolled above the head's sticky offset.

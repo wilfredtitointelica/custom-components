@@ -1,8 +1,13 @@
 <!--
   title: Sticky Header
-  description: `stickyHeader` deja la cabecera fija bajo el header del dashboard al desplazar la página.
+  description: `stickyHeader` deja la cabecera fija al desplazar la página y `stickyTop` define a qué distancia de arriba se pega: la suma de lo que ya está fijo encima en cada dashboard (header, filtros, tabs). Sin `stickyTop`, se pega bajo el header del dashboard (`--i-dashboard-layout-header-height`).
 -->
-<int-treetable stickyHeader [value]="files">
+<!-- In this page, what is fixed above the preview: top bar + chips row + variant title -->
+<int-treetable
+  stickyHeader
+  stickyTop="calc(var(--doc-topbar-h) + var(--doc-meta-h) + var(--doc-section-head-h))"
+  [value]="files"
+>
   <ng-template #header>
     <tr>
       <th class="u-text-left" width="50%">Name</th>

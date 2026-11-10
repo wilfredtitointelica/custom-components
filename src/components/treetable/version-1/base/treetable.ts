@@ -246,7 +246,7 @@ interface FilterParams {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Same root as PrimeNG: p-treetable puts its root classes on the host element.
-  host: { '[class]': 'classes()' },
+  host: { '[class]': 'classes()', '[style.--int-treetable-sticky-top]': 'stickyTop()' },
 })
 export class IntTreetable implements OnChanges, OnInit {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -363,6 +363,12 @@ export class IntTreetable implements OnChanges, OnInit {
   readonly showGridlines = input(false, { transform: booleanAttribute });
   /** int-* extension: la cabecera queda fija bajo el header del dashboard al desplazar la página. Ningún contenedor de la tabla debe tener `overflow`. */
   readonly stickyHeader = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: distancia desde arriba a la que se pega la cabecera con `stickyHeader` (longitud CSS,
+   * p. ej. `'7.5rem'`), para cuando hay otros elementos fijos encima. Por defecto, el token
+   * `--int-treetable-sticky-top` (alto del header del dashboard).
+   */
+  readonly stickyTop = input<string>();
 
   /** Se emite al filtrar, con los filtros y los nodos que quedan. */
   readonly onFilter = output<IntTreetableFilterEvent>();

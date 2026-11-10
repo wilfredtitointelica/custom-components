@@ -358,6 +358,18 @@
     z-index: 1;
   }
 
+  // Sticky header (scrollable or stickyHeader): with border-collapse the borders belong to the table, not
+  // to the sticky cells, so the header line would scroll away with the body. The line is drawn inside the
+  // cells (inset shadow) and travels with the header; the total row keeps its own dark line.
+  &:is(&--scrollable, &--sticky-header) &__thead > tr > :is(th, td) {
+    border-block-end: 0;
+    box-shadow: inset 0 calc(-1 * var(--int-treetable-header-cell-border-width)) 0 var(--int-treetable-header-cell-border-color);
+  }
+
+  &:is(&--scrollable, &--sticky-header) &__total-row > td {
+    box-shadow: inset 0 calc(-1 * var(--int-treetable-total-border-width)) 0 var(--int-treetable-total-border-color);
+  }
+
   &--flex-scrollable {
     display: flex;
     flex-direction: column;

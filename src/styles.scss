@@ -122,6 +122,16 @@ html.doc-html,
   scrollbar-color: var(--doc-outline) transparent;
 }
 
+/*
+ * Scrollbar of the style guide (base/_scroll-bar.scss) in the int-* previews: its track color points to
+ * --i-sidebar-layout-background → --i-panel-background, layout/component tokens the base bundle does not
+ * load, so the track had no background and the thumb border fell back to currentColor (dark outline).
+ * Same chain, ending in the global token they resolve to. Class + tag: wins over the bundle's :root.
+ */
+html.doc-html {
+  --i-scrollbar-track-color: var(--i-sidebar-layout-background, var(--i-panel-background, var(--i-background-default)));
+}
+
 /* Class + tag: wins over tag resets (html, body { min-width; height; overflow }) whatever the import order. */
 html.doc-html {
   margin: 0;

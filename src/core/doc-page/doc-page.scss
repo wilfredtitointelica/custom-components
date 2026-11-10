@@ -4,6 +4,9 @@
   display: block;
   // Height of the sticky chips row, measured in doc-page.ts.
   --doc-meta-h: 0px;
+  // Height of the sticky variant head, measured in doc-page.ts. With --doc-topbar-h and --doc-meta-h it is
+  // the sticky stack above a preview: an example passes it to a sticky int-* (treetable stickyTop).
+  --doc-section-head-h: 0px;
 }
 
 /* Page header (M3 display / headline scale) */
