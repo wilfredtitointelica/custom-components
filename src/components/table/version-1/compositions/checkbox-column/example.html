@@ -1,0 +1,49 @@
+<!--
+  title: Checkbox Column
+  description: Columna de checkbox: el de la cabecera selecciona o quita todas las filas (y queda indeterminado si hay algunas marcadas) y cada fila tiene el suyo. La fila marcada toma el fondo de seleccionada.
+-->
+<int-table [style]="{ width: '40rem' }" [value]="fees" dataKey="code">
+  <ng-template #header>
+    <tr>
+      <th width="2%">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
+          <!-- dep:input provisional · replace with <int-input> (checkbox) when input is done -->
+          <input
+            type="checkbox"
+            class="u-pointer"
+            data-dep="input"
+            aria-label="Select all"
+            [checked]="allSelected()"
+            [indeterminate]="someSelected()"
+            (change)="toggleAll()"
+          />
+          <!-- /dep:input -->
+        </div>
+      </th>
+      <th class="u-text-left" width="48%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+      <th width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Code</div></th>
+      <th class="u-text-right" width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-center">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
+          <!-- dep:input provisional · replace with <int-input> (checkbox) when input is done -->
+          <input
+            type="checkbox"
+            class="u-pointer"
+            data-dep="input"
+            [attr.aria-label]="'Select ' + fee.name"
+            [checked]="isSelected(fee.code)"
+            (change)="toggle(fee.code)"
+          />
+          <!-- /dep:input -->
+        </div>
+      </td>
+      <td class="u-text-left">{{ fee.name }}</td>
+      <td class="u-text-center">{{ fee.code }}</td>
+      <td class="u-text-right">{{ fee.amount }}</td>
+    </tr>
+  </ng-template>
+</int-table>

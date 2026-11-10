@@ -1,0 +1,35 @@
+<!--
+  title: Paginator
+  description: Tabla con `int-paginator` al pie, alineado a la derecha, como en los proyectos. La tabla muestra las filas de la página actual; en un proyecto real cada página la trae el backend. El formato "Rows per page" y "Page n of N" del diseño se arma hoy en la composición "Table paginator" de Paginator.
+-->
+<div class="u-display-flex u-flex-column">
+  <int-table [style]="{ width: '40rem' }" [value]="pageFees()" dataKey="code">
+    <ng-template #header>
+      <tr>
+        <th class="u-text-left" width="40%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+        <th width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Code</div></th>
+        <th width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region</div></th>
+        <th class="u-text-right" width="20%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-fee>
+      <tr>
+        <td class="u-text-left">{{ fee.name }}</td>
+        <td class="u-text-center">{{ fee.code }}</td>
+        <td class="u-text-center">{{ fee.region }}</td>
+        <td class="u-text-right">{{ fee.amount | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </int-table>
+
+  <!-- Paginator: closes the panel of the table, aligned to the end -->
+  <div class="u-display-flex u-justify-content-end u-py-3">
+    <int-paginator
+      [totalRecords]="fees.length"
+      [rows]="rows()"
+      [first]="first()"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      (onPageChange)="onPageChange($event)"
+    />
+  </div>
+</div>

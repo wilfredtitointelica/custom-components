@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
-import { IntStepper } from '../../base/stepper';
+import { INT_STEPPER } from '../../base/stepper';
 
 @Component({
   selector: 'stepper-basic-example',
   templateUrl: './example.html',
-  imports: [IntStepper],
+  imports: [INT_STEPPER],
 })
-export class StepperBasicExample {}
+export class StepperBasicExample {
+  readonly step = signal(1);
+}

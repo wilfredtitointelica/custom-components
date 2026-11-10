@@ -2,15 +2,99 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// .prConfirmDialog (components/confirmdialog) is in the Style Guide bundle base; each token points to the --i-* the
+// knowledge base uses. Its width: 4400px is a typo: the effective width is the max-width 440px.
 :root {
   --NOTE-CONFIRM-DIALOG-MODAL: 'int-confirm-dialog-modal ( Custom )';
+
+  // --- panel ---
+  --int-confirm-dialog-modal-max-width: calc(var(--i-sizing-1000) * 4 + var(--i-sizing-500) + var(--i-sizing-200)); // knowledgeBase: max-width 440px · Figma: 440px (overlay Size=Small), no exact token (96×4 + 40 + 16)
+  --int-confirm-dialog-modal-padding: var(--i-spacing-container-2xl); // knowledgeBase: padding 24px · Figma: 24px (overlay/padding/x/2xl)
+  --int-confirm-dialog-modal-gap: var(--i-spacing-gap-lg); // knowledgeBase: gap 16px · Figma: 16px (overlay/gap/lg)
+  --int-confirm-dialog-modal-border-radius: var(--i-border-radius-200); // knowledgeBase: 16px · Figma: 16px (overlay/border/radius/2xl)
+  --int-confirm-dialog-modal-color: var(--i-color-secondary-600); // knowledgeBase: color
+  --int-confirm-dialog-modal-background: var(--i-color-secondary-50); // knowledgeBase: background · Figma: #FCFCFC (overlay/color/background)
+  --int-confirm-dialog-modal-shadow: var(--i-shadow-depth-3); // Figma: shadow.300 (knowledgeBase --p-overlay-modal-shadow is a PrimeNG token, not loaded)
+  --int-confirm-dialog-modal-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (overlay/font/fontFamily)
+  --int-confirm-dialog-modal-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+
+  // --- mask ---
+  --int-confirm-dialog-modal-mask-background: color-mix(in srgb, var(--i-color-secondary-900) 40%, transparent); // SG: --i-color-secondary-900 at 40%, no knowledgeBase/Figma value
+
+  // --- close button ---
+  --int-confirm-dialog-modal-close-size: var(--i-sizing-md); // knowledgeBase: icon-only 24px · Figma: 24px (button/sizing/md)
+  --int-confirm-dialog-modal-close-padding: var(--i-spacing-50); // knowledgeBase: 4px · Figma: 4px (button/padding/x/xs)
+  --int-confirm-dialog-modal-close-border-radius: var(--i-border-radius-md); // knowledgeBase: 6px · Figma: 6px (button/border/radius/md)
+  --int-confirm-dialog-modal-close-color: var(--i-color-primary-900); // Figma: #0A1733 (button/secondary/text), chosen over knowledgeBase icon-only secondary-600 ⚠️ (update KB/SG)
+  --int-confirm-dialog-modal-close-icon-size: var(--i-sizing-200); // knowledgeBase: font-size 16px · Figma: 16px (icon/sizing/sm)
+  --int-confirm-dialog-modal-close-hover-color: var(--i-color-primary-900); // knowledgeBase: hover color
+  --int-confirm-dialog-modal-close-hover-background: var(--i-color-secondary-100); // knowledgeBase: hover background
+  --int-confirm-dialog-modal-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: outline 1px
+  --int-confirm-dialog-modal-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color
+
+  // --- content ---
+  --int-confirm-dialog-modal-content-gap: var(--i-spacing-gap-lg); // knowledgeBase: __content gap 16px
+  --int-confirm-dialog-modal-icon-size: var(--i-icon-size-lg); // knowledgeBase: __icon i --i-icon-size-lg (32px)
+  --int-confirm-dialog-modal-image-size: calc(var(--i-sizing-600) + var(--i-sizing-150)); // knowledgeBase: __icon img 60px, no exact token (48 + 12)
+  --int-confirm-dialog-modal-details-gap: var(--i-spacing-gap-xs); // knowledgeBase: __details gap 4px
+  --int-confirm-dialog-modal-title-font-size: var(--i-typography-font-size-xl); // knowledgeBase: 20px
+  --int-confirm-dialog-modal-title-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: 700
+  --int-confirm-dialog-modal-title-line-height: var(--i-typography-lineHeight-500); // knowledgeBase: 28px
+  --int-confirm-dialog-modal-text-font-size: var(--i-typography-font-size-lg); // knowledgeBase: __subtitle / __text 16px
+  --int-confirm-dialog-modal-text-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: 400
+  --int-confirm-dialog-modal-text-line-height: var(--i-typography-lineHeight-400); // knowledgeBase: 24px
+  --int-confirm-dialog-modal-text-color: var(--i-color-primary-900); // knowledgeBase: p color
+
+  // --- footer ---
+  --int-confirm-dialog-modal-footer-gap: var(--i-spacing-gap-lg); // knowledgeBase: __footer gap 16px
+  --int-confirm-dialog-modal-button-min-width: var(--i-sizing-800); // knowledgeBase: .prButton .p-button min-width 64px
+
+  // --- severity (title + icon) ---
+  --int-confirm-dialog-modal-default-color: var(--i-color-primary-900); // knowledgeBase: --default
+  --int-confirm-dialog-modal-warning-color: var(--i-color-warning-700); // knowledgeBase: --warning
+  --int-confirm-dialog-modal-danger-color: var(--i-color-error-700); // knowledgeBase: --danger
+  --int-confirm-dialog-modal-error-color: var(--i-color-error-700); // knowledgeBase: --error
+  --int-confirm-dialog-modal-success-color: var(--i-color-success-800); // knowledgeBase: --success
+
+  // TODO(dep:button provisional): int-button gives these.
+  // --- buttons (provisional) ---
+  --int-confirm-dialog-modal-button-height: var(--i-sizing-lg); // Figma: 32px (button/sizing/lg)
+  --int-confirm-dialog-modal-button-padding-y: var(--i-spacing-container-sm); // Figma: 6px (button/padding/y/sm)
+  --int-confirm-dialog-modal-button-padding-x: var(--i-spacing-container-md); // Figma: 8px (button/padding/x/md)
+  --int-confirm-dialog-modal-button-border-radius: var(--i-border-radius-lg); // Figma: 8px (button/border/radius/lg)
+  --int-confirm-dialog-modal-button-font-size: var(--i-typography-font-size-md); // Figma: 14px (button/font/size/md)
+  --int-confirm-dialog-modal-button-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (button/font/lineHeight/md)
+  --int-confirm-dialog-modal-accept-background: var(--i-color-primary-700); // Figma: #1B3E88 (button/primary/background)
+  --int-confirm-dialog-modal-accept-color: var(--i-color-primary-50); // Figma: #EEF2FC (button/primary/text)
+  --int-confirm-dialog-modal-reject-background: var(--i-color-secondary-50); // Figma: #FCFCFC (button/secondary/background)
+  --int-confirm-dialog-modal-reject-border-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (button/secondary/border)
+  --int-confirm-dialog-modal-reject-color: var(--i-color-primary-900); // Figma: #0A1733 (button/secondary/text)
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// TODO(dep:dialog-modal provisional): mask and panel box come from int-dialog-modal. The pane width (100% up to
+// --int-confirm-dialog-modal-max-width) is set in the overlay config of the base.
 .int-confirm-dialog-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--int-confirm-dialog-modal-gap);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--int-confirm-dialog-modal-padding);
+  font-family: var(--int-confirm-dialog-modal-font-family);
+  color: var(--int-confirm-dialog-modal-color);
+  background: var(--int-confirm-dialog-modal-background);
+  border-radius: var(--int-confirm-dialog-modal-border-radius);
+  box-shadow: var(--int-confirm-dialog-modal-shadow);
+  outline: none;
+
+  p {
+    margin: 0;
+    color: var(--int-confirm-dialog-modal-text-color);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +102,163 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-confirm-dialog-modal {
+  &__mask {
+    background: var(--int-confirm-dialog-modal-mask-background);
+  }
+
+  &__close {
+    display: flex;
+    justify-content: end;
+  }
+
+  // TODO(dep:button provisional) text + secondary + icon-only look until int-button.
+  &__close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: var(--int-confirm-dialog-modal-close-size);
+    height: var(--int-confirm-dialog-modal-close-size);
+    padding: var(--int-confirm-dialog-modal-close-padding);
+    font-size: var(--int-confirm-dialog-modal-close-icon-size);
+    color: var(--int-confirm-dialog-modal-close-color);
+    background: transparent;
+    border: none;
+    border-radius: var(--int-confirm-dialog-modal-close-border-radius);
+    cursor: pointer;
+    transition:
+      background-color var(--int-confirm-dialog-modal-transition-duration),
+      color var(--int-confirm-dialog-modal-transition-duration);
+
+    &:hover {
+      color: var(--int-confirm-dialog-modal-close-hover-color);
+      background: var(--int-confirm-dialog-modal-close-hover-background);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirm-dialog-modal-content-gap);
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+
+    i {
+      font-size: var(--int-confirm-dialog-modal-icon-size);
+    }
+
+    img {
+      width: var(--int-confirm-dialog-modal-image-size);
+      height: var(--int-confirm-dialog-modal-image-size);
+      object-fit: contain;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirm-dialog-modal-details-gap);
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--int-confirm-dialog-modal-title-font-size);
+    font-weight: var(--int-confirm-dialog-modal-title-font-weight);
+    line-height: var(--int-confirm-dialog-modal-title-line-height);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__subtitle,
+  &__text {
+    font-size: var(--int-confirm-dialog-modal-text-font-size);
+    font-weight: var(--int-confirm-dialog-modal-text-font-weight);
+    line-height: var(--int-confirm-dialog-modal-text-line-height);
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: var(--int-confirm-dialog-modal-footer-gap);
+  }
+
+  // TODO(dep:button provisional) primary / secondary look until int-button.
+  &__accept-button,
+  &__reject-button {
+    box-sizing: border-box;
+    min-width: var(--int-confirm-dialog-modal-button-min-width);
+    height: var(--int-confirm-dialog-modal-button-height);
+    padding: var(--int-confirm-dialog-modal-button-padding-y) var(--int-confirm-dialog-modal-button-padding-x);
+    font-family: inherit;
+    font-size: var(--int-confirm-dialog-modal-button-font-size);
+    line-height: var(--int-confirm-dialog-modal-button-line-height);
+    border: var(--i-border-width-sm) solid transparent;
+    border-radius: var(--int-confirm-dialog-modal-button-border-radius);
+    cursor: pointer;
+  }
+
+  &__accept-button {
+    color: var(--int-confirm-dialog-modal-accept-color);
+    background: var(--int-confirm-dialog-modal-accept-background);
+  }
+
+  &__reject-button {
+    color: var(--int-confirm-dialog-modal-reject-color);
+    background: var(--int-confirm-dialog-modal-reject-background);
+    border-color: var(--int-confirm-dialog-modal-reject-border-color);
+  }
+
+  &__close-button,
+  &__accept-button,
+  &__reject-button {
+    &:focus-visible {
+      outline: var(--int-confirm-dialog-modal-focus-ring-width) solid var(--int-confirm-dialog-modal-focus-ring-color);
+      outline-offset: var(--int-confirm-dialog-modal-focus-ring-width);
+    }
+  }
+}
+
+// PrimeNG p-dialog enter: fade + scale(0.7).
+@keyframes int-confirm-dialog-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.7); // Aura: scale(0.7)
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
+.int-confirm-dialog-modal--enter {
+  animation: int-confirm-dialog-modal-enter var(--int-confirm-dialog-modal-transition-duration) var(--i-motion-ease-out);
+}
+
+// Severity: colors the title and the icon (not the image).
 .int-confirm-dialog-modal {
+  @each $severity in default, warning, danger, error, success {
+    &--#{$severity} {
+      .int-confirm-dialog-modal__title,
+      .int-confirm-dialog-modal__icon i {
+        color: var(--int-confirm-dialog-modal-#{$severity}-color);
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-confirm-dialog-modal--enter,
+  .int-confirm-dialog-modal__close-button {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

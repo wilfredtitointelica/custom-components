@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'carousel',
+  requires: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

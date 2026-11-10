@@ -1,2 +1,4 @@
 // int-table · entry point. Add one `@use 'table.<variant>' as table-<variant>;` per variant module.
 @use 'table';
+@use 'table.size' as table-size;
+@use 'table.sticky-header' as table-sticky-header;

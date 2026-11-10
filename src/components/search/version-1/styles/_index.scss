@@ -1,2 +1,3 @@
 // int-search · entry point. Add one `@use 'search.<variant>' as search-<variant>;` per variant module.
 @use 'search';
+@use 'search.size' as search-size;

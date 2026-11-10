@@ -1,0 +1,57 @@
+<!--
+  title: Template
+  description: El template `caption` va arriba de la tabla con lo que necesite (acciones, selectores) alineado a la derecha; `emptymessage` es la fila que se muestra cuando no hay datos. Para el buscador que filtra, ver la variante Filter.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <int-table [style]="{ width: '40rem' }" [value]="fees">
+    <ng-template #caption>
+      <div class="u-display-flex u-align-items-center u-justify-content-end u-gap-sm u-full-width u-pb-2">
+        <!-- dep:dropdown-select provisional · replace with <int-dropdown-select> when dropdown-select is done -->
+        <button
+          type="button"
+          class="u-display-flex u-align-items-center u-gap-xs u-px-2 u-py-1 u-radius-lg u-background-white u-text-md u-pointer"
+          data-dep="dropdown-select"
+        >
+          Export <i class="icon icon-arrow-down icon--xs" aria-hidden="true"></i>
+        </button>
+        <!-- /dep:dropdown-select -->
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th class="u-text-left" width="50%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+        <th width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region</div></th>
+        <th class="u-text-right" width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-fee>
+      <tr>
+        <td class="u-text-left">{{ fee.name }}</td>
+        <td class="u-text-center">{{ fee.region }}</td>
+        <td class="u-text-right">{{ fee.amount | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </int-table>
+
+  <int-table [style]="{ width: '40rem' }" [value]="[]">
+    <ng-template #header>
+      <tr>
+        <th class="u-text-left" width="50%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+        <th width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region</div></th>
+        <th class="u-text-right" width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-fee>
+      <tr>
+        <td class="u-text-left">{{ fee.name }}</td>
+        <td class="u-text-center">{{ fee.region }}</td>
+        <td class="u-text-right">{{ fee.amount }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td class="u-text-center" colspan="3">No fees found.</td>
+      </tr>
+    </ng-template>
+  </int-table>
+</div>

@@ -4,13 +4,96 @@
 
 :root {
   --NOTE-MESSAGE: 'int-message ( Custom )';
+
+  // --- root ---
+  --int-message-border-radius: var(--i-border-radius-lg); // Figma: 8px (toast/border/radius/lg), no knowledgeBase/SG value
+  --int-message-border-width: var(--i-border-width-sm); // SG: outline 1px · Figma: 1px (toast/border/width/sm)
+  --int-message-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+
+  // --- content ---
+  --int-message-content-padding: var(--i-spacing-container-md); // knowledgeBase: --i-message-content-padding 8px · Figma: 8px (toast/padding/x/md)
+  --int-message-content-gap: var(--i-spacing-gap-sm); // Figma: 8px (toast/gap/sm), chosen over knowledgeBase --i-message-content-gap 12px ⚠️ (update KB/SG)
+  --int-message-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (toast/font/fontFamily)
+  --int-message-text-color: var(--i-color-primary-900); // knowledgeBase: --i-message-content-color · Figma: #0A1733 (toast/color/info/text)
+  --int-message-text-font-size: var(--i-text-body-size-md); // knowledgeBase: --i-message-text-font-size 14px · Figma: 14px (toast/font/size/md)
+  --int-message-text-line-height: var(--i-typography-lineHeight-md); // knowledgeBase: --i-message-text-line-height 20px · Figma: 20px (toast/font/lineHeight/md)
+
+  // --- title (knowledgeBase .prMessage__title) ---
+  --int-message-title-font-size: var(--i-text-subtitle-size-lg); // knowledgeBase: --i-message-title-font-size 16px · Figma: 16px (toast/font/size/lg)
+  --int-message-title-line-height: var(--i-typography-lineHeight-lg); // knowledgeBase: --i-message-title-line-height 24px · Figma: 24px (toast/font/lineHeight/lg)
+  --int-message-title-weight: var(--i-text-subtitle-weight); // knowledgeBase: --i-message-title-weight · Figma: 700 (toast/font/weightTitle)
+  --int-message-title-color: var(--i-color-primary-900); // knowledgeBase: --i-message-title-color · Figma: #0A1733 (toast/color/info/text)
+
+  // --- icon ---
+  --int-message-icon-size: var(--i-icon-size-sm); // knowledgeBase: --i-message-icon-size 16px · Figma: 16px (icon/sizing/sm)
+
+  // --- close button ---
+  --int-message-close-button-size: var(--i-sizing-sm); // SG: --i-message-text-line-height 20px
+  --int-message-close-icon-size: var(--i-icon-size-xs); // SG: --i-message-close-button-icon-size · Figma: 12px (icon/sizing/xs)
+  --int-message-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm, no knowledgeBase/Figma value
+
+  // --- severity ---
+  --int-message-info-background: var(--i-color-primary-100); // knowledgeBase: --i-message-info-background · Figma: #DDE6F8 (toast/color/info/background) [Type=Info]
+  --int-message-info-border-color: var(--i-color-primary-700); // knowledgeBase: --i-message-info-border-color · Figma: #1B3E88 (toast/color/info/border) [Type=Info]
+  --int-message-info-color: var(--i-color-primary-700); // knowledgeBase: --i-message-info-color · Figma: #1B3E88 (toast/color/info/icon) [Type=Info]
+  --int-message-info-close-button-hover-background: var(--i-color-primary-200); // knowledgeBase: --i-message-info-close-button-hover-background
+  --int-message-success-background: var(--i-color-success-50); // knowledgeBase: --i-message-success-background · Figma: #F2FAF5 (toast/color/success/background) [Type=Success]
+  --int-message-success-border-color: var(--i-color-success-800); // knowledgeBase: --i-message-success-border-color · Figma: #126629 (toast/color/success/border) [Type=Success]
+  --int-message-success-color: var(--i-color-success-800); // knowledgeBase: --i-message-success-color · Figma: #126629 (toast/color/success/icon) [Type=Success]
+  --int-message-success-close-button-hover-background: var(--i-color-success-200); // knowledgeBase: --i-message-success-close-button-hover-background
+  --int-message-warn-background: var(--i-color-warning-100); // knowledgeBase: --i-message-warn-background · Figma: #FFF8ED (toast/color/warning/background) [Type=Warning]
+  --int-message-warn-border-color: var(--i-color-warning-700); // knowledgeBase: --i-message-warn-border-color · Figma: #C27E00 (toast/color/warning/border) [Type=Warning]
+  --int-message-warn-color: var(--i-color-warning-700); // knowledgeBase: --i-message-warn-color · Figma: #C27E00 (toast/color/warning/icon) [Type=Warning]
+  --int-message-warn-close-button-hover-background: var(--i-color-warning-300); // knowledgeBase: --i-message-warn-close-button-hover-background
+  --int-message-error-background: var(--i-color-error-50); // knowledgeBase: --i-message-error-background · Figma: #FCEDED (toast/color/error/background) [Type=Error]
+  --int-message-error-border-color: var(--i-color-error-700); // knowledgeBase: --i-message-error-border-color · Figma: #960D0D (toast/color/error/border) [Type=Error]
+  --int-message-error-color: var(--i-color-error-700); // knowledgeBase: --i-message-error-color · Figma: #960D0D (toast/color/error/icon) [Type=Error]
+  --int-message-error-close-button-hover-background: var(--i-color-error-100); // knowledgeBase: --i-message-error-close-button-hover-background
+  --int-message-secondary-background: var(--i-color-secondary-50); // Figma: #FCFCFC (toast/color/default/background) [Type=Loading], no knowledgeBase/SG value
+  --int-message-secondary-border-color: var(--i-color-primary-900); // Figma: #0A1733 (toast/color/default/border) [Type=Loading], no knowledgeBase/SG value
+  --int-message-secondary-color: var(--i-color-secondary-500); // Figma: #7D85A6 (loading/color/loader) [Type=Loading], no knowledgeBase/SG value
+  --int-message-secondary-close-button-hover-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
+
+  // --- size small ---
+  --int-message-sm-content-padding-y: var(--i-spacing-container-sm); // knowledgeBase: --i-message-content-sm-padding 6px · Figma: 8px (toast/padding/y/md) [Size=Small] ⚠️
+  --int-message-sm-content-gap: var(--i-spacing-gap-sm); // Figma: 8px (toast/gap/sm) [Size=Small], chosen over SG --i-message-content-sm-gap 6px ⚠️ (update KB/SG)
+  --int-message-sm-text-font-size: var(--i-text-body-size-sm); // knowledgeBase: --i-message-text-sm-font-size 12px · Figma: 12px (toast/font/size/sm) [Size=Small]
+  --int-message-sm-text-line-height: var(--i-typography-lineHeight-sm); // knowledgeBase: --i-message-text-sm-line-height 16px · Figma: 16px (toast/font/lineHeight/sm) [Size=Small]
+  --int-message-sm-close-button-size: var(--i-sizing-xs); // SG: --i-message-text-sm-line-height 16px
+
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Outline instead of border, as PrimeNG; the -1px offset keeps it inside the box (Style Guide).
 .int-message {
+  overflow: hidden;
+  border-radius: var(--int-message-border-radius);
+  outline: var(--int-message-border-width) solid transparent;
+  outline-offset: calc(var(--int-message-border-width) * -1);
+
+  &.int-message--enter {
+    animation: int-message-enter var(--i-motion-duration-base) var(--i-motion-ease-out);
+  }
+
+  &.int-message--leave {
+    animation: int-message-leave var(--int-message-transition-duration) var(--i-motion-ease-in-out) forwards;
+  }
+}
+
+@keyframes int-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-25%); // Aura: translateY(-25%)
+  }
+}
+
+@keyframes int-message-leave {
+  to {
+    opacity: 0;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +101,89 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-message {
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--int-message-content-gap);
+    height: 100%;
+    padding: var(--int-message-content-padding);
+    font-family: var(--int-message-font-family);
+    color: var(--int-message-text-color);
+    font-size: var(--int-message-text-font-size);
+    line-height: var(--int-message-text-line-height);
+  }
+
+  // Box as tall as the first line, so the icon stays centered on it (Style Guide p-message-icon).
+  &__icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--int-message-icon-size);
+    height: var(--int-message-text-line-height);
+    font-size: var(--int-message-icon-size);
+    line-height: 1em;
+  }
+
+  &__text {
+    flex-grow: 1;
+  }
+
+  // Title of the projected content (knowledgeBase .prMessage__title); standard size only.
+  &__title {
+    font-size: var(--int-message-title-font-size);
+    font-weight: var(--int-message-title-weight);
+    line-height: var(--int-message-title-line-height);
+    color: var(--int-message-title-color);
+  }
+
+  &__close-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-message-close-button-size);
+    height: var(--int-message-close-button-size);
+    margin-inline-start: auto;
+    padding: 0;
+    overflow: hidden;
+    color: inherit;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    outline-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background var(--int-message-transition-duration),
+      outline-color var(--int-message-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-message-focus-ring-width) solid currentColor;
+    }
+  }
+
+  &__close-icon {
+    font-size: var(--int-message-close-icon-size);
+  }
+
+  // With a title the first line is the title line (Style Guide :has(.prMessage__title)).
+  &__content:has(.int-message__title) .int-message__icon {
+    height: var(--int-message-title-line-height);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-message {
+// Severities, size and variant live in _message.severity, _message.size and _message.simple.
+
+@media (prefers-reduced-motion: reduce) {
+  .int-message,
+  .int-message__close-button {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

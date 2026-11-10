@@ -1,0 +1,41 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Vertical
+\*——————————————————————————————————————————————————————————*/
+
+// int-step-item layout (Figma Type=Vertical): number over the title, every step centered on one axis and the
+// separator of the panel joining one step with the next. The panel content shows under the active step.
+.int-stepper--vertical {
+  align-items: center;
+  gap: var(--int-stepper-list-gap);
+
+  .int-stepper__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--int-stepper-list-gap);
+  }
+
+  .int-stepper__step {
+    flex: initial;
+  }
+
+  .int-stepper__step-header {
+    flex-direction: column;
+    gap: var(--int-stepper-vertical-step-gap);
+  }
+
+  .int-stepper__panel {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: var(--int-stepper-list-gap);
+  }
+
+  .int-stepper__separator {
+    flex: 0 0 auto;
+    width: var(--int-stepper-vertical-separator-size);
+    min-width: 0;
+    height: auto;
+    min-height: var(--int-stepper-vertical-separator-min-height);
+  }
+}

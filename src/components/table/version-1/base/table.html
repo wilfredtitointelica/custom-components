@@ -1,6 +1,78 @@
 <!--
   title: Table
-  description:
-  figma:
+  description: DataTable displays data in tabular format.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=4004-1448
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=4351-2348
 -->
-int-table
+<!-- Caption (p-datatable-header): content above the table -->
+@if (captionTemplate(); as captionTemplate) {
+  <div class="int-table__header">
+    <ng-container *ngTemplateOutlet="captionTemplate" />
+  </div>
+}
+
+<!-- Table container (p-datatable-table-container): scrolls when the table is wider or taller than its space -->
+<div class="int-table__table-container" [style.max-height]="containerMaxHeight()">
+  <table
+    role="table"
+    [class]="tableClasses()"
+    [class.int-table__table--scrollable]="scrollable()"
+    [style]="tableStyle()"
+  >
+    <thead role="rowgroup" class="int-table__thead">
+      @if (headerTemplate(); as headerTemplate) {
+        <ng-container *ngTemplateOutlet="headerTemplate; context: { $implicit: orderedColumns() }" />
+      }
+    </thead>
+
+    <!-- Frozen rows (p-datatable-frozen-tbody): frozenValue with the #frozenbody template, above the data -->
+    @if (frozenBodyTemplate(); as frozenBodyTemplate) {
+      <tbody role="rowgroup" class="int-table__tbody int-table__tbody--frozen">
+        @for (row of frozenValue() ?? []; track $index; let rowIndex = $index) {
+          <ng-container
+            *ngTemplateOutlet="
+              frozenBodyTemplate;
+              context: { $implicit: row, rowIndex, columns: orderedColumns(), editing: false, frozen: true }
+            "
+          />
+        }
+      </tbody>
+    }
+
+    <tbody role="rowgroup" class="int-table__tbody">
+      @if (bodyTemplate(); as bodyTemplate) {
+        @for (row of filteredData(); track trackRow($index, row); let rowIndex = $index) {
+          <ng-container
+            *ngTemplateOutlet="
+              bodyTemplate;
+              context: { $implicit: row, rowIndex, columns: orderedColumns(), editing: false, frozen: false }
+            "
+          />
+        }
+      }
+      @if (!filteredData().length && emptyMessageTemplate(); as emptyMessageTemplate) {
+        <ng-container *ngTemplateOutlet="emptyMessageTemplate; context: { $implicit: orderedColumns() }" />
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Column reorder arrows (p-datatable-row-reorder-indicator-up/down): above and below the edge of the drop -->
+@if (reorderIndicator(); as indicator) {
+  <span
+    class="int-table__reorder-indicator int-table__reorder-indicator--up"
+    [style.left.px]="indicator.left"
+    [style.top.px]="indicator.top"
+    aria-hidden="true"
+  >
+    <i class="icon icon-arrow-down icon--xs"></i>
+  </span>
+  <span
+    class="int-table__reorder-indicator int-table__reorder-indicator--down"
+    [style.left.px]="indicator.left"
+    [style.top.px]="indicator.bottom"
+    aria-hidden="true"
+  >
+    <i class="icon icon-arrow-up icon--xs"></i>
+  </span>
+}

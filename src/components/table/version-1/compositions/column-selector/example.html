@@ -1,0 +1,40 @@
+<!--
+  title: Column Selector
+  description: Tabla con selector de columnas: en el `caption`, un `int-multiselect` elige qué columnas se muestran (con "seleccionar todas"). Las columnas elegidas llegan a la tabla por `columns`.
+-->
+<int-table [style]="{ width: '40rem' }" [value]="fees" [columns]="visibleColumns()">
+  <ng-template #caption>
+    <div class="u-display-flex u-align-items-center u-justify-content-end u-full-width u-pb-2">
+      <int-multiselect
+        [style]="{ 'min-width': '186px' }"
+        [options]="columns"
+        [filter]="columns.length > 10"
+        optionLabel="header"
+        optionValue="field"
+        placeholder="Choose columns"
+        selectedItemsLabel="{0} columns selected"
+        showToggleAll
+        dropdownIcon="icon icon-arrow-down"
+        appendTo="body"
+        [ngModel]="selectedFields()"
+        (ngModelChange)="selectedFields.set($event)"
+      />
+    </div>
+  </ng-template>
+  <ng-template #header let-columns>
+    <tr>
+      @for (col of columns; track col.field) {
+        <th [class]="col.align" [attr.width]="col.width">
+          <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">{{ col.header }}</div>
+        </th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee let-columns="columns">
+    <tr>
+      @for (col of columns; track col.field) {
+        <td [class]="col.align">{{ fee[col.field] }}</td>
+      }
+    </tr>
+  </ng-template>
+</int-table>

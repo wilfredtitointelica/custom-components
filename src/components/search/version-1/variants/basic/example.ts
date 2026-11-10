@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { IntSearch } from '../../base/search';
 
 @Component({
   selector: 'search-basic-example',
   templateUrl: './example.html',
-  imports: [IntSearch],
+  imports: [IntSearch, FormsModule],
 })
-export class SearchBasicExample {}
+export class SearchBasicExample {
+  value = '';
+  readonly lastSearch = signal('');
+}

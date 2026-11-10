@@ -1,0 +1,17 @@
+<!--
+  title: Wrap Vertical
+  description: Mensaje con contenido en columna: el template `container` reemplaza el contenido con título y lista en columna y la acción a la derecha, armados con helpers; `closeCallback` cierra desde el botón.
+-->
+<int-message severity="info" icon="icon icon-info" closable>
+  <ng-template #container let-closeCallback="closeCallback">
+    <div class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+      <span class="int-message__title">What Happens Next</span>
+      <span>• Wait for official confirmation via email (2-3 business days)</span>
+      <span>• Your request will be processed once received</span>
+      <span>• Contact support if you don't receive confirmation</span>
+    </div>
+    <!-- dep:button provisional · replace with <int-button> when button is done -->
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="closeCallback($event)">Got it</button>
+    <!-- /dep:button -->
+  </ng-template>
+</int-message>

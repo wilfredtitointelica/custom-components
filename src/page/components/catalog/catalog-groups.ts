@@ -37,6 +37,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   multiselect: 'pi-list-check',
   'tree-select': 'pi-sitemap',
   'list-box': 'pi-list',
+  'pick-list': 'pi-arrow-right-arrow-left',
   'toggle-switch': 'pi-circle-on',
   slider: 'pi-sliders-h',
   'date-picker': 'pi-calendar',

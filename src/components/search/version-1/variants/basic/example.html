@@ -1,4 +1,8 @@
 <!--
   title: Basic
-  description:
+  description: El valor se enlaza con `ngModel`; al pulsar Enter en el campo o hacer clic en la lupa se emite `onSearch` con el texto en `query`.
 -->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-search [(ngModel)]="value" placeholder="Search" ariaLabel="Search" [style]="{ width: '15rem' }" (onSearch)="lastSearch.set($event.query)" />
+  <span class="u-text-sm">Last search: {{ lastSearch() || '—' }}</span>
+</div>

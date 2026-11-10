@@ -1,0 +1,18 @@
+<!--
+  title: Sizes
+  description: Además del tamaño por defecto, `size="small"` (12/16, padding de 6px). En `small` no se usa `int-message__title`: el título va en negrita al tamaño del texto, en su propia línea.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-message size="small" icon="icon icon-info">Small Message</int-message>
+  <int-message icon="icon icon-info">Normal Message</int-message>
+  <int-message severity="error" icon="icon icon-alert">
+    <span class="u-display-flex u-flex-column">
+      <span class="int-message__title">Download failed</span>
+      <span>We couldn’t generate the file. Please try again. If the issue persists, contact support.</span>
+    </span>
+  </int-message>
+  <int-message severity="error" size="small" icon="icon icon-alert">
+    <span class="u-bold u-display-block">Invalid Input Format</span>
+    Please enter a valid numeric value. Letters and special symbols are not allowed.
+  </int-message>
+</div>

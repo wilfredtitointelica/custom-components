@@ -12,5 +12,17 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'toggle-switch',
+  uses: ['button'],
+  variants: [
+    'basic',
+    'preselection',
+    'template',
+    'forms',
+    'invalid',
+    'disabled',
+    'accessibility',
+    'slider',
+    'forced-checked',
+  ],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

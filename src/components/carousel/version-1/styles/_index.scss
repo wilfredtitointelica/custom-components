@@ -1,2 +1,3 @@
 // int-carousel · entry point. Add one `@use 'carousel.<variant>' as carousel-<variant>;` per variant module.
 @use 'carousel';
+@use 'carousel.more' as carousel-more;
