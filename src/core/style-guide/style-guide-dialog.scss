@@ -162,7 +162,7 @@
 
 .doc-sg-group {
   margin: 8px 12px;
-  color: rgb(255 255 255 / 0.45);
+  color: rgb(255 255 255 / 0.3);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -398,7 +398,11 @@
  */
 .doc-sg-content.doc-sg-no-search {
   --doc-sg-search-h: 0px;
-  padding-top: 8px;
+
+  // Space on the first section, not on the scroller: sticky titles stick below the padding and rows show above them.
+  > .doc-sg-section:first-child {
+    padding-top: 8px;
+  }
 }
 
 .doc-sg-sb-card {
