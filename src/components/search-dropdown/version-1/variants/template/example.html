@@ -1,10 +1,10 @@
 <!--
   title: Template
-  description: Los templates `header`, `item`, `itemSkeleton` y `footer` personalizan el panel. `item` recibe la sugerencia y `highlight` para subrayar el texto escrito. `itemSkeleton` es la fila de carga, pareja de `item`: mientras cargan los resultados se repite `itemSkeletonCount` veces (aquí 4, sin depender de los datos) en la misma fila, y `header` y `footer` reciben `loading` para mostrar su propio skeleton, así no hay saltos al llegar los resultados.
+  description: Los templates `header`, `item`, `itemSkeleton` y `footer` personalizan el panel. `item` recibe la sugerencia y `highlight` para subrayar el texto escrito. `itemSkeleton` es la fila de carga, pareja de `item`: mientras cargan los resultados se repite `itemSkeletonCount` veces (aquí 4, sin depender de los datos) en la misma fila, y `header` y `footer` reciben `loading` para mostrar su propio skeleton, así no hay saltos al llegar los resultados. Para maquetar estos skeletons, `previewSkeleton` deja el panel abierto en carga.
 -->
 <int-search-dropdown
   optionLabel="name"
-  placeholder="Try &quot;serv&quot; or &quot;data&quot; (1.5 s answer)"
+  placeholder='Search fees, try "serv" or "data" (1.5 s answer)'
   ariaLabel="Search fees"
   [itemSkeletonCount]="4"
   [suggestions]="results()"
@@ -19,7 +19,7 @@
         <span class="u-flex-grow-1"></span>
       </span>
     } @else {
-      <span class="u-text-sm u-bold">Suggested fees</span>
+      <span class="u-display-block u-text-sm u-bold">Suggested fees</span>
     }
   </ng-template>
 
@@ -52,7 +52,7 @@
         <span class="u-flex-grow-1"></span>
       </span>
     } @else {
-      <span class="u-text-sm u-color-secondary">Press Enter to see every result</span>
+      <span class="u-display-block u-text-sm u-color-secondary">Press Enter to see every result</span>
     }
   </ng-template>
 </int-search-dropdown>

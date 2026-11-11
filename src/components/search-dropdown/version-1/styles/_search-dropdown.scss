@@ -15,7 +15,8 @@
   --int-search-dropdown-panel-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
   --int-search-dropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
   --int-search-dropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
-  --int-search-dropdown-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Figma: 14px (tooltip/font/size/md)
+  --int-search-dropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
+  --int-search-dropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
   --int-search-dropdown-enter-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .12s
   --int-search-dropdown-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
   --int-search-dropdown-leave-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .1s
@@ -31,7 +32,8 @@
   --int-search-dropdown-group-padding-y: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Figma: 4px (space/050)
 
   // --- item ---
-  --int-search-dropdown-item-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md · Figma: 8px (listItemDetail/padding/md)
+  --int-search-dropdown-list-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-searchresult-gap (--i-spacing-gap-sm) between rows, title and groups · Figma: 8px (searchbar/gap/sm)
+  --int-search-dropdown-item-padding: var(--i-spacing-container-sm); // SG: --i-spacing-container-md · Figma: 8px (listItemDetail/padding/md)
   --int-search-dropdown-item-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (listItemDetail/gap/sm)
   --int-search-dropdown-item-border-radius: var(--i-border-radius-lg); // SG: ptSearchResult 8px · Figma: 8px (listItemDetail/border/radius/lg)
   --int-search-dropdown-item-info-gap: var(--i-spacing-gap-xs); // SG: ptSearchResult --i-spacing-gap-xs · Figma: 4px (listItemDetail/gap/xs)
@@ -48,8 +50,6 @@
 
   // --- skeleton ---
   --int-search-dropdown-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect)
-  --int-search-dropdown-skeleton-icon-size: var(--i-sizing-xs); // SG: --i-sizing-xs · Figma: 16px (icon/sizing/sm)
-  --int-search-dropdown-skeleton-line-height: var(--i-sizing-2xs); // SG: --i-sizing-2xs · Figma: 12px (listItemDetail/font/size/sm)
   --int-search-dropdown-skeleton-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm
   --int-search-dropdown-skeleton-duration: var(--i-motion-duration-slow); // SG: --i-motion-duration-slow (pulse, x4)
 }
@@ -87,7 +87,7 @@
     position: absolute;
     inset-block-start: 100%;
     inset-inline: 0;
-    z-index: 1;
+    z-index: 1000; // Aura: zIndex.overlay 1000 (no SG token)
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -96,6 +96,7 @@
     padding: var(--int-search-dropdown-panel-padding);
     color: var(--int-search-dropdown-color);
     font-size: var(--int-search-dropdown-font-size);
+    line-height: var(--int-search-dropdown-line-height);
     background: var(--int-search-dropdown-panel-background);
     border-radius: var(--int-search-dropdown-panel-border-radius);
     box-shadow: var(--int-search-dropdown-panel-shadow);
@@ -110,10 +111,6 @@
     &--leave {
       animation: int-search-dropdown-panel-leave var(--int-search-dropdown-leave-duration)
         var(--int-search-dropdown-leave-easing) forwards;
-    }
-
-    &--appended {
-      z-index: 1000; // Aura: zIndex.overlay 1000
     }
 
     &--top {
@@ -131,9 +128,19 @@
     }
   }
 
+  // Header and footer: only the place, always visible outside the scroll; the content (and any divider) is the
+  // consumer's. Hidden when the template draws nothing (e.g. a footer only for one category).
+  &__header,
   &__footer {
-    padding-block-start: var(--int-search-dropdown-panel-gap);
-    border-block-start: var(--int-search-dropdown-divider-width) solid var(--int-search-dropdown-divider-color);
+    &:empty {
+      display: none;
+    }
+  }
+
+  // Same gap between rows, below a group title and between groups (ptSearchResult).
+  &__list,
+  &__skeleton {
+    gap: var(--int-search-dropdown-list-gap);
   }
 
   &__list {
@@ -147,7 +154,7 @@
   // Group title, sticky while its options scroll (ptSearchResult__title). No z-index: as a positioned box it
   // already paints over the rows, and an overlay opened from a row (a tooltip) can still paint over it.
   &__group {
-    position: sticky;
+    //position: sticky;
     inset-block-start: 0;
     padding-block: var(--int-search-dropdown-group-padding-y);
     font-size: var(--int-search-dropdown-group-font-size);
@@ -165,6 +172,14 @@
     cursor: pointer;
     transition: background var(--int-search-dropdown-item-transition-duration)
       var(--int-search-dropdown-item-transition-easing);
+
+    // optionSticky: stays at the bottom of the results while they scroll (SG ptSearchResult__explore), with the
+    // panel background so the rows passing under it do not show through. Before --focus, so the focus still wins.
+    &--sticky {
+      position: sticky;
+      inset-block-end: 0;
+      background: var(--int-search-dropdown-panel-background);
+    }
 
     &--focus {
       background: var(--int-search-dropdown-item-focus-background);
@@ -215,50 +230,23 @@
     flex-direction: column;
   }
 
-  // Default skeleton (no itemSkeleton template): rows with the box of an item.
-
-  &__skeleton-row {
-    display: flex;
-    align-items: center;
-    gap: var(--int-search-dropdown-item-gap);
-    padding: var(--int-search-dropdown-item-padding);
-  }
-
-  &__skeleton-info {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    gap: var(--int-search-dropdown-item-info-gap);
-  }
-
-  &__skeleton-icon,
-  &__skeleton-line,
-  &__skeleton-title {
+  // Default skeleton: a bar with the height of one text line (&nbsp;), as the default label or the group title.
+  &__skeleton-line {
     display: block;
+    width: 70%;
     background: var(--int-search-dropdown-skeleton-background);
     border-radius: var(--int-search-dropdown-skeleton-radius);
     animation: int-search-dropdown-pulse calc(var(--int-search-dropdown-skeleton-duration) * 4)
       var(--i-motion-ease-in-out) infinite;
+
+    &--title {
+      width: 25%;
+    }
   }
 
-  &__skeleton-icon {
-    flex-shrink: 0;
-    width: var(--int-search-dropdown-skeleton-icon-size);
-    height: var(--int-search-dropdown-skeleton-icon-size);
-  }
-
-  &__skeleton-line,
-  &__skeleton-title {
-    height: var(--int-search-dropdown-skeleton-line-height);
-  }
-
-  &__skeleton-line--short {
-    width: 60%;
-  }
-
-  &__skeleton-title {
-    width: 25%;
-    margin-block: var(--int-search-dropdown-group-padding-y);
+  // Varied widths, so the rows do not read as one block.
+  &__item--skeleton:nth-child(even) > &__skeleton-line {
+    width: 50%;
   }
 }
 
@@ -269,6 +257,12 @@
 .int-search-dropdown {
   &--fluid {
     width: 100%;
+  }
+
+  // While open the whole block goes above its siblings: a later field (its icons have z-index) or a positioned
+  // element cannot paint over the panel. A clipping or transformed ancestor still cuts it: appendTo="body".
+  &--open {
+    z-index: 1000; // Aura: zIndex.overlay 1000 (no SG token)
   }
 }
 

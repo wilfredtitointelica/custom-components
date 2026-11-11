@@ -59,26 +59,22 @@
       @if (isLoading()) {
         <!-- Skeleton: rows with the shape of an item while completeMethod is answered -->
         <div class="int-search-dropdown__skeleton" aria-hidden="true">
-          @if (itemSkeletonTemplate(); as template) {
-            <!-- itemSkeleton template: one row, repeated itemSkeletonCount times in the same row box as the item template -->
-            @for (row of skeleton(); track row) {
-              <div class="int-search-dropdown__item int-search-dropdown__item--skeleton">
+          <!-- Same boxes as the loaded list (group title, item rows), so nothing moves when the results arrive -->
+          @if (group()) {
+            <div class="int-search-dropdown__group">
+              <span class="int-search-dropdown__skeleton-line int-search-dropdown__skeleton-line--title">&nbsp;</span>
+            </div>
+          }
+          @for (row of skeleton(); track row) {
+            <div class="int-search-dropdown__item int-search-dropdown__item--skeleton">
+              @if (itemSkeletonTemplate(); as template) {
+                <!-- itemSkeleton template: one row, repeated itemSkeletonCount times in the same row box as the item template -->
                 <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: row, index: row }" />
-              </div>
-            }
-          } @else {
-            @if (group()) {
-              <span class="int-search-dropdown__skeleton-title"></span>
-            }
-            @for (row of skeleton(); track row) {
-              <div class="int-search-dropdown__skeleton-row">
-                <span class="int-search-dropdown__skeleton-icon"></span>
-                <span class="int-search-dropdown__skeleton-info">
-                  <span class="int-search-dropdown__skeleton-line"></span>
-                  <span class="int-search-dropdown__skeleton-line int-search-dropdown__skeleton-line--short"></span>
-                </span>
-              </div>
-            }
+              } @else {
+                <!-- Default: one text line, as the default item -->
+                <span class="int-search-dropdown__skeleton-line">&nbsp;</span>
+              }
+            </div>
           }
         </div>
       } @else if (rows().length) {
@@ -98,6 +94,7 @@
                 class="int-search-dropdown__item"
                 role="option"
                 [id]="baseId() + '_' + index"
+                [class.int-search-dropdown__item--sticky]="row.sticky"
                 [class.int-search-dropdown__item--focus]="focusedOptionIndex() === index"
                 [attr.aria-selected]="focusedOptionIndex() === index"
                 (click)="onOptionSelect($event, row.option)"

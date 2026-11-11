@@ -1,0 +1,29 @@
+<!--
+  title: Sizes
+  description: Con `size` el campo pasa a `small` o `large`; sin valor queda en el tamaño normal. El panel no cambia con el tamaño.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-search-dropdown
+    size="small"
+    placeholder='Small, try "serv"'
+    ariaLabel="Small"
+    [suggestions]="results()"
+    [style]="{ width: '29rem' }"
+    (completeMethod)="search($event.query)"
+  />
+  <int-search-dropdown
+    placeholder='Normal, try "serv"'
+    ariaLabel="Normal"
+    [suggestions]="results()"
+    [style]="{ width: '29rem' }"
+    (completeMethod)="search($event.query)"
+  />
+  <int-search-dropdown
+    size="large"
+    placeholder='Large, try "serv"'
+    ariaLabel="Large"
+    [suggestions]="results()"
+    [style]="{ width: '29rem' }"
+    (completeMethod)="search($event.query)"
+  />
+</div>

@@ -1,0 +1,40 @@
+<!--
+  title: Recent Searches
+  description: Buscador con búsquedas recientes (Brand Publications). Con `completeOnFocus` el panel se abre al enfocar con el grupo "Recent" y el texto escrito filtra la lista. Cada `item` trae una X que borra esa búsqueda sin elegirla; Enter o la lupa (`onSearch`) agregan el texto arriba de la lista. Sin recientes el panel no se abre (`showEmptyMessage` en `false`).
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-search-dropdown
+    group
+    completeOnFocus
+    size="large"
+    placeholder="Search for Publications"
+    ariaLabel="Search for Publications"
+    [showEmptyMessage]="false"
+    [suggestions]="results()"
+    [(ngModel)]="query"
+    [style]="{ width: '43rem' }"
+    (completeMethod)="filter($event.query)"
+    (onSelect)="search($event.value)"
+    (onSearch)="search($event.query)"
+  >
+    <!-- Item: clock, term and the X that removes it -->
+    <ng-template #item let-term let-h="highlight">
+      <i class="icon icon-clock" aria-hidden="true"></i>
+      <span class="u-flex-grow-1 u-overflow-hidden u-text-ellipsis">{{ h.before }}<span class="u-text-link">{{ h.match }}</span>{{ h.after }}</span>
+      <!-- dep:button provisional · replace with <int-button> when button is done -->
+      <!-- Click only: the focus stays in the field (combobox), so it is not a tab stop -->
+      <button
+        type="button"
+        class="u-display-inline-flex u-p-1 u-radius-md u-color-body u-pointer"
+        tabindex="-1"
+        aria-label="Remove recent search"
+        data-dep="button"
+        (click)="remove($event, term)"
+      >
+        <i class="icon icon-cancel icon--xs" aria-hidden="true"></i>
+      </button>
+      <!-- /dep:button -->
+    </ng-template>
+  </int-search-dropdown>
+  <span class="u-text-sm">{{ last() || '—' }}</span>
+</div>

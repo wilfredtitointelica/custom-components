@@ -72,6 +72,7 @@ export interface IntSearchDropdownPanelContext {
 /** One row of the list: a group title or an option, with its label already resolved. */
 interface Row {
   group: boolean;
+  sticky: boolean;
   option: unknown;
   label: string;
   highlight: IntSearchDropdownHighlight;
@@ -115,6 +116,12 @@ export class IntSearchDropdown implements ControlValueAccessor {
   readonly suggestions = input<readonly unknown[] | null>(null);
   /** Campo de cada sugerencia que se usa como texto (nombre o ruta con puntos). */
   readonly optionLabel = input<string>();
+  /**
+   * int-* extension: campo de la sugerencia que la deja fija abajo de la lista mientras se desplaza, dentro del
+   * scroll (p. ej. una acción "Explore all"). Va en la última sugerencia; sigue siendo una opción que se elige con
+   * clic o teclado.
+   */
+  readonly optionSticky = input<string>();
   /** Muestra las sugerencias agrupadas en secciones con título. */
   readonly group = input(false, { transform: booleanAttribute });
   /**
@@ -180,6 +187,11 @@ export class IntSearchDropdown implements ControlValueAccessor {
    * categoría desde el template `header`).
    */
   readonly loading = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: deja el panel abierto y en carga sin escribir ni enfocar, para maquetar `itemSkeleton` y el
+   * `loading` de `header` y `footer`. Solo mientras se maqueta; se quita antes de subir.
+   */
+  readonly previewSkeleton = input(false, { transform: booleanAttribute });
   /**
    * int-* extension: cantidad de filas del skeleton, el por defecto o el del template `itemSkeleton`; no depende de la cantidad de resultados.
    * @defaultValue 3
@@ -282,7 +294,7 @@ export class IntSearchDropdown implements ControlValueAccessor {
   private searchTimeout?: ReturnType<typeof setTimeout>;
 
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
-  protected readonly isLoading = computed(() => this.loading() || this.searching());
+  protected readonly isLoading = computed(() => this.loading() || this.searching() || this.previewSkeleton());
   /** Same loading state for header and footer as for the results zone, so the three switch together. */
   protected readonly panelContext = computed<IntSearchDropdownPanelContext>(() => ({
     $implicit: this.isLoading(),
@@ -294,7 +306,8 @@ export class IntSearchDropdown implements ControlValueAccessor {
     const query = this.query();
     const toRow = (option: unknown, group: boolean): Row => {
       const label = String(resolveField(option, group ? this.optionGroupLabel() : this.optionLabel()) ?? '');
-      return { group, option, label, highlight: this.highlight(label, query) };
+      const sticky = !group && !!this.optionSticky() && !!resolveField(option, this.optionSticky());
+      return { group, sticky, option, label, highlight: this.highlight(label, query) };
     };
     const suggestions = this.suggestions() ?? [];
     if (!this.group()) return suggestions.map((option) => toRow(option, false));
@@ -319,11 +332,12 @@ export class IntSearchDropdown implements ControlValueAccessor {
       (this.showEmptyMessage() || !!this.emptyTemplate()),
   );
 
-  /** The panel is rendered when it was opened and has something to show. */
+  /** The panel is rendered when it was opened and has something to show, or always with previewSkeleton. */
   protected readonly panelVisible = computed(
     () =>
-      this.overlayOpen() &&
-      (this.isLoading() || !!this.optionCount() || this.showEmpty() || !!this.headerTemplate() || !!this.footerTemplate()),
+      this.previewSkeleton() ||
+      (this.overlayOpen() &&
+        (this.isLoading() || !!this.optionCount() || this.showEmpty() || !!this.headerTemplate() || !!this.footerTemplate())),
   );
 
   protected readonly activeDescendant = computed(() =>
