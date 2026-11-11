@@ -1,0 +1,22 @@
+// int-badge · badgeSize="small | large | xlarge" (same as p-badge; without a value the badge is medium).
+// Width follows the height, so a single character stays round.
+
+.int-badge {
+  &--small {
+    min-width: var(--int-badge-small-height);
+    height: var(--int-badge-small-height);
+    font-size: var(--int-badge-small-font-size);
+  }
+
+  &--large {
+    min-width: var(--int-badge-large-height);
+    height: var(--int-badge-large-height);
+    font-size: var(--int-badge-large-font-size);
+  }
+
+  &--xlarge {
+    min-width: var(--int-badge-xlarge-height);
+    height: var(--int-badge-xlarge-height);
+    font-size: var(--int-badge-xlarge-font-size);
+  }
+}

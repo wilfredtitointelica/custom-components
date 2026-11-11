@@ -12,5 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'badge',
+  variants: ['basic', 'severity', 'size', 'overlay'],
+  uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

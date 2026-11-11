@@ -1,2 +1,5 @@
-// int-badge · entry point. Add one `@use 'badge.<variant>' as badge-<variant>;` per variant module.
+// int-badge · entry point. Add one `@use 'badge.<group>' as badge-<group>;` per modifier module.
 @use 'badge';
+@use 'badge.severity' as badge-severity;
+@use 'badge.size' as badge-size;
+@use 'badge.overlay' as badge-overlay;
