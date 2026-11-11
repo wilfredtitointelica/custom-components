@@ -8,19 +8,7 @@
 		<div class="u-display-flex u-align-items-center u-justify-content-between u-gap-md u-full-width">
 			<span class="u-text-lg u-bold">Fee Chart</span>
 			<div class="u-display-flex u-align-items-center u-gap-sm">
-				<!-- dep:search provisional · replace with <int-search> when search is done -->
-				<!-- The input is the box; the icon is absolute, so the flex end of the wrapper places it on the right -->
-				<div class="u-relative u-display-flex u-align-items-center u-justify-content-end" data-dep="search">
-					<input
-						type="text"
-						size="22"
-						class="u-full-width u-ps-3 u-pe-5 u-py-2 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-text-sm u-color-body"
-						placeholder="Search by Institution"
-						aria-label="Search by Institution"
-					/>
-					<i class="icon icon-search u-absolute u-me-2 u-color-body" aria-hidden="true"></i>
-				</div>
-				<!-- /dep:search -->
+				<int-search placeholder="Search by Institution" ariaLabel="Search by Institution" [style]="{ width: '15rem' }" />
 				<!-- dep:button provisional · replace with <int-button> when button is done -->
 				<button type="button" class="u-display-inline-flex u-p-2 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-color-body u-pointer" aria-label="Download" data-dep="button">
 					<i class="icon icon-download" aria-hidden="true"></i>

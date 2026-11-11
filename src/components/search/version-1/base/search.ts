@@ -48,10 +48,18 @@ export class IntSearch implements ControlValueAccessor {
   readonly inputId = input(`int-search-${nextId++}`);
   /** Nombre del control dentro del formulario. */
   readonly name = input<string>();
+  /**
+   * Atributo `autocomplete` del `<input>` interno; en `off` el navegador no muestra sus sugerencias de lo escrito
+   * antes, que taparían el panel de un buscador.
+   * @defaultValue 'off'
+   */
+  readonly autocomplete = input('off');
   /** Etiqueta accesible del campo. */
   readonly ariaLabel = input<string>();
   /** Id del elemento que etiqueta al campo. */
   readonly ariaLabelledBy = input<string>();
+  /** Ocupa todo el ancho del contenedor. */
+  readonly fluid = input(false, { transform: booleanAttribute });
   /** Muestra el estado inválido. */
   readonly invalid = input(false, { transform: booleanAttribute });
   /** Deshabilita el campo. */
@@ -69,6 +77,28 @@ export class IntSearch implements ControlValueAccessor {
    */
   readonly searchAriaLabel = input('Search');
 
+  /** int-* extension: rol del `<input>` interno, para componerlo dentro de otro `int-*` (p. ej. `combobox`). */
+  readonly inputRole = input<string>();
+  /** int-* extension: `aria-expanded` del `<input>` interno, para componerlo dentro de otro `int-*` con un panel. */
+  readonly ariaExpanded = input<boolean>();
+  /** int-* extension: `aria-controls` del `<input>` interno: id del panel que controla. */
+  readonly ariaControls = input<string>();
+  /** int-* extension: `aria-activedescendant` del `<input>` interno: id de la opción enfocada del panel. */
+  readonly ariaActiveDescendant = input<string>();
+  /** int-* extension: `aria-autocomplete` del `<input>` interno (`list`, `both`…). */
+  readonly ariaAutoComplete = input<'none' | 'inline' | 'list' | 'both'>();
+
+  /** Se emite con cada cambio del texto. */
+  readonly onInput = output<Event>();
+  /** Se emite cuando el campo recibe el foco. */
+  readonly onFocus = output<FocusEvent>();
+  /** Se emite cuando el campo pierde el foco. */
+  readonly onBlur = output<FocusEvent>();
+  /**
+   * int-* extension: se emite con cada tecla pulsada en el campo, antes de que el componente la procese.
+   * Si quien escucha llama a `preventDefault()`, Enter no emite `onSearch`.
+   */
+  readonly onKeyDown = output<KeyboardEvent>();
   /** int-* extension: se emite al limpiar el campo con el botón para limpiar. */
   readonly onClear = output<void>();
   /** int-* extension: se emite al pulsar Enter en el campo o al hacer clic en la lupa, con el texto actual en `query`. */
@@ -89,6 +119,7 @@ export class IntSearch implements ControlValueAccessor {
     const classes = ['int-search'];
     const size = this.size();
     if (size) classes.push(`int-search--${size}`);
+    if (this.fluid()) classes.push('int-search--fluid');
     if (this.clearVisible()) classes.push('int-search--clearable');
     if (this.invalid()) classes.push('int-search--invalid');
     if (this.isDisabled()) classes.push('int-search--disabled');
@@ -96,12 +127,29 @@ export class IntSearch implements ControlValueAccessor {
   });
 
   private onModelChange: (value: string) => void = () => {};
-  protected onModelTouched: () => void = () => {};
+  private onModelTouched: () => void = () => {};
 
-  protected onInput(event: Event): void {
+  protected handleInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.value.set(value);
     this.onModelChange(value);
+    this.onInput.emit(event);
+  }
+
+  /** A composing int-* handles the key first; Enter runs the search unless it called preventDefault. */
+  protected handleKeyDown(event: KeyboardEvent): void {
+    this.onKeyDown.emit(event);
+    if (event.key === 'Enter' && !event.defaultPrevented) this.search(event);
+  }
+
+  protected handleBlur(event: FocusEvent): void {
+    this.onModelTouched();
+    this.onBlur.emit(event);
+  }
+
+  /** int-* extension: pone el foco en el campo, para componerlo dentro de otro `int-*`. */
+  focus(): void {
+    this.inputEl().nativeElement.focus();
   }
 
   /** Runs the search with the current text (Enter on the field or click on the search icon). */

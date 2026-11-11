@@ -174,6 +174,8 @@ export class DocPage {
     const items = groups.flatMap((group) => group.items);
     return {
       groups,
+      /** Every dependency the component declares: the only ones the scan marks. */
+      ids: [...requires, ...declared],
       count: requires.length + uses.length,
       state: items.some((item) => item.pending) ? ('pending' as const) : ('resolved' as const),
       resolvedIds: items.filter((item) => !item.pending).map((item) => item.id),
@@ -339,11 +341,11 @@ export class DocPage {
     // while scanning is on.
     effect((onCleanup) => {
       if (!this.scanning() || !this.examples.hasValue()) return;
-      const resolved = this.dependencies().resolvedIds;
+      const { resolvedIds: resolved, ids: declared } = this.dependencies();
       let frame = 0;
       const mark = () => {
         cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => markDependencies(host, resolved));
+        frame = requestAnimationFrame(() => markDependencies(host, resolved, declared));
       };
       const observer = new MutationObserver(mark);
       afterNextRender(
@@ -401,13 +403,19 @@ function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement
 
 /**
  * Inside every preview, marks the first [data-dep] of each pending dependency and the first <int-<id>>
- * of each resolved one. The page's own component is never a dependency, so it is never marked.
+ * of each resolved one. The page's own component is never a dependency, so it is never marked; neither are
+ * the provisionals inside another int-* it uses (its own dependencies, e.g. dep:input inside <int-search>):
+ * only the ids the page's component declares in requires / uses count.
  */
-function markDependencies(host: HTMLElement, resolved: readonly string[]): void {
+function markDependencies(host: HTMLElement, resolved: readonly string[], declared: readonly string[]): void {
   for (const preview of host.querySelectorAll<HTMLElement>('.doc-preview')) {
     const byDep = new Map<string, HTMLElement[]>();
     for (const element of preview.querySelectorAll<HTMLElement>('[data-dep]')) {
       const dep = element.dataset['dep'] ?? '';
+      if (!declared.includes(dep)) {
+        element.removeAttribute(SCAN_MARK);
+        continue;
+      }
       byDep.set(dep, [...(byDep.get(dep) ?? []), element]);
     }
     for (const [dep, elements] of byDep) markFirst(SCAN_MARK, dep, elements);

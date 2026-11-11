@@ -1,4 +1,16 @@
 <!--
   title: Basic
-  description:
+  description: Al escribir se emite `completeMethod` con el texto en `query` y el panel muestra las `suggestions` que se asignan como respuesta; Enter o la lupa sin una sugerencia elegida emiten `onSearch`.
 -->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-search-dropdown
+    placeholder="Search fees"
+    ariaLabel="Search fees"
+    [suggestions]="results()"
+    [style]="{ width: '29rem' }"
+    (completeMethod)="search($event.query)"
+    (onSelect)="last.set('Selected: ' + $event.value)"
+    (onSearch)="last.set('Search: ' + $event.query)"
+  />
+  <span class="u-text-sm">{{ last() || '—' }}</span>
+</div>

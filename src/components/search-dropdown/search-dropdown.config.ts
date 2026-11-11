@@ -12,5 +12,8 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'search-dropdown',
+  variants: ['basic', 'group', 'template', 'complete-on-focus', 'loading', 'empty'],
+  requires: ['search'],
+  uses: ['button', 'tooltip'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

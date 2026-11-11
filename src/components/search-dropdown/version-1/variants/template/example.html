@@ -1,0 +1,58 @@
+<!--
+  title: Template
+  description: Los templates `header`, `item`, `itemSkeleton` y `footer` personalizan el panel. `item` recibe la sugerencia y `highlight` para subrayar el texto escrito. `itemSkeleton` es la fila de carga, pareja de `item`: mientras cargan los resultados se repite `itemSkeletonCount` veces (aquí 4, sin depender de los datos) en la misma fila, y `header` y `footer` reciben `loading` para mostrar su propio skeleton, así no hay saltos al llegar los resultados.
+-->
+<int-search-dropdown
+  optionLabel="name"
+  placeholder="Try &quot;serv&quot; or &quot;data&quot; (1.5 s answer)"
+  ariaLabel="Search fees"
+  [itemSkeletonCount]="4"
+  [suggestions]="results()"
+  [style]="{ width: '29rem' }"
+  (completeMethod)="search($event.query)"
+>
+  <!-- Header (its skeleton: @if loading) -->
+  <ng-template #header let-loading>
+    @if (loading) {
+      <span class="u-display-flex u-text-sm">
+        <span class="u-display-block u-flex-grow-1 u-background-surface u-radius-sm">&nbsp;</span>
+        <span class="u-flex-grow-1"></span>
+      </span>
+    } @else {
+      <span class="u-text-sm u-bold">Suggested fees</span>
+    }
+  </ng-template>
+
+  <!-- Item (its skeleton: #itemSkeleton) -->
+  <ng-template #item let-fee let-h="highlight">
+    <i class="icon icon-list" aria-hidden="true"></i>
+    <span class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1 u-overflow-hidden">
+      <span class="u-overflow-hidden u-text-ellipsis">{{ h.before }}<span class="u-text-link">{{ h.match }}</span>{{ h.after }}</span>
+      <span class="u-text-xs">Banks: {{ fee.banks }}</span>
+    </span>
+  </ng-template>
+
+  <!-- Item skeleton (skeleton of #item) -->
+  <ng-template #itemSkeleton>
+    <span class="icon u-background-surface"></span>
+    <span class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+      <span class="u-display-block u-background-surface u-radius-sm">&nbsp;</span>
+      <span class="u-display-flex u-text-xs">
+        <span class="u-display-block u-flex-grow-1 u-background-surface u-radius-sm">&nbsp;</span>
+        <span class="u-flex-grow-1"></span>
+      </span>
+    </span>
+  </ng-template>
+
+  <!-- Footer (its skeleton: @if loading) -->
+  <ng-template #footer let-loading>
+    @if (loading) {
+      <span class="u-display-flex u-text-sm">
+        <span class="u-display-block u-flex-grow-1 u-background-surface u-radius-sm">&nbsp;</span>
+        <span class="u-flex-grow-1"></span>
+      </span>
+    } @else {
+      <span class="u-text-sm u-color-secondary">Press Enter to see every result</span>
+    }
+  </ng-template>
+</int-search-dropdown>

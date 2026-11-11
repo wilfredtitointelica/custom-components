@@ -1,5 +1,6 @@
 import { Component, computed, ElementRef, inject, signal } from '@angular/core';
 
+import { IntSearch } from '../../../../search/version-1/base/search';
 import { IntTreeNode, IntTreetableModule, IntTreetablePageEvent } from '../../base/treetable';
 
 interface FeeChartRow {
@@ -58,7 +59,7 @@ function buildFees(): IntTreeNode<FeeChartRow>[] {
 @Component({
   selector: 'treetable-fee-chart-example',
   templateUrl: './example.html',
-  imports: [IntTreetableModule],
+  imports: [IntTreetableModule, IntSearch],
   // TODO(dep:dropdown-select provisional) a press outside the rows per page list closes it.
   host: { '(document:pointerdown)': 'onDocumentPointerDown($event)' },
 })

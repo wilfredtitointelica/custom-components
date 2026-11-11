@@ -1,6 +1,6 @@
 <!--
   title: Search
-  description: IconField wraps an input and an icon.
+  description: Campo de búsqueda con botón para limpiar y lupa; Enter o la lupa emiten `onSearch` con el texto escrito.
   figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2572-2023
   figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2585-1986
 -->
@@ -12,15 +12,22 @@
   data-dep="input"
   [id]="inputId()"
   [attr.name]="name()"
+  [attr.autocomplete]="autocomplete()"
   [attr.placeholder]="placeholder()"
   [attr.aria-label]="ariaLabel()"
   [attr.aria-labelledby]="ariaLabelledBy()"
   [attr.aria-invalid]="invalid() || null"
+  [attr.role]="inputRole()"
+  [attr.aria-expanded]="ariaExpanded()"
+  [attr.aria-controls]="ariaControls()"
+  [attr.aria-activedescendant]="ariaActiveDescendant()"
+  [attr.aria-autocomplete]="ariaAutoComplete()"
   [value]="value()"
   [disabled]="isDisabled()"
-  (input)="onInput($event)"
-  (keydown.enter)="search($event)"
-  (blur)="onModelTouched()"
+  (input)="handleInput($event)"
+  (keydown)="handleKeyDown($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="handleBlur($event)"
 />
 <!-- /dep:input -->
 

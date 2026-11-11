@@ -1,0 +1,126 @@
+<!--
+  title: Global Search
+  description: Buscador de la barra superior: filtros por categoría en `header`, resultados agrupados con `group` y un `item` con código y última vista, y accesos "Explore" en `footer`. Mientras carga, `itemSkeleton` dibuja las filas y `header` y `footer` usan `loading` para su skeleton de la primera carga; un label truncado muestra el texto completo en un tooltip.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-search-dropdown
+    group
+    completeOnFocus
+    optionLabel="name"
+    placeholder="Search Fees, Reports & Dashboards"
+    ariaLabel="Search Fees, Reports & Dashboards"
+    emptyMessage="No results were found"
+    scrollHeight="15rem"
+    [itemSkeletonCount]="3"
+    [suggestions]="results()"
+    [loading]="loading()"
+    [(ngModel)]="query"
+    [style]="{ width: '29rem' }"
+    (completeMethod)="search($event.query)"
+    (onSearch)="last.set('Search: ' + $event.query)"
+    (onSelect)="open($event.value)"
+  >
+    <!-- Header (its skeleton: @if loading, only on the first load) -->
+    <ng-template #header let-loading>
+      @if (loading && !loaded()) {
+        <div class="u-display-flex u-gap-xs" aria-hidden="true">
+          @for (category of categories; track category) {
+            <span class="u-px-2 u-py-1 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-text-xs u-background-surface">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          }
+        </div>
+      } @else {
+        <div class="u-display-flex u-gap-xs" role="group" aria-label="Category">
+          @for (category of categories; track category) {
+            <!-- dep:button provisional · replace with <int-button> when button is done -->
+            <button
+              type="button"
+              class="u-px-2 u-py-1 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-text-xs u-color-primary u-pointer"
+              [class.u-background-surface]="category === activeCategory()"
+              [class.u-background-white]="category !== activeCategory()"
+              [attr.aria-pressed]="category === activeCategory()"
+              data-dep="button"
+              (click)="selectCategory(category)"
+            >
+              {{ category }}
+            </button>
+            <!-- /dep:button -->
+          }
+        </div>
+      }
+    </ng-template>
+
+    <!-- Item (its skeleton: #itemSkeleton) -->
+    <ng-template #item let-entry let-h="highlight">
+      <i [class]="'icon ' + entry.icon" aria-hidden="true"></i>
+      <span class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+        <span class="u-display-flex u-flex-column">
+          <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
+          <!-- Zero-height anchor: the tooltip sits right above the label. No u-relative on the way up, so it is
+               placed against the panel and is not cut by the scroll of the results -->
+          <span class="u-display-flex u-flex-column u-justify-content-end">
+            @if (tooltip() === entry.code) {
+              <span
+                class="u-absolute u-mb-1 u-p-3 u-radius-sm u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-shadow-sm u-text-xs u-color-primary"
+                role="tooltip"
+                data-dep="tooltip"
+                [id]="'tooltip-' + entry.code"
+              >
+                {{ entry.code }} - {{ entry.name }}
+              </span>
+            }
+          </span>
+          <!-- Trigger without data-dep: the scan marks the tooltip only while it is shown -->
+          <span
+            class="u-overflow-hidden u-text-ellipsis"
+            [attr.aria-describedby]="tooltip() === entry.code ? 'tooltip-' + entry.code : null"
+            (mouseenter)="showTooltip($event, entry)"
+            (mouseleave)="tooltip.set(null)"
+          >
+            <span class="u-text-xs">{{ entry.code }}</span>
+            {{ h.before }}<span class="u-text-link">{{ h.match }}</span>{{ h.after }}
+          </span>
+          <!-- /dep:tooltip -->
+        </span>
+        @if (entry.lastViewed) {
+          <span class="u-text-xs">Banks: {{ entry.banks }} · Last viewed: {{ entry.lastViewed }}</span>
+        }
+      </span>
+    </ng-template>
+
+    <!-- Item skeleton (skeleton of #item) -->
+    <ng-template #itemSkeleton>
+      <span class="icon u-background-surface"></span>
+      <span class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+        <span class="u-display-block u-background-surface u-radius-sm">&nbsp;</span>
+        <span class="u-display-flex u-text-xs">
+          <span class="u-display-block u-flex-grow-1 u-background-surface u-radius-sm">&nbsp;</span>
+          <span class="u-flex-grow-1"></span>
+        </span>
+      </span>
+    </ng-template>
+
+    <!-- Footer (its skeleton: @if loading, only on the first load) -->
+    <ng-template #footer let-loading>
+      <div class="u-display-flex u-flex-column">
+        @for (link of explore; track link.label) {
+          @if (loading && !loaded()) {
+            <span class="u-display-flex u-align-items-center u-gap-sm u-p-2" aria-hidden="true">
+              <span class="icon u-background-surface"></span>
+              <span class="u-display-flex u-flex-grow-1">
+                <span class="u-display-block u-flex-grow-1 u-background-surface u-radius-sm">&nbsp;</span>
+                <span class="u-flex-grow-1"></span>
+              </span>
+            </span>
+          } @else {
+            <a class="u-display-flex u-align-items-center u-gap-sm u-p-2 u-radius-lg u-color-primary u-pointer" href="javascript:void(0)">
+              <i [class]="'icon ' + link.icon" aria-hidden="true"></i>
+              <span class="u-flex-grow-1">{{ link.label }}</span>
+              <i class="icon icon-arrow-right icon--xs" aria-hidden="true"></i>
+            </a>
+          }
+        }
+      </div>
+    </ng-template>
+  </int-search-dropdown>
+  <span class="u-text-sm">{{ last() || '—' }}</span>
+</div>

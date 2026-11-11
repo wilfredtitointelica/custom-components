@@ -41,6 +41,9 @@
   // --- motion ---
   --int-search-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
   --int-search-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
+
+  // --- skeleton ---
+  --int-search-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect) · knowledgeBase: ptSearch skeleton height 32px
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -131,6 +134,11 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-search {
+  // .p-inputtext-fluid: full width also as a flex item of a toolbar.
+  &--fluid {
+    width: 100%;
+  }
+
   // Room for the divider and the clear button besides the search icon.
   &--clearable &__input {
     padding-inline-end: calc(
@@ -181,4 +189,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-search {
+  block-size: var(--int-search-height);
+  border-radius: var(--int-search-border-radius);
+  background: var(--int-search-skeleton-background);
 }
