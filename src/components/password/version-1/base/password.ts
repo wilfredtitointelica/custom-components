@@ -22,6 +22,9 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+/** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
+const OVERLAY_Z_INDEX = 1000;
+
 /**
  * Target of the overlay, same values as PrimeNG's appendTo: 'self', 'body' or an element (a template
  * variable such as [appendTo]="container").
@@ -132,6 +135,19 @@ export class IntPassword implements ControlValueAccessor {
    */
   readonly appendTo = input<IntPasswordAppendTo>('self');
   /**
+   * Con `appendTo` en `body` o en un elemento, el componente asigna el `z-index` del panel del medidor
+   * (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y se define con CSS.
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel del medidor montado fuera (`appendTo`) cuando `autoZIndex` está
+   * activo, tal cual (en PrimeNG se suma a 1000); en `0` usa 1000. P. ej. `9` lo deja debajo de un
+   * encabezado fijo con `z-index` 10.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
+  /**
    * int-* extension: el campo es de solo lectura (atributo nativo `readonly`): se ve habilitado y se
    * puede enfocar, pero no se edita; no abre el medidor ni muestra el icono de borrar.
    */
@@ -176,6 +192,11 @@ export class IntPassword implements ControlValueAccessor {
   protected readonly overlayVisible = signal(false);
   /** Disabled by the forms API (setDisabledState), combined with the disabled input. */
   private readonly formDisabled = signal(false);
+
+  /** z-index of the overlay moved out of the block (PrimeNG's ZIndexUtils 'overlay'); else the CSS. */
+  protected readonly overlayZIndex = computed(() =>
+    this.overlayTarget() && this.autoZIndex() ? this.baseZIndex() || OVERLAY_Z_INDEX : null,
+  );
 
   /** Element the overlay is moved to; null with appendTo="self" (it stays below the input). */
   protected readonly overlayTarget = computed<HTMLElement | null>(() => {

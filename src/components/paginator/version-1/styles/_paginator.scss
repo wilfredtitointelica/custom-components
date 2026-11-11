@@ -253,7 +253,6 @@
   &__dropdown-list--appended {
     inset-block-end: auto;
     inset-inline-end: auto;
-    z-index: 1000; // Aura: zIndex.overlay 1000
     margin-block: calc(-1 * var(--int-paginator-nav-button-padding)) 0;
     color: var(--int-paginator-color);
     font-family: var(--int-paginator-font-family);

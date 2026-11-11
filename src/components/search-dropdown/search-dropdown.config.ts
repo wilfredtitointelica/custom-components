@@ -22,7 +22,7 @@ export default {
     'empty',
     'sizes',
     'disabled',
-    'append-to',
+    'append-to-body',
   ],
   requires: ['search'],
   uses: ['button', 'tooltip'],

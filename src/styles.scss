@@ -156,8 +156,11 @@ body.doc-body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Overlays of the int-* components (CDK) mount on <body>, outside the preview: same font as the examples. */
-.cdk-overlay-container {
+/* Overlays of the int-* components (CDK, or appendTo="body") mount on <body>, outside the preview: same font as
+   the examples. */
+.cdk-overlay-container,
+body.doc-body > [class^='int-'],
+body.doc-body > [class*=' int-'] {
   font-family: var(--doc-font-component);
 }
 

@@ -27,6 +27,7 @@ export default {
     'accessibility',
     'success',
     'readonly',
+    'append-to-body',
   ],
   compositions: ['helper-text', 'template-driven-form'],
   requires: ['input'],

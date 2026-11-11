@@ -11,11 +11,11 @@ const FEES: readonly string[] = [
 ];
 
 @Component({
-  selector: 'search-dropdown-append-to-example',
+  selector: 'search-dropdown-append-to-body-example',
   templateUrl: './example.html',
   imports: [IntSearchDropdown],
 })
-export class SearchDropdownAppendToExample {
+export class SearchDropdownAppendToBodyExample {
   protected readonly results = signal<string[]>([]);
 
   protected search(query: string): void {

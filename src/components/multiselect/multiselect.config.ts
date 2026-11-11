@@ -29,8 +29,9 @@ export default {
     'accessibility',
     'readonly',
     'success',
+    'append-to-body',
   ],
-  compositions: ['selected-items-label', 'brands', 'append-to-body'],
+  compositions: ['selected-items-label', 'brands'],
   requires: ['checkbox', 'chip', 'input', 'tooltip'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

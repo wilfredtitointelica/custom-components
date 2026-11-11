@@ -272,10 +272,6 @@
         var(--int-multiselect-overlay-leave-easing) forwards;
     }
 
-    &--appended {
-      z-index: 1000; // Aura: zIndex.overlay 1000
-    }
-
     &--top {
       margin-block-start: calc(-1 * var(--int-multiselect-overlay-offset));
       transform-origin: bottom;

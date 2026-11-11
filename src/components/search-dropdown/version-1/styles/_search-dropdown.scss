@@ -87,7 +87,7 @@
     position: absolute;
     inset-block-start: 100%;
     inset-inline: 0;
-    z-index: 1000; // Aura: zIndex.overlay 1000 (no SG token)
+    z-index: 1; // inside the block, which sets the level against the page (--open)
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -259,10 +259,11 @@
     width: 100%;
   }
 
-  // While open the whole block goes above its siblings: a later field (its icons have z-index) or a positioned
-  // element cannot paint over the panel. A clipping or transformed ancestor still cuts it: appendTo="body".
+  // While open the block goes just above its siblings (a later field: its icons have z-index 1), but stays
+  // below the sticky headers of the page, so a field scrolled under one is not lifted over it. A clipping or
+  // transformed ancestor still cuts the panel: appendTo="body".
   &--open {
-    z-index: 1000; // Aura: zIndex.overlay 1000 (no SG token)
+    z-index: 2; // one above the int-search icons (z-index 1)
   }
 }
 

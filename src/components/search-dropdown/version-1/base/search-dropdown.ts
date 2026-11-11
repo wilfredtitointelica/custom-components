@@ -25,6 +25,9 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 
 import { IntSearch, IntSearchEvent, IntSearchSize } from '../../../search/version-1/base/search';
 
+/** Aura: zIndex.overlay, the level of an overlay moved out of the component (no Style Guide token). */
+const OVERLAY_Z_INDEX = 1000;
+
 /**
  * Target of the panel, same values as PrimeNG's appendTo: 'self', 'body' or an element (a template
  * variable such as [appendTo]="container").
@@ -180,6 +183,18 @@ export class IntSearchDropdown implements ControlValueAccessor {
   readonly focusOnHover = input(true, { transform: booleanAttribute });
   /** Clase extra del panel. */
   readonly panelStyleClass = input<string>();
+  /**
+   * Con `appendTo` en `body` o en un elemento, el componente asigna el `z-index` del panel (`baseZIndex`, o 1000,
+   * el nivel de los overlays). En `false` no lo asigna y se define con `panelStyleClass`.
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel montado fuera (`appendTo`) cuando `autoZIndex` está activo, tal cual
+   * (en PrimeNG se suma a 1000); en `0` usa 1000. P. ej. `9` lo deja debajo de un encabezado fijo con `z-index` 10.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
   /** Id del componente; con él se arman los ids de la lista y de las opciones. */
   readonly id = input<string>();
   /**
@@ -365,6 +380,11 @@ export class IntSearchDropdown implements ControlValueAccessor {
     return classes.join(' ');
   });
 
+  /** z-index of a panel moved out of the block (PrimeNG's ZIndexUtils 'overlay'); the block sets it otherwise. */
+  protected readonly panelZIndex = computed(() =>
+    this.overlayTarget() && this.autoZIndex() ? this.baseZIndex() || OVERLAY_Z_INDEX : null,
+  );
+
   protected readonly panelClass = computed(() =>
     ['int-search-dropdown__panel', this.overlayTarget() && 'int-search-dropdown__panel--appended', this.panelStyleClass()]
       .filter(Boolean)
@@ -384,18 +404,25 @@ export class IntSearchDropdown implements ControlValueAccessor {
       this.alignOverlay();
     });
 
-    // Only while the panel is open: outside click closes it; scroll and resize keep an appended panel aligned.
+    // Only while the panel is open: outside click closes it, and so does a scroll of the page or of a container
+    // (PrimeNG's ConnectedOverlayScrollHandler), so the panel never floats over a sticky header or another
+    // area; the scroll of its own results does not count. Resize keeps an appended panel aligned.
     effect((onCleanup) => {
       if (!this.panelVisible()) return;
       const view = this.document.defaultView;
       const outsideClick = (event: MouseEvent) => this.onDocumentClick(event);
+      const outsideScroll = (event: Event) => {
+        const panel = this.panelRef()?.nativeElement;
+        if (panel && event.target instanceof Node && panel.contains(event.target)) return;
+        this.hide();
+      };
       const realign = () => this.alignOverlay();
       this.document.addEventListener('click', outsideClick);
-      view?.addEventListener('scroll', realign, true);
+      view?.addEventListener('scroll', outsideScroll, true);
       view?.addEventListener('resize', realign);
       onCleanup(() => {
         this.document.removeEventListener('click', outsideClick);
-        view?.removeEventListener('scroll', realign, true);
+        view?.removeEventListener('scroll', outsideScroll, true);
         view?.removeEventListener('resize', realign);
       });
     });

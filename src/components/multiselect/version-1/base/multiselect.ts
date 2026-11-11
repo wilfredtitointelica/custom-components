@@ -27,6 +27,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IntChip } from '../../../chip/version-1/base/chip';
 
+/** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
+const OVERLAY_Z_INDEX = 1000;
+
 /**
  * Target of the overlay, same values as PrimeNG's appendTo: 'self', 'body' or an element (a template
  * variable such as [appendTo]="container").
@@ -361,6 +364,19 @@ export class IntMultiselect implements ControlValueAccessor {
    * de template, p. ej. `[appendTo]="container"`), para que ningún contenedor lo recorte ni lo tape.
    */
   readonly appendTo = input<IntMultiselectAppendTo>('self');
+  /**
+   * Con `appendTo` en `body` o en un elemento, el componente asigna el `z-index` del panel
+   * (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y se define con `panelStyleClass`.
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel montado fuera (`appendTo`) cuando `autoZIndex` está
+   * activo, tal cual (en PrimeNG se suma a 1000); en `0` usa 1000. P. ej. `9` lo deja debajo de un
+   * encabezado fijo con `z-index` 10.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
   /** Cuando está presente, el campo se muestra con estilo de error. */
   readonly invalid = input(false, { transform: booleanAttribute });
   /** Cuando está presente, el componente queda deshabilitado. */
@@ -617,6 +633,11 @@ export class IntMultiselect implements ControlValueAccessor {
       .filter(Boolean)
       .join(' ');
   });
+
+  /** z-index of the panel moved out of the block (PrimeNG's ZIndexUtils 'overlay'); else the CSS. */
+  protected readonly overlayZIndex = computed(() =>
+    this.overlayTarget() && this.autoZIndex() ? this.baseZIndex() || OVERLAY_Z_INDEX : null,
+  );
 
   protected readonly overlayClass = computed(() =>
     ['int-multiselect__overlay', this.overlayTarget() && 'int-multiselect__overlay--appended', this.panelStyleClass()]

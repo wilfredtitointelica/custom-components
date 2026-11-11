@@ -43,6 +43,7 @@
   <div
     #panel
     [class]="panelClass()"
+    [style.z-index]="panelZIndex()"
     animate.enter="int-search-dropdown__panel--enter"
     animate.leave="int-search-dropdown__panel--leave"
     (mousedown)="onPanelMouseDown($event)"

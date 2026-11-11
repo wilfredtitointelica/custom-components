@@ -24,6 +24,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
+/** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
+const OVERLAY_Z_INDEX = 1000;
+
 /**
  * Target of the selects' lists, same values as PrimeNG's appendTo: 'self', 'body' or an element (a
  * template variable such as [appendTo]="container").
@@ -126,6 +129,19 @@ export class IntPaginator {
    * recorte ni la tape.
    */
   readonly appendTo = input<IntPaginatorAppendTo>('self');
+  /**
+   * Con `appendTo` en `body` o en un elemento, el componente asigna el `z-index` de la lista de los selectores
+   * (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y se define con CSS.
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` de la lista de los selectores montado fuera (`appendTo`) cuando `autoZIndex` está
+   * activo, tal cual (en PrimeNG se suma a 1000); en `0` usa 1000. P. ej. `9` lo deja debajo de un
+   * encabezado fijo con `z-index` 10.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
   /** Muestra un selector para saltar a cualquier página. */
   readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
   /** Muestra un campo numérico para saltar a cualquier página. */
@@ -307,6 +323,11 @@ export class IntPaginator {
   private readonly injector = inject(Injector);
   /** List of the open select (one at a time). */
   private readonly listRef = viewChild<ElementRef<HTMLElement>>('list');
+  /** z-index of the list moved out of the block (PrimeNG's ZIndexUtils 'overlay'); else the CSS. */
+  protected readonly overlayZIndex = computed(() =>
+    this.overlayTarget() && this.autoZIndex() ? this.baseZIndex() || OVERLAY_Z_INDEX : null,
+  );
+
   /** Element the open list is moved to; null with appendTo="self" (it stays above its select). */
   protected readonly overlayTarget = computed<HTMLElement | null>(() => {
     const appendTo = this.appendTo();
