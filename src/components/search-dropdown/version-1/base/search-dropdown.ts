@@ -107,7 +107,7 @@ function resolveField(data: unknown, field: string | undefined): unknown {
   imports: [IntSearch, FormsModule, NgTemplateOutlet],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => IntSearchDropdown), multi: true }],
   // Same root as PrimeNG: p-autocomplete puts its root classes on the host element.
-  host: { '[class]': 'classes()' },
+  host: { '[class]': 'classes()', '(click)': 'onHostClick($event)' },
 })
 export class IntSearchDropdown implements ControlValueAccessor {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -481,6 +481,15 @@ export class IntSearchDropdown implements ControlValueAccessor {
     }
     this.focusedOptionIndex.set(-1);
     this.searchTimeout = setTimeout(() => this.search(event, query, 'input'), this.delay());
+  }
+
+  // A click on the field that already has the focus fires no focus event: reopen the closed panel the same way
+  // (completeOnFocus), or with the text already written.
+  protected onHostClick(event: MouseEvent): void {
+    if (this.isDisabled() || this.overlayOpen() || !(event.target instanceof HTMLInputElement)) return;
+    const query = this.query();
+    if (this.completeOnFocus()) this.search(event, query, 'focus');
+    else if (query.length >= this.minLength()) this.search(event, query, 'input');
   }
 
   protected onInputFocus(event: FocusEvent): void {
