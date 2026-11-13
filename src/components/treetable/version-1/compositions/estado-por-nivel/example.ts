@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
+import { IntTooltip } from '../../../../tooltip/version-2/base/tooltip';
 import { IntTreeNode, IntTreetableModule } from '../../base/treetable';
 
 interface FeeRow {
@@ -34,10 +35,8 @@ const FEES: IntTreeNode<FeeRow>[] = [
 @Component({
   selector: 'treetable-estado-por-nivel-example',
   templateUrl: './example.html',
-  imports: [IntTreetableModule],
+  imports: [IntTreetableModule, IntTooltip],
 })
 export class TreetableEstadoPorNivelExample {
   protected readonly fees = FEES;
-  // TODO(dep:tooltip provisional): code of the row whose tooltip is open (hover / focus), until int-tooltip is done.
-  protected readonly openTooltip = signal<string | null>(null);
 }

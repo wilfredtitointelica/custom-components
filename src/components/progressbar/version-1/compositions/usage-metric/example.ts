@@ -1,6 +1,6 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
+import { IntTooltip } from '../../../../tooltip/version-2/base/tooltip';
 import { IntProgressbar } from '../../base/progressbar';
 
 interface ProductUsage {
@@ -47,17 +47,10 @@ const MOCK_PRODUCTS: readonly ProductUsage[] = [
 @Component({
   selector: 'progressbar-usage-metric-example',
   templateUrl: './example.html',
-  imports: [IntProgressbar, NgTemplateOutlet],
+  imports: [IntProgressbar, IntTooltip],
 })
 export class ProgressbarUsageMetricExample {
   protected readonly products = MOCK_PRODUCTS;
-  // TODO(dep:tooltip provisional): open and tooltipId only exist for the provisional tooltip.
-  /** Id of the tooltip shown (hover or focus on its info icon). */
-  protected readonly open = signal<string | null>(null);
-
-  protected tooltipId(product: ProductUsage): string {
-    return `progressbar-usage-metric-tooltip-${product.code.toLowerCase()}`;
-  }
 
   protected labelId(product: ProductUsage): string {
     return `progressbar-usage-metric-label-${product.code.toLowerCase()}`;

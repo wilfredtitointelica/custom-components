@@ -23,31 +23,9 @@
       <td class="u-text-center">
         @if (rowNode.level === 0 && rowData.status === 'error') {
           <div class="u-display-flex u-justify-content-center">
-            <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
-            <span
-              class="u-relative u-display-inline-flex u-flex-column u-align-items-center u-color-error"
-              tabindex="0"
-              data-dep="tooltip"
-              [attr.aria-describedby]="'fee-tip-' + rowData.code"
-              (mouseenter)="openTooltip.set(rowData.code)"
-              (mouseleave)="openTooltip.set(null)"
-              (focus)="openTooltip.set(rowData.code)"
-              (blur)="openTooltip.set(null)"
-            >
-              <span class="u-display-flex u-flex-column u-justify-content-end u-align-items-center">
-                @if (openTooltip() === rowData.code) {
-                  <span
-                    class="u-absolute u-mb-1 u-background-white u-bt-1 u-bm-1 u-bs-1 u-be-1 u-radius-sm u-p-3 u-shadow-sm u-text-xs u-color-primary u-text-nowrap"
-                    role="tooltip"
-                    [id]="'fee-tip-' + rowData.code"
-                  >
-                    Pending review of the fee amount
-                  </span>
-                }
-              </span>
+            <span class="u-display-inline-flex u-color-error" tabindex="0" tooltipPosition="top" intTooltip="Pending review of the fee amount">
               <i class="icon icon-alert icon--sm" aria-hidden="true"></i>
             </span>
-            <!-- /dep:tooltip -->
           </div>
         }
       </td>

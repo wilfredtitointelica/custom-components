@@ -2,10 +2,4 @@
   title: Truncated cell
   description: Patrón de tabla: el texto cortado con puntos suspensivos muestra el valor completo en el tooltip.
 -->
-<!-- Inline max-width (no Style Guide helper for it): the cell must actually truncate. -->
-<span
-  class="u-display-block u-text-ellipsis"
-  style="max-width: 16rem"
-  tabindex="0"
-  [intTooltip]="fee"
->{{ fee }}</span>
+<span tabindex="0" [intTooltip]="fee">{{ fee }}</span>

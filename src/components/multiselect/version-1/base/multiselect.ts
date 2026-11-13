@@ -27,6 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IntChip } from '../../../chip/version-1/base/chip';
 import { IntInputText } from '../../../input/version-1/base/input-text';
+import { IntTooltip } from '../../../tooltip/version-2/base/tooltip';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
 const OVERLAY_Z_INDEX = 1000;
@@ -216,14 +217,15 @@ let nextId = 0;
  * Selects several options of a list in an overlay with checkboxes, a "select all" header and a filter.
  * The filter is input[intInputText] and the chips are int-chip. The checkboxes stay provisional native
  * inputs: int-checkbox has no tabindex for the option checkbox (out of the tab order, the row handles
- * the click) nor a checkbox icon template. The tooltip is provisional until it is done.
+ * the click) nor a checkbox icon template. The tooltip is [intTooltip] on the label container; it also
+ * shows while the hidden combobox has the keyboard focus.
  */
 @Component({
   selector: 'int-multiselect',
   templateUrl: './multiselect.html',
   styleUrl: '../styles/_index.scss',
   // CDK virtual scroll replaces PrimeNG's p-scroller for virtualScroll.
-  imports: [NgTemplateOutlet, ScrollingModule, IntChip, IntInputText],
+  imports: [NgTemplateOutlet, ScrollingModule, IntChip, IntInputText, IntTooltip],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -462,6 +464,8 @@ export class IntMultiselect implements ControlValueAccessor {
   private readonly overlayRef = viewChild<ElementRef<HTMLElement>>('overlay');
   private readonly listRef = viewChild<ElementRef<HTMLElement>>('list');
   private readonly viewport = viewChild(CdkVirtualScrollViewport);
+  /** Tooltip of the label container, also shown on keyboard focus of the hidden combobox. */
+  private readonly labelTooltip = viewChild(IntTooltip);
 
   private readonly generatedId = `int_multi_select_${nextId++}`;
   /** Id used for the listbox and the options (aria-controls, aria-activedescendant). */
@@ -479,8 +483,6 @@ export class IntMultiselect implements ControlValueAccessor {
   protected readonly focusedOptionIndex = signal(-1);
   private readonly startRangeIndex = signal(-1);
   protected readonly focused = signal(false);
-  /** Provisional tooltip shown while the pointer is over the field or it has the focus. */
-  protected readonly tooltipVisible = signal(false);
   /** Disabled by the forms API (setDisabledState), combined with the disabled input. */
   private readonly formDisabled = signal(false);
 
@@ -839,7 +841,7 @@ export class IntMultiselect implements ControlValueAccessor {
   protected clear(event: Event): void {
     this.updateModel(null);
     this.onClear.emit();
-    this.tooltipVisible.set(false);
+    this.labelTooltip()?.hide();
     event.stopPropagation();
   }
 
@@ -1003,7 +1005,7 @@ export class IntMultiselect implements ControlValueAccessor {
 
   protected onInputFocus(event: FocusEvent): void {
     this.focused.set(true);
-    if (this.tooltip()) this.tooltipVisible.set(true);
+    this.labelTooltip()?.show();
     const index =
       this.focusedOptionIndex() !== -1
         ? this.focusedOptionIndex()
@@ -1017,7 +1019,7 @@ export class IntMultiselect implements ControlValueAccessor {
 
   protected onInputBlur(event: FocusEvent): void {
     this.focused.set(false);
-    this.tooltipVisible.set(false);
+    this.labelTooltip()?.hide();
     this.onBlur.emit({ originalEvent: event });
     if (!this.preventModelTouched) this.onModelTouched();
     this.preventModelTouched = false;

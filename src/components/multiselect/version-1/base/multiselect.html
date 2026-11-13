@@ -33,8 +33,10 @@
 <!-- Label: comma separated labels, chips or the selecteditems template; placeholder when empty -->
 <div
   class="int-multiselect__label-container"
-  (mouseenter)="tooltipVisible.set(!!tooltip())"
-  (mouseleave)="tooltipVisible.set(focused() && !!tooltip())"
+  tooltipEvent="hover"
+  [intTooltip]="tooltip()"
+  [tooltipPosition]="tooltipPosition()"
+  [tooltipStyleClass]="tooltipStyleClass()"
 >
   <div
     class="int-multiselect__label"
@@ -81,19 +83,6 @@
       {{ label() || 'empty' }}
     }
   </div>
-
-  <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
-  @if (tooltipVisible() && tooltip()) {
-    <span
-      class="int-multiselect__tooltip"
-      [class]="'int-multiselect__tooltip--' + tooltipPosition() + ' ' + (tooltipStyleClass() ?? '')"
-      role="tooltip"
-      data-dep="tooltip"
-    >
-      {{ tooltip() }}
-    </span>
-  }
-  <!-- /dep:tooltip -->
 </div>
 
 <!-- Clear icon: the clearicon template replaces the default icon -->

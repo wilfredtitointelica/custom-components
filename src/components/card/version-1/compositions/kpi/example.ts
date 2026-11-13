@@ -1,6 +1,6 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
+import { IntTooltip } from '../../../../tooltip/version-2/base/tooltip';
 import { IntCard } from '../../base/card';
 
 interface Kpi {
@@ -20,15 +20,8 @@ const KPIS: readonly Kpi[] = [
 @Component({
   selector: 'card-kpi-example',
   templateUrl: './example.html',
-  imports: [IntCard, NgTemplateOutlet],
+  imports: [IntCard, IntTooltip],
 })
 export class CardKpiExample {
   readonly kpis = KPIS;
-  // TODO(dep:tooltip provisional): open and tooltipId only exist for the provisional tooltip.
-  /** Id of the tooltip shown (hover or focus on its alert icon). */
-  readonly open = signal<string | null>(null);
-
-  tooltipId(block: string, kpi: Kpi): string {
-    return `card-kpi-tooltip-${block}-${kpi.title.toLowerCase()}`;
-  }
 }

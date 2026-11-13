@@ -38,7 +38,7 @@ export type { IntTooltipContent } from './tooltip-panel';
 })
 export class IntTooltip implements OnDestroy {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
