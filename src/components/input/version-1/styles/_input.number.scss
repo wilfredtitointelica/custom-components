@@ -1,0 +1,101 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Number
+\*——————————————————————————————————————————————————————————*/
+
+// <int-inputnumber>: an int-input text field (__field) plus optional spin buttons.
+.int-input--number {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+
+  &.int-input--fluid {
+    display: flex;
+    width: 100%;
+  }
+  &.int-input--small {
+    --int-field-height: var(--i-sizing-md);
+  }
+  &.int-input--large {
+    --int-field-height: var(--i-sizing-xl);
+  }
+
+  .int-input__field {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .int-input__button {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: int.field(icon-color);
+    font-size: var(--i-icon-size-xs);
+
+    &:not(:disabled):hover {
+      color: var(--i-icon-color-default);
+      background: var(--i-background-hover);
+    }
+    &:disabled {
+      color: var(--i-icon-color-disabled);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  // Stacked: chevrons inside the field, right side.
+  &.int-input--stacked .int-input__field {
+    padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-sm));
+  }
+  .int-input__stack {
+    position: absolute;
+    top: var(--i-border-width-sm);
+    right: var(--i-border-width-sm);
+    bottom: var(--i-border-width-sm);
+    display: flex;
+    flex-direction: column;
+    width: var(--i-sizing-sm);
+
+    .int-input__button {
+      flex: 1 1 50%;
+      &:first-child {
+        border-top-right-radius: var(--i-border-radius-lg);
+      }
+      &:last-child {
+        border-bottom-right-radius: var(--i-border-radius-lg);
+      }
+    }
+  }
+
+  // Horizontal: [- value +] as one field box (Figma counter); the host carries border and states.
+  &.int-input--horizontal {
+    box-sizing: border-box;
+    border: var(--i-border-width-sm) solid int.field(border);
+    border-radius: int.field(radius);
+    background: int.field(background);
+    transition: border-color var(--i-motion-base);
+    @include int.field-states(int-input, '&:focus-within');
+
+    .int-input__field {
+      min-height: calc(#{int.field(height)} - 2 * var(--i-border-width-sm));
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      text-align: center;
+    }
+    .int-input__button {
+      width: int.field(height);
+      color: var(--i-icon-color-default);
+
+      &:not(:disabled):hover {
+        background: transparent;
+      }
+      &:disabled {
+        color: var(--i-icon-color-disabled);
+      }
+    }
+  }
+}

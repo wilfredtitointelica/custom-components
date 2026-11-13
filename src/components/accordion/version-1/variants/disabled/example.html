@@ -1,0 +1,14 @@
+<!--
+  title: Disabled
+  description: disabled en int-accordion-panel bloquea el panel: no se abre ni recibe foco con las flechas.
+-->
+<int-accordion [(value)]="active">
+  <int-accordion-panel value="fees">
+    <int-accordion-header>Scheme fees</int-accordion-header>
+    <int-accordion-content>Assessment, processing and cross-border fees charged by the networks.</int-accordion-content>
+  </int-accordion-panel>
+  <int-accordion-panel value="archived" disabled>
+    <int-accordion-header>Archived (disabled)</int-accordion-header>
+    <int-accordion-content>Not available.</int-accordion-content>
+  </int-accordion-panel>
+</int-accordion>

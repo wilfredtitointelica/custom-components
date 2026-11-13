@@ -1,0 +1,20 @@
+<!--
+  title: Range with min & max
+  description: `selectionMode="range"` guarda `[inicio, fin]` y `numberOfMonths="2"` muestra dos meses; `minDate` y `maxDate` limitan el rango (aquí, los últimos 90 días) y ocultan las flechas fuera de él. `showButtonBar` agrega Hoy y Limpiar.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-date-picker
+    [(ngModel)]="range"
+    selectionMode="range"
+    numberOfMonths="2"
+    dateFormat="dd M, yy"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+    showIcon
+    showButtonBar
+    placeholder="dd mm, yyyy - dd mm, yyyy"
+    ariaLabel="Period"
+    [style]="{ width: '18rem' }"
+  />
+  <p class="u-m-0 u-text-sm">Value: {{ range | json }}</p>
+</div>

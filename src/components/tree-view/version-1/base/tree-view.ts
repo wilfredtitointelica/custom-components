@@ -5,6 +5,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { IntCheckbox } from '../../../input/version-1/base/checkbox';
 import { IntSearch } from '../../../search/version-1/base/search';
 
 /** Node of the tree, same shape as PrimeNG TreeNode (the fields int-tree-view uses). */
@@ -305,7 +306,7 @@ export class IntTreeView {
 @Component({
   selector: 'int-tree-view-node',
   templateUrl: './tree-view-node.html',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, IntCheckbox, FormsModule],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { style: 'display: contents' },

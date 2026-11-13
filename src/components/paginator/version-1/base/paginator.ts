@@ -23,6 +23,9 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { IntInputNumber } from '../../../input/version-1/base/input-number';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
 const OVERLAY_Z_INDEX = 1000;
@@ -68,13 +71,14 @@ let nextId = 0;
 /**
  * <int-paginator> · version 1. Replica of PrimeNG v20 p-paginator without PrimeNG at runtime.
  * Navigation buttons (first, prev, pages, next, last), current page report, jump to page and rows per
- * page. The selects and the number input are provisional until dropdown-select and input are done.
+ * page. The jump to page field is an `<int-inputnumber>`; the selects stay provisional (see dropdown-select
+ * markers): int-dropdown-select has no `appendTo` / `autoZIndex` / `baseZIndex` and opens below.
  */
 @Component({
   selector: 'int-paginator',
   templateUrl: './paginator.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, FormsModule, IntInputNumber],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -82,7 +86,8 @@ let nextId = 0;
   host: {
     class: 'int-paginator',
     '[style.display]': 'display()',
-    '[class.int-paginator--disabled]': 'disabled()',    // TODO(dep:dropdown-select provisional) a press outside the open list closes it.
+    '[class.int-paginator--disabled]': 'disabled()',
+    // TODO(dep:dropdown-select provisional) a press outside the open list closes it.
     '(document:pointerdown)': 'onDocumentPointerDown($event)',
   },
 })
@@ -303,9 +308,9 @@ export class IntPaginator {
     this.onPageChange.emit({ page, first: this.firstState(), rows: this.rowsState(), pageCount });
   }
 
-  protected onJumpToPageInputChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).valueAsNumber;
-    if (!Number.isNaN(value)) this.changePage(value - 1);
+  /** Same as PrimeNG: the int-inputnumber model is the 1-based page; empty, partial or out of range is ignored. */
+  protected onJumpToPageInputChange(value: number | null): void {
+    if (value != null && Number.isInteger(value)) this.changePage(value - 1);
   }
 
   /** Same as PrimeNG onRppChange: new page size, then the page that contains the current offset. */

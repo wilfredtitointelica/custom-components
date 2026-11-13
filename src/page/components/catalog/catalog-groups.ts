@@ -16,7 +16,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   },
   {
     name: 'Comunicación',
-    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'pill', 'progressbar'],
+    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar'],
   },
 ];
 
@@ -62,7 +62,6 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   badge: 'pi-hashtag',
   chip: 'pi-user',
   tag: 'pi-bookmark',
-  pill: 'pi-tag',
   progressbar: 'pi-chart-bar',
 };
 

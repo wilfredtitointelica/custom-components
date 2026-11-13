@@ -73,13 +73,7 @@
 
   // --- header (select all + filter) ---
   --int-multiselect-header-margin-x: var(--i-spacing-50); // SG: 4px · Aura: {list.header.padding}
-  --int-multiselect-filter-height: var(--i-sizing-md); // SG: --i-sizing-md 24px · Aura: auto
-  --int-multiselect-filter-font-size: var(--i-form-field-size-sm); // SG: 12px · Aura: inherit
   --int-multiselect-filter-padding-x: var(--i-spacing-container-md); // SG: 8px · Aura: {form.field.padding.x}
-  --int-multiselect-filter-padding-y: var(--i-spacing-container-xs); // SG: 4px · Aura: {form.field.padding.y}
-  --int-multiselect-filter-hover-border-color: var(--i-color-primary-400); // SG: primary-400 · Aura: {form.field.hover.border.color}
-  --int-multiselect-filter-focus-border-color: var(--i-color-primary-900); // SG: .p-multiselect-filter:focus primary-900 · Aura: {form.field.focus.border.color}
-  --int-multiselect-filter-border-radius: var(--i-border-radius-md); // SG: no override → Aura {form.field.border.radius} {border.radius.md} 6px
   --int-multiselect-filter-icon-size: var(--i-sizing-2xs); // SG: 12px · Aura: {icon.size}
   --int-multiselect-filter-icon-color: var(--i-color-primary-900); // SG: .p-multiselect-filter-container .p-icon primary-900 · Aura: {form.field.icon.color}
 
@@ -89,7 +83,7 @@
   --int-multiselect-scrollbar-thumb-inset: var(--i-scrollbar-border-witdh); // SG: 2px · Aura: —
   --int-multiselect-scrollbar-thumb-radius: var(--i-scrollbar-border-radius); // SG: full · Aura: —
 
-  // --- checkbox (TODO(dep:checkbox provisional)) ---
+  // --- checkbox (TODO(dep:input provisional)) ---
   --int-multiselect-checkbox-size: var(--i-sizing-xs); // SG: 16px · Figma: 16px (checkbox/sizing/xs) · Aura: {checkbox.width} 1.25rem
   --int-multiselect-checkbox-border-radius: var(--i-border-radius-sm); // Figma: 4px (checkbox/border/radius/sm) · Aura: {checkbox.border.radius}
   --int-multiselect-checkbox-background: var(--i-color-secondary-50); // Figma: #FCFCFC (checkbox/color/unchecked) · Aura: {form.field.background}
@@ -303,35 +297,10 @@
     align-items: center;
   }
 
-  // TODO(dep:input provisional): the filter field until int-input is done.
-  &__filter {
-    box-sizing: border-box;
-    inline-size: 100%;
-    block-size: var(--int-multiselect-filter-height);
-    padding-block: var(--int-multiselect-filter-padding-y);
-    padding-inline: var(--int-multiselect-filter-padding-x)
-      calc(var(--int-multiselect-filter-padding-x) * 2 + var(--int-multiselect-filter-icon-size));
-    border: var(--int-multiselect-border-width) solid var(--int-multiselect-border-color);
-    border-radius: var(--int-multiselect-filter-border-radius);
-    outline-color: transparent;
-    background: var(--int-multiselect-background);
-    color: var(--int-multiselect-color);
-    font: inherit;
-    font-size: var(--int-multiselect-filter-font-size);
-
-    &::placeholder {
-      color: var(--int-multiselect-placeholder-color);
-    }
-
-    &:enabled:hover {
-      border-color: var(--int-multiselect-filter-hover-border-color);
-    }
-
-    // The border is the focus indicator of the text field (SG: .p-multiselect-filter:focus).
-    &:enabled:focus-visible {
-      border-color: var(--int-multiselect-filter-focus-border-color);
-      outline: none;
-    }
+  // The filter is input[intInputText] small fluid: its look comes from int-input. Only the end padding
+  // changes (room for the search icon); the wrapper prefix outweighs the int-input field padding.
+  &__filter-container &__filter {
+    padding-inline-end: calc(var(--int-multiselect-filter-padding-x) * 2 + var(--int-multiselect-filter-icon-size));
   }
 
   &__filter-icon {
@@ -442,7 +411,7 @@
   }
 
 
-  // TODO(dep:checkbox provisional): native checkbox + painted box until int-checkbox is done.
+  // TODO(dep:input provisional): native checkbox + painted box until int-checkbox is done.
   &__checkbox {
     display: inline-flex;
     position: relative;

@@ -63,7 +63,7 @@
   // --- sticky header ---
   --int-treetable-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height · Aura: —
 
-  // --- checkbox (TODO(dep:checkbox provisional)) ---
+  // --- checkbox (TODO(dep:input provisional)) ---
   --int-treetable-checkbox-size: var(--i-sizing-xs); // SG: 16px · knowledgeBase: checkbox 16px · Aura: {checkbox.width} 1.25rem
   --int-treetable-checkbox-border-radius: var(--i-border-radius-sm); // knowledgeBase: 4px · Aura: {checkbox.border.radius}
   --int-treetable-checkbox-background: var(--i-color-secondary-50); // SG: unchecked #FCFCFC · Aura: {form.field.background}
@@ -262,7 +262,7 @@
     }
   }
 
-  // --- checkbox (TODO(dep:checkbox provisional)): native input + painted box until int-checkbox is done ---
+  // --- checkbox (TODO(dep:input provisional)): native input + painted box until int-checkbox is done ---
   &__checkbox {
     position: relative;
     display: inline-flex;

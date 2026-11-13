@@ -1178,14 +1178,14 @@ export class IntTreetableSelectableRowDblClick {
   imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
+    <!-- dep:input provisional · replace with <int-checkbox> (from input) when input is done -->
     <!-- tabindex -1 as PrimeNG: the row handles Enter / Space -->
     <span
       class="int-treetable__checkbox"
       [class.int-treetable__checkbox--checked]="checked()"
       [class.int-treetable__checkbox--partial]="partial()"
       [class.int-treetable__checkbox--disabled]="disabled()"
-      data-dep="checkbox"
+      data-dep="input"
     >
       <input
         type="checkbox"
@@ -1208,7 +1208,7 @@ export class IntTreetableSelectableRowDblClick {
         }
       </span>
     </span>
-    <!-- /dep:checkbox -->
+    <!-- /dep:input -->
   `,
 })
 export class IntTreetableCheckbox {
@@ -1236,12 +1236,12 @@ export class IntTreetableCheckbox {
   imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
+    <!-- dep:input provisional · replace with <int-checkbox> (from input) when input is done -->
     <span
       class="int-treetable__checkbox"
       [class.int-treetable__checkbox--checked]="tt.allChecked()"
       [class.int-treetable__checkbox--disabled]="disabled()"
-      data-dep="checkbox"
+      data-dep="input"
     >
       <input
         type="checkbox"
@@ -1259,7 +1259,7 @@ export class IntTreetableCheckbox {
         }
       </span>
     </span>
-    <!-- /dep:checkbox -->
+    <!-- /dep:input -->
   `,
 })
 export class IntTreetableHeaderCheckbox {

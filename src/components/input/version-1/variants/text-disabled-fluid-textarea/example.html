@@ -1,0 +1,13 @@
+<!--
+  title: Text · Disabled, fluid, textarea
+  description: disabled nativo, fluid ocupa todo el ancho del contenedor y la directiva también se aplica a textarea.
+-->
+<!-- The preview shrinks to its content: the first row sets the width that the fluid fields fill. -->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <input intInputText placeholder="Default" aria-label="Default" />
+    <input intInputText disabled placeholder="Disabled" aria-label="Disabled" />
+  </div>
+  <input intInputText fluid placeholder="Fluid" aria-label="Fluid" />
+  <textarea intInputText fluid rows="3" placeholder="Comments" aria-label="Comments"></textarea>
+</div>

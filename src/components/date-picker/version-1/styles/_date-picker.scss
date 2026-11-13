@@ -1,16 +1,49 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// In :root, not on the host: the popup panel renders in the CDK overlay container, outside .int-date-picker.
 :root {
-  --NOTE-DATE-PICKER: 'int-date-picker ( Custom )';
+  --NOTE-DATE-PICKER: 'int-date-picker ( PrimeNG v20 p-datepicker )';
+
+  // --- panel ---
+  --int-date-picker-panel-background: var(--i-color-secondary-50); // SG: .prDatapicker · Figma: #FCFCFC (datepicker/color/background)
+  --int-date-picker-panel-radius: var(--i-border-radius-2xl); // SG: .prDatapicker .p-datepicker-panel
+  --int-date-picker-panel-shadow: var(--i-shadow-depth-3); // SG: .prDatapicker .p-datepicker-panel (same two layers)
+  --int-date-picker-panel-padding: var(--i-spacing-container-xl); // SG: .prDatapicker · Figma: 16px
+  --int-date-picker-color: var(--i-color-primary-900); // SG: .p-datepicker-day-view · Figma: #0A1733 (datepicker/color/text)
+
+  // --- day grid ---
+  --int-date-picker-column-width: var(--i-sizing-600); // Figma: 48px (date-container)
+  --int-date-picker-day-size: var(--i-sizing-md); // SG: .p-datepicker-day · Figma: 24px
+  --int-date-picker-row-gap: var(--i-spacing-gap-sm); // Figma: 8px (day-container gap)
+
+  // --- cell states ---
+  --int-date-picker-hover-background: var(--i-color-secondary-100); // SG: .p-datepicker-day:hover · Figma: #F2F2F5 (datepicker/color/hover/background)
+  --int-date-picker-hover-color: var(--i-color-primary-700); // SG: .p-datepicker-year:hover · Figma: #1B3E88 (datepicker/color/hover/text)
+  --int-date-picker-selected-background: var(--i-color-primary-700); // SG: .p-datepicker-day-selected · Figma: #1B3E88 (datepicker/color/pressed/background)
+  --int-date-picker-selected-color: var(--i-color-primary-50); // Figma: #EEF2FC (datepicker/color/pressed/text)
+  --int-date-picker-range-background: var(--i-color-secondary-100); // SG: .prDatapicker--dropdown · Figma: #F2F2F5 (Hover state between the ends)
+  --int-date-picker-range-color: var(--i-color-primary-700); // Figma: #1B3E88
+  --int-date-picker-today-border: var(--i-color-primary-900); // SG: .p-datepicker-today · Figma: #0A1733 (datepicker/color/border)
+  --int-date-picker-disabled-color: var(--i-color-secondary-200); // SG: .p-datepicker-day.p-disabled · Figma: #D9D9E3 (datepicker/color/disabled/text)
+
+  // --- footer ---
+  --int-date-picker-footer-border: var(--i-color-secondary-200); // SG: .footerDatapicker
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// The input is an int-input text field; the panel follows the Style Guide .prDatapicker (app look) with the
+// colors and spacing of the Figma "Datepicker" (6978-644): 48px columns, round 24px days, pill months/years.
 .int-date-picker {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +51,174 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-date-picker {
+  // ---------- Input ----------
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  // Wrapper-qualified to outrank the int-input field padding without !important.
+  &__input-wrapper &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    cursor: pointer;
+    padding-right: calc(var(--i-sizing-sm) * 2 + var(--i-spacing-container-md));
+  }
+  &__icon,
+  &__clear {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--i-icon-color-default);
+    font-size: var(--i-icon-size-sm);
+  }
+  &__icon {
+    right: var(--i-spacing-container-md);
+    cursor: pointer;
+  }
+  &__clear {
+    @include int.reset-button;
+    display: inline-flex;
+    right: calc(var(--i-spacing-container-md) + var(--i-sizing-sm));
+    color: var(--i-icon-color-secondary);
+    font-size: var(--i-icon-size-xs);
+  }
+
+  // ---------- Panel ----------
+  &__panel {
+    box-sizing: border-box;
+    width: max-content;
+    padding: var(--int-date-picker-panel-padding);
+    border-radius: var(--int-date-picker-panel-radius);
+    background: var(--int-date-picker-panel-background);
+    box-shadow: var(--int-date-picker-panel-shadow);
+    color: var(--int-date-picker-color);
+    font-family: var(--i-text-body-family);
+    font-size: var(--i-typography-font-size-md);
+    user-select: none;
+  }
+
+  // Months side by side (numberOfMonths), split by a vertical line.
+  &__months {
+    display: flex;
+  }
+  &__month + &__month {
+    margin-left: var(--int-date-picker-panel-padding);
+    padding-left: var(--int-date-picker-panel-padding);
+    border-left: var(--i-line);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--i-sizing-lg);
+    margin-bottom: var(--i-spacing-gap-sm);
+  }
+  &__title {
+    display: flex;
+    gap: var(--i-spacing-gap-xs);
+  }
+  &__nav,
+  &__title-button {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--i-sizing-lg);
+    border-radius: var(--i-border-radius-lg);
+    color: var(--int-date-picker-color);
+
+    &:hover {
+      background: var(--int-date-picker-hover-background);
+    }
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+  &__nav,
+  &__nav-spacer {
+    flex-shrink: 0;
+    width: var(--i-sizing-lg);
+  }
+  &__nav {
+    font-size: var(--i-icon-size-sm);
+
+    // Out of minDate–maxDate: keeps its place so the title stays centered.
+    &:disabled {
+      visibility: hidden;
+    }
+  }
+  &__title-button,
+  &__decade {
+    padding: 0 var(--i-spacing-container-md);
+  }
+
+  // ---------- Day grid ----------
+  &__calendar {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: calc(var(--int-date-picker-column-width) * 7);
+
+    th {
+      padding: 0 0 var(--int-date-picker-row-gap);
+      font-weight: var(--i-typography-font-weight-regular);
+      line-height: var(--i-sizing-xs);
+      text-align: center;
+    }
+    td {
+      height: var(--int-date-picker-day-size);
+      padding: calc(var(--int-date-picker-row-gap) / 2) 0;
+      text-align: center;
+    }
+  }
+
+  // ---------- Month / year grid ----------
+  &__grid {
+    display: grid;
+    gap: var(--i-spacing-gap-sm);
+    width: calc(var(--int-date-picker-column-width) * 7);
+
+    &--month {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    &--year {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // Month and year cells are pills; day cells add --day (24px circle).
+  &__cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: var(--i-sizing-lg);
+    border: var(--i-border-width-sm) solid transparent;
+    border-radius: var(--i-border-radius-full);
+    color: var(--int-date-picker-color);
+    cursor: pointer;
+    outline: none;
+
+    &:hover:not(.int-date-picker__cell--disabled):not(.int-date-picker__cell--selected) {
+      background: var(--int-date-picker-hover-background);
+      color: var(--int-date-picker-hover-color);
+    }
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+
+  // Footer: Today / Clear (showButtonBar) and the `footer` template.
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--i-spacing-gap-lg);
+    margin-top: var(--int-date-picker-panel-padding);
+    padding-top: var(--int-date-picker-panel-padding);
+    border-top: var(--i-border-width-sm) solid var(--int-date-picker-footer-border);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,6 +226,42 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-date-picker {
+  &--fluid {
+    display: flex;
+  }
+  &--inline &__panel {
+    box-shadow: none;
+  }
+
+  // Cell states (order matters: selected and disabled win over range / today)
+  &__cell--day {
+    width: var(--int-date-picker-day-size);
+    height: var(--int-date-picker-day-size);
+    line-height: var(--i-sizing-sm);
+  }
+  &__cell--in-range {
+    background: var(--int-date-picker-range-background);
+    color: var(--int-date-picker-range-color);
+  }
+  // A month range is solid from end to end (app look); a day range only fills its ends.
+  &__grid &__cell--in-range,
+  &__cell--selected {
+    border-color: transparent;
+    background: var(--int-date-picker-selected-background);
+    color: var(--int-date-picker-selected-color);
+  }
+  &__cell--today {
+    border-color: var(--int-date-picker-today-border);
+  }
+  &__cell--disabled {
+    background: transparent;
+    color: var(--int-date-picker-disabled-color);
+    cursor: not-allowed;
+    user-select: none;
+  }
+  &__cell--today.int-date-picker__cell--disabled {
+    border-color: var(--int-date-picker-disabled-color);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +269,9 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-date-picker {
+  display: inline-block;
+  width: 12rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
 }

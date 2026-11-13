@@ -4,6 +4,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { IntInputText } from '../../../input/version-1/base/input-text';
+
 /** Size of the field, same values as PrimeNG InputText pSize. */
 export type IntSearchSize = 'small' | 'large';
 
@@ -24,6 +26,7 @@ let nextId = 0;
   selector: 'int-search',
   templateUrl: './search.html',
   styleUrl: '../styles/_index.scss',
+  imports: [IntInputText],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

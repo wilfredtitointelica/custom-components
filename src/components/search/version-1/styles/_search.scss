@@ -2,27 +2,13 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
-// Field values from the knowledge base .prIconfield + .prInputtext; the clear button and the sizes only exist in
-// Figma (input-search-bar), so they take the Style Guide token of the Figma value.
+// The field is input[intInputText]: its look comes from int-input. Icon values from the knowledge base .prIconfield;
+// the clear button only exists in Figma (input-search-bar), so it takes the Style Guide token of the Figma value.
 :root {
   --NOTE-SEARCH: 'int-search ( Custom )';
 
-  // --- field (TODO(dep:input provisional) knowledgeBase .prInputtext until int-input) ---
-  --int-search-height: var(--i-sizing-lg); // knowledgeBase: .prInputtext height 32px · Figma: 32px [Size=Medium]
-  --int-search-padding-y: var(--i-spacing-container-sm); // knowledgeBase: .prInputtext --i-spacing-container-sm · Figma: 6px (input/padding/y/sm)
-  --int-search-padding-x: var(--i-spacing-container-md); // knowledgeBase: .prInputtext --i-spacing-container-md · Figma: 8px (input/padding/x/md)
-  --int-search-font-size: var(--i-typography-font-size-md); // knowledgeBase: .prInputtext --i-typography-font-size-md · Figma: 14px (input/font/size/md)
-  --int-search-border-width: var(--i-border-width-sm); // knowledgeBase: .prInputtext --i-border-width-sm · Figma: 1px (input/border/width/sm)
-  --int-search-border-radius: var(--i-border-radius-lg); // knowledgeBase: .prInputtext --i-border-radius-lg · Figma: 8px (input/border/radius/lg)
-  --int-search-background: var(--i-background-default); // knowledgeBase: .prInputtext --i-background-default · Figma: #fcfcfc (input/color/background)
-  --int-search-border-color: var(--i-border-default); // knowledgeBase: .prInputtext --i-border-default · Figma: #d9d9e3 (input/color/border)
-  --int-search-color: var(--i-color-primary-900); // knowledgeBase: .prInputtext --i-color-primary-900
-  --int-search-placeholder-color: var(--i-color-secondary-400); // knowledgeBase: .prInputtext --i-color-secondary-400 · Figma: #9ca3ba (input/color/text)
-  --int-search-hover-border-color: var(--i-border-hover); // knowledgeBase: .prInputtext --i-border-hover · Figma: #5d86df (input/color/hover/border)
-  --int-search-focus-border-color: var(--i-color-primary-900); // knowledgeBase: .prInputtext --i-color-primary-900 · Figma: #0a1733 (input/color/pressed/border)
+  // --- field state colors of the end buttons (the field look comes from input[intInputText]) ---
   --int-search-invalid-color: var(--i-text-color-error); // knowledgeBase: .prIconfield invalid --i-text-color-error
-  --int-search-invalid-border-color: var(--i-border-error); // knowledgeBase: .prIconfield invalid --i-border-error
-  --int-search-disabled-background: var(--i-background-disabled); // knowledgeBase: .prInputtext disabled background · Figma: #d9d9e3 (input/color/disabled/background)
   --int-search-disabled-color: var(--i-text-color-disabled); // knowledgeBase: .prInputtext disabled color · Figma: #9ca3ba (input/color/disabled/text)
 
   // --- icon (knowledgeBase .prIconfield) ---
@@ -38,11 +24,9 @@
   --int-search-divider-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Figma: 1px (Line-divider), no knowledgeBase value
   --int-search-divider-height: var(--i-icon-size-xs); // SG: --i-icon-size-xs · Figma: 12px (Line-divider), no knowledgeBase value
 
-  // --- motion ---
-  --int-search-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
-  --int-search-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
-
   // --- skeleton ---
+  --int-search-height: var(--i-sizing-lg); // knowledgeBase: ptSearch skeleton height 32px (same as the int-input field)
+  --int-search-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (same as the int-input field)
   --int-search-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect) · knowledgeBase: ptSearch skeleton height 32px
 }
 
@@ -60,38 +44,10 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-search {
-  // TODO(dep:input provisional) knowledgeBase .prInputtext until int-input.
-  &__input {
-    box-sizing: border-box;
-    width: 100%;
-    height: var(--int-search-height);
-    padding-block: var(--int-search-padding-y);
-    padding-inline: var(--int-search-padding-x) var(--int-search-icon-padding-inline);
-    font-family: inherit;
-    font-size: var(--int-search-font-size);
-    color: var(--int-search-color);
-    background: var(--int-search-background);
-    border: var(--int-search-border-width) solid var(--int-search-border-color);
-    border-radius: var(--int-search-border-radius);
-    appearance: none;
-    transition:
-      background var(--int-search-transition-duration) var(--int-search-transition-easing),
-      color var(--int-search-transition-duration) var(--int-search-transition-easing),
-      border-color var(--int-search-transition-duration) var(--int-search-transition-easing);
-
-    &::placeholder {
-      color: var(--int-search-placeholder-color);
-    }
-
-    &:enabled:hover {
-      border-color: var(--int-search-hover-border-color);
-    }
-
-    // Same as the knowledge base: the dark border is the focus indicator, without ring.
-    &:focus-visible {
-      outline: none;
-      border-color: var(--int-search-focus-border-color);
-    }
+  // Room for the search icon at the end of input[intInputText] (as .p-iconfield .p-inputtext). The block
+  // prefix outweighs the int-input field padding; only the end padding changes, the look stays int-input.
+  & &__input {
+    padding-inline-end: var(--int-search-icon-padding-inline);
   }
 
   // Clear button + divider + search button, aligned to the end of the field as p-inputicon.
@@ -147,16 +103,8 @@
     );
   }
 
+  // The field shows its own invalid and disabled states (input[intInputText] invalid / :disabled).
   &--invalid {
-    .int-search__input {
-      color: var(--int-search-invalid-color);
-      border-color: var(--int-search-invalid-border-color);
-
-      &::placeholder {
-        color: var(--int-search-invalid-color);
-      }
-    }
-
     // The buttons take the error color, as the clear button of .prIconfield.
     .int-search__end {
       color: var(--int-search-invalid-color);
@@ -164,23 +112,9 @@
   }
 
   &--disabled {
-    .int-search__input {
-      color: var(--int-search-disabled-color);
-      cursor: not-allowed;
-      user-select: none;
-      background: var(--int-search-disabled-background);
-      border-color: transparent;
-    }
-
     .int-search__end {
       color: var(--int-search-disabled-color);
     }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .int-search__input {
-    transition: none;
   }
 }
 

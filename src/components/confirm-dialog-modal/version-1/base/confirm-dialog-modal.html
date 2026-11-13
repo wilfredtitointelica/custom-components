@@ -7,7 +7,7 @@
 <!-- Rendered in a CDK overlay attached to the body while a confirmation is open -->
 <ng-template #dialog>
   @if (active(); as confirmation) {
-    <!-- dep:dialog-modal provisional · replace with <int-dialog-modal> when dialog-modal is done -->
+    <!-- dep:dialog-modal provisional · int-dialog-modal (done) has no role="alertdialog", aria-describedby / aria-label passthrough nor a headerless panel (it always renders its header row and labels by it): replace with <int-dialog-modal> when its API covers them -->
     <div
       #panel
       [class]="classes()"
@@ -23,17 +23,16 @@
     >
       @if (resolved().closable) {
         <div class="int-confirm-dialog-modal__close">
-          <!-- dep:button provisional · replace with <int-button> (text, secondary, icon only) when button is done -->
           <button
+            intButton
             type="button"
             class="int-confirm-dialog-modal__close-button"
-            data-dep="button"
-            [attr.aria-label]="resolved().closeAriaLabel"
+            severity="secondary"
+            variant="text"
+            icon="icon icon-cancel"
+            [ariaLabel]="resolved().closeAriaLabel"
             (click)="cancel()"
-          >
-            <i class="icon icon-cancel" aria-hidden="true"></i>
-          </button>
-          <!-- /dep:button -->
+          ></button>
         </div>
       }
 
@@ -77,28 +76,23 @@
         <!-- Accept goes first in the DOM: row-reverse shows it on the right and Tab reaches it first -->
         <div class="int-confirm-dialog-modal__footer">
           @if (resolved().acceptVisible) {
-            <!-- dep:button provisional · replace with <int-button> when button is done -->
             <button
+              intButton
               type="button"
               class="int-confirm-dialog-modal__accept-button"
-              data-dep="button"
+              [label]="resolved().acceptLabel"
               (click)="accept()"
-            >
-              {{ resolved().acceptLabel }}
-            </button>
-            <!-- /dep:button -->
+            ></button>
           }
           @if (resolved().rejectVisible) {
-            <!-- dep:button provisional · replace with <int-button severity="secondary"> when button is done -->
             <button
+              intButton
               type="button"
               class="int-confirm-dialog-modal__reject-button"
-              data-dep="button"
+              severity="secondary"
+              [label]="resolved().rejectLabel"
               (click)="reject()"
-            >
-              {{ resolved().rejectLabel }}
-            </button>
-            <!-- /dep:button -->
+            ></button>
           }
         </div>
       }

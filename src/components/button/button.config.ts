@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'button',
+  variants: ['basic', 'element', 'severities', 'variants', 'icons', 'sizes', 'loading-disabled', 'fluid', 'help'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -26,6 +26,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IntChip } from '../../../chip/version-1/base/chip';
+import { IntInputText } from '../../../input/version-1/base/input-text';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
 const OVERLAY_Z_INDEX = 1000;
@@ -213,15 +214,16 @@ let nextId = 0;
 /**
  * <int-multiselect> · version 1. Replica of PrimeNG v20 p-multiselect without PrimeNG at runtime.
  * Selects several options of a list in an overlay with checkboxes, a "select all" header and a filter.
- * The checkboxes, the filter input and the tooltip are provisional native elements until those
- * components are done; the chips are int-chip.
+ * The filter is input[intInputText] and the chips are int-chip. The checkboxes stay provisional native
+ * inputs: int-checkbox has no tabindex for the option checkbox (out of the tab order, the row handles
+ * the click) nor a checkbox icon template. The tooltip is provisional until it is done.
  */
 @Component({
   selector: 'int-multiselect',
   templateUrl: './multiselect.html',
   styleUrl: '../styles/_index.scss',
   // CDK virtual scroll replaces PrimeNG's p-scroller for virtualScroll.
-  imports: [NgTemplateOutlet, ScrollingModule, IntChip],
+  imports: [NgTemplateOutlet, ScrollingModule, IntChip, IntInputText],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

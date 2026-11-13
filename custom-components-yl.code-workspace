@@ -1,0 +1,17 @@
+{
+  "folders": [
+	{
+		"path": "../custom-components-il"
+	},
+	{
+		"path": "."
+	},
+	{
+		"path": "../Intelica.Style.Guide.New"
+	},
+	{
+		"path": "../Intelica.knowledgeBase"
+	}
+],
+  "settings": {}
+}

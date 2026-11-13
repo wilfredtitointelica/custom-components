@@ -1,0 +1,37 @@
+<!--
+  title: Select Data
+  description: Popover que contiene un `int-list-box` con el template `item`: al elegir un miembro se cierra y su nombre pasa a la etiqueta del botón. Los datos se toman del contenido del popover.
+-->
+<div class="u-display-flex u-flex-column u-align-items-center u-gap-sm">
+  <button
+    intButton
+    icon="icon icon-user"
+    severity="secondary"
+    [label]="selectedMember()?.name ?? 'Select Member'"
+    (click)="op.toggle($event)"
+  ></button>
+  <int-popover #op ariaLabel="Team members">
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <span id="popover-team-members" class="u-bold">Team Members</span>
+      <int-list-box
+        [options]="members"
+        optionLabel="name"
+        [ngModel]="selectedMember()"
+        (ngModelChange)="selectedMember.set($event)"
+        (onChange)="op.hide()"
+        ariaLabelledBy="popover-team-members"
+      >
+        <ng-template #item let-member>
+          <span class="u-display-flex u-align-items-center u-gap-sm">
+            <span class="icon icon-user" aria-hidden="true"></span>
+            <span class="u-display-flex u-flex-column">
+              <span class="u-bold">{{ member.name }}</span>
+              <span class="u-text-xs">{{ member.email }}</span>
+            </span>
+            <span class="u-ms-auto u-text-xs">{{ member.role }}</span>
+          </span>
+        </ng-template>
+      </int-list-box>
+    </div>
+  </int-popover>
+</div>

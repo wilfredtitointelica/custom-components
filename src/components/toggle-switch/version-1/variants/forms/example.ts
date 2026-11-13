@@ -1,12 +1,13 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntToggleSwitch } from '../../base/toggle-switch';
 
 @Component({
   selector: 'toggle-switch-forms-example',
   templateUrl: './example.html',
-  imports: [IntToggleSwitch, FormsModule],
+  imports: [IntToggleSwitch, FormsModule, IntButton],
 })
 export class ToggleSwitchFormsExample {
   readonly accepted = signal(false);

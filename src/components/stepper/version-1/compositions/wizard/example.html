@@ -1,6 +1,6 @@
 <!--
   title: Wizard
-  description: Modo wizard de la base de conocimientos: los pasos llevan `disabled` y solo se avanza con Continue o se retrocede con Back (deshabilitado en el primer paso). Los íconos de flecha llegan con `int-button`.
+  description: Modo wizard de la base de conocimientos: los pasos llevan `disabled` y solo se avanza con Continue o se retrocede con Back (deshabilitado en el primer paso). Back y Continue llevan íconos de flecha.
 -->
 <int-stepper variant="progressive" [value]="step()">
   <int-step-list>
@@ -19,10 +19,8 @@
           </div>
         </div>
         <div class="u-display-flex u-align-items-center u-justify-content-between">
-          <!-- dep:button provisional · replace with <int-button> when button is done (Back: icon-arrow-left, Continue: icon-arrow-right, as the knowledge base) -->
-          <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" [disabled]="first" (click)="prevStep()">Back</button>
-          <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" [disabled]="last" (click)="nextStep()">Continue</button>
-          <!-- /dep:button -->
+          <button intButton severity="secondary" label="Back" icon="icon icon-arrow-left" [disabled]="first" (click)="prevStep()"></button>
+          <button intButton label="Continue" icon="icon icon-arrow-right" iconPos="right" [disabled]="last" (click)="nextStep()"></button>
         </div>
       </int-step-panel>
     }

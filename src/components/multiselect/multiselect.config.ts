@@ -32,6 +32,6 @@ export default {
     'append-to-body',
   ],
   compositions: ['selected-items-label', 'brands'],
-  requires: ['checkbox', 'chip', 'input', 'tooltip'],
+  requires: ['chip', 'input', 'tooltip'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

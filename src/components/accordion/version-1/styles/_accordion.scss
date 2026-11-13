@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,7 +12,21 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prAccordion`. Overridable props: --int-accordion-{border-color,
+// header-color,header-hover-color,header-active-color,background,content-color,padding} and
+// --int-accordion-content-max-height (int-* extension: scrolls the content, like PrimeNG scrollHeight).
 .int-accordion {
+  --int-accordion-border-color: var(--i-color-neutral-400);
+  --int-accordion-header-color: var(--i-color-neutral-700);
+  --int-accordion-header-hover-color: var(--i-color-neutral-800);
+  --int-accordion-header-active-color: var(--i-color-primary-700);
+  --int-accordion-background: var(--i-color-neutral-50);
+  --int-accordion-content-color: var(--i-color-neutral-700);
+  --int-accordion-padding: var(--i-spacing-container-xl);
+
+  display: block;
+  background: var(--int-accordion-background);
+  font-family: var(--i-text-body-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +34,122 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-accordion {
+  &__panel {
+    display: block;
+    border-bottom: var(--i-border-width-sm) solid var(--int-accordion-border-color);
+  }
+
+  &__trigger {
+    @include int.reset-button;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--i-spacing-gap-sm);
+    width: 100%;
+    padding: var(--int-accordion-padding) 0;
+    color: var(--int-accordion-header-color);
+    font-size: var(--i-typography-font-size-md);
+    font-weight: var(--i-typography-font-weight-bold);
+    text-align: left;
+
+    &:hover:not(:disabled) {
+      color: var(--int-accordion-header-hover-color);
+    }
+    &:focus-visible {
+      @include int.focus-ring(-3px);
+    }
+    &:disabled {
+      color: var(--i-text-color-disabled);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  // Inline-flex so a projected status icon lines up with the text ("Alert sent: 80").
+  &__title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--i-spacing-gap-xs);
+  }
+
+  // Status icon projected in the header (Style Guide alerts .success-icon / .error-icon). Uses the icon
+  // tokens: .u-color-success is --i-color-success-base = green/400 (#64E386), not the icon green.
+  &__status-icon {
+    font-size: var(--i-icon-size-sm);
+
+    &--success {
+      color: var(--i-icon-color-success); // green/800 #126629
+    }
+    &--error {
+      color: var(--i-icon-color-error); // red/700 #960D0D
+    }
+  }
+
+  &__toggle-icon {
+    font-size: var(--i-icon-size-sm);
+    transition: transform var(--i-motion-base);
+  }
+
+  // Height animation without measuring: grid rows 0fr → 1fr.
+  &__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--i-motion-base);
+    color: var(--int-accordion-content-color);
+    font-size: var(--i-typography-font-size-md);
+  }
+  &__content-inner {
+    overflow: hidden;
+  }
+  &__content-body {
+    max-height: var(--int-accordion-content-max-height, none);
+    overflow: auto;
+    padding-bottom: var(--int-accordion-padding);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__content,
+    &__toggle-icon {
+      transition: none;
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-accordion {
+.int-accordion__panel--active {
+  > .int-accordion__header > .int-accordion__trigger {
+    color: var(--int-accordion-header-active-color);
+  }
+  > .int-accordion__header .int-accordion__toggle-icon {
+    transform: rotate(180deg);
+  }
+  > .int-accordion__content {
+    grid-template-rows: 1fr;
+  }
+}
+
+// Card (int-* extension): each panel is a bordered card (Style Guide alerts .borderWrapper, but with a
+// primary-900 border by design instead of its secondary-300).
+.int-accordion--card {
+  --int-accordion-padding: var(--i-spacing-container-lg);
+  --int-accordion-header-color: var(--i-color-primary-900);
+  --int-accordion-header-hover-color: var(--i-color-primary-900);
+  --int-accordion-header-active-color: var(--i-color-primary-900);
+  --int-accordion-background: transparent;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--i-spacing-gap-sm);
+
+  > .int-accordion__panel {
+    padding-inline: var(--int-accordion-padding);
+    border: var(--i-border-width-sm) solid var(--i-color-primary-900); // #0A1733
+    border-radius: var(--i-border-radius-xl);
+    background: var(--i-color-secondary-50);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +157,8 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-accordion {
+  display: block;
+  height: 9rem;
+  border-radius: var(--i-border-radius-md);
+  background: var(--i-background-disabled);
 }
