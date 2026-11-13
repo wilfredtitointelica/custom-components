@@ -6,7 +6,7 @@ import { IntTabValue, IntTabsImports } from './tabs';
 @Component({
   imports: [IntTabsImports],
   template: `
-    <int-tabs [(value)]="tab">
+    <int-tabs [(value)]="tab" [orientation]="orientation()">
       <int-tablist>
         <int-tab value="summary">Summary</int-tab>
         <int-tab value="detail">Detail</int-tab>
@@ -22,6 +22,7 @@ import { IntTabValue, IntTabsImports } from './tabs';
 })
 class Host {
   tab = signal<IntTabValue | null>('summary');
+  orientation = signal<'horizontal' | 'vertical'>('horizontal');
 }
 
 describe('IntTabs', () => {
@@ -63,5 +64,22 @@ describe('IntTabs', () => {
     tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     fixture.detectChanges();
     expect(host.tab()).toBe('detail');
+  });
+
+  it('vertical: marks the tablist and moves focus with Up/Down instead of Left/Right', () => {
+    const { fixture, tabs, host } = setup();
+    const list = (fixture.nativeElement as HTMLElement).querySelector('[role="tablist"]')!;
+    expect(list.hasAttribute('aria-orientation')).toBeFalse();
+    host.orientation.set('vertical');
+    fixture.detectChanges();
+    expect(list.getAttribute('aria-orientation')).toBe('vertical');
+    expect((fixture.nativeElement as HTMLElement).querySelector('int-tabs')!.classList).toContain('int-tabs--vertical');
+    tabs[0].focus();
+    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    expect(document.activeElement).toBe(tabs[0]);
+    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(document.activeElement).toBe(tabs[1]);
+    tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    expect(document.activeElement).toBe(tabs[0]);
   });
 });
