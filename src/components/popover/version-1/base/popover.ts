@@ -48,16 +48,22 @@ const ARROW_EDGE = 16;
 })
 export class IntPopover implements OnDestroy {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
   /** Close on outside click. */
   readonly dismissable = input(true, { transform: booleanAttribute });
+  /**
+   * Escape cierra el popover y devuelve el foco al disparador.
+   * @defaultValue true
+   */
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
   /** Moves focus into the panel when shown and restores it to the trigger when hidden. */
   readonly focusOnShow = input(true, { transform: booleanAttribute });
+  /** Clase extra para el panel del popover (se monta en el overlay, fuera del componente). */
   readonly styleClass = input<string | undefined>(undefined);
+  /** Nombre accesible del panel (`role="dialog"`). */
   readonly ariaLabel = input<string | undefined>(undefined);
   /**
    * int-* extension: flecha sólida (como la del tooltip) que apunta al centro del disparador; pasa al
@@ -65,7 +71,9 @@ export class IntPopover implements OnDestroy {
    */
   readonly arrow = input(false, { transform: booleanAttribute });
 
+  /** Se emite al abrirse el popover. */
   readonly onShow = output<void>();
+  /** Se emite al cerrarse el popover. */
   readonly onHide = output<void>();
 
   readonly visible = signal(false);
@@ -83,11 +91,16 @@ export class IntPopover implements OnDestroy {
   private positionChanges: Subscription | null = null;
   private target: HTMLElement | null = null;
 
+  /** Abre el popover si está cerrado y lo cierra si está abierto (mismos argumentos que `show`). */
   toggle(event: Event, target?: HTMLElement): void {
     if (this.visible()) this.hide();
     else this.show(event, target);
   }
 
+  /**
+   * Abre el popover anclado a `target` o, si no se pasa, al `currentTarget` del evento (el disparador). Si ya
+   * estaba abierto, lo vuelve a anclar.
+   */
   show(event: Event | null, target?: HTMLElement): void {
     const anchor = target ?? (event?.currentTarget as HTMLElement | null) ?? null;
     if (!anchor) return;
@@ -133,7 +146,10 @@ export class IntPopover implements OnDestroy {
     this.onShow.emit();
   }
 
-  /** @param restoreFocus return focus to the trigger (default true). */
+  /**
+   * Cierra el popover.
+   * @param restoreFocus devuelve el foco al disparador (por defecto true).
+   */
   hide(restoreFocus = true): void {
     if (!this.overlayRef) return;
     this.positionChanges?.unsubscribe();

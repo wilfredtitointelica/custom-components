@@ -15,7 +15,7 @@
 // The block is the panel rendered in the CDK overlay.
 // Overridable props: --int-popover-{padding,arrow-color,arrow-size}.
 .int-popover {
-  --int-popover-padding: var(--i-spacing-container-lg);
+  --int-popover-padding: var(--i-popover-padding, var(--i-spacing-container-2xl)); // knowledgeBase: .prPopover .p-popover-content padding: var(--i-popover-padding) (24px; not in the base bundle → fallback)
   --int-popover-arrow-color: var(--i-color-primary-900); // knowledgeBase: prPopover--tooltipLike · Figma: #0A1733 (tooltip/color/arrow)
   --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
 
@@ -42,6 +42,7 @@
 // Solid beak just outside the border, pointing at the trigger; --int-popover-arrow-left (px from the
 // left edge) is set by the component. Below the trigger it sits on top; --flipped moves it to the bottom.
 .int-popover--arrow {
+  --int-popover-padding: var(--i-spacing-container-lg); // knowledgeBase: prPopover--tooltipLike · int-*: 12px compact, tooltip-like
   position: relative;
 
   &::before {
