@@ -10,20 +10,17 @@
     </int-accordion-header>
     <int-accordion-content>
       <!-- dep:table provisional · replace with <int-table> (sticky header) when table is done -->
-      <table class="u-full-width u-text-sm" style="border-collapse: collapse" data-dep="table">
+      <table class="u-full-width u-text-sm" data-dep="table">
         <thead>
           <tr>
             @for (column of ['N°', 'Alert Type', 'Impacted clients']; track column) {
-              <th
-                class="u-sticky u-text-left u-py-2 u-px-2"
-                style="top: 0; background: var(--i-color-secondary-50); border-bottom: var(--i-border-width-sm) solid var(--i-color-primary-900)"
-              >{{ column }}</th>
+              <th class="u-sticky u-text-left u-py-2 u-px-2">{{ column }}</th>
             }
           </tr>
         </thead>
         <tbody>
-          @for (alert of alerts; track alert.id; let odd = $odd) {
-            <tr [style.background]="odd ? 'var(--i-color-secondary-100)' : null">
+          @for (alert of alerts; track alert.id) {
+            <tr>
               <td class="u-py-2 u-px-2">{{ alert.id }}</td>
               <td class="u-py-2 u-px-2">Opt-Out - <span class="u-bold">{{ alert.type }}</span></td>
               <td class="u-py-2 u-px-2">{{ alert.client }}</td>

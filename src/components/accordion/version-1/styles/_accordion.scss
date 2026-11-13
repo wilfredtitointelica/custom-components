@@ -16,13 +16,13 @@
 // header-color,header-hover-color,header-active-color,background,content-color,padding} and
 // --int-accordion-content-max-height (int-* extension: scrolls the content, like PrimeNG scrollHeight).
 .int-accordion {
-  --int-accordion-border-color: var(--i-color-neutral-400);
-  --int-accordion-header-color: var(--i-color-neutral-700);
-  --int-accordion-header-hover-color: var(--i-color-neutral-800);
-  --int-accordion-header-active-color: var(--i-color-primary-700);
-  --int-accordion-background: var(--i-color-neutral-50);
-  --int-accordion-content-color: var(--i-color-neutral-700);
-  --int-accordion-padding: var(--i-spacing-container-xl);
+  --int-accordion-border-color: var(--i-color-neutral-400); // knowledgeBase: --i-accordion-panel-border-color (Neutral 400)
+  --int-accordion-header-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-header-color (Neutral 700)
+  --int-accordion-header-hover-color: var(--i-color-neutral-800); // knowledgeBase: --i-accordion-header-hover-color (Neutral 800)
+  --int-accordion-header-active-color: var(--i-color-primary-700); // knowledgeBase: --i-accordion-header-active-color (blue/700)
+  --int-accordion-background: var(--i-color-neutral-50); // knowledgeBase: --i-accordion-header-background / content-background (Neutral 50)
+  --int-accordion-content-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-content-color (Neutral 700)
+  --int-accordion-padding: var(--i-spacing-container-xl); // knowledgeBase: .prAccordion header/content padding (int-*: container-xl spacing)
 
   display: block;
   background: var(--int-accordion-background);
@@ -134,11 +134,11 @@
 // Card (int-* extension): each panel is a bordered card (Style Guide alerts .borderWrapper, but with a
 // primary-900 border by design instead of its secondary-300).
 .int-accordion--card {
-  --int-accordion-padding: var(--i-spacing-container-lg);
-  --int-accordion-header-color: var(--i-color-primary-900);
-  --int-accordion-header-hover-color: var(--i-color-primary-900);
-  --int-accordion-header-active-color: var(--i-color-primary-900);
-  --int-accordion-background: transparent;
+  --int-accordion-padding: var(--i-spacing-container-lg); // knowledgeBase: alerts .borderWrapper padding
+  --int-accordion-header-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper title (primary-900 by design)
+  --int-accordion-header-hover-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper (no hover change)
+  --int-accordion-header-active-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper (no active change)
+  --int-accordion-background: transparent; // knowledgeBase: alerts .borderWrapper (page background shows through)
 
   display: flex;
   flex-direction: column;
