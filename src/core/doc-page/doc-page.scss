@@ -4,6 +4,9 @@
   display: block;
   // Height of the sticky chips row, measured in doc-page.ts.
   --doc-meta-h: 0px;
+  // Height of the sticky variant head, measured in doc-page.ts. With --doc-topbar-h and --doc-meta-h it is
+  // the sticky stack above a preview: an example passes it to a sticky int-* (treetable stickyTop).
+  --doc-section-head-h: 0px;
 }
 
 /* Page header (M3 display / headline scale) */
@@ -364,18 +367,22 @@
 
 // The head (title + Code button) sticks right below the chips row while its section scrolls, so a
 // long example or code panel still shows which variant you're in. The 16px margin it had becomes
-// bottom padding, painted with the pane background so the content scrolls under it.
+// bottom padding, painted with the pane background so the content scrolls under it. The background
+// and z-index only apply while stuck (.doc-is-stuck, doc-page.ts): at rest the head is transparent
+// and stays below an overlay opened in the previous preview (select, datepicker…).
 .doc-section-head {
   position: sticky;
   top: calc(var(--doc-topbar-h) + var(--doc-meta-h));
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 20px 0;
-  //margin-bottom: 4px;
-  background: var(--doc-surface);
+
+  &.doc-is-stuck {
+    z-index: 10;
+    background: var(--doc-surface);
+  }
 }
 
 /* Per-variant code button, at the right end of the section title */

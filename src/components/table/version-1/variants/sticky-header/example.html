@@ -1,0 +1,33 @@
+<!--
+  title: Sticky Header
+  description: `stickyHeader` deja fijas la cabecera y la fila Total al desplazar la página, y `stickyTop` define a qué distancia de arriba se pegan: la suma de lo que ya está fijo encima (header del dashboard, filtros, tabs). Sin `stickyTop` se pegan bajo el header del dashboard; dentro de un modal, popover o tooltip se usa `stickyTop="0"`. Ningún contenedor de la tabla debe tener `overflow`.
+-->
+<!-- In this page, what is fixed above the preview: top bar + chips row + variant title -->
+<int-table
+  [style]="{ width: '40rem' }"
+  [value]="fees"
+  [frozenValue]="totals"
+  stickyHeader
+  stickyTop="calc(var(--doc-topbar-h) + var(--doc-meta-h) + var(--doc-section-head-h))"
+>
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="50%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
+      <th width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Code</div></th>
+      <th class="u-text-right" width="25%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #frozenbody let-total>
+    <tr>
+      <td class="u-text-left" colspan="2">{{ total.label }}</td>
+      <td class="u-text-right">{{ total.amount | number: '1.2-2' }}</td>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-left">{{ fee.name }}</td>
+      <td class="u-text-center">{{ fee.code }}</td>
+      <td class="u-text-right">{{ fee.amount | number: '1.2-2' }}</td>
+    </tr>
+  </ng-template>
+</int-table>

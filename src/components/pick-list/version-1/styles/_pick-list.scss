@@ -1,0 +1,274 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// The knowledge base (.prPicklist) and Style Guide (_picklist.scss) have no styles yet and there is no Figma design:
+// each list box takes the values of the knowledge base .prCard--version, the options the .prSelect options and the
+// focus the knowledge base inputs.
+:root {
+  --NOTE-PICK-LIST: 'int-pick-list ( Custom )';
+
+  // --- layout ---
+  --int-pick-list-gap: var(--i-spacing-gap-lg); // knowledgeBase: .prCard --i-card-gap 16px
+  --int-pick-list-controls-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm, no knowledgeBase/Figma value
+
+  // --- list box (knowledgeBase .prCard / .prCard--version) ---
+  --int-pick-list-list-padding: var(--i-spacing-container-lg); // knowledgeBase: .prCard--version body padding 12px
+  --int-pick-list-list-gap: var(--i-spacing-container-sm); // knowledgeBase: .prCard --i-card-body-gap 6px
+  --int-pick-list-list-background: var(--i-background-default); // knowledgeBase: .prCard --i-card-background
+  --int-pick-list-border-width: var(--i-border-width-sm); // knowledgeBase: .prCard--version border 1px
+  --int-pick-list-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200
+  --int-pick-list-border-radius: var(--i-border-radius-lg); // knowledgeBase: .prCard--version radius lg
+  --int-pick-list-header-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md, no knowledgeBase/Figma value
+  --int-pick-list-header-font-size: var(--i-typography-font-size-lg); // knowledgeBase: .prCard__title 16px
+  --int-pick-list-header-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: .prCard__title bold
+  --int-pick-list-header-color: var(--i-color-secondary-700); // knowledgeBase: .prCard --i-card-color secondary-700
+
+  // --- options (knowledgeBase .prSelect) ---
+  --int-pick-list-option-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md, no knowledgeBase/Figma value
+  --int-pick-list-option-font-size: var(--i-typography-font-size-md); // knowledgeBase: .prSelect option font-size md
+  --int-pick-list-option-color: var(--i-color-primary-900); // knowledgeBase: .prSelect option primary-900
+  --int-pick-list-option-border-radius: var(--i-border-radius-sm); // knowledgeBase: .prSelect overlay radius sm
+  --int-pick-list-option-hover-background: var(--i-color-secondary-100); // knowledgeBase: .prSelect option focus/hover secondary-100
+  --int-pick-list-option-selected-background: var(--i-color-primary-700); // knowledgeBase: .prSelect option selected primary-700
+  --int-pick-list-option-selected-color: var(--i-color-primary-50); // knowledgeBase: .prSelect option selected primary-50
+  --int-pick-list-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: inputs focus 1px
+  --int-pick-list-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: inputs --i-focus-border-color
+
+  // --- transfer buttons (TODO(dep:button provisional) secondary icon button until int-button) ---
+  --int-pick-list-control-size: var(--i-sizing-xl); // SG: --i-sizing-xl, no knowledgeBase/Figma value
+  --int-pick-list-control-icon-size: var(--i-icon-size-md); // SG: --i-icon-size-md, no knowledgeBase/Figma value
+  --int-pick-list-control-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100, no knowledgeBase/Figma value
+  --int-pick-list-control-color: var(--i-color-secondary-600); // SG: --i-color-secondary-600, no knowledgeBase/Figma value
+  --int-pick-list-control-hover-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
+
+  // --- filter (TODO(dep:input provisional) same values as the tree-select filter until int-input) ---
+  --int-pick-list-filter-gap: var(--i-spacing-container-sm); // knowledgeBase: .prCard --i-card-body-gap 6px
+  --int-pick-list-filter-height: var(--i-sizing-md); // SG: .p-tree-filter-input height 24px (same as the tree-select filter)
+  --int-pick-list-filter-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-filter-input padding 4px (same as the tree-select filter)
+  --int-pick-list-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px (same as the tree-select filter)
+  --int-pick-list-filter-font-size: var(--i-form-field-size-sm); // SG: .p-tree-filter-input --i-form-field-size-sm 12px (same as the tree-select filter)
+  --int-pick-list-filter-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md 6px, same as the tree-select filter
+  --int-pick-list-filter-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200
+  --int-pick-list-filter-focus-border-color: var(--i-color-secondary-900); // SG: .p-iconfield .p-inputtext:focus border
+  --int-pick-list-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px (same as the tree-select filter)
+  --int-pick-list-filter-icon-color: var(--i-color-secondary-600); // knowledgeBase: .prSelect --i-inputtext-color secondary-600
+
+  // --- drag and drop ---
+  --int-pick-list-placeholder-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200
+  --int-pick-list-preview-background: var(--i-background-default); // knowledgeBase: .prCard --i-card-background
+  --int-pick-list-preview-shadow: var(--i-shadow-depth-2); // knowledgeBase: .prCard --i-card-box-shadow
+  --int-pick-list-drag-duration: var(--i-motion-duration-base); // SG: --i-motion-duration-base, no knowledgeBase/Figma value
+  --int-pick-list-drag-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out, no knowledgeBase/Figma value
+
+  // --- states and motion ---
+  --int-pick-list-disabled-opacity: var(--i-opacity-semi); // SG: --i-opacity-semi, no knowledgeBase/Figma value
+  --int-pick-list-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-pick-list-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+.int-pick-list {
+  display: block;
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-pick-list {
+  // Source · transfer buttons · target, in one row as p-picklist.
+  &__lists {
+    display: flex;
+    gap: var(--int-pick-list-gap);
+  }
+
+  &__list-container {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+    padding: var(--int-pick-list-list-padding);
+    background: var(--int-pick-list-list-background);
+    border: var(--int-pick-list-border-width) solid var(--int-pick-list-border-color);
+    border-radius: var(--int-pick-list-border-radius);
+  }
+
+  &__header {
+    margin-block-end: var(--int-pick-list-list-gap);
+    padding-block-end: var(--int-pick-list-header-padding);
+    font-size: var(--int-pick-list-header-font-size);
+    font-weight: var(--int-pick-list-header-font-weight);
+    color: var(--int-pick-list-header-color);
+    border-block-end: var(--int-pick-list-border-width) solid var(--int-pick-list-border-color);
+  }
+
+  &__filter {
+    position: relative;
+    margin-block-end: var(--int-pick-list-filter-gap);
+  }
+
+  // TODO(dep:input provisional) minimal input until int-input.
+  &__filter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--int-pick-list-filter-height);
+    padding: var(--int-pick-list-filter-padding-y) var(--int-pick-list-filter-padding-x);
+    padding-inline-end: calc(var(--int-pick-list-filter-padding-x) * 2 + var(--int-pick-list-filter-icon-size));
+    font-size: var(--int-pick-list-filter-font-size);
+    border: var(--int-pick-list-border-width) solid var(--int-pick-list-filter-border-color);
+    border-radius: var(--int-pick-list-filter-border-radius);
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--int-pick-list-filter-focus-border-color);
+    }
+  }
+
+  &__filter-icon {
+    position: absolute;
+    inset-inline-end: var(--int-pick-list-filter-padding-x);
+    top: 50%;
+    font-size: var(--int-pick-list-filter-icon-size);
+    color: var(--int-pick-list-filter-icon-color);
+    transform: translateY(-50%);
+  }
+
+  // TODO(dep:list-box provisional) list styles until int-list-box. The scroll lives here, not on the block.
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-pick-list-list-gap);
+    overflow: auto;
+  }
+
+  &__option {
+    flex-shrink: 0;
+    padding: var(--int-pick-list-option-padding);
+    font-size: var(--int-pick-list-option-font-size);
+    color: var(--int-pick-list-option-color);
+    border-radius: var(--int-pick-list-option-border-radius);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background var(--int-pick-list-duration) var(--int-pick-list-easing),
+      color var(--int-pick-list-duration) var(--int-pick-list-easing);
+
+    &:hover {
+      background: var(--int-pick-list-option-hover-background);
+    }
+
+    &:focus-visible {
+      outline: var(--int-pick-list-focus-ring-width) solid var(--int-pick-list-focus-ring-color);
+      outline-offset: calc(var(--int-pick-list-focus-ring-width) * -1);
+    }
+
+    &--selected,
+    &--selected:hover {
+      color: var(--int-pick-list-option-selected-color);
+      background: var(--int-pick-list-option-selected-background);
+    }
+
+    // CDK clone that follows the pointer (cdkDragPreviewClass); it lives in <body>, outside the block.
+    // A selected option keeps its selected background while dragged.
+    &--preview {
+      box-shadow: var(--int-pick-list-preview-shadow);
+    }
+
+    &--preview:not(.int-pick-list__option--selected) {
+      background: var(--int-pick-list-preview-background);
+    }
+  }
+
+  // Empty slot with the height of a one-line option where the dragged item will land.
+  &__placeholder {
+    min-height: calc(var(--int-pick-list-option-padding) * 2 + 1lh);
+    border: var(--int-pick-list-border-width) dashed var(--int-pick-list-placeholder-border-color);
+    border-radius: var(--int-pick-list-option-border-radius);
+    transition: transform var(--int-pick-list-drag-duration) var(--int-pick-list-drag-easing);
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--int-pick-list-controls-gap);
+  }
+
+  // TODO(dep:button provisional) secondary icon-only button until int-button.
+  &__control-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-pick-list-control-size);
+    height: var(--int-pick-list-control-size);
+    padding: 0;
+    font-size: var(--int-pick-list-control-icon-size);
+    color: var(--int-pick-list-control-color);
+    background: var(--int-pick-list-control-background);
+    border: none;
+    border-radius: var(--int-pick-list-border-radius);
+    cursor: pointer;
+    transition: background var(--int-pick-list-duration) var(--int-pick-list-easing);
+
+    &:hover:not(:disabled) {
+      background: var(--int-pick-list-control-hover-background);
+    }
+
+    &:focus-visible {
+      outline: var(--int-pick-list-focus-ring-width) solid var(--int-pick-list-focus-ring-color);
+      outline-offset: var(--int-pick-list-focus-ring-width);
+    }
+
+    &:disabled {
+      opacity: var(--int-pick-list-disabled-opacity);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-pick-list--disabled .int-pick-list__list {
+  opacity: var(--int-pick-list-disabled-opacity);
+
+  .int-pick-list__option {
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+// With dragdrop the options can be grabbed.
+.int-pick-list--dragdrop .int-pick-list__option {
+  cursor: move;
+}
+
+// While an item is dragged over a list, the other options slide to make room for it.
+.int-pick-list__list--dragging .int-pick-list__option {
+  transition: transform var(--int-pick-list-drag-duration) var(--int-pick-list-drag-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-pick-list__option,
+  .int-pick-list__placeholder,
+  .int-pick-list__list--dragging .int-pick-list__option,
+  .int-pick-list__control-button {
+    transition-duration: 0s;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-pick-list {
+}

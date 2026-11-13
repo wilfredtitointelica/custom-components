@@ -1,0 +1,74 @@
+<!--
+  title: Estado por nivel
+  description: El contenido depende de `rowNode.level`: marca y alerta con tooltip solo en los padres, sin quitar la celda en los hijos.
+-->
+<int-treetable [value]="fees">
+  <ng-template #header>
+    <tr>
+      <th width="6%"></th>
+      <th class="u-text-center" width="8%">Status</th>
+      <th class="u-text-center" width="10%">Brand</th>
+      <th class="u-text-left" width="52%">Name</th>
+      <th class="u-text-right" width="24%">Amount USD</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode">
+      <td class="u-text-center">
+        <div class="u-display-flex u-justify-content-center">
+          <int-treetable-toggler [rowNode]="rowNode" />
+        </div>
+      </td>
+      <!-- The cell always exists: a missing td would shift every column after it -->
+      <td class="u-text-center">
+        @if (rowNode.level === 0 && rowData.status === 'error') {
+          <div class="u-display-flex u-justify-content-center">
+            <!-- dep:tooltip provisional · replace with <int-tooltip> when tooltip is done -->
+            <span
+              class="u-relative u-display-inline-flex u-flex-column u-align-items-center u-color-error"
+              tabindex="0"
+              data-dep="tooltip"
+              [attr.aria-describedby]="'fee-tip-' + rowData.code"
+              (mouseenter)="openTooltip.set(rowData.code)"
+              (mouseleave)="openTooltip.set(null)"
+              (focus)="openTooltip.set(rowData.code)"
+              (blur)="openTooltip.set(null)"
+            >
+              <span class="u-display-flex u-flex-column u-justify-content-end u-align-items-center">
+                @if (openTooltip() === rowData.code) {
+                  <span
+                    class="u-absolute u-mb-1 u-background-white u-bt-1 u-bm-1 u-bs-1 u-be-1 u-radius-sm u-p-3 u-shadow-sm u-text-xs u-color-primary u-text-nowrap"
+                    role="tooltip"
+                    [id]="'fee-tip-' + rowData.code"
+                  >
+                    Pending review of the fee amount
+                  </span>
+                }
+              </span>
+              <i class="icon icon-alert icon--sm" aria-hidden="true"></i>
+            </span>
+            <!-- /dep:tooltip -->
+          </div>
+        }
+      </td>
+      <td class="u-text-center">
+        @if (rowNode.level === 0) {
+          <div class="u-display-flex u-justify-content-center">
+            @switch (rowData.brand) {
+              @case ('visa') { <i class="icon icon-visa" aria-label="Visa"></i> }
+              @case ('mastercard') { <i class="icon icon-mastercard" aria-label="Mastercard"></i> }
+              @case ('amex') { <i class="icon icon-amex" aria-label="Amex"></i> }
+            }
+          </div>
+        }
+      </td>
+      <td class="u-text-left">
+        <div class="u-display-flex u-flex-column">
+          <span>{{ rowData.code }}</span>
+          <span>{{ rowData.name }}</span>
+        </div>
+      </td>
+      <td class="u-text-right">{{ rowData.amount }}</td>
+    </tr>
+  </ng-template>
+</int-treetable>

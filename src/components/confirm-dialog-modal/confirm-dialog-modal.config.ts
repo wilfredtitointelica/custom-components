@@ -1,7 +1,7 @@
 import { ComponentDefinition } from '../../service/catalog.model';
 
 /**
- * Documentation config of "ConfirmDialog (Modal)": what the side menu and the documentation page show.
+ * Documentation config of "ConfirmDialog (Alert)": what the side menu and the documentation page show.
  * - Titles and descriptions are not written here: they live in the header comment of
  *   version-N/base/confirm-dialog-modal.html (component) and version-N/variants/<slug>/example.html (each variant).
  * - Variants are the version-N/variants/<slug>/ folders, detected automatically ("basic" first).
@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'confirm-dialog-modal',
+  requires: ['dialog-modal', 'button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

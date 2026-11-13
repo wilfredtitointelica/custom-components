@@ -1,2 +1,4 @@
 // int-password · entry point. Add one `@use 'password.<variant>' as password-<variant>;` per variant module.
 @use 'password';
+@use 'password.size' as password-size;
+@use 'password.state' as password-state;

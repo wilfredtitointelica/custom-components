@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'slider',
+  variants: ['basic', 'step', 'range', 'vertical', 'disabled'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

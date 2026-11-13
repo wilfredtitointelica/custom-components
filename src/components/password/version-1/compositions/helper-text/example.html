@@ -1,0 +1,23 @@
+<!--
+  title: Helper text
+  description: Campo de contraseña en un formulario, como lo usa la base de conocimientos: `toggleMask` sin `feedback`, con `invalid` y el texto de ayuda alineado a la derecha debajo del campo.
+-->
+<div class="u-display-inline-flex u-flex-column u-gap-xs">
+  <label for="password-helper-text" class="u-text-md u-bold">Password</label>
+  <int-password
+    toggleMask
+    placeholder="Enter a password"
+    inputId="password-helper-text"
+    [feedback]="false"
+    [invalid]="!value"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="value"
+  />
+  @if (!value) {
+    <!-- dep:message provisional · replace with <int-message> when message is done -->
+    <div class="u-display-flex u-justify-content-end" data-dep="message">
+      <span class="u-text-xs u-text-lineHeight-xs u-color-error">Helper text here</span>
+    </div>
+    <!-- /dep:message -->
+  }
+</div>

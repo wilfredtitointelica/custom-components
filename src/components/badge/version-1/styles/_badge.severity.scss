@@ -1,0 +1,33 @@
+// int-badge · severity="secondary | info | success | warn | danger | contrast" (same as p-badge).
+
+.int-badge {
+  &--secondary {
+    background: var(--int-badge-secondary-background);
+    color: var(--int-badge-secondary-color);
+  }
+
+  &--success {
+    background: var(--int-badge-success-background);
+    color: var(--int-badge-success-color);
+  }
+
+  &--info {
+    background: var(--int-badge-info-background);
+    color: var(--int-badge-info-color);
+  }
+
+  &--warn {
+    background: var(--int-badge-warn-background);
+    color: var(--int-badge-warn-color);
+  }
+
+  &--danger {
+    background: var(--int-badge-danger-background);
+    color: var(--int-badge-danger-color);
+  }
+
+  &--contrast {
+    background: var(--int-badge-contrast-background);
+    color: var(--int-badge-contrast-color);
+  }
+}

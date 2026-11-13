@@ -1,0 +1,18 @@
+<!--
+  title: Group
+  description: Con `group` las opciones se agrupan (`optionGroupLabel` y `optionGroupChildren` indican la etiqueta y las opciones de cada grupo) y el template `group` personaliza la fila de cada grupo.
+-->
+<int-multiselect
+  placeholder="Select Cities"
+  [options]="groupedCities"
+  [group]="true"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+>
+  <ng-template #group let-group>
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <span class="u-text-xs u-color-grey-500">{{ group.code }}</span>
+      <span>{{ group.label }}</span>
+    </div>
+  </ng-template>
+</int-multiselect>

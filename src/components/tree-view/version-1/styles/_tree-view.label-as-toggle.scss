@@ -1,0 +1,16 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Label as toggle
+\*——————————————————————————————————————————————————————————*/
+
+// Style Guide .prTreeselect--labelAsToggle: the whole parent row expands or collapses, rows without gap.
+.int-tree-view--label-as-toggle {
+  .int-tree-view__root,
+  .int-tree-view__node-children,
+  .int-tree-view__node {
+    gap: 0;
+  }
+
+  .int-tree-view__node:not(.int-tree-view__node--leaf) > .int-tree-view__node-content {
+    cursor: pointer;
+  }
+}

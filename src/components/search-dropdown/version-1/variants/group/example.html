@@ -1,0 +1,14 @@
+<!--
+  title: Group
+  description: Con `group` las sugerencias se muestran en secciones con título fijo mientras se desplazan; `optionGroupLabel` y `optionGroupChildren` indican los campos de cada grupo.
+-->
+<int-search-dropdown
+  group
+  optionLabel="name"
+  placeholder='Search fees and reports, try "es" to see both groups'
+  ariaLabel="Search fees and reports"
+  scrollHeight="18rem"
+  [suggestions]="results()"
+  [style]="{ width: '29rem' }"
+  (completeMethod)="search($event.query)"
+/>

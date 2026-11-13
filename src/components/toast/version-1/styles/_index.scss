@@ -1,2 +1,4 @@
-// int-toast · entry point. Add one `@use 'toast.<variant>' as toast-<variant>;` per variant module.
+// int-toast · entry point. Add one `@use 'toast.<group>' as toast-<group>;` per modifier module.
 @use 'toast';
+@use 'toast.position' as toast-position;
+@use 'toast.severity' as toast-severity;

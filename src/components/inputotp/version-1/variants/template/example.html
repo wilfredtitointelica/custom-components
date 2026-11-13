@@ -1,0 +1,24 @@
+<!--
+  title: Template
+  description: El template `input` reemplaza cada celda. Recibe el carácter (`$implicit`), los handlers `events` (`input`, `keydown`, `focus`, `blur`, `paste`) que el campo propio debe enlazar y el `index` de la celda, aquí usado para su etiqueta accesible.
+-->
+<int-inputotp [(ngModel)]="value">
+  <ng-template #input let-token let-events="events" let-index="index">
+    <!-- dep:input provisional · replace with <int-input> when input is done -->
+    <input
+      type="text"
+      class="int-inputotp__input"
+      data-dep="input"
+      maxlength="1"
+      [class.int-inputotp__input--value]="token"
+      [attr.aria-label]="'Character ' + index"
+      [value]="token"
+      (input)="events.input($event)"
+      (keydown)="events.keydown($event)"
+      (focus)="events.focus($event)"
+      (blur)="events.blur($event)"
+      (paste)="events.paste($event)"
+    />
+    <!-- /dep:input -->
+  </ng-template>
+</int-inputotp>

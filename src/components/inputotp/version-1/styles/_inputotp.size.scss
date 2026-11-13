@@ -1,0 +1,17 @@
+// int-inputotp · size="small" | "large" (same as p-inputtext-sm / -lg on .p-inputotp-input).
+// knowledgeBase: .prInputotp--big → size="large".
+.int-inputotp {
+  &--small &__input {
+    inline-size: var(--int-inputotp-input-sm-size);
+    block-size: var(--int-inputotp-input-sm-size);
+    font-size: var(--int-inputotp-input-sm-font-size);
+    line-height: var(--int-inputotp-input-sm-line-height);
+  }
+
+  &--large &__input {
+    inline-size: var(--int-inputotp-input-lg-size);
+    block-size: var(--int-inputotp-input-lg-size);
+    font-size: var(--int-inputotp-input-lg-font-size);
+    line-height: var(--int-inputotp-input-lg-line-height);
+  }
+}

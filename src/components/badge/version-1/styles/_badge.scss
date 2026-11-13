@@ -2,8 +2,53 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// Solid look of p-badge (Aura), translated to the Style Guide. The status labels of badge.md
+// (light background + border) are int-tag.
 :root {
   --NOTE-BADGE: 'int-badge ( Custom )';
+
+  // --- root (medium) ---
+  --int-badge-font-family: var(--i-typography-font-family-base); // SG: --i-typography-font-family-base · Aura: inherit
+  --int-badge-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Aura: 0.75rem
+  --int-badge-font-weight: var(--i-typography-font-weight-bold); // SG: --i-typography-font-weight-bold · Aura: 700
+  --int-badge-padding-x: var(--i-spacing-container-md); // SG: --i-spacing-container-md · Aura: 0.5rem
+  --int-badge-min-width: var(--i-sizing-md); // SG: --i-sizing-md · Aura: 1.5rem
+  --int-badge-height: var(--i-sizing-md); // SG: --i-sizing-md · Aura: 1.5rem
+  --int-badge-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Aura: {border.radius.md} 6px
+  --int-badge-dot-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs (12px, closest) ⚠️ · Aura: 0.5rem
+
+  // --- primary (no severity) ---
+  --int-badge-background: var(--i-color-primary-600); // SG: --i-color-primary-600 (--i-background-accent) · Aura: {primary.color}
+  --int-badge-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {primary.contrast.color}
+
+  // --- severity ---
+  --int-badge-secondary-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Aura: {surface.100}
+  --int-badge-secondary-color: var(--i-color-secondary-600); // SG: --i-color-secondary-600 · Aura: {surface.600}
+  --int-badge-success-background: var(--i-color-success-600); // SG: --i-color-success-600 (closest) · Aura: {green.500}
+  --int-badge-success-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {surface.0}
+  --int-badge-info-background: var(--i-color-primary-500); // SG: --i-color-primary-500 (no sky) ⚠️ · Aura: {sky.500}
+  --int-badge-info-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {surface.0}
+  --int-badge-warn-background: var(--i-color-warning-600); // SG: --i-color-warning-600 (no orange) ⚠️ · Aura: {orange.500}
+  --int-badge-warn-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {surface.0}
+  --int-badge-danger-background: var(--i-color-error-600); // SG: --i-color-error-600 · Aura: {red.500}
+  --int-badge-danger-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {surface.0}
+  --int-badge-contrast-background: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.950}
+  --int-badge-contrast-color: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {surface.0}
+
+  // --- badgeSize ---
+  --int-badge-small-font-size: var(--i-typography-font-size-xs); // SG: --i-typography-font-size-xs · Aura: 0.625rem
+  --int-badge-small-height: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: 1.25rem
+  --int-badge-large-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Aura: 0.875rem
+  --int-badge-large-height: var(--i-sizing-lg); // SG: --i-sizing-lg (32px) ⚠️ · Aura: 1.75rem
+  --int-badge-xlarge-font-size: var(--i-typography-font-size-lg); // SG: --i-typography-font-size-lg · Aura: 1rem
+  --int-badge-xlarge-height: var(--i-sizing-xl); // SG: --i-sizing-xl (40px) ⚠️ · Aura: 2rem
+
+  // --- overlay ---
+  --int-badge-overlay-outline-width: var(--i-border-width-md); // SG: --i-border-width-md · Aura: 2px
+  --int-badge-overlay-outline-color: var(--i-background-default); // SG: --i-background-default · Aura: {content.background}
+
+  // --- skeleton ---
+  --int-badge-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,25 +56,58 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--int-badge-min-width);
+  height: var(--int-badge-height);
+  padding-block: 0;
+  padding-inline: var(--int-badge-padding-x);
+  border-radius: var(--int-badge-border-radius);
+  background: var(--int-badge-background);
+  color: var(--int-badge-color);
+  font-family: var(--int-badge-font-family);
+  font-size: var(--int-badge-font-size);
+  font-weight: var(--int-badge-font-weight);
+  white-space: nowrap;
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
-.int-badge {
-}
+// p-badge has no inner elements: the host only renders the value.
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
+// A single character keeps the badge round; without a value it is a dot.
 .int-badge {
+  &--circle {
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  &--dot {
+    width: var(--int-badge-dot-size);
+    min-width: var(--int-badge-dot-size);
+    height: var(--int-badge-dot-size);
+    padding: 0;
+    border-radius: 50%;
+  }
 }
+
+// Severity: _badge.severity.scss · badgeSize: _badge.size.scss · int-overlay-badge: _badge.overlay.scss.
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-badge {
+  display: inline-block;
+  min-width: var(--int-badge-min-width);
+  height: var(--int-badge-height);
+  border-radius: var(--int-badge-border-radius);
+  background: var(--int-badge-skeleton-background);
 }

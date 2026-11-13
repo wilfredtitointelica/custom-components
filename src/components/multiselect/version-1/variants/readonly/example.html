@@ -1,0 +1,12 @@
+<!--
+  title: Readonly
+  description: Con `readonly` se muestra el valor sin flecha y el panel no se abre.
+-->
+<int-multiselect
+  optionLabel="name"
+  placeholder="Select Cities"
+  [options]="cities"
+  [readonly]="true"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

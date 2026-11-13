@@ -1,0 +1,15 @@
+<!--
+  title: Filter
+  description: El campo de filtro aparece por defecto (`filter`); `filterBy` indica en qué propiedades busca y `filterPlaceHolder` su texto de ayuda.
+-->
+<int-multiselect
+  optionLabel="name"
+  placeholder="Select Cities"
+  filterBy="name"
+  filterPlaceHolder="Search"
+  [options]="cities"
+  [filter]="true"
+  [maxSelectedLabels]="3"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

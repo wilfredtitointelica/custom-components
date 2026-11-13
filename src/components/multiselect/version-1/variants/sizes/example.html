@@ -1,0 +1,29 @@
+<!--
+  title: Sizes
+  description: `size` en `small` o `large` cambia el alto y el tamaño del texto del campo.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-multiselect
+    size="small"
+    optionLabel="name"
+    placeholder="Small"
+    [options]="cities"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="small"
+  />
+  <int-multiselect
+    optionLabel="name"
+    placeholder="Normal"
+    [options]="cities"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="normal"
+  />
+  <int-multiselect
+    size="large"
+    optionLabel="name"
+    placeholder="Large"
+    [options]="cities"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="large"
+  />
+</div>

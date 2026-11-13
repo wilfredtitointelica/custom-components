@@ -4,13 +4,57 @@
 
 :root {
   --NOTE-TOAST: 'int-toast ( Custom )';
+
+  // --- root ---
+  --int-toast-width: calc(var(--i-sizing-800) * 6.25); // SG: no width token, 64px × 6.25 = 400px, as deployed in the projects · Figma: 600px ⚠️ · Aura: 25rem
+  --int-toast-offset: var(--i-spacing-250); // SG: --i-spacing-250 · Aura: 20px (inline position)
+  --int-toast-message-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg · Aura: 1rem (message margin)
+
+  // --- message ---
+  --int-toast-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Figma: 1px (toast/border/width/sm) · Aura: 1px
+  --int-toast-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg · Figma: 8px (toast/border/radius/lg) · Aura: {content.border.radius} 6px
+  --int-toast-content-padding: var(--i-spacing-container-md); // knowledgeBase: --i-toast-message-content-padding → --i-spacing-container-md · Figma: 8px (toast/padding/x/md) · Aura: {overlay.popover.padding} 0.75rem
+  --int-toast-content-gap: var(--i-spacing-gap-sm); // knowledgeBase: --i-toast-message-content-gap 12px ⚠️ · Figma: 8px (toast/gap/sm) · Aura: 0.5rem
+  --int-toast-content-color: var(--i-color-primary-900); // knowledgeBase: --i-toast-message-content-color → --i-color-primary-900 · Figma: #0A1733 (toast/color/default/text) · Aura: {surface.700}
+  --int-toast-icon-size: var(--i-icon-size-sm); // knowledgeBase: --i-toast-message-icon-size → --i-icon-size-sm · Figma: 16px (icon/sizing/sm) · Aura: 1.125rem
+  --int-toast-text-gap: 0; // knowledgeBase: --i-toast-message-text-gap 4px ⚠️ · Figma: 0 (toast/gap/none) · Aura: 0.5rem
+  --int-toast-summary-font-size: var(--i-typography-font-size-200); // knowledgeBase: --i-toast-message-text-font-size 14px ⚠️ · Figma: 16px (toast/font/size/lg) · Aura: 1rem
+  --int-toast-summary-line-height: var(--i-typography-lineHeight-lg); // knowledgeBase: --i-toast-message-text-line-height 20px ⚠️ · Figma: 24px (toast/font/lineHeight/lg) · Aura: —
+  --int-toast-summary-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: bold · Figma: 700 (toast/font/weightTitle) · Aura: 500
+  --int-toast-detail-font-size: var(--i-text-body-size-md); // knowledgeBase: --i-toast-message-text-font-size → --i-text-body-size-md · Figma: 14px (toast/font/size/md) · Aura: 0.875rem
+  --int-toast-detail-line-height: var(--i-typography-lineHeight-md); // knowledgeBase: --i-toast-message-text-line-height → --i-typography-lineHeight-md · Figma: 20px (toast/font/lineHeight/md) · Aura: —
+  --int-toast-detail-font-weight: var(--i-typography-font-weight-regular); // SG: --i-typography-font-weight-regular · Figma: 400 (toast/font/weightBody) · Aura: 500
+
+  // --- close button ---
+  --int-toast-close-button-size: var(--i-sizing-sm); // knowledgeBase: 1em of --i-toast-message-text-line-height (20px) → --i-sizing-sm · Aura: 1.75rem
+  --int-toast-close-button-border-radius: 50%; // Aura: 50%
+  --int-toast-close-icon-size: var(--i-icon-size-xs); // knowledgeBase: --i-toast-close-button-icon-size → --i-icon-size-xs · Figma: 12px (icon/sizing/xs) · Aura: 1rem
+  --int-toast-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: {focus.ring.width} 1px
+  --int-toast-focus-ring-offset: var(--i-spacing-container-none); // SG: no offset, the button sits on the border · Aura: {focus.ring.offset} 2px
+
+  // --- motion ---
+  --int-toast-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast · Aura: {transition.duration} 0.2s
+  --int-toast-enter-duration: var(--i-motion-duration-base); // SG: --i-motion-duration-base · Aura: showTransitionOptions 300ms
+  --int-toast-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: ease-out
+  --int-toast-leave-duration: var(--i-motion-duration-base); // SG: --i-motion-duration-base ⚠️ · Aura: hideTransitionOptions 250ms
+  --int-toast-leave-easing: var(--i-motion-ease-in); // SG: --i-motion-ease-in · Aura: ease-in
+
+  // --- skeleton ---
+  --int-toast-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+  --int-toast-skeleton-height: var(--i-sizing-2xl); // SG: --i-sizing-2xl (64px, nearest) · Figma: 80px ⚠️ [Size=Standard]
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// knowledgeBase: .prToast · Figma: toast [Size=Standard]
 .int-toast {
+  position: fixed;
+  width: var(--int-toast-width);
+  max-width: calc(100vw - 2 * var(--int-toast-offset));
+  white-space: pre-line;
+  word-break: break-word;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,18 +62,131 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-toast {
+  &__message {
+    margin-block-end: var(--int-toast-message-gap);
+    border: var(--int-toast-border-width) solid;
+    border-radius: var(--int-toast-border-radius);
+  }
+
+  &__message-content {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--int-toast-content-padding);
+    gap: var(--int-toast-content-gap);
+    font-size: var(--int-toast-detail-font-size);
+    line-height: var(--int-toast-detail-line-height);
+  }
+
+  // Same box as the first line of text, so the icon centers on it (title or detail).
+  &__message-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--int-toast-icon-size);
+    height: var(--int-toast-detail-line-height);
+    font-size: var(--int-toast-icon-size);
+  }
+
+  &__message-content:has(&__summary) &__message-icon {
+    height: var(--int-toast-summary-line-height);
+  }
+
+  &__message-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--int-toast-text-gap);
+    color: var(--int-toast-content-color);
+  }
+
+  &__summary {
+    font-size: var(--int-toast-summary-font-size);
+    font-weight: var(--int-toast-summary-font-weight);
+    line-height: var(--int-toast-summary-line-height);
+  }
+
+  &__detail {
+    font-weight: var(--int-toast-detail-font-weight);
+  }
+
+  &__close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--int-toast-close-button-size);
+    height: var(--int-toast-close-button-size);
+    margin-inline-start: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--int-toast-close-button-border-radius);
+    outline-color: transparent;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color var(--int-toast-transition-duration),
+      outline-color var(--int-toast-transition-duration);
+
+    &:focus-visible {
+      outline: var(--int-toast-focus-ring-width) solid currentColor;
+      outline-offset: var(--int-toast-focus-ring-offset);
+    }
+  }
+
+  &__close-icon {
+    font-size: var(--int-toast-close-icon-size);
+  }
+
+  // Enter and leave: fade + move as PrimeNG, at full height; the other messages slide to their new place
+  // from the base (FLIP with `translate`). show/hide Transform/Transition options set the variables inline.
+  &__message--enter {
+    animation: int-toast-enter var(--int-toast-show-transition, var(--int-toast-enter-duration) var(--int-toast-enter-easing));
+  }
+
+  &__message--leave {
+    animation: int-toast-leave var(--int-toast-hide-transition, var(--int-toast-leave-duration) var(--int-toast-leave-easing)) forwards;
+  }
+}
+
+@keyframes int-toast-enter {
+  from {
+    opacity: 0; // Aura: opacity 0
+    transform: var(--int-toast-show-transform, translateY(100%)); // Aura: translateY(100%)
+  }
+}
+
+@keyframes int-toast-leave {
+  to {
+    opacity: 0; // Aura: opacity 0
+    transform: var(--int-toast-hide-transform, translateY(-100%)); // Aura: translateY(-100%) (+ height 0, not replicated)
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-toast,
+  .int-toast * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-toast {
-}
+// Position: _toast.position.scss · severity: _toast.severity.scss.
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
 .sk-toast {
+  display: block;
+  width: var(--int-toast-width);
+  height: var(--int-toast-skeleton-height);
+  border-radius: var(--int-toast-border-radius);
+  background: var(--int-toast-skeleton-background);
 }

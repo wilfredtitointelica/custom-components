@@ -1,0 +1,14 @@
+// int-treetable--sticky-header (stickyHeader, int-* extension): the header sticks below the dashboard
+// header while the page scrolls. knowledgeBase: .prTable--stickyHeader
+.int-treetable--sticky-header {
+  // A var() resolves where it is declared: redeclared on the block (same value as :root) so
+  // --i-dashboard-layout-header-height is read from the table's context (a container that sets it, the
+  // docs preview). stickyTop sets the token inline on the host and wins.
+  --int-treetable-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height · Aura: —
+}
+
+.int-treetable--sticky-header .int-treetable__thead {
+  position: sticky;
+  inset-block-start: var(--int-treetable-sticky-top);
+  z-index: 1;
+}

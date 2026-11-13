@@ -20,21 +20,22 @@ import search from './search/search.config';
 import stepper from './stepper/stepper.config';
 import treeSelect from './tree-select/tree-select.config';
 import dragAndDrop from './drag-and-drop/drag-and-drop.config';
+import pickList from './pick-list/pick-list.config';
 import table from './table/table.config';
 import fileDrop from './file-drop/file-drop.config';
 import carousel from './carousel/carousel.config';
 import message from './message/message.config';
-import multiSelect from './multi-select/multi-select.config';
+import multiselect from './multiselect/multiselect.config';
 import timeline from './timeline/timeline.config';
 import toast from './toast/toast.config';
-import treeTable from './tree-table/tree-table.config';
+import treetable from './treetable/treetable.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
 import chip from './chip/chip.config';
 import searchDropdown from './search-dropdown/search-dropdown.config';
 import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
-import inputOtp from './input-otp/input-otp.config';
+import inputotp from './inputotp/inputotp.config';
 import password from './password/password.config';
 import progressbar from './progressbar/progressbar.config';
 import demo from './_demo_/demo.config';
@@ -55,12 +56,12 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   datePicker,
   listBox,
   dialogModal,
-  confirmDialogModal,
   tabs,
   tooltip,
   tag,
   popover,
   alertas,
+  confirmDialogModal,
   toggleSwitch,
   slider,
   treeView,
@@ -68,21 +69,22 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   stepper,
   treeSelect,
   dragAndDrop,
+  pickList,
   table,
   fileDrop,
   carousel,
   message,
-  multiSelect,
+  multiselect,
   timeline,
   toast,
-  treeTable,
+  treetable,
   card,
   badge,
   chip,
   searchDropdown,
   breadcrumb,
   paginator,
-  inputOtp,
+  inputotp,
   password,
   progressbar,
 ];

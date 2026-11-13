@@ -1,0 +1,12 @@
+<!--
+  title: Severity
+  description: Cada valor de `severity` (`default`, `warning`, `danger`, `error`, `success`) colorea el título y el ícono.
+-->
+<int-confirm-dialog-modal key="severity" />
+<div class="u-display-flex u-flex-wrap u-gap-sm">
+  @for (option of options; track option.severity) {
+    <!-- dep:button provisional · replace with <int-button> when button is done -->
+    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="confirm(option)">{{ option.label }}</button>
+    <!-- /dep:button -->
+  }
+</div>

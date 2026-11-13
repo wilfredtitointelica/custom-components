@@ -4,6 +4,42 @@
 
 :root {
   --NOTE-TOGGLE-SWITCH: 'int-toggle-switch ( Custom )';
+
+  // --- root ---
+  --int-toggle-switch-width: var(--i-sizing-600); // knowledgeBase: --i-toggleswitch-width 48px · Figma: 48px (—)
+  --int-toggle-switch-height: var(--i-sizing-md); // knowledgeBase: --i-toggleswitch-height 24px · Figma: 24px (—)
+  --int-toggle-switch-gap: var(--i-spacing-25); // knowledgeBase: --i-toggleswitch-gap 2px · Figma: 2px (toggle/padding/x/2xs)
+  --int-toggle-switch-background: var(--i-color-neutral-100); // knowledgeBase: --i-toggleswitch-background · Figma: #F2F2F5 (toggle/inactive/background)
+  --int-toggle-switch-border-width: var(--i-border-width-sm); // knowledgeBase: --i-toggleswitch-border-width · Figma: 1px (toggle/border/width/sm)
+  --int-toggle-switch-border-color: var(--i-color-secondary-400); // knowledgeBase: --i-toggleswitch-border-color · Figma: #9CA3BA (toggle/inactive/border)
+  --int-toggle-switch-border-radius: var(--i-border-radius-full); // knowledgeBase: --i-toggleswitch-border-radius · Figma: 1000px (toggle/border/radius/full)
+  --int-toggle-switch-hover-border-color: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-hover-border-color · Figma: #0A1733 (toggle/inactive/hover/border) [State=Hover]
+  --int-toggle-switch-checked-background: var(--i-color-neutral-100); // SG: --i-toggleswitch-background (checked rule) · Figma: #FCFCFC (toggle/active/background) [Type=Active] ⚠️
+  --int-toggle-switch-checked-border-color: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-checked-border-color · Figma: #0A1733 (toggle/active/border) [Type=Active]
+  --int-toggle-switch-checked-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-toggleswitch-hover-background · Figma: #DDE6F8 (toggle/active/hover/background) [Type=Active, State=Hover]
+  --int-toggle-switch-disabled-background: var(--i-color-neutral-200); // knowledgeBase: --i-toggleswitch-disabled-background · Figma: #D9D9E3 (toggle/inactive/disabled/background) [State=Disabled]
+  --int-toggle-switch-invalid-border-color: var(--i-border-error); // SG: --i-checkbox-invalid-border-color
+  --int-toggle-switch-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: outline 1px
+  --int-toggle-switch-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color
+  --int-toggle-switch-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+
+  // --- handle ---
+  --int-toggle-switch-handle-size: var(--i-sizing-sm); // knowledgeBase: --i-toggleswitch-handle-size 20px · Figma: 20px (toggle/sizing/sm)
+  --int-toggle-switch-handle-border-radius: var(--i-border-radius-full); // SG: --i-toggleswitch-handle-border-radius · Figma: 1000px (toggle/border/radius/full)
+  --int-toggle-switch-handle-background: var(--i-color-secondary-400); // knowledgeBase: handle secondary-400 · Figma: #9CA3BA (toggle/inactive/ellipse)
+  --int-toggle-switch-handle-checked-background: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-checked-handle-color · Figma: #0A1733 (toggle/active/ellipse) [Type=Active]
+  --int-toggle-switch-handle-checked-hover-background: var(--i-color-primary-900); // SG: --i-toggleswitch-handle-hover-color · Figma: #0A1733 (toggle/active/hover/ellipse) [Type=Active, State=Hover]
+  --int-toggle-switch-handle-disabled-background: var(--i-color-neutral-400); // knowledgeBase: --i-toggleswitch-handle-disabled-background · Figma: #9CA3BA (toggle/inactive/disabled/ellipse) [State=Disabled]
+  --int-toggle-switch-handle-color: var(--i-color-secondary-50); // SG: —
+
+  // --- slider (knowledgeBase modifier .prToggleswitch--slider) ---
+  --int-toggle-switch-slider-width: var(--i-sizing-450); // knowledgeBase: --slider width 36px · Figma: 36px (—) [toggle-small]
+  --int-toggle-switch-slider-track-height: var(--i-spacing-50); // knowledgeBase: track 4px · Figma: 4px (—) [toggle-small]
+  --int-toggle-switch-slider-track-color: var(--i-color-secondary-600); // knowledgeBase: track secondary-600 · Figma: — [toggle-small]
+  --int-toggle-switch-slider-disabled-color: var(--i-color-secondary-200); // knowledgeBase: track disabled secondary-200 · Figma: #D9D9E3 (toggle/inactive/disabled/background) [toggle-small, State=Disabled]
+  --int-toggle-switch-slider-handle-size: var(--i-sizing-xs); // knowledgeBase: --slider handle 16px · Figma: 16px (—) [toggle-small]
+  --int-toggle-switch-slider-handle-background: var(--i-color-secondary-100); // knowledgeBase: handle secondary-100 · Figma: #F2F2F5 (toggle/inactive/background) [toggle-small]
+  --int-toggle-switch-slider-handle-checked-background: var(--i-color-secondary-50); // knowledgeBase: handle checked secondary-50 · Figma: #FCFCFC (toggle/active/background) [toggle-small, Type=Active]
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,6 +47,10 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: var(--int-toggle-switch-width);
+  height: var(--int-toggle-switch-height);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,13 +58,121 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-toggle-switch {
+  // Invisible native input covering the whole switch.
+  &__input {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    appearance: none;
+    cursor: pointer;
+    outline: 0 none;
+    border-radius: var(--int-toggle-switch-border-radius);
+  }
+
+  &__slider {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background: var(--int-toggle-switch-background);
+    border: var(--int-toggle-switch-border-width) solid var(--int-toggle-switch-border-color);
+    border-radius: var(--int-toggle-switch-border-radius);
+    outline-color: transparent;
+    cursor: pointer;
+    transition:
+      background var(--int-toggle-switch-transition-duration),
+      border-color var(--int-toggle-switch-transition-duration),
+      outline-color var(--int-toggle-switch-transition-duration);
+  }
+
+  &__handle {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inset-inline-start: var(--int-toggle-switch-gap);
+    box-sizing: border-box;
+    width: var(--int-toggle-switch-handle-size);
+    height: var(--int-toggle-switch-handle-size);
+    margin-block-start: calc(var(--int-toggle-switch-handle-size) / -2);
+    background: var(--int-toggle-switch-handle-background);
+    color: var(--int-toggle-switch-handle-color);
+    border-radius: var(--int-toggle-switch-handle-border-radius);
+    transition:
+      background var(--int-toggle-switch-transition-duration),
+      inset-inline-start var(--int-toggle-switch-transition-duration);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-.int-toggle-switch {
+.int-toggle-switch--checked {
+  .int-toggle-switch__slider {
+    background: var(--int-toggle-switch-checked-background);
+    border-color: var(--int-toggle-switch-checked-border-color);
+  }
+
+  .int-toggle-switch__handle {
+    inset-inline-start: calc(
+      var(--int-toggle-switch-width) - (var(--int-toggle-switch-handle-size) + var(--int-toggle-switch-gap))
+    );
+    background: var(--int-toggle-switch-handle-checked-background);
+  }
+}
+
+.int-toggle-switch:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:hover) {
+  .int-toggle-switch__slider {
+    border-color: var(--int-toggle-switch-hover-border-color);
+  }
+
+  &.int-toggle-switch--checked .int-toggle-switch__slider {
+    background: var(--int-toggle-switch-checked-hover-background);
+  }
+
+  &.int-toggle-switch--checked .int-toggle-switch__handle {
+    background: var(--int-toggle-switch-handle-checked-hover-background);
+  }
+}
+
+.int-toggle-switch:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:focus-visible)
+  .int-toggle-switch__slider {
+  outline: var(--int-toggle-switch-focus-ring-width) solid var(--int-toggle-switch-focus-ring-color);
+}
+
+// Same look off and on.
+.int-toggle-switch--disabled {
+  .int-toggle-switch__input {
+    cursor: default;
+  }
+
+  .int-toggle-switch__slider {
+    background: var(--int-toggle-switch-disabled-background);
+    border-style: none;
+  }
+
+  .int-toggle-switch__handle {
+    background: var(--int-toggle-switch-handle-disabled-background);
+  }
+}
+
+// Invalid: error border, as PrimeNG p-invalid (no knowledge base case).
+.int-toggle-switch--invalid:not(.int-toggle-switch--disabled) .int-toggle-switch__slider {
+  border-color: var(--int-toggle-switch-invalid-border-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-toggle-switch__slider,
+  .int-toggle-switch__handle {
+    transition-duration: 0s;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

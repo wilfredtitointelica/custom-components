@@ -189,7 +189,10 @@
 
     @if (open) {
       <div
+        #list
         class="int-paginator__dropdown-list"
+        [class.int-paginator__dropdown-list--appended]="!!overlayTarget()"
+        [style.z-index]="overlayZIndex()"
         role="listbox"
         [id]="listId"
         [attr.aria-label]="label"

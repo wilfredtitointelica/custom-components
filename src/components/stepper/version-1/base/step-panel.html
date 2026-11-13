@@ -1,0 +1,16 @@
+<!-- Vertical layout: the separator of the panel joins this step with the next one -->
+@if (isVertical() && !isLast()) {
+  <int-stepper-separator />
+}
+
+<!-- Content, rendered only while its step is active -->
+<div class="int-stepper__panel-content">
+  @if (active()) {
+    <div class="int-stepper__panel-body" animate.enter="int-stepper__panel-body--enter">
+      @if (contentTemplate(); as content) {
+        <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="context()" />
+      }
+      <ng-content />
+    </div>
+  }
+</div>

@@ -1,6 +1,59 @@
 <!--
   title: Search
-  description:
-  figma:
+  description: Campo de búsqueda con botón para limpiar y lupa; Enter o la lupa emiten `onSearch` con el texto escrito.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2572-2023
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2585-1986
 -->
-int-search
+<!-- dep:input provisional · replace with <int-input> when input is done -->
+<input
+  #inputEl
+  type="text"
+  class="int-search__input"
+  data-dep="input"
+  [id]="inputId()"
+  [attr.name]="name()"
+  [attr.autocomplete]="autocomplete()"
+  [attr.placeholder]="placeholder()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+  [attr.aria-invalid]="invalid() || null"
+  [attr.role]="inputRole()"
+  [attr.aria-expanded]="ariaExpanded()"
+  [attr.aria-controls]="ariaControls()"
+  [attr.aria-activedescendant]="ariaActiveDescendant()"
+  [attr.aria-autocomplete]="ariaAutoComplete()"
+  [value]="value()"
+  [disabled]="isDisabled()"
+  (input)="handleInput($event)"
+  (keydown)="handleKeyDown($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="handleBlur($event)"
+/>
+<!-- /dep:input -->
+
+<!-- End side, as p-inputicon after the input: clear button + divider (int-* extension) and the search button -->
+<!-- Both buttons stay out of the tab order: Enter runs the search and the text is removed with the keyboard -->
+<span class="int-search__end">
+  @if (clearVisible()) {
+    <button
+      type="button"
+      class="int-search__button"
+      tabindex="-1"
+      [attr.aria-label]="clearAriaLabel()"
+      (click)="clear()"
+    >
+      <i class="icon icon-cancel icon--xs" aria-hidden="true"></i>
+    </button>
+    <span class="int-search__divider" aria-hidden="true"></span>
+  }
+  <button
+    type="button"
+    class="int-search__button"
+    tabindex="-1"
+    [attr.aria-label]="searchAriaLabel()"
+    [disabled]="isDisabled()"
+    (click)="search($event)"
+  >
+    <i class="icon icon-search" [class.icon--xs]="size() === 'small'" aria-hidden="true"></i>
+  </button>
+</span>

@@ -1,0 +1,23 @@
+<!--
+  title: Invalid
+  description: Con `invalid` el campo muestra borde, icono y placeholder de error.
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  <int-multiselect
+    optionLabel="name"
+    placeholder="Select Cities"
+    [options]="cities"
+    [invalid]="!first.length"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="first"
+  />
+  <int-multiselect
+    variant="filled"
+    optionLabel="name"
+    placeholder="Select Cities"
+    [options]="cities"
+    [invalid]="!second.length"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="second"
+  />
+</div>

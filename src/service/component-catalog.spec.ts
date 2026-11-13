@@ -49,8 +49,8 @@ const EXCEL_NAMES = [
   'ProgressBar',
 ];
 
-/** Components added outside the Excel (chip split from Badge; confirm-dialog-modal from Dialog). Tag is the Excel "Pill". */
-const NON_EXCEL_IDS = ['chip', 'confirm-dialog-modal'];
+/** Components added outside the Excel (chip and tag split from Badge; confirm-dialog-modal from Dialog; pick-list from Drag and Drop). */
+const NON_EXCEL_IDS = ['chip', 'tag', 'confirm-dialog-modal', 'pick-list'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
@@ -290,7 +290,7 @@ describe('Component catalog', () => {
     expect(catalog.searchByName('TREE').map((c) => c.id)).toEqual([
       'tree-view',
       'tree-select',
-      'tree-table',
+      'treetable',
     ]);
     expect(catalog.searchByName('basic')).toEqual([]); // variant names are not searched
     expect(catalog.searchByName('  ').length).toBe(CATALOG.length);

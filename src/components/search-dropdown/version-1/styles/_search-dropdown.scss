@@ -2,15 +2,66 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// No .pr case in the knowledge base (search is a .pt pattern): values from Figma search-top-bar with the Style
+// Guide token of each Figma variable; the SG ptSearchResult SCSS is noted where it agrees.
 :root {
   --NOTE-SEARCH-DROPDOWN: 'int-search-dropdown ( Custom )';
+
+  // --- panel ---
+  --int-search-dropdown-panel-offset: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · Figma: 4px (space/050)
+  --int-search-dropdown-panel-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl (popover padding) · Figma: 24px (searchbar/padding/2xl)
+  --int-search-dropdown-panel-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-spacing-gap-sm · Figma: 8px (searchbar/gap/sm)
+  --int-search-dropdown-panel-border-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl · Figma: 16px (searchbar/border/radius/2xl)
+  --int-search-dropdown-panel-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
+  --int-search-dropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
+  --int-search-dropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
+  --int-search-dropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
+  --int-search-dropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
+  --int-search-dropdown-enter-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .12s
+  --int-search-dropdown-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
+  --int-search-dropdown-leave-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .1s
+  --int-search-dropdown-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal · Aura: linear
+
+  // --- divider (group title and footer) ---
+  --int-search-dropdown-divider-width: var(--i-divider-border-sm); // SG: ptSearchResult --i-divider-color-default 1px · Figma: 1px (divider/border/sm)
+  --int-search-dropdown-divider-color: var(--i-divider-color-default); // SG: --i-divider-color-default · Figma: #d9d9e3 (divider/color/default)
+
+  // --- group title ---
+  --int-search-dropdown-group-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Figma: 12px (Subtitle/Subtitle-sm)
+  --int-search-dropdown-group-font-weight: var(--i-typography-font-weight-bold); // SG: ptSearchResult bold · Figma: 700 (page/font/bold)
+  --int-search-dropdown-group-padding-y: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Figma: 4px (space/050)
+
+  // --- item ---
+  --int-search-dropdown-list-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-searchresult-gap (--i-spacing-gap-sm) between rows, title and groups · Figma: 8px (searchbar/gap/sm)
+  --int-search-dropdown-item-padding: var(--i-spacing-container-sm); // SG: --i-spacing-container-md · Figma: 8px (listItemDetail/padding/md)
+  --int-search-dropdown-item-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (listItemDetail/gap/sm)
+  --int-search-dropdown-item-border-radius: var(--i-border-radius-lg); // SG: ptSearchResult 8px · Figma: 8px (listItemDetail/border/radius/lg)
+  --int-search-dropdown-item-info-gap: var(--i-spacing-gap-xs); // SG: ptSearchResult --i-spacing-gap-xs · Figma: 4px (listItemDetail/gap/xs)
+  --int-search-dropdown-item-focus-background: var(--i-color-secondary-100); // SG: ptSearchResult hover --i-color-secondary-100
+  --int-search-dropdown-item-active-background: var(--i-color-primary-100); // SG: ptSearchResult active --i-color-primary-100
+  --int-search-dropdown-item-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast
+  --int-search-dropdown-item-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out
+  --int-search-dropdown-match-offset: var(--i-spacing-25); // SG: ptSearchResult __nameline underline offset --i-spacing-25
+  --int-search-dropdown-match-thickness: var(--i-border-width-sm); // SG: ptSearchResult __nameline 1px
+
+  // --- empty ---
+  --int-search-dropdown-empty-color: var(--i-color-secondary-400); // SG: ptSearchResult empty --i-color-secondary-400
+  --int-search-dropdown-empty-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl · Figma: centered in the panel
+
+  // --- skeleton ---
+  --int-search-dropdown-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect)
+  --int-search-dropdown-skeleton-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm
+  --int-search-dropdown-skeleton-duration: var(--i-motion-duration-slow); // SG: --i-motion-duration-slow (pulse, x4)
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Same width rules as int-search: [style]="{ width }", fluid, or the width of its container.
 .int-search-dropdown {
+  position: relative;
+  display: block;
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -18,6 +69,185 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-search-dropdown {
+  // Same as PrimeNG's .p-hidden-accessible.
+  &__hidden-accessible {
+    position: absolute;
+    width: var(--i-border-width-sm);
+    height: var(--i-border-width-sm);
+    margin: calc(-1 * var(--i-border-width-sm));
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  // Same width as the field (ptSearchEntry), below it as appendTo="self".
+  &__panel {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    z-index: 1; // inside the block, which sets the level against the page (--open)
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-search-dropdown-panel-gap);
+    margin-block-start: var(--int-search-dropdown-panel-offset);
+    padding: var(--int-search-dropdown-panel-padding);
+    color: var(--int-search-dropdown-color);
+    font-size: var(--int-search-dropdown-font-size);
+    line-height: var(--int-search-dropdown-line-height);
+    background: var(--int-search-dropdown-panel-background);
+    border-radius: var(--int-search-dropdown-panel-border-radius);
+    box-shadow: var(--int-search-dropdown-panel-shadow);
+    cursor: default;
+    transform-origin: top;
+
+    &--enter {
+      animation: int-search-dropdown-panel-enter var(--int-search-dropdown-enter-duration)
+        var(--int-search-dropdown-enter-easing);
+    }
+
+    &--leave {
+      animation: int-search-dropdown-panel-leave var(--int-search-dropdown-leave-duration)
+        var(--int-search-dropdown-leave-easing) forwards;
+    }
+
+    &--top {
+      margin-block-start: calc(-1 * var(--int-search-dropdown-panel-offset));
+      transform-origin: bottom;
+    }
+  }
+
+  // Results zone: the only part that scrolls (scrollHeight).
+  &__body {
+    overflow-y: auto;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  // Header and footer: only the place, always visible outside the scroll; the content (and any divider) is the
+  // consumer's. Hidden when the template draws nothing (e.g. a footer only for one category).
+  &__header,
+  &__footer {
+    &:empty {
+      display: none;
+    }
+  }
+
+  // Same gap between rows, below a group title and between groups (ptSearchResult).
+  &__list,
+  &__skeleton {
+    gap: var(--int-search-dropdown-list-gap);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Group title, sticky while its options scroll (ptSearchResult__title). No z-index: as a positioned box it
+  // already paints over the rows, and an overlay opened from a row (a tooltip) can still paint over it.
+  &__group {
+    //position: sticky;
+    inset-block-start: 0;
+    padding-block: var(--int-search-dropdown-group-padding-y);
+    font-size: var(--int-search-dropdown-group-font-size);
+    font-weight: var(--int-search-dropdown-group-font-weight);
+    background: var(--int-search-dropdown-panel-background);
+    border-block-end: var(--int-search-dropdown-divider-width) solid var(--int-search-dropdown-divider-color);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--int-search-dropdown-item-gap);
+    padding: var(--int-search-dropdown-item-padding);
+    border-radius: var(--int-search-dropdown-item-border-radius);
+    cursor: pointer;
+    transition: background var(--int-search-dropdown-item-transition-duration)
+      var(--int-search-dropdown-item-transition-easing);
+
+    // optionSticky: stays at the bottom of the results while they scroll (SG ptSearchResult__explore), with the
+    // panel background so the rows passing under it do not show through. Before --focus, so the focus still wins.
+    &--sticky {
+      position: sticky;
+      inset-block-end: 0;
+      background: var(--int-search-dropdown-panel-background);
+    }
+
+    &--focus {
+      background: var(--int-search-dropdown-item-focus-background);
+    }
+
+    &:active {
+      background: var(--int-search-dropdown-item-active-background);
+    }
+
+    // Row of the itemSkeleton template: the box of an item, without its pointer states.
+    &--skeleton {
+      cursor: default;
+
+      &:active {
+        background: transparent;
+      }
+    }
+
+    // The template content can shrink below its text, so a long label truncates instead of widening the row.
+    > * {
+      min-width: 0;
+    }
+  }
+
+  // Default content (no item template): the label, truncated. The item template content is up to the consumer.
+  &__item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Typed text inside the default label (ptSearchResult__nameline).
+  &__item-match {
+    text-decoration: underline;
+    text-decoration-thickness: var(--int-search-dropdown-match-thickness);
+    text-underline-offset: var(--int-search-dropdown-match-offset);
+  }
+
+  &__empty {
+    padding-block: var(--int-search-dropdown-empty-padding);
+    color: var(--int-search-dropdown-empty-color);
+    text-align: center;
+  }
+
+  // Skeleton zone, in place of the list: only the layout; the itemSkeleton template draws its own rows.
+  &__skeleton {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Default skeleton: a bar with the height of one text line (&nbsp;), as the default label or the group title.
+  &__skeleton-line {
+    display: block;
+    width: 70%;
+    background: var(--int-search-dropdown-skeleton-background);
+    border-radius: var(--int-search-dropdown-skeleton-radius);
+    animation: int-search-dropdown-pulse calc(var(--int-search-dropdown-skeleton-duration) * 4)
+      var(--i-motion-ease-in-out) infinite;
+
+    &--title {
+      width: 25%;
+    }
+  }
+
+  // Varied widths, so the rows do not read as one block.
+  &__item--skeleton:nth-child(even) > &__skeleton-line {
+    width: 50%;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -25,11 +255,56 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-search-dropdown {
+  &--fluid {
+    width: 100%;
+  }
+
+  // While open the block goes just above its siblings (a later field: its icons have z-index 1), but stays
+  // below the sticky headers of the page, so a field scrolled under one is not lifted over it. A clipping or
+  // transformed ancestor still cuts the panel: appendTo="body".
+  &--open {
+    z-index: 2; // one above the int-search icons (z-index 1)
+  }
+}
+
+@keyframes int-search-dropdown-panel-enter {
+  from {
+    opacity: 0; // Aura: opacity 0
+    transform: scaleY(0.8); // Aura: scaleY(0.8)
+  }
+}
+
+@keyframes int-search-dropdown-panel-leave {
+  to {
+    opacity: 0; // Aura: opacity 0
+  }
+}
+
+@keyframes int-search-dropdown-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-search-dropdown__panel,
+  .int-search-dropdown__panel * {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
+
+  .int-search-dropdown__skeleton * {
+    animation: none;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
 \*——————————————————————————————————————————————————————————*/
 
+// Same box as .sk-search: the field before the component loads.
 .sk-search-dropdown {
+  block-size: var(--int-search-height);
+  border-radius: var(--int-search-border-radius);
+  background: var(--int-search-dropdown-skeleton-background);
 }

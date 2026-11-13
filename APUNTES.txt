@@ -1,0 +1,13 @@
+OBSERVACIONES
+
+////////////////////////////////////////////// PENDIENTE
+
+en search dropdown, hay un tema que cuando el item el texto esta truncate, debe aperecer un tooltip con el texto completo, claro esta integrado solo para la composition Global Search.
+
+sacarlo como utilidad, para poder reutilizarlo en otros lados.
+
+////////////////////////////////////////////// PENDIENTE
+
+////////////////////////////////////////////// PENDIENTE
+////////////////////////////////////////////// PENDIENTE
+////////////////////////////////////////////// PENDIENTE

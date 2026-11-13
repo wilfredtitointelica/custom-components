@@ -1,0 +1,25 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// small is the knowledge base .prTable--compact.
+:root {
+  // --- small ---
+  --int-table-sm-header-height: var(--i-sizing-lg); // knowledgeBase: .prTable--compact th 32px
+  --int-table-sm-body-height: var(--i-sizing-xl); // knowledgeBase: .prTable--compact td 40px
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --small )
+\*——————————————————————————————————————————————————————————*/
+
+.int-table--small {
+  .int-table__thead > tr > th {
+    height: var(--int-table-sm-header-height);
+  }
+
+  .int-table__tbody > tr > td {
+    height: var(--int-table-sm-body-height);
+    line-height: 1;
+  }
+}

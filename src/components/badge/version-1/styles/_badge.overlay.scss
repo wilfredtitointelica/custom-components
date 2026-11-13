@@ -1,0 +1,21 @@
+// int-overlay-badge · same as p-overlaybadge: the badge sits on the top end corner of the content,
+// with an outline in the content background so it separates from what it covers.
+// knowledgeBase: badge.md · "Badge sobre botón" (p-overlaybadge).
+
+.int-overlay-badge {
+  position: relative;
+
+  > .int-badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin: 0;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0;
+    outline: var(--int-badge-overlay-outline-width) solid var(--int-badge-overlay-outline-color);
+  }
+
+  &:dir(rtl) > .int-badge {
+    transform: translate(-50%, -50%);
+  }
+}

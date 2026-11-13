@@ -15,7 +15,7 @@ describe('App', () => {
   it('renders the main navigation with every section', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const links = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.doc-rail-item')];
+    const links = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.doc-rail-nav .doc-rail-item')];
     expect(links.map((l) => [l.querySelector('.doc-rail-label')?.textContent?.trim(), l.classList.contains('doc-is-pending')])).toEqual([
       ['Components', false],
       ['Prototypes', true],

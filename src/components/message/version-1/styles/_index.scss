@@ -1,2 +1,5 @@
 // int-message · entry point. Add one `@use 'message.<variant>' as message-<variant>;` per variant module.
 @use 'message';
+@use 'message.severity' as message-severity;
+@use 'message.size' as message-size;
+@use 'message.simple' as message-simple;

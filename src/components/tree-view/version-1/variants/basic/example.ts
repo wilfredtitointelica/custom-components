@@ -1,10 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
-import { IntTreeView } from '../../base/tree-view';
+import { IntTreeNode, IntTreeView } from '../../base/tree-view';
+
+function createNodes(): IntTreeNode[] {
+  return [
+    {
+      key: 'documents',
+      label: 'Documents',
+      expanded: true,
+      children: [
+        {
+          key: 'work',
+          label: 'Work',
+          children: [
+            { key: 'expenses', label: 'Expenses.doc' },
+            { key: 'resume', label: 'Resume.doc' },
+          ],
+        },
+        {
+          key: 'home',
+          label: 'Home',
+          children: [{ key: 'invoices', label: 'Invoices.txt' }],
+        },
+      ],
+    },
+    {
+      key: 'events',
+      label: 'Events',
+      children: [
+        { key: 'meeting', label: 'Meeting' },
+        { key: 'product-launch', label: 'Product Launch' },
+        { key: 'report-review', label: 'Report Review' },
+      ],
+    },
+    {
+      key: 'movies',
+      label: 'Movies',
+      children: [
+        { key: 'al-pacino', label: 'Al Pacino' },
+        { key: 'robert-de-niro', label: 'Robert De Niro' },
+      ],
+    },
+  ];
+}
 
 @Component({
   selector: 'tree-view-basic-example',
   templateUrl: './example.html',
   imports: [IntTreeView],
 })
-export class TreeViewBasicExample {}
+export class TreeViewBasicExample {
+  readonly nodes = createNodes();
+  readonly selected = signal<IntTreeNode | null>(null);
+}

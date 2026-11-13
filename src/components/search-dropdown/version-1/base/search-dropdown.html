@@ -1,6 +1,136 @@
 <!--
   title: Search Dropdown
-  description:
-  figma:
+  description: Buscador que pide sugerencias al escribir y las muestra en un panel; Enter o la lupa sin una sugerencia elegida emiten `onSearch`.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=3620-2444
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=3943-1345
 -->
-int-search-dropdown
+<!-- Field: int-search as a combobox; the panel decides what Enter does through onKeyDown -->
+<int-search
+  class="int-search-dropdown__field"
+  fluid
+  [size]="size()"
+  [placeholder]="placeholder()"
+  [inputId]="inputId() ?? baseId() + '_input'"
+  [ariaLabel]="ariaLabel()"
+  [ariaLabelledBy]="ariaLabelledBy()"
+  [showClear]="showClear()"
+  [invalid]="invalid()"
+  [disabled]="isDisabled()"
+  inputRole="combobox"
+  ariaAutoComplete="list"
+  [ariaExpanded]="panelVisible()"
+  [ariaControls]="panelVisible() ? listId() : undefined"
+  [ariaActiveDescendant]="activeDescendant()"
+  [ngModel]="query()"
+  (ngModelChange)="onQueryChange($event)"
+  (onInput)="onInput($event)"
+  (onKeyDown)="onKeyDown($event)"
+  (onFocus)="onInputFocus($event)"
+  (onBlur)="onInputBlur($event)"
+  (onClear)="onFieldClear()"
+  (onSearch)="onFieldSearch($event)"
+/>
+
+<!-- Number of results for screen readers, as PrimeNG's hidden live region -->
+<span class="int-search-dropdown__hidden-accessible" role="status" aria-live="polite">
+  @if (panelVisible() && !isLoading()) {
+    {{ searchResultMessage() }}
+  }
+</span>
+
+<!-- Panel, below the field or moved to the body or an element (appendTo) -->
+@if (panelVisible()) {
+  <div
+    #panel
+    [class]="panelClass()"
+    [style.z-index]="panelZIndex()"
+    animate.enter="int-search-dropdown__panel--enter"
+    animate.leave="int-search-dropdown__panel--leave"
+    (mousedown)="onPanelMouseDown($event)"
+  >
+    <!-- header template: fixed above the results in every state -->
+    @if (headerTemplate(); as template) {
+      <div class="int-search-dropdown__header">
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="panelContext()" />
+      </div>
+    }
+
+    <!-- Results zone: skeleton, list or empty, one at a time -->
+    <div class="int-search-dropdown__body" [style.max-height]="scrollHeight()" [attr.aria-busy]="isLoading() || null">
+      @if (isLoading()) {
+        <!-- Skeleton: rows with the shape of an item while completeMethod is answered -->
+        <div class="int-search-dropdown__skeleton" aria-hidden="true">
+          <!-- Same boxes as the loaded list (group title, item rows), so nothing moves when the results arrive -->
+          @if (group()) {
+            <div class="int-search-dropdown__group">
+              <span class="int-search-dropdown__skeleton-line int-search-dropdown__skeleton-line--title">&nbsp;</span>
+            </div>
+          }
+          @for (row of skeleton(); track row) {
+            <div class="int-search-dropdown__item int-search-dropdown__item--skeleton">
+              @if (itemSkeletonTemplate(); as template) {
+                <!-- itemSkeleton template: one row, repeated itemSkeletonCount times in the same row box as the item template -->
+                <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: row, index: row }" />
+              } @else {
+                <!-- Default: one text line, as the default item -->
+                <span class="int-search-dropdown__skeleton-line">&nbsp;</span>
+              }
+            </div>
+          }
+        </div>
+      } @else if (rows().length) {
+        <ul class="int-search-dropdown__list" role="listbox" [id]="listId()" [attr.aria-label]="ariaLabel()">
+          @for (row of rows(); track $index; let index = $index) {
+            @if (row.group) {
+              <!-- Group title, sticky while its options scroll -->
+              <li class="int-search-dropdown__group" role="presentation">
+                @if (groupTemplate(); as template) {
+                  <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: row.option }" />
+                } @else {
+                  {{ row.label }}
+                }
+              </li>
+            } @else {
+              <li
+                class="int-search-dropdown__item"
+                role="option"
+                [id]="baseId() + '_' + index"
+                [class.int-search-dropdown__item--sticky]="row.sticky"
+                [class.int-search-dropdown__item--focus]="focusedOptionIndex() === index"
+                [attr.aria-selected]="focusedOptionIndex() === index"
+                (click)="onOptionSelect($event, row.option)"
+                (mouseenter)="onOptionMouseEnter(index)"
+              >
+                @if (itemTemplate(); as template) {
+                  <ng-container
+                    [ngTemplateOutlet]="template"
+                    [ngTemplateOutletContext]="{ $implicit: row.option, index, query: query(), highlight: row.highlight }"
+                  />
+                } @else {
+                  <span class="int-search-dropdown__item-label">
+                    {{ row.highlight.before }}<span class="int-search-dropdown__item-match">{{ row.highlight.match }}</span>{{ row.highlight.after }}
+                  </span>
+                }
+              </li>
+            }
+          }
+        </ul>
+      } @else if (showEmpty()) {
+        <div class="int-search-dropdown__empty">
+          @if (emptyTemplate(); as template) {
+            <ng-container [ngTemplateOutlet]="template" />
+          } @else {
+            {{ emptyMessage() }}
+          }
+        </div>
+      }
+    </div>
+
+    <!-- footer template: fixed below the results in every state -->
+    @if (footerTemplate(); as template) {
+      <div class="int-search-dropdown__footer">
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="panelContext()" />
+      </div>
+    }
+  </div>
+}

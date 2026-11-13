@@ -1,0 +1,7 @@
+// int-inputotp · entry point. Add one `@use 'inputotp.<variant>' as inputotp-<variant>;` per variant module.
+@use 'inputotp';
+@use 'inputotp.size' as inputotp-size;
+@use 'inputotp.state' as inputotp-state;
+@use 'inputotp.loading' as inputotp-loading;
+@use 'inputotp.underlined' as inputotp-underlined;
+@use 'inputotp.grouped' as inputotp-grouped;

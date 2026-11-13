@@ -1,0 +1,23 @@
+<!-- Header: #content template, or the PrimeNG button (number + title) that activates the step -->
+@if (contentTemplate(); as content) {
+  <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="context()" />
+} @else {
+  <button
+    type="button"
+    role="tab"
+    class="int-stepper__step-header"
+    [attr.id]="id()"
+    [attr.aria-controls]="ariaControls()"
+    [attr.tabindex]="isStepDisabled() ? -1 : null"
+    [disabled]="isStepDisabled()"
+    (click)="onStepClick()"
+  >
+    <span class="int-stepper__step-number">{{ stepValue() }}</span>
+    <span class="int-stepper__step-title"><ng-content /></span>
+  </button>
+}
+
+<!-- Separator after every step of the list but the last one -->
+@if (isSeparatorVisible()) {
+  <int-stepper-separator />
+}

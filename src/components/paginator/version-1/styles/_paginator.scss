@@ -248,6 +248,18 @@
     box-shadow: var(--int-paginator-dropdown-list-shadow);
   }
 
+  // appendTo="body" or an element: positioned by the component above the trigger, over the content.
+  // Out of the block, it takes the text styles it no longer inherits.
+  &__dropdown-list--appended {
+    inset-block-end: auto;
+    inset-inline-end: auto;
+    margin-block: calc(-1 * var(--int-paginator-nav-button-padding)) 0;
+    color: var(--int-paginator-color);
+    font-family: var(--int-paginator-font-family);
+    font-size: var(--int-paginator-font-size);
+    line-height: var(--int-paginator-line-height);
+  }
+
   &__dropdown-option {
     padding-inline: var(--int-paginator-nav-button-padding);
     border-radius: var(--int-paginator-jtp-input-border-radius);

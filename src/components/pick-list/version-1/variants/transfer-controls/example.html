@@ -1,0 +1,13 @@
+<!--
+  title: Transfer Controls
+  description: Propiedad `showTransferControls` (extensión `int-*`): con `false` se ocultan los botones del centro y los items se pasan y reordenan solo arrastrando, por eso se usa con `dragdrop`.
+-->
+<int-pick-list
+  dragdrop
+  [showTransferControls]="false"
+  [(source)]="source"
+  [(target)]="target"
+  sourceHeader="Available"
+  targetHeader="Selected"
+  [style]="{ width: '32rem' }"
+/>

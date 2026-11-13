@@ -1,0 +1,18 @@
+// int-inputotp · variant="filled", invalid and success (int-* extension) on every cell.
+.int-inputotp {
+  // Same as .p-inputtext.p-variant-filled: hover and focus keep the filled background.
+  &--filled &__input:enabled {
+    background: var(--int-inputotp-filled-background);
+  }
+
+  // knowledgeBase: .prInputotp .p-invalid · error border on hover and focus too.
+  &--invalid &__input:enabled {
+    border-color: var(--int-inputotp-invalid-border-color);
+  }
+
+  // knowledgeBase: .prInputotp--success · success border and text.
+  &--success &__input:enabled {
+    border-color: var(--int-inputotp-success-border-color);
+    color: var(--int-inputotp-success-color);
+  }
+}

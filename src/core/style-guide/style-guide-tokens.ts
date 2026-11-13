@@ -57,6 +57,17 @@ export function readStyleTokens(sources = readStyleGuideSources()): TokenFile[] 
   });
 }
 
+const SCROLLBAR_FILE = /\/base\/_scroll-bar\.scss$/;
+
+/** Tokens --i-scrollbar-* of base/_scroll-bar.scss (Scrollbar tab). Null when the sources cannot be read. */
+export function readScrollbarTokens(sources = readStyleGuideSources()): StyleToken[] | null {
+  if (!sources) {
+    return null;
+  }
+  const source = sources.find(({ path }) => SCROLLBAR_FILE.test(path));
+  return source ? parseTokens(source.content, getComputedStyle(document.documentElement)) : [];
+}
+
 function parseTokens(scss: string, root: CSSStyleDeclaration): StyleToken[] {
   // Block comments and whole-line `//` comments go first; a trailing `//` after `;` is kept as the note.
   const code = scss.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');

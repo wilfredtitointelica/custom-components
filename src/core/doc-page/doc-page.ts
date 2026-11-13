@@ -174,6 +174,8 @@ export class DocPage {
     const items = groups.flatMap((group) => group.items);
     return {
       groups,
+      /** Every dependency the component declares: the only ones the scan marks. */
+      ids: [...requires, ...declared],
       count: requires.length + uses.length,
       state: items.some((item) => item.pending) ? ('pending' as const) : ('resolved' as const),
       resolvedIds: items.filter((item) => !item.pending).map((item) => item.id),
@@ -266,6 +268,50 @@ export class DocPage {
       observer.observe(this.meta().nativeElement);
       destroyRef.onDestroy(() => observer.disconnect());
     });
+
+    // The variant heads stick below the chips row too: publish their height as --doc-section-head-h, so an
+    // example can stick a int-* below the whole stack (treetable stickyTop). All heads are the same
+    // height; the first one is measured once the examples are rendered.
+    let headObserver: ResizeObserver | undefined;
+    destroyRef.onDestroy(() => headObserver?.disconnect());
+    effect(() => {
+      if (!this.examples.hasValue()) return;
+      afterNextRender(
+        () => {
+          const head = host.querySelector<HTMLElement>('.doc-section-head');
+          if (!head) return;
+          headObserver?.disconnect();
+          headObserver = new ResizeObserver(([entry]) =>
+            host.style.setProperty('--doc-section-head-h', `${entry.borderBoxSize[0].blockSize}px`),
+          );
+          headObserver.observe(head);
+        },
+        { injector },
+      );
+    });
+
+    // A variant head only gets its background (and z-index) while it is stuck: at rest it stays
+    // transparent and below the previous preview, so an open overlay (select, datepicker…) is not cut.
+    // It is stuck once its section's top has scrolled above the head's sticky offset.
+    afterNextRender(() => {
+      let frame = 0;
+      const update = (): void => {
+        frame = 0;
+        for (const head of host.querySelectorAll<HTMLElement>('.doc-section-head')) {
+          const top = parseFloat(getComputedStyle(head).top) || 0;
+          const sectionTop = head.parentElement?.getBoundingClientRect().top ?? 0;
+          head.classList.toggle('doc-is-stuck', sectionTop < top - 0.5);
+        }
+      };
+      const schedule = (): void => {
+        frame ||= requestAnimationFrame(update);
+      };
+      document.addEventListener('scroll', schedule, { capture: true, passive: true });
+      destroyRef.onDestroy(() => {
+        document.removeEventListener('scroll', schedule, { capture: true });
+        cancelAnimationFrame(frame);
+      });
+    });
     effect(() => {
       if (this.examples.isLoading() || !this.examples.hasValue()) return;
       const variantId = untracked(() => this.nav.activeVariantId());
@@ -295,11 +341,11 @@ export class DocPage {
     // while scanning is on.
     effect((onCleanup) => {
       if (!this.scanning() || !this.examples.hasValue()) return;
-      const resolved = this.dependencies().resolvedIds;
+      const { resolvedIds: resolved, ids: declared } = this.dependencies();
       let frame = 0;
       const mark = () => {
         cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => markDependencies(host, resolved));
+        frame = requestAnimationFrame(() => markDependencies(host, resolved, declared));
       };
       const observer = new MutationObserver(mark);
       afterNextRender(
@@ -324,24 +370,52 @@ export class DocPage {
  */
 const SCAN_MARK = 'data-dep-scan';
 const DONE_MARK = 'data-dep-done';
+/** Set on a marked element that already has its own position (fixed, absolute…), so the scan keeps it. */
+const POSITIONED_MARK = 'data-dep-positioned';
+/**
+ * Outline without label ("scan" | "done") on the other elements of the dependency in its first table
+ * row: a button repeated per row shows up once, in the first row, instead of in every row.
+ */
+const ROW_MARK = 'data-dep-row';
 
-/** Marks the first element of a dependency with how many there are; clears the mark from the rest. */
+/**
+ * Marks the first element of a dependency with how many there are, outlines the others in its first
+ * table row and clears the mark from the rest.
+ */
 function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement[]): void {
   if (!first) return;
+  const row = [first, ...rest].map((element) => element.closest('tbody tr')).find(Boolean);
+  const kind = attribute === SCAN_MARK ? 'scan' : 'done';
+  for (const element of rest) {
+    if (row && element.closest('tbody tr') === row) element.setAttribute(ROW_MARK, kind);
+    else if (element.getAttribute(ROW_MARK) === kind) element.removeAttribute(ROW_MARK);
+  }
   const label = rest.length ? `${dep} ×${rest.length + 1}` : dep;
-  if (first.getAttribute(attribute) !== label) first.setAttribute(attribute, label);
+  if (first.getAttribute(attribute) !== label) {
+    // Read before marking: once marked, the scan rule would make a static element relative.
+    if (!first.hasAttribute(SCAN_MARK) && !first.hasAttribute(DONE_MARK)) {
+      first.toggleAttribute(POSITIONED_MARK, getComputedStyle(first).position !== 'static');
+    }
+    first.setAttribute(attribute, label);
+  }
   for (const element of rest) element.removeAttribute(attribute);
 }
 
 /**
  * Inside every preview, marks the first [data-dep] of each pending dependency and the first <int-<id>>
- * of each resolved one. The page's own component is never a dependency, so it is never marked.
+ * of each resolved one. The page's own component is never a dependency, so it is never marked; neither are
+ * the provisionals inside another int-* it uses (its own dependencies, e.g. dep:input inside <int-search>):
+ * only the ids the page's component declares in requires / uses count.
  */
-function markDependencies(host: HTMLElement, resolved: readonly string[]): void {
+function markDependencies(host: HTMLElement, resolved: readonly string[], declared: readonly string[]): void {
   for (const preview of host.querySelectorAll<HTMLElement>('.doc-preview')) {
     const byDep = new Map<string, HTMLElement[]>();
     for (const element of preview.querySelectorAll<HTMLElement>('[data-dep]')) {
       const dep = element.dataset['dep'] ?? '';
+      if (!declared.includes(dep)) {
+        element.removeAttribute(SCAN_MARK);
+        continue;
+      }
       byDep.set(dep, [...(byDep.get(dep) ?? []), element]);
     }
     for (const [dep, elements] of byDep) markFirst(SCAN_MARK, dep, elements);
@@ -352,8 +426,10 @@ function markDependencies(host: HTMLElement, resolved: readonly string[]): void 
 }
 
 function clearDependencyMarks(host: HTMLElement): void {
-  for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}]`)) {
+  for (const element of host.querySelectorAll(`[${SCAN_MARK}], [${DONE_MARK}], [${ROW_MARK}]`)) {
     element.removeAttribute(SCAN_MARK);
     element.removeAttribute(DONE_MARK);
+    element.removeAttribute(POSITIONED_MARK);
+    element.removeAttribute(ROW_MARK);
   }
 }

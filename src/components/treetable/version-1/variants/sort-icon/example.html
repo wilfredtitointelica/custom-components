@@ -1,0 +1,82 @@
+<!--
+  title: Sort Icon
+  description: El icono de orden se cambia con el atributo `sortIcons` (una clase por estado) o con el template `sorticon`, que recibe el orden (`0`, `1`, `-1`) como `$implicit`.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <!-- By attribute: one icon class per state -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">sortIcons</p>
+    <int-treetable [value]="byAttribute" [sortIcons]="sortIcons">
+      <ng-template #header>
+        <tr>
+          <th class="u-text-left" ttSortableColumn="name" width="60%">
+            <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+              Name
+              <int-treetable-sort-icon field="name" />
+            </span>
+          </th>
+          <th ttSortableColumn="size" width="40%">
+            <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+              Size
+              <int-treetable-sort-icon field="size" />
+            </span>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode">
+          <td class="u-text-left">
+            <div class="u-display-flex u-align-items-center u-gap-xs">
+              <int-treetable-toggler [rowNode]="rowNode" />
+              {{ rowData.name }}
+            </div>
+          </td>
+          <td class="u-text-center">{{ rowData.size }} kb</td>
+        </tr>
+      </ng-template>
+    </int-treetable>
+  </div>
+
+  <div class="u-divider-horizontal u-my-0" aria-hidden="true"></div>
+
+  <!-- By template: any markup, receives the order as $implicit -->
+  <div class="u-display-flex u-flex-column u-gap-md">
+    <p class="u-m-0 u-text-md u-bold">sorticon</p>
+    <int-treetable [value]="byTemplate">
+      <ng-template #sorticon let-order>
+        @switch (order) {
+          @case (1) { <span class="u-text-xs u-color-primary">A → Z</span> }
+          @case (-1) { <span class="u-text-xs u-color-primary">Z → A</span> }
+          @default { <i class="icon icon-sort-table" aria-hidden="true"></i> }
+        }
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th class="u-text-left" ttSortableColumn="name" width="60%">
+            <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+              Name
+              <int-treetable-sort-icon field="name" />
+            </span>
+          </th>
+          <th ttSortableColumn="size" width="40%">
+            <span class="u-display-inline-flex u-align-items-center u-justify-content-center u-gap-sm u-inherit-width">
+              Size
+              <int-treetable-sort-icon field="size" />
+            </span>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode">
+          <td class="u-text-left">
+            <div class="u-display-flex u-align-items-center u-gap-xs">
+              <int-treetable-toggler [rowNode]="rowNode" />
+              {{ rowData.name }}
+            </div>
+          </td>
+          <td class="u-text-center">{{ rowData.size }} kb</td>
+        </tr>
+      </ng-template>
+    </int-treetable>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<!--
+  title: Dynamic Columns
+  description: Las columnas se generan desde el input `columns`, que llega como contexto a los templates `header` y `body`.
+-->
+<int-treetable [value]="files" [columns]="columns">
+  <ng-template #header let-columns>
+    <tr>
+      @for (column of columns; track column.field) {
+        <th [class.u-text-left]="$first">{{ column.header }}</th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttRow]="rowNode">
+      @for (column of columns; track column.field) {
+        @if ($first) {
+          <td class="u-text-left">
+            <div class="u-display-flex u-align-items-center u-gap-xs">
+              <int-treetable-toggler [rowNode]="rowNode" />
+              <span class="u-text-ellipsis">{{ rowData[column.field] }}</span>
+            </div>
+          </td>
+        } @else {
+          <td class="u-text-center">{{ rowData[column.field] }}</td>
+        }
+      }
+    </tr>
+  </ng-template>
+</int-treetable>

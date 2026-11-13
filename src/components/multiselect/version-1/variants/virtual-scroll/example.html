@@ -1,0 +1,15 @@
+<!--
+  title: Virtual Scroll
+  description: Con `virtualScroll` y `virtualScrollItemSize` solo se renderizan las opciones visibles, para listas grandes.
+-->
+<int-multiselect
+  optionLabel="label"
+  optionValue="value"
+  placeholder="Select Items"
+  [options]="items"
+  [virtualScroll]="true"
+  [virtualScrollItemSize]="32"
+  [maxSelectedLabels]="3"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

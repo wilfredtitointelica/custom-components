@@ -1,0 +1,12 @@
+<!--
+  title: Empty
+  description: Si la búsqueda no devuelve sugerencias se muestra `emptyMessage` o el template `empty`.
+-->
+<int-search-dropdown
+  placeholder='Search, try any text like "xyz"'
+  ariaLabel="Search"
+  emptyMessage="No results were found"
+  [suggestions]="results()"
+  [style]="{ width: '29rem' }"
+  (completeMethod)="results.set([])"
+/>

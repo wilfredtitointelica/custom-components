@@ -19,6 +19,7 @@ export default {
     'custom-content',
     'accessibility',
     'disabled',
+    'append-to-body',
   ],
   requires: ['dropdown-select', 'input'],
   loadRoutes: () => import('./routes'),

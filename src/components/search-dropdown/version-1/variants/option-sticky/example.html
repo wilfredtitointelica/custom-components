@@ -1,0 +1,15 @@
+<!--
+  title: Option Sticky
+  description: Con `optionSticky` la sugerencia que tiene ese campo en `true` queda fija abajo de la lista mientras se desplaza, dentro del scroll; sigue siendo una opción que se elige con clic o teclado.
+-->
+<int-search-dropdown
+  completeOnFocus
+  optionLabel="name"
+  optionSticky="sticky"
+  placeholder='Click to see the fees, then try "serv"'
+  ariaLabel="Search fees"
+  scrollHeight="10rem"
+  [suggestions]="results()"
+  [style]="{ width: '29rem' }"
+  (completeMethod)="search($event.query)"
+/>

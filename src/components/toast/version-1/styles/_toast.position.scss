@@ -1,0 +1,39 @@
+// int-toast · position in the viewport (input position), as the inline styles PrimeNG puts on p-toast.
+// --int-toast-stack-offset (set by the base) places a toast after the others at the same position.
+
+.int-toast {
+  &--top-left,
+  &--top-center,
+  &--top-right {
+    inset-block-start: calc(var(--int-toast-offset) + var(--int-toast-stack-offset));
+  }
+
+  &--bottom-left,
+  &--bottom-center,
+  &--bottom-right {
+    inset-block-end: calc(var(--int-toast-offset) + var(--int-toast-stack-offset));
+  }
+
+  &--top-left,
+  &--bottom-left {
+    left: var(--int-toast-offset);
+  }
+
+  &--top-right,
+  &--bottom-right {
+    right: var(--int-toast-offset);
+  }
+
+  &--top-center,
+  &--bottom-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &--center {
+    top: 50%;
+    left: 50%;
+    min-width: 20vw; // Aura: 20vw
+    transform: translate(-50%, -50%);
+  }
+}

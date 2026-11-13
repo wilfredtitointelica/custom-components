@@ -162,7 +162,7 @@
 
 .doc-sg-group {
   margin: 8px 12px;
-  color: rgb(255 255 255 / 0.45);
+  color: rgb(255 255 255 / 0.3);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -390,4 +390,149 @@
 
 .doc-sg-pad {
   padding: 0 24px;
+}
+
+/*
+ * Scrollbar tab: the scrollbar of the style guide (base/_scroll-bar.scss), drawn with its --i-scrollbar-*
+ * tokens on a light card (the surface int-* components sit on). No search: section titles stick at the top.
+ */
+.doc-sg-content.doc-sg-no-search {
+  --doc-sg-search-h: 0px;
+
+  // Space on the first section, not on the scroller: sticky titles stick below the padding and rows show above them.
+  > .doc-sg-section:first-child {
+    padding-top: 8px;
+  }
+}
+
+.doc-sg-sb-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+  padding: 24px;
+  border-radius: var(--doc-radius-md);
+  background: var(--i-background-default, #fcfcfc);
+  color: var(--doc-ink);
+  color-scheme: light;
+}
+
+// Every measure is the token x6, so the drawing changes with the style guide.
+.doc-sg-sb-figure {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.doc-sg-sb-track {
+  position: relative;
+  width: calc(var(--i-scrollbar-width) * 6);
+  height: 240px;
+  outline: 1px dashed var(--doc-outline);
+  outline-offset: 2px;
+  background: var(--i-scrollbar-track-color);
+}
+
+.doc-sg-sb-thumb {
+  position: absolute;
+  inset: 20% 0 auto;
+  box-sizing: border-box;
+  height: 50%; // min-height of the thumb in base/_scroll-bar.scss
+  border: calc(var(--i-scrollbar-border-witdh) * 6) solid var(--i-scrollbar-track-color);
+  border-radius: var(--i-scrollbar-border-radius);
+  background: var(--i-scrollbar-thumb-color);
+}
+
+.doc-sg-sb-scale {
+  color: var(--doc-outline);
+  font-family: var(--doc-font-mono);
+  font-size: 0.75rem;
+}
+
+.doc-sg-sb-parts {
+  display: grid;
+  flex: 1;
+  gap: 12px;
+  min-width: 260px;
+  margin: 0;
+  font-size: 0.8125rem;
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+  }
+
+  dd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    margin: 4px 0 0 20px;
+  }
+
+  code {
+    padding: 1px 6px;
+    border-radius: var(--doc-radius-sm);
+    background: rgb(0 0 0 / 0.06);
+    font-family: var(--doc-font-mono);
+    font-size: 0.75rem;
+  }
+}
+
+.doc-sg-sb-marker {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--doc-outline);
+  border-radius: 3px;
+  background: transparent;
+
+  &[data-part='track'] {
+    background: var(--i-scrollbar-track-color);
+  }
+
+  &[data-part='thumb'] {
+    border-color: transparent;
+    background: var(--i-scrollbar-thumb-color);
+  }
+
+  &[data-part='radius'] {
+    border-radius: 999px;
+  }
+
+  &[data-part='corner'] {
+    border-style: dashed;
+  }
+}
+
+// The real ::-webkit-scrollbar rules of the style guide: they only apply while scrollbar-color is auto.
+.doc-sg-sb-demo {
+  width: 100%;
+  height: 200px;
+  overflow: auto;
+  border: 1px solid rgb(0 0 0 / 0.08);
+  border-radius: var(--doc-radius-sm);
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent);
+    outline-offset: 2px;
+  }
+}
+
+.doc-sg-sb-demo-content {
+  width: 140%;
+  padding: 8px 16px;
+
+  p {
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgb(0 0 0 / 0.06);
+    white-space: nowrap;
+  }
 }

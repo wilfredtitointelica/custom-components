@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { IntToggleSwitch } from '../../base/toggle-switch';
 
 @Component({
   selector: 'toggle-switch-basic-example',
   templateUrl: './example.html',
-  imports: [IntToggleSwitch],
+  imports: [IntToggleSwitch, FormsModule],
 })
-export class ToggleSwitchBasicExample {}
+export class ToggleSwitchBasicExample {
+  checked = false;
+}

@@ -1,0 +1,20 @@
+<!--
+  title: Active Row
+  description: Fila activa o vigente: la clase `int-table__cell--active` en la primera celda dibuja el borde izquierdo de acento que la distingue del resto.
+-->
+<int-table [style]="{ width: '40rem' }" [value]="versions">
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" width="40%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Version</div></th>
+      <th width="30%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Effective Date</div></th>
+      <th class="u-text-right" width="30%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD</div></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-version>
+    <tr>
+      <td class="u-text-left" [class.int-table__cell--active]="version.current">{{ version.name }}</td>
+      <td class="u-text-center">{{ version.date }}</td>
+      <td class="u-text-right">{{ version.amount }}</td>
+    </tr>
+  </ng-template>
+</int-table>

@@ -1,0 +1,26 @@
+<!--
+  title: Sizes
+  description: Con `size` cambia el tamaño del campo: `small`, por defecto y `large`.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <int-password
+    size="small"
+    placeholder="Small"
+    [feedback]="false"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="small"
+  />
+  <int-password
+    placeholder="Normal"
+    [feedback]="false"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="normal"
+  />
+  <int-password
+    size="large"
+    placeholder="Large"
+    [feedback]="false"
+    [style]="{ width: '20rem' }"
+    [(ngModel)]="large"
+  />
+</div>

@@ -1,0 +1,180 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-INPUTOTP: 'int-inputotp ( Custom )';
+
+  // --- root ---
+  --int-inputotp-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (between number-container) · Aura: 0.5rem
+
+  // --- cell ---
+  --int-inputotp-input-size: var(--i-sizing-2xl); // knowledgeBase: 4rem · Figma: 64px (input/sizing/3xl) · Aura: width 2.5rem
+  --int-inputotp-input-padding: var(--i-spacing-container-none); // Figma: 0 (input/padding/x/none, input/padding/y/none) · Aura: {form.field.padding.y} {form.field.padding.x}
+  --int-inputotp-input-border-width: var(--i-border-width-sm); // knowledgeBase: --i-border-width-sm · Figma: 1px (input/border/width/sm) · Aura: 1px
+  --int-inputotp-input-border-radius: var(--i-border-radius-lg); // knowledgeBase: --i-border-radius-lg (InputText) · Figma: 8px (input/border/radius/lg) · Aura: {border.radius.md}
+  --int-inputotp-input-border-color: var(--i-border-default); // knowledgeBase: --i-border-default · Figma: #D9D9E3 (input/color/border) · Aura: {surface.300}
+  --int-inputotp-input-background: var(--i-background-default); // knowledgeBase: --i-background-default · Figma: #FCFCFC (input/color/background) · Aura: {surface.0}
+  --int-inputotp-input-color: var(--i-color-primary-900); // knowledgeBase: InputText primary-900 · SG: --i-color-secondary-700 ⚠️ · Figma: #0A1733 (input/color/pressed/text) · Aura: {surface.700}
+  --int-inputotp-input-font-family: var(--i-typography-font-family-base); // Figma: Lato (input/font/fontFamily) · Aura: inherit
+  --int-inputotp-input-font-size: var(--i-typography-font-size-lg); // Figma: 16px (input/font/size/lg) · Aura: 1rem
+  --int-inputotp-input-line-height: var(--i-typography-lineHeight-lg); // Figma: 24px (input/font/lineHeight/lg) · Aura: normal
+  --int-inputotp-input-font-weight: var(--i-typography-font-weight-bold); // Figma: 700 (input/font/OTPweight) · Aura: inherit
+  --int-inputotp-input-hover-border-color: var(--i-border-hover); // knowledgeBase: --i-border-hover · Figma: #5D86DF (input/color/hover/border) · Aura: {surface.400}
+  --int-inputotp-input-focus-border-color: var(--i-color-primary-900); // knowledgeBase: --i-inputtext-focus-border-color → --i-color-primary-900 · Figma: #0A1733 (input/color/pressed/OTPborder) · Aura: {primary.color}
+  --int-inputotp-input-value-border-color: var(--i-color-primary-900); // Figma: #0A1733 (input/color/pressed/OTPborder, cell with a value) · Aura: —
+  --int-inputotp-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast ⚠️ 150ms · Aura: {transition.duration} 0.2s
+  --int-inputotp-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out · Aura: ease
+
+  // --- sizes ---
+  --int-inputotp-input-sm-size: var(--i-sizing-600); // SG: nearest step below 64px · Aura: 2rem
+  --int-inputotp-input-sm-font-size: var(--i-typography-font-size-md); // SG: 14px · Aura: {form.field.sm.font.size} 0.875rem
+  --int-inputotp-input-sm-line-height: var(--i-typography-lineHeight-md); // SG: 20px · Aura: normal
+  --int-inputotp-input-lg-size: var(--i-sizing-3xl); // knowledgeBase: --big 4em (bigger than large) ⚠️ · SG: 96px · Aura: 3rem
+  --int-inputotp-input-lg-font-size: var(--i-typography-font-size-xl); // SG: 20px · Aura: {form.field.lg.font.size} 1.125rem
+  --int-inputotp-input-lg-line-height: var(--i-typography-lineHeight-xl); // SG: 28px · Aura: normal
+
+  // --- filled variant ---
+  --int-inputotp-filled-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Aura: {form.field.filled.background} {surface.50}
+
+  // --- underlined variant (int-* extension) ---
+  --int-inputotp-underlined-border-width: var(--i-border-width-md); // SG: --i-border-width-md (2px) · Aura: — (PrimeNG Template demo: bottom line only)
+  --int-inputotp-underlined-border-radius: var(--i-border-radius-none); // SG: --i-border-radius-none · Aura: —
+
+  // --- grouped (int-* extension) ---
+  --int-inputotp-grouped-inner-radius: var(--i-border-radius-none); // SG: --i-border-radius-none · Aura: — (PrimeNG Sample demo: joined cells)
+  --int-inputotp-grouped-separator-spacing: var(--i-spacing-gap-md); // SG: --i-spacing-gap-md · Aura: — (space on each side of the separator)
+
+  // --- states ---
+  --int-inputotp-invalid-border-color: var(--i-border-error); // knowledgeBase: --i-inputtext-invalid-border-color → --i-color-error-700 · Figma: #960D0D (input/color/error/border) · Aura: {red.400}
+  --int-inputotp-success-border-color: var(--i-border-success); // knowledgeBase: --i-border-success · Figma: #126629 (input/color/success/border) · Aura: —
+  --int-inputotp-success-color: var(--i-text-color-success); // knowledgeBase: --i-text-color-success · Figma: #126629 (input/color/success/text) · Aura: —
+  --int-inputotp-disabled-background: var(--i-background-disabled); // knowledgeBase: InputText #d8dae4 → --i-background-disabled · Aura: {form.field.disabled.background}
+  --int-inputotp-disabled-color: var(--i-text-color-disabled); // knowledgeBase: InputText #9ca2ba → --i-text-color-disabled · Aura: {form.field.disabled.color}
+
+  // --- separator (separatorAt) ---
+  --int-inputotp-separator-width: var(--i-sizing-xs); // knowledgeBase: withSeparator 1rem · Figma: 15px (separator) · Aura: —
+  --int-inputotp-separator-border: var(--i-line); // knowledgeBase: withSeparator --i-line · Aura: —
+
+  // --- loading (int-* extension) ---
+  --int-inputotp-loader-size: var(--i-sizing-xs); // Figma: 16px (icon/sizing/sm) · Aura: —
+  --int-inputotp-loader-border-width: var(--i-border-width-sm); // Figma: 1px (ring stroke) · Aura: —
+  --int-inputotp-loader-track-color: var(--i-color-neutral-300); // Figma: #BABFCF (loading/color/ellipse) · Aura: —
+  --int-inputotp-loader-color: var(--i-color-neutral-500); // Figma: #7D85A6 (loading/color/loader) · Aura: —
+  --int-inputotp-loader-duration: calc(var(--i-motion-duration-slow) * 2); // SG: 2 × --i-motion-duration-slow (1s) · Aura: p-progress-spinner 2s
+
+  // --- skeleton ---
+  --int-inputotp-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// knowledgeBase: .prInputotp · same layout as .p-inputotp.
+.int-inputotp {
+  display: flex;
+  align-items: center;
+  gap: var(--int-inputotp-gap);
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-inputotp {
+  // .p-inputotp-input + .p-inputtext (provisional until int-input is done), with the knowledge base cell.
+  &__input {
+    box-sizing: border-box;
+    inline-size: var(--int-inputotp-input-size);
+    block-size: var(--int-inputotp-input-size);
+    margin: 0;
+    padding: var(--int-inputotp-input-padding);
+    border: var(--int-inputotp-input-border-width) solid var(--int-inputotp-input-border-color);
+    border-radius: var(--int-inputotp-input-border-radius);
+    outline-color: transparent;
+    appearance: none;
+    background: var(--int-inputotp-input-background);
+    color: var(--int-inputotp-input-color);
+    font-family: var(--int-inputotp-input-font-family);
+    font-size: var(--int-inputotp-input-font-size);
+    font-weight: var(--int-inputotp-input-font-weight);
+    line-height: var(--int-inputotp-input-line-height);
+    text-align: center;
+    transition:
+      background var(--int-inputotp-transition-duration) var(--int-inputotp-transition-easing),
+      color var(--int-inputotp-transition-duration) var(--int-inputotp-transition-easing),
+      border-color var(--int-inputotp-transition-duration) var(--int-inputotp-transition-easing);
+
+    // Figma: a cell with a value keeps the dark border (Pressed / Input 1…6).
+    &--value {
+      border-color: var(--int-inputotp-input-value-border-color);
+    }
+
+    &:enabled:hover {
+      border-color: var(--int-inputotp-input-hover-border-color);
+    }
+
+    // Text inputs always match :focus-visible; the border is the focus indicator (Figma: Focused).
+    // knowledgeBase: .prInputotp :focus · Aura focus ring 0: the UA `outline: auto` would paint over the border.
+    &:enabled:focus-visible {
+      border-color: var(--int-inputotp-input-focus-border-color);
+      outline: none;
+    }
+
+    &:disabled {
+      border-color: transparent;
+      background: var(--int-inputotp-disabled-background);
+      color: var(--int-inputotp-disabled-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  // knowledgeBase: .prInputotp--withSeparator · int-* extension separatorAt: one flex item between two
+  // groups of cells, so no order per input is needed; the separator template replaces its content.
+  &__separator {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__separator-line {
+    inline-size: var(--int-inputotp-separator-width);
+    border-block-start: var(--int-inputotp-separator-border);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-inputotp {
+  &--disabled {
+    cursor: not-allowed;
+    user-select: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-inputotp__input {
+    transition-duration: 0s;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-inputotp {
+  display: flex;
+  gap: var(--int-inputotp-gap);
+
+  &__cell {
+    inline-size: var(--int-inputotp-input-size);
+    block-size: var(--int-inputotp-input-size);
+    border-radius: var(--int-inputotp-input-border-radius);
+    background: var(--int-inputotp-skeleton-background);
+  }
+}

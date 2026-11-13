@@ -24,7 +24,7 @@
 
     @if (!unreadable()) {
       <div class="doc-sg-body" role="tabpanel">
-        <nav #nav class="doc-sg-files" [attr.aria-label]="tab() === 'tokens' ? 'Token files' : 'Helper categories'">
+        <nav #nav class="doc-sg-files" [attr.aria-label]="tab() === 'tokens' ? 'Token files' : tab() === 'helpers' ? 'Helper categories' : 'Scrollbar sections'">
           @for (group of navGroups(); track group.id) {
             <p class="doc-sg-group">{{ group.label }}</p>
             <ul>
@@ -39,7 +39,9 @@
                     (click)="goTo(item.id)"
                   >
                     <span>{{ item.label }}</span>
-                    <span class="doc-sg-count">{{ item.count }}</span>
+                    @if (tab() !== 'scrollbar' || item.id === 'tokens') {
+                      <span class="doc-sg-count">{{ item.count }}</span>
+                    }
                   </button>
                 </li>
               }
@@ -47,7 +49,8 @@
           }
         </nav>
 
-        <div #content class="doc-sg-content">
+        <div #content class="doc-sg-content" [class.doc-sg-no-search]="tab() === 'scrollbar'">
+          @if (tab() !== 'scrollbar') {
           <div class="doc-sg-search">
             <div class="doc-sg-search-box">
               <i class="pi pi-search doc-sg-search-icon" aria-hidden="true"></i>
@@ -76,6 +79,7 @@
               <app-style-guide-code-switch class="doc-sg-search-switch" [(checked)]="showCode" />
             }
           </div>
+          }
 
           @if (tab() === 'tokens') {
             @for (file of visibleFiles(); track file.id) {
@@ -95,6 +99,64 @@
             } @empty {
               <p class="doc-sg-empty">El Style Guide no expone archivos de tokens.</p>
             }
+          } @else if (tab() === 'scrollbar') {
+            <!-- Scrollbar of the style guide: what every scrollable int-* shows (base/_scroll-bar.scss) -->
+            <section class="doc-sg-section" [id]="sectionId('anatomy')">
+              <h3 class="doc-sg-section-title" [class.doc-is-active]="active() === 'anatomy'">
+                Anatomía
+                <small>base/_scroll-bar.scss</small>
+              </h3>
+              <div class="doc-sg-sb-card">
+                <!-- Enlarged x6: every measure is calc(token * 6), so the drawing follows the tokens -->
+                <div class="doc-sg-sb-figure" aria-hidden="true">
+                  <div class="doc-sg-sb-track">
+                    <div class="doc-sg-sb-thumb"></div>
+                  </div>
+                  <span class="doc-sg-sb-scale">×6</span>
+                </div>
+                <dl class="doc-sg-sb-parts">
+                  @for (part of scrollbarParts; track part.name) {
+                    <div class="doc-sg-sb-part">
+                      <dt>
+                        <span class="doc-sg-sb-marker" [attr.data-part]="part.id" aria-hidden="true"></span>
+                        {{ part.name }}
+                      </dt>
+                      <dd>
+                        @for (token of part.tokens; track token) {
+                          <code>{{ token }}</code>
+                        }
+                        <span>{{ part.description }}</span>
+                      </dd>
+                    </div>
+                  }
+                </dl>
+              </div>
+            </section>
+
+            <section class="doc-sg-section" [id]="sectionId('preview')">
+              <h3 class="doc-sg-section-title" [class.doc-is-active]="active() === 'preview'">
+                Vista previa
+                <small>*::-webkit-scrollbar</small>
+              </h3>
+              <!-- The real rules of the style guide: the box sets scrollbar-color auto, so Chromium applies them -->
+              <div class="doc-sg-sb-card">
+                <div class="doc-sg-sb-demo" tabindex="0" aria-label="Ejemplo de scroll del Style Guide">
+                  <div class="doc-sg-sb-demo-content">
+                    @for (row of scrollbarRows; track row) {
+                      <p>Fila {{ row }} · contenido ancho para mostrar también la barra horizontal y la esquina</p>
+                    }
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="doc-sg-section" [id]="sectionId('tokens')">
+              <h3 class="doc-sg-section-title" [class.doc-is-active]="active() === 'tokens'">
+                Tokens
+                <small>:root · Custom Scrollbar</small>
+              </h3>
+              <app-style-guide-token-table [tokens]="scrollbarTokens() ?? []" [copied]="copied()" (copyToken)="copyToken($event)" />
+            </section>
           } @else {
             @for (category of visibleCategories(); track category.id) {
               @if (category.rules.length) {

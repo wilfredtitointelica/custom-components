@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 import { STATUS_META, STATUS_ORDER, StatusChip } from '../../../core/status-chip/status-chip';
 import { ComponentStatus } from '../../../service/catalog.model';
@@ -18,7 +19,7 @@ const UNASSIGNED = UNASSIGNED_DESIGNER;
  */
 @Component({
   selector: 'app-status-page',
-  imports: [RouterLink, StatusChip, FilterMenu],
+  imports: [RouterLink, StatusChip, FilterMenu, CdkMenuTrigger, CdkMenu, CdkMenuItem],
   templateUrl: './status-page.html',
   styleUrl: './status-page.scss',
 })
@@ -36,17 +37,20 @@ export class StatusPage {
     .components.filter((component) => !component.reference)
     .map((component, index) => {
       const latest = component.versions.at(-1);
+      /** Components it composes (config `requires`): not done = the base uses a provisional. */
+      const requires = component.requires.map((id) => {
+        const required = this.catalog.find(id);
+        return {
+          id,
+          name: required?.name ?? id,
+          path: required?.path,
+          status: required?.versions.at(-1)?.status ?? ('pending' as ComponentStatus),
+        };
+      });
       return {
-        /** Components it composes (config `requires`): not done = the base uses a provisional. */
-        requires: component.requires.map((id) => {
-          const required = this.catalog.find(id);
-          return {
-            id,
-            name: required?.name ?? id,
-            path: required?.path,
-            status: required?.versions.at(-1)?.status ?? ('pending' as ComponentStatus),
-          };
-        }),
+        requires,
+        /** How many of them are not done yet (trigger label of the popover). */
+        requiresPending: requires.filter((required) => required.status !== 'done').length,
         index: index + 1,
         component,
         latest,

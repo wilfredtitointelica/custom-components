@@ -1,0 +1,25 @@
+<!--
+  title: Append To Body
+  description: Con `appendTo` en `body` el panel de `feedback` no lo recorta ni le agrega scroll un contenedor con `overflow`; a la izquierda el mismo caso sin `appendTo`, donde el panel queda cortado. Montado fuera, su `z-index` es 1000 (el de los overlays) o el que indique `baseZIndex` (aquí `9`, debajo del encabezado fijo de la página, que está en 10).
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  <!-- Without appendTo: the panel stays inside the container and is cut at its edge -->
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-text-sm u-color-grey-500">Sin appendTo</span>
+    <div class="u-display-flex u-flex-column u-gap-md u-overflow-hidden u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
+      <int-password [style]="{ width: '20rem' }" [(ngModel)]="valueClipped" />
+      <span class="u-text-sm u-color-grey-500">Contenedor con overflow hidden</span>
+      <span class="u-text-sm u-color-grey-500">El panel se corta aquí</span>
+    </div>
+  </div>
+
+  <!-- appendTo="body": the panel lives in the body, so it is not cut -->
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-text-sm u-color-grey-500">appendTo="body"</span>
+    <div class="u-display-flex u-flex-column u-gap-md u-overflow-hidden u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
+      <int-password appendTo="body" [baseZIndex]="9" [style]="{ width: '20rem' }" [(ngModel)]="value" />
+      <span class="u-text-sm u-color-grey-500">Contenedor con overflow hidden</span>
+      <span class="u-text-sm u-color-grey-500">El panel pasa por encima del borde</span>
+    </div>
+  </div>
+</div>

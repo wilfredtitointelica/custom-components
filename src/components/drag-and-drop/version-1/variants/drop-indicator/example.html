@@ -1,0 +1,21 @@
+<!--
+  title: Drop Indicator
+  description: Cuando un item con el mismo `scope` entra a la zona, la zona se resalta con el borde azul (modificador `int-drag-and-drop--enter`); al salir o soltar vuelve a su estado normal.
+-->
+<div class="u-display-flex u-gap-lg">
+  <div class="u-display-flex u-flex-column u-gap-sm u-p-2 u-radius-md u-shadow-sm u-background-white">
+    @for (product of availableProducts(); track product.id) {
+      <div class="u-p-2 u-radius-sm u-shadow-xs u-background-white" intDraggable="products" (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
+        {{ product.name }}
+      </div>
+    }
+  </div>
+  <int-drag-and-drop scope="products" [style]="{ width: '15rem' }" (onDrop)="drop()">
+    <p class="u-text-center u-bm-1 u-pb-2">Drop Zone</p>
+    <div class="u-display-flex u-flex-column u-gap-sm u-pt-2">
+      @for (product of selectedProducts(); track product.id) {
+        <div class="u-p-2 u-radius-sm u-shadow-xs u-background-white">{{ product.name }}</div>
+      }
+    </div>
+  </int-drag-and-drop>
+</div>
