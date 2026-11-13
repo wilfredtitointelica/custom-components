@@ -8,6 +8,9 @@ import {
   CdkDrag, CdkDragDrop, CdkDragPlaceholder, CdkDropList, CdkDropListGroup,
 } from '@angular/cdk/drag-drop';
 
+import { IntButton } from '../../../button/version-1/base/button';
+import { IntInputText } from '../../../input/version-1/base/input-text';
+
 /** List an item belongs to. */
 export type IntPickListList = 'source' | 'target';
 
@@ -47,7 +50,7 @@ export interface IntPickListItemContext<T = unknown> {
   selector: 'int-pick-list',
   templateUrl: './pick-list.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet, CdkDropListGroup, CdkDropList, CdkDrag, CdkDragPlaceholder],
+  imports: [NgTemplateOutlet, CdkDropListGroup, CdkDropList, CdkDrag, CdkDragPlaceholder, IntButton, IntInputText],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

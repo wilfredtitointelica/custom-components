@@ -4,10 +4,8 @@
 -->
 <div class="u-display-flex u-flex-column u-gap-md">
   <div class="u-display-flex u-gap-sm">
-    <!-- dep:button provisional · replace with <int-button> when button is done -->
-    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="expandAll()">Expand all</button>
-    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="collapseAll()">Collapse all</button>
-    <!-- /dep:button -->
+    <int-button label="Expand all" (onClick)="expandAll()" />
+    <int-button label="Collapse all" (onClick)="collapseAll()" />
   </div>
   <int-tree-view [value]="nodes()" [(selection)]="selected" ariaLabel="Files" />
 </div>

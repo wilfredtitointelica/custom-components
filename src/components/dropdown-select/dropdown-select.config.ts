@@ -19,5 +19,6 @@ export default {
     'reactive-forms-validation',
     'sizes-fluid',
   ],
+  requires: ['list-box'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

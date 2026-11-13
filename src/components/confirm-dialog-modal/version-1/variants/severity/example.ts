@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntConfirmationService, IntConfirmDialogModal, IntConfirmSeverity } from '../../base/confirm-dialog-modal';
 
 interface SeverityOption {
@@ -12,7 +13,7 @@ interface SeverityOption {
 @Component({
   selector: 'confirm-dialog-modal-severity-example',
   templateUrl: './example.html',
-  imports: [IntConfirmDialogModal],
+  imports: [IntConfirmDialogModal, IntButton],
 })
 export class ConfirmDialogModalSeverityExample {
   private readonly confirmation = inject(IntConfirmationService);

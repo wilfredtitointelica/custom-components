@@ -1,6 +1,7 @@
 import { afterNextRender, Component, DestroyRef, DOCUMENT, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntSearchDropdown } from '../../base/search-dropdown';
 
 type Category = 'All' | 'Fees' | 'Reports';
@@ -72,7 +73,7 @@ const ANSWER_DELAY = 800;
 @Component({
   selector: 'search-dropdown-global-search-example',
   templateUrl: './example.html',
-  imports: [IntSearchDropdown, FormsModule],
+  imports: [IntSearchDropdown, FormsModule, IntButton],
 })
 export class SearchDropdownGlobalSearchExample {
   protected readonly categories: readonly Category[] = ['All', 'Fees', 'Reports'];

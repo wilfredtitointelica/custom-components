@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntTreeNode, IntTreetableModule } from '../../base/treetable';
 
 interface FeeRow {
@@ -33,7 +34,7 @@ const FEES: IntTreeNode<FeeRow>[] = [
 @Component({
   selector: 'treetable-estructura-base-example',
   templateUrl: './example.html',
-  imports: [IntTreetableModule],
+  imports: [IntTreetableModule, IntButton],
 })
 export class TreetableEstructuraBaseExample {
   protected readonly fees = FEES;

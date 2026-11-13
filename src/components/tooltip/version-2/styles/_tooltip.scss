@@ -19,7 +19,7 @@
   --int-tooltip-arrow-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/arrow)
   --int-tooltip-arrow-size: var(--i-border-width-lg); // Figma: 4px (beak 8×4, valor suelto)
   --int-tooltip-arrow-inset: var(--i-spacing-container-lg); // Figma: 12px (space/150) [Indicator=corners]
-  --int-tooltip-max-width: 360px; // Figma: 336px · Style Guide: 360px (kept, pending decision)
+  --int-tooltip-max-width: var(--i-tooltip-max-width, 360px); // knowledgeBase: --i-tooltip-max-width 360px (not in base bundle → fallback) · Figma: 336px
 
   display: flex;
   flex-direction: column;

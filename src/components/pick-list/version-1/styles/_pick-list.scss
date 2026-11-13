@@ -35,22 +35,9 @@
   --int-pick-list-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: inputs focus 1px
   --int-pick-list-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: inputs --i-focus-border-color
 
-  // --- transfer buttons (TODO(dep:button provisional) secondary icon button until int-button) ---
-  --int-pick-list-control-size: var(--i-sizing-xl); // SG: --i-sizing-xl, no knowledgeBase/Figma value
-  --int-pick-list-control-icon-size: var(--i-icon-size-md); // SG: --i-icon-size-md, no knowledgeBase/Figma value
-  --int-pick-list-control-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100, no knowledgeBase/Figma value
-  --int-pick-list-control-color: var(--i-color-secondary-600); // SG: --i-color-secondary-600, no knowledgeBase/Figma value
-  --int-pick-list-control-hover-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
-
-  // --- filter (TODO(dep:input provisional) same values as the tree-select filter until int-input) ---
+  // --- filter (int-input small; only the search icon placement lives here) ---
   --int-pick-list-filter-gap: var(--i-spacing-container-sm); // knowledgeBase: .prCard --i-card-body-gap 6px
-  --int-pick-list-filter-height: var(--i-sizing-md); // SG: .p-tree-filter-input height 24px (same as the tree-select filter)
-  --int-pick-list-filter-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-filter-input padding 4px (same as the tree-select filter)
   --int-pick-list-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px (same as the tree-select filter)
-  --int-pick-list-filter-font-size: var(--i-form-field-size-sm); // SG: .p-tree-filter-input --i-form-field-size-sm 12px (same as the tree-select filter)
-  --int-pick-list-filter-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md 6px, same as the tree-select filter
-  --int-pick-list-filter-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200
-  --int-pick-list-filter-focus-border-color: var(--i-color-secondary-900); // SG: .p-iconfield .p-inputtext:focus border
   --int-pick-list-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px (same as the tree-select filter)
   --int-pick-list-filter-icon-color: var(--i-color-secondary-600); // knowledgeBase: .prSelect --i-inputtext-color secondary-600
 
@@ -111,21 +98,9 @@
     margin-block-end: var(--int-pick-list-filter-gap);
   }
 
-  // TODO(dep:input provisional) minimal input until int-input.
+  // Room for the search icon inside the int-input field.
   &__filter-input {
-    box-sizing: border-box;
-    width: 100%;
-    height: var(--int-pick-list-filter-height);
-    padding: var(--int-pick-list-filter-padding-y) var(--int-pick-list-filter-padding-x);
     padding-inline-end: calc(var(--int-pick-list-filter-padding-x) * 2 + var(--int-pick-list-filter-icon-size));
-    font-size: var(--int-pick-list-filter-font-size);
-    border: var(--int-pick-list-border-width) solid var(--int-pick-list-filter-border-color);
-    border-radius: var(--int-pick-list-filter-border-radius);
-
-    &:focus-visible {
-      outline: none;
-      border-color: var(--int-pick-list-filter-focus-border-color);
-    }
   }
 
   &__filter-icon {
@@ -197,38 +172,6 @@
     justify-content: center;
     gap: var(--int-pick-list-controls-gap);
   }
-
-  // TODO(dep:button provisional) secondary icon-only button until int-button.
-  &__control-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--int-pick-list-control-size);
-    height: var(--int-pick-list-control-size);
-    padding: 0;
-    font-size: var(--int-pick-list-control-icon-size);
-    color: var(--int-pick-list-control-color);
-    background: var(--int-pick-list-control-background);
-    border: none;
-    border-radius: var(--int-pick-list-border-radius);
-    cursor: pointer;
-    transition: background var(--int-pick-list-duration) var(--int-pick-list-easing);
-
-    &:hover:not(:disabled) {
-      background: var(--int-pick-list-control-hover-background);
-    }
-
-    &:focus-visible {
-      outline: var(--int-pick-list-focus-ring-width) solid var(--int-pick-list-focus-ring-color);
-      outline-offset: var(--int-pick-list-focus-ring-width);
-    }
-
-    &:disabled {
-      opacity: var(--int-pick-list-disabled-opacity);
-      cursor: not-allowed;
-      user-select: none;
-    }
-  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -260,8 +203,7 @@
 @media (prefers-reduced-motion: reduce) {
   .int-pick-list__option,
   .int-pick-list__placeholder,
-  .int-pick-list__list--dragging .int-pick-list__option,
-  .int-pick-list__control-button {
+  .int-pick-list__list--dragging .int-pick-list__option {
     transition-duration: 0s;
   }
 }

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntConfirmationService, IntConfirmDialogModal } from '../../base/confirm-dialog-modal';
 
 @Component({
   selector: 'confirm-dialog-modal-basic-example',
   templateUrl: './example.html',
-  imports: [IntConfirmDialogModal],
+  imports: [IntConfirmDialogModal, IntButton],
 })
 export class ConfirmDialogModalBasicExample {
   private readonly confirmation = inject(IntConfirmationService);

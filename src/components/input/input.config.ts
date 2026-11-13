@@ -32,5 +32,6 @@ export default {
     'radio-sizes-states',
   ],
   sourceName: 'Input (InputText, Checkbox, RadioButton, Textarea)',
+  uses: ['message'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

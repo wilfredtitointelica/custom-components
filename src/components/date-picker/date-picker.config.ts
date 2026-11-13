@@ -19,5 +19,6 @@ export default {
     'year-picker',
     'inline-disabled-weekends',
   ],
+  requires: ['button', 'input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

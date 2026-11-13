@@ -1,5 +1,6 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntMessageService, IntToast } from '../../base/toast';
 
 /** A file the user can export; `fails` simulates an error while generating it. */
@@ -21,7 +22,7 @@ const EXPORT_TIME = 2500;
 @Component({
   selector: 'toast-descarga-de-archivo-example',
   templateUrl: './example.html',
-  imports: [IntToast],
+  imports: [IntToast, IntButton],
   // Same as PrimeNG: the view that shows the toast provides the message service.
   providers: [IntMessageService],
 })

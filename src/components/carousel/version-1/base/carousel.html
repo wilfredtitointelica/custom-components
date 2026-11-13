@@ -13,18 +13,21 @@
   <div class="int-carousel__content" aria-live="off">
     <!-- Side navigators (default format): shown on hover, over the viewport -->
     @if (showNavigators() && !isMore()) {
-      <!-- dep:button provisional · replace with <int-button text severity="secondary"> when button is done -->
       <button
+        intButton
         type="button"
         class="int-carousel__prev-button"
-        data-dep="button"
+        severity="secondary"
+        variant="text"
+        [icon]="previousIconTemplate() ? undefined : 'icon icon-arrow-left'"
         [disabled]="isBackwardNavDisabled()"
-        [attr.aria-label]="prevButtonAriaLabel()"
+        [ariaLabel]="prevButtonAriaLabel()"
         (click)="navBackward($event)"
       >
-        <ng-container [ngTemplateOutlet]="prevIcon" />
+        @if (previousIconTemplate(); as iconTpl) {
+          <ng-container [ngTemplateOutlet]="iconTpl" />
+        }
       </button>
-      <!-- /dep:button -->
     }
 
     <div
@@ -57,18 +60,21 @@
     </div>
 
     @if (showNavigators() && !isMore()) {
-      <!-- dep:button provisional · replace with <int-button text severity="secondary"> when button is done -->
       <button
+        intButton
         type="button"
         class="int-carousel__next-button"
-        data-dep="button"
+        severity="secondary"
+        variant="text"
+        [icon]="nextIconTemplate() ? undefined : 'icon icon-arrow-right'"
         [disabled]="isForwardNavDisabled()"
-        [attr.aria-label]="nextButtonAriaLabel()"
+        [ariaLabel]="nextButtonAriaLabel()"
         (click)="navForward($event)"
       >
-        <ng-container [ngTemplateOutlet]="nextIcon" />
+        @if (nextIconTemplate(); as iconTpl) {
+          <ng-container [ngTemplateOutlet]="iconTpl" />
+        }
       </button>
-      <!-- /dep:button -->
     }
   </div>
 
@@ -76,29 +82,37 @@
     <!-- int-* extension: compact navigators and counter below the content (knowledge base .prCarousel--more) -->
     @if (showNavigators()) {
       <div class="int-carousel__nav">
-        <!-- dep:button provisional · replace with <int-button> (icon only, outlined) when button is done -->
         <button
+          intButton
           type="button"
           class="int-carousel__prev-button"
-          data-dep="button"
+          severity="secondary"
+          size="small"
+          [icon]="previousIconTemplate() ? undefined : 'icon icon-arrow-left'"
           [disabled]="isBackwardNavDisabled()"
-          [attr.aria-label]="prevButtonAriaLabel()"
+          [ariaLabel]="prevButtonAriaLabel()"
           (click)="navBackward($event)"
         >
-          <ng-container [ngTemplateOutlet]="prevIcon" />
+          @if (previousIconTemplate(); as iconTpl) {
+            <ng-container [ngTemplateOutlet]="iconTpl" />
+          }
         </button>
         <span class="int-carousel__counter">{{ counter() }}</span>
         <button
+          intButton
           type="button"
           class="int-carousel__next-button"
-          data-dep="button"
+          severity="secondary"
+          size="small"
+          [icon]="nextIconTemplate() ? undefined : 'icon icon-arrow-right'"
           [disabled]="isForwardNavDisabled()"
-          [attr.aria-label]="nextButtonAriaLabel()"
+          [ariaLabel]="nextButtonAriaLabel()"
           (click)="navForward($event)"
         >
-          <ng-container [ngTemplateOutlet]="nextIcon" />
+          @if (nextIconTemplate(); as iconTpl) {
+            <ng-container [ngTemplateOutlet]="iconTpl" />
+          }
         </button>
-        <!-- /dep:button -->
       </div>
     }
   } @else if (showIndicators()) {
@@ -131,19 +145,3 @@
 @if (footerTemplate(); as footerTpl) {
   <div class="int-carousel__footer"><ng-container [ngTemplateOutlet]="footerTpl" /></div>
 }
-
-<!-- Navigator icons: #previousicon / #nexticon templates or the arrows of incontrol-icons -->
-<ng-template #prevIcon>
-  @if (previousIconTemplate(); as iconTpl) {
-    <ng-container [ngTemplateOutlet]="iconTpl" />
-  } @else {
-    <i class="icon icon-arrow-left" aria-hidden="true"></i>
-  }
-</ng-template>
-<ng-template #nextIcon>
-  @if (nextIconTemplate(); as iconTpl) {
-    <ng-container [ngTemplateOutlet]="iconTpl" />
-  } @else {
-    <i class="icon icon-arrow-right" aria-hidden="true"></i>
-  }
-</ng-template>

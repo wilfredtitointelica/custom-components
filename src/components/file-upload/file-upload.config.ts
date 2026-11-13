@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'file-upload',
+  requires: ['button', 'tag'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { INT_STEPPER } from '../../base/stepper';
 
 interface WizardPanel {
@@ -18,7 +19,7 @@ const MOCK_PANELS: readonly WizardPanel[] = [
 @Component({
   selector: 'stepper-wizard-example',
   templateUrl: './example.html',
-  imports: [INT_STEPPER],
+  imports: [INT_STEPPER, IntButton],
 })
 export class StepperWizardExample {
   readonly panels = MOCK_PANELS;

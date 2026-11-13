@@ -14,22 +14,22 @@
       <!-- Filter (filterBy): one field per list, as the listbox filter of p-picklist -->
       @if (showFilter(list)) {
         <div class="int-pick-list__filter">
-          <!-- dep:input provisional · replace with <int-input> (icon field) when input is done -->
           <input
+            intInputText
+            intSize="small"
+            fluid
             type="text"
             class="int-pick-list__filter-input"
-            data-dep="input"
             [attr.placeholder]="list === 'source' ? sourceFilterPlaceholder() : targetFilterPlaceholder()"
             [attr.aria-label]="(list === 'source' ? ariaSourceFilterLabel() : ariaTargetFilterLabel()) || 'Search'"
             [disabled]="disabled()"
             (input)="onFilterInput($event, list)"
           />
-          <!-- /dep:input -->
           <i class="int-pick-list__filter-icon icon icon-search" aria-hidden="true"></i>
         </div>
       }
 
-      <!-- dep:list-box provisional · replace with <int-list-box [multiple]="true"> when list-box is done -->
+      <!-- dep:list-box provisional · int-list-box (done) renders its options internally: no cdkDrag / cdkDropList per option (dragdrop), no option dblclick (transfer) nor metaKey / shift range selection, and it uses aria-activedescendant instead of this roving tabindex. Replace with <int-list-box multiple> when its API covers them -->
       <!-- Multiple selection listbox with one tab stop (roving tabindex), as the p-listbox of p-picklist -->
       <div
         class="int-pick-list__list"
@@ -81,48 +81,46 @@
     <!-- Transfer buttons between both lists, same order and conditions as p-picklist -->
     @if (list === 'source' && showTransferControls()) {
       <div class="int-pick-list__controls">
-        <!-- dep:button provisional · replace with <int-button severity="secondary"> when button is done -->
         <button
+          intButton
           type="button"
           class="int-pick-list__control-button"
-          data-dep="button"
+          severity="secondary"
+          icon="icon icon-arrow-right"
           [disabled]="moveRightDisabled()"
-          [attr.aria-label]="rightButtonAriaLabel()"
+          [ariaLabel]="rightButtonAriaLabel()"
           (click)="moveRight()"
-        >
-          <i class="icon icon-arrow-right" aria-hidden="true"></i>
-        </button>
+        ></button>
         <button
+          intButton
           type="button"
           class="int-pick-list__control-button"
-          data-dep="button"
+          severity="secondary"
+          icon="icon icon-arrow-right-double"
           [disabled]="moveAllRightDisabled()"
-          [attr.aria-label]="allRightButtonAriaLabel()"
+          [ariaLabel]="allRightButtonAriaLabel()"
           (click)="moveAllRight()"
-        >
-          <i class="icon icon-arrow-right-double" aria-hidden="true"></i>
-        </button>
+        ></button>
         <button
+          intButton
           type="button"
           class="int-pick-list__control-button"
-          data-dep="button"
+          severity="secondary"
+          icon="icon icon-arrow-left"
           [disabled]="moveLeftDisabled()"
-          [attr.aria-label]="leftButtonAriaLabel()"
+          [ariaLabel]="leftButtonAriaLabel()"
           (click)="moveLeft()"
-        >
-          <i class="icon icon-arrow-left" aria-hidden="true"></i>
-        </button>
+        ></button>
         <button
+          intButton
           type="button"
           class="int-pick-list__control-button"
-          data-dep="button"
+          severity="secondary"
+          icon="icon icon-arrow-left-double"
           [disabled]="moveAllLeftDisabled()"
-          [attr.aria-label]="allLeftButtonAriaLabel()"
+          [ariaLabel]="allLeftButtonAriaLabel()"
           (click)="moveAllLeft()"
-        >
-          <i class="icon icon-arrow-left-double" aria-hidden="true"></i>
-        </button>
-        <!-- /dep:button -->
+        ></button>
       </div>
     }
   }

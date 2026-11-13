@@ -5,17 +5,14 @@
 <int-treetable #tt filterMode="lenient" [value]="files" [globalFilterFields]="['name', 'type']">
   <ng-template #caption>
     <div class="u-display-flex u-justify-content-end u-full-width">
-      <!-- dep:input provisional · replace with <int-input> when input is done -->
       <input
         #search
+        intInputText
         type="text"
-        class="u-px-3 u-py-2 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-background-white u-text-sm"
         placeholder="Search"
         aria-label="Search"
-        data-dep="input"
         (input)="tt.filterGlobal(search.value, 'contains')"
       />
-      <!-- /dep:input -->
     </div>
   </ng-template>
   <ng-template #header>

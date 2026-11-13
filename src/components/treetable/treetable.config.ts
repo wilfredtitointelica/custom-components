@@ -38,7 +38,7 @@ export default {
     'estado-por-nivel',
     'checkbox-con-propagacion',
   ],
-  requires: ['paginator', 'checkbox', 'badge'],
+  requires: ['paginator', 'input', 'badge'],
   uses: ['button', 'dropdown-select', 'input', 'search', 'tooltip'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

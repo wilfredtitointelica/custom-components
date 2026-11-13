@@ -16,7 +16,7 @@
   --int-tooltip-background: var(--i-color-secondary-50);
   --int-tooltip-color: var(--i-color-primary-900);
   --int-tooltip-border-color: var(--i-color-secondary-200);
-  --int-tooltip-max-width: 360px;
+  --int-tooltip-max-width: var(--i-tooltip-max-width, 360px); // knowledgeBase: --i-tooltip-max-width (Style Guide components bundle, not in base → fallback)
 
   display: block;
   box-sizing: border-box;

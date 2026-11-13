@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
+import { IntButtonElement } from '../../../../button/version-1/base/button-element';
 import { IntMessageService, IntToast } from '../../../../toast/version-1/base/toast';
 import { IntPassword } from '../../base/password';
 
 @Component({
   selector: 'password-template-driven-form-example',
   templateUrl: './example.html',
-  imports: [IntPassword, IntToast, FormsModule],
+  imports: [IntPassword, IntToast, FormsModule, IntButtonElement],
   // Same as PrimeNG: the view that shows the toast provides the message service.
   providers: [IntMessageService],
 })

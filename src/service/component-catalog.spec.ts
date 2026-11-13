@@ -49,8 +49,8 @@ const EXCEL_NAMES = [
   'ProgressBar',
 ];
 
-/** Components added outside the Excel (chip and tag split from Badge; confirm-dialog-modal from Dialog; pick-list from Drag and Drop). */
-const NON_EXCEL_IDS = ['chip', 'tag', 'confirm-dialog-modal', 'pick-list'];
+/** Components added outside the Excel (chip split from Badge; confirm-dialog-modal from Dialog; pick-list from Drag and Drop). Tag is the Excel "Pill". */
+const NON_EXCEL_IDS = ['chip', 'confirm-dialog-modal', 'pick-list'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
