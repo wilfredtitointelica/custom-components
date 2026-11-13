@@ -7,17 +7,13 @@
     <tr>
       <th width="2%">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
-          <!-- dep:input provisional · replace with <int-input> (checkbox) when input is done -->
-          <input
-            type="checkbox"
-            class="u-pointer"
-            data-dep="input"
-            aria-label="Select all"
-            [checked]="allSelected()"
+          <int-checkbox
+            binary
+            ariaLabel="Select all"
+            [ngModel]="allSelected()"
             [indeterminate]="someSelected()"
-            (change)="toggleAll()"
+            (onChange)="toggleAll()"
           />
-          <!-- /dep:input -->
         </div>
       </th>
       <th class="u-text-left" width="48%"><div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name</div></th>
@@ -29,16 +25,12 @@
     <tr>
       <td class="u-text-center">
         <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">
-          <!-- dep:input provisional · replace with <int-input> (checkbox) when input is done -->
-          <input
-            type="checkbox"
-            class="u-pointer"
-            data-dep="input"
-            [attr.aria-label]="'Select ' + fee.name"
-            [checked]="isSelected(fee.code)"
-            (change)="toggle(fee.code)"
+          <int-checkbox
+            binary
+            [ariaLabel]="'Select ' + fee.name"
+            [ngModel]="isSelected(fee.code)"
+            (onChange)="toggle(fee.code)"
           />
-          <!-- /dep:input -->
         </div>
       </td>
       <td class="u-text-left">{{ fee.name }}</td>

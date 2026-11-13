@@ -12,5 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'popover',
+  uses: ['button', 'list-box'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

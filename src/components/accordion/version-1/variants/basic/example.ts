@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
-import { IntAccordion } from '../../base/accordion';
+import { IntAccordionImports, IntAccordionValue } from '../../base/accordion';
 
 @Component({
   selector: 'accordion-basic-example',
   templateUrl: './example.html',
-  imports: [IntAccordion],
+  imports: [IntAccordionImports],
 })
-export class AccordionBasicExample {}
+export class AccordionBasicExample {
+  active: IntAccordionValue | IntAccordionValue[] | null = 'fees';
+}

@@ -13,12 +13,8 @@
     </div>
   </ng-template>
   <ng-template #footer let-onAccept="onAccept" let-onReject="onReject">
-    <!-- dep:button provisional · replace with <int-button> when button is done -->
-    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="onAccept()">Great</button>
-    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="onReject()">Later</button>
-    <!-- /dep:button -->
+    <button intButton label="Great" (click)="onAccept()"></button>
+    <button intButton label="Later" severity="secondary" (click)="onReject()"></button>
   </ng-template>
 </int-confirm-dialog-modal>
-<!-- dep:button provisional · replace with <int-button> when button is done -->
-<button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="confirm()">Publish</button>
-<!-- /dep:button -->
+<button intButton label="Publish" (click)="confirm()"></button>

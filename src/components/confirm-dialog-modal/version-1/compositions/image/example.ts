@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntConfirmationService, IntConfirmDialogModal } from '../../base/confirm-dialog-modal';
 
 // Placeholder illustration (circle + paper plane), inline so the example needs no asset.
@@ -13,7 +14,7 @@ const IMAGE =
 @Component({
   selector: 'confirm-dialog-modal-image-example',
   templateUrl: './example.html',
-  imports: [IntConfirmDialogModal],
+  imports: [IntConfirmDialogModal, IntButton],
 })
 export class ConfirmDialogModalImageExample {
   private readonly confirmation = inject(IntConfirmationService);

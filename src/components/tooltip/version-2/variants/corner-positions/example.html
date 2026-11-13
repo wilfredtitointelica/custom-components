@@ -1,0 +1,9 @@
+<!--
+  title: Corner positions
+  description: tooltipPosition top-left, top-right, bottom-left o bottom-right: la flecha queda a 12px del borde y apunta al centro del elemento.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  @for (placement of placements; track placement) {
+    <button intButton severity="secondary" [label]="placement" [intTooltip]="'Tooltip on ' + placement" [tooltipPosition]="placement"></button>
+  }
+</div>

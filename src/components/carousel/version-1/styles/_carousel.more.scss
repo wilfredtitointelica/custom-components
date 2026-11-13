@@ -10,40 +10,13 @@
     padding-block-end: var(--int-carousel-content-padding);
   }
 
-  // TODO(dep:button provisional) icon-only outlined look until int-button.
+  // int-button (secondary, small, icon only) in the row: undo the side-navigator placement of the base.
   .int-carousel__prev-button,
   .int-carousel__next-button {
     position: static;
-    width: var(--int-carousel-more-button-size);
-    height: var(--int-carousel-more-button-size);
-    font-size: var(--int-carousel-more-icon-size);
-    color: var(--int-carousel-more-button-color);
-    background: var(--int-carousel-more-button-background);
-    border: var(--i-border-width-sm) solid var(--int-carousel-more-button-border-color);
-    border-radius: var(--int-carousel-more-button-border-radius);
     opacity: 1;
     visibility: visible;
-    transition:
-      background-color var(--int-carousel-indicator-duration),
-      border-color var(--int-carousel-indicator-duration),
-      color var(--int-carousel-indicator-duration);
-
-    &:hover:not(:disabled) {
-      color: var(--int-carousel-more-button-hover-color);
-      background: var(--int-carousel-more-button-hover-background);
-      border-color: var(--int-carousel-more-button-hover-border-color);
-    }
-
-    &:disabled {
-      color: var(--int-carousel-more-button-disabled-color);
-      background: var(--int-carousel-more-button-disabled-background);
-    }
-
-    &:focus-visible {
-      outline-offset: var(--int-carousel-focus-ring-width);
-    }
   }
-
 
   .int-carousel__counter {
     font-size: var(--int-carousel-counter-font-size);

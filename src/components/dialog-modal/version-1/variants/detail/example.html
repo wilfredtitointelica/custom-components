@@ -1,0 +1,18 @@
+<!--
+  title: Detail
+  description: Vista de solo lectura (size="lg") con una única acción Close en el footer.
+-->
+<button intButton label="View detail" icon="icon icon-view" severity="secondary" (click)="visible.set(true)"></button>
+<int-dialog-modal header="Fee detail" [(visible)]="visible" size="lg">
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    @for (row of rows; track row.label) {
+      <div class="u-display-flex u-gap-sm">
+        <span class="u-color-grey-500">{{ row.label }}:</span>
+        <strong>{{ row.value }}</strong>
+      </div>
+    }
+  </div>
+  <ng-template #footer>
+    <button intButton label="Close" severity="secondary" (click)="visible.set(false)"></button>
+  </ng-template>
+</int-dialog-modal>

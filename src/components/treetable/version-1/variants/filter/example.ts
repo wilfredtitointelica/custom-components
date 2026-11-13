@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { IntInputText } from '../../../../input/version-1/base/input-text';
 import { IntTreeNode, IntTreetableModule } from '../../base/treetable';
 
 interface FileRow {
@@ -52,7 +53,7 @@ const FILES: IntTreeNode<FileRow>[] = [
 @Component({
   selector: 'treetable-filter-example',
   templateUrl: './example.html',
-  imports: [IntTreetableModule],
+  imports: [IntTreetableModule, IntInputText],
 })
 export class TreetableFilterExample {
   protected readonly files = FILES;

@@ -45,12 +45,7 @@
   --int-tree-select-panel-offset: var(--i-spacing-50); // Figma: 4px between trigger and panel, no SG value
 
   // --- filter ---
-  --int-tree-select-filter-height: var(--i-sizing-md); // SG: .p-tree-filter-input height 24px · Figma: 24px
-  --int-tree-select-filter-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-filter-input padding 4px · Figma: 4px (input/padding/y/xs)
   --int-tree-select-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px · Figma: 8px (input/padding/x/md)
-  --int-tree-select-filter-font-size: var(--i-form-field-size-sm); // SG: .p-tree-filter-input --i-form-field-size-sm 12px · Figma: 12px (input/font/size/sm)
-  --int-tree-select-filter-border-radius: var(--i-border-radius-md); // Figma: 6px (input/border/radius/md), no SG value
-  --int-tree-select-filter-focus-border-color: var(--i-color-secondary-900); // SG: .p-iconfield .p-inputtext:focus border
   --int-tree-select-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px · Figma: 12px (icon/sizing/xs)
 }
 
@@ -167,32 +162,10 @@
     flex-shrink: 0;
   }
 
-  // TODO(dep:input provisional) minimal look until the icon field of int-input.
-  &__filter-input {
-    box-sizing: border-box;
-    width: 100%;
-    height: var(--int-tree-select-filter-height);
-    padding: var(--int-tree-select-filter-padding-y) var(--int-tree-select-filter-padding-x);
+  // The filter is input[intInputText] small fluid: its look comes from int-input. Only the end padding
+  // changes (room for the search icon); the wrapper prefix outweighs the int-input field padding.
+  &__filter &__filter-input {
     padding-inline-end: calc(var(--int-tree-select-filter-padding-x) * 2 + var(--int-tree-select-filter-icon-size));
-    font: inherit;
-    font-size: var(--int-tree-select-filter-font-size);
-    color: var(--int-tree-select-color);
-    background: var(--int-tree-select-background);
-    border: var(--int-tree-select-border-width) solid var(--int-tree-select-border-color);
-    border-radius: var(--int-tree-select-filter-border-radius);
-    outline: none;
-
-    &::placeholder {
-      color: var(--int-tree-select-placeholder-color);
-    }
-
-    &:hover {
-      border-color: var(--int-tree-select-hover-border-color);
-    }
-
-    &:focus-visible {
-      border-color: var(--int-tree-select-filter-focus-border-color);
-    }
   }
 
   &__filter-icon {

@@ -123,21 +123,20 @@
 }
 
 @if (showJumpToPageInput()) {
-  <!-- dep:input provisional · replace with <int-input> (number) when input is done -->
-  <span class="int-paginator__jtp-input" data-dep="input">
-    <input
-      type="number"
-      class="int-paginator__input"
-      inputmode="numeric"
-      aria-label="Jump to Page Input"
-      min="1"
+  <!-- Same as p-paginator: a p-inputnumber bound to the current page -->
+  <span class="int-paginator__jtp-input">
+    <int-inputnumber
+      size="small"
+      ariaLabel="Jump to Page Input"
+      [min]="1"
       [max]="pageCount()"
-      [value]="currentPage()"
+      [useGrouping]="false"
       [disabled]="inactive()"
-      (change)="onJumpToPageInputChange($event)"
+      [ngModel]="currentPage()"
+      [ngModelOptions]="{ standalone: true }"
+      (ngModelChange)="onJumpToPageInputChange($event)"
     />
   </span>
-  <!-- /dep:input -->
 }
 
 @if (rowsPerPageOptions()) {

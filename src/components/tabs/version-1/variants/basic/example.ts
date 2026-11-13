@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
-import { IntTabs } from '../../base/tabs';
+import { IntTabValue, IntTabsImports } from '../../base/tabs';
 
 @Component({
   selector: 'tabs-basic-example',
   templateUrl: './example.html',
-  imports: [IntTabs],
+  imports: [IntTabsImports],
 })
-export class TabsBasicExample {}
+export class TabsBasicExample {
+  tab: IntTabValue | null = 'summary';
+}

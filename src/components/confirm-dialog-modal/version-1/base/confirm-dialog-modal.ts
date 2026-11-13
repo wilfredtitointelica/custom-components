@@ -9,6 +9,8 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Observable, Subject, Subscription } from 'rxjs';
 
+import { IntButton } from '../../../button/version-1/base/button';
+
 /** Severity of the knowledge base (.prConfirmDialog--default/--warning/--danger/--error/--success). */
 export type IntConfirmSeverity = 'default' | 'warning' | 'danger' | 'error' | 'success';
 
@@ -86,7 +88,7 @@ let nextId = 0;
   selector: 'int-confirm-dialog-modal',
   templateUrl: './confirm-dialog-modal.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet, CdkTrapFocus],
+  imports: [NgTemplateOutlet, CdkTrapFocus, IntButton],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -254,7 +256,8 @@ export class IntConfirmDialogModal implements OnDestroy {
     this.cancel();
   }
 
-  // TODO(dep:dialog-modal provisional): the CDK overlay (mask, z-index, scroll block, Escape) comes from int-dialog-modal.
+  // TODO(dep:dialog-modal provisional): the CDK overlay (mask, z-index, scroll block, Escape) comes from int-dialog-modal
+  // once it supports role="alertdialog", aria-describedby and a headerless panel (see the marker in the template).
   private attach(): void {
     if (this.overlayRef?.hasAttached()) return;
     this.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;

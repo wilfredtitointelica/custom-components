@@ -10,8 +10,6 @@
       <span>• Your request will be processed once received</span>
       <span>• Contact support if you don't receive confirmation</span>
     </div>
-    <!-- dep:button provisional · replace with <int-button> when button is done -->
-    <button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="closeCallback($event)">Got it</button>
-    <!-- /dep:button -->
+    <button intButton severity="secondary" size="small" label="Got it" (click)="closeCallback($event)"></button>
   </ng-template>
 </int-message>

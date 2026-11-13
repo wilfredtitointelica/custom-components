@@ -1,0 +1,9 @@
+<!--
+  title: Active
+  description: El input `active` mantiene el aspecto presionado y marca `aria-pressed`: sirve para botones de alternar o la opción elegida de un grupo.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm" role="group" aria-label="Period">
+  @for (period of periods; track period) {
+    <button intButton severity="secondary" [label]="period" [active]="selected() === period" (click)="selected.set(period)"></button>
+  }
+</div>

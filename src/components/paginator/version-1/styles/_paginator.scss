@@ -34,24 +34,13 @@
   --int-paginator-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · Aura: {focus.ring.color}
   --int-paginator-focus-ring-offset: var(--i-spacing-container-none); // knowledgeBase: no offset · Aura: {focus.ring.offset} 2px
 
-
-  // --- jump to page input ---
+  // --- jump to page input (int-inputnumber: width and margin; radius, border and background used by the selects) ---
   --int-paginator-jtp-input-width: var(--i-sizing-xl); // Figma: 40px · Aura: jumpToPageInput.maxWidth 2.5rem
-  --int-paginator-jtp-input-height: var(--i-sizing-md); // Figma: 24px · Aura: —
-  --int-paginator-jtp-input-padding-y: var(--i-spacing-container-2xs); // knowledgeBase: 2px · Figma: 2px (pagination/padding/y/2xs) · Aura: —
-  --int-paginator-jtp-input-padding-x: var(--i-spacing-container-md); // knowledgeBase: 0 · Figma: 8px (pagination/padding/x/md) · Aura: —
   --int-paginator-jtp-input-margin-x: var(--i-spacing-container-xs); // knowledgeBase: 4px · Aura: —
   --int-paginator-jtp-input-border-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm) · Aura: {form.field.border.radius}
   --int-paginator-jtp-input-border-width: var(--i-border-width-sm); // Figma: 1px (pagination/border/width/sm) · Aura: 1px
-  --int-paginator-jtp-input-border-color: var(--i-line-border-color); // SG: --i-line-border-color (same border as the table paginator composition) · knowledgeBase: --i-color-secondary-600 ⚠️ · Figma: #636B8C (pagination/color/border) ⚠️ · Aura: {form.field.border.color}
   --int-paginator-jtp-input-background: var(--i-color-secondary-50); // knowledgeBase: --i-color-secondary-50 · Figma: #FCFCFC (pagination/color/background) · Aura: {form.field.background}
-  --int-paginator-jtp-input-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: bold · Figma: Lato Bold · Aura: inherit
-  --int-paginator-jtp-input-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (pagination/color/hover/border) · Aura: {form.field.hover.border.color}
-  --int-paginator-jtp-input-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background) · Aura: —
-  --int-paginator-jtp-input-focus-background: var(--i-color-secondary-100); // knowledgeBase: --i-color-secondary-100 · Aura: —
   --int-paginator-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Figma: #9CA3BA (pagination/color/disabled/text) · Aura: {disabled.opacity}
-  --int-paginator-disabled-border-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Figma: #9CA3BA (pagination/color/disabled/border) · Aura: —
-  --int-paginator-disabled-background: var(--i-background-disabled); // SG: --i-background-disabled · Figma: #D9D9E3 (pagination/color/disabled/background) · Aura: —
 
   // --- rows per page / jump to page select (provisional; gap, padding, radius and background reuse the tokens above) ---
   --int-paginator-dropdown-label-min-width: var(--i-sizing-lg); // Figma: 32px (value width) · Aura: —
@@ -176,42 +165,14 @@
     color: var(--int-paginator-nav-button-selected-color);
   }
 
-  // TODO(dep:input provisional) knowledgeBase: centered bold number input; shape from Figma.
-  &__input {
-    box-sizing: border-box;
-    inline-size: var(--int-paginator-jtp-input-width);
-    block-size: var(--int-paginator-jtp-input-height);
+  // Jump to page: only its size and place in the row (Aura: jumpToPageInput.maxWidth).
+  &__jtp-input {
+    display: inline-flex;
     margin-inline: var(--int-paginator-jtp-input-margin-x);
-    padding: var(--int-paginator-jtp-input-padding-y) var(--int-paginator-jtp-input-padding-x);
-    border: var(--int-paginator-jtp-input-border-width) solid var(--int-paginator-jtp-input-border-color);
-    border-radius: var(--int-paginator-jtp-input-border-radius);
-    background: var(--int-paginator-jtp-input-background);
-    color: inherit;
-    font: inherit;
-    font-weight: var(--int-paginator-jtp-input-font-weight);
-    text-align: center;
-    appearance: textfield;
 
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-      appearance: none;
+    .int-input--number {
+      inline-size: var(--int-paginator-jtp-input-width);
     }
-
-    &:not(:disabled):hover {
-      border-color: var(--int-paginator-jtp-input-hover-border-color);
-      background: var(--int-paginator-jtp-input-hover-background);
-    }
-
-    &:focus-visible {
-      outline: 0;
-      border-color: var(--int-paginator-focus-ring-color);
-      background: var(--int-paginator-jtp-input-focus-background);
-    }
-  }
-
-  &__input:disabled {
-    border-color: var(--int-paginator-disabled-border-color);
-    background: var(--int-paginator-disabled-background);
   }
 
   // TODO(dep:dropdown-select provisional) trigger "10 ^" and a list that opens upwards (Figma).
@@ -277,7 +238,6 @@
     outline: var(--int-paginator-focus-ring-width) solid var(--int-paginator-focus-ring-color);
   }
 
-  &__input:disabled,
   &__dropdown--disabled &__dropdown-trigger {
     color: var(--int-paginator-disabled-color);
     cursor: not-allowed;

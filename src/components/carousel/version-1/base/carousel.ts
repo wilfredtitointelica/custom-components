@@ -5,6 +5,8 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
+import { IntButton } from '../../../button/version-1/base/button';
+
 /** int-* extension: visual format of the knowledge base (.prCarousel--more: compact arrows and counter below). */
 export type IntCarouselAppearance = 'more';
 
@@ -41,7 +43,7 @@ let nextId = 0;
   selector: 'int-carousel',
   templateUrl: './carousel.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, IntButton],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

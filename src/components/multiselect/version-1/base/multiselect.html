@@ -182,10 +182,13 @@
           }
 
           @if (filter()) {
-            <!-- dep:input provisional · replace with <int-input> (icon field) when input is done -->
-            <span class="int-multiselect__filter-container" data-dep="input">
+            <!-- Filter field: input[intInputText] small, with the search icon over its end padding -->
+            <span class="int-multiselect__filter-container">
               <input
                 #filterInput
+                intInputText
+                intSize="small"
+                fluid
                 class="int-multiselect__filter"
                 type="text"
                 role="searchbox"
@@ -209,7 +212,6 @@
                 }
               </span>
             </span>
-            <!-- /dep:input -->
           }
         }
       </div>
@@ -336,7 +338,7 @@
   }
 </ng-template>
 
-<!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
+<!-- dep:input provisional · replace with <int-checkbox> (from input) when input is done -->
 <!-- Header checkbox: focusable, toggles all. Option checkbox: tabindex -1, the option handles the click -->
 <ng-template #checkbox let-checked="checked" let-partial="partial" let-header="header" let-label="label" let-disabled="disabled">
   <span
@@ -344,7 +346,7 @@
     [class.int-multiselect__checkbox--checked]="checked"
     [class.int-multiselect__checkbox--partial]="partial"
     [class.int-multiselect__checkbox--disabled]="disabled || (header && isDisabled())"
-    data-dep="checkbox"
+    data-dep="input"
   >
     @if (header) {
       <input
@@ -387,4 +389,4 @@
     </span>
   </span>
 </ng-template>
-<!-- /dep:checkbox -->
+<!-- /dep:input -->

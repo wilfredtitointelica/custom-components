@@ -1,0 +1,8 @@
+<!--
+  title: Number · Prefix & suffix
+  description: prefix y suffix se agregan al valor formateado; max limita el valor al salir del campo.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-inputnumber [(ngModel)]="percentage" suffix=" %" [max]="100" ariaLabel="Percentage" />
+  <int-inputnumber [(ngModel)]="txn" prefix="≈ " suffix=" txn" ariaLabel="Transactions" />
+</div>

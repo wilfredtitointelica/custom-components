@@ -1,0 +1,17 @@
+<!--
+  title: Tooltip
+  description: Directiva intTooltip. Se muestra con hover y con foco de teclado (tooltipEvent="both"), queda enlazada con aria-describedby y Escape la oculta. Versión 2: flecha según la posición (tooltipArrow), posiciones de esquina y título (tooltipTitle) según Figma Atoms / Tooltip.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2238-340&m=dev
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2238-287&m=dev
+-->
+<span class="int-tooltip__arrow" aria-hidden="true"></span>
+<div class="int-tooltip__container">
+  @if (title(); as title) {
+    <span class="int-tooltip__title">{{ title }}</span>
+  }
+  @if (template(); as tpl) {
+    <ng-container [ngTemplateOutlet]="tpl" />
+  } @else {
+    <span class="int-tooltip__text">{{ content() }}</span>
+  }
+</div>

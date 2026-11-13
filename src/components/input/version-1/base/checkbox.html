@@ -1,0 +1,24 @@
+<input
+  type="checkbox"
+  class="int-input__control"
+  [id]="inputId()"
+  [checked]="checked()"
+  [indeterminate]="isIndeterminate()"
+  [disabled]="isDisabled()"
+  [attr.name]="name() ?? null"
+  [attr.aria-checked]="isIndeterminate() ? 'mixed' : null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  [attr.aria-readonly]="readonly() || null"
+  (click)="onClick($event)"
+  (change)="toggle($event)"
+  (blur)="markAsTouched()"
+/>
+<span class="int-input__box" aria-hidden="true">
+  @if (isIndeterminate()) {
+    <int-icon name="minus" />
+  } @else if (checked()) {
+    <int-icon name="check" />
+  }
+</span>

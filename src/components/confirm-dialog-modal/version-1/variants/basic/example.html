@@ -3,6 +3,4 @@
   description: La confirmación se abre con `confirm()` del servicio y muestra los botones de aceptar y rechazar; `key` une la llamada con su `int-confirm-dialog-modal`.
 -->
 <int-confirm-dialog-modal key="basic" />
-<!-- dep:button provisional · replace with <int-button> when button is done -->
-<button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="confirm()">Confirm</button>
-<!-- /dep:button -->
+<button intButton label="Confirm" (click)="confirm()"></button>

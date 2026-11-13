@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 
+import { IntButtonElement } from '../../../../button/version-1/base/button-element';
 import { IntTreeNode, IntTreeView } from '../../base/tree-view';
 
 function createNodes(): IntTreeNode[] {
@@ -47,7 +48,7 @@ function createNodes(): IntTreeNode[] {
 @Component({
   selector: 'tree-view-controlled-example',
   templateUrl: './example.html',
-  imports: [IntTreeView],
+  imports: [IntTreeView, IntButtonElement],
 })
 export class TreeViewControlledExample {
   readonly nodes = signal(createNodes());

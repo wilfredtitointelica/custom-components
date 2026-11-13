@@ -14,9 +14,6 @@
   --int-carousel-track-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
 
   // --- navigators ---
-  --int-carousel-nav-width: var(--i-sizing-xl); // Figma: 40px (carousel-arrow), no knowledgeBase/SG value
-  --int-carousel-nav-icon-size: var(--i-icon-size-md); // Figma: 24px (icon/sizing/md), no knowledgeBase/SG value
-  --int-carousel-nav-color: var(--i-color-secondary-500); // Figma: #7E85A5 (color/grey/500), no knowledgeBase/SG value
   --int-carousel-nav-duration: var(--i-motion-duration-base); // knowledgeBase: opacity 0.3s
   --int-carousel-nav-easing: var(--i-motion-ease-in-out); // knowledgeBase: ease
 
@@ -32,17 +29,6 @@
 
   // --- more (knowledgeBase .prCarousel--more) ---
   --int-carousel-more-gap: var(--i-spacing-gap-sm); // Figma: 8px (arrow-container gap) [Type=Arrows], no knowledgeBase/SG value
-  --int-carousel-more-button-size: var(--i-sizing-xs); // knowledgeBase: --more buttons 16px · Figma: 16px (button/sizing/xs)
-  --int-carousel-more-button-border-radius: var(--i-border-radius-sm); // knowledgeBase: --more radius sm · Figma: 4px (button/border/radius/sm)
-  --int-carousel-more-button-border-color: var(--i-color-secondary-200); // knowledgeBase: --more border secondary-200 · Figma: #D9D9E3 (button/secondary/border)
-  --int-carousel-more-button-background: var(--i-color-secondary-50); // Figma: #FCFCFC (button/secondary/background), knowledgeBase transparent ⚠️
-  --int-carousel-more-button-color: var(--i-color-secondary-600); // knowledgeBase: --more icon grey-600 · Figma: #636B8D (color/grey/600)
-  --int-carousel-more-icon-size: var(--i-icon-size-xs); // knowledgeBase: --more icon 12px · Figma: 12px (icon/sizing/xs)
-  --int-carousel-more-button-hover-background: var(--i-color-secondary-200); // knowledgeBase: --more hover background
-  --int-carousel-more-button-hover-border-color: var(--i-color-secondary-400); // knowledgeBase: --more hover border
-  --int-carousel-more-button-hover-color: var(--i-color-secondary-400); // knowledgeBase: --more hover icon
-  --int-carousel-more-button-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (button/secondary/disabled/background), no knowledgeBase/SG value
-  --int-carousel-more-button-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (button/secondary/disabled/icon), no knowledgeBase/SG value
   --int-carousel-counter-font-size: var(--i-typography-font-size-sm); // knowledgeBase: .ptCarousel__counter 12px · Figma: 12px (page/font/size/sm)
   --int-carousel-counter-line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (page/font/lineHeight/sm), no knowledgeBase/SG value
   --int-carousel-counter-color: var(--i-color-secondary-600); // Figma: #636B8D (color/grey/600), no knowledgeBase/SG value
@@ -102,42 +88,23 @@
     min-width: 0;
   }
 
-  // TODO(dep:button provisional) text-button look until int-button.
+  // Side navigators: int-button (text, icon only) placed over the viewport edges, hidden until the carousel is
+  // hovered (knowledge base). The transition keeps the button's own color ones and adds opacity / visibility.
   &__prev-button,
   &__next-button {
     position: absolute;
     inset-block: 0;
     z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--int-carousel-nav-width);
-    padding: 0;
-    // On the button, so the icon of a #previousicon / #nexticon template gets the same size.
-    font-size: var(--int-carousel-nav-icon-size);
-    color: var(--int-carousel-nav-color);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    // Same as the knowledge base: hidden until the carousel is hovered.
     opacity: 0;
     visibility: hidden;
     transition:
       opacity var(--int-carousel-nav-duration) var(--int-carousel-nav-easing),
-      visibility var(--int-carousel-nav-duration) var(--int-carousel-nav-easing);
-
-    &:focus-visible {
-      outline: var(--int-carousel-focus-ring-width) solid var(--int-carousel-focus-ring-color);
-      outline-offset: calc(var(--int-carousel-focus-ring-width) * -1);
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-      user-select: none;
-    }
+      visibility var(--int-carousel-nav-duration) var(--int-carousel-nav-easing),
+      background-color var(--i-motion-base),
+      color var(--i-motion-base);
   }
 
-  // Only the icon, as Figma carousel-arrow; the knowledge base gradient is left out for now.
+  // The knowledge base gradient is left out for now.
   &__prev-button {
     inset-inline-start: 0;
   }

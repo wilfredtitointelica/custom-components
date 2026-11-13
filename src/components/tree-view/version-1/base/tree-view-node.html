@@ -20,19 +20,16 @@
     </button>
 
     @if (tree.isCheckboxMode()) {
-      <!-- dep:input provisional · replace with the checkbox of <int-input> when input is done -->
-      <input
-        type="checkbox"
+      <!-- Display only: inert keeps it out of the tab order, the pointer and the a11y tree; -->
+      <!-- the row handles the click and the treeitem carries aria-checked -->
+      <int-checkbox
         class="int-tree-view__checkbox"
-        data-dep="input"
-        tabindex="-1"
-        aria-hidden="true"
-        [checked]="selected()"
+        binary
+        inert
+        [ngModel]="selected()"
         [indeterminate]="partial()"
         [disabled]="disabled()"
-        (click)="$event.preventDefault()"
       />
-      <!-- /dep:input -->
     }
 
     @if (node().icon) {

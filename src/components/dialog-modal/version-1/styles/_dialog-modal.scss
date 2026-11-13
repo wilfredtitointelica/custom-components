@@ -1,3 +1,5 @@
+@use '../../../_shared_/mixins' as int;
+
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -10,21 +12,103 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
+// Parity with Style Guide `.prDialog` and Figma "Atoms / Overlay". The block is the panel rendered
+// in the CDK overlay. Overridable props: --int-dialog-modal-{padding,radius,background,color,width}.
 .int-dialog-modal {
+  --int-dialog-modal-padding: var(--i-spacing-container-2xl);
+  --int-dialog-modal-radius: var(--i-border-radius-2xl);
+  --int-dialog-modal-background: var(--i-color-secondary-50);
+  --int-dialog-modal-color: var(--i-color-primary-900);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--i-spacing-gap-lg);
+  box-sizing: border-box;
+  // Without --int-dialog-modal-width (no size) the declaration is invalid and the width stays auto.
+  width: min(var(--int-dialog-modal-width), calc(100vw - 2rem));
+  min-width: min(20rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  padding: var(--int-dialog-modal-padding);
+  border-radius: var(--int-dialog-modal-radius);
+  background: var(--int-dialog-modal-background);
+  box-shadow: var(--i-shadow-depth-3); // Figma: shadow.300
+  color: var(--int-dialog-modal-color);
+  font-family: var(--i-text-body-family);
+  font-size: var(--i-typography-font-size-md);
+  animation: int-dialog-modal-enter var(--i-motion-duration-fast) var(--i-motion-ease-out);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes int-dialog-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
 \*——————————————————————————————————————————————————————————*/
 
+// Backdrop of the CDK overlay (outside the panel).
+.int-dialog-modal__mask {
+  background: var(--i-shadow-color-strong);
+}
+
 .int-dialog-modal {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--i-spacing-gap-lg);
+    padding-bottom: var(--i-spacing-gap-lg);
+    border-bottom: var(--i-border-width-sm) solid var(--i-color-neutral-200);
+  }
+  &__title {
+    font-size: var(--i-typography-font-size-lg); // Figma: 16px (overlay/font/size/lg)
+    font-weight: var(--i-typography-font-weight-bold);
+    line-height: var(--i-typography-lineHeight-lg); // Figma: 24px (overlay/font/lineHeight/lg)
+  }
+  // Text + icon-only int-button: its look comes from the button block.
+  &__close {
+    flex-shrink: 0;
+  }
+  &__content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+  &__footer {
+    display: flex;
+    // Right-aligned, Cancel before the primary action (knowledgeBase dialog.md; Figma centers them).
+    justify-content: flex-end;
+    gap: var(--i-spacing-gap-lg); // Figma: 16px
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
+// Sizes: Style Guide .prDialog--sm|md|lg|xl (Figma XSmall / Medium / Large / XLarge).
+// --i-dialog-max-width-* live in the Style Guide components/dialog/_dialog-size.scss, not in tokens/,
+// so the base bundle (tokens only) lacks them: the fallbacks are the same Style Guide values.
+$sizes: (
+  sm: 400px,
+  md: 600px,
+  lg: 800px,
+  xl: 1024px,
+);
+
 .int-dialog-modal {
+  @each $size, $width in $sizes {
+    &--#{$size} {
+      --int-dialog-modal-width: var(--i-dialog-max-width-#{$size}, #{$width});
+    }
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -32,4 +116,10 @@
 \*——————————————————————————————————————————————————————————*/
 
 .sk-dialog-modal {
+  display: block;
+  width: 32rem;
+  max-width: 100%;
+  height: 12rem;
+  border-radius: var(--i-border-radius-2xl);
+  background: var(--i-background-disabled);
 }

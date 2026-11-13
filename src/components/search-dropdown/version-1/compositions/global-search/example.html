@@ -32,19 +32,14 @@
       } @else {
         <div class="u-display-flex u-gap-xs" role="group" aria-label="Category">
           @for (category of categories; track category) {
-            <!-- dep:button provisional · replace with <int-button> when button is done -->
             <button
-              type="button"
-              class="u-px-2 u-py-1 u-radius-md u-bt-1 u-bm-1 u-bs-1 u-be-1 u-text-xs u-color-primary u-pointer"
-              [class.u-background-surface]="category === activeCategory()"
-              [class.u-background-white]="category !== activeCategory()"
-              [attr.aria-pressed]="category === activeCategory()"
-              data-dep="button"
+              intButton
+              severity="secondary"
+              size="small"
+              [label]="category"
+              [active]="category === activeCategory()"
               (click)="selectCategory(category)"
-            >
-              {{ category }}
-            </button>
-            <!-- /dep:button -->
+            ></button>
           }
         </div>
       }

@@ -10,7 +10,7 @@ import dialogModal from './dialog-modal/dialog-modal.config';
 import confirmDialogModal from './confirm-dialog-modal/confirm-dialog-modal.config';
 import tabs from './tabs/tabs.config';
 import tooltip from './tooltip/tooltip.config';
-import pill from './pill/pill.config';
+import tag from './tag/tag.config';
 import popover from './popover/popover.config';
 import alertas from './alertas/alertas.config';
 import toggleSwitch from './toggle-switch/toggle-switch.config';
@@ -32,7 +32,6 @@ import treetable from './treetable/treetable.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
 import chip from './chip/chip.config';
-import tag from './tag/tag.config';
 import searchDropdown from './search-dropdown/search-dropdown.config';
 import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
@@ -59,7 +58,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   dialogModal,
   tabs,
   tooltip,
-  pill,
+  tag,
   popover,
   alertas,
   confirmDialogModal,
@@ -82,7 +81,6 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   card,
   badge,
   chip,
-  tag,
   searchDropdown,
   breadcrumb,
   paginator,

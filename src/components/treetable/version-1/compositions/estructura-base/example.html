@@ -54,12 +54,7 @@
       <td class="u-text-right">{{ rowData.amount }}</td>
       <td class="u-text-center">
         <div class="u-display-flex u-justify-content-center">
-          <!-- dep:button provisional · replace with <int-button> when button is done -->
-          <!-- Text button (no border): a span, since no helper removes the native button border -->
-          <span class="u-display-inline-flex u-p-1 u-radius-md u-color-body u-pointer" role="button" tabindex="0" aria-label="Settings" data-dep="button">
-            <i class="icon icon-settings" aria-hidden="true"></i>
-          </span>
-          <!-- /dep:button -->
+          <button intButton variant="text" icon="icon icon-settings" ariaLabel="Settings"></button>
         </div>
       </td>
     </tr>

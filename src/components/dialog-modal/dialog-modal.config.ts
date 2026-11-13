@@ -13,5 +13,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
 export default {
   id: 'dialog-modal',
   sourceName: 'Dialog / Modal',
+  requires: ['button'],
+  uses: ['date-picker', 'dropdown-select', 'input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

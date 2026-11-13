@@ -7,6 +7,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 // CDK overlay replaces PrimeNG p-overlay: the panel is attached to the body and positioned under the trigger.
 import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 
+import { IntInputText } from '../../../input/version-1/base/input-text';
 // tree-view is in-progress only for the checkbox of int-input; composed real by decision of the designer
 // (TreeSelect has no meaning without its tree and the tree is her own component).
 import {
@@ -31,7 +32,7 @@ const PANEL_POSITIONS: ConnectedPosition[] = [
   selector: 'int-tree-select',
   templateUrl: './tree-select.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet, CdkConnectedOverlay, IntTreeView],
+  imports: [NgTemplateOutlet, CdkConnectedOverlay, IntTreeView, IntInputText],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

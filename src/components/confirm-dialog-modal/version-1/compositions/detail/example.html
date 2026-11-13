@@ -3,6 +3,4 @@
   description: Confirmación con un texto secundario debajo del mensaje: `header`, `message` y `detail` en `confirm()`, con `severity="warning"`.
 -->
 <int-confirm-dialog-modal key="detail" />
-<!-- dep:button provisional · replace with <int-button> when button is done -->
-<button type="button" class="u-px-2 u-py-1 u-radius-lg u-background-white u-pointer" data-dep="button" (click)="confirm()">Leave page</button>
-<!-- /dep:button -->
+<button intButton label="Leave page" (click)="confirm()"></button>

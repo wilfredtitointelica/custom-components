@@ -12,6 +12,26 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'input',
+  variants: [
+    'basic',
+    'text-sizes',
+    'text-validation',
+    'text-helper-text',
+    'text-disabled-fluid-textarea',
+    'number-decimal',
+    'number-currency',
+    'number-prefix-suffix',
+    'number-buttons',
+    'number-states',
+    'checkbox-binary',
+    'checkbox-group',
+    'checkbox-validation',
+    'checkbox-sizes-states',
+    'radio-group',
+    'radio-reactive-forms',
+    'radio-sizes-states',
+  ],
   sourceName: 'Input (InputText, Checkbox, RadioButton, Textarea)',
+  uses: ['message'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

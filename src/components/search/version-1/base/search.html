@@ -4,19 +4,21 @@
   figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2572-2023
   figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2585-1986
 -->
-<!-- dep:input provisional · replace with <int-input> when input is done -->
+<!-- Text field: input[intInputText] (fluid, it fills the host); the end buttons sit over its padding -->
 <input
   #inputEl
+  intInputText
   type="text"
+  fluid
+  [intSize]="size()"
+  [invalid]="invalid()"
   class="int-search__input"
-  data-dep="input"
   [id]="inputId()"
   [attr.name]="name()"
   [attr.autocomplete]="autocomplete()"
   [attr.placeholder]="placeholder()"
   [attr.aria-label]="ariaLabel()"
   [attr.aria-labelledby]="ariaLabelledBy()"
-  [attr.aria-invalid]="invalid() || null"
   [attr.role]="inputRole()"
   [attr.aria-expanded]="ariaExpanded()"
   [attr.aria-controls]="ariaControls()"
@@ -29,7 +31,6 @@
   (focus)="onFocus.emit($event)"
   (blur)="handleBlur($event)"
 />
-<!-- /dep:input -->
 
 <!-- End side, as p-inputicon after the input: clear button + divider (int-* extension) and the search button -->
 <!-- Both buttons stay out of the tab order: Enter runs the search and the text is removed with the keyboard -->

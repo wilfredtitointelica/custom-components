@@ -68,17 +68,18 @@
   >
     @if (filter()) {
       <div class="int-tree-select__filter">
-        <!-- dep:input provisional · replace with <int-input> (icon field) when input is done -->
+        <!-- Filter field: input[intInputText] small, with the search icon over its end padding -->
         <input
+          intInputText
+          intSize="small"
+          fluid
           type="text"
           class="int-tree-select__filter-input"
-          data-dep="input"
           [attr.placeholder]="filterPlaceholder()"
           [attr.aria-label]="filterPlaceholder() || 'Search'"
           [value]="filterValue()"
           (input)="onFilterInput($event)"
         />
-        <!-- /dep:input -->
         <i class="int-tree-select__filter-icon icon icon-search" aria-hidden="true"></i>
       </div>
     }

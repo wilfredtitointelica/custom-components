@@ -1,5 +1,9 @@
-import { Component, computed, ElementRef, inject, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { IntButton } from '../../../../button/version-1/base/button';
+import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
+import { IntInputNumber } from '../../../../input/version-1/base/input-number';
 import { IntSearch } from '../../../../search/version-1/base/search';
 import { IntTreeNode, IntTreetableModule, IntTreetablePageEvent } from '../../base/treetable';
 
@@ -59,13 +63,9 @@ function buildFees(): IntTreeNode<FeeChartRow>[] {
 @Component({
   selector: 'treetable-fee-chart-example',
   templateUrl: './example.html',
-  imports: [IntTreetableModule, IntSearch],
-  // TODO(dep:dropdown-select provisional) a press outside the rows per page list closes it.
-  host: { '(document:pointerdown)': 'onDocumentPointerDown($event)' },
+  imports: [FormsModule, IntTreetableModule, IntSearch, IntButton, IntDropdownSelect, IntInputNumber],
 })
 export class TreetableFeeChartExample {
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-
   protected readonly fees = buildFees();
   protected readonly total = this.fees.reduce((sum, node) => sum + (node.data?.amount ?? 0), 0);
 
@@ -75,52 +75,22 @@ export class TreetableFeeChartExample {
   protected readonly currentPage = computed(() => Math.floor(this.first() / this.rows()) + 1);
   protected readonly totalPages = computed(() => Math.ceil(this.fees.length / this.rows()));
 
-  // TODO(dep:dropdown-select provisional) open state and options of the rows per page list.
-  protected readonly rowsOpen = signal(false);
-  /** The list shows the sizes that are not selected, as in the design. */
-  protected readonly otherPageSizes = computed(() => PAGE_SIZES.filter((size) => size !== this.rows()));
+  protected readonly pageSizes = PAGE_SIZES;
 
   protected onPage(event: IntTreetablePageEvent): void {
     this.first.set(event.first);
     this.rows.set(event.rows);
   }
 
-  protected toggleRows(): void {
-    this.rowsOpen.update((open) => !open);
-  }
-
-  /** Same keys as p-select on its trigger: Enter, Space and the arrows open; Escape closes. */
-  protected onRowsTriggerKeydown(event: KeyboardEvent): void {
-    if (['Enter', ' ', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-      event.preventDefault();
-      this.rowsOpen.set(true);
-      queueMicrotask(() => this.host.nativeElement.querySelector<HTMLElement>('[role="option"]')?.focus());
-    } else if (event.key === 'Escape') {
-      this.rowsOpen.set(false);
-    }
-  }
-
-  protected selectRowsPerPage(size: number, trigger: HTMLElement): void {
+  protected selectRowsPerPage(size: number): void {
     this.rows.set(size);
     this.first.set(0);
-    this.closeRows(trigger);
   }
 
-  protected closeRows(trigger: HTMLElement): void {
-    this.rowsOpen.set(false);
-    trigger.focus();
-  }
-
-  protected onDocumentPointerDown(event: PointerEvent): void {
-    const list = this.host.nativeElement.querySelector('[data-dep="dropdown-select"]');
-    if (this.rowsOpen() && !list?.contains(event.target as Node)) this.rowsOpen.set(false);
-  }
-
-  // TODO(dep:input provisional) the number input of int-input will clamp the value itself.
-  protected onPageSelect(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const page = Math.min(Math.max(Number(input.value) || 1, 1), this.totalPages());
-    this.first.set((page - 1) * this.rows());
-    input.value = String(page);
+  /** int-inputnumber clamps to min / max on blur; while typing, only whole pages in range are applied. */
+  protected onPageSelect(page: number | null): void {
+    if (page != null && Number.isInteger(page) && page >= 1 && page <= this.totalPages()) {
+      this.first.set((page - 1) * this.rows());
+    }
   }
 }

@@ -1,5 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { IntCheckbox } from '../../../../input/version-1/base/checkbox';
 import { IntTable } from '../../base/table';
 
 interface Fee {
@@ -18,7 +20,7 @@ const FEES: readonly Fee[] = [
 @Component({
   selector: 'table-checkbox-column-example',
   templateUrl: './example.html',
-  imports: [IntTable],
+  imports: [IntTable, IntCheckbox, FormsModule],
 })
 export class TableCheckboxColumnExample {
   protected readonly fees = FEES;

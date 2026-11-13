@@ -1,12 +1,13 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntProgressbar } from '../../../../progressbar/version-1/base/progressbar';
 import { IntMessageService, IntToast } from '../../base/toast';
 
 @Component({
   selector: 'toast-headless-example',
   templateUrl: './example.html',
-  imports: [IntToast, IntProgressbar],
+  imports: [IntToast, IntProgressbar, IntButton],
   // Same as PrimeNG: the view that shows the toast provides the message service.
   providers: [IntMessageService],
 })

@@ -1,0 +1,20 @@
+<!--
+  title: Status header
+  description: variant="card" (extensión int-*): cada panel es una tarjeta con borde; el encabezado acepta un icono de estado (int-accordion__status-icon--success | --error, colores --i-icon-color-*) y un conteo.
+-->
+<int-accordion variant="card" multiple [(value)]="active">
+  <int-accordion-panel value="sent">
+    <int-accordion-header>
+      <span class="int-accordion__status-icon int-accordion__status-icon--success icon icon-success" aria-hidden="true"></span>
+      Alert sent: 80
+    </int-accordion-header>
+    <int-accordion-content>80 clients were notified about the Opt-Out deadline.</int-accordion-content>
+  </int-accordion-panel>
+  <int-accordion-panel value="failed">
+    <int-accordion-header>
+      <span class="int-accordion__status-icon int-accordion__status-icon--error icon icon-alert" aria-hidden="true"></span>
+      Alert failed: 3
+    </int-accordion-header>
+    <int-accordion-content>3 alerts could not be delivered; check the client contact data.</int-accordion-content>
+  </int-accordion-panel>
+</int-accordion>

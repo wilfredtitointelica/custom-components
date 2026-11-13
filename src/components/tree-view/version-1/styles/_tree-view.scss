@@ -36,10 +36,6 @@
   --int-tree-view-toggle-size: var(--i-spacing-container-xl); // SG: .p-tree-node-toggle-button 16px · Figma: 16px (icon-container)
   --int-tree-view-toggle-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container)
 
-  // --- checkbox (provisional until the checkbox of int-input) ---
-  --int-tree-view-checkbox-size: var(--i-sizing-xs); // SG: .p-checkbox-box 1rem · Figma: 16px (checkbox/sizing/xs)
-  --int-tree-view-checkbox-accent: var(--i-color-primary-700); // Figma: #1B3E88 (checkbox/color/background)
-
   // --- empty message ---
   --int-tree-view-empty-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs, no knowledgeBase/Figma value
 
@@ -147,14 +143,9 @@
     rotate: 90deg;
   }
 
-  // TODO(dep:input provisional) minimal native look until the checkbox of int-input.
+  // <int-checkbox> keeps its own look; the row only keeps it from shrinking.
   &__checkbox {
     flex-shrink: 0;
-    width: var(--int-tree-view-checkbox-size);
-    height: var(--int-tree-view-checkbox-size);
-    margin: 0;
-    accent-color: var(--int-tree-view-checkbox-accent);
-    pointer-events: none;
   }
 
   &__node-label {
