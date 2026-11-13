@@ -9,7 +9,10 @@ import {
   resolveInventory,
 } from './component-catalog';
 
-/** Column A of "Listado de componentes a replicar" (rows 2–37), verbatim. */
+/**
+ * Column A of "Listado de componentes a replicar" (rows 2–37), verbatim, without the rows that were dropped:
+ * Alertas (it is ConfirmDialog, confirm-dialog-modal) and FileDrop (a variant of FileUpload).
+ */
 const EXCEL_NAMES = [
   'Accordion',
   'Button',
@@ -23,7 +26,6 @@ const EXCEL_NAMES = [
   'Tooltip',
   'Pill',
   'Popover',
-  'Alertas',
   'ToggleSwitch',
   'Slider',
   'TreeView',
@@ -32,7 +34,6 @@ const EXCEL_NAMES = [
   'TreeSelect',
   'Drag and Drop',
   'Table',
-  'FileDrop',
   'Carousel',
   'Message',
   'MultiSelect',
