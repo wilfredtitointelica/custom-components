@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'popover',
+  variants: ['basic', 'arrow', 'append-to'],
   uses: ['button', 'list-box'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

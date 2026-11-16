@@ -18,6 +18,8 @@ export default {
     'templates',
     'reactive-forms-validation',
     'sizes-fluid',
+    'placement',
+    'append-to',
   ],
   requires: ['list-box'],
   loadRoutes: () => import('./routes'),

@@ -1,9 +1,16 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  ConnectedPosition,
+  OverlayRef,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   Component,
+  Injector,
   OnDestroy,
   TemplateRef,
   ViewContainerRef,
@@ -11,13 +18,20 @@ import {
   booleanAttribute,
   inject,
   input,
+  numberAttribute,
   output,
   signal,
   viewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { INT_DROPDOWN_POSITIONS, uniqueId } from '../../../_shared_';
+import {
+  INT_DROPDOWN_POSITIONS,
+  IntAppendTo,
+  connectOverlayContainer,
+  provideIntOverlayContainer,
+  uniqueId,
+} from '../../../_shared_';
 
 /** Same pairs as INT_DROPDOWN_POSITIONS, 4px further away to leave room for the 8×4 beak. */
 const ARROW_POSITIONS: ConnectedPosition[] = INT_DROPDOWN_POSITIONS.map((p) => ({
@@ -33,6 +47,7 @@ const ARROW_EDGE = 16;
  * toggle / show / hide; API mirrors PrimeNG v20 Popover. The host is `display: contents`: the
  * `int-popover` block is the panel inside the CDK overlay.
  * Deviation: the arrow is opt-in (`arrow`) and looks like the tooltip beak; PrimeNG always draws one.
+ * int-* extension: `baseZIndex`.
  *
  * @example
  * <button intButton label="Columns" (click)="op.toggle($event)"></button>
@@ -43,6 +58,7 @@ const ARROW_EDGE = 16;
   templateUrl: './popover.html',
   styleUrl: '../styles/_index.scss',
   host: { style: 'display: contents' },
+  providers: [provideIntOverlayContainer()],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -70,6 +86,24 @@ export class IntPopover implements OnDestroy {
    * borde inferior cuando el popover se abre encima.
    */
   readonly arrow = input(false, { transform: booleanAttribute });
+  /**
+   * Dónde se monta el panel: `body` (por defecto, como PrimeNG), `self` (dentro del componente) o un elemento
+   * (variable de template, p. ej. `[appendTo]="container"`).
+   * @defaultValue 'body'
+   */
+  readonly appendTo = input<IntAppendTo>('body');
+  /**
+   * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
+   * se define con CSS (`.int-overlay-container`).
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * `z-index` del panel cuando `autoZIndex` está activo; 0 usa 1000. Útil para quedar sobre un encabezado
+   * fijo u otro overlay.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
 
   /** Se emite al abrirse el popover. */
   readonly onShow = output<void>();
@@ -84,12 +118,20 @@ export class IntPopover implements OnDestroy {
   protected readonly arrowLeft = signal(ARROW_EDGE);
 
   private readonly panel = viewChild.required<TemplateRef<unknown>>('panel');
-  private readonly overlay = inject(Overlay);
+  private readonly injector = inject(Injector);
   private readonly vcr = inject(ViewContainerRef);
   private readonly focusMonitor = inject(FocusMonitor);
   private overlayRef: OverlayRef | null = null;
   private positionChanges: Subscription | null = null;
   private target: HTMLElement | null = null;
+
+  constructor() {
+    connectOverlayContainer({
+      appendTo: this.appendTo,
+      autoZIndex: this.autoZIndex,
+      baseZIndex: this.baseZIndex,
+    });
+  }
 
   /** Abre el popover si está cerrado y lo cierra si está abierto (mismos argumentos que `show`). */
   toggle(event: Event, target?: HTMLElement): void {
@@ -107,16 +149,15 @@ export class IntPopover implements OnDestroy {
     if (this.visible()) this.hide(false);
     this.target = anchor;
 
-    const strategy = this.overlay
-      .position()
-      .flexibleConnectedTo(anchor)
+    const strategy = createFlexibleConnectedPositionStrategy(this.injector, anchor)
       .withPositions(this.arrow() ? ARROW_POSITIONS : INT_DROPDOWN_POSITIONS)
       // No push: pushing it into the viewport detaches the panel from the trigger when the page scrolls.
       .withPush(false)
       .withViewportMargin(8);
-    this.overlayRef = this.overlay.create({
+    // Created from this component's injector, so it uses its IntOverlayContainer (appendTo).
+    this.overlayRef = createOverlayRef(this.injector, {
       positionStrategy: strategy,
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      scrollStrategy: createRepositionScrollStrategy(this.injector),
     });
     if (this.arrow()) {
       // Emitted after the CDK applied the position (push included), so the rects are final.

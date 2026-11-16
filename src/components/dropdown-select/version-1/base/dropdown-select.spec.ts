@@ -1,6 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { IntDropdownSelect } from './dropdown-select';
@@ -22,12 +23,17 @@ class Host {
   ];
 }
 
+
+/** Panels mount in the component's own overlay container (appendTo), not in the root one. */
+function overlayOf(fixture: ComponentFixture<unknown>): HTMLElement {
+  return fixture.debugElement.query(By.directive(IntDropdownSelect)).injector.get(OverlayContainer).getContainerElement();
+}
 describe('IntDropdownSelect', () => {
   function setup() {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     const trigger: HTMLElement = fixture.nativeElement.querySelector('[role="combobox"]');
-    const overlay = TestBed.inject(OverlayContainer).getContainerElement();
+    const overlay = overlayOf(fixture);
     return { fixture, trigger, overlay, control: fixture.componentInstance.control };
   }
 
@@ -90,5 +96,55 @@ describe('IntDropdownSelect', () => {
     fixture.componentInstance.threshold = 2;
     fixture.detectChanges();
     expect(overlay.querySelector('.int-list-box__filter')).not.toBeNull();
+  });
+});
+
+@Component({
+  imports: [IntDropdownSelect],
+  template: `
+    <div #box class="box"></div>
+    <int-dropdown-select class="self" appendTo="self" [options]="['A', 'B']" [baseZIndex]="1200" />
+    <int-dropdown-select class="box-target" [appendTo]="box" [options]="['A', 'B']" [autoZIndex]="false" />
+  `,
+})
+class AppendToHost {}
+
+describe('IntDropdownSelect appendTo', () => {
+  function openSelect(fixture: ComponentFixture<AppendToHost>, selector: string): HTMLElement {
+    const host: HTMLElement = fixture.nativeElement.querySelector(selector);
+    host.querySelector<HTMLElement>('[role="combobox"]')!.click();
+    fixture.detectChanges();
+    return host;
+  }
+
+  it('mounts the panel in the body by default, with the overlay z-index', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('[role="combobox"]').click();
+    fixture.detectChanges();
+    const container = overlayOf(fixture);
+    expect(container.parentElement).toBe(document.body);
+    expect(container.style.zIndex).toBe('1000');
+    expect(container.querySelectorAll('[role="option"]').length).toBe(3);
+  });
+
+  it('mounts the panel inside the component with appendTo="self" and uses baseZIndex', () => {
+    const fixture = TestBed.createComponent(AppendToHost);
+    fixture.detectChanges();
+    const host = openSelect(fixture, '.self');
+    const container = host.querySelector<HTMLElement>('.int-overlay-container')!;
+    expect(container).not.toBeNull();
+    expect(container.style.zIndex).toBe('1200');
+    expect(container.querySelectorAll('[role="option"]').length).toBe(2);
+  });
+
+  it('mounts the panel in a given element and leaves the z-index to CSS without autoZIndex', () => {
+    const fixture = TestBed.createComponent(AppendToHost);
+    fixture.detectChanges();
+    openSelect(fixture, '.box-target');
+    const container = fixture.nativeElement.querySelector('.box > .int-overlay-container') as HTMLElement;
+    expect(container).not.toBeNull();
+    expect(container.style.zIndex).toBe('');
+    expect(container.querySelectorAll('[role="option"]').length).toBe(2);
   });
 });

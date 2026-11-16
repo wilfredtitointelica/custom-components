@@ -81,6 +81,10 @@
     color: var(--i-icon-color-default);
     font-size: var(--i-icon-size-sm);
     transition: transform var(--i-motion-base);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   // Rendered in the CDK overlay container, outside the host.
