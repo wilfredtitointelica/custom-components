@@ -72,7 +72,8 @@ let nextId = 0;
  * <int-paginator> · version 1. Replica of PrimeNG v20 p-paginator without PrimeNG at runtime.
  * Navigation buttons (first, prev, pages, next, last), current page report, jump to page and rows per
  * page. The jump to page field is an `<int-inputnumber>`; the selects stay provisional (see dropdown-select
- * markers): int-dropdown-select has no `appendTo` / `autoZIndex` / `baseZIndex` and opens below.
+ * markers): int-dropdown-select now has `appendTo` / `autoZIndex` / `baseZIndex` and `placement="top"`, but
+ * no borderless "10 ^" trigger and it lists the selected option, while the Figma list hides it.
  */
 @Component({
   selector: 'int-paginator',
