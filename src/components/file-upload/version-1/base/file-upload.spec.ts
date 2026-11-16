@@ -14,6 +14,17 @@ class Host {
   uploaded: IntFileUploadHandlerEvent | null = null;
 }
 
+@Component({
+  imports: [IntFileUpload],
+  template: `
+    <int-file-upload #fu dropzone multiple accept=".csv, .xlsx" [maxFileSize]="2048" [fileLimit]="3"
+                     hint="One per period" (uploadHandler)="uploaded = $event" />
+  `,
+})
+class DropzoneHost {
+  uploaded: IntFileUploadHandlerEvent | null = null;
+}
+
 function selectFiles(input: HTMLInputElement, files: File[]): void {
   const transfer = new DataTransfer();
   files.forEach((f) => transfer.items.add(f));
@@ -71,5 +82,38 @@ describe('IntFileUpload', () => {
     )!;
     upload.click();
     expect(host.uploaded?.files.map((f) => f.name)).toEqual(['b.csv']);
+  });
+
+  describe('dropzone', () => {
+    function setupDropzone() {
+      const fixture = TestBed.createComponent(DropzoneHost);
+      fixture.detectChanges();
+      const el: HTMLElement = fixture.nativeElement;
+      return { fixture, el, host: fixture.componentInstance };
+    }
+
+    it('hides the header and shows hint + requirements built from the validation inputs', () => {
+      const { el } = setupDropzone();
+      expect(el.querySelector('int-file-upload')!.classList).toContain('int-file-upload--dropzone');
+      expect(el.querySelector('.int-file-upload__header')).toBeNull();
+      expect(el.querySelector('.int-file-upload__hint')?.textContent).toContain('One per period');
+      const reqs = Array.from(el.querySelectorAll('.int-file-upload__requirement')).map((r) =>
+        Array.from(r.children).map((c) => c.textContent?.trim()).join(' '),
+      );
+      expect(reqs).toEqual(['Formats: .csv, .xlsx', 'Max size: 2 KB', 'Max files: 3']);
+    });
+
+    it('lists queued files below the zone and uploads through upload()', () => {
+      const { fixture, el, host } = setupDropzone();
+      const input = el.querySelector<HTMLInputElement>('input[type="file"]')!;
+      selectFiles(input, [file('a.csv')]);
+      fixture.detectChanges();
+      expect(el.querySelector('.int-file-upload__dropzone .int-file-upload__file')).toBeNull();
+      expect(el.querySelector('.int-file-upload__file-name')?.textContent).toBe('a.csv');
+
+      const upload = fixture.debugElement.children[0].componentInstance as IntFileUpload;
+      upload.upload();
+      expect(host.uploaded?.files.map((f) => f.name)).toEqual(['a.csv']);
+    });
   });
 });
