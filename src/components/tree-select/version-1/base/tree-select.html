@@ -45,25 +45,28 @@
 }
 
 <div class="int-tree-select__dropdown" aria-hidden="true">
-  <i class="int-tree-select__dropdown-icon icon" [class.icon-arrow-up]="overlayVisible()" [class.icon-arrow-down]="!overlayVisible()"></i>
+  <i class="int-tree-select__dropdown-icon icon icon-arrow-down"></i>
 </div>
 
 <!-- Panel attached to the body under the trigger (CDK overlay instead of p-overlay) -->
 <ng-template
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="host"
-  [cdkConnectedOverlayOpen]="overlayVisible()"
+  [cdkConnectedOverlayOpen]="overlayAttached()"
   [cdkConnectedOverlayPositions]="positions"
   [cdkConnectedOverlayMinWidth]="triggerWidth()"
+  cdkConnectedOverlayTransformOriginOn=".int-tree-select__panel"
   (overlayOutsideClick)="onOutsideClick($event)"
-  (detach)="hide()"
+  (detach)="onOverlayDetach()"
 >
   <div
     #panel
     class="int-tree-select__panel"
     [class]="panelStyleClass()"
     [attr.id]="listId()"
+    [class.int-tree-select__panel--leave]="closing()"
     animate.enter="int-tree-select__panel--enter"
+    (animationend)="onPanelAnimationEnd($event)"
     (keydown)="onPanelKeyDown($event)"
   >
     @if (filter()) {

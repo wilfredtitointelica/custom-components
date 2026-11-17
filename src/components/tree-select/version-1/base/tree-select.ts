@@ -129,6 +129,9 @@ export class IntTreeSelect implements ControlValueAccessor {
   /** Model value: a node or null in single mode, an array of nodes in multiple and checkbox modes. */
   protected readonly value = signal<IntTreeSelection>(null);
   protected readonly overlayVisible = signal(false);
+  /** The CDK overlay stays attached while the leave animation runs (the CDK detaches before animate.leave). */
+  protected readonly overlayAttached = signal(false);
+  protected readonly closing = signal(false);
   protected readonly focused = signal(false);
   protected readonly filterValue = signal('');
   /** Width of the trigger, so the panel opens as wide as it (PrimeNG p-overlay min-width). */
@@ -179,6 +182,8 @@ export class IntTreeSelect implements ControlValueAccessor {
   show(): void {
     if (this.isDisabled() || this.overlayVisible()) return;
     this.triggerWidth.set(this.host.nativeElement.offsetWidth);
+    this.closing.set(false);
+    this.overlayAttached.set(true);
     this.overlayVisible.set(true);
     this.onShow.emit();
   }
@@ -187,8 +192,26 @@ export class IntTreeSelect implements ControlValueAccessor {
   hide(): void {
     if (!this.overlayVisible()) return;
     this.overlayVisible.set(false);
-    this.filterValue.set('');
+    // Leave animation first; the overlay is detached on its animationend.
+    if (this.panel()) this.closing.set(true);
+    else this.overlayAttached.set(false);
     this.onHide.emit();
+  }
+
+  /** End of the leave animation: detach the overlay and clear the filter. */
+  protected onPanelAnimationEnd(event: AnimationEvent): void {
+    if (!this.closing() || event.target !== event.currentTarget) return;
+    this.closing.set(false);
+    this.overlayAttached.set(false);
+    this.filterValue.set('');
+  }
+
+  /** The CDK detached the overlay itself (scroll, navigation): no animation left to wait for. */
+  protected onOverlayDetach(): void {
+    this.hide();
+    this.closing.set(false);
+    this.overlayAttached.set(false);
+    this.filterValue.set('');
   }
 
   protected onTriggerClick(): void {
