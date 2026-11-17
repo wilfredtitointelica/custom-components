@@ -1,5 +1,8 @@
 <!--
   title: Truncated cell
-  description: Patrón de tabla: el texto cortado con puntos suspensivos muestra el valor completo en el tooltip.
+  description: Patrón de tabla: con `tooltipOnTruncate` (extensión int-*) el tooltip solo aparece cuando el texto está cortado con puntos suspensivos; el valor corto de abajo no lo muestra.
 -->
-<span tabindex="0" [intTooltip]="fee">{{ fee }}</span>
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <span tabindex="0" tooltipOnTruncate [intTooltip]="fee">{{ fee }}</span>
+  <span tabindex="0" tooltipOnTruncate [intTooltip]="shortFee">{{ shortFee }}</span>
+</div>

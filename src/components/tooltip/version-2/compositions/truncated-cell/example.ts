@@ -20,4 +20,5 @@ import { IntTooltip } from '../../base/tooltip';
 })
 export class TooltipTruncatedCellExample {
   readonly fee = 'Mastercard Cross-Border Assessment Fee — Consumer Credit';
+  readonly shortFee = 'Visa ISA Fee';
 }

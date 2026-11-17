@@ -84,6 +84,11 @@ export class IntTooltip implements OnDestroy {
   readonly tooltipTitle = input<string | undefined>(undefined);
   /** int-* extension: `false` hides the arrow (Figma `Indicator=None`); the gap stays the same. */
   readonly tooltipArrow = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: solo se muestra si el texto del elemento está cortado (con `text-overflow: ellipsis` o
+   * `line-clamp`), p. ej. el nombre largo de un resultado en una lista. Se comprueba cada vez que va a abrirse.
+   */
+  readonly tooltipOnTruncate = input(false, { transform: booleanAttribute });
 
   protected readonly id = uniqueId('int-tooltip');
   protected readonly visible = signal(false);
@@ -111,6 +116,7 @@ export class IntTooltip implements OnDestroy {
 
   show(): void {
     if (this.tooltipDisabled() || !this.content() || this.visible()) return;
+    if (this.tooltipOnTruncate() && !this.isTruncated()) return;
     const preferred = this.tooltipPosition();
     const candidates = [preferred, OPPOSITE[preferred]];
     if (!this.overlayRef) {
@@ -159,6 +165,12 @@ export class IntTooltip implements OnDestroy {
     clearTimeout(this.timer);
     this.positionChanges?.unsubscribe();
     this.overlayRef?.dispose();
+  }
+
+  /** The host content overflows its box: cut by an ellipsis (width) or a line clamp (height). */
+  private isTruncated(): boolean {
+    const el = this.host.nativeElement;
+    return el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
   }
 
   private scheduleShow(): void {
