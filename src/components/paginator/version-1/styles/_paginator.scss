@@ -43,9 +43,6 @@
   --int-paginator-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Figma: #9CA3BA (pagination/color/disabled/text) · Aura: {disabled.opacity}
 
   // --- rows per page / jump to page select (provisional; gap, padding, radius and background reuse the tokens above) ---
-  --int-paginator-dropdown-label-min-width: var(--i-sizing-lg); // Figma: 32px (value width) · Aura: —
-  --int-paginator-dropdown-list-border-color: var(--i-color-secondary-600); // knowledgeBase: --i-color-secondary-600 (select overlay) · Figma: #636B8C (pagination/color/border) · Aura: {select.overlay.border.color}
-  --int-paginator-dropdown-list-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300 · Aura: {select.overlay.shadow}
 
   // --- ripple ---
   --int-paginator-ripple-background: var(--i-shadow-color-medium); // SG: nearest translucent token ⚠️ rgba(36, 38, 51, 0.1) · Aura: {ripple.background} rgba(0, 0, 0, 0.1)
@@ -173,75 +170,6 @@
     .int-input--number {
       inline-size: var(--int-paginator-jtp-input-width);
     }
-  }
-
-  // TODO(dep:dropdown-select provisional) trigger "10 ^" and a list that opens upwards (Figma).
-  &__dropdown {
-    position: relative;
-    display: inline-flex;
-  }
-
-  &__dropdown-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--int-paginator-gap);
-    border-radius: var(--int-paginator-jtp-input-border-radius);
-    cursor: pointer;
-    user-select: none;
-  }
-
-  &__dropdown-label {
-    min-inline-size: var(--int-paginator-dropdown-label-min-width);
-    text-align: end;
-  }
-
-  &__dropdown-list {
-    position: absolute;
-    inset-block-end: 100%;
-    inset-inline-end: 0;
-    z-index: 1;
-    margin-block-end: var(--int-paginator-nav-button-padding);
-    padding: var(--int-paginator-nav-button-padding);
-    overflow-y: auto;
-    border: var(--int-paginator-jtp-input-border-width) solid var(--int-paginator-dropdown-list-border-color);
-    border-radius: var(--int-paginator-nav-button-border-radius);
-    background: var(--int-paginator-jtp-input-background);
-    box-shadow: var(--int-paginator-dropdown-list-shadow);
-  }
-
-  // appendTo="body" or an element: positioned by the component above the trigger, over the content.
-  // Out of the block, it takes the text styles it no longer inherits.
-  &__dropdown-list--appended {
-    inset-block-end: auto;
-    inset-inline-end: auto;
-    margin-block: calc(-1 * var(--int-paginator-nav-button-padding)) 0;
-    color: var(--int-paginator-color);
-    font-family: var(--int-paginator-font-family);
-    font-size: var(--int-paginator-font-size);
-    line-height: var(--int-paginator-line-height);
-  }
-
-  &__dropdown-option {
-    padding-inline: var(--int-paginator-nav-button-padding);
-    border-radius: var(--int-paginator-jtp-input-border-radius);
-    text-align: end;
-    white-space: nowrap;
-    cursor: pointer;
-
-    &:hover {
-      background: var(--int-paginator-nav-button-hover-background);
-    }
-  }
-
-  &__dropdown-trigger:focus-visible,
-  &__dropdown-option:focus-visible {
-    outline: var(--int-paginator-focus-ring-width) solid var(--int-paginator-focus-ring-color);
-  }
-
-  &__dropdown--disabled &__dropdown-trigger {
-    color: var(--int-paginator-disabled-color);
-    cursor: not-allowed;
-    user-select: none;
   }
 
   // Ripple ink (PrimeNG .p-ink): grows from the press point and fades out.

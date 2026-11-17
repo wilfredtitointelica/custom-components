@@ -148,3 +148,31 @@ describe('IntDropdownSelect appendTo', () => {
     expect(container.querySelectorAll('[role="option"]').length).toBe(2);
   });
 });
+
+@Component({
+  imports: [IntDropdownSelect, ReactiveFormsModule],
+  template: `<int-dropdown-select variant="text" [formControl]="control" [options]="[10, 25, 50]" />`,
+})
+class TextHost {
+  control = new FormControl<number | null>(10);
+}
+
+describe('IntDropdownSelect variant="text"', () => {
+  it('marks the host and leaves the selected option out of the list', () => {
+    const fixture = TestBed.createComponent(TextHost);
+    fixture.detectChanges();
+    const host: HTMLElement = fixture.nativeElement.querySelector('int-dropdown-select');
+    expect(host.classList).toContain('int-dropdown-select--text');
+    host.querySelector<HTMLElement>('[role="combobox"]')!.click();
+    fixture.detectChanges();
+    const overlay = overlayOf(fixture);
+    expect(overlay.querySelector('.int-dropdown-select__panel--text')).not.toBeNull();
+    const labels = Array.from(overlay.querySelectorAll('[role="option"]')).map((o) => o.textContent?.trim());
+    expect(labels).toEqual(['25', '50']);
+
+    overlay.querySelectorAll<HTMLElement>('[role="option"]')[1].click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.control.value).toBe(50);
+    expect(host.querySelector('[role="combobox"]')?.textContent).toContain('50');
+  });
+});

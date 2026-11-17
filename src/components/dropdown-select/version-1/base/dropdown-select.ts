@@ -51,7 +51,8 @@ export interface IntDropdownSelectChangeEvent {
  * (ported from @intelica/ui `int-select`). The option list is an embedded IntListBox in a CDK
  * overlay, so filtering, templates and keyboard behaviour are shared with List-box.
  * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the panel.
- * int-* extensions: `placement` (open upwards) and `baseZIndex`.
+ * int-* extensions: `placement` (open upwards), `baseZIndex` and `variant="text"` (bare "10 ^" trigger whose list
+ * leaves out the selected option, as the paginator's rows per page in Figma).
  *
  * @example
  * <int-dropdown-select [options]="cities" optionLabel="name" optionValue="code" [(ngModel)]="city"
@@ -69,6 +70,7 @@ export interface IntDropdownSelectChangeEvent {
     '[class.int-dropdown-select--disabled]': 'isDisabled()',
     '[class.int-dropdown-select--invalid]': 'isInvalid()',
     '[class.int-dropdown-select--fluid]': 'fluid()',
+    '[class.int-dropdown-select--text]': 'variant() === "text"',
     '[class.int-dropdown-select--small]': 'size() === "small"',
     '[class.int-dropdown-select--large]': 'size() === "large"',
   },
@@ -144,6 +146,13 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
    * @defaultValue 'bottom'
    */
   readonly placement = input<'bottom' | 'top'>('bottom');
+  /**
+   * Aspecto del disparador. `outlined`: campo con borde (por defecto). int-* extension: `text` deja solo el
+   * valor y la flecha, sin borde ni fondo (p. ej. filas por página del paginador), y su lista no repite la
+   * opción elegida.
+   * @defaultValue 'outlined'
+   */
+  readonly variant = input<'outlined' | 'text'>('outlined');
 
   /** Se emite al elegir o borrar una opción, con el evento y el valor nuevo. */
   readonly onChange = output<IntDropdownSelectChangeEvent>();
@@ -159,9 +168,11 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   readonly onBlur = output<FocusEvent>();
 
   protected readonly config = inject(IntConfig);
-  protected readonly positions = computed(() =>
-    this.placement() === 'top' ? INT_DROPUP_POSITIONS : INT_DROPDOWN_POSITIONS,
-  );
+  protected readonly positions = computed(() => {
+    const positions = this.placement() === 'top' ? INT_DROPUP_POSITIONS : INT_DROPDOWN_POSITIONS;
+    // variant="text": content-sized list aligned with the end of the trigger (Figma paginator).
+    return this.variant() === 'text' ? [...positions.slice(2), ...positions.slice(0, 2)] : positions;
+  });
   protected readonly open = signal(false);
   protected readonly triggerWidth = signal(0);
   protected readonly listBox = viewChild(IntListBox);
@@ -189,6 +200,13 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   protected readonly showFilter = computed(() => {
     const threshold = this.filterThreshold();
     return this.filter() && (threshold == null || this.options().length > threshold);
+  });
+
+  /** Options shown in the list: with `variant="text"` the selected one is left out (Figma paginator). */
+  protected readonly listOptions = computed(() => {
+    const selected = this.selectedOption();
+    if (this.variant() !== 'text' || selected === undefined) return this.options();
+    return this.options().filter((o) => o !== selected);
   });
 
   protected readonly hasValue = computed(() => this.selectedOption() !== undefined);

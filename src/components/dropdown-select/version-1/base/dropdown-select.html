@@ -1,7 +1,7 @@
 <!--
   title: Dropdown / Select
   description: Lista desplegable de un solo valor. El panel es un List-box embebido en un overlay del CDK, así que el filtro, las plantillas y el teclado funcionan igual.
-  figma:
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2827&p=f&t=YfIILMQ73S0VgZVt-0
 -->
 <div
   #trigger
@@ -62,16 +62,20 @@
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayOpen]="open()"
   [cdkConnectedOverlayPositions]="positions()"
-  [cdkConnectedOverlayMinWidth]="triggerWidth()"
+  [cdkConnectedOverlayMinWidth]="variant() === 'text' ? 0 : triggerWidth()"
   [cdkConnectedOverlayViewportMargin]="8"
   (overlayOutsideClick)="onOutsideClick($event)"
   (overlayKeydown)="onOverlayKeydown($event)"
   (detach)="close(false)"
 >
-  <div class="int-dropdown-select__panel" [class]="panelStyleClass() ?? ''">
+  <div
+    class="int-dropdown-select__panel"
+    [class]="panelStyleClass() ?? ''"
+    [class.int-dropdown-select__panel--text]="variant() === 'text'"
+  >
     <int-list-box
       embedded
-      [options]="options()"
+      [options]="listOptions()"
       [optionLabel]="optionLabel()"
       [optionValue]="optionValue()"
       [optionDisabled]="optionDisabled()"

@@ -19,6 +19,7 @@ export default {
     'reactive-forms-validation',
     'sizes-fluid',
     'placement',
+    'text',
     'append-to',
   ],
   requires: ['list-box'],
