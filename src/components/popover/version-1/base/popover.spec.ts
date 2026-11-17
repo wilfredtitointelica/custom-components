@@ -92,3 +92,26 @@ describe('IntPopover appendTo', () => {
     expect(host.querySelector('.int-overlay-container .content')?.textContent).toBe('Hello');
   });
 });
+
+@Component({
+  imports: [IntPopover],
+  template: `
+    <button (click)="op.toggle($event)">Open</button>
+    <int-popover #op borderless ariaLabel="Products"><p>Menu</p></int-popover>
+  `,
+})
+class BorderlessHost {}
+
+describe('IntPopover borderless', () => {
+  // Width comes from Style Guide tokens (not loaded in specs); the color is the component's.
+  it('makes the border transparent', () => {
+    const fixture = TestBed.createComponent(BorderlessHost);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    const panel = overlayOf(fixture).querySelector<HTMLElement>('.int-popover')!;
+    expect(panel.classList).toContain('int-popover--borderless');
+    const style = getComputedStyle(panel);
+    expect(style.borderTopColor).toBe('rgba(0, 0, 0, 0)');
+  });
+});

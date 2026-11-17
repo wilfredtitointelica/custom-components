@@ -47,7 +47,7 @@ const ARROW_EDGE = 16;
  * toggle / show / hide; API mirrors PrimeNG v20 Popover. The host is `display: contents`: the
  * `int-popover` block is the panel inside the CDK overlay.
  * Deviation: the arrow is opt-in (`arrow`) and looks like the tooltip beak; PrimeNG always draws one.
- * int-* extension: `baseZIndex`.
+ * int-* extensions: `baseZIndex` and `borderless` (transparent border, as the Style Guide `.prPopover`).
  *
  * @example
  * <button intButton label="Columns" (click)="op.toggle($event)"></button>
@@ -86,6 +86,11 @@ export class IntPopover implements OnDestroy {
    * borde inferior cuando el popover se abre encima.
    */
   readonly arrow = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: borde transparente (sigue midiendo 1px, así el tamaño no cambia), como el popover del Style
+   * Guide; p. ej. el menú de productos del header, que se separa del fondo solo con la sombra.
+   */
+  readonly borderless = input(false, { transform: booleanAttribute });
   /**
    * Dónde se monta el panel: `body` (por defecto, como PrimeNG), `self` (dentro del componente) o un elemento
    * (variable de template, p. ej. `[appendTo]="container"`).

@@ -1,10 +1,10 @@
 <!--
   title: Available Products
-  description: Menú de productos del header: popover anclado a la pestaña Products, con título y una lista de productos (icono, nombre, `int-tag` New / Legacy y descripción); el producto actual queda resaltado.
+  description: Menú de productos del header: popover `borderless` anclado a la pestaña Products, con título y una lista de productos (icono, nombre, `int-tag` New / Legacy y descripción); el producto actual queda resaltado.
 -->
 <div class="u-display-flex u-flex-column u-align-items-center">
   <button intButton variant="text" label="Products" (click)="op.toggle($event)"></button>
-  <int-popover #op ariaLabel="Available Products">
+  <int-popover #op borderless ariaLabel="Available Products">
     <div class="u-display-flex u-flex-column u-gap-lg">
       <h2 class="u-m-0">Available Products</h2>
       <ul class="u-display-flex u-flex-column u-gap-sm u-m-0 u-p-0">

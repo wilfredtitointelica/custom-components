@@ -18,6 +18,7 @@
   --int-popover-padding: var(--i-popover-padding, var(--i-spacing-container-2xl)); // knowledgeBase: .prPopover .p-popover-content padding: var(--i-popover-padding) (24px; not in the base bundle → fallback)
   --int-popover-arrow-color: var(--i-color-primary-900); // knowledgeBase: prPopover--tooltipLike · Figma: #0A1733 (tooltip/color/arrow)
   --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
+  --int-popover-border-color: var(--i-border-default); // Aura: {overlay.popover.border.color} · knowledgeBase: .prPopover --i-popover-border-color (transparent → modifier --borderless)
 
   @include int.overlay-surface;
   // Flex column: when the CDK caps the pane to the room left in the viewport, the content scrolls instead of
@@ -27,6 +28,7 @@
   min-height: 0;
   max-width: min(480px, calc(100vw - 16px));
   padding: var(--int-popover-padding);
+  border-color: var(--int-popover-border-color);
 
   &:focus-visible {
     @include int.focus-ring(-2px);
@@ -49,6 +51,12 @@
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
+
+// int-* extension borderless: the 1px border stays (no size change) but transparent, as the Style Guide
+// .prPopover; the shadow alone separates the panel from the page.
+.int-popover--borderless {
+  --int-popover-border-color: transparent; // knowledgeBase: .prPopover --i-popover-border-color: transparent
+}
 
 // Solid beak just outside the border, pointing at the trigger; --int-popover-arrow-left (px from the
 // left edge) is set by the component. Below the trigger it sits on top; --flipped moves it to the bottom.
