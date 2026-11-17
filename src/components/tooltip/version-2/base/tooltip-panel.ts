@@ -43,12 +43,17 @@ export type IntTooltipPosition =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntTooltipPanel {
+  /** `id` del panel, enlazado con `aria-describedby` del elemento. */
   readonly id = input.required<string>();
+  /** Contenido del tooltip: texto o plantilla. */
   readonly content = input<IntTooltipContent>(null);
+  /** Título en negrita sobre el contenido. */
   readonly title = input<string | undefined>(undefined);
-  /** Side actually used after the overlay flips; drives the arrow side. */
+  /** Lado que quedó en uso después de acomodarse; define de qué lado va la flecha. */
   readonly position = input<IntTooltipPosition>('top');
+  /** Muestra la flecha. */
   readonly arrow = input(true);
+  /** Clases extra del panel. */
   readonly styleClass = input<string | undefined>(undefined);
 
   protected readonly template = computed(() => {

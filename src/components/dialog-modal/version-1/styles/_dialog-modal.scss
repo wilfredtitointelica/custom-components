@@ -15,10 +15,10 @@
 // Parity with Style Guide `.prDialog` and Figma "Atoms / Overlay". The block is the panel rendered
 // in the CDK overlay. Overridable props: --int-dialog-modal-{padding,radius,background,color,width}.
 .int-dialog-modal {
-  --int-dialog-modal-padding: var(--i-spacing-container-2xl);
-  --int-dialog-modal-radius: var(--i-border-radius-2xl);
-  --int-dialog-modal-background: var(--i-color-secondary-50);
-  --int-dialog-modal-color: var(--i-color-primary-900);
+  --int-dialog-modal-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl
+  --int-dialog-modal-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl
+  --int-dialog-modal-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50
+  --int-dialog-modal-color: var(--i-color-primary-900); // SG: --i-color-primary-900
 
   display: flex;
   flex-direction: column;
@@ -106,7 +106,7 @@ $sizes: (
 .int-dialog-modal {
   @each $size, $width in $sizes {
     &--#{$size} {
-      --int-dialog-modal-width: var(--i-dialog-max-width-#{$size}, #{$width});
+      --int-dialog-modal-width: var(--i-dialog-max-width-#{$size}, #{$width}); // SG: --i-dialog-max-width-sm/md/lg/xl (components/dialog, not in the base bundle → fallback)
     }
   }
 }

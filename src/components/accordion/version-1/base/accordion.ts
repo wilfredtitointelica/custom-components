@@ -42,7 +42,7 @@ export class IntAccordion {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
-  /** Active panel value (single) or values (`multiple`). */
+  /** Valor del panel abierto, o arreglo de valores con `multiple`; admite `[(value)]`. */
   readonly value = model<IntAccordionValue | IntAccordionValue[] | null>(null);
   /**
    * Permite varios paneles abiertos a la vez; `value` pasa a ser un arreglo.
@@ -85,7 +85,7 @@ export class IntAccordion {
     else this.onOpen.emit(panel);
   }
 
-  /** Roving focus between headers (WAI-ARIA accordion pattern). */
+  /** Mueve el foco entre las cabeceras con las flechas, Home y End (patrón WAI-ARIA accordion). */
   focusHeader(from: HTMLElement, key: string): void {
     const headers = Array.from(
       this.el.nativeElement.querySelectorAll<HTMLButtonElement>(
@@ -114,7 +114,9 @@ export class IntAccordion {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntAccordionPanel {
+  /** Valor que identifica al panel dentro del acordeón. */
   readonly value = input.required<IntAccordionValue>();
+  /** Deshabilita el panel: no se puede abrir ni cerrar. */
   readonly disabled = input(false, { transform: booleanAttribute });
 
   readonly accordion = inject(IntAccordion);

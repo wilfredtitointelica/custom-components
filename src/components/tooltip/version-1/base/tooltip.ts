@@ -42,13 +42,19 @@ export class IntTooltip implements OnDestroy {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** Contenido del tooltip: texto o una plantilla. Vacío, no se muestra. */
   readonly content = input<IntTooltipContent>(null, { alias: 'intTooltip' });
+  /** Lado preferido respecto al elemento; cambia al opuesto si no hay espacio. */
   readonly tooltipPosition = input<IntPlacement>('top');
-  /** `both` (default) shows on hover and keyboard focus for accessibility. */
+  /** Qué lo muestra: `hover`, `focus` o `both` (por defecto: mouse y foco del teclado, por accesibilidad). */
   readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
+  /** Milisegundos de espera antes de mostrarse. */
   readonly showDelay = input(0, { transform: numberAttribute });
+  /** Milisegundos de espera antes de ocultarse. */
   readonly hideDelay = input(0, { transform: numberAttribute });
+  /** Desactiva el tooltip. */
   readonly tooltipDisabled = input(false, { transform: booleanAttribute });
+  /** Clases extra para el panel del tooltip. */
   readonly tooltipStyleClass = input<string | undefined>(undefined);
 
   protected readonly id = uniqueId('int-tooltip');
@@ -73,6 +79,7 @@ export class IntTooltip implements OnDestroy {
     else this.scheduleHide();
   }
 
+  /** Muestra el tooltip de inmediato. */
   show(): void {
     if (this.tooltipDisabled() || !this.content() || this.visible()) return;
     this.overlayRef ??= this.overlay.create({
@@ -91,6 +98,7 @@ export class IntTooltip implements OnDestroy {
     this.visible.set(true);
   }
 
+  /** Oculta el tooltip de inmediato. */
   hide(): void {
     clearTimeout(this.timer);
     this.overlayRef?.detach();

@@ -68,14 +68,14 @@ export class IntPopover implements OnDestroy {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
-  /** Close on outside click. */
+  /** Se cierra al hacer clic fuera. */
   readonly dismissable = input(true, { transform: booleanAttribute });
   /**
    * Escape cierra el popover y devuelve el foco al disparador.
    * @defaultValue true
    */
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
-  /** Moves focus into the panel when shown and restores it to the trigger when hidden. */
+  /** Al abrir, el foco pasa al panel; al cerrar, vuelve al disparador. */
   readonly focusOnShow = input(true, { transform: booleanAttribute });
   /** Clase extra para el panel del popover (se monta en el overlay, fuera del componente). */
   readonly styleClass = input<string | undefined>(undefined);
@@ -210,7 +210,7 @@ export class IntPopover implements OnDestroy {
     this.onHide.emit();
   }
 
-  /** Recomputes the position, e.g. after the content size changed. */
+  /** Recalcula la posición, p. ej. cuando cambió el tamaño del contenido. */
   align(): void {
     this.overlayRef?.updatePosition();
   }

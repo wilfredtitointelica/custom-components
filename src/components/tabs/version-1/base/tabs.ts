@@ -47,9 +47,9 @@ export class IntTabs {
 
   /** `value` de la pestaña activa (`[(value)]`); `null` sin pestaña activa. */
   readonly value = model<IntTabValue | null>(null);
-  /** Activate a tab as soon as it receives keyboard focus. */
+  /** Activa la pestaña apenas recibe el foco del teclado. */
   readonly selectOnFocus = input(false, { transform: booleanAttribute });
-  /** Render a panel's content only while it is active. */
+  /** Renderiza el contenido de un panel solo mientras está activo. */
   readonly lazy = input(false, { transform: booleanAttribute });
   /**
    * int-* extension (PrimeNG v20 Tabs no tiene orientación): `vertical` apila las pestañas en una columna a la
@@ -86,14 +86,14 @@ export class IntTabList {
   protected readonly tabs = inject(IntTabs);
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  /** Keys that move the focus: Left/Right, or Up/Down in vertical, plus Home/End. */
+  /** Teclas que mueven el foco: izquierda y derecha, o arriba y abajo en vertical, más Home y End. */
   navigationKeys(): readonly string[] {
     return this.tabs.orientation() === 'vertical'
       ? ['ArrowDown', 'ArrowUp', 'Home', 'End']
       : ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
   }
 
-  /** Moves focus between enabled tabs; returns the focused tab element. */
+  /** Mueve el foco entre las pestañas habilitadas y devuelve la pestaña enfocada. */
   focusTab(from: HTMLElement, key: string): HTMLElement | undefined {
     const [next, previous] = this.navigationKeys();
     const tabs = Array.from(
@@ -130,7 +130,9 @@ export class IntTabList {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntTab {
+  /** Valor que identifica a la pestaña; el panel con el mismo `value` es su contenido. */
   readonly value = input.required<IntTabValue>();
+  /** Deshabilita la pestaña. */
   readonly disabled = input(false, { transform: booleanAttribute });
 
   protected readonly tabs = inject(IntTabs);
@@ -138,6 +140,7 @@ export class IntTab {
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
   protected readonly active = computed(() => this.tabs.value() === this.value());
 
+  /** Activa esta pestaña (salvo que esté deshabilitada). */
   select(): void {
     if (!this.disabled()) this.tabs.value.set(this.value());
   }
@@ -183,6 +186,7 @@ export class IntTabPanels {}
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntTabPanel {
+  /** Valor de la pestaña a la que pertenece este panel. */
   readonly value = input.required<IntTabValue>();
   protected readonly tabs = inject(IntTabs);
   protected readonly active = computed(() => this.tabs.value() === this.value());

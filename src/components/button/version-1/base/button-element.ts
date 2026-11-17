@@ -32,21 +32,36 @@ import { IntButton, IntButtonIconPos, IntButtonVariant } from './button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntButtonElement {
+  /** Texto del botón. */
   readonly label = input<string | undefined>(undefined);
-  /** CSS class of the icon, e.g. `icon icon-download` (incontrol-icons). */
+  /** Clase del icono, p. ej. `icon icon-download`. */
   readonly icon = input<string | undefined>(undefined);
+  /** Posición del icono respecto al texto: `left`, `right`, `top` o `bottom`. */
   readonly iconPos = input<IntButtonIconPos>('left');
+  /** Color según la intención: `primary`, `secondary`, `success`, `danger`… */
   readonly severity = input<IntSeverity>('primary');
-  /** `text` with an icon and no label is the bare icon button (Style Guide `.prButton--icon`). */
+  /**
+   * Aspecto: `outlined` (solo borde), `text` (sin fondo ni borde) o `link`. Con `text`, icono y sin `label`
+   * queda el botón de solo icono: una caja de 24px (16px en `small`, 32px en `large`) que se pone azul al pasar
+   * el mouse.
+   */
   readonly variant = input<IntButtonVariant | undefined>(undefined);
+  /** Tamaño: `small` o `large`; sin valor, el tamaño normal. */
   readonly size = input<IntSize | undefined>(undefined);
+  /** Bordes completamente redondeados. */
   readonly rounded = input(false, { transform: booleanAttribute });
+  /** Ocupa todo el ancho de su contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
+  /** Muestra el indicador de carga y bloquea el clic. */
   readonly loading = input(false, { transform: booleanAttribute });
+  /** Deshabilita el botón. */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** Required for icon-only buttons. */
+  /** Nombre accesible; obligatorio en los botones de solo icono. */
   readonly ariaLabel = input<string | undefined>(undefined);
-  /** int-* extension: label hidden until hover or keyboard focus (Figma button-help). */
+  /**
+   * int-* extension: el texto queda oculto hasta pasar el mouse o enfocar con el teclado (botón de ayuda); sigue
+   * siendo el nombre accesible.
+   */
   readonly labelOnHover = input(false, { transform: booleanAttribute });
   /** int-* extension: mantiene el aspecto presionado y marca `aria-pressed`. */
   readonly active = input<boolean | undefined>(undefined);
@@ -57,13 +72,17 @@ export class IntButtonElement {
   readonly tabindex = input<number | undefined, unknown>(undefined, {
     transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
   });
-  /** Native `type` of the inner button. */
+  /** `type` nativo del botón interno. */
   readonly type = input<'button' | 'submit' | 'reset'>('button');
+  /** Enfoca el botón al cargarse la vista. */
   readonly autofocus = input(false, { transform: booleanAttribute });
-  /** Extra classes for the inner native button. */
+  /** Clases extra para el botón nativo interno. */
   readonly styleClass = input<string | undefined>(undefined);
 
+  /** Se emite al hacer clic. */
   readonly onClick = output<MouseEvent>();
+  /** Se emite cuando el botón recibe el foco. */
   readonly onFocus = output<FocusEvent>();
+  /** Se emite cuando el botón pierde el foco. */
   readonly onBlur = output<FocusEvent>();
 }

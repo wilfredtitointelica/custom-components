@@ -29,8 +29,11 @@ export type IntTooltipContent = string | TemplateRef<unknown> | null | undefined
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntTooltipPanel {
+  /** `id` del panel, enlazado con `aria-describedby` del elemento. */
   readonly id = input.required<string>();
+  /** Contenido del tooltip: texto o plantilla. */
   readonly content = input<IntTooltipContent>(null);
+  /** Clases extra del panel. */
   readonly styleClass = input<string | undefined>(undefined);
   protected readonly template = computed(() => {
     const c = this.content();

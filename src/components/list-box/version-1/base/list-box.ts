@@ -256,7 +256,7 @@ export class IntListBox extends IntBaseControl<unknown> {
     this.onDrop.emit(event);
   }
 
-  /** Keyboard contract shared with Dropdown-select (WAI-ARIA listbox pattern). */
+  /** Maneja el teclado de la lista (patrón WAI-ARIA listbox); Dropdown-select le reenvía sus teclas. */
   handleKeydown(event: KeyboardEvent): void {
     if (this.isDisabled()) return;
     const options = this.visibleOptions();
@@ -297,7 +297,7 @@ export class IntListBox extends IntBaseControl<unknown> {
     this.scrollToFocused();
   }
 
-  /** Focuses the selected option (or the first enabled one) — used when a host opens the list. */
+  /** Enfoca la opción elegida (o la primera habilitada); lo usa el componente que abre la lista. */
   activateSelected(): void {
     const options = this.visibleOptions();
     const selected = options.findIndex((o) => this.isSelected(o) && !this.isDisabledOption(o));

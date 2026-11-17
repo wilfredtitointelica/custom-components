@@ -16,10 +16,10 @@
     width: 100%;
   }
   &.int-input--small {
-    --int-field-height: var(--i-sizing-md);
+    --int-field-height: var(--i-sizing-md); // SG: --i-sizing-md
   }
   &.int-input--large {
-    --int-field-height: var(--i-sizing-xl);
+    --int-field-height: var(--i-sizing-xl); // SG: --i-sizing-xl
   }
 
   .int-input__field {

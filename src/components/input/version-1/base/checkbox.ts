@@ -61,19 +61,27 @@ export interface IntCheckboxChangeEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntCheckbox extends IntBaseControl<unknown> {
-  /** Item added to / removed from the array model (ignored when `binary`). */
+  /** Elemento que se agrega o se quita del modelo cuando es un arreglo (se ignora con `binary`). */
   readonly value = input<unknown>(undefined);
+  /** El modelo es un solo valor (`trueValue` / `falseValue`) en lugar de un arreglo. */
   readonly binary = input(false, { transform: booleanAttribute });
+  /** Valor del modelo cuando está marcado (con `binary`). */
   readonly trueValue = input<unknown>(true);
+  /** Valor del modelo cuando no está marcado (con `binary`). */
   readonly falseValue = input<unknown>(false);
-  /** Shows the mixed state; cleared on the next user toggle. */
+  /** Muestra el estado mixto (guion); se quita en el siguiente clic del usuario. */
   readonly indeterminate = input(false, { transform: booleanAttribute });
+  /** Solo lectura: se ve normal pero no cambia. */
   readonly readonly = input(false, { transform: booleanAttribute });
-  /** Property used to compare object values in the array model. */
+  /** Campo que identifica un elemento al comparar valores que son objetos. */
   readonly dataKey = input<string | undefined>(undefined);
+  /** `id` del checkbox nativo, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-checkbox'));
+  /** Atributo `name` del checkbox nativo. */
   readonly name = input<string | undefined>(undefined);
+  /** Nombre accesible cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /** `id` del elemento que nombra al checkbox. */
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   /**
    * `tabindex` del checkbox nativo (como en PrimeNG), p. ej. `-1` cuando la fila o la celda que lo contiene
@@ -89,6 +97,7 @@ export class IntCheckbox extends IntBaseControl<unknown> {
    */
   protected readonly iconTemplate = contentChild<TemplateRef<IntCheckboxIconContext>>('icon');
 
+  /** Se emite al marcar o desmarcar, con el evento y el estado nuevo. */
   readonly onChange = output<IntCheckboxChangeEvent>();
 
   protected readonly isIndeterminate = linkedSignal(() => this.indeterminate());
