@@ -158,16 +158,6 @@
     color: var(--int-treetable-sort-icon-selected-color);
   }
 
-  // TODO(dep:badge provisional): position in multiple sort until int-badge is done.
-  &__sort-badge {
-    min-inline-size: var(--int-treetable-checkbox-size);
-    border-radius: var(--i-border-radius-full);
-    background: var(--int-treetable-sort-icon-selected-color);
-    color: var(--int-treetable-checkbox-icon-color);
-    font-size: var(--int-treetable-checkbox-icon-size);
-    text-align: center;
-  }
-
   // --- body cells, zebra as the Style Guide ---
   &__tbody > tr > td {
     block-size: var(--int-treetable-body-cell-height);

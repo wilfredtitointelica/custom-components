@@ -20,11 +20,7 @@
                 <span class="u-text-lg u-bold u-text-nowrap">{{ version.name }}</span>
               </div>
               @if (version.latest) {
-                <!-- dep:badge provisional · replace with <int-badge> when badge is done -->
-                <span class="u-px-3 u-py-2 u-radius-xl u-bs-1 u-be-1 u-bt-1 u-bm-1 u-background-surface u-text-xs u-text-lineHeight-xs u-text-nowrap" data-dep="badge">
-                  Latest version
-                </span>
-                <!-- /dep:badge -->
+                <int-badge severity="secondary" value="Latest version" />
               }
             </div>
             <span class="u-text-md">{{ version.notes }}</span>

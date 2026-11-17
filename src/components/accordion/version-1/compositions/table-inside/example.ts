@@ -1,25 +1,12 @@
 import { Component } from '@angular/core';
 
+import { IntTable } from '../../../../table/version-1/base/table';
 import { IntAccordionImports, IntAccordionValue } from '../../base/accordion';
 
 @Component({
   selector: 'accordion-table-inside-example',
   templateUrl: './example.html',
-  imports: [IntAccordionImports],
-  // TODO(dep:table provisional): look of the native table until int-table is done (no Style Guide helpers for it).
-  styles: `
-    table {
-      border-collapse: collapse;
-    }
-    th {
-      top: 0;
-      background: var(--i-color-secondary-50);
-      border-bottom: var(--i-border-width-sm) solid var(--i-color-primary-900);
-    }
-    tbody tr:nth-child(even) {
-      background: var(--i-color-secondary-100);
-    }
-  `,
+  imports: [IntAccordionImports, IntTable],
 })
 export class AccordionTableInsideExample {
   active: IntAccordionValue | IntAccordionValue[] | null = 'sent';

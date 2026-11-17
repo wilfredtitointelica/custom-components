@@ -26,6 +26,7 @@ import {
 } from '@angular/core';
 
 import { IntPaginator, IntPaginatorAppendTo, IntPaginatorPageChangeEvent, IntPaginatorRowsPerPageOption, IntPaginatorTemplateContext } from '../../../paginator/version-1/base/paginator';
+import { IntBadge } from '../../../badge/version-1/base/badge';
 
 /** Node of the tree: same shape as PrimeNG's TreeNode. `data` holds the row values read by the columns. */
 export interface IntTreeNode<T = unknown> {
@@ -1067,7 +1068,7 @@ export class IntTreetableSortableColumn {
 /** <int-treetable-sort-icon>: sort state of a column (arrows of the Style Guide) and its position in multiple sort. */
 @Component({
   selector: 'int-treetable-sort-icon',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, IntBadge],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'int-treetable__sort-icon' },
   template: `
@@ -1077,9 +1078,7 @@ export class IntTreetableSortableColumn {
       <i class="int-treetable__sort-arrow" [class]="iconClass()" aria-hidden="true"></i>
     }
     @if (badge(); as position) {
-      <!-- dep:badge provisional · replace with <int-badge> when badge is done -->
-      <span class="int-treetable__sort-badge" data-dep="badge">{{ position }}</span>
-      <!-- /dep:badge -->
+      <int-badge size="small" [value]="position" />
     }
   `,
 })

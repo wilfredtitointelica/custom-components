@@ -9,26 +9,22 @@
       Alert sent: {{ alerts.length }}
     </int-accordion-header>
     <int-accordion-content>
-      <!-- dep:table provisional · replace with <int-table> (sticky header) when table is done -->
-      <table class="u-full-width u-text-sm" data-dep="table">
-        <thead>
+      <int-table [value]="alerts" size="small" stickyHeader stickyTop="0">
+        <ng-template #header>
           <tr>
-            @for (column of ['N°', 'Alert Type', 'Impacted clients']; track column) {
-              <th class="u-sticky u-text-left u-py-2 u-px-2">{{ column }}</th>
-            }
+            <th class="u-text-left">N°</th>
+            <th class="u-text-left">Alert Type</th>
+            <th class="u-text-left">Impacted clients</th>
           </tr>
-        </thead>
-        <tbody>
-          @for (alert of alerts; track alert.id) {
-            <tr>
-              <td class="u-py-2 u-px-2">{{ alert.id }}</td>
-              <td class="u-py-2 u-px-2">Opt-Out - <span class="u-bold">{{ alert.type }}</span></td>
-              <td class="u-py-2 u-px-2">{{ alert.client }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      <!-- /dep:table -->
+        </ng-template>
+        <ng-template #body let-alert>
+          <tr>
+            <td>{{ alert.id }}</td>
+            <td>Opt-Out - <span class="u-bold">{{ alert.type }}</span></td>
+            <td>{{ alert.client }}</td>
+          </tr>
+        </ng-template>
+      </int-table>
     </int-accordion-content>
   </int-accordion-panel>
 </int-accordion>
