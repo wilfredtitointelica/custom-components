@@ -15,6 +15,9 @@
     [style.--int-popover-arrow-left.px]="arrow() ? arrowLeft() : null"
     [attr.aria-label]="ariaLabel() ?? null"
   >
-    <ng-content />
+    <!-- Scrolls when the CDK limits the panel to the space left in the viewport; the arrow stays outside. -->
+    <div class="int-popover__content">
+      <ng-content />
+    </div>
   </div>
 </ng-template>

@@ -20,6 +20,11 @@
   --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
 
   @include int.overlay-surface;
+  // Flex column: when the CDK caps the pane to the room left in the viewport, the content scrolls instead of
+  // spilling out of the panel (the arrow, drawn outside the box, is not clipped).
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   max-width: min(480px, calc(100vw - 16px));
   padding: var(--int-popover-padding);
 
@@ -29,6 +34,12 @@
   &:focus:not(:focus-visible) {
     outline: none;
   }
+}
+
+.int-popover__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /*——————————————————————————————————————————————————————————*\
