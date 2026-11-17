@@ -1,11 +1,15 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   computed,
+  contentChild,
   input,
   linkedSignal,
+  numberAttribute,
   output,
 } from '@angular/core';
 
@@ -18,6 +22,12 @@ import {
   valueEquals,
 } from '../../../_shared_';
 import { IntInput } from './input';
+
+/** Context of the `#icon` template: `$implicit` is the checked state and `class` the icon class (PrimeNG). */
+export interface IntCheckboxIconContext {
+  $implicit: boolean;
+  class: string;
+}
 
 export interface IntCheckboxChangeEvent {
   originalEvent: Event;
@@ -37,7 +47,7 @@ export interface IntCheckboxChangeEvent {
 @Component({
   selector: 'int-checkbox',
   templateUrl: './checkbox.html',
-  imports: [IntIcon],
+  imports: [IntIcon, NgTemplateOutlet],
   providers: [provideValueAccessor(() => IntCheckbox)],
   host: {
     class: 'int-input int-input--checkbox',
@@ -65,6 +75,19 @@ export class IntCheckbox extends IntBaseControl<unknown> {
   readonly name = input<string | undefined>(undefined);
   readonly ariaLabel = input<string | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
+  /**
+   * `tabindex` del checkbox nativo (como en PrimeNG), p. ej. `-1` cuando la fila o la celda que lo contiene
+   * maneja el teclado.
+   */
+  readonly tabindex = input<number | undefined, unknown>(undefined, {
+    transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
+  });
+
+  /**
+   * Plantilla `#icon`: reemplaza el check (y el guion del estado mixto) dentro de la caja; recibe el estado
+   * marcado como `$implicit` y la clase del icono como `class`, como en PrimeNG.
+   */
+  protected readonly iconTemplate = contentChild<TemplateRef<IntCheckboxIconContext>>('icon');
 
   readonly onChange = output<IntCheckboxChangeEvent>();
 
