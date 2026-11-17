@@ -85,3 +85,31 @@ describe('IntDialogModal', () => {
     expect(host.visible()).toBeFalse();
   });
 });
+
+@Component({
+  imports: [IntDialogModal],
+  template: `
+    <int-dialog-modal [(visible)]="visible" [showHeader]="false" role="alertdialog" ariaLabel="Discard changes"
+                      ariaDescribedBy="msg">
+      <p id="msg">Discard them?</p>
+    </int-dialog-modal>
+  `,
+})
+class AlertHost {
+  visible = signal(true);
+}
+
+describe('IntDialogModal headerless alert', () => {
+  it('renders role=alertdialog without header, named by ariaLabel and described by the message', () => {
+    const fixture = TestBed.createComponent(AlertHost);
+    fixture.detectChanges();
+    const overlay = TestBed.inject(OverlayContainer).getContainerElement();
+    const dialog = overlay.querySelector('[role="alertdialog"]')!;
+    expect(dialog).not.toBeNull();
+    expect(dialog.querySelector('.int-dialog-modal__header')).toBeNull();
+    expect(dialog.querySelector('.int-dialog-modal__close')).toBeNull();
+    expect(dialog.getAttribute('aria-label')).toBe('Discard changes');
+    expect(dialog.hasAttribute('aria-labelledby')).toBeFalse();
+    expect(dialog.getAttribute('aria-describedby')).toBe('msg');
+  });
+});

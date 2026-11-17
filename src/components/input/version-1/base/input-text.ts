@@ -34,9 +34,11 @@ import { IntInput } from './input';
   },
 })
 export class IntInputText implements DoCheck {
-  /** Named `intSize` because `size` is a native input attribute. */
+  /** Tamaño del campo: `small` o `large`. Se llama `intSize` porque `size` es un atributo nativo de `<input>`. */
   readonly intSize = input<IntSize | undefined>(undefined);
+  /** Marca el campo como inválido (borde de error). */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Ocupa todo el ancho de su contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
   /**
    * int-* extension: estado de éxito (borde y texto verdes, Style Guide `.prInputtext--success`).

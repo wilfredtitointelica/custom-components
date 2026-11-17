@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 
+import { IntBadge } from '../../../../badge/version-1/base/badge';
 import { IntCard } from '../../base/card';
 
 interface Version {
@@ -18,7 +19,7 @@ const VERSIONS: readonly Version[] = [
 @Component({
   selector: 'card-version-picker-example',
   templateUrl: './example.html',
-  imports: [IntCard],
+  imports: [IntCard, IntBadge],
 })
 export class CardVersionPickerExample {
   readonly versions = VERSIONS;

@@ -1,6 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { formatDate } from './date-utils';
@@ -20,6 +21,11 @@ class Host {
   minDate = new Date(2026, 9, 10);
 }
 
+
+/** Panels mount in the component's own overlay container (appendTo), not in the root one. */
+function overlayOf(fixture: ComponentFixture<unknown>): HTMLElement {
+  return fixture.debugElement.query(By.directive(IntDatePicker)).injector.get(OverlayContainer).getContainerElement();
+}
 describe('formatDate', () => {
   it('supports PrimeNG tokens', () => {
     const date = new Date(2026, 0, 5);
@@ -37,7 +43,7 @@ describe('IntDatePicker', () => {
     fixture.componentInstance.view.set(view);
     fixture.detectChanges();
     const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
-    const overlay = TestBed.inject(OverlayContainer).getContainerElement();
+    const overlay = overlayOf(fixture);
     const open = () => {
       input.click();
       fixture.detectChanges();
@@ -184,5 +190,24 @@ describe('IntDatePicker · numberOfMonths and footer', () => {
     const fixture = TestBed.createComponent(MonthsHost);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.int-date-picker__footer .preset')).not.toBeNull();
+  });
+});
+
+@Component({
+  imports: [IntDatePicker],
+  template: `<int-date-picker appendTo="self" [baseZIndex]="1500" />`,
+})
+class SelfHost {}
+
+describe('IntDatePicker appendTo', () => {
+  it('mounts the popup inside the component with appendTo="self" and uses baseZIndex', () => {
+    const fixture = TestBed.createComponent(SelfHost);
+    fixture.detectChanges();
+    const host: HTMLElement = fixture.nativeElement.querySelector('int-date-picker');
+    host.querySelector('input')!.click();
+    fixture.detectChanges();
+    const container = host.querySelector<HTMLElement>('.int-overlay-container')!;
+    expect(container.style.zIndex).toBe('1500');
+    expect(container.querySelector('.int-date-picker__cell')).not.toBeNull();
   });
 });

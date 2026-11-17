@@ -97,3 +97,35 @@ describe('IntCheckbox', () => {
     expect(inputs()[0].disabled).toBeTrue();
   });
 });
+
+@Component({
+  imports: [IntCheckbox, ReactiveFormsModule],
+  template: `
+    <int-checkbox binary tabindex="-1" [formControl]="on">
+      <ng-template #icon let-checked let-class="class">
+        <i [class]="class + ' custom ' + (checked ? 'is-on' : 'is-off')"></i>
+      </ng-template>
+    </int-checkbox>
+  `,
+})
+class IconHost {
+  on = new FormControl(false);
+}
+
+describe('IntCheckbox tabindex and #icon', () => {
+  it('passes tabindex to the native input and renders the icon template with the checked state', () => {
+    const fixture = TestBed.createComponent(IconHost);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const input = el.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    expect(input.getAttribute('tabindex')).toBe('-1');
+    expect(el.querySelector('.custom')?.className).toContain('is-off');
+    expect(el.querySelector('.custom')?.className).toContain('int-input__icon');
+
+    input.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.on.value).toBeTrue();
+    expect(el.querySelector('.custom')?.className).toContain('is-on');
+    expect(el.querySelector('int-icon')).toBeNull();
+  });
+});

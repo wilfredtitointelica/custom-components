@@ -20,6 +20,11 @@ export interface IntTranslation {
   remove: string;
   pending: string;
   dragDropMessage: string;
+  dragDropOrMessage: string;
+  browse: string;
+  acceptedFormats: string;
+  maxFileSizeLabel: string;
+  fileLimitLabel: string;
   invalidFileSizeMessage: string;
   invalidFileTypeMessage: string;
   invalidFileLimitMessage: string;
@@ -46,6 +51,11 @@ export const INT_DEFAULT_TRANSLATION: IntTranslation = {
   remove: 'Remove',
   pending: 'Pending',
   dragDropMessage: 'Drag and drop files here to upload.',
+  dragDropOrMessage: 'Drag and drop files or',
+  browse: 'browse',
+  acceptedFormats: 'Formats',
+  maxFileSizeLabel: 'Max size',
+  fileLimitLabel: 'Max files',
   invalidFileSizeMessage: '{0}: Invalid file size, maximum upload size is {1}.',
   invalidFileTypeMessage: '{0}: Invalid file type, allowed file types: {1}.',
   invalidFileLimitMessage: 'Maximum number of files exceeded, limit is {0} at most.',

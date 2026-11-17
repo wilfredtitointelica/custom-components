@@ -7,13 +7,13 @@
 // <int-radiobutton>: parity with Style Guide `.prRadioButton`. The native input (__control) covers
 // the visual box (__box + __dot) and receives clicks, focus and arrow keys.
 .int-input--radio-button {
-  --int-radiobutton-size: var(--i-sizing-xs);
-  --int-radiobutton-dot-size: calc(var(--int-radiobutton-size) / 2);
-  --int-radiobutton-border: var(--i-color-secondary-200);
-  --int-radiobutton-hover-border: var(--i-color-primary-700);
-  --int-radiobutton-hover-background: var(--i-color-primary-50);
-  --int-radiobutton-checked: var(--i-color-primary-700);
-  --int-radiobutton-dot-color: var(--i-color-primary-50);
+  --int-radiobutton-size: var(--i-sizing-xs); // SG: --i-sizing-xs
+  --int-radiobutton-dot-size: calc(var(--int-radiobutton-size) / 2); // SG: no token, follows --int-radiobutton-size
+  --int-radiobutton-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200
+  --int-radiobutton-hover-border: var(--i-color-primary-700); // SG: --i-color-primary-700
+  --int-radiobutton-hover-background: var(--i-color-primary-50); // SG: --i-color-primary-50
+  --int-radiobutton-checked: var(--i-color-primary-700); // SG: --i-color-primary-700
+  --int-radiobutton-dot-color: var(--i-color-primary-50); // SG: --i-color-primary-50
 
   position: relative;
   display: inline-flex;
@@ -23,10 +23,10 @@
   vertical-align: middle;
 
   &.int-input--small {
-    --int-radiobutton-size: var(--i-sizing-2xs);
+    --int-radiobutton-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs
   }
   &.int-input--large {
-    --int-radiobutton-size: var(--i-sizing-sm);
+    --int-radiobutton-size: var(--i-sizing-sm); // SG: --i-sizing-sm
   }
 
   .int-input__control {

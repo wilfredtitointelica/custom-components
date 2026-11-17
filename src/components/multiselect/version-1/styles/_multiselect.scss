@@ -96,12 +96,6 @@
   --int-multiselect-checkbox-disabled-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (checkbox/color/disabled/background, border) · SG: secondary-300 ⚠️ · Aura: {form.field.disabled.background}
   --int-multiselect-checkbox-disabled-icon-color: var(--i-color-secondary-400); // Figma: #9CA3BA (checkbox/color/disabled/icon) · Aura: —
 
-  // --- tooltip (TODO(dep:tooltip provisional)) ---
-  --int-multiselect-tooltip-background: var(--i-background-default); // SG: --i-background-default · Aura: {tooltip.background}
-  --int-multiselect-tooltip-border-color: var(--i-border-default); // SG: --i-border-default · Aura: —
-  --int-multiselect-tooltip-padding: var(--i-spacing-container-md); // SG: 8px · Aura: {tooltip.padding} 0.5rem 0.75rem
-  --int-multiselect-tooltip-font-size: var(--i-typography-font-size-sm); // SG: 12px · Aura: inherit
-
   // --- skeleton ---
   --int-multiselect-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
@@ -487,40 +481,6 @@
   // SG: .p-checkbox-input:focus-visible → outline on the box.
   &__checkbox-input:focus-visible + &__checkbox-box {
     outline: var(--int-multiselect-border-width) solid var(--int-multiselect-focus-border-color);
-  }
-
-  // TODO(dep:tooltip provisional): the tooltip panel until int-tooltip is done.
-  &__tooltip {
-    position: absolute;
-    z-index: 1000; // Aura: zIndex.tooltip
-    padding: var(--int-multiselect-tooltip-padding);
-    border: var(--int-multiselect-border-width) solid var(--int-multiselect-tooltip-border-color);
-    border-radius: var(--int-multiselect-checkbox-border-radius);
-    background: var(--int-multiselect-tooltip-background);
-    box-shadow: var(--int-multiselect-overlay-shadow);
-    font-size: var(--int-multiselect-tooltip-font-size);
-    white-space: nowrap;
-    pointer-events: none;
-
-    &--right {
-      inset-inline-start: 100%;
-      margin-inline-start: var(--int-multiselect-overlay-offset);
-    }
-
-    &--left {
-      inset-inline-end: 100%;
-      margin-inline-end: var(--int-multiselect-overlay-offset);
-    }
-
-    &--top {
-      inset-block-end: 100%;
-      margin-block-end: var(--int-multiselect-overlay-offset);
-    }
-
-    &--bottom {
-      inset-block-start: 100%;
-      margin-block-start: var(--int-multiselect-overlay-offset);
-    }
   }
 }
 

@@ -13,9 +13,9 @@
 // Parity with Style Guide `.prTooltip`. <int-tooltip> is the bubble in the CDK overlay.
 // Overridable props: --int-tooltip-{background,color,border-color,max-width}.
 .int-tooltip {
-  --int-tooltip-background: var(--i-color-secondary-50);
-  --int-tooltip-color: var(--i-color-primary-900);
-  --int-tooltip-border-color: var(--i-color-secondary-200);
+  --int-tooltip-background: var(--i-color-secondary-50); // Figma: #FCFCFC (tooltip/color/background)
+  --int-tooltip-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/text)
+  --int-tooltip-border-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (tooltip/color/border)
   --int-tooltip-max-width: var(--i-tooltip-max-width, 360px); // knowledgeBase: --i-tooltip-max-width (Style Guide components bundle, not in base → fallback)
 
   display: block;

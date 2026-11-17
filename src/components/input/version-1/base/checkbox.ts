@@ -1,11 +1,15 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   computed,
+  contentChild,
   input,
   linkedSignal,
+  numberAttribute,
   output,
 } from '@angular/core';
 
@@ -18,6 +22,12 @@ import {
   valueEquals,
 } from '../../../_shared_';
 import { IntInput } from './input';
+
+/** Context of the `#icon` template: `$implicit` is the checked state and `class` the icon class (PrimeNG). */
+export interface IntCheckboxIconContext {
+  $implicit: boolean;
+  class: string;
+}
 
 export interface IntCheckboxChangeEvent {
   originalEvent: Event;
@@ -37,7 +47,7 @@ export interface IntCheckboxChangeEvent {
 @Component({
   selector: 'int-checkbox',
   templateUrl: './checkbox.html',
-  imports: [IntIcon],
+  imports: [IntIcon, NgTemplateOutlet],
   providers: [provideValueAccessor(() => IntCheckbox)],
   host: {
     class: 'int-input int-input--checkbox',
@@ -51,21 +61,43 @@ export interface IntCheckboxChangeEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntCheckbox extends IntBaseControl<unknown> {
-  /** Item added to / removed from the array model (ignored when `binary`). */
+  /** Elemento que se agrega o se quita del modelo cuando es un arreglo (se ignora con `binary`). */
   readonly value = input<unknown>(undefined);
+  /** El modelo es un solo valor (`trueValue` / `falseValue`) en lugar de un arreglo. */
   readonly binary = input(false, { transform: booleanAttribute });
+  /** Valor del modelo cuando está marcado (con `binary`). */
   readonly trueValue = input<unknown>(true);
+  /** Valor del modelo cuando no está marcado (con `binary`). */
   readonly falseValue = input<unknown>(false);
-  /** Shows the mixed state; cleared on the next user toggle. */
+  /** Muestra el estado mixto (guion); se quita en el siguiente clic del usuario. */
   readonly indeterminate = input(false, { transform: booleanAttribute });
+  /** Solo lectura: se ve normal pero no cambia. */
   readonly readonly = input(false, { transform: booleanAttribute });
-  /** Property used to compare object values in the array model. */
+  /** Campo que identifica un elemento al comparar valores que son objetos. */
   readonly dataKey = input<string | undefined>(undefined);
+  /** `id` del checkbox nativo, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-checkbox'));
+  /** Atributo `name` del checkbox nativo. */
   readonly name = input<string | undefined>(undefined);
+  /** Nombre accesible cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /** `id` del elemento que nombra al checkbox. */
   readonly ariaLabelledBy = input<string | undefined>(undefined);
+  /**
+   * `tabindex` del checkbox nativo (como en PrimeNG), p. ej. `-1` cuando la fila o la celda que lo contiene
+   * maneja el teclado.
+   */
+  readonly tabindex = input<number | undefined, unknown>(undefined, {
+    transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
+  });
 
+  /**
+   * Plantilla `#icon`: reemplaza el check (y el guion del estado mixto) dentro de la caja; recibe el estado
+   * marcado como `$implicit` y la clase del icono como `class`, como en PrimeNG.
+   */
+  protected readonly iconTemplate = contentChild<TemplateRef<IntCheckboxIconContext>>('icon');
+
+  /** Se emite al marcar o desmarcar, con el evento y el estado nuevo. */
   readonly onChange = output<IntCheckboxChangeEvent>();
 
   protected readonly isIndeterminate = linkedSignal(() => this.indeterminate());

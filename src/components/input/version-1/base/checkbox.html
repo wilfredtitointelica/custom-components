@@ -6,6 +6,7 @@
   [indeterminate]="isIndeterminate()"
   [disabled]="isDisabled()"
   [attr.name]="name() ?? null"
+  [attr.tabindex]="tabindex() ?? null"
   [attr.aria-checked]="isIndeterminate() ? 'mixed' : null"
   [attr.aria-label]="ariaLabel() ?? null"
   [attr.aria-labelledby]="ariaLabelledBy() ?? null"
@@ -16,7 +17,12 @@
   (blur)="markAsTouched()"
 />
 <span class="int-input__box" aria-hidden="true">
-  @if (isIndeterminate()) {
+  @if (iconTemplate(); as tpl) {
+    <ng-container
+      [ngTemplateOutlet]="tpl"
+      [ngTemplateOutletContext]="{ $implicit: checked(), class: 'int-input__icon' }"
+    />
+  } @else if (isIndeterminate()) {
     <int-icon name="minus" />
   } @else if (checked()) {
     <int-icon name="check" />

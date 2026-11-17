@@ -37,6 +37,7 @@ export interface IntFileUploadHandlerEvent {
  * PrimeNG v20 FileUpload (ported from @intelica/ui `int-fileupload`).
  * Deviation: no built-in HTTP. Uploading is delegated to the app through `uploadHandler` (PrimeNG
  * `customUpload` mode), so each app keeps using its own HTTP service, auth and error handling.
+ * int-* extensions: `dropzone` (File Sharing drop-zone look) and `hint`.
  *
  * @example
  * <int-file-upload #fu multiple accept=".xlsx,.csv" [maxFileSize]="10_000_000"
@@ -50,6 +51,7 @@ export interface IntFileUploadHandlerEvent {
   host: {
     class: 'int-file-upload',
     '[class.int-file-upload--advanced]': 'mode() === "advanced"',
+    '[class.int-file-upload--dropzone]': 'mode() === "advanced" && dropzone()',
     '[class.int-file-upload--disabled]': 'disabled()',
   },
   encapsulation: ViewEncapsulation.None,
@@ -57,41 +59,66 @@ export interface IntFileUploadHandlerEvent {
 })
 export class IntFileUpload {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** `advanced` muestra la zona de arrastre y la lista de pendientes; `basic` solo el botón de elegir. */
   readonly mode = input<'advanced' | 'basic'>('advanced');
+  /** Atributo `name` del `<input type="file">` interno. */
   readonly name = input<string | undefined>(undefined);
+  /** Permite elegir y encolar varios archivos. */
   readonly multiple = input(false, { transform: booleanAttribute });
-  /** Same syntax as the native accept attribute: `.pdf,image/*,application/zip`. */
+  /** Tipos aceptados, con la sintaxis del atributo nativo `accept`: `.pdf,image/*,application/zip`. */
   readonly accept = input<string | undefined>(undefined);
-  /** Maximum size per file, in bytes. */
+  /** Tamaño máximo por archivo, en bytes. */
   readonly maxFileSize = input<number | undefined, unknown>(undefined, {
     transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
   });
-  /** Maximum number of queued files. */
+  /** Cantidad máxima de archivos en cola. */
   readonly fileLimit = input<number | undefined, unknown>(undefined, {
     transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
   });
+  /** Deshabilita la selección, el arrastre y los botones. */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** Emit `uploadHandler` right after a valid selection. */
+  /** Emite `uploadHandler` apenas se elige una selección válida (sin botón Upload). */
   readonly auto = input(false, { transform: booleanAttribute });
+  /** Texto del botón Choose (por defecto, traducción `choose`). */
   readonly chooseLabel = input<string | undefined>(undefined);
+  /** Texto del botón Upload (por defecto, traducción `upload`). */
   readonly uploadLabel = input<string | undefined>(undefined);
+  /** Texto del botón Cancel (por defecto, traducción `cancel`). */
   readonly cancelLabel = input<string | undefined>(undefined);
+  /** Clase del icono del botón Choose, p. ej. `icon icon-add`. */
   readonly chooseIcon = input<string | undefined>(undefined);
+  /** Clase del icono del botón Upload. */
   readonly uploadIcon = input<string | undefined>(undefined);
+  /** Clase del icono del botón Cancel. */
   readonly cancelIcon = input<string | undefined>(undefined);
+  /** Muestra el botón Upload en la cabecera (modo `advanced`, sin `auto`). */
   readonly showUploadButton = input(true, { transform: booleanAttribute });
+  /** Muestra el botón Cancel en la cabecera (modo `advanced`, sin `auto`). */
   readonly showCancelButton = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: aspecto de zona de arrastre de File Sharing: sin cabecera, borde
+   * punteado, enlace "browse" y requisitos (formatos, tamaño y cantidad máximos) armados desde `accept`,
+   * `maxFileSize` y `fileLimit`. La subida se dispara con `auto` o llamando a `upload()`.
+   */
+  readonly dropzone = input(false, { transform: booleanAttribute });
+  /** int-* extension: texto de ayuda bajo el mensaje de la zona de arrastre (solo con `dropzone`). */
+  readonly hint = input<string | undefined>(undefined);
 
+  /** Se emite al encolar archivos válidos. */
   readonly onSelect = output<IntFileSelectEvent>();
+  /** Se emite al quitar un archivo de la cola. */
   readonly onRemove = output<{ originalEvent: Event; file: File }>();
+  /** Se emite al vaciar la cola con `clear()` o el botón Cancel. */
   readonly onClear = output<void>();
+  /** Entrega los archivos en cola para que la app los suba (Upload, `auto` o `upload()`). */
   readonly uploadHandler = output<IntFileUploadHandlerEvent>();
 
   protected readonly config = inject(IntConfig);
+  /** Plantilla `#empty`: reemplaza el contenido de la zona cuando no hay archivos en cola. */
   protected readonly emptyTemplate = contentChild<TemplateRef<unknown>>('empty');
   private readonly fileInput = viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
 
@@ -101,27 +128,43 @@ export class IntFileUpload {
   protected readonly dragOver = signal(false);
 
   protected readonly fileNames = computed(() => this.files().map((f) => f.name).join(', '));
+  /** Requisitos de la zona `dropzone`, armados desde las entradas de validación. */
+  protected readonly requirements = computed(() => {
+    const t = this.config.translation();
+    const list: { label: string; value: string }[] = [];
+    const accept = this.accept();
+    if (accept) list.push({ label: t.acceptedFormats, value: accept.split(',').map((a) => a.trim()).join(', ') });
+    const max = this.maxFileSize();
+    if (max != null) list.push({ label: t.maxFileSizeLabel, value: this.formatSize(max) });
+    const limit = this.fileLimit();
+    if (limit != null) list.push({ label: t.fileLimitLabel, value: String(limit) });
+    return list;
+  });
   protected readonly limitReached = computed(() => {
     const limit = this.fileLimit();
     return limit != null && this.files().length >= limit;
   });
 
+  /** Abre el diálogo nativo de selección de archivos. */
   choose(): void {
     if (this.disabled()) return;
     this.fileInput().nativeElement.click();
   }
 
+  /** Emite `uploadHandler` con los archivos en cola. */
   upload(): void {
     if (!this.files().length) return;
     this.uploadHandler.emit({ files: [...this.files()] });
   }
 
+  /** Vacía la cola y los mensajes de validación, y emite `onClear`. */
   clear(): void {
     this.files.set([]);
     this.messages.set([]);
     this.onClear.emit();
   }
 
+  /** Quita de la cola el archivo en `index` y emite `onRemove`. */
   remove(event: Event, index: number): void {
     const file = this.files()[index];
     this.files.update((files) => files.filter((_, i) => i !== index));

@@ -81,6 +81,10 @@
     color: var(--i-icon-color-default);
     font-size: var(--i-icon-size-sm);
     transition: transform var(--i-motion-base);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   // Rendered in the CDK overlay container, outside the host.
@@ -122,6 +126,49 @@
   // Same grey as the disabled text (Figma).
   &--disabled &__icon {
     color: int.field(color-disabled);
+  }
+  // int-* extension variant="text": value + arrow only, no box (Figma paginator rows per page "10 ^").
+  &--text {
+    min-width: 0;
+  }
+  &--text &__trigger,
+  &--text.int-dropdown-select--open &__trigger,
+  &--text.int-dropdown-select--disabled &__trigger {
+    gap: var(--i-spacing-gap-sm); // Figma: 8px between value and arrow (paginator)
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--i-border-radius-sm); // Figma: 4px (focus ring corners)
+    background: transparent;
+
+    &:focus-visible {
+      @include int.focus-ring(0);
+    }
+  }
+  &--text &__label {
+    flex: 0 0 auto;
+    min-width: var(--i-sizing-lg); // Figma: 32px value width (paginator)
+    text-align: end;
+  }
+  &--text &__icon {
+    color: currentColor;
+  }
+  // Compact list: 4px inner padding, 20px end-aligned rows, 1px secondary-600 border (Figma paginator).
+  &__panel--text {
+    --int-option-padding: 0 var(--i-spacing-container-xs); // Figma: 0 4px (pagination/padding/x/xs)
+    --int-option-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm)
+    --int-option-background-hover: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
+    --int-option-background-focused: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
+    --int-list-box-gap: var(--i-spacing-gap-none); // Figma: rows without gap (paginator list)
+    min-width: 0;
+    line-height: var(--i-sizing-250); // Figma: 20px rows
+    border-color: var(--i-color-secondary-600); // Figma: #636B8C (pagination/color/border)
+    font-size: var(--i-typography-font-size-md);
+
+    // Values end-aligned under the trigger value (Figma paginator).
+    .int-list-box__option {
+      justify-content: flex-end;
+    }
   }
 }
 

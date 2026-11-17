@@ -18,6 +18,7 @@ export default {
     'month-picker',
     'year-picker',
     'inline-disabled-weekends',
+    'append-to',
   ],
   requires: ['button', 'input'],
   loadRoutes: () => import('./routes'),

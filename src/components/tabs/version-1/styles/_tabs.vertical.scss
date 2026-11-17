@@ -1,0 +1,67 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · VERTICAL
+\*——————————————————————————————————————————————————————————*/
+
+// orientation="vertical" (int-* extension): tabs stacked in a column on the left, a line, then the content, as in the
+// advanced filters of Fee Library. Overridable props: --int-tabs-vertical-{list-width,gap,list-gap,tab-padding,
+// tab-color,tab-hover-background,tab-active-background}.
+// Deviation: the knowledgeBase draws the line with a `u-divider-vertical` element between p-tablist and p-tabpanels
+// because PrimeNG owns that DOM; here the DOM is ours, so it is the tablist's end border. Each tab is not a
+// <p-button> inside the tab either (a button inside role="tab" is nested interactive content): the tab itself gets
+// the look.
+.int-tabs--vertical {
+  --int-tabs-vertical-list-width: calc(var(--i-sizing-1000) * 2.5); // knowledgeBase: .prTabVertical .p-tablist max-width 200px · design screenshot ~240px (no sizing token)
+  --int-tabs-vertical-gap: var(--i-spacing-gap-lg); // knowledgeBase: .prTabVertical.p-tabs gap 16px
+  --int-tabs-vertical-list-gap: var(--i-spacing-gap-sm); // knowledgeBase: .prTabVertical .p-tablist-tab-list gap 8px
+  --int-tabs-vertical-tab-padding: var(--i-spacing-container-md) var(--i-spacing-container-xl); // knowledgeBase: prButton (secondary) padding 8px 16px
+  --int-tabs-vertical-tab-color: var(--i-color-primary-900); // knowledgeBase: .prTabVertical active label primary-900
+  --int-tabs-vertical-tab-hover-background: var(--i-color-secondary-100); // knowledgeBase: .prTabVertical hover secondary-100
+  --int-tabs-vertical-tab-active-background: var(--i-color-primary-100); // knowledgeBase: .prTabVertical .p-tab-active button primary-100
+
+  display: flex;
+  gap: var(--int-tabs-vertical-gap);
+
+  .int-tabs__list {
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: var(--int-tabs-vertical-list-gap);
+    inline-size: var(--int-tabs-vertical-list-width);
+    padding-inline-end: var(--int-tabs-vertical-gap);
+    border-inline-end: var(--i-line);
+    overflow: visible;
+  }
+
+  .int-tabs__tab {
+    flex: none;
+    overflow: hidden;
+    padding: var(--int-tabs-vertical-tab-padding);
+    border: 0;
+    border-radius: var(--i-border-radius-lg);
+    background: transparent;
+    color: var(--int-tabs-vertical-tab-color);
+    text-align: start;
+    text-overflow: ellipsis;
+
+    &:not(.int-tabs__tab--active):not(.int-tabs__tab--disabled):hover {
+      color: var(--int-tabs-vertical-tab-color);
+      background: var(--int-tabs-vertical-tab-hover-background);
+    }
+  }
+
+  .int-tabs__tab--active {
+    border: 0;
+    background: var(--int-tabs-vertical-tab-active-background);
+    font-weight: var(--i-typography-font-weight-regular);
+  }
+
+  .int-tabs__tab--disabled {
+    border: 0;
+  }
+
+  .int-tabs__panels {
+    flex: auto;
+    min-inline-size: 0;
+    padding: 0;
+    background: transparent;
+  }
+}

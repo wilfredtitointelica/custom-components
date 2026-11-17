@@ -27,6 +27,7 @@ export default {
     'checkbox-group',
     'checkbox-validation',
     'checkbox-sizes-states',
+    'checkbox-icon-template',
     'radio-group',
     'radio-reactive-forms',
     'radio-sizes-states',
