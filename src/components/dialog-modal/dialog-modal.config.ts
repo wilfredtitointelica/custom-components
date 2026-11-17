@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'dialog-modal',
+  variants: ['basic', 'confirmation', 'detail', 'sizes', 'alert-headerless'],
   sourceName: 'Dialog / Modal',
   requires: ['button'],
   uses: ['date-picker', 'dropdown-select', 'input'],

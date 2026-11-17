@@ -6,35 +6,39 @@
 <ng-template #dialog>
   <div
     class="int-dialog-modal"
-    role="dialog"
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="focusOnShow()"
     [class]="panelClass()"
     [ngStyle]="style()"
+    [attr.role]="role()"
     [attr.aria-modal]="modal()"
-    [attr.aria-labelledby]="headerId"
+    [attr.aria-labelledby]="labelledBy()"
+    [attr.aria-label]="ariaLabel() ?? null"
+    [attr.aria-describedby]="ariaDescribedBy() ?? null"
   >
-    <div class="int-dialog-modal__header">
-      <div class="int-dialog-modal__title" [id]="headerId">
-        @if (headerTemplate(); as tpl) {
-          <ng-container [ngTemplateOutlet]="tpl" />
-        } @else {
-          {{ header() }}
+    @if (showHeader()) {
+      <div class="int-dialog-modal__header">
+        <div class="int-dialog-modal__title" [id]="headerId">
+          @if (headerTemplate(); as tpl) {
+            <ng-container [ngTemplateOutlet]="tpl" />
+          } @else {
+            {{ header() }}
+          }
+        </div>
+        @if (closable()) {
+          <!-- Figma icon-button: the bare text + icon-only int-button (24px box, 16px icon). -->
+          <button
+            intButton
+            type="button"
+            class="int-dialog-modal__close"
+            variant="text"
+            icon="icon icon-cancel"
+            [ariaLabel]="config.t('close')"
+            (click)="close()"
+          ></button>
         }
       </div>
-      @if (closable()) {
-        <!-- Figma icon-button: the bare text + icon-only int-button (24px box, 16px icon). -->
-        <button
-          intButton
-          type="button"
-          class="int-dialog-modal__close"
-          variant="text"
-          icon="icon icon-cancel"
-          [ariaLabel]="config.t('close')"
-          (click)="close()"
-        ></button>
-      }
-    </div>
+    }
     <div class="int-dialog-modal__content">
       <ng-content />
     </div>

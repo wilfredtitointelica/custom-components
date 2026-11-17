@@ -49,7 +49,8 @@ export type IntDialogModalSize = 'sm' | 'md' | 'lg' | 'xl';
   imports: [CdkTrapFocus, NgStyle, NgTemplateOutlet, IntButton],
   templateUrl: './dialog-modal.html',
   styleUrl: '../styles/_index.scss',
-  host: { style: 'display: contents' },
+  // role="alertdialog" on the tag feeds the `role` input; the host itself must not carry it (only the panel).
+  host: { style: 'display: contents', '[attr.role]': 'null' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -59,32 +60,58 @@ export class IntDialogModal implements OnDestroy {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** Abre (`true`) o cierra (`false`) el diálogo; admite `[(visible)]`. */
   readonly visible = model(false);
+  /** Título de la cabecera (o la plantilla `#header`). */
   readonly header = input<string | undefined>(undefined);
+  /** Muestra la máscara y bloquea la página detrás del diálogo. */
   readonly modal = input(true, { transform: booleanAttribute });
+  /** Muestra el botón de cerrar en la cabecera. */
   readonly closable = input(true, { transform: booleanAttribute });
-  /** Close when clicking the mask (modal only). */
+  /** Cierra el diálogo al hacer clic en la máscara (solo con `modal`). */
   readonly dismissableMask = input(false, { transform: booleanAttribute });
+  /** Escape cierra el diálogo. */
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
+  /** Bloquea el scroll de la página mientras está abierto. */
   readonly blockScroll = input(true, { transform: booleanAttribute });
-  /** Focus the first focusable element when shown; focus is restored to the opener on hide. */
+  /** Enfoca el primer elemento enfocable al abrir; al cerrar, el foco vuelve al elemento que lo abrió. */
   readonly focusOnShow = input(true, { transform: booleanAttribute });
+  /** Posición del panel en la pantalla: centrado o arriba. */
   readonly position = input<'center' | 'top'>('center');
   /**
-   * int-* extension (PrimeNG sizes dialogs with `[style]`): panel width from the Style Guide
-   * `.prDialog--<size>` tokens. Figma "Atoms / Overlay": sm = XSmall (400px), md = Medium (600px),
-   * lg = Large (800px), xl = XLarge (1024px). Figma Small (440px, the confirm width) has no token:
-   * set `--int-dialog-modal-width: 440px` through `styleClass`.
+   * int-* extension: ancho del panel con los tamaños del Style Guide: `sm` 400px, `md` 600px, `lg` 800px y `xl`
+   * 1024px. Para otro ancho (p. ej. 440px de una confirmación) usa `--int-dialog-modal-width` con `styleClass`.
    */
   readonly size = input<IntDialogModalSize | undefined>(undefined);
   /**
-   * Inline styles of the dialog panel, e.g. `{ width: '40rem' }` (PrimeNG `[style]`). Prefer `size`:
-   * the app guidelines (knowledgeBase dialog.md) discourage `[style]` on dialogs.
+   * Estilos en línea del panel, p. ej. `{ width: '40rem' }`. Mejor usar `size`: las guías de la app desaconsejan
+   * `[style]` en los diálogos.
    */
   readonly style = input<Record<string, string> | null>(null);
+  /** Clases extra para el panel. */
   readonly styleClass = input<string | undefined>(undefined);
+  /**
+   * Muestra la cabecera (título y botón de cerrar). En `false` el panel queda solo con contenido y pie, p. ej. un
+   * aviso de confirmación; dale entonces un nombre accesible con `ariaLabel` o `ariaLabelledBy`.
+   * @defaultValue true
+   */
+  readonly showHeader = input(true, { transform: booleanAttribute });
+  /**
+   * Rol ARIA del panel: `dialog` (por defecto) o `alertdialog` para avisos que piden una respuesta (confirmar una
+   * eliminación).
+   * @defaultValue 'dialog'
+   */
+  readonly role = input<'dialog' | 'alertdialog'>('dialog');
+  /** `id` del elemento que nombra al panel; por defecto, el título de la cabecera. */
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  /** int-* extension: nombre accesible del panel cuando no hay un elemento visible que lo nombre (sin cabecera). */
+  readonly ariaLabel = input<string | undefined>(undefined);
+  /** int-* extension: `id` del elemento que describe el panel (`aria-describedby`), p. ej. el mensaje de un aviso. */
+  readonly ariaDescribedBy = input<string | undefined>(undefined);
 
+  /** Se emite al abrirse el diálogo. */
   readonly onShow = output<void>();
+  /** Se emite al cerrarse el diálogo. */
   readonly onHide = output<void>();
 
   protected readonly config = inject(IntConfig);
@@ -93,7 +120,13 @@ export class IntDialogModal implements OnDestroy {
   protected readonly panelClass = computed(() =>
     [this.size() && `int-dialog-modal--${this.size()}`, this.styleClass()].filter(Boolean).join(' '),
   );
+  /** aria-labelledby: the consumer's id, else the header title (only when it is rendered and no ariaLabel). */
+  protected readonly labelledBy = computed(
+    () => this.ariaLabelledBy() ?? (this.showHeader() && !this.ariaLabel() ? this.headerId : null),
+  );
+  /** Plantilla `#header`: reemplaza el texto de `header` en la cabecera. */
   protected readonly headerTemplate = contentChild<TemplateRef<unknown>>('header');
+  /** Plantilla `#footer`: botones de acción, alineados a la derecha. */
   protected readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer');
   private readonly dialogTemplate = viewChild.required<TemplateRef<unknown>>('dialog');
 
@@ -108,6 +141,7 @@ export class IntDialogModal implements OnDestroy {
     });
   }
 
+  /** Cierra el diálogo (`visible` pasa a `false`). */
   close(): void {
     this.visible.set(false);
   }
