@@ -1,24 +1,34 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  afterNextRender,
+  afterRenderEffect,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
+  DestroyRef,
+  DOCUMENT,
   effect,
   ElementRef,
+  inject,
+  Injector,
   input,
   linkedSignal,
   numberAttribute,
   output,
+  signal,
   TemplateRef,
   untracked,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { IntDropdownSelect } from '../../../dropdown-select/version-1/base/dropdown-select';
 import { IntInputNumber } from '../../../input/version-1/base/input-number';
+
+/** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
+const OVERLAY_Z_INDEX = 1000;
 
 /**
  * Target of the selects' lists, same values as PrimeNG's appendTo: 'self', 'body' or an element (a
@@ -53,17 +63,22 @@ interface IntPaginatorOption {
   value: number;
 }
 
+/** Which provisional select is open: rows per page or jump to page. */
+type IntPaginatorDropdown = 'rpp' | 'jtp';
+
+let nextId = 0;
+
 /**
  * <int-paginator> · version 1. Replica of PrimeNG v20 p-paginator without PrimeNG at runtime.
  * Navigation buttons (first, prev, pages, next, last), current page report, jump to page and rows per
- * page. The jump to page field is an `<int-inputnumber>`; both selects are `<int-dropdown-select variant="text"
- * placement="top">` (Figma "10 ^" trigger, list above that leaves out the current value).
+ * page. The jump to page field is an `<int-inputnumber>`; the selects stay provisional (see dropdown-select
+ * markers): int-dropdown-select has no `appendTo` / `autoZIndex` / `baseZIndex` and opens below.
  */
 @Component({
   selector: 'int-paginator',
   templateUrl: './paginator.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet, FormsModule, IntInputNumber, IntDropdownSelect],
+  imports: [NgTemplateOutlet, FormsModule, IntInputNumber],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,6 +87,8 @@ interface IntPaginatorOption {
     class: 'int-paginator',
     '[style.display]': 'display()',
     '[class.int-paginator--disabled]': 'disabled()',
+    // TODO(dep:dropdown-select provisional) a press outside the open list closes it.
+    '(document:pointerdown)': 'onDocumentPointerDown($event)',
   },
 })
 export class IntPaginator {
@@ -79,6 +96,8 @@ export class IntPaginator {
   static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   // JSDoc of the public API in Spanish: it is the Descripción column of the API tab of the page.
   /** Cantidad de enlaces de página que se muestran. */
@@ -243,6 +262,26 @@ export class IntPaginator {
   });
 
   constructor() {
+    // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
+    // the node with node.remove(), so closing the list still works from the target.
+    afterRenderEffect(() => {
+      const list = this.listRef()?.nativeElement;
+      const target = this.overlayTarget();
+      if (!list || !target) return;
+      if (list.parentElement !== target) target.appendChild(list);
+      this.alignList();
+    });
+
+    // Keep the appended list attached to its select while the page or a container scrolls.
+    const realign = () => this.alignList();
+    const view = this.document.defaultView;
+    view?.addEventListener('scroll', realign, true);
+    view?.addEventListener('resize', realign);
+    inject(DestroyRef).onDestroy(() => {
+      view?.removeEventListener('scroll', realign, true);
+      view?.removeEventListener('resize', realign);
+    });
+
     // Same as PrimeNG updateFirst: when totalRecords shrinks below the offset, go back one page.
     effect(() => {
       const total = this.totalRecords();
@@ -275,15 +314,128 @@ export class IntPaginator {
   }
 
   /** Same as PrimeNG onRppChange: new page size, then the page that contains the current offset. */
-  protected onRppChange(rows: number): void {
+  private onRppChange(rows: number): void {
     this.rowsState.set(rows);
     this.changePage(this.page());
   }
 
-  /** Rows per page trigger text when rowsState is not one of the options (placeholder of the select). */
+  // --- TODO(dep:dropdown-select provisional) rows per page and jump to page selects ---
+  // Same keys as p-select: the trigger is a combobox, the list a listbox that opens upwards.
+  /** Unique prefix for the ids that link each trigger with its list (aria-controls). */
+  protected readonly uid = `int-paginator-${nextId++}`;
+  protected readonly openDropdown = signal<IntPaginatorDropdown | null>(null);
+  private readonly document = inject(DOCUMENT);
+  private readonly injector = inject(Injector);
+  /** List of the open select (one at a time). */
+  private readonly listRef = viewChild<ElementRef<HTMLElement>>('list');
+  /** z-index of the list moved out of the block (PrimeNG's ZIndexUtils 'overlay'); else the CSS. */
+  protected readonly overlayZIndex = computed(() =>
+    this.overlayTarget() && this.autoZIndex() ? this.baseZIndex() || OVERLAY_Z_INDEX : null,
+  );
+
+  /** Element the open list is moved to; null with appendTo="self" (it stays above its select). */
+  protected readonly overlayTarget = computed<HTMLElement | null>(() => {
+    const appendTo = this.appendTo();
+    if (!appendTo || appendTo === 'self') return null;
+    if (appendTo === 'body') return this.document.body;
+    return appendTo instanceof ElementRef ? appendTo.nativeElement : appendTo;
+  });
   protected readonly rowsLabel = computed(
     () => this.rowsPerPageItems().find((item) => item.value === this.rowsState())?.label ?? String(this.rowsState()),
   );
+
+  protected toggleDropdown(key: IntPaginatorDropdown): void {
+    if (this.inactive()) return;
+    this.openDropdown.update((open) => (open === key ? null : key));
+  }
+
+  /** Enter, Space and the arrows open the list and focus its first option; Escape closes it. */
+  protected onTriggerKeydown(event: KeyboardEvent, key: IntPaginatorDropdown): void {
+    if (this.inactive()) return;
+    if (['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) {
+      event.preventDefault();
+      this.openDropdown.set(key);
+      // Focus once the list is rendered and, with appendTo, already moved (moving a node blurs it).
+      afterNextRender({ read: () => this.options()[0]?.focus() }, { injector: this.injector });
+    } else if (event.key === 'Escape') {
+      this.openDropdown.set(null);
+    }
+  }
+
+  /** Arrows move between options (wrapping), Home/End go to the ends, Escape closes and Tab leaves. */
+  protected onListKeydown(event: KeyboardEvent, trigger: HTMLElement): void {
+    const options = this.options();
+    const current = options.indexOf(event.target as HTMLElement);
+    const focus = (index: number): void => {
+      event.preventDefault();
+      options.at(index)?.focus();
+    };
+    switch (event.key) {
+      case 'ArrowDown':
+        return focus((current + 1) % options.length);
+      case 'ArrowUp':
+        return focus((current - 1 + options.length) % options.length);
+      case 'Home':
+        return focus(0);
+      case 'End':
+        return focus(-1);
+      case 'Escape':
+        event.preventDefault();
+        return this.closeDropdown(trigger);
+      case 'Tab':
+        return this.openDropdown.set(null);
+    }
+  }
+
+  protected selectOption(key: IntPaginatorDropdown, value: number, trigger: HTMLElement): void {
+    if (key === 'rpp') this.onRppChange(value);
+    else this.changePage(value);
+    this.closeDropdown(trigger);
+  }
+
+  protected onDocumentPointerDown(event: PointerEvent): void {
+    if (!this.openDropdown()) return;
+    const target = event.target as Node;
+    const open = this.host.nativeElement.querySelector('.int-paginator__dropdown--open');
+    if (!open?.contains(target) && !this.listRef()?.nativeElement.contains(target)) this.openDropdown.set(null);
+  }
+
+  // Above the select, end-aligned with it, as with appendTo="self". Coordinates are relative to the
+  // list's containing block: the page, or a positioned target.
+  private alignList(): void {
+    const list = this.listRef()?.nativeElement;
+    const anchor = this.host.nativeElement.querySelector('.int-paginator__dropdown--open');
+    const view = this.document.defaultView;
+    if (!list || !anchor || !view || !this.overlayTarget()) return;
+    const rect = anchor.getBoundingClientRect();
+    const origin = this.containingBlockOrigin(list, view);
+    list.style.left = `${rect.right - list.offsetWidth - origin.left}px`;
+    list.style.top = `${rect.top - list.offsetHeight - origin.top}px`;
+  }
+
+  /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */
+  private containingBlockOrigin(element: HTMLElement, view: Window): { left: number; top: number } {
+    const parent = element.offsetParent;
+    if (!(parent instanceof HTMLElement) || parent === this.document.body) {
+      return { left: -view.scrollX, top: -view.scrollY };
+    }
+    const rect = parent.getBoundingClientRect();
+    return {
+      left: rect.left + parent.clientLeft - parent.scrollLeft,
+      top: rect.top + parent.clientTop - parent.scrollTop,
+    };
+  }
+
+  private closeDropdown(trigger: HTMLElement): void {
+    this.openDropdown.set(null);
+    trigger.focus();
+  }
+
+  private options(): HTMLElement[] {
+    // From the list itself: with appendTo it is no longer inside the host.
+    const list = this.listRef()?.nativeElement;
+    return list ? [...list.querySelectorAll<HTMLElement>('.int-paginator__dropdown-option')] : [];
+  }
 
   // --- Ripple (PrimeNG puts its ripple directive on every navigation and page button) ---
   /** Ink at the press point, sized to the longest side of the button; removed when it ends. */

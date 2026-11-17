@@ -74,24 +74,16 @@
 
 <!-- Jump to page: the trigger shows the current page report, like the selectedItem of p-paginator -->
 @if (showJumpToPageDropdown()) {
-  <int-dropdown-select
-    class="int-paginator__dropdown"
-    variant="text"
-    placement="top"
-    ariaLabel="Jump to Page Dropdown"
-    [options]="pageItems()"
-    optionLabel="label"
-    optionValue="value"
-    [ngModel]="page()"
-    [disabled]="inactive()"
-    [scrollHeight]="dropdownScrollHeight()"
-    [appendTo]="appendTo()"
-    [autoZIndex]="autoZIndex()"
-    [baseZIndex]="baseZIndex()"
-    (onChange)="changePage($any($event.value))"
-  >
-    <ng-template #selectedItem>{{ currentPageReport() }}</ng-template>
-  </int-dropdown-select>
+  <ng-container
+    [ngTemplateOutlet]="dropdown"
+    [ngTemplateOutletContext]="{
+      key: 'jtp',
+      items: pageItems(),
+      value: page(),
+      label: 'Jump to Page Dropdown',
+      text: currentPageReport(),
+    }"
+  />
 }
 
 <button
@@ -148,22 +140,15 @@
 }
 
 @if (rowsPerPageOptions()) {
-  <int-dropdown-select
-    class="int-paginator__dropdown"
-    variant="text"
-    placement="top"
-    ariaLabel="Rows per page"
-    [options]="rowsPerPageItems()"
-    optionLabel="label"
-    optionValue="value"
-    [ngModel]="rowsState()"
-    [placeholder]="rowsLabel()"
-    [disabled]="inactive()"
-    [scrollHeight]="dropdownScrollHeight()"
-    [appendTo]="appendTo()"
-    [autoZIndex]="autoZIndex()"
-    [baseZIndex]="baseZIndex()"
-    (onChange)="onRppChange($any($event.value))"
+  <ng-container
+    [ngTemplateOutlet]="dropdown"
+    [ngTemplateOutletContext]="{
+      key: 'rpp',
+      items: rowsPerPageItems(),
+      value: rowsState(),
+      label: 'Rows per page',
+      text: rowsLabel(),
+    }"
   />
 }
 
@@ -172,3 +157,64 @@
     <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: state() }" />
   </div>
 }
+
+<!-- dep:dropdown-select provisional · replace with <int-dropdown-select> when dropdown-select is done -->
+<!-- Combobox trigger ("10 ^") and a listbox that opens upwards with the other options, as in the design -->
+<ng-template #dropdown let-key="key" let-items="items" let-value="value" let-label="label" let-text="text">
+  @let open = openDropdown() === key;
+  @let listId = uid + '-' + key;
+  <span
+    class="int-paginator__dropdown"
+    [class.int-paginator__dropdown--open]="open"
+    [class.int-paginator__dropdown--disabled]="inactive()"
+    data-dep="dropdown-select"
+  >
+    <span
+      #trigger
+      class="int-paginator__dropdown-trigger"
+      role="combobox"
+      aria-haspopup="listbox"
+      [attr.aria-label]="label"
+      [attr.aria-expanded]="open"
+      [attr.aria-controls]="listId"
+      [attr.aria-disabled]="inactive() || null"
+      [attr.tabindex]="inactive() ? -1 : 0"
+      (click)="toggleDropdown(key)"
+      (keydown)="onTriggerKeydown($event, key)"
+    >
+      <span class="int-paginator__dropdown-label">{{ text }}</span>
+      <i class="icon icon--sm" [class]="open ? 'icon-arrow-up' : 'icon-arrow-down'" aria-hidden="true"></i>
+    </span>
+
+    @if (open) {
+      <div
+        #list
+        class="int-paginator__dropdown-list"
+        [class.int-paginator__dropdown-list--appended]="!!overlayTarget()"
+        [style.z-index]="overlayZIndex()"
+        role="listbox"
+        [id]="listId"
+        [attr.aria-label]="label"
+        [style.max-block-size]="dropdownScrollHeight()"
+        (keydown)="onListKeydown($event, trigger)"
+      >
+        @for (item of items; track item.value) {
+          @if (item.value !== value) {
+            <div
+              class="int-paginator__dropdown-option"
+              role="option"
+              tabindex="-1"
+              aria-selected="false"
+              (click)="selectOption(key, item.value, trigger)"
+              (keydown.enter)="selectOption(key, item.value, trigger)"
+              (keydown.space)="$event.preventDefault(); selectOption(key, item.value, trigger)"
+            >
+              {{ item.label }}
+            </div>
+          }
+        }
+      </div>
+    }
+  </span>
+</ng-template>
+<!-- /dep:dropdown-select -->
