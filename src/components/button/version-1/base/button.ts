@@ -7,6 +7,7 @@ import {
   computed,
   inject,
   input,
+  numberAttribute,
 } from '@angular/core';
 
 import { IntIcon, IntSeverity, IntSize } from '../../../_shared_';
@@ -36,7 +37,7 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
     '[class]': 'modifiers()',
     '[attr.disabled]': 'isDisabled() ? "" : null',
     '[attr.aria-disabled]': 'isDisabled() || null',
-    '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : null',
+    '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : (tabindex() ?? null)',
     '[attr.aria-pressed]': 'active() ?? null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.aria-label]': 'ariaLabel() ?? (labelOnHover() ? label() : null) ?? null',
@@ -78,6 +79,13 @@ export class IntButton {
    * predefinido elegido en el pie de `int-date-picker`.
    */
   readonly active = input<boolean | undefined>(undefined);
+  /**
+   * `tabindex` del botón (como en PrimeNG), p. ej. `-1` para sacarlo del orden de `Tab` cuando otro elemento
+   * maneja el teclado. Un `<a intButton>` deshabilitado usa siempre `-1`.
+   */
+  readonly tabindex = input<number | undefined, unknown>(undefined, {
+    transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
+  });
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;

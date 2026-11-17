@@ -5,6 +5,7 @@ import {
   booleanAttribute,
   input,
   output,
+  numberAttribute,
 } from '@angular/core';
 
 import { IntSeverity, IntSize } from '../../../_shared_';
@@ -49,6 +50,13 @@ export class IntButtonElement {
   readonly labelOnHover = input(false, { transform: booleanAttribute });
   /** int-* extension: mantiene el aspecto presionado y marca `aria-pressed`. */
   readonly active = input<boolean | undefined>(undefined);
+  /**
+   * `tabindex` del botón (como en PrimeNG), p. ej. `-1` para sacarlo del orden de `Tab` cuando otro elemento
+   * maneja el teclado. Un `<a intButton>` deshabilitado usa siempre `-1`.
+   */
+  readonly tabindex = input<number | undefined, unknown>(undefined, {
+    transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
+  });
   /** Native `type` of the inner button. */
   readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly autofocus = input(false, { transform: booleanAttribute });
