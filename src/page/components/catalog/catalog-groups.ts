@@ -15,7 +15,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   { name: 'Navegación', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
     name: 'Contención',
-    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'treetable', 'tree-view', 'timeline'],
+    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'treetable', 'tree-view', 'pick-list', 'timeline'],
   },
   {
     name: 'Comunicación',
