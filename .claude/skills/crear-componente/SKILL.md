@@ -134,7 +134,10 @@ Si no existe, pregunta en **un solo mensaje** lo que no se haya dado:
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
    kebab-case (`chip`, `dropdown-select`); confírmalo si no es obvio. Nunca `skills` ni `status`
    (reservados por las páginas de Reference).
-2. **Descripción** del componente: una línea (puede quedar vacía si el usuario no la tiene).
+2. **Descripción** del componente: **una sola frase breve** (≈ 80 caracteres como máximo, para que se vea
+   en una línea bajo el título), en español, que diga qué es o para qué sirve: "Chip representa una
+   entidad o un filtro aplicado que se puede quitar.". Sin detalles de API, teclado ni implementación
+   (eso va en las variantes y en la pestaña API). Si el usuario da un texto largo, se resume.
 3. **Descripción de la variante `Basic`**: una línea (opcional). Su título es siempre `Basic`.
 4. **Diseñador** a cargo: nombre completo. Equipo actual: **Yony León**, **Gabriela Javier**,
    **Christian Abanto** (acepta el nombre corto: "Yony", "Gabi", "Abanto"). Puede quedar vacío si aún
@@ -148,15 +151,16 @@ El título y la descripción se escriben **en el HTML**, en un comentario al ini
 ```html
 <!--
   title: Chip
-  description: Los chips representan entidades con iconos, etiquetas e imágenes.
+  description: Chip representa una entidad o un filtro aplicado que se puede quitar.
   figma:
 -->
 ```
 
 - Componente → cabecera de `version-N/base/<id>.html` (título de la página y del menú, descripción
   bajo el título). Cada versión tiene la suya; el menú usa la de la versión más reciente.
+  Su `description:` es **una sola línea breve** (ver 3.0, punto 2).
 - Variante → cabecera de `version-N/variants/<slug>/example.html` (título y descripción de la sección).
-- `description:` puede quedar vacío y continuar en varias líneas.
+  La de una variante sí puede ser más larga y continuar en varias líneas.
 - El título cambia con el tab, como PrimeNG: "Card" en Variants, "Card API" y "Card Compositions".
   La descripción bajo el título también: Variants muestra `description:` y API / Compositions un texto
   genérico, igual para todos los componentes. **No se escriben al crear el componente.** Si el
@@ -335,7 +339,7 @@ Se entrega **exactamente así**: la cabecera con lo respondido en 3.0 y el nombr
 ```html
 <!--
   title: Chip
-  description: Los chips representan entidades con iconos, etiquetas e imágenes.
+  description: Chip representa una entidad o un filtro aplicado que se puede quitar.
   figma:
 -->
 int-chip

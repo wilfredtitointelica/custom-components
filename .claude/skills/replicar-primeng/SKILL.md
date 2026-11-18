@@ -253,7 +253,7 @@ de mayor prioridad y la diferencia se reporta. Procedimiento completo en
    ```html
    <!--
      title: Chip
-     description: Chip representa personas con iconos, etiquetas e imágenes.
+     description: Chip representa una entidad o un filtro aplicado que se puede quitar.
      figma: https://www.figma.com/design/<fileKey>/<name>?node-id=12-345
      figma-frame: https://www.figma.com/design/<fileKey>/<name>?node-id=12-300
    -->
@@ -577,7 +577,7 @@ Reglas:
 
 ### 3.2 `base/<id>.html`
 
-- Cabecera `<!-- title: … description: … -->` arriba, intacta.
+- Cabecera `<!-- title: … description: … -->` arriba, intacta. La `description:` del componente es una sola frase breve (≈ 80 caracteres), sin detalles de API ni teclado (`crear-componente` 3.0).
 - Misma estructura de elementos que la plantilla de PrimeNG (mismo orden, mismas condiciones), con
   clases BEM: `p-chip` → `int-chip`, `p-chip-label` → `int-chip__label`, `p-chip-remove-icon` →
   `int-chip__remove-icon`. Estados → modificadores (`p-disabled` → `int-chip--disabled`).
