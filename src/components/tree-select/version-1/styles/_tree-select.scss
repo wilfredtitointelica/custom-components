@@ -80,6 +80,12 @@
   transition:
     background var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing),
     border-color var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing);
+
+  // appendTo="self": the panel is mounted inside the host; it must not inherit the trigger's cursor and selection.
+  > .int-overlay-container {
+    cursor: auto;
+    user-select: text;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

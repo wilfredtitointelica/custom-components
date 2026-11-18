@@ -221,6 +221,12 @@
     line-height: var(--int-paginator-line-height);
   }
 
+  // No room above the select: the list opens below it (with appendTo, the component sets its top).
+  &__dropdown-list--below {
+    inset-block: 100% auto;
+    margin-block: var(--int-paginator-nav-button-padding) 0;
+  }
+
   &__dropdown-option {
     padding-inline: var(--int-paginator-nav-button-padding);
     border-radius: var(--int-paginator-jtp-input-border-radius);

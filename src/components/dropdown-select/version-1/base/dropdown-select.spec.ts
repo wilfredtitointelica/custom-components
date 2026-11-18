@@ -117,13 +117,13 @@ describe('IntDropdownSelect appendTo', () => {
     return host;
   }
 
-  it('mounts the panel in the body by default, with the overlay z-index', () => {
+  it('mounts the panel inside the component by default, with the overlay z-index', () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     fixture.nativeElement.querySelector('[role="combobox"]').click();
     fixture.detectChanges();
     const container = overlayOf(fixture);
-    expect(container.parentElement).toBe(document.body);
+    expect(container.parentElement).toBe(fixture.nativeElement.querySelector('int-dropdown-select'));
     expect(container.style.zIndex).toBe('1000');
     expect(container.querySelectorAll('[role="option"]').length).toBe(3);
   });

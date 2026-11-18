@@ -292,6 +292,25 @@
   font-size: 0.75rem;
 }
 
+// Done dependency still replaced by a provisional: Scan palette (fuchsia), like its outline in the preview.
+.doc-deps-provisional {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px dashed var(--doc-scan);
+  border-radius: 999px;
+  background: var(--doc-scan-container);
+  color: var(--doc-on-scan-container);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  .pi {
+    font-size: 0.6875rem;
+  }
+}
+
 /* Scan toggle (outlines provisionals and resolved int-*; the outlines are global rules of styles.scss) */
 .doc-scan-toggle[aria-pressed='true'] {
   border-color: var(--doc-deps-color);

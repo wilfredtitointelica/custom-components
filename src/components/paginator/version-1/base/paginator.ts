@@ -25,6 +25,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { closeWhenOriginHidden } from '../../../_shared_';
 import { IntInputNumber } from '../../../input/version-1/base/input-number';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
@@ -129,7 +130,7 @@ export class IntPaginator {
   /** Alto máximo de la lista de los selectores; si las opciones no caben, la lista hace scroll. */
   readonly dropdownScrollHeight = input('200px');
   /**
-   * Dónde se inserta la lista de los selectores: `self` (por defecto, sobre el selector), `body` o un
+   * Dónde se inserta la lista de los selectores: `self` (por defecto, sobre el selector o debajo si no hay espacio), `body` o un
    * elemento (variable de template, p. ej. `[appendTo]="container"`), para que ningún contenedor la
    * recorte ni la tape.
    */
@@ -262,13 +263,20 @@ export class IntPaginator {
   });
 
   constructor() {
+    // Close the list when a scroll leaves its select out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => !!this.openDropdown(),
+      origin: () => this.host.nativeElement.querySelector<HTMLElement>('.int-paginator__dropdown--open'),
+      panel: () => this.listRef()?.nativeElement,
+      close: () => this.openDropdown.set(null),
+    });
     // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
     // the node with node.remove(), so closing the list still works from the target.
     afterRenderEffect(() => {
       const list = this.listRef()?.nativeElement;
       const target = this.overlayTarget();
-      if (!list || !target) return;
-      if (list.parentElement !== target) target.appendChild(list);
+      if (!list) return;
+      if (target && list.parentElement !== target) target.appendChild(list);
       this.alignList();
     });
 
@@ -400,17 +408,21 @@ export class IntPaginator {
     if (!open?.contains(target) && !this.listRef()?.nativeElement.contains(target)) this.openDropdown.set(null);
   }
 
-  // Above the select, end-aligned with it, as with appendTo="self". Coordinates are relative to the
-  // list's containing block: the page, or a positioned target.
+  // Above the select, end-aligned with it, or below it when there is no room above (any appendTo). With appendTo,
+  // coordinates are relative to the list's containing block: the page, or a positioned target.
   private alignList(): void {
     const list = this.listRef()?.nativeElement;
     const anchor = this.host.nativeElement.querySelector('.int-paginator__dropdown--open');
     const view = this.document.defaultView;
-    if (!list || !anchor || !view || !this.overlayTarget()) return;
+    if (!list || !anchor || !view) return;
     const rect = anchor.getBoundingClientRect();
+    // Below the select only when there is no room above and there is room below (any appendTo).
+    const below = rect.top < list.offsetHeight && rect.bottom + list.offsetHeight <= view.innerHeight;
+    list.classList.toggle('int-paginator__dropdown-list--below', below);
+    if (!this.overlayTarget()) return; // appendTo="self": the CSS places it against the select
     const origin = this.containingBlockOrigin(list, view);
     list.style.left = `${rect.right - list.offsetWidth - origin.left}px`;
-    list.style.top = `${rect.top - list.offsetHeight - origin.top}px`;
+    list.style.top = `${(below ? rect.bottom : rect.top - list.offsetHeight) - origin.top}px`;
   }
 
   /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */

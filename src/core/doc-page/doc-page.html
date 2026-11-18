@@ -125,6 +125,16 @@
                         (click)="depsPanel.hidePopover()"
                       >
                         <span class="doc-deps-name">{{ item.name }}</span>
+                        <!-- Done, but the base or an example still uses its provisional (dep:<id> provisional). -->
+                        @if (item.provisional) {
+                          <span
+                            class="doc-deps-provisional"
+                            [title]="item.name + ' ya está Done, pero aquí sigue el provisional dep:' + item.id + ': reemplázalo por el int-* real'"
+                          >
+                            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                            Provisional
+                          </span>
+                        }
                         <app-status-chip [status]="item.status" size="sm" />
                         <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
                       </a>

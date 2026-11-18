@@ -53,9 +53,10 @@
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="host"
   [cdkConnectedOverlayOpen]="overlayAttached()"
-  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayPositions]="avoid.positions()"
   [cdkConnectedOverlayMinWidth]="triggerWidth()"
   cdkConnectedOverlayTransformOriginOn=".int-tree-select__panel"
+  (attach)="avoid.onAttach()"
   (overlayOutsideClick)="onOutsideClick($event)"
   (detach)="onOverlayDetach()"
 >

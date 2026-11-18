@@ -61,9 +61,10 @@
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayOpen]="open()"
-  [cdkConnectedOverlayPositions]="positions()"
+  [cdkConnectedOverlayPositions]="avoid.positions()"
   [cdkConnectedOverlayMinWidth]="variant() === 'text' ? 0 : triggerWidth()"
   [cdkConnectedOverlayViewportMargin]="8"
+  (attach)="avoid.onAttach()"
   (overlayOutsideClick)="onOutsideClick($event)"
   (overlayKeydown)="onOverlayKeydown($event)"
   (detach)="close(false)"

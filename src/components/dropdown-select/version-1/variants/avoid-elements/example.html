@@ -1,0 +1,19 @@
+<!--
+  title: Avoid Elements
+  description: Con `avoidElements` el panel no tapa los elementos indicados (selector CSS, variable de template de un elemento HTML o una lista). Al abrirse prueba debajo, arriba y a los lados del campo, y usa la primera posición que cabe en pantalla sin taparlos. Aquí no tapa el botón "Apply Filters".
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-dropdown-select
+    [style]="{ width: '20rem' }"
+    [options]="regions"
+    optionLabel="name"
+    optionValue="code"
+    placeholder="Select a region"
+    ariaLabel="Region"
+    avoidElements=".dropdown-select-apply"
+    [(ngModel)]="region"
+  />
+  <div class="u-display-flex">
+    <button intButton class="dropdown-select-apply" label="Apply Filters"></button>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<!--
+  title: Avoid Elements
+  description: Con `avoidElements` el panel no tapa los elementos indicados (selector CSS, variable de template de un elemento HTML o una lista). Al abrirse prueba debajo, arriba y a los lados del campo, y usa la primera posición que cabe en pantalla sin taparlos. Aquí no tapa la fila de botones `#actions`.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-tree-select [style]="{ width: '20rem' }" [options]="nodes" placeholder="Select item" [avoidElements]="actions" [(ngModel)]="selected" />
+  <div #actions class="u-display-flex u-gap-sm">
+    <button intButton label="Apply"></button>
+    <button intButton severity="secondary" label="Reset"></button>
+  </div>
+</div>

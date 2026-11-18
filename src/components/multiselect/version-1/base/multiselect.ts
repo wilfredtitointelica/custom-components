@@ -25,6 +25,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { IntAvoidElements, closeWhenOriginHidden, placeAvoiding } from '../../../_shared_';
 import { IntChip } from '../../../chip/version-1/base/chip';
 import { IntInputText } from '../../../input/version-1/base/input-text';
 import { IntTooltip } from '../../../tooltip/version-2/base/tooltip';
@@ -364,7 +365,7 @@ export class IntMultiselect implements ControlValueAccessor {
   /** Ocupa todo el ancho del contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
   /**
-   * Dónde se inserta el panel: `self` (por defecto, debajo del campo), `body` o un elemento (variable
+   * Dónde se inserta el panel: `self` (por defecto, debajo del campo o encima si no hay espacio), `body` o un elemento (variable
    * de template, p. ej. `[appendTo]="container"`), para que ningún contenedor lo recorte ni lo tape.
    */
   readonly appendTo = input<IntMultiselectAppendTo>('self');
@@ -381,6 +382,15 @@ export class IntMultiselect implements ControlValueAccessor {
    * @defaultValue 0
    */
   readonly baseZIndex = input(0, { transform: numberAttribute });
+  /**
+   * int-* extension: elementos que el panel no debe tapar: selector CSS, elemento o variable de template, o una
+   * lista (`[avoidElements]="[applyBtn, '.otro']"`). Al abrir, el panel prueba debajo, arriba y a los lados del
+   * campo, y usa la primera posición que cabe en pantalla sin taparlos (si todas tapan algo, la que tapa menos).
+   * Una variable de template puesta en un componente (p. ej. `<button intButton #btn>`) es el componente, no el
+   * elemento: en ese caso usar un selector CSS.
+   * Funciona con cualquier `appendTo`.
+   */
+  readonly avoidElements = input<IntAvoidElements | null>(null);
   /** Cuando está presente, el campo se muestra con estilo de error. */
   readonly invalid = input(false, { transform: booleanAttribute });
   /** Cuando está presente, el componente queda deshabilitado. */
@@ -653,6 +663,13 @@ export class IntMultiselect implements ControlValueAccessor {
   private onModelTouched: () => void = () => {};
 
   constructor() {
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.overlayOpen(),
+      origin: () => this.host.nativeElement,
+      panel: () => this.overlayRef()?.nativeElement,
+      close: () => this.hide(),
+    });
     // Same as pAutoFocus on the hidden input; and overlayVisible opens the panel on load.
     afterNextRender(() => {
       if (this.autofocus()) this.focusInputRef()?.nativeElement.focus();
@@ -667,11 +684,12 @@ export class IntMultiselect implements ControlValueAccessor {
 
     // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
     // the node with node.remove(), so the leave animation and the cleanup still work from the target.
+    // Also with appendTo="self": placed here so it flips above the field when there is no room below.
     afterRenderEffect(() => {
       const overlay = this.overlayRef()?.nativeElement;
       const target = this.overlayTarget();
-      if (!overlay || !target) return;
-      if (overlay.parentElement !== target) target.appendChild(overlay);
+      if (!overlay) return;
+      if (target && overlay.parentElement !== target) target.appendChild(overlay);
       this.alignOverlay();
     });
 
@@ -973,19 +991,26 @@ export class IntMultiselect implements ControlValueAccessor {
   }
 
   // Below the field, or above it when there is no room below (same as PrimeNG's absolutePosition).
-  // Coordinates are relative to the overlay's containing block: the page, or a positioned target.
+  // With avoidElements, the first place (below, above or beside) that does not cover those elements.
+  // Coordinates are relative to the overlay's containing block: the page, a positioned target or, with
+  // appendTo="self", the component itself.
   private alignOverlay(): void {
     const overlay = this.overlayRef()?.nativeElement;
     const anchor = this.host.nativeElement;
     const view = this.document.defaultView;
-    if (!overlay || !view || !this.overlayTarget()) return;
+    if (!overlay || !view) return;
     const rect = anchor.getBoundingClientRect();
-    const flip = rect.bottom + overlay.offsetHeight > view.innerHeight && rect.top > overlay.offsetHeight;
+    overlay.style.minWidth = `${rect.width}px`;
+    const placed = placeAvoiding(anchor, overlay, this.avoidElements(), this.document);
+    const flip = placed
+      ? placed.side === 'above'
+      : rect.bottom + overlay.offsetHeight > view.innerHeight && rect.top > overlay.offsetHeight;
     const origin = this.containingBlockOrigin(overlay, view);
     overlay.classList.toggle('int-multiselect__overlay--top', flip);
-    overlay.style.minWidth = `${rect.width}px`;
-    overlay.style.left = `${rect.left - origin.left}px`;
-    overlay.style.top = `${(flip ? rect.top - overlay.offsetHeight : rect.bottom) - origin.top}px`;
+    // Beside the field the CSS vertical gap does not apply.
+    overlay.style.marginBlockStart = placed?.side === 'beside' ? '0' : '';
+    overlay.style.left = `${(placed ? placed.rect.left : rect.left) - origin.left}px`;
+    overlay.style.top = `${(placed ? placed.rect.top : flip ? rect.top - overlay.offsetHeight : rect.bottom) - origin.top}px`;
   }
 
   /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */

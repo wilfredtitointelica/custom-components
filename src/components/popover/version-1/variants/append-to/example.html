@@ -1,6 +1,6 @@
 <!--
   title: Append To
-  description: El panel se monta en `body` por defecto. Con `appendTo="self"` o un elemento se monta dentro de ese elemento, y `baseZIndex` fija su `z-index` (aquí `9`, debajo del encabezado fijo de la página, que está en 10).
+  description: El panel se monta dentro del componente por defecto (`appendTo="self"`) y se coloca sobre la pantalla. Con `appendTo="body"` o un elemento se monta ahí, y `baseZIndex` fija su `z-index` (aquí `9`, debajo del encabezado fijo de la página, que está en 10).
 -->
 <div #container class="u-display-flex u-flex-column u-align-items-center u-gap-md u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
   <button intButton type="button" label="Show info" (click)="op.toggle($event)"></button>

@@ -146,15 +146,21 @@ export class DocPage {
       compositions ? this.component().compositions : this.component().variants,
     );
     const uses = declared.filter((id) => used.all.has(id));
+    // Provisionals of the base (dep:<id> provisional in base/ and styles/) count on every tab: the base
+    // renders them in every example, even when the dependency itself is already done.
+    const baseProvisionals = new Set(this.nav.activeVersion()?.baseProvisionals ?? []);
     const toItem = (id: string) => {
       const dependency = this.catalog.find(id);
       const status = dependency ? (dependency.versions.at(-1)?.status ?? 'pending') : undefined;
+      const provisional = baseProvisionals.has(id) || used.provisional.has(id);
       return {
         id,
         name: dependency?.name ?? id,
         path: dependency?.path,
         status,
-        pending: status !== 'done' || used.provisional.has(id),
+        /** Done, but a provisional still stands in for it: pending until it is replaced. */
+        provisional: status === 'done' && provisional,
+        pending: status !== 'done' || provisional,
       };
     };
     const groups = [
@@ -271,19 +277,24 @@ export class DocPage {
 
     // The variant heads stick below the chips row too: publish their height as --doc-section-head-h, so an
     // example can stick a int-* below the whole stack (treetable stickyTop). All heads are the same
-    // height; the first one is measured once the examples are rendered.
+    // height; the first one is measured once the examples are rendered. Switching tabs destroys the heads
+    // and renders new ones, so the effect also tracks the tab: otherwise it keeps observing a detached head,
+    // which reports 0px, and the sticky int-* ends up under the variant head.
     let headObserver: ResizeObserver | undefined;
     destroyRef.onDestroy(() => headObserver?.disconnect());
     effect(() => {
+      this.nav.activeTab();
       if (!this.examples.hasValue()) return;
       afterNextRender(
         () => {
           const head = host.querySelector<HTMLElement>('.doc-section-head');
           if (!head) return;
           headObserver?.disconnect();
-          headObserver = new ResizeObserver(([entry]) =>
-            host.style.setProperty('--doc-section-head-h', `${entry.borderBoxSize[0].blockSize}px`),
-          );
+          headObserver = new ResizeObserver(([entry]) => {
+            const height = entry.borderBoxSize[0].blockSize;
+            // A head that leaves the DOM reports 0px: keep the last real height.
+            if (height > 0) host.style.setProperty('--doc-section-head-h', `${height}px`);
+          });
           headObserver.observe(head);
         },
         { injector },

@@ -23,7 +23,10 @@ import {
   INT_DROPDOWN_POSITIONS,
   INT_DROPUP_POSITIONS,
   IntAppendTo,
+  IntAvoidElements,
   IntBaseControl,
+  avoidOverlayElements,
+  closeWhenOriginHidden,
   IntConfig,
   IntFieldAccessor,
   IntIcon,
@@ -123,11 +126,12 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   /** `id` del elemento que nombra al disparador. */
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   /**
-   * Dónde se monta el panel: `body` (por defecto), `self` (dentro del componente) o un elemento (variable de
-   * template, p. ej. `[appendTo]="container"`). Diferencia con PrimeNG: allí el valor por defecto es `self`.
-   * @defaultValue 'body'
+   * Dónde se monta el panel: `self` (por defecto, dentro del componente, como PrimeNG), `body` o un elemento
+   * (variable de template, p. ej. `[appendTo]="container"`). En todos los casos se coloca sobre la pantalla y
+   * cambia de lado si no hay espacio.
+   * @defaultValue 'self'
    */
-  readonly appendTo = input<IntAppendTo>('body');
+  readonly appendTo = input<IntAppendTo>('self');
   /**
    * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
    * se define con CSS (`.int-overlay-container`).
@@ -153,6 +157,14 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
    * @defaultValue 'outlined'
    */
   readonly variant = input<'outlined' | 'text'>('outlined');
+  /**
+   * int-* extension: elementos que el panel no debe tapar: selector CSS, elemento o variable de template, o una
+   * lista (`[avoidElements]="[applyBtn, '.otro']"`). Al abrir, el panel prueba debajo, arriba y a los lados del
+   * campo, y usa la primera posición que cabe en pantalla sin taparlos (si todas tapan algo, la que tapa menos).
+   * Una variable de template puesta en un componente (p. ej. `<button intButton #btn>`) es el componente, no el
+   * elemento: en ese caso usar un selector CSS.
+   */
+  readonly avoidElements = input<IntAvoidElements | null>(null);
 
   /** Se emite al elegir o borrar una opción, con el evento y el valor nuevo. */
   readonly onChange = output<IntDropdownSelectChangeEvent>();
@@ -168,7 +180,7 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   readonly onBlur = output<FocusEvent>();
 
   protected readonly config = inject(IntConfig);
-  protected readonly positions = computed(() => {
+  private readonly basePositions = computed(() => {
     const positions = this.placement() === 'top' ? INT_DROPUP_POSITIONS : INT_DROPDOWN_POSITIONS;
     // variant="text": content-sized list aligned with the end of the trigger (Figma paginator).
     return this.variant() === 'text' ? [...positions.slice(2), ...positions.slice(0, 2)] : positions;
@@ -177,6 +189,13 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   protected readonly triggerWidth = signal(0);
   protected readonly listBox = viewChild(IntListBox);
   private readonly trigger = viewChild.required<ElementRef<HTMLElement>>('trigger');
+  private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  protected readonly avoid = avoidOverlayElements({
+    avoid: this.avoidElements,
+    positions: this.basePositions,
+    overlay: this.overlayDir,
+    origin: () => this.trigger().nativeElement,
+  });
 
   /** Plantilla `#item`: contenido de cada opción de la lista. */
   protected readonly itemTemplate = contentChild<TemplateRef<IntListBoxItemContext>>('item');
@@ -214,6 +233,13 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
 
   constructor() {
     super();
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.open(),
+      origin: () => this.trigger().nativeElement,
+      panel: () => this.overlayDir()?.overlayRef?.overlayElement,
+      close: () => this.close(false),
+    });
     connectOverlayContainer({
       appendTo: this.appendTo,
       autoZIndex: this.autoZIndex,
@@ -248,6 +274,7 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   close(focusTrigger = true): void {
     if (!this.open()) return;
     this.open.set(false);
+    this.avoid.reset();
     if (focusTrigger) this.trigger().nativeElement.focus();
     this.onHide.emit();
   }

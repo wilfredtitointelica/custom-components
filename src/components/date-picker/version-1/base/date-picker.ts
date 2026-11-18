@@ -23,6 +23,9 @@ import {
 import {
   INT_DROPDOWN_POSITIONS,
   IntAppendTo,
+  IntAvoidElements,
+  avoidOverlayElements,
+  closeWhenOriginHidden,
   IntBaseControl,
   IntConfig,
   IntIcon,
@@ -133,12 +136,12 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
   /** Clase extra para el panel del calendario. */
   readonly panelStyleClass = input<string | undefined>(undefined);
   /**
-   * Dónde se monta el panel: `body` (por defecto), `self` (dentro del componente) o un elemento (variable de
-   * template, p. ej. `[appendTo]="container"`). Diferencia con PrimeNG: allí el valor por defecto es `self`.
-   * Sin efecto con `inline`.
-   * @defaultValue 'body'
+   * Dónde se monta el panel: `self` (por defecto, dentro del componente, como PrimeNG), `body` o un elemento
+   * (variable de template, p. ej. `[appendTo]="container"`). En todos los casos se coloca sobre la pantalla y
+   * cambia de lado si no hay espacio. Sin efecto con `inline`.
+   * @defaultValue 'self'
    */
-  readonly appendTo = input<IntAppendTo>('body');
+  readonly appendTo = input<IntAppendTo>('self');
   /**
    * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
    * se define con CSS (`.int-overlay-container`).
@@ -151,6 +154,14 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
    * @defaultValue 0
    */
   readonly baseZIndex = input(0, { transform: numberAttribute });
+  /**
+   * int-* extension: elementos que el panel no debe tapar: selector CSS, elemento o variable de template, o una
+   * lista (`[avoidElements]="[applyBtn, '.otro']"`). Al abrir, el panel prueba debajo, arriba y a los lados del
+   * campo, y usa la primera posición que cabe en pantalla sin taparlos (si todas tapan algo, la que tapa menos).
+   * Una variable de template puesta en un componente (p. ej. `<button intButton #btn>`) es el componente, no el
+   * elemento: en ese caso usar un selector CSS.
+   */
+  readonly avoidElements = input<IntAvoidElements | null>(null);
 
   /** Se emite con la fecha elegida (en `range`, en cada uno de los dos clics). */
   readonly onSelect = output<Date>();
@@ -167,7 +178,14 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
   readonly footerTemplate = contentChild<TemplateRef<unknown>>('footer');
 
   protected readonly config = inject(IntConfig);
-  protected readonly positions = INT_DROPDOWN_POSITIONS;
+  private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  private readonly overlayOrigin = viewChild(CdkOverlayOrigin);
+  protected readonly avoid = avoidOverlayElements({
+    avoid: this.avoidElements,
+    positions: () => INT_DROPDOWN_POSITIONS,
+    overlay: this.overlayDir,
+    origin: () => this.overlayOrigin()?.elementRef.nativeElement,
+  });
   protected readonly panelId = uniqueId('int-date-picker-panel');
   private readonly injector = inject(Injector);
   private readonly panelEl = viewChild<ElementRef<HTMLElement>>('panel');
@@ -175,6 +193,13 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
 
   constructor() {
     super();
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.open(),
+      origin: () => this.overlayOrigin()?.elementRef.nativeElement,
+      panel: () => this.overlayDir()?.overlayRef?.overlayElement,
+      close: () => this.close(false),
+    });
     connectOverlayContainer({
       appendTo: this.appendTo,
       autoZIndex: this.autoZIndex,
@@ -344,6 +369,7 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
   close(focusInput = true): void {
     if (!this.open()) return;
     this.open.set(false);
+    this.avoid.reset();
     this.hoverDate.set(null);
     this.markAsTouched();
     if (focusInput) this.inputEl()?.nativeElement.focus();

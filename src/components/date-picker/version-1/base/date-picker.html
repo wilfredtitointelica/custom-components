@@ -50,8 +50,9 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="origin"
     [cdkConnectedOverlayOpen]="open()"
-    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayPositions]="avoid.positions()"
     [cdkConnectedOverlayViewportMargin]="8"
+    (attach)="avoid.onAttach()"
     (overlayOutsideClick)="onOutsideClick($event)"
     (detach)="close(false)"
   >

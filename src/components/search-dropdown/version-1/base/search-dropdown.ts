@@ -23,6 +23,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { IntAvoidElements, placeAvoiding } from '../../../_shared_';
 import { IntSearch, IntSearchEvent, IntSearchSize } from '../../../search/version-1/base/search';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no Style Guide token). */
@@ -155,7 +156,7 @@ export class IntSearchDropdown implements ControlValueAccessor {
    */
   readonly scrollHeight = input('200px');
   /**
-   * Dónde se coloca el panel: `self` (debajo del campo), `body` o un elemento.
+   * Dónde se coloca el panel: `self` (por defecto, debajo del campo o encima si no hay espacio), `body` o un elemento.
    * @defaultValue 'self'
    */
   readonly appendTo = input<IntSearchDropdownAppendTo>('self');
@@ -195,6 +196,15 @@ export class IntSearchDropdown implements ControlValueAccessor {
    * @defaultValue 0
    */
   readonly baseZIndex = input(0, { transform: numberAttribute });
+  /**
+   * int-* extension: elementos que el panel no debe tapar: selector CSS, elemento o variable de template, o una
+   * lista (`[avoidElements]="[applyBtn, '.otro']"`). Al abrir, el panel prueba debajo, arriba y a los lados del
+   * campo, y usa la primera posición que cabe en pantalla sin taparlos (si todas tapan algo, la que tapa menos).
+   * Una variable de template puesta en un componente (p. ej. `<button intButton #btn>`) es el componente, no el
+   * elemento: en ese caso usar un selector CSS.
+   * Funciona con cualquier `appendTo`.
+   */
+  readonly avoidElements = input<IntAvoidElements | null>(null);
   /** Id del componente; con él se arman los ids de la lista y de las opciones. */
   readonly id = input<string>();
   /**
@@ -395,12 +405,13 @@ export class IntSearchDropdown implements ControlValueAccessor {
   private onModelTouched: () => void = () => {};
 
   constructor() {
-    // appendTo="body" or an element: move the panel there and place it below the field (PrimeNG's appendOverlay).
+    // appendTo="body" or an element: move the panel there (PrimeNG's appendOverlay). With any appendTo, place it
+    // below the field, or above it when there is no room below.
     afterRenderEffect(() => {
       const panel = this.panelRef()?.nativeElement;
       const target = this.overlayTarget();
-      if (!panel || !target) return;
-      if (panel.parentElement !== target) target.appendChild(panel);
+      if (!panel) return;
+      if (target && panel.parentElement !== target) target.appendChild(panel);
       this.alignOverlay();
     });
 
@@ -624,17 +635,24 @@ export class IntSearchDropdown implements ControlValueAccessor {
   }
 
   // Below the field, or above it when there is no room below (same as PrimeNG's absolutePosition).
+  // With avoidElements, the first place (below, above or beside) that does not cover those elements.
   private alignOverlay(): void {
     const panel = this.panelRef()?.nativeElement;
+    const anchor = this.host.nativeElement;
     const view = this.document.defaultView;
-    if (!panel || !view || !this.overlayTarget()) return;
-    const rect = this.host.nativeElement.getBoundingClientRect();
-    const flip = rect.bottom + panel.offsetHeight > view.innerHeight && rect.top > panel.offsetHeight;
+    if (!panel || !view) return;
+    const rect = anchor.getBoundingClientRect();
+    panel.style.width = `${rect.width}px`;
+    const placed = placeAvoiding(anchor, panel, this.avoidElements(), this.document);
+    const flip = placed
+      ? placed.side === 'above'
+      : rect.bottom + panel.offsetHeight > view.innerHeight && rect.top > panel.offsetHeight;
     const origin = this.containingBlockOrigin(panel, view);
     panel.classList.toggle('int-search-dropdown__panel--top', flip);
-    panel.style.width = `${rect.width}px`;
-    panel.style.left = `${rect.left - origin.left}px`;
-    panel.style.top = `${(flip ? rect.top - panel.offsetHeight : rect.bottom) - origin.top}px`;
+    // Beside the field the CSS vertical gap does not apply.
+    panel.style.marginBlockStart = placed?.side === 'beside' ? '0' : '';
+    panel.style.left = `${(placed ? placed.rect.left : rect.left) - origin.left}px`;
+    panel.style.top = `${(placed ? placed.rect.top : flip ? rect.top - panel.offsetHeight : rect.bottom) - origin.top}px`;
   }
 
   /** Viewport position of the box an absolute element is placed against (the page when nothing is positioned). */
