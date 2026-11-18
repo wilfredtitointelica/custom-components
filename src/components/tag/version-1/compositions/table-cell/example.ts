@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { IntTable } from '../../../../table/version-1/base/table';
 import { IntTag, IntTagSeverity } from '../../base/tag';
 
 interface Row {
@@ -17,7 +18,7 @@ const ROWS: readonly Row[] = [
 @Component({
   selector: 'tag-table-cell-example',
   templateUrl: './example.html',
-  imports: [IntTag],
+  imports: [IntTag, IntTable],
 })
 export class TagTableCellExample {
   readonly rows = ROWS;

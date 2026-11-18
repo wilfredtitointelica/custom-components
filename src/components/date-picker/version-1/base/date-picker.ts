@@ -22,9 +22,12 @@ import {
 
 import {
   INT_DROPDOWN_POSITIONS,
+  IntAppendTo,
   IntBaseControl,
   IntConfig,
   IntIcon,
+  connectOverlayContainer,
+  provideIntOverlayContainer,
   provideValueAccessor,
   uniqueId,
 } from '../../../_shared_';
@@ -68,6 +71,8 @@ interface MonthView {
  * PrimeNG v20 DatePicker (ported from @intelica/ui `int-datepicker`). Range values are `[start, end]`;
  * month view yields the first day of the chosen month. Not supported yet: time picker, typed input.
  * Deviation: days of other months are left blank (Style Guide `.prDatapicker`; PrimeNG shows them).
+ * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the popup.
+ * int-* extension: `baseZIndex`.
  *
  * @example
  * <int-date-picker [(ngModel)]="date" dateFormat="dd/mm/yy" showIcon showClear />
@@ -76,7 +81,7 @@ interface MonthView {
 @Component({
   selector: 'int-date-picker',
   imports: [CdkConnectedOverlay, CdkOverlayOrigin, CdkTrapFocus, NgTemplateOutlet, IntButton, IntIcon, IntInputText],
-  providers: [provideValueAccessor(() => IntDatePicker)],
+  providers: [provideValueAccessor(() => IntDatePicker), provideIntOverlayContainer()],
   templateUrl: './date-picker.html',
   styleUrl: '../styles/_index.scss',
   host: {
@@ -89,35 +94,73 @@ interface MonthView {
 })
 export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** `single` elige una fecha; `range` elige `[inicio, fin]` en dos clics (se ordenan solas). */
   readonly selectionMode = input<'single' | 'range'>('single');
+  /** Vista y precisión de la selección: `date` (días), `month` (primer día del mes) o `year`. */
   readonly view = input<IntDatePickerView>('date');
-  /** PrimeNG format tokens: d, dd, m, mm, M, MM, y, yy. */
+  /** Formato del valor mostrado, con los tokens de PrimeNG: d, dd, m, mm, M, MM, y, yy. */
   readonly dateFormat = input<string | undefined>(undefined);
+  /** Fecha mínima seleccionable; también limita la navegación. */
   readonly minDate = input<Date | null>(null);
+  /** Fecha máxima seleccionable; también limita la navegación. */
   readonly maxDate = input<Date | null>(null);
+  /** Fechas puntuales que no se pueden elegir. */
   readonly disabledDates = input<Date[]>([]);
-  /** Days of the week that cannot be selected (0 = Sunday). */
+  /** Días de la semana que no se pueden elegir (0 = domingo). */
   readonly disabledDays = input<number[]>([]);
+  /** Primer día de la semana en el calendario (0 = domingo, 1 = lunes). */
   readonly firstDayOfWeek = input(0, { transform: numberAttribute });
   /** Cantidad de meses que se muestran lado a lado en la vista de días (p. ej. `2` para un rango). */
   readonly numberOfMonths = input(1, { transform: numberAttribute });
+  /** Texto del campo cuando no hay valor. */
   readonly placeholder = input<string | undefined>(undefined);
+  /** Muestra el icono de calendario junto al campo. */
   readonly showIcon = input(false, { transform: booleanAttribute });
+  /** Muestra el icono para borrar el valor cuando hay uno. */
   readonly showClear = input(false, { transform: booleanAttribute });
+  /** Muestra la barra inferior con los botones Today y Clear. */
   readonly showButtonBar = input(false, { transform: booleanAttribute });
+  /** Muestra el calendario siempre visible, sin campo ni panel flotante. */
   readonly inline = input(false, { transform: booleanAttribute });
+  /** `id` del campo de texto, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-date-picker'));
+  /** Nombre accesible del campo cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /** Clase extra para el panel del calendario. */
   readonly panelStyleClass = input<string | undefined>(undefined);
+  /**
+   * Dónde se monta el panel: `body` (por defecto), `self` (dentro del componente) o un elemento (variable de
+   * template, p. ej. `[appendTo]="container"`). Diferencia con PrimeNG: allí el valor por defecto es `self`.
+   * Sin efecto con `inline`.
+   * @defaultValue 'body'
+   */
+  readonly appendTo = input<IntAppendTo>('body');
+  /**
+   * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
+   * se define con CSS (`.int-overlay-container`).
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel cuando `autoZIndex` está activo; 0 usa 1000. Útil para quedar sobre
+   * un encabezado fijo u otro overlay.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
 
+  /** Se emite con la fecha elegida (en `range`, en cada uno de los dos clics). */
   readonly onSelect = output<Date>();
+  /** Se emite al borrar el valor. */
   readonly onClear = output<void>();
+  /** Se emite al abrirse el panel. */
   readonly onShow = output<void>();
+  /** Se emite al cerrarse el panel. */
   readonly onHide = output<void>();
+  /** Se emite al navegar a otro mes, con `month` (1-12) y `year`. */
   readonly onMonthChange = output<{ month: number; year: number }>();
 
   /** Template del pie del panel, debajo del calendario (p. ej. rangos predefinidos). */
@@ -129,6 +172,15 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
   private readonly injector = inject(Injector);
   private readonly panelEl = viewChild<ElementRef<HTMLElement>>('panel');
   private readonly inputEl = viewChild<ElementRef<HTMLInputElement>>('inputEl');
+
+  constructor() {
+    super();
+    connectOverlayContainer({
+      appendTo: this.appendTo,
+      autoZIndex: this.autoZIndex,
+      baseZIndex: this.baseZIndex,
+    });
+  }
 
   protected readonly open = signal(false);
   protected readonly currentView = signal<IntDatePickerView>('date');
@@ -270,6 +322,7 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
     return `${this.panelId}-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
   }
 
+  /** ControlValueAccessor: recibe el valor desde el formulario y muestra su mes. */
   override writeValue(value: IntDatePickerValue): void {
     super.writeValue(value);
     // Also while open: a value set from outside (e.g. a preset in the footer) shows its month.
@@ -278,6 +331,7 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
 
   // ---------- Opening / closing ----------
 
+  /** Abre el panel en el mes del valor (o el actual) y enfoca el día activo. */
   show(): void {
     if (this.isDisabled() || this.open() || this.inline()) return;
     this.resetNavigation();
@@ -286,6 +340,7 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
     this.onShow.emit();
   }
 
+  /** Cierra el panel; con `focusInput` devuelve el foco al campo. */
   close(focusInput = true): void {
     if (!this.open()) return;
     this.open.set(false);
@@ -295,11 +350,13 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
     this.onHide.emit();
   }
 
+  /** Abre el panel si está cerrado y lo cierra si está abierto. */
   toggle(): void {
     if (this.open()) this.close();
     else this.show();
   }
 
+  /** Borra el valor y emite `onClear`. */
   clear(event?: Event): void {
     event?.stopPropagation();
     this.updateValue(null);

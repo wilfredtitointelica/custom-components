@@ -12,7 +12,6 @@ import tabs from './tabs/tabs.config';
 import tooltip from './tooltip/tooltip.config';
 import tag from './tag/tag.config';
 import popover from './popover/popover.config';
-import alertas from './alertas/alertas.config';
 import toggleSwitch from './toggle-switch/toggle-switch.config';
 import slider from './slider/slider.config';
 import treeView from './tree-view/tree-view.config';
@@ -22,7 +21,6 @@ import treeSelect from './tree-select/tree-select.config';
 import dragAndDrop from './drag-and-drop/drag-and-drop.config';
 import pickList from './pick-list/pick-list.config';
 import table from './table/table.config';
-import fileDrop from './file-drop/file-drop.config';
 import carousel from './carousel/carousel.config';
 import message from './message/message.config';
 import multiselect from './multiselect/multiselect.config';
@@ -60,7 +58,6 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   tooltip,
   tag,
   popover,
-  alertas,
   confirmDialogModal,
   toggleSwitch,
   slider,
@@ -71,7 +68,6 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   dragAndDrop,
   pickList,
   table,
-  fileDrop,
   carousel,
   message,
   multiselect,

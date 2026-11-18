@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   computed,
+  numberAttribute,
   contentChild,
   effect,
   inject,
@@ -20,10 +21,14 @@ import {
 
 import {
   INT_DROPDOWN_POSITIONS,
+  INT_DROPUP_POSITIONS,
+  IntAppendTo,
   IntBaseControl,
   IntConfig,
   IntFieldAccessor,
   IntIcon,
+  connectOverlayContainer,
+  provideIntOverlayContainer,
   getOptionLabel,
   getOptionValue,
   provideValueAccessor,
@@ -45,6 +50,9 @@ export interface IntDropdownSelectChangeEvent {
  * <int-dropdown-select> · version 1. Single-value dropdown; API mirrors PrimeNG v20 Select
  * (ported from @intelica/ui `int-select`). The option list is an embedded IntListBox in a CDK
  * overlay, so filtering, templates and keyboard behaviour are shared with List-box.
+ * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the panel.
+ * int-* extensions: `placement` (open upwards), `baseZIndex` and `variant="text"` (bare "10 ^" trigger whose list
+ * leaves out the selected option, as the paginator's rows per page in Figma).
  *
  * @example
  * <int-dropdown-select [options]="cities" optionLabel="name" optionValue="code" [(ngModel)]="city"
@@ -53,7 +61,7 @@ export interface IntDropdownSelectChangeEvent {
 @Component({
   selector: 'int-dropdown-select',
   imports: [CdkConnectedOverlay, CdkOverlayOrigin, NgTemplateOutlet, IntIcon, IntListBox],
-  providers: [provideValueAccessor(() => IntDropdownSelect)],
+  providers: [provideValueAccessor(() => IntDropdownSelect), provideIntOverlayContainer()],
   templateUrl: './dropdown-select.html',
   styleUrl: '../styles/_index.scss',
   host: {
@@ -62,6 +70,7 @@ export interface IntDropdownSelectChangeEvent {
     '[class.int-dropdown-select--disabled]': 'isDisabled()',
     '[class.int-dropdown-select--invalid]': 'isInvalid()',
     '[class.int-dropdown-select--fluid]': 'fluid()',
+    '[class.int-dropdown-select--text]': 'variant() === "text"',
     '[class.int-dropdown-select--small]': 'size() === "small"',
     '[class.int-dropdown-select--large]': 'size() === "large"',
   },
@@ -74,44 +83,104 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** Lista de opciones (objetos o valores simples). */
   readonly options = input<readonly any[]>([]);
+  /** Campo (o función) con el texto visible de cada opción. */
   readonly optionLabel = input<IntFieldAccessor | undefined>(undefined);
+  /** Campo (o función) con el valor de cada opción; sin él, el valor es la opción entera. */
   readonly optionValue = input<IntFieldAccessor | undefined>(undefined);
+  /** Campo (o función) que indica si una opción está deshabilitada. */
   readonly optionDisabled = input<IntFieldAccessor | undefined>(undefined);
+  /** Campo que identifica una opción al comparar valores que son objetos. */
   readonly dataKey = input<string | undefined>(undefined);
+  /** Texto del disparador cuando no hay valor. */
   readonly placeholder = input<string | undefined>(undefined);
+  /** Muestra un buscador sobre la lista para filtrar las opciones. */
   readonly filter = input(false, { transform: booleanAttribute });
   /**
-   * Not in PrimeNG: with `filter`, the search input is only shown when there are more options than
-   * this number (e.g. `5` → shown from 6 options). Undefined shows it always.
+   * int-* extension: con `filter`, el buscador solo aparece cuando hay más opciones que este número (p. ej.
+   * `5` → desde 6 opciones). Sin valor, aparece siempre.
    */
   readonly filterThreshold = input<number | undefined>(undefined);
+  /** Texto del buscador (por defecto, traducción `searchPlaceholder`). */
   readonly filterPlaceholder = input<string | undefined>(undefined);
+  /** Muestra el icono para borrar el valor cuando hay uno. */
   readonly showClear = input(false, { transform: booleanAttribute });
+  /** Marca con un check la opción elegida. */
   readonly checkmark = input(false, { transform: booleanAttribute });
+  /** Texto cuando no hay opciones (por defecto, traducción `emptyMessage`). */
   readonly emptyMessage = input<string | undefined>(undefined);
+  /** Texto cuando el filtro no encuentra opciones (por defecto, traducción `emptyFilterMessage`). */
   readonly emptyFilterMessage = input<string | undefined>(undefined);
+  /** Alto máximo de la lista antes de hacer scroll. */
   readonly scrollHeight = input('14rem');
+  /** Clase extra para el panel (se monta en el overlay, fuera del componente). */
   readonly panelStyleClass = input<string | undefined>(undefined);
+  /** `id` del disparador, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-dropdown-select'));
+  /** Nombre accesible del disparador cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /** `id` del elemento que nombra al disparador. */
   readonly ariaLabelledBy = input<string | undefined>(undefined);
+  /**
+   * Dónde se monta el panel: `body` (por defecto), `self` (dentro del componente) o un elemento (variable de
+   * template, p. ej. `[appendTo]="container"`). Diferencia con PrimeNG: allí el valor por defecto es `self`.
+   * @defaultValue 'body'
+   */
+  readonly appendTo = input<IntAppendTo>('body');
+  /**
+   * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
+   * se define con CSS (`.int-overlay-container`).
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel cuando `autoZIndex` está activo; 0 usa 1000. Útil para quedar sobre
+   * un encabezado fijo u otro overlay.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
+  /**
+   * int-* extension: lado preferido para abrir el panel; `top` lo abre hacia arriba (p. ej. al pie de una
+   * tabla). En ambos casos cambia de lado si no hay espacio.
+   * @defaultValue 'bottom'
+   */
+  readonly placement = input<'bottom' | 'top'>('bottom');
+  /**
+   * Aspecto del disparador. `outlined`: campo con borde (por defecto). int-* extension: `text` deja solo el
+   * valor y la flecha, sin borde ni fondo (p. ej. filas por página del paginador), y su lista no repite la
+   * opción elegida.
+   * @defaultValue 'outlined'
+   */
+  readonly variant = input<'outlined' | 'text'>('outlined');
 
+  /** Se emite al elegir o borrar una opción, con el evento y el valor nuevo. */
   readonly onChange = output<IntDropdownSelectChangeEvent>();
+  /** Se emite al abrirse el panel. */
   readonly onShow = output<void>();
+  /** Se emite al cerrarse el panel. */
   readonly onHide = output<void>();
+  /** Se emite al borrar el valor con el icono de limpiar. */
   readonly onClear = output<void>();
+  /** Se emite cuando el disparador recibe el foco. */
   readonly onFocus = output<FocusEvent>();
+  /** Se emite cuando el disparador pierde el foco. */
   readonly onBlur = output<FocusEvent>();
 
   protected readonly config = inject(IntConfig);
-  protected readonly positions = INT_DROPDOWN_POSITIONS;
+  protected readonly positions = computed(() => {
+    const positions = this.placement() === 'top' ? INT_DROPUP_POSITIONS : INT_DROPDOWN_POSITIONS;
+    // variant="text": content-sized list aligned with the end of the trigger (Figma paginator).
+    return this.variant() === 'text' ? [...positions.slice(2), ...positions.slice(0, 2)] : positions;
+  });
   protected readonly open = signal(false);
   protected readonly triggerWidth = signal(0);
   protected readonly listBox = viewChild(IntListBox);
   private readonly trigger = viewChild.required<ElementRef<HTMLElement>>('trigger');
 
+  /** Plantilla `#item`: contenido de cada opción de la lista. */
   protected readonly itemTemplate = contentChild<TemplateRef<IntListBoxItemContext>>('item');
+  /** Plantilla `#selectedItem`: contenido del disparador con la opción elegida. */
   protected readonly selectedItemTemplate = contentChild<TemplateRef<{ $implicit: unknown }>>('selectedItem');
 
   private readonly optionConfig = computed(() => ({
@@ -133,11 +202,23 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
     return this.filter() && (threshold == null || this.options().length > threshold);
   });
 
+  /** Options shown in the list: with `variant="text"` the selected one is left out (Figma paginator). */
+  protected readonly listOptions = computed(() => {
+    const selected = this.selectedOption();
+    if (this.variant() !== 'text' || selected === undefined) return this.options();
+    return this.options().filter((o) => o !== selected);
+  });
+
   protected readonly hasValue = computed(() => this.selectedOption() !== undefined);
   protected readonly selectedLabel = computed(() => getOptionLabel(this.selectedOption(), this.optionConfig()));
 
   constructor() {
     super();
+    connectOverlayContainer({
+      appendTo: this.appendTo,
+      autoZIndex: this.autoZIndex,
+      baseZIndex: this.baseZIndex,
+    });
     // Keep the embedded list-box in sync and focus the selected option whenever the panel opens.
     effect(() => {
       const listBox = this.listBox();
@@ -154,6 +235,7 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
     });
   }
 
+  /** Abre el panel. */
   show(): void {
     if (this.isDisabled() || this.open()) return;
     this.triggerWidth.set(this.trigger().nativeElement.offsetWidth);
@@ -162,6 +244,7 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
   }
 
   /** @param focusTrigger return focus to the trigger (default true). */
+  /** Cierra el panel; con `focusTrigger` devuelve el foco al disparador. */
   close(focusTrigger = true): void {
     if (!this.open()) return;
     this.open.set(false);
@@ -169,11 +252,13 @@ export class IntDropdownSelect extends IntBaseControl<unknown> {
     this.onHide.emit();
   }
 
+  /** Abre el panel si está cerrado y lo cierra si está abierto. */
   toggle(): void {
     if (this.open()) this.close();
     else this.show();
   }
 
+  /** Borra el valor y emite `onChange` y `onClear`. */
   clear(event: Event): void {
     event.stopPropagation();
     this.updateValue(null);

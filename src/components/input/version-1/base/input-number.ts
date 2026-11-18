@@ -54,29 +54,48 @@ export interface IntInputNumberInputEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntInputNumber extends IntBaseControl<number> {
+  /** `decimal` (número) o `currency` (importe con moneda). */
   readonly mode = input<'decimal' | 'currency'>('decimal');
-  /** ISO 4217 code, required when mode is `currency`. */
+  /** Código ISO 4217 de la moneda (`USD`, `PEN`); obligatorio con `mode="currency"`. */
   readonly currency = input<string | undefined>(undefined);
+  /** Cómo se muestra la moneda: símbolo, código, nombre o símbolo corto. */
   readonly currencyDisplay = input<'symbol' | 'code' | 'name' | 'narrowSymbol'>('symbol');
-  /** Overrides the global locale from `provideIntelicaUI`. */
+  /** Locale para el formato; por defecto, el global de `provideIntelicaUI`. */
   readonly locale = input<string | undefined>(undefined);
+  /** Cantidad mínima de decimales. */
   readonly minFractionDigits = input<number | undefined, unknown>(undefined, { transform: optionalNumber });
+  /** Cantidad máxima de decimales. */
   readonly maxFractionDigits = input<number | undefined, unknown>(undefined, { transform: optionalNumber });
+  /** Usa separador de miles. */
   readonly useGrouping = input(true, { transform: booleanAttribute });
+  /** Valor mínimo permitido. */
   readonly min = input<number | undefined, unknown>(undefined, { transform: optionalNumber });
+  /** Valor máximo permitido. */
   readonly max = input<number | undefined, unknown>(undefined, { transform: optionalNumber });
+  /** Cuánto suma o resta cada paso (botones y flechas del teclado). */
   readonly step = input(1, { transform: numberAttribute });
+  /** Texto antes del número, p. ej. `$`. */
   readonly prefix = input('');
+  /** Texto después del número, p. ej. `%`. */
   readonly suffix = input('');
+  /** Muestra los botones para aumentar y disminuir. */
   readonly showButtons = input(false, { transform: booleanAttribute });
+  /** Ubicación de los botones: `stacked` (apilados a la derecha) u `horizontal` (a los lados). */
   readonly buttonLayout = input<'stacked' | 'horizontal'>('stacked');
+  /** Texto del campo cuando está vacío. */
   readonly placeholder = input<string | undefined>(undefined);
+  /** Solo lectura: se ve normal pero no se puede editar. */
   readonly readonly = input(false, { transform: booleanAttribute });
+  /** `id` del campo, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-inputnumber'));
+  /** Nombre accesible cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
 
+  /** Se emite en cada cambio del valor al escribir o usar los botones. */
   readonly onInput = output<IntInputNumberInputEvent>();
+  /** Se emite cuando el campo recibe el foco. */
   readonly onFocus = output<FocusEvent>();
+  /** Se emite cuando el campo pierde el foco. */
   readonly onBlur = output<FocusEvent>();
 
   protected readonly config = inject(IntConfig);

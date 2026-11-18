@@ -12,7 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'list-box',
-  variants: ['basic', 'multiple-filter-checkmark', 'item-template'],
+  variants: ['basic', 'multiple-filter-checkmark', 'item-template', 'reorder-range-selection'],
   requires: ['input'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

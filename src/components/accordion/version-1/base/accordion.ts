@@ -38,12 +38,16 @@ export type IntAccordionValue = string | number;
 })
 export class IntAccordion {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
-  /** Active panel value (single) or values (`multiple`). */
+  /** Valor del panel abierto, o arreglo de valores con `multiple`; admite `[(value)]`. */
   readonly value = model<IntAccordionValue | IntAccordionValue[] | null>(null);
+  /**
+   * Permite varios paneles abiertos a la vez; `value` pasa a ser un arreglo.
+   * @defaultValue false
+   */
   readonly multiple = input(false, { transform: booleanAttribute });
   /**
    * int-* extension (PrimeNG restyles through `dt`): `card` renders each panel as a bordered card
@@ -51,16 +55,23 @@ export class IntAccordion {
    */
   readonly variant = input<'card' | undefined>(undefined);
 
+  /** Se emite al abrir un panel, con su `value`. */
   readonly onOpen = output<IntAccordionValue>();
+  /** Se emite al cerrar un panel, con su `value`. */
   readonly onClose = output<IntAccordionValue>();
 
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
 
+  /** Indica si el panel con ese `value` está abierto. */
   isActive(panel: IntAccordionValue): boolean {
     const value = this.value();
     return Array.isArray(value) ? value.includes(panel) : value === panel;
   }
 
+  /**
+   * Abre o cierra el panel con ese `value` y emite `onOpen` u `onClose`. Sin `multiple`, abrir uno cierra el
+   * que estaba abierto.
+   */
   toggle(panel: IntAccordionValue): void {
     const active = this.isActive(panel);
     const value = this.value();
@@ -74,7 +85,7 @@ export class IntAccordion {
     else this.onOpen.emit(panel);
   }
 
-  /** Roving focus between headers (WAI-ARIA accordion pattern). */
+  /** Mueve el foco entre las cabeceras con las flechas, Home y End (patrón WAI-ARIA accordion). */
   focusHeader(from: HTMLElement, key: string): void {
     const headers = Array.from(
       this.el.nativeElement.querySelectorAll<HTMLButtonElement>(
@@ -103,7 +114,9 @@ export class IntAccordion {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntAccordionPanel {
+  /** Valor que identifica al panel dentro del acordeón. */
   readonly value = input.required<IntAccordionValue>();
+  /** Deshabilita el panel: no se puede abrir ni cerrar. */
   readonly disabled = input(false, { transform: booleanAttribute });
 
   readonly accordion = inject(IntAccordion);

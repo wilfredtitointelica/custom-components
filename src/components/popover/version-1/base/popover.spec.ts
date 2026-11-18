@@ -1,6 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, viewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { IntPopover } from './popover';
 
@@ -15,11 +16,16 @@ class Host {
   popover = viewChild.required(IntPopover);
 }
 
+
+/** Panels mount in the component's own overlay container (appendTo), not in the root one. */
+function overlayOf(fixture: ComponentFixture<unknown>): HTMLElement {
+  return fixture.debugElement.query(By.directive(IntPopover)).injector.get(OverlayContainer).getContainerElement();
+}
 describe('IntPopover', () => {
   it('toggles content anchored to the trigger and closes on Escape', () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    const container = TestBed.inject(OverlayContainer).getContainerElement();
+    const container = overlayOf(fixture);
     const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('button');
 
     trigger.click();
@@ -37,7 +43,7 @@ describe('IntPopover', () => {
   it('has no arrow by default', () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    const container = TestBed.inject(OverlayContainer).getContainerElement();
+    const container = overlayOf(fixture);
 
     fixture.nativeElement.querySelector('button').click();
     fixture.detectChanges();
@@ -47,7 +53,7 @@ describe('IntPopover', () => {
   it('draws the arrow pointing at the trigger when arrow is set', () => {
     const fixture = TestBed.createComponent(ArrowHost);
     fixture.detectChanges();
-    const container = TestBed.inject(OverlayContainer).getContainerElement();
+    const container = overlayOf(fixture);
 
     fixture.nativeElement.querySelector('button').click();
     fixture.detectChanges();
@@ -66,3 +72,46 @@ describe('IntPopover', () => {
   `,
 })
 class ArrowHost {}
+
+@Component({
+  imports: [IntPopover],
+  template: `
+    <button (click)="op.toggle($event)">Columns</button>
+    <int-popover #op appendTo="self" ariaLabel="Columns"><p class="content">Hello</p></int-popover>
+  `,
+})
+class SelfHost {}
+
+describe('IntPopover appendTo', () => {
+  it('mounts the panel inside the component with appendTo="self"', () => {
+    const fixture = TestBed.createComponent(SelfHost);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    const host: HTMLElement = fixture.nativeElement.querySelector('int-popover');
+    expect(host.querySelector('.int-overlay-container .content')?.textContent).toBe('Hello');
+  });
+});
+
+@Component({
+  imports: [IntPopover],
+  template: `
+    <button (click)="op.toggle($event)">Open</button>
+    <int-popover #op borderless ariaLabel="Products"><p>Menu</p></int-popover>
+  `,
+})
+class BorderlessHost {}
+
+describe('IntPopover borderless', () => {
+  // Width comes from Style Guide tokens (not loaded in specs); the color is the component's.
+  it('makes the border transparent', () => {
+    const fixture = TestBed.createComponent(BorderlessHost);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    const panel = overlayOf(fixture).querySelector<HTMLElement>('.int-popover')!;
+    expect(panel.classList).toContain('int-popover--borderless');
+    const style = getComputedStyle(panel);
+    expect(style.borderTopColor).toBe('rgba(0, 0, 0, 0)');
+  });
+});

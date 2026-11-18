@@ -35,6 +35,11 @@
   [attr.aria-disabled]="isDisabled() || null"
   [attr.aria-label]="ariaLabel() ?? null"
   [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [class.int-list-box__list--dragging]="dragging()"
+  cdkDropList
+  [cdkDropListData]="visibleOptions()"
+  [cdkDropListDisabled]="dragDisabled()"
+  (cdkDropListDropped)="onDropped($event)"
   (keydown)="handleKeydown($event)"
   (focus)="onListFocus()"
   (blur)="onListBlur()"
@@ -51,10 +56,19 @@
       [class.int-list-box__option--disabled]="isDisabledOption(option)"
       [attr.aria-selected]="selected"
       [attr.aria-disabled]="isDisabledOption(option) || null"
+      cdkDrag
+      [cdkDragData]="option"
+      [cdkDragDisabled]="dragDisabled() || isDisabledOption(option)"
+      cdkDragPreviewClass="int-list-box__option--preview"
+      (cdkDragStarted)="dragging.set(true)"
+      (cdkDragEnded)="dragging.set(false)"
       (mousedown)="onOptionMousedown($event)"
       (mousemove)="focusedIndex.set(i)"
       (click)="selectOption($event, option, i)"
+      (dblclick)="onOptionDblClick($event, option)"
     >
+      <!-- Slot where the dragged option will land (dragdrop) -->
+      <div *cdkDragPlaceholder class="int-list-box__placeholder" aria-hidden="true"></div>
       @if (checkmark()) {
         <int-icon
           class="int-list-box__check"

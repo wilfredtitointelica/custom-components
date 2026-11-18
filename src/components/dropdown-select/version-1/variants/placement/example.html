@@ -1,0 +1,8 @@
+<!--
+  title: Placement
+  description: Con `placement="top"` el panel se abre hacia arriba, como en el pie de una tabla o en el paginador; si no hay espacio arriba, se abre hacia abajo.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <int-dropdown-select [options]="sizes" placement="top" [(ngModel)]="rows" />
+  <span class="u-text-sm">filas por página</span>
+</div>

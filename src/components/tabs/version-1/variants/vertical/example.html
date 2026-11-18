@@ -1,0 +1,44 @@
+<!--
+  title: Vertical
+  description: Con orientation="vertical" las pestañas se apilan en una columna a la izquierda, separadas del contenido por una línea, como en los filtros avanzados; las flechas Arriba y Abajo mueven el foco y los nombres largos se cortan con puntos suspensivos.
+-->
+<int-tabs orientation="vertical" [(value)]="tab" [style]="{ width: '48rem', maxWidth: '100%' }">
+  <int-tablist>
+    <int-tab value="entities">Entities &amp; Invoices</int-tab>
+    <int-tab value="categorization">Categorization</int-tab>
+    <int-tab value="rates">Rates, Frequency &amp; Amount Type</int-tab>
+    <int-tab value="audit" disabled>Audit</int-tab>
+  </int-tablist>
+  <int-tabpanels>
+    <int-tabpanel value="entities">
+      <p class="u-m-0 u-text-sm">Entity and invoice filters.</p>
+    </int-tabpanel>
+    <int-tabpanel value="categorization">
+      <p class="u-m-0 u-text-sm">Category filters.</p>
+    </int-tabpanel>
+    <int-tabpanel value="rates">
+      <div class="u-display-flex u-flex-column u-gap-md">
+        <div class="u-display-flex u-flex-wrap u-gap-md">
+          <div class="u-display-flex u-flex-column u-gap-xs">
+            <span id="tabs-vertical-rate-type" class="u-bold">Rate Type</span>
+            <int-dropdown-select placeholder="Rate Type" ariaLabelledBy="tabs-vertical-rate-type" [options]="rateTypes" [(ngModel)]="rateType" />
+          </div>
+          <div class="u-display-flex u-flex-column u-gap-xs">
+            <span id="tabs-vertical-frequency" class="u-bold">Frequency</span>
+            <int-dropdown-select placeholder="Frequency" ariaLabelledBy="tabs-vertical-frequency" [options]="frequencies" [(ngModel)]="frequency" />
+          </div>
+        </div>
+        <span class="u-bold">Amount Type</span>
+        <div class="u-display-flex u-flex-column u-gap-xs">
+          <label class="u-text-sm" for="tabs-vertical-min">Min Amount</label>
+          <int-inputnumber inputId="tabs-vertical-min" showButtons buttonLayout="horizontal" [min]="0" [(ngModel)]="minAmount" />
+        </div>
+        <div class="u-display-flex u-flex-column u-gap-xs">
+          <label class="u-text-sm" for="tabs-vertical-max">Max Amount</label>
+          <int-inputnumber inputId="tabs-vertical-max" showButtons buttonLayout="horizontal" [min]="0" [(ngModel)]="maxAmount" />
+        </div>
+      </div>
+    </int-tabpanel>
+    <int-tabpanel value="audit">Audit log.</int-tabpanel>
+  </int-tabpanels>
+</int-tabs>

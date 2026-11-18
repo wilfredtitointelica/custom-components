@@ -1,0 +1,15 @@
+<!--
+  title: Borderless
+  description: Con `borderless` (extensión int-*) el borde queda transparente, como el popover del Style Guide: el panel se separa de la página solo con la sombra. A la izquierda, el borde por defecto.
+-->
+<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+  <button intButton label="Default border" severity="secondary" (click)="bordered.toggle($event)"></button>
+  <int-popover #bordered ariaLabel="Default border">
+    <p class="u-m-0 u-text-sm">1px border with the default color.</p>
+  </int-popover>
+
+  <button intButton label="Borderless" severity="secondary" (click)="borderless.toggle($event)"></button>
+  <int-popover #borderless borderless ariaLabel="Borderless">
+    <p class="u-m-0 u-text-sm">Transparent border: only the shadow separates the panel.</p>
+  </int-popover>
+</div>

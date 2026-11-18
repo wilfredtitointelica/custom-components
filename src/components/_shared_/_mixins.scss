@@ -142,10 +142,11 @@ $field-defaults: (
   font-size: var(--i-typography-font-size-md);
 }
 
-/// Option row colors, read as `var(--int-option-*, <token>)` like the field tokens, so a container
+/// Option row look (colors, padding, radius), read as `var(--int-option-*, <token>)` like the field tokens, so a container
 /// (e.g. the Dropdown-select panel) can restyle the options inside it without touching the others.
 /// Rows grey/50; hover and keyboard focus grey/100; selected solid blue/700 with blue/50 text.
 $option-defaults: (
+  padding: var(--i-spacing-container-sm) var(--i-spacing-container-md),
   radius: var(--i-border-radius-lg),
   background: var(--i-color-secondary-50),
   color: var(--i-text-color-default),
@@ -170,7 +171,7 @@ $option-defaults: (
   display: flex;
   align-items: center;
   gap: var(--i-spacing-gap-sm);
-  padding: var(--i-spacing-container-sm) var(--i-spacing-container-md);
+  padding: option-token(padding);
   border-radius: option-token(radius);
   background: option-token(background);
   color: option-token(color);

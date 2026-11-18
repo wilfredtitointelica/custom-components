@@ -3,7 +3,7 @@
  * is not listed here goes to the "Otros" group at the end, so a new component always shows up.
  */
 export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: readonly string[] }[] = [
-  { name: 'Acciones', ids: ['button', 'file-upload', 'file-drop', 'drag-and-drop'] },
+  { name: 'Acciones', ids: ['button', 'file-upload', 'drag-and-drop'] },
   { name: 'Entrada de texto', ids: ['input', 'password', 'inputotp', 'search', 'search-dropdown'] },
   {
     name: 'Selección',
@@ -16,7 +16,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   },
   {
     name: 'Comunicación',
-    ids: ['alertas', 'message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar'],
+    ids: ['message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar'],
   },
 ];
 
@@ -26,7 +26,6 @@ export const OTHER_GROUP = 'Otros';
 export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   button: 'pi-stop',
   'file-upload': 'pi-cloud-upload',
-  'file-drop': 'pi-file-arrow-up',
   'drag-and-drop': 'pi-arrows-alt',
   input: 'pi-pen-to-square',
   password: 'pi-lock',
@@ -54,7 +53,6 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   treetable: 'pi-objects-column',
   'tree-view': 'pi-sitemap',
   timeline: 'pi-history',
-  alertas: 'pi-exclamation-circle',
   message: 'pi-info-circle',
   toast: 'pi-bell',
   tooltip: 'pi-comment',

@@ -7,6 +7,7 @@ import {
   computed,
   inject,
   input,
+  numberAttribute,
 } from '@angular/core';
 
 import { IntIcon, IntSeverity, IntSize } from '../../../_shared_';
@@ -36,7 +37,7 @@ export type IntButtonIconPos = 'left' | 'right' | 'top' | 'bottom';
     '[class]': 'modifiers()',
     '[attr.disabled]': 'isDisabled() ? "" : null',
     '[attr.aria-disabled]': 'isDisabled() || null',
-    '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : null',
+    '[attr.tabindex]': 'isDisabled() && isAnchor ? -1 : (tabindex() ?? null)',
     '[attr.aria-pressed]': 'active() ?? null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.aria-label]': 'ariaLabel() ?? (labelOnHover() ? label() : null) ?? null',
@@ -51,26 +52,35 @@ export class IntButton {
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** Texto del botón. */
   readonly label = input<string | undefined>(undefined);
-  /** CSS class of the icon, e.g. `icon icon-download` (incontrol-icons). */
+  /** Clase del icono, p. ej. `icon icon-download`. */
   readonly icon = input<string | undefined>(undefined);
+  /** Posición del icono respecto al texto: `left`, `right`, `top` o `bottom`. */
   readonly iconPos = input<IntButtonIconPos>('left');
+  /** Color según la intención: `primary`, `secondary`, `success`, `danger`… */
   readonly severity = input<IntSeverity>('primary');
   /**
-   * `text` with an icon and no label renders the Style Guide `.prButton--icon` look: a bare icon in a
-   * 24px box (16px small, 32px large) that turns blue on hover.
+   * Aspecto: `outlined` (solo borde), `text` (sin fondo ni borde) o `link`. Con `text`, icono y sin `label`
+   * queda el botón de solo icono: una caja de 24px (16px en `small`, 32px en `large`) que se pone azul al pasar
+   * el mouse.
    */
   readonly variant = input<IntButtonVariant | undefined>(undefined);
+  /** Tamaño: `small` o `large`; sin valor, el tamaño normal. */
   readonly size = input<IntSize | undefined>(undefined);
+  /** Bordes completamente redondeados. */
   readonly rounded = input(false, { transform: booleanAttribute });
+  /** Ocupa todo el ancho de su contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
+  /** Muestra el indicador de carga y bloquea el clic. */
   readonly loading = input(false, { transform: booleanAttribute });
+  /** Deshabilita el botón. */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** Required for icon-only buttons. */
+  /** Nombre accesible; obligatorio en los botones de solo icono. */
   readonly ariaLabel = input<string | undefined>(undefined);
   /**
-   * int-* extension (Figma button-help): the label is hidden until hover or keyboard focus; it stays
-   * the accessible name.
+   * int-* extension: el texto queda oculto hasta pasar el mouse o enfocar con el teclado (botón de ayuda); sigue
+   * siendo el nombre accesible.
    */
   readonly labelOnHover = input(false, { transform: booleanAttribute });
   /**
@@ -78,6 +88,13 @@ export class IntButton {
    * predefinido elegido en el pie de `int-date-picker`.
    */
   readonly active = input<boolean | undefined>(undefined);
+  /**
+   * `tabindex` del botón (como en PrimeNG), p. ej. `-1` para sacarlo del orden de `Tab` cuando otro elemento
+   * maneja el teclado. Un `<a intButton>` deshabilitado usa siempre `-1`.
+   */
+  readonly tabindex = input<number | undefined, unknown>(undefined, {
+    transform: (v: unknown) => (v == null || v === '' ? undefined : numberAttribute(v)),
+  });
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;

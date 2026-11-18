@@ -6,7 +6,7 @@
 
 :root {
   --NOTE-LIST-BOX: 'int-list-box ( Custom )';
-  --int-list-box-gap: var(--i-spacing-gap-xs); // space between options (4px)
+  --int-list-box-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · space between options (4px)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -117,6 +117,31 @@
   &--disabled &__option:hover:not(.int-list-box__option--selected) {
     background: int.option-token(background);
   }
+  // dragdrop: options can be grabbed; the preview (cloned into the body) keeps the option look plus a shadow,
+  // the placeholder marks the drop slot and the other options slide to make room.
+  &--dragdrop &__option {
+    cursor: grab;
+  }
+  &__list--dragging &__option {
+    transition: transform var(--i-motion-base);
+  }
+  &__option--preview {
+    box-sizing: border-box;
+    box-shadow: var(--i-shadow-depth-3);
+    cursor: grabbing;
+  }
+  &__placeholder {
+    min-height: var(--i-sizing-md); // one option row (24px)
+    border: var(--i-border-width-sm) dashed var(--i-color-secondary-200);
+    border-radius: int.option-token(radius);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__list--dragging &__option {
+      transition: none;
+    }
+  }
+
   // Inside Dropdown-select: no frame, the overlay panel draws it.
   &--embedded {
     display: flex;

@@ -69,3 +69,36 @@ describe('IntTooltip (version 2)', () => {
     ).toBeTrue();
   }));
 });
+
+@Component({
+  imports: [IntTooltip],
+  template: `
+    <span class="cut" tooltipOnTruncate intTooltip="A very long fee name that does not fit">A very long fee name that does not fit</span>
+    <span class="fits" tooltipOnTruncate intTooltip="Short">Short</span>
+  `,
+  styles: `
+    span { display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cut { width: 3rem; }
+    .fits { width: 20rem; }
+  `,
+})
+class TruncateHost {}
+
+describe('IntTooltip (version 2) tooltipOnTruncate', () => {
+  it('shows only for the host whose text is cut', fakeAsync(() => {
+    const fixture = TestBed.createComponent(TruncateHost);
+    fixture.detectChanges();
+    const container = TestBed.inject(OverlayContainer).getContainerElement();
+    const [cut, fits] = fixture.nativeElement.querySelectorAll('span');
+
+    fits.dispatchEvent(new Event('mouseenter'));
+    tick();
+    fixture.detectChanges();
+    expect(container.querySelector('[role="tooltip"]')).toBeNull();
+
+    cut.dispatchEvent(new Event('mouseenter'));
+    tick();
+    fixture.detectChanges();
+    expect(container.querySelector('[role="tooltip"]')?.textContent).toContain('A very long fee name');
+  }));
+});

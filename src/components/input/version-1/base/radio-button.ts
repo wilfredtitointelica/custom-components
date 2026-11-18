@@ -48,15 +48,20 @@ export interface IntRadioButtonClickEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntRadioButton extends IntBaseControl<unknown> {
+  /** Valor que toma el modelo al elegir este radio. */
   readonly value = input.required<unknown>();
-  /** Groups radios for native arrow-key navigation. */
+  /** Nombre del grupo: los radios con el mismo `name` se recorren con las flechas. */
   readonly name = input<string | undefined>(undefined);
-  /** Property used to compare object values. */
+  /** Campo que identifica el valor al comparar objetos. */
   readonly dataKey = input<string | undefined>(undefined);
+  /** `id` del radio nativo, para asociarlo a un `<label for>`. */
   readonly inputId = input(uniqueId('int-radiobutton'));
+  /** Nombre accesible cuando no hay `<label>`. */
   readonly ariaLabel = input<string | undefined>(undefined);
+  /** `id` del elemento que nombra al radio. */
   readonly ariaLabelledBy = input<string | undefined>(undefined);
 
+  /** Se emite al hacer clic en el radio, con el evento y su valor. */
   readonly onClick = output<IntRadioButtonClickEvent>();
 
   protected readonly checked = computed(() => {

@@ -7,15 +7,15 @@
 // <int-checkbox>: parity with Style Guide `.prCheckbox`. The native input (__control) covers the
 // visual box (__box) and receives clicks, focus and keyboard.
 .int-input--checkbox {
-  --int-checkbox-size: var(--i-sizing-xs);
-  --int-checkbox-icon-size: var(--i-icon-size-xs);
-  --int-checkbox-radius: var(--i-border-radius-sm);
-  --int-checkbox-background: var(--i-color-secondary-50);
-  --int-checkbox-border: var(--i-color-secondary-200);
-  --int-checkbox-hover-border: var(--i-color-primary-600);
-  --int-checkbox-checked-background: var(--i-color-primary-700);
-  --int-checkbox-checked-hover-background: var(--i-color-primary-600);
-  --int-checkbox-icon-color: var(--i-color-primary-50);
+  --int-checkbox-size: var(--i-sizing-xs); // SG: --i-sizing-xs
+  --int-checkbox-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs
+  --int-checkbox-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm
+  --int-checkbox-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50
+  --int-checkbox-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200
+  --int-checkbox-hover-border: var(--i-color-primary-600); // SG: --i-color-primary-600
+  --int-checkbox-checked-background: var(--i-color-primary-700); // SG: --i-color-primary-700
+  --int-checkbox-checked-hover-background: var(--i-color-primary-600); // SG: --i-color-primary-600
+  --int-checkbox-icon-color: var(--i-color-primary-50); // SG: --i-color-primary-50
 
   position: relative;
   display: inline-flex;
@@ -25,12 +25,12 @@
   vertical-align: middle;
 
   &.int-input--small {
-    --int-checkbox-size: var(--i-sizing-2xs);
-    --int-checkbox-icon-size: var(--i-sizing-2xs);
+    --int-checkbox-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs
+    --int-checkbox-icon-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs
   }
   &.int-input--large {
-    --int-checkbox-size: var(--i-sizing-sm);
-    --int-checkbox-icon-size: var(--i-icon-size-sm);
+    --int-checkbox-size: var(--i-sizing-sm); // SG: --i-sizing-sm
+    --int-checkbox-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm
   }
 
   .int-input__control {

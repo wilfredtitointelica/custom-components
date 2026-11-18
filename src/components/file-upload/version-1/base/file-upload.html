@@ -41,6 +41,47 @@
       }
     }
   </div>
+} @else if (dropzone()) {
+  <div
+    class="int-file-upload__content int-file-upload__dropzone"
+    [class.int-file-upload__content--highlight]="dragOver()"
+    (dragenter)="onDragOver($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    @if (emptyTemplate(); as tpl) {
+      <ng-container [ngTemplateOutlet]="tpl" />
+    } @else {
+      <int-icon class="int-file-upload__dropzone-icon" name="upload" />
+      <span class="int-file-upload__dropzone-text">
+        {{ config.t('dragDropOrMessage') }}
+        <button
+          intButton
+          type="button"
+          variant="link"
+          class="int-file-upload__browse"
+          [label]="chooseLabel() ?? config.t('browse')"
+          [disabled]="disabled() || limitReached()"
+          (click)="choose()"
+        ></button>
+      </span>
+      @if (hint()) {
+        <span class="int-file-upload__hint">{{ hint() }}</span>
+      }
+      @if (requirements().length) {
+        <dl class="int-file-upload__requirements">
+          @for (req of requirements(); track req.label) {
+            <div class="int-file-upload__requirement">
+              <dt>{{ req.label }}:</dt>
+              <dd class="int-file-upload__requirement-value">{{ req.value }}</dd>
+            </div>
+          }
+        </dl>
+      }
+    }
+  </div>
+  <ng-container [ngTemplateOutlet]="queue" />
 } @else {
   <div class="int-file-upload__header">
     <button
@@ -84,34 +125,10 @@
     (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)"
   >
-    @for (message of messages(); track $index) {
-      <div class="int-file-upload__message" role="alert">{{ message }}</div>
+    @if (files().length || messages().length) {
+      <ng-container [ngTemplateOutlet]="queue" />
     }
-
-    @if (files().length) {
-      <ul class="int-file-upload__files">
-        @for (file of files(); track file; let i = $index) {
-          <li class="int-file-upload__file">
-            <int-icon class="int-file-upload__file-icon" name="file" />
-            <span class="int-file-upload__file-name" [title]="file.name">{{ file.name }}</span>
-            <span class="int-file-upload__file-size">{{ formatSize(file.size) }}</span>
-            <int-tag size="small" severity="warn" [value]="config.t('pending')" />
-            <button
-              intButton
-              type="button"
-              severity="danger"
-              variant="text"
-              size="small"
-              [ariaLabel]="config.t('remove') + ' ' + file.name"
-              [disabled]="disabled()"
-              (click)="remove($event, i)"
-            >
-              <int-icon name="close" />
-            </button>
-          </li>
-        }
-      </ul>
-    } @else {
+    @if (!files().length) {
       @if (emptyTemplate(); as tpl) {
         <ng-container [ngTemplateOutlet]="tpl" />
       } @else {
@@ -123,3 +140,34 @@
     }
   </div>
 }
+
+<!-- Validation messages + pending files: inside the zone (header look) or below it (dropzone). -->
+<ng-template #queue>
+  @for (message of messages(); track $index) {
+    <div class="int-file-upload__message" role="alert">{{ message }}</div>
+  }
+  @if (files().length) {
+    <ul class="int-file-upload__files">
+      @for (file of files(); track file; let i = $index) {
+        <li class="int-file-upload__file">
+          <int-icon class="int-file-upload__file-icon" name="file" />
+          <span class="int-file-upload__file-name" [title]="file.name">{{ file.name }}</span>
+          <span class="int-file-upload__file-size">{{ formatSize(file.size) }}</span>
+          <int-tag size="small" severity="warn" [value]="config.t('pending')" />
+          <button
+            intButton
+            type="button"
+            severity="danger"
+            variant="text"
+            size="small"
+            [ariaLabel]="config.t('remove') + ' ' + file.name"
+            [disabled]="disabled()"
+            (click)="remove($event, i)"
+          >
+            <int-icon name="close" />
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</ng-template>

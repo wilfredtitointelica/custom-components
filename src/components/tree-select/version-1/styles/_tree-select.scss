@@ -21,6 +21,9 @@
   --int-tree-select-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
   --int-tree-select-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
   --int-tree-select-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-tree-select-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out (same as int-multiselect)
+  --int-tree-select-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms (same as int-multiselect)
+  --int-tree-select-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out (same as int-multiselect)
 
   // --- label ---
   --int-tree-select-label-padding-y: var(--i-spacing-container-sm); // SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
@@ -33,6 +36,7 @@
 
   // --- icons ---
   --int-tree-select-icon-color: var(--i-color-primary-900); // SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
+  --int-tree-select-hover-icon-color: var(--int-tree-select-hover-border-color); // Figma Input State=Hover [2572:2449]: the arrow turns blue (#2A52C5, no token) · SG multiselect: hover arrow primary-400, same as the border
   --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
   --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
   --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
@@ -73,7 +77,9 @@
   border-radius: var(--int-tree-select-border-radius);
   cursor: pointer;
   user-select: none;
-  transition: border-color var(--int-tree-select-transition-duration);
+  transition:
+    background var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing),
+    border-color var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -129,9 +135,17 @@
     padding-inline-end: var(--int-tree-select-label-padding-x);
   }
 
+  // knowledgeBase: the arrow turns -180deg while the panel is open.
   &__dropdown-icon {
     font-size: var(--int-tree-select-icon-size);
     color: var(--int-tree-select-icon-color);
+    transition:
+      rotate var(--int-tree-select-arrow-duration) var(--int-tree-select-arrow-easing),
+      color var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing);
+  }
+
+  &--open &__dropdown-icon {
+    rotate: -180deg;
   }
 
   // Panel: rendered in the body by the CDK overlay, so it is styled on its own element.
@@ -152,8 +166,15 @@
       var(--i-shadow-x-0) var(--i-shadow-y-150) var(--i-shadow-y-200) var(--i-shadow-spread-40) var(--i-shadow-color-200),
       var(--i-shadow-x-0) var(--i-shadow-y-100) var(--i-shadow-y-100) var(--i-shadow-spread-20) var(--i-shadow-color-100);
 
+    // Grows from the trigger edge; the CDK switches it to bottom when the panel flips above.
+    transform-origin: top;
+
     &--enter {
-      animation: int-tree-select-panel-enter var(--int-tree-select-transition-duration) var(--i-motion-ease-out);
+      animation: int-tree-select-panel-enter var(--int-tree-select-transition-duration) var(--i-motion-ease-out); // same as int-multiselect
+    }
+
+    &--leave {
+      animation: int-tree-select-panel-leave var(--int-tree-select-transition-duration) var(--i-motion-ease-equal) forwards;
     }
   }
 
@@ -191,16 +212,28 @@
   }
 }
 
+// PrimeNG .p-connected-overlay-leave: fade out.
+@keyframes int-tree-select-panel-leave {
+  to {
+    opacity: 0;
+  }
+}
+
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
+.int-tree-select:not(.int-tree-select--disabled):is(.int-tree-select--focus, .int-tree-select--open) {
+  border-color: var(--int-tree-select-focus-border-color);
+}
+
+// SG: hover wins over focus and open. The arrow takes the hover color too, except when invalid (as int-multiselect).
 .int-tree-select:not(.int-tree-select--disabled):hover {
   border-color: var(--int-tree-select-hover-border-color);
 }
 
-.int-tree-select:not(.int-tree-select--disabled):is(.int-tree-select--focus, .int-tree-select--open) {
-  border-color: var(--int-tree-select-focus-border-color);
+.int-tree-select:not(.int-tree-select--disabled, .int-tree-select--invalid):hover .int-tree-select__dropdown-icon {
+  color: var(--int-tree-select-hover-icon-color);
 }
 
 .int-tree-select--invalid {
@@ -226,6 +259,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .int-tree-select,
+  .int-tree-select__dropdown-icon,
   .int-tree-select__panel {
     transition-duration: 0s;
     animation-duration: 0s;

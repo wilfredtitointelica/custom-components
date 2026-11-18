@@ -1,0 +1,19 @@
+<!--
+  title: Alert, headerless
+  description: Con `showHeader` en `false` el panel queda sin título ni botón de cerrar. `role="alertdialog"` lo anuncia como un aviso que pide respuesta; como no hay cabecera, `ariaLabel` le da el nombre y `ariaDescribedBy` apunta al mensaje.
+-->
+<button intButton label="Discard changes" severity="danger" (click)="visible.set(true)"></button>
+<int-dialog-modal
+  [(visible)]="visible"
+  [showHeader]="false"
+  [role]="'alertdialog'"
+  ariaLabel="Discard changes"
+  ariaDescribedBy="dialog-modal-alert-message"
+  size="sm"
+>
+  <p id="dialog-modal-alert-message" class="u-m-0">You have unsaved changes. Discard them and leave the page?</p>
+  <ng-template #footer>
+    <button intButton label="Keep editing" severity="secondary" (click)="visible.set(false)"></button>
+    <button intButton label="Discard" severity="danger" (click)="visible.set(false)"></button>
+  </ng-template>
+</int-dialog-modal>

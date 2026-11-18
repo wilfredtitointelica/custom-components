@@ -104,3 +104,33 @@ describe('IntButton', () => {
     expect(buttons[1].getAttribute('aria-pressed')).toBe('false');
   });
 });
+
+@Component({
+  imports: [IntButton],
+  template: `
+    <button intButton label="Static" tabindex="-1"></button>
+    <button intButton label="Bound" [tabindex]="index()"></button>
+    <button intButton label="None"></button>
+    <a intButton label="Disabled link" href="#x" tabindex="3" disabled></a>
+  `,
+})
+class TabindexHost {
+  index = signal<number | undefined>(2);
+}
+
+describe('IntButton tabindex', () => {
+  it('keeps a template tabindex, follows a bound one and forces -1 on a disabled link', () => {
+    const fixture = TestBed.createComponent(TabindexHost);
+    fixture.detectChanges();
+    const [staticBtn, bound, none] = fixture.nativeElement.querySelectorAll('button');
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(staticBtn.getAttribute('tabindex')).toBe('-1');
+    expect(bound.getAttribute('tabindex')).toBe('2');
+    expect(none.hasAttribute('tabindex')).toBeFalse();
+    expect(link.getAttribute('tabindex')).toBe('-1');
+
+    fixture.componentInstance.index.set(undefined);
+    fixture.detectChanges();
+    expect(bound.hasAttribute('tabindex')).toBeFalse();
+  });
+});

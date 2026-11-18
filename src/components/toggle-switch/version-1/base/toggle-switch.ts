@@ -75,13 +75,11 @@ export class IntToggleSwitch implements ControlValueAccessor {
   /** Deshabilita el switch. */
   readonly disabled = input(false, { transform: booleanAttribute });
   /**
-   * int-* extension: apariencia. 'slider' es el toggle-small de la base de conocimientos (track lineal); con PrimeNG
-   * era la clase .prToggleswitch--slider.
+   * int-* extension: apariencia. `slider` muestra el switch pequeño con un track lineal.
    */
   readonly variant = input<IntToggleSwitchVariant>();
   /**
-   * int-* extension: lo muestra encendido y bloqueado (.prToggleswitch--forcedChecked de la base de conocimientos).
-   * Es solo visual: no escribe en el modelo.
+   * int-* extension: lo muestra encendido y bloqueado. Es solo visual: no escribe en el modelo.
    */
   readonly forcedChecked = input(false, { transform: booleanAttribute });
 

@@ -68,22 +68,33 @@ const OPPOSITE: Record<IntTooltipPosition, IntTooltipPosition> = {
 })
 export class IntTooltip implements OnDestroy {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'pending';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Yony León';
 
+  /** Contenido del tooltip: texto o una plantilla. Vacío, no se muestra. */
   readonly content = input<IntTooltipContent>(null, { alias: 'intTooltip' });
+  /** Lado preferido respecto al elemento; cambia al opuesto si no hay espacio. */
   readonly tooltipPosition = input<IntTooltipPosition>('top');
-  /** `both` (default) shows on hover and keyboard focus for accessibility. */
+  /** Qué lo muestra: `hover`, `focus` o `both` (por defecto: mouse y foco del teclado, por accesibilidad). */
   readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
+  /** Milisegundos de espera antes de mostrarse. */
   readonly showDelay = input(0, { transform: numberAttribute });
+  /** Milisegundos de espera antes de ocultarse. */
   readonly hideDelay = input(0, { transform: numberAttribute });
+  /** Desactiva el tooltip. */
   readonly tooltipDisabled = input(false, { transform: booleanAttribute });
+  /** Clases extra para el panel del tooltip. */
   readonly tooltipStyleClass = input<string | undefined>(undefined);
-  /** int-* extension: bold title above the content (Figma "Title here"). */
+  /** int-* extension: título en negrita sobre el contenido. */
   readonly tooltipTitle = input<string | undefined>(undefined);
-  /** int-* extension: `false` hides the arrow (Figma `Indicator=None`); the gap stays the same. */
+  /** int-* extension: en `false` oculta la flecha; la separación con el elemento no cambia. */
   readonly tooltipArrow = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: solo se muestra si el texto del elemento está cortado (con `text-overflow: ellipsis` o
+   * `line-clamp`), p. ej. el nombre largo de un resultado en una lista. Se comprueba cada vez que va a abrirse.
+   */
+  readonly tooltipOnTruncate = input(false, { transform: booleanAttribute });
 
   protected readonly id = uniqueId('int-tooltip');
   protected readonly visible = signal(false);
@@ -109,8 +120,10 @@ export class IntTooltip implements OnDestroy {
     else this.scheduleHide();
   }
 
+  /** Muestra el tooltip de inmediato. */
   show(): void {
     if (this.tooltipDisabled() || !this.content() || this.visible()) return;
+    if (this.tooltipOnTruncate() && !this.isTruncated()) return;
     const preferred = this.tooltipPosition();
     const candidates = [preferred, OPPOSITE[preferred]];
     if (!this.overlayRef) {
@@ -148,6 +161,7 @@ export class IntTooltip implements OnDestroy {
     this.visible.set(true);
   }
 
+  /** Oculta el tooltip de inmediato. */
   hide(): void {
     clearTimeout(this.timer);
     this.overlayRef?.detach();
@@ -159,6 +173,12 @@ export class IntTooltip implements OnDestroy {
     clearTimeout(this.timer);
     this.positionChanges?.unsubscribe();
     this.overlayRef?.dispose();
+  }
+
+  /** The host content overflows its box: cut by an ellipsis (width) or a line clamp (height). */
+  private isTruncated(): boolean {
+    const el = this.host.nativeElement;
+    return el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
   }
 
   private scheduleShow(): void {

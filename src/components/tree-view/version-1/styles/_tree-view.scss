@@ -16,6 +16,8 @@
   --int-tree-view-gap: var(--i-spacing-gap-xs); // SG: .p-tree-node gap 4px · Figma: 4px (select/gap/xs)
   --int-tree-view-indent: var(--i-spacing-container-xl); // Figma: 16px (select/padding/x/xl) level indent, no knowledgeBase/SG value
   --int-tree-view-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-tree-view-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out (same as int-multiselect)
+  --int-tree-view-node-transition-duration: var(--i-motion-duration-base); // SG: 300ms, soft hover fade (same as int-multiselect option)
 
   // --- row ---
   --int-tree-view-node-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-node-content padding 4px · Figma: 6px (select/padding/y/sm) ⚠️
@@ -28,6 +30,9 @@
   --int-tree-view-node-selected-color: var(--i-color-primary-50); // SG: .p-tree-node-selected (no checkbox) · Figma: #EEF2FC (select/color/pressed/text) [State=Pressed]
   --int-tree-view-node-checked-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background) [State=Selected], SG multiselect transparent · SG treeselect secondary-100 ⚠️
   --int-tree-view-node-checked-hover-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (select/color/hover/background) [State=Selected hover] · SG: multiselect .p-focus secondary-100
+  --int-tree-view-checkbox-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (checkbox Hover, row State=Hover / Selected hover) [2354:2484], no SG treeselect value
+  --int-tree-view-checkbox-checked-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
+  --int-tree-view-checkbox-checked-hover-icon-color: var(--i-color-primary-700); // Figma: #1B3E88 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
   --int-tree-view-node-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (select/color/disabled/text) [State=Disabled], no knowledgeBase/SG value
   --int-tree-view-focus-ring-width: var(--i-border-width-sm); // SG: overlay focus-visible outline 1px
   --int-tree-view-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color
@@ -93,7 +98,9 @@
     padding: var(--int-tree-view-node-padding-y) var(--int-tree-view-node-padding-x);
     background: var(--int-tree-view-node-background);
     border-radius: var(--int-tree-view-node-radius);
-    transition: background var(--int-tree-view-transition-duration), color var(--int-tree-view-transition-duration);
+    transition:
+      background var(--int-tree-view-node-transition-duration) var(--int-tree-view-transition-easing),
+      color var(--int-tree-view-node-transition-duration) var(--int-tree-view-transition-easing);
 
     &--selectable {
       cursor: pointer;
@@ -131,7 +138,7 @@
 
   &__toggle-icon {
     font-size: var(--int-tree-view-toggle-icon-size);
-    transition: rotate var(--int-tree-view-transition-duration);
+    transition: rotate var(--int-tree-view-transition-duration) var(--int-tree-view-transition-easing);
   }
 
   // A leaf keeps the space of the toggle, so labels stay aligned (PrimeNG .p-tree-node-leaf).
@@ -173,6 +180,18 @@
 
   &.int-tree-view__node-content--selectable:hover {
     background: var(--int-tree-view-node-checked-hover-background);
+  }
+}
+
+// Figma 2354:2484: hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover).
+// Unchecked: only the border. Checked / indeterminate: light box, dark mark, border as unchecked.
+.int-tree-view__node-content--selectable:hover .int-tree-view__checkbox {
+  --int-checkbox-border: var(--int-tree-view-checkbox-hover-border-color);
+
+  &.int-input--checked .int-input__box {
+    border-color: var(--int-tree-view-checkbox-hover-border-color);
+    background: var(--int-tree-view-checkbox-checked-hover-background);
+    color: var(--int-tree-view-checkbox-checked-hover-icon-color);
   }
 }
 

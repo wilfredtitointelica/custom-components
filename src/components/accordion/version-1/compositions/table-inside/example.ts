@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 
+import { IntTable } from '../../../../table/version-1/base/table';
 import { IntAccordionImports, IntAccordionValue } from '../../base/accordion';
 
 @Component({
   selector: 'accordion-table-inside-example',
   templateUrl: './example.html',
-  imports: [IntAccordionImports],
+  imports: [IntAccordionImports, IntTable],
 })
 export class AccordionTableInsideExample {
   active: IntAccordionValue | IntAccordionValue[] | null = 'sent';
