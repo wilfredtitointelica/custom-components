@@ -1,6 +1,0 @@
-// int-input · entry point. Add one `@use 'input.<variant>' as input-<variant>;` per variant module.
-@use 'input';
-@use 'input.textarea' as input-textarea;
-@use 'input.number' as input-number;
-@use 'input.checkbox' as input-checkbox;
-@use 'input.radio-button' as input-radio-button;

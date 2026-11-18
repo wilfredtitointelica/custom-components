@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IntInputText } from '../../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../../inputtext/version-1/base/inputtext';
 import { IntTreeNode, IntTreetableModule } from '../../base/treetable';
 
 interface FileRow {

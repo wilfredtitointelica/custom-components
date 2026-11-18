@@ -9,7 +9,7 @@ import {
 } from '@angular/cdk/drag-drop';
 
 import { IntButton } from '../../../button/version-1/base/button';
-import { IntInputText } from '../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
 
 /** List an item belongs to. */
 export type IntPickListList = 'source' | 'target';

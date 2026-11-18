@@ -1,0 +1,10 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Textarea
+\*——————————————————————————————————————————————————————————*/
+
+textarea.int-inputtext--textarea {
+  resize: vertical;
+  min-height: calc(int.field(height) * 2);
+}

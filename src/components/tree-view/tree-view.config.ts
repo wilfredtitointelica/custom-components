@@ -23,7 +23,7 @@ export default {
     'label-as-toggle',
     'children-aligned',
   ],
-  requires: ['input', 'search'],
+  requires: ['checkbox', 'search'],
   uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

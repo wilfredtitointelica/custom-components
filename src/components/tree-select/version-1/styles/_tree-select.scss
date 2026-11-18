@@ -189,8 +189,8 @@
     flex-shrink: 0;
   }
 
-  // The filter is input[intInputText] small fluid: its look comes from int-input. Only the end padding
-  // changes (room for the search icon); the wrapper prefix outweighs the int-input field padding.
+  // The filter is input[intInputText] small fluid: its look comes from int-inputtext. Only the end padding
+  // changes (room for the search icon); the wrapper prefix outweighs the int-inputtext field padding.
   &__filter &__filter-input {
     padding-inline-end: calc(var(--int-tree-select-filter-padding-x) * 2 + var(--int-tree-select-filter-icon-size));
   }

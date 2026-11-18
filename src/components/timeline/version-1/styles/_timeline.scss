@@ -31,7 +31,7 @@
   --int-timeline-horizontal-line-width: var(--i-border-width-sm); // SG: 1px · Figma: 1px (Vector 7500)
   --int-timeline-horizontal-dot-size: var(--i-spacing-75); // knowledgeBase: --i-timeline-event-separator-dot-size (spacing-75) · Figma: 6px
   --int-timeline-horizontal-guide-width: var(--i-border-width-sm); // SG: 1px · Figma: 1px (Vector 7499)
-  --int-timeline-horizontal-guide-height: 22px; // var(--i-sizing-2xs); // Figma: 12px (Vector 7499) · SG: 1.375rem ⚠️
+  --int-timeline-horizontal-guide-height: 22px; // SG: no token with 1.375rem, fixed value (keeps the current look) · Figma: 12px (Vector 7499) ⚠️
   --int-timeline-horizontal-guide-color: var(--i-color-primary-600); // knowledgeBase: --i-timeline-event-marker-background (primary-600) · Figma: #2A52C5 (color/blue/600)
 
   // --- disabled (int-* extension: no source has it; greys of the SG disabled controls) ---

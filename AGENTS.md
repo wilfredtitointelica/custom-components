@@ -75,8 +75,9 @@ src/components/<id>/version-N/
   ```scss
   --int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
   ```
-- Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
-  animación, foco con `:focus-visible`.
+- Lo ideal es `var(--i-*)`. Un valor fijo (`auto`, `22px`) es una excepción válida solo **dentro del
+  `--int-*`** y con su comentario de origen (`// SG: no token · Figma: 22px`); nunca suelto en las reglas.
+  Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes y composiciones: helpers `.u-*`, nunca `style` inline. Única
   excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`
   (sin crear inputs `width`/`height` en la base para eso).

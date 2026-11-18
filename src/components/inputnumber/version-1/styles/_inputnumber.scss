@@ -1,0 +1,139 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// The field is an int-inputtext (__field): its look is read from --int-field-* (see _shared_/mixins).
+:root {
+  --NOTE-INPUTNUMBER: 'int-inputnumber ( Custom )';
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// <int-inputnumber>: an int-inputtext field (__field) plus optional spin buttons.
+.int-inputnumber {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-inputnumber {
+  &__field {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__button {
+    @include int.reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: int.field(icon-color);
+    font-size: var(--i-icon-size-xs);
+
+    &:not(:disabled):hover {
+      color: var(--i-icon-color-default);
+      background: var(--i-background-hover);
+    }
+    &:disabled {
+      color: var(--i-icon-color-disabled);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  // Stacked chevrons inside the field, right side.
+  &__stack {
+    position: absolute;
+    top: var(--i-border-width-sm);
+    right: var(--i-border-width-sm);
+    bottom: var(--i-border-width-sm);
+    display: flex;
+    flex-direction: column;
+    width: var(--i-sizing-sm);
+
+    .int-inputnumber__button {
+      flex: 1 1 50%;
+      &:first-child {
+        border-top-right-radius: var(--i-border-radius-lg);
+      }
+      &:last-child {
+        border-bottom-right-radius: var(--i-border-radius-lg);
+      }
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-inputnumber {
+  &--fluid {
+    display: flex;
+    width: 100%;
+  }
+  &--small {
+    --int-field-height: var(--i-sizing-md); // SG: --i-sizing-md
+  }
+  &--large {
+    --int-field-height: var(--i-sizing-xl); // SG: --i-sizing-xl
+  }
+
+  &--stacked .int-inputnumber__field {
+    padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-sm));
+  }
+
+  // Horizontal: [- value +] as one field box (Figma counter); the host carries border and states.
+  &--horizontal {
+    box-sizing: border-box;
+    border: var(--i-border-width-sm) solid int.field(border);
+    border-radius: int.field(radius);
+    background: int.field(background);
+    transition: border-color var(--i-motion-base);
+    @include int.field-states(int-inputnumber, '&:focus-within');
+
+    .int-inputnumber__field {
+      min-height: calc(#{int.field(height)} - 2 * var(--i-border-width-sm));
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      text-align: center;
+    }
+    .int-inputnumber__button {
+      width: int.field(height);
+      color: var(--i-icon-color-default);
+
+      &:not(:disabled):hover {
+        background: transparent;
+      }
+      &:disabled {
+        color: var(--i-icon-color-disabled);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-inputnumber {
+  display: inline-block;
+  width: 12rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
+}

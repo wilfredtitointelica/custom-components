@@ -144,10 +144,15 @@ function checkVersion(component, version, report, deps) {
   const baseTs = join(root, 'base', `${id}.ts`);
   if (existsSync(baseTs)) {
     const source = readFileSync(baseTs, 'utf8');
-    if (!new RegExp(`selector:\\s*['"]int-${id}['"]`).test(source))
+    // Element selector int-<id>, or an attribute directive [int<Id>] as PrimeNG (pInputText, pButton).
+    const selectorOk =
+      new RegExp(`selector:\\s*['"]int-${id}['"]`).test(source) ||
+      new RegExp(`selector:\\s*['"][^'"]*\\[int${toPascal(id)}\\]`, 'i').test(source);
+    if (!selectorOk)
       report.error(rel(baseTs), `selector must be 'int-${id}'`);
     const body = /export class (\w+)[^{]*\{([\s\S]*)/.exec(source);
-    if (body?.[1] !== `Int${toPascal(id)}`)
+    // Case-insensitive: the PrimeNG casing is kept (inputnumber → IntInputNumber, radiobutton → IntRadioButton).
+    if (body?.[1]?.toLowerCase() !== `Int${toPascal(id)}`.toLowerCase())
       report.error(rel(baseTs), `class must be Int${toPascal(id)}`);
     const members = stripComments(body?.[2] ?? '')
       .split('\n')
@@ -201,7 +206,8 @@ function checkVersion(component, version, report, deps) {
         report.error(path, 'imports @angular/animations: use animate.enter / animate.leave + CSS');
       if (/:\s*any\b|<any>|\bas any\b|as unknown as/.test(stripComments(source)))
         report.error(path, 'uses any / as unknown as');
-      if (inBase(file) && /from\s+['"][^'"]*\/(core|service|variants|compositions)\//.test(source))
+      // Relative imports only: '@angular/core/testing' in a spec is not the app core/ folder.
+      if (inBase(file) && /from\s+['"]\.[^'"]*\/(core|service|variants|compositions)\//.test(source))
         report.error(
           path,
           'the base imports core/, service/, variants/ or compositions/ (it is extracted to npm alone)',
@@ -341,7 +347,8 @@ function checkVersion(component, version, report, deps) {
           report.warn(at, 'disabled without user-select: none');
       }
 
-      // Tokens: every --int-* is an alias of a --i-* and documents where its value comes from.
+      // Tokens: every --int-* is ideally an alias of a --i-* and documents where its value comes from.
+      // A fixed value (auto, 22px…) is an accepted exception, but only with its origin comment.
       source.split('\n').forEach((text, i) => {
         const token = /^\s*(--int-[\w-]+)\s*:\s*([^;]+);/.exec(text);
         if (!token) return;
@@ -351,7 +358,8 @@ function checkVersion(component, version, report, deps) {
           /var\(--(i|int)-/.test(value) && !/#[0-9a-fA-F]{3,8}\b|\brgba?\(/.test(value)
             ? true
             : TOKEN_EXCEPTIONS.has(value.trim());
-        if (!valid) report.error(at, `${name}: ${value.trim()} must be var(--i-*)`);
+        if (!valid && !ORIGIN_COMMENT.test(text))
+          report.error(at, `${name}: fixed value ${value.trim()} without origin comment (// SG: · Figma: …): explain why it is not a var(--i-*)`);
         if (!ORIGIN_COMMENT.test(text))
           report.warn(at, `${name} without origin comment (// knowledgeBase: · Figma: · Aura:)`);
       });

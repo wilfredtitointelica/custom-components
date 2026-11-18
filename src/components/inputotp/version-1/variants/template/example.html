@@ -4,11 +4,11 @@
 -->
 <int-inputotp [(ngModel)]="value">
   <ng-template #input let-token let-events="events" let-index="index">
-    <!-- dep:input provisional · replace with <int-input> when input is done -->
+    <!-- dep:inputtext provisional · replace with input[intInputText] when inputtext is done -->
     <input
       type="text"
       class="int-inputotp__input"
-      data-dep="input"
+      data-dep="inputtext"
       maxlength="1"
       [class.int-inputotp__input--value]="token"
       [attr.aria-label]="'Character ' + index"
@@ -19,6 +19,6 @@
       (blur)="events.blur($event)"
       (paste)="events.paste($event)"
     />
-    <!-- /dep:input -->
+    <!-- /dep:inputtext -->
   </ng-template>
 </int-inputotp>

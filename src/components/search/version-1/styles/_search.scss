@@ -2,7 +2,7 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
-// The field is input[intInputText]: its look comes from int-input. Icon values from the knowledge base .prIconfield;
+// The field is input[intInputText]: its look comes from int-inputtext. Icon values from the knowledge base .prIconfield;
 // the clear button only exists in Figma (input-search-bar), so it takes the Style Guide token of the Figma value.
 :root {
   --NOTE-SEARCH: 'int-search ( Custom )';
@@ -25,8 +25,8 @@
   --int-search-divider-height: var(--i-icon-size-xs); // SG: --i-icon-size-xs · Figma: 12px (Line-divider), no knowledgeBase value
 
   // --- skeleton ---
-  --int-search-height: var(--i-sizing-lg); // knowledgeBase: ptSearch skeleton height 32px (same as the int-input field)
-  --int-search-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (same as the int-input field)
+  --int-search-height: var(--i-sizing-lg); // knowledgeBase: ptSearch skeleton height 32px (same as the int-inputtext field)
+  --int-search-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (same as the int-inputtext field)
   --int-search-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect) · knowledgeBase: ptSearch skeleton height 32px
 }
 
@@ -45,7 +45,7 @@
 
 .int-search {
   // Room for the search icon at the end of input[intInputText] (as .p-iconfield .p-inputtext). The block
-  // prefix outweighs the int-input field padding; only the end padding changes, the look stays int-input.
+  // prefix outweighs the int-inputtext field padding; only the end padding changes, the look stays int-inputtext.
   & &__input {
     padding-inline-end: var(--int-search-icon-padding-inline);
   }

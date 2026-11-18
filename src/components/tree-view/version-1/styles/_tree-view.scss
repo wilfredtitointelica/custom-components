@@ -188,7 +188,7 @@
 .int-tree-view__node-content--selectable:hover .int-tree-view__checkbox {
   --int-checkbox-border: var(--int-tree-view-checkbox-hover-border-color);
 
-  &.int-input--checked .int-input__box {
+  &.int-checkbox--checked .int-checkbox__box {
     border-color: var(--int-tree-view-checkbox-hover-border-color);
     background: var(--int-tree-view-checkbox-checked-hover-background);
     color: var(--int-tree-view-checkbox-checked-hover-icon-color);

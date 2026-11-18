@@ -4,10 +4,13 @@
  */
 export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: readonly string[] }[] = [
   { name: 'Acciones', ids: ['button', 'file-upload', 'drag-and-drop'] },
-  { name: 'Entrada de texto', ids: ['input', 'password', 'inputotp', 'search', 'search-dropdown'] },
+  {
+    name: 'Entrada de datos',
+    ids: ['inputtext', 'inputnumber', 'inputotp', 'checkbox', 'radiobutton', 'password', 'search', 'search-dropdown'],
+  },
   {
     name: 'Selección',
-    ids: ['dropdown-select', 'multiselect', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'date-picker'],
+    ids: ['dropdown-select', 'multiselect', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'datepicker'],
   },
   { name: 'Navegación', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
@@ -27,9 +30,12 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   button: 'pi-stop',
   'file-upload': 'pi-cloud-upload',
   'drag-and-drop': 'pi-arrows-alt',
-  input: 'pi-pen-to-square',
+  inputtext: 'pi-pen-to-square',
+  inputnumber: 'pi-calculator',
   password: 'pi-lock',
   inputotp: 'pi-key',
+  checkbox: 'pi-check-square',
+  radiobutton: 'pi-circle',
   search: 'pi-search',
   'search-dropdown': 'pi-search-plus',
   'dropdown-select': 'pi-chevron-circle-down',
@@ -39,7 +45,7 @@ export const CATALOG_ICONS: Readonly<Record<string, string>> = {
   'pick-list': 'pi-arrow-right-arrow-left',
   'toggle-switch': 'pi-circle-on',
   slider: 'pi-sliders-h',
-  'date-picker': 'pi-calendar',
+  datepicker: 'pi-calendar',
   breadcrumb: 'pi-angle-double-right',
   tabs: 'pi-folder-open',
   paginator: 'pi-ellipsis-h',

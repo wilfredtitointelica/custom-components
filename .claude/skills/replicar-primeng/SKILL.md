@@ -93,11 +93,11 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    grep -h "sourceName" src/components/*/*.config.ts
    ```
    Equivalencias habituales: `p-select` → `dropdown-select`, `p-dialog` → `dialog-modal`,
-   `p-inputtext`/`p-checkbox`/`p-radiobutton`/`p-textarea` → `input`, `p-tree` → `tree-view`,
-   `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `date-picker`,
-   `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-inputotp` → `input-otp`,
-   `p-progressbar` → `progress-bar`, `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`,
-   `p-chip` → `chip`.
+   `p-inputtext`/`p-textarea` → `inputtext`, `p-inputnumber` → `inputnumber`, `p-inputotp` → `inputotp`,
+   `p-checkbox` → `checkbox`, `p-radiobutton` → `radiobutton` (one component each, together in the menu),
+   `p-tree` → `tree-view`, `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,
+   `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-progressbar` → `progressbar`,
+   `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`, `p-chip` → `chip`.
 2. Pregunta, en un solo mensaje:
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
      defecto la más reciente). Aunque el candidato parezca obvio, se confirma.
@@ -600,22 +600,27 @@ Reglas:
     nombre `--int-<id>-<parte>` (`--int-chip-padding-x`).
     > 🎯 **Regla de tokens: `--int-<id>-*: var(--i-*)`.** Los tokens (color, spacing, sizing,
     > border-radius, border-width, tipografía, sombra, opacidad, motion, etc.) se consumen **siempre**
-    > del Intelica Style Guide. Cada `--int-*` es un alias de un `--i-*`, nunca un valor propio, y se
+    > del Intelica Style Guide. Lo ideal es que cada `--int-*` sea un alias de un `--i-*`, y se
     > prefiere el **alias con escala** del Style Guide (`xs`, `sm`, `md`, `lg`, `xl`) sobre la escala
-    > numérica (`--i-spacing-100`):
+    > numérica (`--i-spacing-100`). Un **valor fijo** en el `--int-*` es una excepción válida (ver abajo):
     > ```scss
     > --int-chip-gap: var(--i-spacing-gap-sm);              // Aura: 0.5rem
     > --int-chip-padding-x: var(--i-spacing-container-lg);  // Aura: 0.75rem
     > ```
     - **Qué token**: el que indica la base de conocimientos (Intelica.knowledgeBase) para el caso `.pr` (o, si la base de conocimientos (Intelica.knowledgeBase) no lo dice, el que usa el SCSS
       `.pr*` del Style Guide); solo sin ninguno de los dos, el equivalente del valor de Aura.
-    - Sin literales (`#hex`, `rgb()`, `px`, `rem`, `0.6`, `0.2s`) ni valores de Aura en los `--int-*`.
-      Comentario de origen: `// knowledgeBase: <token> · Aura: <valor>` (o `// SG: …` si sale del SCSS; con Figma
-      se agrega `· Figma: <valor> (<variable>)`, ver references/figma.md).
+    - Se busca siempre primero un `--i-*`. Comentario de origen: `// knowledgeBase: <token> · Aura: <valor>`
+      (o `// SG: …` si sale del SCSS; con Figma se agrega `· Figma: <valor> (<variable>)`, ver references/figma.md).
+    - **Valor fijo (excepción)**: cuando ningún `--i-*` da el mismo resultado visual o el valor no es de
+      diseño (`auto`, el alto de una guía de 22px, un ancho máximo de componente), el `--int-*` puede
+      llevar el valor directo (`--int-timeline-guide-height: 22px;`). Siempre **dentro del token** (las
+      reglas siguen usando solo `var(--int-*)`) y **con su comentario de origen** explicando de dónde sale
+      y por qué no es un `--i-*` (`// SG: no token · Figma: 22px`). Sin comentario, `check:component` da error.
+      Las duraciones siguen con `--i-motion-*`.
     - Si el valor de Aura no existe exacto en el Style Guide, se usa el `--i-*` **más cercano** de su
-      escala y la diferencia va al informe ("Diferencias"). Si no hay ninguno de esa categoría, no se
-      inventa: se pregunta al usuario (2.2) qué token usar o si se crea en el Style Guide.
-    - Únicas excepciones, porque no son tokens de diseño: `0`, `50%` (círculo), `currentColor`,
+      escala si se ve igual, y la diferencia va al informe ("Diferencias"); si el más cercano cambia lo que
+      se ve, va el valor fijo (excepción de arriba) y se reporta.
+    - Valores que no necesitan ni token ni comentario, porque no son de diseño: `0`, `50%` (círculo), `currentColor`,
       `inherit`, `transparent` y `calc()` sobre otros `--int-*`/`--i-*`. En `@keyframes` y estados
       iniciales de animación, además, `opacity` 0/1 y `scale()` (3.6), siempre fuera de los `--int-*`.
     - Ver la traducción en el mapa (sección 3). Así se personaliza por variables CSS sin una segunda
@@ -891,8 +896,8 @@ Si `build` o `test` fallan por algo ajeno al componente, se reporta sin "arregla
 - ❌ Nombrar la base `<id>.component.ts` / `<id>.component.html` o `int-<id>.*`: es `base/<id>.ts` + `base/<id>.html`.
 - ❌ Usar `.css`, `_index.css` o `variants/default/`: ver tabla 0.
 - ❌ Mocks en la base, servicios de mocks o archivos `*.mock.ts`.
-- ❌ Tokens `--doc-*`, valores sueltos en las reglas, o `--int-*` con literales (`#hex`, `px`, `0.6`,
-  `0.2s`) en lugar de `var(--i-*)` del Style Guide.
+- ❌ Tokens `--doc-*`, valores sueltos en las reglas (fuera de un `--int-*`), o un `--int-*` con valor
+  fijo sin comentario de origen o cuando un `var(--i-*)` del Style Guide da el mismo resultado.
 - ❌ Cambiar `status` o `designer` existentes, tocar `app.routes.ts` o configuraciones globales.
 - ❌ Afirmar que build, tests o la fidelidad visual están bien sin haberlos ejecutado/visto.
 - ❌ Terminar con `npm run check:component -- <id>` en rojo.

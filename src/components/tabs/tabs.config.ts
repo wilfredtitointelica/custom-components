@@ -13,6 +13,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
 export default {
   id: 'tabs',
   sourceName: 'Tabs (V1 / V2)',
-  uses: ['dropdown-select', 'input'],
+  uses: ['dropdown-select', 'inputnumber'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -28,7 +28,7 @@ import {
 
 import { IntPaginator, IntPaginatorAppendTo, IntPaginatorPageChangeEvent, IntPaginatorRowsPerPageOption, IntPaginatorTemplateContext } from '../../../paginator/version-1/base/paginator';
 import { IntBadge } from '../../../badge/version-1/base/badge';
-import { IntCheckbox } from '../../../input/version-1/base/checkbox';
+import { IntCheckbox } from '../../../checkbox/version-1/base/checkbox';
 
 /** Node of the tree: same shape as PrimeNG's TreeNode. `data` holds the row values read by the columns. */
 export interface IntTreeNode<T = unknown> {

@@ -50,20 +50,28 @@ const EXCEL_NAMES = [
   'ProgressBar',
 ];
 
-/** Components added outside the Excel (chip split from Badge; confirm-dialog-modal from Dialog; pick-list from Drag and Drop). Tag is the Excel "Pill". */
-const NON_EXCEL_IDS = ['chip', 'confirm-dialog-modal', 'pick-list'];
+/**
+ * Components added outside the Excel (chip split from Badge; confirm-dialog-modal from Dialog; pick-list from
+ * Drag and Drop; inputnumber, checkbox and radiobutton split from Input, which stays as inputtext). Tag is the
+ * Excel "Pill".
+ */
+const NON_EXCEL_IDS = ['chip', 'confirm-dialog-modal', 'pick-list', 'inputnumber', 'checkbox', 'radiobutton'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
 
-  it('lists exactly the Excel components, in the Excel order', () => {
+  // The menu groups the input family together (InputText → InputNumber → InputOTP → Checkbox → RadioButton),
+  // so the order no longer follows the Excel: only the set of components is checked.
+  it('lists exactly the Excel components', () => {
     const excel = COMPONENT_INVENTORY.filter((c) => !c.reference && !NON_EXCEL_IDS.includes(c.id)); // demo: reference implementation
-    expect(excel.map((c) => c.sourceName ?? catalog.find(c.id)!.name)).toEqual(EXCEL_NAMES);
+    expect(excel.map((c) => c.sourceName ?? catalog.find(c.id)!.name)).toEqual(
+      jasmine.arrayWithExactContents(EXCEL_NAMES),
+    );
   });
 
   it('keeps the original Excel name only for simplified titles', () => {
     const renamed = COMPONENT_INVENTORY.filter((c) => c.sourceName).map((c) => catalog.find(c.id)!.name);
-    expect(renamed).toEqual(['Input', 'Dialog (Modal)', 'Tabs', 'Tag']);
+    expect(renamed).toEqual(['InputText', 'Dialog (Modal)', 'Tabs', 'Tag']);
   });
 
   it('takes titles and descriptions from the HTML headers, over the config', () => {

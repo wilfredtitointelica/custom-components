@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IntAvoidElements, closeWhenOriginHidden, placeAvoiding } from '../../../_shared_';
 import { IntChip } from '../../../chip/version-1/base/chip';
-import { IntInputText } from '../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
 import { IntTooltip } from '../../../tooltip/version-2/base/tooltip';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */

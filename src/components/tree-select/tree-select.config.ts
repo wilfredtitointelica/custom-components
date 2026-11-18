@@ -23,6 +23,6 @@ export default {
     'label-as-toggle',
     'children-aligned',
   ],
-  requires: ['tree-view', 'input'],
+  requires: ['tree-view', 'inputtext'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

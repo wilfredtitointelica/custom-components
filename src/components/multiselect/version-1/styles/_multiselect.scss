@@ -83,7 +83,7 @@
   --int-multiselect-scrollbar-thumb-inset: var(--i-scrollbar-border-witdh); // SG: 2px · Aura: —
   --int-multiselect-scrollbar-thumb-radius: var(--i-scrollbar-border-radius); // SG: full · Aura: —
 
-  // --- checkbox (TODO(dep:input provisional)) ---
+  // --- checkbox (TODO(dep:checkbox provisional)) ---
   --int-multiselect-checkbox-size: var(--i-sizing-xs); // SG: 16px · Figma: 16px (checkbox/sizing/xs) · Aura: {checkbox.width} 1.25rem
   --int-multiselect-checkbox-border-radius: var(--i-border-radius-sm); // Figma: 4px (checkbox/border/radius/sm) · Aura: {checkbox.border.radius}
   --int-multiselect-checkbox-background: var(--i-color-secondary-50); // Figma: #FCFCFC (checkbox/color/unchecked) · Aura: {form.field.background}
@@ -291,8 +291,8 @@
     align-items: center;
   }
 
-  // The filter is input[intInputText] small fluid: its look comes from int-input. Only the end padding
-  // changes (room for the search icon); the wrapper prefix outweighs the int-input field padding.
+  // The filter is input[intInputText] small fluid: its look comes from int-inputtext. Only the end padding
+  // changes (room for the search icon); the wrapper prefix outweighs the int-inputtext field padding.
   &__filter-container &__filter {
     padding-inline-end: calc(var(--int-multiselect-filter-padding-x) * 2 + var(--int-multiselect-filter-icon-size));
   }
@@ -405,7 +405,7 @@
   }
 
 
-  // TODO(dep:input provisional): native checkbox + painted box until int-checkbox is done.
+  // TODO(dep:checkbox provisional): native checkbox + painted box until int-checkbox is done.
   &__checkbox {
     display: inline-flex;
     position: relative;

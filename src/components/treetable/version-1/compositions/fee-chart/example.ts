@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
 import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
-import { IntInputNumber } from '../../../../input/version-1/base/input-number';
+import { IntInputNumber } from '../../../../inputnumber/version-1/base/inputnumber';
 import { IntSearch } from '../../../../search/version-1/base/search';
 import { IntTreeNode, IntTreetableModule, IntTreetablePageEvent } from '../../base/treetable';
 

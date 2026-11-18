@@ -22,7 +22,7 @@ Se apoya en `replicar-primeng` (no se duplica aquí):
   [../replicar-primeng/references/knowledge-base.md](../replicar-primeng/references/knowledge-base.md).
 - Lectura de Figma, tabla visual y traducción a tokens:
   [../replicar-primeng/references/figma.md](../replicar-primeng/references/figma.md).
-- Regla de tokens (`--int-<id>-*: var(--i-*)`, alias con escala xs–xl, sin literales): sección 3.3 de
+- Regla de tokens (`--int-<id>-*: var(--i-*)`, alias con escala xs–xl; valor fijo solo como excepción comentada): sección 3.3 de
   [../replicar-primeng/SKILL.md](../replicar-primeng/SKILL.md) y el mapa
   [../replicar-primeng/references/primeng-v20-map.md](../replicar-primeng/references/primeng-v20-map.md).
 
@@ -132,8 +132,9 @@ Pregunta en un solo mensaje:
   - 📘: cambiar el `var(--i-*)` al de la base de conocimientos (Intelica.knowledgeBase) o Style Guide y actualizar `knowledgeBase:`/`SG:` y `Figma:`.
   - 🔄 con respaldo: **solo** el texto `Figma:` (y `⚠️` si difiere de la base de conocimientos (Intelica.knowledgeBase)); el `var(--i-*)` no cambia.
   - 🔄 sin respaldo: el `--i-*` del valor nuevo de Figma, si el usuario lo aprobó.
-  - Siempre un `--i-*`, preferiblemente alias con escala; sin literales. Sin token equivalente: el más
-    cercano y anotarlo, o preguntar.
+  - Idealmente un `--i-*`, preferiblemente alias con escala. Sin token equivalente: el más cercano si se
+    ve igual y anotarlo; si no, valor fijo en el `--int-*` con su comentario de origen (excepción de
+    `replicar-primeng` 3.3).
 - **Reglas** (`_<id>.scss` y módulos): solo si un token nuevo o un caso nuevo de la base de conocimientos (Intelica.knowledgeBase) lo exige.
   Solo `var(--int-<id>-*)`, BEM, sin `p-*`, `::ng-deep` ni `--doc-*`.
 - **Base** (`<id>.ts` / `<id>.html`): no se cambia por Figma. La API de PrimeNG no se renombra ni se quita.

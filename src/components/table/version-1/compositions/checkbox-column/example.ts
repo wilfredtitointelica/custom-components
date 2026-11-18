@@ -1,7 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { IntCheckbox } from '../../../../input/version-1/base/checkbox';
+import { IntCheckbox } from '../../../../checkbox/version-1/base/checkbox';
 import { IntTable } from '../../base/table';
 
 interface Fee {

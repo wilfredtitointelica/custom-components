@@ -2,9 +2,9 @@ import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
-import { IntDatePicker } from '../../../../date-picker/version-1/base/date-picker';
+import { IntDatePicker } from '../../../../datepicker/version-1/base/datepicker';
 import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
-import { IntInputText } from '../../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../../inputtext/version-1/base/inputtext';
 import { IntDialogModal } from '../../base/dialog-modal';
 
 @Component({

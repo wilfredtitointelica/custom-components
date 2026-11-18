@@ -2,7 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
-import { IntInputNumber } from '../../../../input/version-1/base/input-number';
+import { IntInputNumber } from '../../../../inputnumber/version-1/base/inputnumber';
 import { IntPaginator, IntPaginatorPageChangeEvent } from '../../base/paginator';
 
 const PAGE_SIZES: readonly number[] = [10, 20, 50, 100];

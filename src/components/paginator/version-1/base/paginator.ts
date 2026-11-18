@@ -26,7 +26,7 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { closeWhenOriginHidden } from '../../../_shared_';
-import { IntInputNumber } from '../../../input/version-1/base/input-number';
+import { IntInputNumber } from '../../../inputnumber/version-1/base/inputnumber';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
 const OVERLAY_Z_INDEX = 1000;

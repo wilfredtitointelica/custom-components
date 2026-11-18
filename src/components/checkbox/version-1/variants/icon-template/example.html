@@ -1,0 +1,21 @@
+<!--
+  title: Icon template
+  description: La plantilla `#icon` reemplaza el check dentro de la caja; recibe el estado marcado (`let-checked`) y la clase del icono (`let-class`). Con `tabindex="-1"` el checkbox sale del orden de Tab cuando la fila que lo contiene maneja el teclado.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-align-items-center u-gap-xs">
+    <int-checkbox inputId="cb-icon-favorite" binary [(ngModel)]="favorite">
+      <ng-template #icon let-checked let-class="class">
+        @if (checked) {
+          <i [class]="class + ' icon icon-favorite'" aria-hidden="true"></i>
+        }
+      </ng-template>
+    </int-checkbox>
+    <label for="cb-icon-favorite">Mark as favorite</label>
+  </div>
+  <div class="u-display-flex u-align-items-center u-gap-xs">
+    <int-checkbox inputId="cb-icon-row" binary tabindex="-1" [(ngModel)]="row" />
+    <label for="cb-icon-row">Out of the Tab order (tabindex -1)</label>
+  </div>
+  <p class="u-m-0 u-text-sm">Favorite: {{ favorite }} · Row: {{ row }}</p>
+</div>

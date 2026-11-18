@@ -15,8 +15,8 @@ import {
   connectOverlayContainer,
   provideIntOverlayContainer,
 } from '../../../_shared_';
-import { IntInputText } from '../../../input/version-1/base/input-text';
-// tree-view is in-progress only for the checkbox of int-input; composed real by decision of the designer
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
+// tree-view is in-progress only for int-checkbox; composed real by decision of the designer
 // (TreeSelect has no meaning without its tree and the tree is her own component).
 import {
   IntTreeNode, IntTreeNodeEvent, IntTreeSelection, IntTreeSelectionMode, IntTreeView,
