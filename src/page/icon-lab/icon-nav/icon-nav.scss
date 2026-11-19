@@ -8,9 +8,9 @@
   z-index: 1;
   top: calc(var(--doc-pane-gap) * -1);
   margin: 0;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 20px; // text aligned with the menu items (20px)
   background-color: var(--doc-bg);
-  color: var(--doc-ink-muted);
+  color: var(--doc-nav-label);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.04em;

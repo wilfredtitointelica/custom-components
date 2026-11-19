@@ -5,7 +5,7 @@ import { InlineCode } from '../../../core/inline-code/inline-code';
 import { StatusChip } from '../../../core/status-chip/status-chip';
 import { CatalogComponent, ComponentStatus } from '../../../service/catalog.model';
 import { ComponentCatalog } from '../../../service/component-catalog';
-import { CATALOG_GROUPS, CATALOG_ICONS, DEFAULT_ICON, OTHER_GROUP } from './catalog-groups';
+import { CATALOG_ICONS, DEFAULT_ICON, groupComponents } from './catalog-groups';
 
 interface CatalogCard {
   readonly component: CatalogComponent;
@@ -34,17 +34,8 @@ export class CatalogPage {
 
   protected readonly total = this.components.length;
 
-  protected readonly groups = (() => {
-    const byId = new Map(this.components.map((c) => [c.id, c]));
-    const grouped = CATALOG_GROUPS.map((group) => ({
-      name: group.name,
-      cards: group.ids.flatMap((id) => {
-        const component = byId.get(id);
-        byId.delete(id);
-        return component ? [toCard(component)] : [];
-      }),
-    }));
-    const others = { name: OTHER_GROUP, cards: [...byId.values()].map(toCard) };
-    return [...grouped, others].filter((group) => group.cards.length);
-  })();
+  protected readonly groups = groupComponents(this.components).map((group) => ({
+    name: group.name,
+    cards: group.items.map(toCard),
+  }));
 }

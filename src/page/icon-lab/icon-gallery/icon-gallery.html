@@ -26,9 +26,9 @@
 @let brands = results().brands;
 @let categories = results().categories;
 
-<!-- Block labels: same split and wording as the menu (Fundamentos / N categorías). -->
+<!-- Block labels: same split and wording as the menu (Foundations / N categories). -->
 @if (sizes.length || brands.length) {
-  <p class="doc-icon-block-label">Fundamentos</p>
+  <p class="doc-icon-block-label">Foundations</p>
 }
 
 <!-- Sizes -->
@@ -89,7 +89,7 @@
 }
 
 @if (categories.length) {
-  <p class="doc-icon-block-label">{{ categories.length }} {{ categories.length === 1 ? 'categoría' : 'categorías' }}</p>
+  <p class="doc-icon-block-label">{{ categories.length }} {{ categories.length === 1 ? 'category' : 'categories' }}</p>
 }
 
 <!-- One section per category of icon-font/incontrol-icons/icons.json -->
