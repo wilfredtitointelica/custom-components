@@ -19,9 +19,9 @@ import { VERSION_QUERY_PARAM } from '../../service/component-catalog';
       [cdkMenuTriggerFor]="menu"
       [attr.aria-label]="'Version ' + active()?.number + ', change version'"
     >
-      <i class="pi pi-tag" aria-hidden="true"></i>
+      <i class="icon icon-bookmark" aria-hidden="true"></i>
       Version {{ active()?.number }}
-      <i class="pi pi-chevron-down doc-version-trigger-arrow" aria-hidden="true"></i>
+      <i class="icon icon-arrow-down doc-version-trigger-arrow" aria-hidden="true"></i>
     </button>
 
     <ng-template #menu>
@@ -39,7 +39,7 @@ import { VERSION_QUERY_PARAM } from '../../service/component-catalog';
             @if (version === latest()) {
               <span class="doc-version-option-badge">Latest</span>
             }
-            <i class="pi pi-check doc-version-option-check" aria-hidden="true"></i>
+            <i class="icon icon-check doc-version-option-check" aria-hidden="true"></i>
           </button>
         }
       </div>

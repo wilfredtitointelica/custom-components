@@ -78,9 +78,9 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
             (click)="copy()"
           >
             <i
-              class="pi"
-              [class.pi-copy]="!copied()"
-              [class.pi-check]="copied()"
+              class="icon"
+              [class.icon-file-copy]="!copied()"
+              [class.icon-check]="copied()"
               aria-hidden="true"
             ></i>
           </button>
@@ -93,7 +93,7 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
               autofocus
               (click)="close()"
             >
-              <i class="pi pi-times" aria-hidden="true"></i>
+              <i class="icon icon-cancel" aria-hidden="true"></i>
             </button>
           } @else {
             <button
@@ -104,7 +104,7 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
               aria-haspopup="dialog"
               (click)="expand()"
             >
-              <i class="pi pi-window-maximize" aria-hidden="true"></i>
+              <i class="icon icon-maximize-screen" aria-hidden="true"></i>
             </button>
           }
         </div>

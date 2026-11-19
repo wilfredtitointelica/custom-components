@@ -17,7 +17,7 @@ import { CodeVisibility } from '../../service/code-visibility';
     >
       <span class="doc-toggle-label">Code</span>
       <span class="doc-toggle-track" aria-hidden="true">
-        <span class="doc-toggle-thumb"><i class="pi pi-code"></i></span>
+        <span class="doc-toggle-thumb"><i class="icon doc-icon-code"></i></span>
       </span>
     </button>
   `,

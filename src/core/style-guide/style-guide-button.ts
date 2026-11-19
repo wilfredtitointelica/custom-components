@@ -20,7 +20,7 @@ import { StyleGuideDialog } from './style-guide-dialog';
       [attr.aria-describedby]="ready() ? null : 'doc-sg-reason'"
       (click)="ready() && dialog()?.open()"
     >
-      <i class="pi pi-folder" aria-hidden="true"></i>
+      <i class="icon icon-folder" aria-hidden="true"></i>
       <span class="doc-sg-trigger-label">REPO SG</span>
     </button>
     @if (!ready()) {

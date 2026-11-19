@@ -20,7 +20,7 @@
 					[attr.aria-label]="(skillsOpen ? 'Collapse' : 'Expand') + ' Skills'"
 					(click)="toggle(skills.key)"
 				>
-					<i class="pi pi-chevron-down" [class.doc-is-open]="skillsOpen" aria-hidden="true"></i>
+					<i class="icon icon-arrow-down" [class.doc-is-open]="skillsOpen" aria-hidden="true"></i>
 				</button>
 			</div>
 
@@ -82,7 +82,7 @@
 	>
 		<span class="doc-nav-category-name">{{ group.name }}</span>
 		<span class="doc-nav-category-count" aria-hidden="true">{{ group.items.length }}</span>
-		<i class="pi doc-nav-category-icon" [class.pi-minus]="groupOpen" [class.pi-plus]="!groupOpen" aria-hidden="true"></i>
+		<i class="icon doc-nav-category-icon" [class.icon-remove]="groupOpen" [class.icon-add]="!groupOpen" aria-hidden="true"></i>
 	</button>
 
 	<div class="doc-variant-collapse" [class.doc-is-open]="groupOpen" [attr.inert]="groupOpen ? null : ''">
@@ -116,7 +116,7 @@
 				[attr.aria-label]="(open ? 'Collapse ' : 'Expand ') + component.name"
 				(click)="toggle(component.id)"
 			>
-				<i class="pi pi-chevron-down" [class.doc-is-open]="open" aria-hidden="true"></i>
+				<i class="icon icon-arrow-down" [class.doc-is-open]="open" aria-hidden="true"></i>
 			</button>
 		</div>
 

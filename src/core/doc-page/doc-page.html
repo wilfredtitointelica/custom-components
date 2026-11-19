@@ -29,7 +29,7 @@
     <app-version-picker [versions]="current.versions" [active]="version" />
   } @else if (current.versions.length === 1) {
     <span class="doc-chip">
-      <i class="pi pi-tag" aria-hidden="true"></i>
+      <i class="icon icon-bookmark" aria-hidden="true"></i>
       Version {{ current.versions[0].number }}
     </span>
   }
@@ -40,7 +40,7 @@
        to its blocks take their place. -->
   @if (tab !== 'api') {
     <span class="doc-chip">
-      <i class="pi pi-clone" aria-hidden="true"></i>
+      <i class="icon icon-file-copy" aria-hidden="true"></i>
       @if (tab === 'compositions') {
         {{ current.compositions.length }}
         {{ current.compositions.length === 1 ? 'composition' : 'compositions' }}
@@ -67,7 +67,7 @@
     @if (version?.figma; as figma) {
       <a class="doc-action" [href]="figma" target="_blank" rel="noopener noreferrer">
         Figma
-        <i class="pi pi-arrow-up-right doc-action-trail" aria-hidden="true"></i>
+        <i class="icon icon-external-link doc-action-trail" aria-hidden="true"></i>
       </a>
     }
     <!-- int-* components it depends on: `requires` (base) and `uses` (variant templates) of <id>.config.ts.
@@ -94,7 +94,7 @@
         >
           Detect
           <span class="doc-deps-count">{{ deps.count }}</span>
-          <i class="pi pi-chevron-down doc-action-trail doc-deps-caret" aria-hidden="true"></i>
+          <i class="icon icon-arrow-down doc-action-trail doc-deps-caret" aria-hidden="true"></i>
         </button>
         <div
           #depsPanel
@@ -131,12 +131,12 @@
                             class="doc-deps-provisional"
                             [title]="item.name + ' ya está Done, pero aquí sigue el provisional dep:' + item.id + ': reemplázalo por el int-* real'"
                           >
-                            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                            <i class="icon icon-warning" aria-hidden="true"></i>
                             Provisional
                           </span>
                         }
                         <app-status-chip [status]="item.status" size="sm" />
-                        <i class="pi pi-arrow-right doc-deps-go" aria-hidden="true"></i>
+                        <i class="icon icon-nav-right doc-deps-go" aria-hidden="true"></i>
                       </a>
                     } @else {
                       <span
@@ -188,7 +188,7 @@
     } @else {
       <div class="doc-preview">
         <div class="doc-placeholder">
-          <span class="doc-placeholder-icon"><i class="pi pi-list" aria-hidden="true"></i></span>
+          <span class="doc-placeholder-icon"><i class="icon icon-list" aria-hidden="true"></i></span>
           <p>API sin documentar todavía</p>
           <code>{{ version?.folder ?? 'version-1' }}/base/{{ current.id }}.ts</code>
         </div>
@@ -230,7 +230,7 @@
             queryParamsHandling="merge"
           >
             {{ variant.name }}
-            <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+            <i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
           </a>
         </h2>
         <!-- Code of this variant only; the top-bar switch shows/hides all of them. -->
@@ -243,7 +243,7 @@
           [title]="(codeVisible ? 'Hide' : 'Show') + ' code of ' + variant.name"
           (click)="code.toggle(variant.id)"
         >
-          <i class="pi pi-code" aria-hidden="true"></i>
+          <i class="icon doc-icon-code" aria-hidden="true"></i>
           Code
         </button>
       </div>
@@ -260,7 +260,7 @@
       @if (scanning()) {
         @if (example?.provisionalDeps?.length) {
           <p class="doc-scan-tags">
-            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+            <i class="icon icon-warning" aria-hidden="true"></i>
             Por resolver:
             @for (dep of example!.provisionalDeps; track dep) {
               <code class="doc-scan-tag">dep:{{ dep }}</code>
@@ -270,7 +270,7 @@
         @let resolved = resolvedIn(example);
         @if (resolved.length) {
           <p class="doc-scan-tags doc-is-resolved">
-            <i class="pi pi-check-circle" aria-hidden="true"></i>
+            <i class="icon icon-success" aria-hidden="true"></i>
             Resueltas:
             @for (dep of resolved; track dep) {
               <code class="doc-scan-tag">dep:{{ dep }}</code>
@@ -283,7 +283,7 @@
           <ng-container *ngComponentOutlet="example.component" />
         } @else if (!examples.isLoading()) {
           <div class="doc-placeholder">
-            <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+            <span class="doc-placeholder-icon"><i class="icon icon-3d-view" aria-hidden="true"></i></span>
             <p>Preview pending</p>
             <code
               >{{ version?.folder ?? 'version-1' }}/{{
@@ -311,7 +311,7 @@
     <section class="doc-section" [id]="current.id">
       <div class="doc-preview">
         <div class="doc-placeholder">
-          <span class="doc-placeholder-icon"><i class="pi pi-box" aria-hidden="true"></i></span>
+          <span class="doc-placeholder-icon"><i class="icon icon-3d-view" aria-hidden="true"></i></span>
           <p>No variants defined yet for this component.</p>
         </div>
       </div>

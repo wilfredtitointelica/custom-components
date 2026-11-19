@@ -10,7 +10,7 @@
   aria-haspopup="dialog"
   (click)="search.toggle()"
 >
-  <span class="doc-rail-search-box"><i class="pi pi-search" aria-hidden="true"></i></span>
+  <span class="doc-rail-search-box"><i class="icon icon-search" aria-hidden="true"></i></span>
   <span class="doc-rail-search-label">Search</span>
 </button>
 
@@ -24,7 +24,7 @@
       ariaCurrentWhenActive="page"
     >
       <span class="doc-rail-indicator">
-        <i class="pi {{ section.icon }}" aria-hidden="true"></i>
+        <i class="icon {{ section.icon }}" aria-hidden="true"></i>
       </span>
       <span class="doc-rail-label">{{ section.label }}</span>
       @if (section.status === 'pending') {
@@ -44,7 +44,7 @@
   (click)="connectionsDialog.open()"
 >
   <span class="doc-rail-indicator">
-    <i class="pi pi-link" aria-hidden="true"></i>
+    <i class="icon icon-link" aria-hidden="true"></i>
     <span class="doc-rail-connections-dot" aria-hidden="true"></span>
   </span>
   <span class="doc-rail-label">Connections</span>

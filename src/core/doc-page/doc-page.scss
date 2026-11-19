@@ -88,7 +88,7 @@
   font-weight: 500;
   white-space: nowrap;
 
-  .pi {
+  .icon {
     font-size: 0.8125rem;
   }
 }
@@ -306,7 +306,7 @@
   font-weight: 600;
   white-space: nowrap;
 
-  .pi {
+  .icon {
     font-size: 0.6875rem;
   }
 }
@@ -358,7 +358,7 @@
   color: var(--doc-ink-muted);
   font-size: 0.75rem;
 
-  .pi {
+  .icon {
     color: var(--doc-deps-color);
   }
 }
@@ -424,7 +424,7 @@
     background-color 0.2s,
     border-color 0.2s;
 
-  .pi {
+  .icon {
     color: var(--doc-ink-muted);
     font-size: 0.8125rem;
   }
@@ -443,7 +443,7 @@
     background: var(--doc-accent-container);
     color: var(--doc-on-accent-container);
 
-    .pi {
+    .icon {
       color: inherit;
     }
   }
@@ -556,7 +556,7 @@
   background: var(--doc-primary-container);
   color: var(--doc-on-primary-container);
 
-  .pi {
+  .icon {
     font-size: 1.25rem;
   }
 }

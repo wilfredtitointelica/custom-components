@@ -123,16 +123,21 @@
   background: var(--doc-surface-low);
   color: var(--doc-ink);
   text-decoration: none;
+  // The ring is an inset outline, not a border: it paints over the preview, so at rest the card has no edge.
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   transition:
-    box-shadow 0.2s,
-    transform 0.3s var(--doc-ease-emphasized);
+    outline-color 0.2s,
+    box-shadow 0.2s;
 
-  &:hover {
-    box-shadow: 0 6px 24px rgb(22 50 92 / 0.14);
-    transform: translateY(-2px);
+  // Accent ring, as the cards of /icon-lab.
+  &:hover,
+  &:focus-visible {
+    outline-color: var(--doc-accent);
+    box-shadow: 0 0 0 4px var(--doc-accent-ring);
 
-    .doc-catalog-art {
-      transform: scale(1.06);
+    .doc-catalog-preview {
+      background: var(--doc-accent-container);
     }
   }
 }
@@ -140,14 +145,11 @@
 /* Cover: drawing of the component (app-catalog-art) on a neutral surface */
 .doc-catalog-preview {
   display: block;
-  height: 200px;
-  padding: 24px 16px;
+  height: 220px;
+  padding: 30px 16px;
   overflow: hidden;
   background: var(--doc-surface-high);
-}
-
-.doc-catalog-art {
-  transition: transform 0.3s var(--doc-ease-emphasized);
+  transition: background-color 0.2s;
 }
 
 .doc-catalog-body {

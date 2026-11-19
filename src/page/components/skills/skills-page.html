@@ -18,7 +18,7 @@
 	<h2 class="doc-skill-section-title" id="skill-how-to-ask-title">
 		<a [routerLink]="path" fragment="skill-how-to-ask">
 			Cómo pedírselo a la IA
-			<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 		</a>
 	</h2>
 	<p>
@@ -31,7 +31,7 @@
 
 	<div class="doc-skill-grid">
 		<article class="doc-skill-card">
-			<span class="doc-skill-card-icon"><i class="pi pi-slash" aria-hidden="true"></i></span>
+			<span class="doc-skill-card-icon"><i class="icon icon-text" aria-hidden="true"></i></span>
 			<h3>1. Con el comando</h3>
 			<p>
 				Escribe
@@ -41,7 +41,7 @@
 			<pre class="doc-skill-prompt">/crear-variante accordion Icons + Border</pre>
 		</article>
 		<article class="doc-skill-card">
-			<span class="doc-skill-card-icon"><i class="pi pi-comment" aria-hidden="true"></i></span>
+			<span class="doc-skill-card-icon"><i class="icon icon-comment" aria-hidden="true"></i></span>
 			<h3>2. En lenguaje natural</h3>
 			<p>Pídelo como se lo pedirías a un compañero; la IA reconoce la skill que corresponde.</p>
 			<pre class="doc-skill-prompt">Crea una nueva versión del componente button</pre>
@@ -92,7 +92,7 @@
 	<h2 class="doc-skill-section-title" id="skill-cheatsheet-title">
 		<a [routerLink]="path" fragment="skill-cheatsheet">
 			Resumen rápido
-			<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+			<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 		</a>
 	</h2>
 	<p>
@@ -237,7 +237,7 @@
 	</div>
 
 	<p class="doc-skill-note">
-		<i class="pi pi-book" aria-hidden="true"></i>
+		<i class="icon icon-resources" aria-hidden="true"></i>
 		Referencia completa:
 		<a routerLink="/components/demo">Demo</a>
 		y
@@ -254,7 +254,7 @@
 		<h2 class="doc-skill-section-title" id="skill-component-title">
 			<a [routerLink]="path" fragment="skill-component">
 				Crear un componente
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -326,7 +326,7 @@
 ├── chip.config.ts              id del componente (+ orden u ocultar variantes)
 └── routes.ts                   ruta /components/chip</span></pre>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Solo se trabaja dentro de
 		<code>version-N/</code>
 		.
@@ -352,7 +352,7 @@
 		<h2 class="doc-skill-section-title" id="skill-variant-title">
 			<a [routerLink]="path" fragment="skill-variant">
 				Crear una variante
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -408,7 +408,7 @@ src/components/accordion/version-N/variants/icons-border/
 └── example.ts      AccordionIconsBorderExample: importa solo la base</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Enlace directo:
 		<code>/components/accordion#accordion-icons-border</code>
 		. El título y la descripción se editan en la cabecera de
@@ -427,7 +427,7 @@ src/components/accordion/version-N/variants/icons-border/
 		<h2 class="doc-skill-section-title" id="skill-composition-title">
 			<a [routerLink]="path" fragment="skill-composition">
 				Crear una composición
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -519,7 +519,7 @@ src/components/card/version-N/compositions/kpi/
 └── example.ts      CardKpiExample: importa solo la base</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Enlace directo:
 		<code>/components/card#card-kpi</code>
 		(abre el tab Compositions). Un slug no se repite entre
@@ -540,7 +540,7 @@ src/components/card/version-N/compositions/kpi/
 		<h2 class="doc-skill-section-title" id="skill-version-title">
 			<a [routerLink]="path" fragment="skill-version">
 				Crear una versión
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -592,7 +592,7 @@ src/components/button/
                     base/button.html → cabecera actualizada</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Cada versión es enlazable con
 		<code>/components/button?version=1</code>
 		; por defecto se abre la más reciente. No confundir con una variante visual (
@@ -611,7 +611,7 @@ src/components/button/
 		<h2 class="doc-skill-section-title" id="skill-visibility-title">
 			<a [routerLink]="path" fragment="skill-visibility">
 				Ocultar y reactivar
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -686,7 +686,7 @@ src/components/button/
 		<h2 class="doc-skill-section-title" id="skill-order-title">
 			<a [routerLink]="path" fragment="skill-order">
 				Ordenar variantes
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -742,7 +742,7 @@ export default &#123;
 &#125;</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Se guardan slugs (nombres de carpeta), así que cambiar un título en
 		<code>example.html</code>
 		no rompe el orden. Una variante nueva que no esté en la lista va al final.
@@ -757,7 +757,7 @@ export default &#123;
 		<h2 class="doc-skill-section-title" id="skill-rename-title">
 			<a [routerLink]="path" fragment="skill-rename">
 				Renombrar
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -841,7 +841,7 @@ export default &#123;
 		<h2 class="doc-skill-section-title" id="skill-remove-title">
 			<a [routerLink]="path" fragment="skill-remove">
 				Eliminar
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -944,7 +944,7 @@ export default &#123;
 		<h2 class="doc-skill-section-title" id="skill-replicate-title">
 			<a [routerLink]="path" fragment="skill-replicate">
 				Replicar de PrimeNG
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -976,7 +976,7 @@ export default &#123;
 	</p>
 	<div class="doc-skill-grid">
 		<article class="doc-skill-card">
-			<span class="doc-skill-card-icon"><i class="pi pi-sign-in" aria-hidden="true"></i></span>
+			<span class="doc-skill-card-icon"><i class="icon icon-download" aria-hidden="true"></i></span>
 			<h3>1. Implementación</h3>
 			<p>Punto de partida: uno u otro.</p>
 			<ul class="doc-skill-list">
@@ -996,7 +996,7 @@ export default &#123;
 			<p class="doc-skill-card-legend">Resultado: un componente estándar.</p>
 		</article>
 		<article class="doc-skill-card">
-			<span class="doc-skill-card-icon"><i class="pi pi-sync" aria-hidden="true"></i></span>
+			<span class="doc-skill-card-icon"><i class="icon icon-reload" aria-hidden="true"></i></span>
 			<h3>2. Mantenimiento</h3>
 			<p>Requiere un componente estándar.</p>
 			<ul class="doc-skill-list">
@@ -1119,7 +1119,7 @@ src/components/chip/version-1/
 └── variants/         basic, icon, image, removable, template, disabled</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Al final informa qué se implementó, qué quedó fuera (PassThrough,
 		<code>unstyled</code>
 		…), las diferencias con PrimeNG, lo que solo está en Figma y el resultado de
@@ -1154,7 +1154,7 @@ src/components/chip/version-1/
 		<h2 class="doc-skill-section-title" id="skill-standardize-title">
 			<a [routerLink]="path" fragment="skill-standardize">
 				Estandarizar un componente
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -1285,7 +1285,7 @@ Quita      imports de PrimeNG, clases .pr*, valores fijos, mocks en la base</pre
 		. Los errores ❌ los corrige la skill; los avisos ⚠️ te los reporta.
 	</p>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Si trabajas con otra IA (Copilot, Cursor…), dale
 		<code>AGENTS.md</code>
 		de la raíz del repo: resume las reglas y así lo que subas llega casi alineado. Si quieres revisarlo por tu cuenta, el comando es
@@ -1304,7 +1304,7 @@ Quita      imports de PrimeNG, clases .pr*, valores fijos, mocks en la base</pre
 		<h2 class="doc-skill-section-title" id="skill-sync-title">
 			<a [routerLink]="path" fragment="skill-sync">
 				Sincronizar un componente
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -1333,7 +1333,7 @@ Quita      imports de PrimeNG, clases .pr*, valores fijos, mocks en la base</pre
 		), el token no se toca; se reporta la diferencia para que el equipo actualice la base de conocimientos (<code>Intelica.knowledgeBase</code>). Tampoco crea variantes a partir de Figma.
 	</p>
 	<p class="doc-skill-note">
-		<i class="pi pi-lock" aria-hidden="true"></i>
+		<i class="icon icon-lock" aria-hidden="true"></i>
 		Requiere un componente estándar, hecho con
 		<code>/replicar-primeng</code>
 		o
@@ -1423,7 +1423,7 @@ Figma: …?node-id=12-345 · Base de conocimientos (Intelica.knowledgeBase): chi
 ✅ Igual: 12 tokens</pre
 	>
 	<div class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Otros estados posibles:
 		<ul class="doc-skill-states">
 			<li>
@@ -1445,7 +1445,7 @@ Figma: …?node-id=12-345 · Base de conocimientos (Intelica.knowledgeBase): chi
 		</ul>
 	</div>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		El link de Figma se ve en la página del componente como un chip
 		<em>Figma</em>
 		junto al estado. Con
@@ -1462,7 +1462,7 @@ Figma: …?node-id=12-345 · Base de conocimientos (Intelica.knowledgeBase): chi
 		<h2 class="doc-skill-section-title" id="skill-dependencies-title">
 			<a [routerLink]="path" fragment="skill-dependencies">
 				Resolver dependencias
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -1501,7 +1501,7 @@ Figma: …?node-id=12-345 · Base de conocimientos (Intelica.knowledgeBase): chi
 		de la página del componente, con su estado y un enlace a cada una.
 	</p>
 	<p class="doc-skill-note">
-		<i class="pi pi-lock" aria-hidden="true"></i>
+		<i class="icon icon-lock" aria-hidden="true"></i>
 		Requiere componentes estándar, hechos con
 		<code>/replicar-primeng</code>
 		o
@@ -1570,7 +1570,7 @@ requires: ['checkbox'],</pre>
 		</li>
 	</ol>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		La página de cada componente muestra un chip
 		<em>Requires …</em>
 		con el estado de lo que necesita, y
@@ -1591,7 +1591,7 @@ requires: ['checkbox'],</pre>
 		<h2 class="doc-skill-section-title" id="skill-status-title">
 			<a [routerLink]="path" fragment="skill-status">
 				Cambiar el estado
-				<i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+				<i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
 			</a>
 		</h2>
 		<span class="doc-skill-use">
@@ -1682,7 +1682,7 @@ export class IntButton &#123;
 &#125;</pre
 	>
 	<p class="doc-skill-note">
-		<i class="pi pi-info-circle" aria-hidden="true"></i>
+		<i class="icon icon-info" aria-hidden="true"></i>
 		Es la primera línea de la clase, así que también puedes cambiarla a mano: el editor te ofrece los tres valores. Es por versión:
 		<code>version-1</code>
 		puede estar

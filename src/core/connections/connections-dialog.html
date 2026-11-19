@@ -13,7 +13,7 @@
       </p>
     </div>
     <button type="button" class="doc-icon-button" aria-label="Cerrar" title="Cerrar" autofocus (click)="close()">
-      <i class="pi pi-times" aria-hidden="true"></i>
+      <i class="icon icon-cancel" aria-hidden="true"></i>
     </button>
   </header>
 
@@ -63,19 +63,19 @@
     >
       @switch (phase()) {
         @case ('checking') {
-          <i class="pi pi-refresh pi-spin" aria-hidden="true"></i>
+          <i class="icon icon-reload doc-icon-spin" aria-hidden="true"></i>
           Verificando…
         }
         @case ('connected') {
-          <i class="pi pi-check" aria-hidden="true"></i>
+          <i class="icon icon-check" aria-hidden="true"></i>
           Conectado
         }
         @case ('disconnected') {
-          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          <i class="icon icon-warning" aria-hidden="true"></i>
           Sin conexión
         }
         @default {
-          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <i class="icon icon-reload" aria-hidden="true"></i>
           Verificar ahora
         }
       }
