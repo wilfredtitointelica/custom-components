@@ -39,7 +39,9 @@
   --int-tree-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft), primary-400 as .prSelect / .prMultiselect hover arrow · Figma: #2A52C5 ⚠️ (Input State=Hover 2572:2449)
   --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
   --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
-  --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
+  --int-tree-select-clear-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: primary-900, same as int-multiselect clear
+  --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050) · padding on each side of the ✕, as --int-multiselect-chip-gap
+  --int-tree-select-dropdown-width: var(--i-sizing-lg); // SG: 32px, square with the field, as --int-multiselect-dropdown-width · Aura: {treeselect.dropdown.width} 2.5rem
 
   // --- panel ---
   --int-tree-select-panel-background: var(--i-color-secondary-50); // SG: .prTreeselect__overlay background · Figma: #FCFCFC (dropdown/color/background)
@@ -60,9 +62,8 @@
 // The host is the trigger, as PrimeNG p-treeselect.
 .int-tree-select {
   position: relative;
+  // No align-items, as PrimeNG .p-treeselect and int-multiselect: label, ✕ and arrow box take the full height.
   display: inline-flex;
-  align-items: center;
-  gap: var(--int-tree-select-icon-gap);
   box-sizing: border-box;
   // Fixed width as the taller, so a long selection ends with an ellipsis; the consumer changes the token.
   width: var(--int-tree-select-width);
@@ -110,8 +111,12 @@
     }
   }
 
+  // Full height (Style Guide .p-treeselect-label height 100%), with the text centered.
   &__label-container {
+    display: flex;
     flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
     min-width: 0;
   }
 
@@ -128,17 +133,30 @@
     }
   }
 
-  &__clear-icon {
-    flex-shrink: 0;
-    font-size: var(--int-tree-select-clear-icon-size);
-    color: var(--int-tree-select-icon-color);
-  }
-
+  // Same structure and spacing as int-multiselect: the wrapper places the ✕ (padding on each side) and takes the
+  // click, the glyph gets size and color. ✕ to arrow = this padding + half of the dropdown box around the arrow.
+  &__clear-icon,
   &__dropdown {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    padding-inline-end: var(--int-tree-select-label-padding-x);
+    justify-content: center;
+  }
+
+  &__clear-icon {
+    padding-inline: var(--int-tree-select-icon-gap);
+    cursor: pointer;
+  }
+
+  // Wins over the 16px and color of the Style Guide .icon class.
+  &__clear-icon &__clear-glyph {
+    color: var(--int-tree-select-clear-icon-color);
+    font-size: var(--int-tree-select-clear-icon-size);
+  }
+
+  // Square box with the arrow centered, as int-multiselect.
+  &__dropdown {
+    inline-size: var(--int-tree-select-dropdown-width);
   }
 
   // knowledgeBase: the arrow turns -180deg while the panel is open.
