@@ -1,8 +1,0 @@
-<!--
-  title: Append To
-  description: El calendario se monta en `body` por defecto, así que un contenedor con `overflow` no lo recorta. Su `z-index` es 1000 (el de los overlays) o el que indique `baseZIndex` (aquí `9`, debajo del encabezado fijo de la página, que está en 10). Con `appendTo="self"` o un elemento se monta dentro de ese elemento.
--->
-<div class="u-display-flex u-flex-column u-gap-md u-overflow-hidden u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
-  <int-date-picker [baseZIndex]="9" showIcon [(ngModel)]="date" />
-  <span class="u-text-sm u-color-grey-500">Contenedor con overflow hidden</span>
-</div>

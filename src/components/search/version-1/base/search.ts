@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { IntInputText } from '../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
 
 /** Size of the field, same values as PrimeNG InputText pSize. */
 export type IntSearchSize = 'small' | 'large';

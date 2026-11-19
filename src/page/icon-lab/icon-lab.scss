@@ -186,7 +186,7 @@
     min-width: 0;
   }
 
-  .pi {
+  .icon {
     color: var(--doc-ink-muted);
     font-size: 0.625rem;
   }
@@ -300,7 +300,7 @@
 
     .doc-breadcrumb a,
     .doc-breadcrumb span,
-    .doc-breadcrumb .pi {
+    .doc-breadcrumb .icon {
       color: rgb(255 255 255 / 0.75);
     }
 
@@ -325,7 +325,7 @@
     display: none;
   }
 
-  .doc-breadcrumb li:last-child .pi {
+  .doc-breadcrumb li:last-child .icon {
     display: none;
   }
 

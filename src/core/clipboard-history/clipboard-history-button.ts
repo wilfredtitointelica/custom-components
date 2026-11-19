@@ -14,10 +14,10 @@ const ICON_SOURCES = { styleguide: 'Styleguides', local: 'Local' } as const;
 
 /** `source`: where the copied names come from, shown next to the title (icons: see ICON_SOURCES). */
 const KIND_INFO: Record<ClipKind, { readonly title: string; readonly icon: string; readonly source?: string }> = {
-  code: { title: 'Componentes', icon: 'pi-code', source: 'Code' },
-  icon: { title: 'Icons Lab', icon: 'pi-images' },
-  token: { title: 'Tokens', icon: 'pi-palette', source: 'Styleguides' },
-  class: { title: 'Helpers', icon: 'pi-hashtag', source: 'Styleguides' },
+  code: { title: 'Componentes', icon: 'doc-icon-code', source: 'Code' },
+  icon: { title: 'Icons Lab', icon: 'icon-image' },
+  token: { title: 'Tokens', icon: 'icon-custom', source: 'Styleguides' },
+  class: { title: 'Helpers', icon: 'icon-pin-code', source: 'Styleguides' },
 };
 
 /** Time the copy button of an entry shows its check. */
@@ -51,13 +51,13 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
         (toggle)="onToggle($any($event).newState === 'open')"
       >
         <header class="doc-clip-head">
-          <span class="doc-clip-head-icon"><i class="pi pi-history" aria-hidden="true"></i></span>
+          <span class="doc-clip-head-icon"><i class="icon icon-clock" aria-hidden="true"></i></span>
           <div class="doc-clip-head-text">
             <h2 id="doc-clip-title" class="doc-clip-title">Últimos copiados</h2>
             <p class="doc-clip-subtitle">Se guardan en este navegador · 5 por tipo</p>
           </div>
           <button type="button" class="doc-clip-icon-btn" aria-label="Cerrar" title="Cerrar" (click)="panel.hidePopover()">
-            <i class="pi pi-times" aria-hidden="true"></i>
+            <i class="icon icon-cancel" aria-hidden="true"></i>
           </button>
         </header>
 
@@ -68,7 +68,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
             }
             <section class="doc-clip-group" [attr.aria-labelledby]="'doc-clip-' + group.kind">
               <h3 class="doc-clip-group-title" [id]="'doc-clip-' + group.kind">
-                <i class="pi {{ group.icon }}" aria-hidden="true"></i>
+                <i class="icon {{ group.icon }}" aria-hidden="true"></i>
                 {{ group.title }}
                 @if (group.source) {
                   <span class="doc-clip-group-source">( {{ group.source }} )</span>
@@ -113,7 +113,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
                       [attr.aria-label]="(copied() === entry.id ? 'Copiado: ' : 'Copiar ') + entry.label"
                       (click)="copy(entry)"
                     >
-                      <i class="pi" [class.pi-copy]="copied() !== entry.id" [class.pi-check]="copied() === entry.id" aria-hidden="true"></i>
+                      <i class="icon" [class.icon-file-copy]="copied() !== entry.id" [class.icon-check]="copied() === entry.id" aria-hidden="true"></i>
                       <span class="doc-clip-tip" aria-hidden="true">{{ copied() === entry.id ? 'Copiado' : 'Copiar' }}</span>
                     </button>
                     <button
@@ -122,7 +122,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
                       [attr.aria-label]="'Quitar ' + entry.label"
                       (click)="history.remove(entry.id)"
                     >
-                      <i class="pi pi-trash" aria-hidden="true"></i>
+                      <i class="icon icon-delete" aria-hidden="true"></i>
                       <span class="doc-clip-tip" aria-hidden="true">Quitar</span>
                     </button>
                   </li>
@@ -131,7 +131,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
             </section>
           } @empty {
             <div class="doc-clip-empty">
-              <span class="doc-clip-empty-icon"><i class="pi pi-clipboard" aria-hidden="true"></i></span>
+              <span class="doc-clip-empty-icon"><i class="icon icon-task" aria-hidden="true"></i></span>
               <p>Aún no copiaste nada.</p>
               <p class="doc-clip-empty-hint">Copia un icono, un código, un token o una clase y aparecerá aquí.</p>
             </div>
@@ -159,7 +159,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
         @if (history.count()) {
           <footer class="doc-clip-foot">
             <button type="button" class="doc-clip-clear" (click)="history.clear()">
-              <i class="pi pi-trash" aria-hidden="true"></i>
+              <i class="icon icon-delete" aria-hidden="true"></i>
               Limpiar todo
             </button>
           </footer>
@@ -177,7 +177,7 @@ type ClipPreview = ClipPreviewContent & { readonly top: number; readonly left: n
         <!-- Re-created on every copy, so the drop / receive animation runs again. -->
         @for (pulse of [history.pulse()]; track pulse) {
           <span class="doc-clip-fab-icon" [class.doc-is-bumped]="pulse > 0">
-            <i class="pi pi-clipboard" aria-hidden="true"></i>
+            <i class="icon icon-task" aria-hidden="true"></i>
           </span>
           @if (pulse > 0) {
             <span class="doc-clip-drop" aria-hidden="true"></span>

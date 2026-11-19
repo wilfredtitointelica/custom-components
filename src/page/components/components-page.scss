@@ -26,6 +26,9 @@
   padding: 16px 4px 24px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
+  // Always reserve the scrollbar track: when a group expands and the scrollbar appears, the content
+  // keeps its width instead of jumping left.
+  scrollbar-gutter: stable;
   scrollbar-color: transparent transparent;
   scrollbar-width: thin;
 
@@ -98,7 +101,7 @@
     min-width: 0;
   }
 
-  .pi {
+  .icon {
     color: var(--doc-ink-muted);
     font-size: 0.625rem;
   }
@@ -222,7 +225,7 @@
 
     .doc-breadcrumb a,
     .doc-breadcrumb span,
-    .doc-breadcrumb .pi {
+    .doc-breadcrumb .icon {
       color: rgb(255 255 255 / 0.75);
     }
 
@@ -256,7 +259,7 @@
     display: none;
   }
 
-  .doc-breadcrumb li:last-child .pi {
+  .doc-breadcrumb li:last-child .icon {
     display: none;
   }
 

@@ -1,9 +1,0 @@
-<!--
-  title: Text
-  description: Con `variant="text"` el disparador muestra solo el valor y la flecha, sin borde ni fondo, y la lista compacta no repite la opción elegida. Es el selector de filas por página del paginador; aquí con `placement="top"`.
--->
-<div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm u-text-sm">
-  <span>Rows per page:</span>
-  <int-dropdown-select variant="text" placement="top" ariaLabel="Rows per page" [options]="sizes" [(ngModel)]="rows" />
-  <span>· showing {{ rows }}</span>
-</div>

@@ -24,9 +24,9 @@ import { StyleToken } from './style-guide-tokens';
               >
                 {{ token.name }}
                 @if (copied() === token.name) {
-                  <span class="doc-sg-copied" role="status"><i class="pi pi-check" aria-hidden="true"></i>Copiado</span>
+                  <span class="doc-sg-copied" role="status"><i class="icon icon-check" aria-hidden="true"></i>Copiado</span>
                 } @else {
-                  <i class="pi pi-copy" aria-hidden="true"></i>
+                  <i class="icon icon-file-copy" aria-hidden="true"></i>
                 }
               </button>
             </td>

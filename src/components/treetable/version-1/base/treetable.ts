@@ -1,4 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   afterNextRender,
   booleanAttribute,
@@ -27,6 +28,7 @@ import {
 
 import { IntPaginator, IntPaginatorAppendTo, IntPaginatorPageChangeEvent, IntPaginatorRowsPerPageOption, IntPaginatorTemplateContext } from '../../../paginator/version-1/base/paginator';
 import { IntBadge } from '../../../badge/version-1/base/badge';
+import { IntCheckbox } from '../../../checkbox/version-1/base/checkbox';
 
 /** Node of the tree: same shape as PrimeNG's TreeNode. `data` holds the row values read by the columns. */
 export interface IntTreeNode<T = unknown> {
@@ -1174,40 +1176,27 @@ export class IntTreetableSelectableRowDblClick {
 /** <int-treetable-checkbox>: checkbox of a row in selectionMode="checkbox", with partial state. */
 @Component({
   selector: 'int-treetable-checkbox',
-  imports: [NgTemplateOutlet],
+  imports: [IntCheckbox, FormsModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- dep:input provisional · replace with <int-checkbox> (from input) when input is done -->
-    <!-- tabindex -1 as PrimeNG: the row handles Enter / Space -->
-    <span
+    <!-- tabindex -1 as PrimeNG: the row handles Enter / Space. --checked marks the row as selected (SCSS). -->
+    <int-checkbox
       class="int-treetable__checkbox"
       [class.int-treetable__checkbox--checked]="checked()"
-      [class.int-treetable__checkbox--partial]="partial()"
-      [class.int-treetable__checkbox--disabled]="disabled()"
-      data-dep="input"
+      binary
+      tabindex="-1"
+      ariaLabel="Select row"
+      [ngModel]="checked()"
+      [indeterminate]="partial()"
+      [disabled]="disabled()"
+      (onChange)="toggle()"
     >
-      <input
-        type="checkbox"
-        class="int-treetable__checkbox-input"
-        tabindex="-1"
-        [checked]="checked()"
-        [indeterminate]="partial()"
-        [disabled]="disabled()"
-        [attr.aria-checked]="partial() ? 'mixed' : checked()"
-        aria-label="Select row"
-        (change)="onChange($event)"
-      />
-      <span class="int-treetable__checkbox-box" aria-hidden="true">
-        @if (tt.checkboxIconTemplate(); as template) {
-          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: checked(), partialSelected: partial() }" />
-        } @else if (checked()) {
-          <i class="int-treetable__checkbox-icon icon icon-check"></i>
-        } @else if (partial()) {
-          <span class="int-treetable__checkbox-dash"></span>
-        }
-      </span>
-    </span>
-    <!-- /dep:input -->
+      @if (tt.checkboxIconTemplate(); as template) {
+        <ng-template #icon let-checked>
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: checked, partialSelected: partial() }" />
+        </ng-template>
+      }
+    </int-checkbox>
   `,
 })
 export class IntTreetableCheckbox {
@@ -1221,44 +1210,32 @@ export class IntTreetableCheckbox {
   protected readonly checked = computed(() => this.tt.isNodeSelected(this.rowNode().node));
   protected readonly partial = computed(() => this.tt.isNodePartialSelected(this.rowNode().node));
 
-  protected onChange(event: Event): void {
-    if (this.disabled()) return;
+  // The checkbox state comes from selectionKeys: [ngModel] follows checked() after the toggle.
+  protected toggle(): void {
     this.tt.toggleCheckbox(this.rowNode().node, !this.checked());
-    // The checkbox state comes from selectionKeys, not from the native input.
-    (event.target as HTMLInputElement).checked = this.checked();
   }
 }
 
 /** <int-treetable-header-checkbox>: checks or unchecks every node. */
 @Component({
   selector: 'int-treetable-header-checkbox',
-  imports: [NgTemplateOutlet],
+  imports: [IntCheckbox, FormsModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- dep:input provisional · replace with <int-checkbox> (from input) when input is done -->
-    <span
+    <int-checkbox
       class="int-treetable__checkbox"
-      [class.int-treetable__checkbox--checked]="tt.allChecked()"
-      [class.int-treetable__checkbox--disabled]="disabled()"
-      data-dep="input"
+      binary
+      ariaLabel="Select all"
+      [ngModel]="tt.allChecked()"
+      [disabled]="disabled()"
+      (onChange)="toggle($event.originalEvent)"
     >
-      <input
-        type="checkbox"
-        class="int-treetable__checkbox-input"
-        [checked]="tt.allChecked()"
-        [disabled]="disabled()"
-        aria-label="Select all"
-        (change)="onChange($event)"
-      />
-      <span class="int-treetable__checkbox-box" aria-hidden="true">
-        @if (tt.headerCheckboxIconTemplate(); as template) {
-          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: tt.allChecked() }" />
-        } @else if (tt.allChecked()) {
-          <i class="int-treetable__checkbox-icon icon icon-check"></i>
-        }
-      </span>
-    </span>
-    <!-- /dep:input -->
+      @if (tt.headerCheckboxIconTemplate(); as template) {
+        <ng-template #icon let-checked>
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: checked }" />
+        </ng-template>
+      }
+    </int-checkbox>
   `,
 })
 export class IntTreetableHeaderCheckbox {
@@ -1267,10 +1244,9 @@ export class IntTreetableHeaderCheckbox {
   // Same rule as PrimeNG: disabled while there are no nodes.
   protected readonly disabled = computed(() => !this.tt.value()?.length);
 
-  protected onChange(event: Event): void {
-    if (this.disabled()) return;
+  // The state comes from selectionKeys: [ngModel] follows allChecked() after the toggle.
+  protected toggle(event: Event): void {
     this.tt.toggleAll(event, !this.tt.allChecked());
-    (event.target as HTMLInputElement).checked = this.tt.allChecked();
   }
 }
 

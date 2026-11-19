@@ -10,9 +10,12 @@ import {
   untracked,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, PRIMARY_OUTLET, Router, RouterLink } from '@angular/router';
+import { filter } from 'rxjs';
 
 import { ComponentCatalog } from '../../../service/component-catalog';
+import { groupComponents } from '../catalog/catalog-groups';
 import { NavigationState } from '../../../service/navigation-state';
 import { SKILL_GROUP_LABELS, SKILLS_PATH, SKILLS_SECTIONS, SKILLS_SEGMENT } from '../skills/skills-sections';
 import { STATUS_PATH, STATUS_SEGMENT } from '../status/status-route';
@@ -40,6 +43,8 @@ export class ComponentNav {
   /** Reference implementations (_demo_), pinned above the divider together with the Skills page. */
   protected readonly references = this.catalog.filter((c) => c.reference);
   protected readonly components = this.catalog.filter((c) => !c.reference);
+  /** Same categories as the gallery (/components/catalog), in the same order. */
+  protected readonly groups = groupComponents(this.components);
   protected readonly nav = inject(NavigationState);
   /** Skills page (usage guide), pinned first under "Reference", before the reference implementations. */
   protected readonly skills = {
@@ -58,7 +63,10 @@ export class ComponentNav {
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
+  private readonly router = inject(Router);
   private readonly expanded = signal<ReadonlySet<string>>(new Set());
+  /** Categories the user opened; every category starts collapsed (the open component's one opens itself). */
+  private readonly openGroups = signal<ReadonlySet<string>>(new Set());
 
   constructor() {
     // Keep the open component expanded and visible in the drawer (click, direct URL, reload,
@@ -67,8 +75,42 @@ export class ComponentNav {
       const componentId =
         this.nav.componentId() ?? (this.nav.page() === SKILLS_SEGMENT ? this.skills.key : null);
       if (!componentId) return;
-      untracked(() => this.setExpanded(componentId, true));
+      untracked(() => {
+        this.setExpanded(componentId, true);
+        // The open component is never hidden inside a collapsed category.
+        const group = this.groups.find((g) => g.items.some((c) => c.id === componentId));
+        if (group && !this.isGroupOpen(group.name)) this.toggleGroup(group.name);
+      });
       afterNextRender(() => this.revealCurrent(), { injector: this.injector });
+    });
+
+    // Landing on the catalog (/components: the rail "Components" button or the breadcrumb, also when it
+    // is already open, since the router reloads same-URL navigations) collapses every category and entry.
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(),
+      )
+      .subscribe((event) => {
+        const segments =
+          this.router.parseUrl(event.urlAfterRedirects).root.children[PRIMARY_OUTLET]?.segments ?? [];
+        if (segments.length === 1 && segments[0].path === 'components') {
+          this.openGroups.set(new Set());
+          this.expanded.set(new Set());
+        }
+      });
+  }
+
+  protected isGroupOpen(name: string): boolean {
+    return this.openGroups().has(name);
+  }
+
+  protected toggleGroup(name: string): void {
+    this.openGroups.update((current) => {
+      const next = new Set(current);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
     });
   }
 

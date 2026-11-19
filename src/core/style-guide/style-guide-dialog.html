@@ -18,7 +18,7 @@
         }
       </div>
       <button type="button" class="doc-sg-action" aria-label="Close" title="Close" autofocus (click)="close()">
-        <i class="pi pi-times" aria-hidden="true"></i>
+        <i class="icon icon-cancel" aria-hidden="true"></i>
       </button>
     </div>
 
@@ -53,7 +53,7 @@
           @if (tab() !== 'scrollbar') {
           <div class="doc-sg-search">
             <div class="doc-sg-search-box">
-              <i class="pi pi-search doc-sg-search-icon" aria-hidden="true"></i>
+              <i class="icon icon-search doc-sg-search-icon" aria-hidden="true"></i>
               <input
                 #field
                 type="search"
@@ -68,7 +68,7 @@
               />
               @if (query()) {
                 <button type="button" class="doc-sg-search-clear" aria-label="Limpiar búsqueda" (click)="setQuery(''); field.focus()">
-                  <i class="pi pi-times" aria-hidden="true"></i>
+                  <i class="icon icon-cancel" aria-hidden="true"></i>
                 </button>
               }
             </div>

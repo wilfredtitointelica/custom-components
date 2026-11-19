@@ -30,7 +30,7 @@ export default {
     'append-to-body',
   ],
   compositions: ['helper-text', 'template-driven-form'],
-  requires: ['input'],
+  requires: ['inputtext'],
   uses: ['message', 'button', 'toast'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

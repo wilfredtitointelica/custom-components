@@ -28,6 +28,7 @@ import { Subscription } from 'rxjs';
 import {
   INT_DROPDOWN_POSITIONS,
   IntAppendTo,
+  closeWhenOriginHidden,
   connectOverlayContainer,
   provideIntOverlayContainer,
   uniqueId,
@@ -92,11 +93,12 @@ export class IntPopover implements OnDestroy {
    */
   readonly borderless = input(false, { transform: booleanAttribute });
   /**
-   * Dónde se monta el panel: `body` (por defecto, como PrimeNG), `self` (dentro del componente) o un elemento
-   * (variable de template, p. ej. `[appendTo]="container"`).
-   * @defaultValue 'body'
+   * Dónde se monta el panel: `self` (por defecto, dentro del componente), `body` o un elemento (variable de
+   * template, p. ej. `[appendTo]="container"`). En todos los casos se coloca sobre la pantalla y cambia de lado
+   * si no hay espacio.
+   * @defaultValue 'self'
    */
-  readonly appendTo = input<IntAppendTo>('body');
+  readonly appendTo = input<IntAppendTo>('self');
   /**
    * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
    * se define con CSS (`.int-overlay-container`).
@@ -131,6 +133,13 @@ export class IntPopover implements OnDestroy {
   private target: HTMLElement | null = null;
 
   constructor() {
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.visible(),
+      origin: () => this.target,
+      panel: () => this.overlayRef?.overlayElement,
+      close: () => this.hide(false),
+    });
     connectOverlayContainer({
       appendTo: this.appendTo,
       autoZIndex: this.autoZIndex,

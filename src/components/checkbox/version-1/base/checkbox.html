@@ -1,0 +1,35 @@
+<!--
+  title: Checkbox
+  description: Checkbox permite marcar una o varias opciones.
+  figma:
+-->
+<input
+  type="checkbox"
+  class="int-checkbox__control"
+  [id]="inputId()"
+  [checked]="checked()"
+  [indeterminate]="isIndeterminate()"
+  [disabled]="isDisabled()"
+  [attr.name]="name() ?? null"
+  [attr.tabindex]="tabindex() ?? null"
+  [attr.aria-checked]="isIndeterminate() ? 'mixed' : null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  [attr.aria-readonly]="readonly() || null"
+  (click)="onClick($event)"
+  (change)="toggle($event)"
+  (blur)="markAsTouched()"
+/>
+<span class="int-checkbox__box" aria-hidden="true">
+  @if (iconTemplate(); as tpl) {
+    <ng-container
+      [ngTemplateOutlet]="tpl"
+      [ngTemplateOutletContext]="{ $implicit: checked(), class: 'int-checkbox__icon' }"
+    />
+  } @else if (isIndeterminate()) {
+    <int-icon name="minus" />
+  } @else if (checked()) {
+    <int-icon name="check" />
+  }
+</span>

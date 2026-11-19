@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
+import { IntSelect } from '../../../../select/version-1/base/select';
 import { IntTable } from '../../base/table';
 
 interface Fee {
@@ -19,7 +19,7 @@ const FEES: readonly Fee[] = [
 @Component({
   selector: 'table-template-example',
   templateUrl: './example.html',
-  imports: [IntTable, IntDropdownSelect, DecimalPipe],
+  imports: [IntTable, IntSelect, DecimalPipe],
 })
 export class TableTemplateExample {
   protected readonly fees = FEES;

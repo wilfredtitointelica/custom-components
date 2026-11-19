@@ -1,7 +1,8 @@
-import { afterNextRender, Component, DestroyRef, DOCUMENT, inject, Injector, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
+import { IntTooltip } from '../../../../tooltip/version-2/base/tooltip';
 import { IntSearchDropdown } from '../../base/search-dropdown';
 
 type Category = 'All' | 'Fees' | 'Reports';
@@ -73,12 +74,10 @@ const ANSWER_DELAY = 800;
 @Component({
   selector: 'search-dropdown-global-search-example',
   templateUrl: './example.html',
-  imports: [IntSearchDropdown, FormsModule, IntButton],
+  imports: [IntSearchDropdown, FormsModule, IntButton, IntTooltip],
 })
 export class SearchDropdownGlobalSearchExample {
   protected readonly categories: readonly Category[] = ['All', 'Fees', 'Reports'];
-  /** Only one tooltip is open at a time. TODO(dep:tooltip provisional) */
-  protected readonly tooltipId = 'global-search-tooltip';
 
   protected query = '';
   protected readonly activeCategory = signal<Category>('All');
@@ -86,12 +85,8 @@ export class SearchDropdownGlobalSearchExample {
   protected readonly loading = signal(false);
   /** First answer received: from then on header and footer keep their content while loading. */
   protected readonly loaded = signal(false);
-  /** Name of the entry whose truncated label shows the tooltip. TODO(dep:tooltip provisional) */
-  protected readonly tooltip = signal<string | null>(null);
   protected readonly last = signal('');
   private timeout?: ReturnType<typeof setTimeout>;
-  private readonly document = inject(DOCUMENT);
-  private readonly injector = inject(Injector);
 
   constructor() {
     inject(DestroyRef).onDestroy(() => clearTimeout(this.timeout));
@@ -112,29 +107,6 @@ export class SearchDropdownGlobalSearchExample {
   protected open(value: unknown): void {
     const entry = value as Entry;
     this.last.set(`${entry.action ? 'Go to' : 'Open'}: ${entry.name}`);
-  }
-
-  // Only a label cut by the ellipsis needs the tooltip. TODO(dep:tooltip provisional)
-  protected showTooltip(event: MouseEvent, entry: Entry): void {
-    const label = event.currentTarget as HTMLElement;
-    if (label.scrollWidth <= label.clientWidth) {
-      this.tooltip.set(null);
-      return;
-    }
-    this.tooltip.set(entry.name);
-    // Fixed tooltip just above the label, from its position on screen (what int-tooltip will do when appended to
-    // the body): the scroll of the results can neither cut nor shift it.
-    afterNextRender(
-      () => {
-        const tooltip = this.document.getElementById(this.tooltipId);
-        if (!tooltip) return;
-        const rect = label.getBoundingClientRect();
-        const gap = rect.height / 4;
-        tooltip.style.left = `${rect.left}px`;
-        tooltip.style.top = `${rect.top - tooltip.offsetHeight - gap}px`;
-      },
-      { injector: this.injector },
-    );
   }
 
   private answer(sections: () => Section[]): void {

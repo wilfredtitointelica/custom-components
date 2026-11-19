@@ -1,26 +1,26 @@
 <!--
   title: ConfirmDialog (Alert)
-  description: ConfirmDialog is backed by a service utilizing Observables to display confirmation windows easily that can be shared by multiple actions on the same component.
+  description: ConfirmDialog pide al usuario confirmar una acción.
   figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=15758-21049
   figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=13146-53859
 -->
-<!-- Rendered in a CDK overlay attached to the body while a confirmation is open -->
-<ng-template #dialog>
+<!-- int-dialog-modal: overlay, mask, scroll block, focus trap and Escape. Without header: the confirmation lays out
+     its own close button, content and footer. Escape cancels (visibleChange false); accept / reject close it. -->
+<int-dialog-modal
+  role="alertdialog"
+  [showHeader]="false"
+  [focusOnShow]="false"
+  [styleClass]="classes()"
+  [ariaLabelledBy]="labelledBy() ?? undefined"
+  [ariaLabel]="ariaLabel() ?? undefined"
+  [ariaDescribedBy]="describedBy() ?? undefined"
+  [visible]="!!active()"
+  (visibleChange)="$event || cancel()"
+  (onShow)="focusDefault()"
+>
   @if (active(); as confirmation) {
-    <!-- dep:dialog-modal provisional · int-dialog-modal (done) has no role="alertdialog", aria-describedby / aria-label passthrough nor a headerless panel (it always renders its header row and labels by it): replace with <int-dialog-modal> when its API covers them -->
-    <div
-      #panel
-      [class]="classes()"
-      data-dep="dialog-modal"
-      role="alertdialog"
-      aria-modal="true"
-      tabindex="-1"
-      cdkTrapFocus
-      [attr.aria-labelledby]="labelledBy()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-describedby]="describedBy()"
-      animate.enter="int-confirm-dialog-modal--enter"
-    >
+    <!-- tabindex: focus fallback when there is no button (focusDefault) -->
+    <div #panel class="int-confirm-dialog-modal__body" tabindex="-1">
       @if (resolved().closable) {
         <div class="int-confirm-dialog-modal__close">
           <button
@@ -97,6 +97,5 @@
         </div>
       }
     </div>
-    <!-- /dep:dialog-modal -->
   }
-</ng-template>
+</int-dialog-modal>

@@ -20,12 +20,12 @@
   justify-items: start;
   gap: 6px;
 
-  // Same icon box in both titles (pi-box and pi-database have different glyph widths), centered on the
+  // Same icon box in both titles (icon-3d-view and icon-database have different glyph widths), centered on the
   // uppercase text: caps have no descenders, so the line box center sits 1px below their visual center.
   .doc-skill-diagram-label {
     line-height: 1;
 
-    .pi {
+    .icon {
       display: inline-flex;
       justify-content: center;
       width: 1rem;
@@ -131,7 +131,7 @@
   text-transform: uppercase;
   white-space: nowrap;
 
-  .pi {
+  .icon {
     font-size: 1rem;
   }
 }
@@ -143,7 +143,7 @@
     grid-template-columns: 1fr;
   }
 
-  .doc-token-arrow .pi {
+  .doc-token-arrow .icon {
     transform: rotate(90deg);
   }
 }

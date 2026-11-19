@@ -1,14 +1,22 @@
 import {
-  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef, input, output,
-  signal, TemplateRef, viewChild, ViewEncapsulation,
+  booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef, input,
+  numberAttribute, output, signal, TemplateRef, viewChild, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-// CDK overlay replaces PrimeNG p-overlay: the panel is attached to the body and positioned under the trigger.
+// CDK overlay replaces PrimeNG p-overlay: the panel is mounted where appendTo says and positioned under the trigger.
 import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 
-import { IntInputText } from '../../../input/version-1/base/input-text';
-// tree-view is in-progress only for the checkbox of int-input; composed real by decision of the designer
+import {
+  IntAppendTo,
+  IntAvoidElements,
+  avoidOverlayElements,
+  closeWhenOriginHidden,
+  connectOverlayContainer,
+  provideIntOverlayContainer,
+} from '../../../_shared_';
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
+// tree-view is in-progress only for int-checkbox; composed real by decision of the designer
 // (TreeSelect has no meaning without its tree and the tree is her own component).
 import {
   IntTreeNode, IntTreeNodeEvent, IntTreeSelection, IntTreeSelectionMode, IntTreeView,
@@ -26,7 +34,7 @@ const PANEL_POSITIONS: ConnectedPosition[] = [
  * <int-tree-select> · version 1. Replica of PrimeNG v20 p-treeselect without PrimeNG at runtime.
  * TreeSelect is a form component to choose from hierarchical data. Scope: what the knowledge base, the Style Guide and
  * Figma define; display="chip", select all, size, variant, fluid, loading, virtual scroll and metaKeySelection are
- * left out. The panel is always attached to the body (the knowledge base asks appendTo="body").
+ * left out. The panel is mounted inside the component by default (appendTo="self"), or in the body / an element.
  */
 @Component({
   selector: 'int-tree-select',
@@ -36,10 +44,13 @@ const PANEL_POSITIONS: ConnectedPosition[] = [
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => IntTreeSelect), multi: true }],
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => IntTreeSelect), multi: true },
+    provideIntOverlayContainer(),
+  ],
   host: {
     '[class]': 'classes()',
-    '(click)': 'onTriggerClick()',
+    '(click)': 'onTriggerClick($event)',
     '(window:resize)': 'hide()',
   },
 })
@@ -82,6 +93,25 @@ export class IntTreeSelect implements ControlValueAccessor {
   readonly propagateSelectionDown = input(true, { transform: booleanAttribute });
   /** Clase extra del panel (la base de conocimientos la usa junto con `appendTo="body"`). */
   readonly panelStyleClass = input<string>();
+  /**
+   * Dónde se monta el panel: `self` (por defecto, dentro del componente, como PrimeNG), `body` o un elemento
+   * (variable de template, p. ej. `[appendTo]="container"`). En todos los casos se coloca sobre la pantalla y
+   * cambia de lado si no hay espacio.
+   * @defaultValue 'self'
+   */
+  readonly appendTo = input<IntAppendTo>('self');
+  /**
+   * Asigna el `z-index` del panel (`baseZIndex`, o 1000, el nivel de los overlays). En `false` no lo asigna y
+   * se define con CSS (`.int-overlay-container`).
+   * @defaultValue true
+   */
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  /**
+   * int-* extension: `z-index` del panel cuando `autoZIndex` está activo; 0 usa 1000. Útil para quedar sobre
+   * un encabezado fijo u otro overlay.
+   * @defaultValue 0
+   */
+  readonly baseZIndex = input(0, { transform: numberAttribute });
   /** Índice de tabulación del disparador. */
   readonly tabindex = input(0);
   /** Etiqueta accesible del disparador. */
@@ -95,6 +125,14 @@ export class IntTreeSelect implements ControlValueAccessor {
   readonly labelAsToggle = input(false, { transform: booleanAttribute });
   /** int-* extension: se pasa al árbol; los hijos se muestran sin sangría. */
   readonly childrenAligned = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: elementos que el panel no debe tapar: selector CSS, elemento o variable de template, o una
+   * lista (`[avoidElements]="[applyBtn, '.otro']"`). Al abrir, el panel prueba debajo, arriba y a los lados del
+   * campo, y usa la primera posición que cabe en pantalla sin taparlos (si todas tapan algo, la que tapa menos).
+   * Una variable de template puesta en un componente (p. ej. `<button intButton #btn>`) es el componente, no el
+   * elemento: en ese caso usar un selector CSS.
+   */
+  readonly avoidElements = input<IntAvoidElements | null>(null);
 
   /** Se emite al seleccionar un nodo. */
   readonly onNodeSelect = output<IntTreeNodeEvent>();
@@ -123,7 +161,13 @@ export class IntTreeSelect implements ControlValueAccessor {
   protected readonly focusInput = viewChild.required<ElementRef<HTMLInputElement>>('focusInput');
   protected readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
-  protected readonly positions = PANEL_POSITIONS;
+  private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  protected readonly avoid = avoidOverlayElements({
+    avoid: this.avoidElements,
+    positions: () => PANEL_POSITIONS,
+    overlay: this.overlayDir,
+    origin: () => this.host.nativeElement,
+  });
   protected readonly listId = computed(() => `${this.inputId()}_list`);
 
   /** Model value: a node or null in single mode, an array of nodes in multiple and checkbox modes. */
@@ -176,12 +220,27 @@ export class IntTreeSelect implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   /** The whole trigger is the origin of the panel. */
-  constructor(protected readonly host: ElementRef<HTMLElement>) {}
+  constructor(protected readonly host: ElementRef<HTMLElement>) {
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.overlayVisible(),
+      origin: () => this.host.nativeElement,
+      panel: () => this.overlayDir()?.overlayRef?.overlayElement,
+      close: () => this.hide(),
+    });
+    connectOverlayContainer({
+      appendTo: this.appendTo,
+      autoZIndex: this.autoZIndex,
+      baseZIndex: this.baseZIndex,
+    });
+  }
 
   /** Abre el panel. */
   show(): void {
     if (this.isDisabled() || this.overlayVisible()) return;
     this.triggerWidth.set(this.host.nativeElement.offsetWidth);
+    // Reopened during the leave animation: the overlay stays attached and keeps its position.
+    if (!this.overlayAttached()) this.avoid.reset();
     this.closing.set(false);
     this.overlayAttached.set(true);
     this.overlayVisible.set(true);
@@ -214,14 +273,17 @@ export class IntTreeSelect implements ControlValueAccessor {
     this.filterValue.set('');
   }
 
-  protected onTriggerClick(): void {
+  protected onTriggerClick(event: MouseEvent): void {
+    // appendTo="self": the panel is inside the host, its clicks bubble here and must not toggle it.
+    const panel = this.overlayDir()?.overlayRef?.overlayElement;
+    if (panel?.contains(event.target as Node)) return;
     if (this.isDisabled()) return;
     if (this.overlayVisible()) this.hide();
     else this.show();
     this.focusInput().nativeElement.focus();
   }
 
-  /** The panel lives in the body: clicks inside it do not count as outside clicks. */
+  /** Clicks on the trigger do not count as outside clicks (the panel's own clicks never reach here). */
   protected onOutsideClick(event: MouseEvent): void {
     if (!this.host.nativeElement.contains(event.target as Node)) this.hide();
   }

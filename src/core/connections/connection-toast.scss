@@ -70,7 +70,7 @@
     --doc-toast-ink: var(--doc-on-danger-container);
   }
 
-  > .pi {
+  > .icon {
     margin-top: 2px;
     color: var(--doc-toast-color);
     font-size: 1.125rem;
@@ -126,7 +126,7 @@
     background: color-mix(in srgb, var(--doc-toast-color) 12%, transparent);
   }
 
-  .pi {
+  .icon {
     font-size: 0.75rem;
   }
 }

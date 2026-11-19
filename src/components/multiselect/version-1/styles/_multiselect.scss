@@ -83,19 +83,6 @@
   --int-multiselect-scrollbar-thumb-inset: var(--i-scrollbar-border-witdh); // SG: 2px · Aura: —
   --int-multiselect-scrollbar-thumb-radius: var(--i-scrollbar-border-radius); // SG: full · Aura: —
 
-  // --- checkbox (TODO(dep:input provisional)) ---
-  --int-multiselect-checkbox-size: var(--i-sizing-xs); // SG: 16px · Figma: 16px (checkbox/sizing/xs) · Aura: {checkbox.width} 1.25rem
-  --int-multiselect-checkbox-border-radius: var(--i-border-radius-sm); // Figma: 4px (checkbox/border/radius/sm) · Aura: {checkbox.border.radius}
-  --int-multiselect-checkbox-background: var(--i-color-secondary-50); // Figma: #FCFCFC (checkbox/color/unchecked) · Aura: {form.field.background}
-  --int-multiselect-checkbox-border-color: var(--i-color-secondary-200); // knowledgeBase: unchecked secondary-200 · SG: primary-600 ⚠️ · Figma: #D9D9E3 (checkbox/color/border) · Aura: {form.field.border.color}
-  --int-multiselect-checkbox-checked-background: var(--i-color-primary-700); // knowledgeBase: checked primary-700 · Figma: #1B3E88 (checkbox/color/background) · Aura: {primary.color}
-  --int-multiselect-checkbox-icon-color: var(--i-color-primary-50); // Figma: #EEF2FC (checkbox/color/icon) · Aura: {primary.contrast.color}
-  --int-multiselect-checkbox-icon-size: var(--i-typography-font-size-xs); // SG: 10px, fits the 16px box (the .icon class would force 16px) · Aura: {checkbox.icon.size} 0.875rem
-  --int-multiselect-checkbox-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 [State=Hover] (checkbox/color/hover/background) · knowledgeBase: primary-600 ⚠️ · Aura: —
-  --int-multiselect-checkbox-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 [State=Hover] (checkbox/color/hover/border) · Aura: {form.field.hover.border.color}
-  --int-multiselect-checkbox-disabled-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (checkbox/color/disabled/background, border) · SG: secondary-300 ⚠️ · Aura: {form.field.disabled.background}
-  --int-multiselect-checkbox-disabled-icon-color: var(--i-color-secondary-400); // Figma: #9CA3BA (checkbox/color/disabled/icon) · Aura: —
-
   // --- skeleton ---
   --int-multiselect-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100
 }
@@ -291,8 +278,8 @@
     align-items: center;
   }
 
-  // The filter is input[intInputText] small fluid: its look comes from int-input. Only the end padding
-  // changes (room for the search icon); the wrapper prefix outweighs the int-input field padding.
+  // The filter is input[intInputText] small fluid: its look comes from int-inputtext. Only the end padding
+  // changes (room for the search icon); the wrapper prefix outweighs the int-inputtext field padding.
   &__filter-container &__filter {
     padding-inline-end: calc(var(--int-multiselect-filter-padding-x) * 2 + var(--int-multiselect-filter-icon-size));
   }
@@ -405,82 +392,11 @@
   }
 
 
-  // TODO(dep:input provisional): native checkbox + painted box until int-checkbox is done.
-  &__checkbox {
-    display: inline-flex;
-    position: relative;
-    flex: 0 0 var(--int-multiselect-checkbox-size);
-    inline-size: var(--int-multiselect-checkbox-size);
-    block-size: var(--int-multiselect-checkbox-size);
-  }
-
-  &__checkbox-input {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: inherit;
-  }
-
-  &__checkbox-box {
-    display: flex;
-    box-sizing: border-box;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    // The box never grows with its mark.
-    min-inline-size: 0;
-    overflow: hidden;
-    border: var(--int-multiselect-border-width) solid var(--int-multiselect-checkbox-border-color);
-    border-radius: var(--int-multiselect-checkbox-border-radius);
-    background: var(--int-multiselect-checkbox-background);
-    color: var(--int-multiselect-checkbox-icon-color);
-    font-size: var(--int-multiselect-checkbox-icon-size);
-    transition:
-      background var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing),
-      border-color var(--int-multiselect-transition-duration) var(--int-multiselect-transition-easing);
-  }
-
-  // Beats the Style Guide .icon (font-size 16px, 1em box), which would fill the whole checkbox.
-  &__checkbox-box &__checkbox-icon {
-    font-size: var(--int-multiselect-checkbox-icon-size);
-  }
-
-  // The check and the dash fade in when they appear, along with the box colour.
-  &__checkbox-icon,
-  &__checkbox-dash {
-    animation: int-multiselect-check-enter var(--int-multiselect-transition-duration)
-      var(--int-multiselect-transition-easing);
-  }
-
-  &__checkbox-dash {
-    inline-size: calc(var(--int-multiselect-checkbox-size) / 2);
-    border-block-start: var(--int-multiselect-border-width) solid currentColor;
-  }
-
-  &__checkbox--checked &__checkbox-box,
-  &__checkbox--partial &__checkbox-box {
-    border-color: var(--int-multiselect-checkbox-checked-background);
-    background: var(--int-multiselect-checkbox-checked-background);
-  }
-
-  // Figma: State=Hover on the row (or the focused option), only while unchecked: a checked box stays blue.
-  &__option--focus &__checkbox:not(&__checkbox--checked, &__checkbox--partial) &__checkbox-box,
-  &__toggle-all:hover &__checkbox:not(&__checkbox--checked, &__checkbox--partial) &__checkbox-box {
-    border-color: var(--int-multiselect-checkbox-hover-border-color);
-    background: var(--int-multiselect-checkbox-hover-background);
-  }
-
-  &__checkbox--disabled &__checkbox-box,
-  &__option--disabled &__checkbox-box {
-    border-color: var(--int-multiselect-checkbox-disabled-color);
-    background: var(--int-multiselect-checkbox-disabled-color);
-    color: var(--int-multiselect-checkbox-disabled-icon-color);
-  }
-
-  // SG: .p-checkbox-input:focus-visible → outline on the box.
-  &__checkbox-input:focus-visible + &__checkbox-box {
-    outline: var(--int-multiselect-border-width) solid var(--int-multiselect-focus-border-color);
+  // Figma: State=Hover on the row (or the focused option), only while unchecked: the box takes the
+  // hover border of int-checkbox, as if the pointer were on it.
+  &__option--focus &__checkbox:not(.int-checkbox--checked),
+  &__toggle-all:hover &__checkbox:not(.int-checkbox--checked) {
+    --int-checkbox-border: var(--int-checkbox-hover-border); // Figma: checkbox State=Hover on row hover
   }
 }
 
@@ -583,14 +499,6 @@
 @keyframes int-multiselect-overlay-leave {
   to {
     opacity: 0; // Aura: opacity 0
-  }
-}
-
-// Check mark entering the box: fade + grow.
-@keyframes int-multiselect-check-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
   }
 }
 

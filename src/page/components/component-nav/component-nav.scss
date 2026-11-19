@@ -7,14 +7,103 @@
   position: sticky;
   z-index: 1;
   top:calc(var(--doc-pane-gap) * -1);
-  padding: 12px 16px;
+  padding: 12px 16px 12px 20px; // text aligned with the menu items (20px)
   margin: 0;
-  color: var(--doc-ink-muted);
+  color: var(--doc-nav-label);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   background-color: var(--doc-bg);
+  // Safety net: a long category name never wraps or pushes the layout.
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-nav-category-group + .doc-nav-category-group {
+  margin-top: 4px;
+}
+
+// Category header (Acciones, Entrada de datos…): a full-width button, sticky inside its group, in the
+// accent color of the page eyebrows so it reads as a section title, not as one more item.
+.doc-nav-category {
+  position: sticky;
+  z-index: 1;
+  top: calc(var(--doc-pane-gap) * -1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  // Aligned with a component row: text at 20px (.doc-nav-link padding-left) and the +/− centered where
+  // the chevron is (row padding-right 4px + half of the 36px .doc-nav-toggle = 22px; 22 − 28/2 = 8px).
+  padding: 10px 8px 10px 20px;
+  border: 0;
+  border-bottom: 1px dashed var(--doc-outline-variant);
+  background-color: var(--doc-bg);
+  color: var(--doc-nav-label);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover .doc-nav-category-icon {
+    background-color: var(--doc-state-hover);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--doc-accent);
+    outline-offset: -2px;
+    border-radius: var(--doc-radius-sm);
+  }
+}
+
+.doc-nav-category-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.doc-nav-category-count {
+  flex-shrink: 0;
+  min-width: 20px;
+  min-height: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: var(--doc-accent-container);
+  color: var(--doc-on-accent-container);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-align: center;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-nav-category-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--doc-ink);
+  font-size: 0.75rem;
+  transition: background-color 0.15s linear;
+}
+
+// The list inside a category gets its breathing room under the header.
+.doc-nav-category-group > .doc-variant-collapse > .doc-nav-list {
+  padding-top: 4px;
+  padding-bottom: 24px;
 }
 
 .doc-nav-list,
@@ -80,7 +169,7 @@
   height: 36px;
   color: var(--doc-ink-muted);
 
-  .pi {
+  .icon {
     font-size: 0.75rem;
     transition: transform 0.3s var(--doc-ease-emphasized);
 

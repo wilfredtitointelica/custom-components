@@ -32,7 +32,7 @@
         [attr.aria-pressed]="filter() === item.status"
         (click)="toggleFilter(item.status)"
       >
-        <span class="doc-summary-icon"><i class="pi {{ item.icon }}" aria-hidden="true"></i></span>
+        <span class="doc-summary-icon"><i class="icon {{ item.icon }}" aria-hidden="true"></i></span>
         <span class="doc-summary-count">{{ item.count }}</span>
         <span class="doc-summary-label">{{ item.label }} · {{ item.percent }}%</span>
       </button>
@@ -82,7 +82,7 @@
         <span class="doc-filter-label" aria-hidden="true">Diseñador</span>
         <app-filter-menu
           title="Diseñador"
-          allIcon="pi-users"
+          allIcon="icon-user-multiple"
           [options]="designerOptions"
           [value]="designerFilter()"
           (changed)="designerFilter.set($event)"
@@ -92,7 +92,7 @@
         <span class="doc-filter-label" aria-hidden="true">Estado</span>
         <app-filter-menu
           title="Estado"
-          allIcon="pi-list"
+          allIcon="icon-list"
           [options]="statusOptions"
           [value]="filter() === 'all' ? null : filter()"
           (changed)="filter.set($any($event) ?? 'all')"
@@ -100,7 +100,7 @@
       </div>
       <!-- Always present (disabled without filters) so the header never shifts. -->
       <button type="button" class="doc-clear-filter" [disabled]="!hasFilter()" (click)="clearFilters()">
-        <i class="pi pi-filter-slash" aria-hidden="true"></i>
+        <i class="icon icon-filter" aria-hidden="true"></i>
         Limpiar filtros
       </button>
     </div>
@@ -170,11 +170,11 @@
                 >
                   <!-- done / total + one state icon: the count appears once and always fits the cell. -->
                   <span class="doc-requires-state" [class.doc-is-done]="!row.requiresPending" aria-hidden="true">
-                    <i class="pi {{ row.requiresPending ? 'pi-hourglass' : 'pi-check' }}"></i>
+                    <i class="icon {{ row.requiresPending ? 'icon-loading' : 'icon-check' }}"></i>
                   </span>
                   <span class="doc-requires-count">{{ row.requires.length - row.requiresPending }}/{{ row.requires.length }}</span>
                   <span class="doc-requires-label">listos</span>
-                  <i class="pi pi-chevron-down doc-requires-arrow" aria-hidden="true"></i>
+                  <i class="icon icon-arrow-down doc-requires-arrow" aria-hidden="true"></i>
                 </button>
 
                 <ng-template #requiresMenu>

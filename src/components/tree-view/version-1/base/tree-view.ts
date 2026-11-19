@@ -5,7 +5,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IntCheckbox } from '../../../input/version-1/base/checkbox';
+import { IntCheckbox } from '../../../checkbox/version-1/base/checkbox';
 import { IntSearch } from '../../../search/version-1/base/search';
 
 /** Node of the tree, same shape as PrimeNG TreeNode (the fields int-tree-view uses). */

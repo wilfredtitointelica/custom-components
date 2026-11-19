@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { IntButton } from '../../../../button/version-1/base/button';
 import { IntSearchDropdown } from '../../base/search-dropdown';
 
 interface Section {
@@ -11,14 +12,7 @@ interface Section {
 @Component({
   selector: 'search-dropdown-recent-searches-example',
   templateUrl: './example.html',
-  imports: [IntSearchDropdown, FormsModule],
-  // TODO(dep:button provisional): no helper removes the native border and background of a button; int-button replaces it.
-  styles: `
-    button[data-dep='button'] {
-      border: 0;
-      background: none;
-    }
-  `,
+  imports: [IntSearchDropdown, FormsModule, IntButton],
 })
 export class SearchDropdownRecentSearchesExample {
   protected query = '';

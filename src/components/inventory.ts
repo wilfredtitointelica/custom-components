@@ -1,10 +1,13 @@
 import { ComponentDefinition } from '../service/catalog.model';
 import accordion from './accordion/accordion.config';
 import button from './button/button.config';
-import dropdownSelect from './dropdown-select/dropdown-select.config';
-import input from './input/input.config';
+import select from './select/select.config';
+import inputtext from './inputtext/inputtext.config';
+import inputnumber from './inputnumber/inputnumber.config';
+import checkbox from './checkbox/checkbox.config';
+import radiobutton from './radiobutton/radiobutton.config';
 import fileUpload from './file-upload/file-upload.config';
-import datePicker from './date-picker/date-picker.config';
+import datepicker from './datepicker/datepicker.config';
 import listBox from './list-box/list-box.config';
 import dialogModal from './dialog-modal/dialog-modal.config';
 import confirmDialogModal from './confirm-dialog-modal/confirm-dialog-modal.config';
@@ -39,7 +42,8 @@ import progressbar from './progressbar/progressbar.config';
 import demo from './_demo_/demo.config';
 
 /**
- * Registered components, in menu order (Excel "Listado de componentes a replicar").
+ * Registered components, in menu order (Excel "Listado de componentes a replicar"; the input family
+ * — inputtext, inputnumber, inputotp, checkbox, radiobutton — goes together).
  * Each component owns its documentation config in <id>/<id>.config.ts (name, variants, hidden);
  * this list only changes when a new component folder is created.
  * Reference implementations (`reference: true`) go first: the menu pins them above a divider.
@@ -48,10 +52,14 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   demo, // reference implementation, not in the Excel
   accordion,
   button,
-  dropdownSelect,
-  input,
+  select,
+  inputtext,
+  inputnumber,
+  inputotp,
+  checkbox,
+  radiobutton,
   fileUpload,
-  datePicker,
+  datepicker,
   listBox,
   dialogModal,
   tabs,
@@ -80,7 +88,6 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   searchDropdown,
   breadcrumb,
   paginator,
-  inputotp,
   password,
   progressbar,
 ];

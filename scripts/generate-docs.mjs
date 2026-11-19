@@ -100,6 +100,28 @@ function readDesigner(dir, folder, id) {
   return DESIGNER_PROPERTY.exec(readFileSync(file, 'utf8'))?.[2].trim() ?? '';
 }
 
+/** `dep:<id> provisional` marker (HTML comment or TODO) of a provisional standing in for an int-*. */
+const PROVISIONAL_MARKER = /\bdep:([a-z0-9-]+)\s+provisional\b/g;
+/** Base and style folders of a version: where the provisionals of its `requires` live. */
+const BASE_FOLDERS = ['base', 'styles'];
+
+/**
+ * IDs still provisional in the base of one version (base/ and styles/, specs left out): the Detect
+ * popover keeps them pending even when the dependency itself is done, until the base is migrated.
+ */
+function readBaseProvisionals(dir, folder) {
+  const ids = new Set();
+  for (const sub of BASE_FOLDERS) {
+    const subDir = join(COMPONENTS_DIR, dir, folder, sub);
+    if (!existsSync(subDir)) continue;
+    for (const name of readdirSync(subDir)) {
+      if (!/\.(ts|html|scss)$/.test(name) || name.endsWith('.spec.ts')) continue;
+      for (const [, id] of readFileSync(join(subDir, name), 'utf8').matchAll(PROVISIONAL_MARKER)) ids.add(id);
+    }
+  }
+  return [...ids].sort();
+}
+
 /** API tab of one version (scripts/extract-api.mjs); a parse error only leaves it out. */
 function readApi(dir, folder, id) {
   const versionDir = join(COMPONENTS_DIR, dir, folder);
@@ -183,6 +205,7 @@ function render() {
           return [`        '${slug}': html${imports.length - 1},`];
         });
         const api = readApi(dir, folder, id);
+        const baseProvisionals = readBaseProvisionals(dir, folder);
         return [
           '    {',
           `      number: ${number},`,
@@ -191,6 +214,9 @@ function render() {
           `      designer: ${JSON.stringify(readDesigner(dir, folder, id))},`,
           ...(baseName ? [`      html: ${baseName},`] : []),
           ...(api ? [`      api: ${JSON.stringify(api)},`] : []),
+          ...(baseProvisionals.length
+            ? [`      baseProvisionals: ${JSON.stringify(baseProvisionals)},`]
+            : []),
           `      examples: [${slugsOf(examples, 'variants')}],`,
           ...(examples.some((e) => e.kind === 'compositions')
             ? [`      compositions: [${slugsOf(examples, 'compositions')}],`]

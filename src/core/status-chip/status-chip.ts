@@ -4,9 +4,9 @@ import { ComponentStatus } from '../../service/catalog.model';
 
 /** Label and icon of each implementation status, in workflow order. */
 export const STATUS_META: Readonly<Record<ComponentStatus, { label: string; icon: string }>> = {
-  pending: { label: 'Pending', icon: 'pi-hourglass' },
-  'in-progress': { label: 'In progress', icon: 'pi-clock' },
-  done: { label: 'Done', icon: 'pi-check-circle' },
+  pending: { label: 'Pending', icon: 'icon-loading' },
+  'in-progress': { label: 'In progress', icon: 'icon-clock' },
+  done: { label: 'Done', icon: 'icon-success' },
 };
 export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress', 'done'];
 
@@ -17,7 +17,7 @@ export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress
 @Component({
   selector: 'app-status-chip',
   template: `
-    <i class="pi {{ meta().icon }}" aria-hidden="true"></i>
+    <i class="icon {{ meta().icon }}" aria-hidden="true"></i>
     {{ meta().label }}
   `,
   host: { '[class]': 'classes()' },
@@ -39,7 +39,7 @@ export const STATUS_ORDER: readonly ComponentStatus[] = ['pending', 'in-progress
       gap: 6px;
       font-size: 0.75rem;
     }
-    .pi {
+    .icon {
       font-size: 0.8125rem;
     }
     :host(.doc-is-pending) {

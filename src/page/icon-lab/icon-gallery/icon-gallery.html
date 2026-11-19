@@ -26,9 +26,9 @@
 @let brands = results().brands;
 @let categories = results().categories;
 
-<!-- Block labels: same split and wording as the menu (Fundamentos / N categorías). -->
+<!-- Block labels: same split and wording as the menu (Foundations / N categories). -->
 @if (sizes.length || brands.length) {
-  <p class="doc-icon-block-label">Fundamentos</p>
+  <p class="doc-icon-block-label">Foundations</p>
 }
 
 <!-- Sizes -->
@@ -38,7 +38,7 @@
       <h2 id="icon-size-title" class="doc-icon-group-title">
         <a [routerLink]="path" [fragment]="foundations.sizes.slug">
           <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: foundations.sizes.name }" /></span>
-          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+          <i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
         </a>
       </h2>
       <code class="doc-icon-group-meta">class="icon icon--size"</code>
@@ -64,7 +64,7 @@
       <h2 id="icon-brand-title" class="doc-icon-group-title">
         <a [routerLink]="path" [fragment]="foundations.brands.slug">
           <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: foundations.brands.name }" /></span>
-          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+          <i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
         </a>
       </h2>
       <code class="doc-icon-group-meta">class="icon icon-brand"</code>
@@ -89,7 +89,7 @@
 }
 
 @if (categories.length) {
-  <p class="doc-icon-block-label">{{ categories.length }} {{ categories.length === 1 ? 'categoría' : 'categorías' }}</p>
+  <p class="doc-icon-block-label">{{ categories.length }} {{ categories.length === 1 ? 'category' : 'categories' }}</p>
 }
 
 <!-- One section per category of icon-font/incontrol-icons/icons.json -->
@@ -99,7 +99,7 @@
       <h2 [id]="category.slug + '-title'" class="doc-icon-group-title">
         <a [routerLink]="path" [fragment]="category.slug">
           <span><ng-container *ngTemplateOutlet="marked; context: { $implicit: category.name }" /></span>
-          <i class="pi pi-link doc-anchor-icon" aria-hidden="true"></i>
+          <i class="icon icon-link doc-anchor-icon" aria-hidden="true"></i>
         </a>
       </h2>
       <span class="doc-icon-group-meta">{{ category.icons.length }} {{ category.icons.length === 1 ? 'icono' : 'iconos' }}</span>
@@ -120,7 +120,7 @@
 
 @if (!sizes.length && !brands.length && !categories.length) {
   <p class="doc-icon-empty">
-    <i class="pi pi-search" aria-hidden="true"></i>
+    <i class="icon icon-search" aria-hidden="true"></i>
     Ningún icono ni categoría coincide con «{{ query().trim() }}».
   </p>
 }
@@ -130,6 +130,6 @@
 
 <!-- Visual confirmation inside the copied card; screen readers get the live region below. -->
 <ng-template #copiedTip>
-  <span class="doc-icon-copied" aria-hidden="true"><i class="pi pi-check"></i> Copiado</span>
+  <span class="doc-icon-copied" aria-hidden="true"><i class="icon icon-check"></i> Copiado</span>
 </ng-template>
 <span class="doc-visually-hidden" aria-live="polite">{{ copied() ? copied() + ' copiado' : '' }}</span>

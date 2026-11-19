@@ -99,8 +99,9 @@ Cómo resolver la columna "`--i-*` de Figma" (para comparar):
    ```
 2. **Sin variable (valor suelto)**: buscar el `--i-*` con ese mismo valor, prefiriendo el alias con
    escala xs–xl (mapa, sección 3). Anotarlo en la fila: "valor suelto en Figma".
-3. **Sin token con ese valor**: el más cercano y la diferencia al informe, o preguntar (SKILL.md 2.2).
-   Nunca literal.
+3. **Sin token con ese valor**: el más cercano si se ve igual y la diferencia al informe; si cambia lo
+   que se ve, valor fijo en el `--int-*` con comentario `Figma: <valor>` (excepción de SKILL.md 3.3).
+   Nunca un literal suelto en las reglas.
 
 ## 5. Figma contra las demás fuentes
 

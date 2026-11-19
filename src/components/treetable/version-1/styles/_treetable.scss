@@ -62,17 +62,6 @@
 
   // --- sticky header ---
   --int-treetable-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height · Aura: —
-
-  // --- checkbox (TODO(dep:input provisional)) ---
-  --int-treetable-checkbox-size: var(--i-sizing-xs); // SG: 16px · knowledgeBase: checkbox 16px · Aura: {checkbox.width} 1.25rem
-  --int-treetable-checkbox-border-radius: var(--i-border-radius-sm); // knowledgeBase: 4px · Aura: {checkbox.border.radius}
-  --int-treetable-checkbox-background: var(--i-color-secondary-50); // SG: unchecked #FCFCFC · Aura: {form.field.background}
-  --int-treetable-checkbox-border-color: var(--i-color-secondary-200); // knowledgeBase: unchecked secondary-200 · Aura: {form.field.border.color}
-  --int-treetable-checkbox-checked-background: var(--i-color-primary-700); // knowledgeBase: checked primary-700 · Aura: {primary.color}
-  --int-treetable-checkbox-icon-color: var(--i-color-primary-50); // SG: #EEF2FC · Aura: {primary.contrast.color}
-  --int-treetable-checkbox-icon-size: var(--i-typography-font-size-xs); // SG: 10px inside the 16px box · Aura: 0.875rem
-  --int-treetable-checkbox-hover-border-color: var(--i-color-primary-600); // SG: hover border · Aura: {form.field.hover.border.color}
-  --int-treetable-checkbox-disabled-color: var(--i-color-secondary-200); // SG: disabled background / border · Aura: {form.field.disabled.background}
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -250,71 +239,6 @@
     &--spin {
       animation: int-treetable-spin var(--int-treetable-spin-duration) linear infinite;
     }
-  }
-
-  // --- checkbox (TODO(dep:input provisional)): native input + painted box until int-checkbox is done ---
-  &__checkbox {
-    position: relative;
-    display: inline-flex;
-    inline-size: var(--int-treetable-checkbox-size);
-    block-size: var(--int-treetable-checkbox-size);
-    vertical-align: middle;
-  }
-
-  &__checkbox-input {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  &__checkbox-box {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    border: var(--i-border-width-sm) solid var(--int-treetable-checkbox-border-color);
-    border-radius: var(--int-treetable-checkbox-border-radius);
-    background: var(--int-treetable-checkbox-background);
-    color: var(--int-treetable-checkbox-icon-color);
-  }
-
-  &__checkbox-box &__checkbox-icon {
-    font-size: var(--int-treetable-checkbox-icon-size);
-  }
-
-  &__checkbox-dash {
-    inline-size: calc(var(--int-treetable-checkbox-size) / 2);
-    block-size: var(--i-border-width-md);
-    background: currentColor;
-  }
-
-  &__checkbox:hover:not(&__checkbox--checked, &__checkbox--partial, &__checkbox--disabled) &__checkbox-box,
-  &__checkbox-input:focus-visible + &__checkbox-box {
-    border-color: var(--int-treetable-checkbox-hover-border-color);
-  }
-
-  &__checkbox--checked &__checkbox-box,
-  &__checkbox--partial &__checkbox-box {
-    border-color: var(--int-treetable-checkbox-checked-background);
-    background: var(--int-treetable-checkbox-checked-background);
-  }
-
-  &__checkbox--disabled {
-    cursor: not-allowed;
-    user-select: none;
-  }
-
-  &__checkbox--disabled &__checkbox-input {
-    cursor: not-allowed;
-    user-select: none;
-  }
-
-  &__checkbox--disabled &__checkbox-box {
-    border-color: var(--int-treetable-checkbox-disabled-color);
-    background: var(--int-treetable-checkbox-disabled-color);
   }
 }
 

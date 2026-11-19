@@ -6,6 +6,13 @@
 
 :root {
   --NOTE-DIALOG-MODAL: 'int-dialog-modal ( Custom )';
+
+  // --- sizes (fixed values: --i-dialog-max-width-* live in the Style Guide components/dialog, not in the
+  // tokens bundle, and no --i-sizing-* reaches these widths) ---
+  --int-dialog-modal-width-sm: 400px; // SG: --i-dialog-max-width-sm 400px · Figma: XSmall
+  --int-dialog-modal-width-md: 600px; // SG: --i-dialog-max-width-md 600px · Figma: Medium
+  --int-dialog-modal-width-lg: 800px; // SG: --i-dialog-max-width-lg 800px · Figma: Large
+  --int-dialog-modal-width-xl: 1024px; // SG: --i-dialog-max-width-xl 1024px · Figma: XLarge
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -93,20 +100,11 @@
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
 
-// Sizes: Style Guide .prDialog--sm|md|lg|xl (Figma XSmall / Medium / Large / XLarge).
-// --i-dialog-max-width-* live in the Style Guide components/dialog/_dialog-size.scss, not in tokens/,
-// so the base bundle (tokens only) lacks them: the fallbacks are the same Style Guide values.
-$sizes: (
-  sm: 400px,
-  md: 600px,
-  lg: 800px,
-  xl: 1024px,
-);
-
+// Sizes: Style Guide .prDialog--sm|md|lg|xl (Figma XSmall / Medium / Large / XLarge), widths in TOKENS.
 .int-dialog-modal {
-  @each $size, $width in $sizes {
+  @each $size in (sm, md, lg, xl) {
     &--#{$size} {
-      --int-dialog-modal-width: var(--i-dialog-max-width-#{$size}, #{$width}); // SG: --i-dialog-max-width-sm/md/lg/xl (components/dialog, not in the base bundle → fallback)
+      --int-dialog-modal-width: var(--int-dialog-modal-width-#{$size}); // SG: .prDialog--sm|md|lg|xl max-width
     }
   }
 }

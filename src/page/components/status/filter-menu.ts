@@ -9,7 +9,7 @@ export interface FilterOption {
   readonly count?: number;
   /** Leading bullet color (designers). */
   readonly color?: string;
-  /** Leading primeicons class (statuses). */
+  /** Leading Incontrol icon class (statuses). */
   readonly icon?: string;
 }
 
@@ -30,7 +30,7 @@ export interface FilterOption {
     >
       <ng-container *ngTemplateOutlet="lead; context: { $implicit: selected() }" />
       <span class="doc-filter-trigger-label">{{ selected().label }}</span>
-      <i class="pi pi-chevron-down doc-filter-trigger-arrow" aria-hidden="true"></i>
+      <i class="icon icon-arrow-down doc-filter-trigger-arrow" aria-hidden="true"></i>
     </button>
 
     <ng-template #menu>
@@ -49,7 +49,7 @@ export interface FilterOption {
             @if (option.count !== undefined) {
               <span class="doc-filter-option-count">{{ option.count }}</span>
             }
-            <i class="pi pi-check doc-filter-option-check" aria-hidden="true"></i>
+            <i class="icon icon-check doc-filter-option-check" aria-hidden="true"></i>
           </button>
         }
       </div>
@@ -60,7 +60,7 @@ export interface FilterOption {
       @if (option.color) {
         <span class="doc-filter-dot" [style.background]="option.color" aria-hidden="true"></span>
       } @else {
-        <i class="pi {{ option.icon ?? allIcon() }} doc-filter-icon" aria-hidden="true"></i>
+        <i class="icon {{ option.icon ?? allIcon() }} doc-filter-icon" aria-hidden="true"></i>
       }
     </ng-template>
   `,
@@ -72,7 +72,7 @@ export class FilterMenu {
   readonly options = input.required<readonly FilterOption[]>();
   readonly value = input<string | null>(null);
   /** Icon of the options without color or icon (the "all" option). */
-  readonly allIcon = input('pi-list');
+  readonly allIcon = input('icon-list');
   readonly changed = output<string | null>();
 
   protected readonly selected = computed(

@@ -85,7 +85,7 @@ export class IntButton {
   readonly labelOnHover = input(false, { transform: booleanAttribute });
   /**
    * int-* extension: mantiene el aspecto presionado (`active`) y marca `aria-pressed`, p. ej. el rango
-   * predefinido elegido en el pie de `int-date-picker`.
+   * predefinido elegido en el pie de `int-datepicker`.
    */
   readonly active = input<boolean | undefined>(undefined);
   /**

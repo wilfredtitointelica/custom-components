@@ -74,7 +74,7 @@
   grid-area: 1 / 1;
   place-items: center;
 
-  .pi {
+  .icon {
     font-size: 1.25rem;
   }
 
@@ -281,7 +281,7 @@
   line-height: 1;
   z-index: 10;
 
-  .pi {
+  .icon {
     display: flex;
     font-size: 0.8125rem;
   }
@@ -399,7 +399,7 @@
     color: var(--doc-danger);
   }
 
-  .pi {
+  .icon {
     font-size: 0.8125rem;
   }
 }
@@ -465,7 +465,7 @@
     color: var(--doc-danger);
   }
 
-  .pi {
+  .icon {
     font-size: 0.75rem;
   }
 }

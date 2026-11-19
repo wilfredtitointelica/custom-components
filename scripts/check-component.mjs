@@ -40,6 +40,28 @@ const NATIVE_EVENTS = new Set([
 ]);
 const toPascal = (id) => id.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
 
+/**
+ * Component ids by how a template names them: the tag (`int-tree-select`) and the attribute, lowercased
+ * without dashes (`intInputText` → `inputtext`). The Scan of the documentation page reads both.
+ */
+const COMPONENT_IDS = (() => {
+  const byName = new Map();
+  for (const name of readdirSync(COMPONENTS_DIR)) {
+    if (name.startsWith('_') || !statSync(join(COMPONENTS_DIR, name)).isDirectory()) continue;
+    byName.set(name, name);
+    byName.set(name.replace(/-/g, ''), name);
+  }
+  return byName;
+})();
+
+/** int-* components a template uses as `<int-<id>>` or as an attribute (`<button intButton>`), by id. */
+function intComponentsIn(markup) {
+  return [...markup.matchAll(/<int-([a-z0-9-]+)|[\s[]int([A-Z][A-Za-z0-9]*)\b/g)].flatMap((match) => {
+    const dep = COMPONENT_IDS.get(match[1] ?? match[2].toLowerCase());
+    return dep ? [{ dep, index: match.index }] : [];
+  });
+}
+
 const walk = (dir) =>
   existsSync(dir)
     ? readdirSync(dir).flatMap((name) => {
@@ -144,10 +166,15 @@ function checkVersion(component, version, report, deps) {
   const baseTs = join(root, 'base', `${id}.ts`);
   if (existsSync(baseTs)) {
     const source = readFileSync(baseTs, 'utf8');
-    if (!new RegExp(`selector:\\s*['"]int-${id}['"]`).test(source))
+    // Element selector int-<id>, or an attribute directive [int<Id>] as PrimeNG (pInputText, pButton).
+    const selectorOk =
+      new RegExp(`selector:\\s*['"]int-${id}['"]`).test(source) ||
+      new RegExp(`selector:\\s*['"][^'"]*\\[int${toPascal(id)}\\]`, 'i').test(source);
+    if (!selectorOk)
       report.error(rel(baseTs), `selector must be 'int-${id}'`);
     const body = /export class (\w+)[^{]*\{([\s\S]*)/.exec(source);
-    if (body?.[1] !== `Int${toPascal(id)}`)
+    // Case-insensitive: the PrimeNG casing is kept (inputnumber → IntInputNumber, radiobutton → IntRadioButton).
+    if (body?.[1]?.toLowerCase() !== `Int${toPascal(id)}`.toLowerCase())
       report.error(rel(baseTs), `class must be Int${toPascal(id)}`);
     const members = stripComments(body?.[2] ?? '')
       .split('\n')
@@ -201,13 +228,15 @@ function checkVersion(component, version, report, deps) {
         report.error(path, 'imports @angular/animations: use animate.enter / animate.leave + CSS');
       if (/:\s*any\b|<any>|\bas any\b|as unknown as/.test(stripComments(source)))
         report.error(path, 'uses any / as unknown as');
-      if (inBase(file) && /from\s+['"][^'"]*\/(core|service|variants|compositions)\//.test(source))
+      // Relative imports only: '@angular/core/testing' in a spec is not the app core/ folder.
+      if (inBase(file) && /from\s+['"]\.[^'"]*\/(core|service|variants|compositions)\//.test(source))
         report.error(
           path,
           'the base imports core/, service/, variants/ or compositions/ (it is extracted to npm alone)',
         );
       for (const match of source.matchAll(
-        /from\s+['"](?:\.\.\/){3}([\w-]+)\/version-\d+\/base\//g,
+        // base/<id>.ts: ../../../<dep>/; variants|compositions/<slug>/example.ts: ../../../../<dep>/.
+        /from\s+['"](?:\.\.\/){3,4}([\w-]+)\/version-\d+\/base\//g,
       )) {
         const dep = match[1];
         if (inBase(file) && !deps.requires.includes(dep))
@@ -227,6 +256,15 @@ function checkVersion(component, version, report, deps) {
     if (file.endsWith('.html')) {
       const markup = source.replace(/<!--[\s\S]*?-->/g, (block) => block.replace(/[^\n]/g, ' '));
       if (/<p-[a-z]/.test(markup)) report.error(path, 'uses <p-*> PrimeNG components');
+      // Every other int-* an example uses (tag or attribute) is declared, so the Scan of the page marks it.
+      if (inExamples(file))
+        for (const { dep, index } of intComponentsIn(markup)) {
+          if (dep === id || deps.requires.includes(dep) || deps.uses.includes(dep)) continue;
+          report.error(
+            `${path}:${lineOf(markup, index)}`,
+            `uses int-${dep} but "${dep}" is not in requires / uses: the Scan does not mark it`,
+          );
+        }
       const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
       if (inExamples(file) && /\b(title|description):.*primeng/i.test(header))
         report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');
@@ -341,7 +379,8 @@ function checkVersion(component, version, report, deps) {
           report.warn(at, 'disabled without user-select: none');
       }
 
-      // Tokens: every --int-* is an alias of a --i-* and documents where its value comes from.
+      // Tokens: every --int-* is ideally an alias of a --i-* and documents where its value comes from.
+      // A fixed value (auto, 22px…) is an accepted exception, but only with its origin comment.
       source.split('\n').forEach((text, i) => {
         const token = /^\s*(--int-[\w-]+)\s*:\s*([^;]+);/.exec(text);
         if (!token) return;
@@ -351,7 +390,8 @@ function checkVersion(component, version, report, deps) {
           /var\(--(i|int)-/.test(value) && !/#[0-9a-fA-F]{3,8}\b|\brgba?\(/.test(value)
             ? true
             : TOKEN_EXCEPTIONS.has(value.trim());
-        if (!valid) report.error(at, `${name}: ${value.trim()} must be var(--i-*)`);
+        if (!valid && !ORIGIN_COMMENT.test(text))
+          report.error(at, `${name}: fixed value ${value.trim()} without origin comment (// SG: · Figma: …): explain why it is not a var(--i-*)`);
         if (!ORIGIN_COMMENT.test(text))
           report.warn(at, `${name} without origin comment (// knowledgeBase: · Figma: · Aura:)`);
       });

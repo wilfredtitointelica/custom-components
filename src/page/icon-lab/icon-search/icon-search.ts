@@ -8,7 +8,7 @@ import { Component, model } from '@angular/core';
   selector: 'app-icon-search',
   template: `
     <div class="doc-icon-search" [class.doc-is-filled]="query()">
-      <i class="pi pi-search doc-icon-search-icon" aria-hidden="true"></i>
+      <i class="icon icon-search doc-icon-search-icon" aria-hidden="true"></i>
       <input
         #field
         type="search"
@@ -23,7 +23,7 @@ import { Component, model } from '@angular/core';
       />
       @if (query()) {
         <button type="button" class="doc-icon-search-clear" aria-label="Limpiar búsqueda" (click)="query.set(''); field.focus()">
-          <i class="pi pi-times" aria-hidden="true"></i>
+          <i class="icon icon-cancel" aria-hidden="true"></i>
         </button>
       }
     </div>

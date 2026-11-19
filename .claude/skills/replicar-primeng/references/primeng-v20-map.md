@@ -71,9 +71,10 @@ Si el archivo no usa `var style=` (cambia entre versiones), abrirlo con `Read` y
    4. Escala numérica (`--i-spacing-150`, `--i-sizing-200`, `--i-color-grey-100`…) solo cuando no hay
       alias con ese valor (colores de paleta, valores fuera de xs–xl).
    5. Sin equivalente exacto: el `--i-*` más cercano, anotando la diferencia.
-   6. Sin ningún token de esa categoría: **no** se pone un literal; se pregunta al usuario.
-4. Declara en TOKENS (`:root` de `_<id>.scss`) siempre como alias: `--int-<id>-<parte>: var(--i-…);`
-   con `// Aura: <valor>` como comentario. Los valores vienen **solo** del Style Guide.
+   6. Sin ningún token de esa categoría (o si el más cercano cambia lo que se ve): valor fijo en el
+      `--int-*` con su comentario de origen (excepción de SKILL.md 3.3) y se reporta.
+4. Declara en TOKENS (`:root` de `_<id>.scss`), idealmente como alias: `--int-<id>-<parte>: var(--i-…);`
+   con `// Aura: <valor>` como comentario. Los valores vienen del Style Guide salvo la excepción del paso 6.
 5. En las reglas usa solo `var(--int-<id>-…)`.
 
 Equivalencias frecuentes (Aura → `--i-*`, por valor; confirmar que el token existe):

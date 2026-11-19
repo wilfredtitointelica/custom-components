@@ -2,8 +2,8 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
-import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
-import { IntInputNumber } from '../../../../input/version-1/base/input-number';
+import { IntSelect } from '../../../../select/version-1/base/select';
+import { IntInputNumber } from '../../../../inputnumber/version-1/base/inputnumber';
 import { IntSearch } from '../../../../search/version-1/base/search';
 import { IntTreeNode, IntTreetableModule, IntTreetablePageEvent } from '../../base/treetable';
 
@@ -63,7 +63,7 @@ function buildFees(): IntTreeNode<FeeChartRow>[] {
 @Component({
   selector: 'treetable-fee-chart-example',
   templateUrl: './example.html',
-  imports: [FormsModule, IntTreetableModule, IntSearch, IntButton, IntDropdownSelect, IntInputNumber],
+  imports: [FormsModule, IntTreetableModule, IntSearch, IntButton, IntSelect, IntInputNumber],
 })
 export class TreetableFeeChartExample {
   protected readonly fees = buildFees();

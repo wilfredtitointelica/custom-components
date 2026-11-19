@@ -34,9 +34,9 @@ import { HelperRule } from './style-guide-helpers';
               >{{ name }}</span
             >
             @if (copied() === name) {
-              <span class="doc-sg-rule-copied" role="status"><i class="pi pi-check" aria-hidden="true"></i>Copiado</span>
+              <span class="doc-sg-rule-copied" role="status"><i class="icon icon-check" aria-hidden="true"></i>Copiado</span>
             } @else {
-              <i class="pi pi-copy doc-sg-rule-copy" aria-hidden="true"></i>
+              <i class="icon icon-file-copy doc-sg-rule-copy" aria-hidden="true"></i>
             }
           </div>
         }
@@ -44,9 +44,9 @@ import { HelperRule } from './style-guide-helpers';
         <!-- Top right corner: copy icon (on hover), "Copiado" once copied. -->
         <span class="doc-sg-rule-corner">
           @if (hasCopied()) {
-            <span class="doc-sg-rule-copied" role="status"><i class="pi pi-check" aria-hidden="true"></i>Copiado</span>
+            <span class="doc-sg-rule-copied" role="status"><i class="icon icon-check" aria-hidden="true"></i>Copiado</span>
           } @else {
-            <i class="pi pi-copy doc-sg-rule-copy" aria-hidden="true"></i>
+            <i class="icon icon-file-copy doc-sg-rule-copy" aria-hidden="true"></i>
           }
         </span>
         @for (line of rule().lines; track $index) {

@@ -1,0 +1,3 @@
+// int-inputtext · entry point. Add one `@use 'inputtext.<variant>' as inputtext-<variant>;` per variant module.
+@use 'inputtext';
+@use 'inputtext.textarea' as inputtext-textarea;

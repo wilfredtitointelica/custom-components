@@ -31,7 +31,7 @@ import {
   uniqueId,
   valueEquals,
 } from '../../../_shared_';
-import { IntInputText } from '../../../input/version-1/base/input-text';
+import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
 
 export interface IntListBoxChangeEvent {
   originalEvent: Event;

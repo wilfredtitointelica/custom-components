@@ -89,7 +89,7 @@ $field-defaults: (
     background-color var(--i-control-motion);
 }
 
-/// States for a field box, as BEM modifiers of $block (`int-input` → `.int-input--invalid`).
+/// States for a field box, as BEM modifiers of $block (`int-inputtext` → `.int-inputtext--invalid`).
 /// $focus-selector lets composite controls (select, datepicker) use :focus-within instead of :focus.
 @mixin field-states($block, $focus-selector: '&:focus') {
   &:hover:not(.#{$block}--disabled):not(:disabled) {

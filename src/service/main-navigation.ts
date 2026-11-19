@@ -2,7 +2,7 @@ export interface MainSection {
   readonly id: string;
   readonly label: string;
   readonly path: string;
-  /** primeicons class shown in the navigation rail. */
+  /** Incontrol icon class (icon-*) shown in the navigation rail. */
   readonly icon: string;
   /** 'pending' sections are visible but only show their initial structure. */
   readonly status: 'available' | 'pending';
@@ -14,7 +14,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     id: 'components',
     label: 'Components',
     path: '/components',
-    icon: 'pi-th-large',
+    icon: 'icon-dashboard-01',
     status: 'available',
     description: 'Componentes de UI reutilizables con sus variantes, uso y código.',
   },
@@ -22,7 +22,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     id: 'prototypes',
     label: 'Prototypes',
     path: '/prototypes',
-    icon: 'pi-desktop',
+    icon: 'icon-computer',
     status: 'pending',
     description: 'Prototipos interactivos construidos con la librería de componentes.',
   },
@@ -30,7 +30,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     id: 'interface-lab',
     label: 'Interface Lab',
     path: '/interface-lab',
-    icon: 'pi-sliders-h',
+    icon: 'icon-filter',
     status: 'pending',
     description: 'Un espacio para experimentar con patrones y composiciones de interfaz.',
   },
@@ -38,7 +38,7 @@ export const MAIN_SECTIONS: readonly MainSection[] = [
     id: 'icon-lab',
     label: 'Icon Lab',
     path: '/icon-lab',
-    icon: 'pi-images',
+    icon: 'icon-image',
     status: 'available',
     description: 'El catálogo de íconos del sistema de diseño.',
   },

@@ -22,6 +22,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { closeWhenOriginHidden } from '../../../_shared_';
+
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no SG token). */
 const OVERLAY_Z_INDEX = 1000;
 
@@ -129,7 +131,7 @@ export class IntPassword implements ControlValueAccessor {
   /** int-* extension: muestra el campo con borde, texto e icono de éxito. `invalid` tiene prioridad. */
   readonly success = input(false, { transform: booleanAttribute });
   /**
-   * Dónde se inserta el panel del medidor: `self` (por defecto, debajo del campo), `body` o un elemento
+   * Dónde se inserta el panel del medidor: `self` (por defecto, debajo del campo o encima si no hay espacio), `body` o un elemento
    * (variable de template, p. ej. `[appendTo]="container"`), para que ningún contenedor lo recorte ni lo
    * tape.
    */
@@ -269,6 +271,13 @@ export class IntPassword implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   constructor() {
+    // Close the panel when a scroll leaves the trigger out of sight (e.g. under a fixed header).
+    closeWhenOriginHidden({
+      open: () => this.overlayVisible(),
+      origin: () => this.inputRef()?.nativeElement,
+      panel: () => this.overlayRef()?.nativeElement,
+      close: () => this.overlayVisible.set(false),
+    });
     // Same as pAutoFocus on the input.
     afterNextRender(() => {
       if (this.autofocus() && !this.displayOnly()) this.inputRef()?.nativeElement.focus();
@@ -276,11 +285,12 @@ export class IntPassword implements ControlValueAccessor {
 
     // appendTo="body" or an element: same as PrimeNG's appendOverlay + absolutePosition. Angular removes
     // the node with node.remove(), so the leave animation and the cleanup still work from the target.
+    // Also with appendTo="self": placed here so it flips above the input when there is no room below.
     afterRenderEffect(() => {
       const overlay = this.overlayRef()?.nativeElement;
       const target = this.overlayTarget();
-      if (!overlay || !target) return;
-      if (overlay.parentElement !== target) target.appendChild(overlay);
+      if (!overlay) return;
+      if (target && overlay.parentElement !== target) target.appendChild(overlay);
       this.alignOverlay();
     });
 
@@ -301,7 +311,7 @@ export class IntPassword implements ControlValueAccessor {
     const overlay = this.overlayRef()?.nativeElement;
     const anchor = this.inputRef()?.nativeElement;
     const view = this.document.defaultView;
-    if (!overlay || !anchor || !view || !this.overlayTarget()) return;
+    if (!overlay || !anchor || !view) return;
     const rect = anchor.getBoundingClientRect();
     const flip = rect.bottom + overlay.offsetHeight > view.innerHeight && rect.top > overlay.offsetHeight;
     const origin = this.containingBlockOrigin(overlay, view);

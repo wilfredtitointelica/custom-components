@@ -3,7 +3,7 @@
     <div class="doc-drawer-head">
       <h2 class="doc-drawer-title">Components</h2>
       <button type="button" class="doc-icon-button doc-drawer-close" aria-label="Close menu" (click)="drawerOpen.set(false)">
-        <i class="pi pi-times" aria-hidden="true"></i>
+        <i class="icon icon-cancel" aria-hidden="true"></i>
       </button>
     </div>
     <app-component-nav (navigated)="drawerOpen.set(false)" />
@@ -23,7 +23,7 @@
         [attr.aria-expanded]="drawerOpen()"
         (click)="drawerOpen.set(true)"
       >
-        <i class="pi pi-bars" aria-hidden="true"></i>
+        <i class="icon icon-menu" aria-hidden="true"></i>
       </button>
       <a class="doc-topbar-brand" routerLink="/" aria-label="Incontrol, go to start">
         <app-brand-mark />
@@ -36,14 +36,14 @@
           </li>
           @if (referencePage(); as page) {
             <li class="doc-breadcrumb-leaf">
-              <i class="pi pi-chevron-right" aria-hidden="true"></i>
+              <i class="icon icon-arrow-right" aria-hidden="true"></i>
               <span aria-current="page">{{ page }}</span>
             </li>
           }
           <!-- The variant is a section of the component page, not another view: it is not a crumb. -->
           @if (component(); as current) {
             <li class="doc-breadcrumb-leaf">
-              <i class="pi pi-chevron-right" aria-hidden="true"></i>
+              <i class="icon icon-arrow-right" aria-hidden="true"></i>
               <a [routerLink]="current.path" aria-current="page">{{ current.name }}</a>
             </li>
           }

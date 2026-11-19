@@ -22,8 +22,8 @@
     background-color 0.2s,
     border-color 0.2s;
 
-  .pi {
-    font-size: 0.8125rem; // same size as the pi-code of the variants' Code button, color of the label
+  .icon {
+    font-size: 0.8125rem; // same size as the code icon (<>) of the variants' Code button, color of the label
   }
 
   &:hover:not([aria-disabled]) {

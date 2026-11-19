@@ -1,0 +1,144 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-RADIOBUTTON: 'int-radiobutton ( Custom )';
+
+  --int-radiobutton-size: var(--i-sizing-xs); // SG: --i-sizing-xs
+  --int-radiobutton-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200
+  --int-radiobutton-hover-border: var(--i-color-primary-700); // SG: --i-color-primary-700
+  --int-radiobutton-hover-background: var(--i-color-primary-50); // SG: --i-color-primary-50
+  --int-radiobutton-checked: var(--i-color-primary-700); // SG: --i-color-primary-700
+  --int-radiobutton-dot-color: var(--i-color-primary-50); // SG: --i-color-primary-50
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// <int-radiobutton>: parity with Style Guide `.prRadioButton`. The native input (__control) covers
+// the visual box (__box + __dot) and receives clicks, focus and arrow keys.
+.int-radiobutton {
+  // Declared on the block (not :root) so it follows the size modifiers.
+  --int-radiobutton-dot-size: calc(var(--int-radiobutton-size) / 2); // SG: no token, follows --int-radiobutton-size
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--int-radiobutton-size);
+  height: var(--int-radiobutton-size);
+  vertical-align: middle;
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-radiobutton {
+  &__control {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  &__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: var(--i-border-width-sm) solid var(--int-radiobutton-border);
+    border-radius: var(--i-border-radius-full);
+    background: transparent;
+    transition:
+      background-color var(--i-motion-base),
+      border-color var(--i-motion-base);
+  }
+
+  &__dot {
+    width: var(--int-radiobutton-dot-size);
+    height: var(--int-radiobutton-dot-size);
+    border-radius: var(--i-border-radius-full);
+    background: var(--int-radiobutton-dot-color);
+    transform: scale(0);
+    transition: transform var(--i-motion-base);
+  }
+
+  &:not(.int-radiobutton--disabled):not(.int-radiobutton--checked):hover .int-radiobutton__box {
+    border-color: var(--int-radiobutton-hover-border);
+    background: var(--int-radiobutton-hover-background);
+  }
+  &__control:focus-visible + .int-radiobutton__box {
+    @include int.focus-ring;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__box,
+    &__dot {
+      transition: none;
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-radiobutton {
+  &--small {
+    --int-radiobutton-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs
+  }
+  &--large {
+    --int-radiobutton-size: var(--i-sizing-sm); // SG: --i-sizing-sm
+  }
+
+  &--checked .int-radiobutton__box {
+    border-color: var(--int-radiobutton-checked);
+    background: var(--int-radiobutton-checked);
+  }
+  &--checked .int-radiobutton__dot {
+    transform: scale(1);
+  }
+
+  &--invalid .int-radiobutton__box {
+    border-color: var(--i-color-error-700);
+    background: var(--i-color-error-50);
+  }
+  &--invalid .int-radiobutton__dot {
+    background: var(--i-color-error-700);
+  }
+
+  &--disabled .int-radiobutton__box {
+    border-color: var(--i-color-secondary-400);
+    background: var(--i-color-secondary-200);
+  }
+  &--disabled .int-radiobutton__dot {
+    background: var(--i-color-secondary-400);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-radiobutton {
+  display: inline-block;
+  width: var(--int-radiobutton-size);
+  height: var(--int-radiobutton-size);
+  border-radius: var(--i-border-radius-full);
+  background: var(--i-background-disabled);
+}

@@ -29,7 +29,7 @@
   @for (section of sections; track section.id) {
     <li>
       <a class="doc-section-card" [class.doc-is-pending]="section.status === 'pending'" [routerLink]="section.path">
-        <span class="doc-section-icon"><i class="pi {{ section.icon }}" aria-hidden="true"></i></span>
+        <span class="doc-section-icon"><i class="icon {{ section.icon }}" aria-hidden="true"></i></span>
         <span class="doc-section-name">
           {{ section.label }}
           @if (section.status === 'pending') {
@@ -37,7 +37,7 @@
           }
         </span>
         <span class="doc-section-desc">{{ section.description }}</span>
-        <i class="pi pi-arrow-right doc-section-go" aria-hidden="true"></i>
+        <i class="icon icon-nav-right doc-section-go" aria-hidden="true"></i>
       </a>
     </li>
   }

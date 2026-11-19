@@ -1,0 +1,62 @@
+@use '../../../_shared_/mixins' as int;
+
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// The field look is read from --int-field-* (see _shared_/mixins): overriding one on any ancestor
+// restyles every field inside it (InputText, InputNumber, the filters of select, list-box…).
+:root {
+  --NOTE-INPUTTEXT: 'int-inputtext ( Custom )';
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// input[intInputText] / textarea[intInputText]: parity with Style Guide `.prInputText`
+// (32px, radius 8, grey border, blue-900 focus).
+.int-inputtext:is(input, textarea) {
+  @include int.field-box;
+  margin: 0;
+  appearance: none;
+  outline: none;
+
+  &::placeholder {
+    color: int.field(placeholder);
+    opacity: 1;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-inputtext:is(input, textarea) {
+  // Mouse and keyboard focus share the focus border (Style Guide field), so :focus-visible is explicit.
+  @include int.field-states(int-inputtext, '&:focus, &:focus-visible');
+  @include int.field-sizes(int-inputtext);
+
+  &.int-inputtext--invalid::placeholder {
+    color: int.field(color-invalid);
+  }
+  &.int-inputtext--success::placeholder {
+    color: int.field(color-success);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-inputtext {
+  display: inline-block;
+  width: 12rem;
+  height: var(--i-sizing-lg);
+  border-radius: var(--i-border-radius-lg);
+  background: var(--i-background-disabled);
+}

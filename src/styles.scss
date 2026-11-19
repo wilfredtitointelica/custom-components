@@ -1,9 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use '@angular/cdk' as cdk;
-@import 'primeicons/primeicons.css';
 // Incontrol icon font and brand marks of /icon-lab come from the Intelica Style Guide bundle
-// (fallback: page/icon-lab/icon-lab-fallback.scss).
+// (fallback: page/icon-lab/icon-lab-fallback.scss). The documentation uses them as `icon icon-*`.
 
 // Positioning of CDK overlays (e.g. the version dropdown of the documentation page).
 @include cdk.overlay();
@@ -49,6 +48,7 @@
   --doc-surface-high: #e5e9f0;
   --doc-ink: #16325c;
   --doc-ink-muted: #55657e;
+  --doc-nav-label: #929fb3; /* section labels of the side menus (Reference, categories, Fundamentos) */
   --doc-outline: #b9c3d3;
   --doc-outline-variant: #dbe1ea;
   --doc-state-hover: rgb(22 50 92 / 0.08);
@@ -224,8 +224,36 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
     background: var(--doc-state-press);
   }
 
-  .pi {
+  .icon {
     font-size: 1rem;
+  }
+}
+
+/* Incontrol icons of the documentation (`<i class="icon icon-*">`): the font only styles ::before, the box goes here. */
+.icon {
+  display: inline-block;
+  font-style: normal;
+  line-height: 1;
+}
+
+/* "Code" icon: the Incontrol font has none, so the PrimeIcons `code` SVG (two chevrons) as a mask,
+   colored with currentColor and sized by font-size like a glyph (`<i class="icon doc-icon-code">`). */
+.doc-icon-code::before {
+  content: '';
+  display: block;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27 fill=%27none%27 stroke=%27%23000%27 stroke-width=%271.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M7 15L2 10l5-5M13 5l5 5-5 5%27/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.doc-icon-spin {
+  animation: doc-icon-spin 1s linear infinite;
+}
+
+@keyframes doc-icon-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

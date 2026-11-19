@@ -151,7 +151,9 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
 4. **Estilos** (3.3): selectores a BEM; cada valor a `--int-<id>-*: var(--i-*)` con el token que indica
    la base de conocimientos (Intelica.knowledgeBase, o el SCSS `.pr*`, o Aura traducido) y su **comentario de origen**
    `// knowledgeBase: <token> · Figma: <valor> (<variable>) · Aura: <valor>`. El valor que tenía el maquetador no
-   va al comentario: va a la tabla de cambios. Literales → token más cercano y la diferencia al informe.
+   va al comentario: va a la tabla de cambios. Literales → token más cercano si se ve igual, y la diferencia al informe; si
+   el más cercano cambia lo que se ve, se conserva como valor fijo en el `--int-*` con su comentario de
+   origen (excepción de `replicar-primeng` 3.3).
    Un `overflow` en el bloque `.int-<id>` (o `u-overflow-*` sobre el `<int-*>` de una variante) se mueve
    al `__elemento` que necesita el recorte: el bloque no recorta, para no cortar overlays abiertos dentro.
 5. **Cabecera**: si hay link de Figma, `figma:` y `figma-frame:` (1.5).

@@ -18,9 +18,9 @@ import { ExternalResources } from '../../service/external-resources';
           animate.leave="doc-toast-leave"
         >
           <i
-            class="pi"
-            [class.pi-check-circle]="notice.tone === 'success'"
-            [class.pi-exclamation-triangle]="notice.tone === 'danger'"
+            class="icon"
+            [class.icon-success]="notice.tone === 'success'"
+            [class.icon-warning]="notice.tone === 'danger'"
             aria-hidden="true"
           ></i>
           <div class="doc-toast-text">
@@ -33,7 +33,7 @@ import { ExternalResources } from '../../service/external-resources';
             </span>
           </div>
           <button type="button" class="doc-toast-close" aria-label="Cerrar aviso" (click)="connections.dismiss(notice.id)">
-            <i class="pi pi-times" aria-hidden="true"></i>
+            <i class="icon icon-cancel" aria-hidden="true"></i>
           </button>
         </div>
       }

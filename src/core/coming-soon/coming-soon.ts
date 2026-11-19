@@ -7,7 +7,7 @@ import { Component, input } from "@angular/core";
 		<main id="main-content" class="doc-pane" tabindex="-1">
 			<section class="doc-coming-soon" aria-labelledby="coming-soon-title">
 				@if (icon()) {
-				<span class="doc-icon"><i class="pi {{ icon() }}" aria-hidden="true"></i></span>
+				<span class="doc-icon"><i class="icon {{ icon() }}" aria-hidden="true"></i></span>
 				}
 				<span class="doc-badge">Coming soon</span>
 				<h1 id="coming-soon-title">{{ title() }}</h1>
@@ -46,7 +46,7 @@ import { Component, input } from "@angular/core";
       background: var(--doc-primary-container);
       color: var(--doc-on-primary-container);
     }
-    .doc-icon .pi {
+    .doc-icon .icon {
       font-size: 2.25rem;
     }
     .doc-badge {

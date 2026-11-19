@@ -35,7 +35,7 @@
   --int-pick-list-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: inputs focus 1px
   --int-pick-list-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: inputs --i-focus-border-color
 
-  // --- filter (int-input small; only the search icon placement lives here) ---
+  // --- filter (int-inputtext small; only the search icon placement lives here) ---
   --int-pick-list-filter-gap: var(--i-spacing-container-sm); // knowledgeBase: .prCard --i-card-body-gap 6px
   --int-pick-list-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px (same as the tree-select filter)
   --int-pick-list-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px (same as the tree-select filter)
@@ -98,7 +98,7 @@
     margin-block-end: var(--int-pick-list-filter-gap);
   }
 
-  // Room for the search icon inside the int-input field.
+  // Room for the search icon inside the int-inputtext field.
   &__filter-input {
     padding-inline-end: calc(var(--int-pick-list-filter-padding-x) * 2 + var(--int-pick-list-filter-icon-size));
   }

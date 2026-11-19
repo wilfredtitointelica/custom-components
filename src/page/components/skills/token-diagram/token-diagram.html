@@ -1,11 +1,11 @@
 <figure class="doc-skill-diagram" aria-label="Diagrama de cómo un componente consume los tokens del Style Guide">
 	<p class="doc-skill-diagram-label">
-		<i class="pi pi-palette" aria-hidden="true"></i>
+		<i class="icon icon-custom" aria-hidden="true"></i>
 		Tokens
 		<code>.int-chip</code>
-		<i class="pi pi-arrow-left" aria-hidden="true"></i>
+		<i class="icon icon-nav-left" aria-hidden="true"></i>
 		<code class="doc-is-base">--int-chip-*</code>
-		<i class="pi pi-arrow-left" aria-hidden="true"></i>
+		<i class="icon icon-nav-left" aria-hidden="true"></i>
 		<code class="doc-is-source">--i-*</code>
 		<span class="doc-skill-diagram-hint">de izquierda a derecha: cada nivel recibe del siguiente</span>
 	</p>
@@ -15,7 +15,7 @@
 		<div class="doc-skill-diagram-version">
 			<div class="doc-token-head">
 				<p class="doc-skill-diagram-label">
-					<i class="pi pi-box" aria-hidden="true"></i>
+					<i class="icon icon-3d-view" aria-hidden="true"></i>
 					Componente
 				</p>
 				<code>src/components/chip/</code>
@@ -25,7 +25,7 @@
 				<!-- 1. Result: BEM rules only read the component aliases. -->
 				<div class="doc-skill-diagram-folder">
 					<p class="doc-skill-diagram-folder-name">
-						<i class="pi pi-code" aria-hidden="true"></i>
+						<i class="icon doc-icon-code" aria-hidden="true"></i>
 						Reglas BEM
 					</p>
 					<p class="doc-skill-diagram-folder-text">Bloque, elementos y modificadores leen solo los alias <code>--int-chip-*</code>.</p>
@@ -37,14 +37,14 @@
 				</div>
 
 				<p class="doc-token-arrow">
-					<i class="pi pi-arrow-left" aria-hidden="true"></i>
+					<i class="icon icon-nav-left" aria-hidden="true"></i>
 					recibe de
 				</p>
 
 				<!-- 2. Component aliases: the adjustment point, always var(--i-*). -->
 				<div class="doc-skill-diagram-folder doc-is-base">
 					<p class="doc-skill-diagram-folder-name">
-						<i class="pi pi-sliders-h" aria-hidden="true"></i>
+						<i class="icon icon-filter" aria-hidden="true"></i>
 						styles/_chip.scss
 					</p>
 					<p class="doc-skill-diagram-folder-text">Un alias por valor, siempre hacia un <code>--i-*</code>; nunca un valor fijo.</p>
@@ -58,7 +58,7 @@
 		</div>
 
 		<p class="doc-token-arrow">
-			<i class="pi pi-arrow-left" aria-hidden="true"></i>
+			<i class="icon icon-nav-left" aria-hidden="true"></i>
 			recibe de
 		</p>
 
@@ -66,7 +66,7 @@
 		<div class="doc-skill-diagram-version">
 			<div class="doc-token-head">
 				<p class="doc-skill-diagram-label">
-					<i class="pi pi-database" aria-hidden="true"></i>
+					<i class="icon icon-database" aria-hidden="true"></i>
 					Repo Style Guide
 				</p>
 				<code>Intelica.Style.Guide.New</code>
@@ -74,7 +74,7 @@
 
 			<div class="doc-skill-diagram-folder doc-is-variants">
 				<p class="doc-skill-diagram-folder-name">
-					<i class="pi pi-palette" aria-hidden="true"></i>
+					<i class="icon icon-custom" aria-hidden="true"></i>
 					Primitives / Alias
 				</p>
 				<p class="doc-skill-diagram-folder-text">Escala xs, sm, md… de spacing, sizing, radios, tipografía, etc.</p>
@@ -90,7 +90,7 @@
 	<!-- PrimeNG is only read during the analysis: its value stays as a comment. -->
 	<div class="doc-skill-diagram-version doc-is-next">
 		<p class="doc-skill-diagram-label">
-			<i class="pi pi-book" aria-hidden="true"></i>
+			<i class="icon icon-resources" aria-hidden="true"></i>
 			<code>PrimeNG Aura</code>
 			<span class="doc-skill-diagram-hint">
 				solo referencia: <code>dt('chip.gap')</code> = 0.5rem queda como comentario <code>// Aura: 0.5rem</code>, nunca como valor

@@ -171,7 +171,7 @@ code {
   white-space: nowrap;
   animation: copied-in 0.2s var(--doc-ease-emphasized);
 
-  .pi {
+  .icon {
     font-size: 0.6875rem;
   }
 
@@ -222,7 +222,7 @@ code {
   border-top: 1px solid var(--doc-outline-variant);
 }
 
-// Label of each block (Fundamentos / categorías), like .doc-nav-status of the menu.
+// Label of each block (Foundations / categories), like .doc-nav-status of the menu.
 .doc-icon-block-label {
   max-width: 1200px;
   margin: 0 auto;

@@ -106,7 +106,7 @@
 
 .doc-catalog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 16px;
   margin: 0;
   padding: 0;
@@ -115,9 +115,6 @@
 
 /* Card: preview on top, name + description + status below */
 .doc-catalog-card {
-  --doc-tone-bg: var(--doc-primary-container);
-  --doc-tone-ink: var(--doc-on-primary-container);
-
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
@@ -126,51 +123,33 @@
   background: var(--doc-surface-low);
   color: var(--doc-ink);
   text-decoration: none;
+  // The ring is an inset outline, not a border: it paints over the preview, so at rest the card has no edge.
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   transition:
-    box-shadow 0.2s,
-    transform 0.3s var(--doc-ease-emphasized);
+    outline-color 0.2s,
+    box-shadow 0.2s;
 
-  &:hover {
-    box-shadow: 0 6px 24px rgb(22 50 92 / 0.14);
-    transform: translateY(-2px);
+  // Accent ring, as the cards of /icon-lab.
+  &:hover,
+  &:focus-visible {
+    outline-color: var(--doc-accent);
+    box-shadow: 0 0 0 4px var(--doc-accent-ring);
 
-    .doc-catalog-preview-icon {
-      transform: scale(1.4);
+    .doc-catalog-preview {
+      background: var(--doc-accent-container);
     }
   }
 }
 
-.doc-tone-1 {
-  --doc-tone-bg: var(--doc-accent-container);
-  --doc-tone-ink: var(--doc-on-accent-container);
-}
-
-.doc-tone-2 {
-  --doc-tone-bg: var(--doc-surface-high);
-  --doc-tone-ink: var(--doc-ink);
-}
-
+/* Cover: drawing of the component (app-catalog-art) on a neutral surface */
 .doc-catalog-preview {
-  display: grid;
-  place-items: center;
-  height: 156px;
-  background: var(--doc-tone-bg);
-}
-
-.doc-catalog-preview-icon {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  border-radius: var(--doc-radius-lg);
-  background: var(--doc-surface);
-  box-shadow: 0 2px 8px rgb(22 50 92 / 0.12);
-  color: var(--doc-tone-ink);
-  transition: transform 0.3s var(--doc-ease-emphasized);
-
-  .pi {
-    font-size: 1.75rem;
-  }
+  display: block;
+  height: 220px;
+  padding: 30px 16px;
+  overflow: hidden;
+  background: var(--doc-surface-high);
+  transition: background-color 0.2s;
 }
 
 .doc-catalog-body {

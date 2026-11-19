@@ -13,6 +13,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
 export default {
   id: 'pick-list',
   variants: ['basic', 'filter', 'template', 'transfer-controls'],
-  requires: ['list-box', 'button', 'input'],
+  requires: ['list-box', 'button', 'inputtext'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

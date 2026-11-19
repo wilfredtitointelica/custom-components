@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
-import { IntInputNumber } from '../../../../input/version-1/base/input-number';
+import { IntSelect } from '../../../../select/version-1/base/select';
+import { IntInputNumber } from '../../../../inputnumber/version-1/base/inputnumber';
 import { IntTabValue, IntTabsImports } from '../../base/tabs';
 
 @Component({
   selector: 'tabs-vertical-example',
   templateUrl: './example.html',
-  imports: [IntTabsImports, IntDropdownSelect, IntInputNumber, FormsModule],
+  imports: [IntTabsImports, IntSelect, IntInputNumber, FormsModule],
 })
 export class TabsVerticalExample {
   tab: IntTabValue | null = 'rates';

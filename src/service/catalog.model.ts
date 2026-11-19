@@ -197,6 +197,11 @@ export interface ComponentVersion extends DocMeta {
   readonly status?: ComponentStatus;
   /** From the static `designer` property of base/<id>.ts: who designs this version ('' = unassigned). */
   readonly designer?: string;
+  /**
+   * IDs still marked `dep:<id> provisional` in its base/ and styles/ files: the Detect popover keeps
+   * them pending even when that dependency is done, until the base replaces the provisional.
+   */
+  readonly baseProvisionals?: readonly string[];
   /** Inputs, outputs, templates, methods and tokens of its base, for the API tab. */
   readonly api?: DocApi;
   /** Slugs of its variants/<slug>/ example folders. */

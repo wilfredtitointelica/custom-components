@@ -9,7 +9,7 @@ import { Component, ElementRef, input, model, output, viewChild } from '@angular
   host: { '[class.doc-is-large]': "appearance() === 'large'" },
   template: `
     <div class="doc-search" role="search">
-      <i class="pi pi-search doc-search-icon" aria-hidden="true"></i>
+      <i class="icon icon-search doc-search-icon" aria-hidden="true"></i>
       <input
         #field
         class="doc-search-input"
@@ -25,7 +25,7 @@ import { Component, ElementRef, input, model, output, viewChild } from '@angular
       />
       @if (query()) {
         <button type="button" class="doc-search-clear" aria-label="Clear search" (click)="clear()">
-          <i class="pi pi-times" aria-hidden="true"></i>
+          <i class="icon icon-cancel" aria-hidden="true"></i>
         </button>
       }
     </div>

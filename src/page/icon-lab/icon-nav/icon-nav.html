@@ -1,7 +1,7 @@
 <!-- Only the sections left by the search (results); each group wraps its label and list so the sticky label stays inside it. -->
 @if (foundations().length) {
 <div class="doc-nav-group">
-	<p class="doc-nav-status">Fundamentos</p>
+	<p class="doc-nav-status">Foundations</p>
 	<ul class="doc-nav-list">
 		@for (section of foundations(); track section.slug) {
 		<ng-container *ngTemplateOutlet="link; context: { $implicit: section, count: null }" />
@@ -12,7 +12,7 @@
 }
 
 <div class="doc-nav-group">
-	<p class="doc-nav-status">{{ results().categories.length }} categorías</p>
+	<p class="doc-nav-status">{{ results().categories.length }} {{ results().categories.length === 1 ? 'category' : 'categories' }}</p>
 	<ul class="doc-nav-list">
 		@for (category of results().categories; track category.slug) {
 		<ng-container *ngTemplateOutlet="link; context: { $implicit: category, count: category.icons.length }" />

@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
         <h1>Page not found</h1>
         <p>The page or component you are looking for does not exist or has moved.</p>
         <a routerLink="/components" class="doc-back">
-          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          <i class="icon icon-nav-left" aria-hidden="true"></i>
           Go to Components
         </a>
       </section>

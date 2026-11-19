@@ -2,7 +2,7 @@ import { Component, model } from '@angular/core';
 
 /**
  * Switch "Properties" of the Helpers tab (same Material 3 switch as the top bar Code one, toggle-code.ts, on a
- * dark surface, with {} for the braces: primeicons has no such glyph). On: blocks show the properties between
+ * dark surface, with {} for the braces: the Incontrol icon font has no such glyph). On: blocks show the properties between
  * their braces; off: only the class names.
  */
 @Component({

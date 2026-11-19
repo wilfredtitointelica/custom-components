@@ -1,0 +1,21 @@
+<!--
+  title: RadioButton
+  description: RadioButton permite elegir una sola opción de un grupo.
+  figma:
+-->
+<input
+  type="radio"
+  class="int-radiobutton__control"
+  [id]="inputId()"
+  [checked]="checked()"
+  [disabled]="isDisabled()"
+  [attr.name]="name() ?? null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  (change)="select($event)"
+  (blur)="markAsTouched()"
+/>
+<span class="int-radiobutton__box" aria-hidden="true">
+  <span class="int-radiobutton__dot"></span>
+</span>

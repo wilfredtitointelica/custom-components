@@ -20,7 +20,7 @@
 					[attr.aria-label]="(skillsOpen ? 'Collapse' : 'Expand') + ' Skills'"
 					(click)="toggle(skills.key)"
 				>
-					<i class="pi pi-chevron-down" [class.doc-is-open]="skillsOpen" aria-hidden="true"></i>
+					<i class="icon icon-arrow-down" [class.doc-is-open]="skillsOpen" aria-hidden="true"></i>
 				</button>
 			</div>
 
@@ -69,15 +69,31 @@
 </div>
 <hr class="doc-nav-divider" />
 
-<div class="doc-nav-group">
-	<p class="doc-nav-status">{{ components.length }} components</p>
+<!-- Same categories as the gallery: one group per category, its header sticky inside the group and
+     collapsible (+ / −), collapsed by default (the one of the open component opens itself). -->
+@for (group of groups; track group.name; let i = $index) { @let groupOpen = isGroupOpen(group.name);
+<div class="doc-nav-group doc-nav-category-group">
+	<button
+		type="button"
+		class="doc-nav-category"
+		[attr.aria-expanded]="groupOpen"
+		[attr.aria-controls]="'nav-category-' + i"
+		(click)="toggleGroup(group.name)"
+	>
+		<span class="doc-nav-category-name">{{ group.name }}</span>
+		<span class="doc-nav-category-count" aria-hidden="true">{{ group.items.length }}</span>
+		<i class="icon doc-nav-category-icon" [class.icon-remove]="groupOpen" [class.icon-add]="!groupOpen" aria-hidden="true"></i>
+	</button>
 
-	<ul class="doc-nav-list">
-		@for (component of components; track component.id) {
-		<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
-		}
-	</ul>
+	<div class="doc-variant-collapse" [class.doc-is-open]="groupOpen" [attr.inert]="groupOpen ? null : ''">
+		<ul class="doc-nav-list" [id]="'nav-category-' + i">
+			@for (component of group.items; track component.id) {
+			<ng-container *ngTemplateOutlet="navItem; context: { $implicit: component }" />
+			}
+		</ul>
+	</div>
 </div>
+}
 
 <ng-template #navItem let-component>
 	@let open = isExpanded(component.id); @let current = nav.componentId() === component.id;
@@ -100,7 +116,7 @@
 				[attr.aria-label]="(open ? 'Collapse ' : 'Expand ') + component.name"
 				(click)="toggle(component.id)"
 			>
-				<i class="pi pi-chevron-down" [class.doc-is-open]="open" aria-hidden="true"></i>
+				<i class="icon icon-arrow-down" [class.doc-is-open]="open" aria-hidden="true"></i>
 			</button>
 		</div>
 

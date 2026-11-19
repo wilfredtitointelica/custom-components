@@ -29,7 +29,7 @@ export default {
     'success',
     'loading',
   ],
-  requires: ['input'],
+  requires: ['inputtext'],
   uses: ['button', 'message'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

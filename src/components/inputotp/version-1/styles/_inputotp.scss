@@ -83,7 +83,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-inputotp {
-  // .p-inputotp-input + .p-inputtext (provisional until int-input is done), with the knowledge base cell.
+  // .p-inputotp-input + .p-inputtext (provisional until int-inputtext is done), with the knowledge base cell.
   &__input {
     box-sizing: border-box;
     inline-size: var(--int-inputotp-input-size);

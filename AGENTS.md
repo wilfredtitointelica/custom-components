@@ -75,8 +75,9 @@ src/components/<id>/version-N/
   ```scss
   --int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
   ```
-- Sin literales (`#hex`, `px`, `0.2s`). Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay
-  animación, foco con `:focus-visible`.
+- Lo ideal es `var(--i-*)`. Un valor fijo (`auto`, `22px`) es una excepción válida solo **dentro del
+  `--int-*`** y con su comentario de origen (`// SG: no token · Figma: 22px`); nunca suelto en las reglas.
+  Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes y composiciones: helpers `.u-*`, nunca `style` inline. Única
   excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`
   (sin crear inputs `width`/`height` en la base para eso).
@@ -106,6 +107,12 @@ src/components/<id>/version-N/
   `/** int-* extension */`; no se vuelve al comportamiento de PrimeNG.
 
 ## Dependencias entre componentes
+
+Todo `int-*` que use la base o un ejemplo, como etiqueta (`<int-card>`) o como atributo
+(`<button intButton>`, `<input intInputText>`, `[intTooltip]`), se declara en `requires` o `uses` de
+`<id>.config.ts`: así el Scan de la página lo marca, y `check:component` da error si falta. Para que
+`avoidElements` no tape un botón, se pasa una variable de template en un `<div>` que lo envuelve
+(`<div #apply><button intButton …></div>` + `[avoidElements]="apply"`), nunca una clase suelta.
 
 Si el componente usa otro `int-*` que aún no está en `done`, se deja un provisional marcado y se declara
 en `requires` (lo usa la base) o `uses` (solo una variante) de `<id>.config.ts`:

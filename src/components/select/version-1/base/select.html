@@ -1,0 +1,94 @@
+<!--
+  title: Select
+  description: Dropdown permite elegir un solo valor de una lista desplegable.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=2354-2827&p=f&t=YfIILMQ73S0VgZVt-0
+-->
+<div
+  #trigger
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  class="int-select__trigger"
+  role="combobox"
+  aria-haspopup="listbox"
+  [id]="inputId()"
+  [attr.tabindex]="isDisabled() ? -1 : 0"
+  [attr.aria-expanded]="open()"
+  [attr.aria-controls]="open() ? listBox()?.listId : null"
+  [attr.aria-activedescendant]="open() ? listBox()?.activeDescendant() : null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [attr.aria-invalid]="isInvalid() || null"
+  [attr.aria-disabled]="isDisabled() || null"
+  (click)="toggle()"
+  (keydown)="onTriggerKeydown($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="onTriggerBlur($event)"
+>
+  <span
+    class="int-select__label"
+    [class.int-select__label--placeholder]="!hasValue()"
+  >
+    @if (hasValue()) {
+      @if (selectedItemTemplate(); as tpl) {
+        <span class="int-select__value">
+          <ng-container
+            [ngTemplateOutlet]="tpl"
+            [ngTemplateOutletContext]="{ $implicit: selectedOption() }"
+          />
+        </span>
+      } @else {
+        {{ selectedLabel() }}
+      }
+    } @else {
+      {{ placeholder() }}
+    }
+  </span>
+  @if (showClear() && hasValue() && !isDisabled()) {
+    <button
+      type="button"
+      class="int-select__clear"
+      tabindex="-1"
+      [attr.aria-label]="config.t('clear')"
+      (click)="clear($event)"
+    >
+      <int-icon name="close" />
+    </button>
+  }
+  <int-icon class="int-select__icon" name="chevron-down" />
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayPositions]="avoid.positions()"
+  [cdkConnectedOverlayMinWidth]="variant() === 'text' ? 0 : triggerWidth()"
+  [cdkConnectedOverlayViewportMargin]="8"
+  (attach)="avoid.onAttach()"
+  (overlayOutsideClick)="onOutsideClick($event)"
+  (overlayKeydown)="onOverlayKeydown($event)"
+  (detach)="close(false)"
+>
+  <div
+    class="int-select__panel"
+    [class]="panelStyleClass() ?? ''"
+    [class.int-select__panel--text]="variant() === 'text'"
+  >
+    <int-list-box
+      embedded
+      [options]="listOptions()"
+      [optionLabel]="optionLabel()"
+      [optionValue]="optionValue()"
+      [optionDisabled]="optionDisabled()"
+      [dataKey]="dataKey()"
+      [filter]="showFilter()"
+      [filterPlaceholder]="filterPlaceholder()"
+      [checkmark]="checkmark()"
+      [emptyMessage]="emptyMessage()"
+      [emptyFilterMessage]="emptyFilterMessage()"
+      [scrollHeight]="scrollHeight()"
+      [itemTemplate]="itemTemplate()"
+      (onChange)="onListBoxChange($event)"
+    />
+  </div>
+</ng-template>
