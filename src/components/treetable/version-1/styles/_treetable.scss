@@ -8,37 +8,37 @@
   --NOTE-TREETABLE: 'int-treetable ( Custom )';
 
   // --- header cell ---
-  --int-treetable-header-cell-background: var(--i-color-secondary-50); // knowledgeBase: --i-datatable-cell-background → --i-color-neutral-50 · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
-  --int-treetable-header-cell-color: var(--i-color-primary-900); // knowledgeBase: --i-datatable-header-cell-text-color → --i-color-primary-900 · Figma: #0A1733 (table/color/text) · Aura: {content.color}
-  --int-treetable-header-cell-hover-background: var(--i-color-secondary-50); // knowledgeBase: --i-datatable-header-cell-hover-background → --i-color-neutral-50 · Aura: {content.hover.background}
-  --int-treetable-header-cell-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-header-cell-text-size · Figma: 12px (table/font/size/sm) · Aura: inherit
-  --int-treetable-header-cell-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: --i-datatable-header-cell-text-weight · Figma: Lato Bold · Aura: 600
-  --int-treetable-header-cell-padding: var(--i-spacing-100); // knowledgeBase: --i-datatable-header-cell-padding-x (SG applies it to every side) · Aura: 0.75rem 1rem
-  --int-treetable-header-cell-height: var(--i-sizing-800); // Figma: 64px (column-header) · SG: 60px ⚠️ · Aura: —
-  --int-treetable-header-cell-gap: var(--i-spacing-gap-sm); // knowledgeBase: --i-datatable-header-cell-gap · Aura: 0.5rem
-  --int-treetable-header-cell-border-width: var(--i-border-width-sm); // knowledgeBase: --i-datatable-header-cell-border-width · Figma: 1px divider · Aura: 0 0 1px 0
-  --int-treetable-header-cell-border-color: var(--i-color-neutral-300); // knowledgeBase: --i-datatable-header-cell-border-color · Aura: {content.border.color}
+  --int-treetable-header-cell-background: var(--i-table-background); // SG: --i-table-background (tokens.table.draft) · knowledgeBase: --i-datatable-cell-background → --i-color-neutral-50 · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
+  --int-treetable-header-cell-color: var(--i-table-color); // SG: --i-table-color (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-color → --i-color-primary-900 · Figma: #0A1733 (table/color/text) · Aura: {content.color}
+  --int-treetable-header-cell-hover-background: var(--i-table-background); // SG: --i-table-background (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-hover-background → --i-color-neutral-50 · Aura: {content.hover.background}
+  --int-treetable-header-cell-font-size: var(--i-table-header-font-size); // SG: --i-table-header-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-size · Figma: 12px (table/font/size/sm) · Aura: inherit
+  --int-treetable-header-cell-font-weight: var(--i-table-header-font-weight); // SG: --i-table-header-font-weight (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-weight · Figma: Lato Bold · Aura: 600
+  --int-treetable-header-cell-padding: var(--i-table-header-padding); // SG: --i-table-header-padding (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-padding-x (SG applies it to every side) · Aura: 0.75rem 1rem
+  --int-treetable-header-cell-height: var(--i-table-header-height); // SG: --i-table-header-height (tokens.table.draft) · Figma: 64px (column-header) · SG: 60px ⚠️ · Aura: —
+  --int-treetable-header-cell-gap: var(--i-table-header-gap); // SG: --i-table-header-gap (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-gap · Aura: 0.5rem
+  --int-treetable-header-cell-border-width: var(--i-table-header-border-width); // SG: --i-table-header-border-width (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-border-width · Figma: 1px divider · Aura: 0 0 1px 0
+  --int-treetable-header-cell-border-color: var(--i-table-header-border-color); // SG: --i-table-header-border-color (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-border-color · Aura: {content.border.color}
 
   // --- sort icon ---
-  --int-treetable-sort-icon-color: var(--i-color-secondary-600); // knowledgeBase: --i-datatable-sort-icon-color · Aura: {text.muted.color}
-  --int-treetable-sort-icon-selected-color: var(--i-color-primary-600); // knowledgeBase: --i-datatable-sort-icon-selected-color · Aura: {highlight.color}
-  --int-treetable-sort-icon-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-sort-icon-size · Figma: 12px (icon resizer) · Aura: 0.875rem
+  --int-treetable-sort-icon-color: var(--i-table-sort-icon-color); // SG: --i-table-sort-icon-color (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-color · Aura: {text.muted.color}
+  --int-treetable-sort-icon-selected-color: var(--i-table-sort-icon-selected-color); // SG: --i-table-sort-icon-selected-color (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-selected-color · Aura: {highlight.color}
+  --int-treetable-sort-icon-size: var(--i-table-sort-icon-size); // SG: --i-table-sort-icon-size (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-size · Figma: 12px (icon resizer) · Aura: 0.875rem
 
   // --- row / body cell ---
-  --int-treetable-row-background: var(--i-color-secondary-50); // SG: #fcfcfc (odd rows) · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
-  --int-treetable-row-striped-background: var(--i-color-secondary-100); // SG: #f2f2f5 (even rows) · Figma: #F2F2F5 (table/color/intersection) · Aura: —
-  --int-treetable-row-color: var(--i-color-primary-900); // knowledgeBase: --i-datatable-body-cell-text-color · Figma: #0A1733 (table/color/text) · Aura: {content.color}
-  --int-treetable-row-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-datatable-body-cell-hover-background · Aura: {content.hover.background}
-  --int-treetable-row-selected-background: var(--i-color-primary-50); // knowledgeBase: --i-datatable-body-cell-selected-background · Aura: {highlight.background}
-  --int-treetable-body-cell-padding: var(--i-spacing-100); // knowledgeBase: --i-datatable-body-cell-padding-x / -y · Figma: 8px (table/padding/md) · Aura: 0.75rem 1rem
-  --int-treetable-body-cell-height: var(--i-sizing-600); // knowledgeBase: --i-datatable-body-cell-height · Figma: 48px · Aura: —
-  --int-treetable-body-cell-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px · Aura: inherit
+  --int-treetable-row-background: var(--i-table-row-background); // SG: --i-table-row-background (tokens.table.draft) · SG: #fcfcfc (odd rows) · Figma: #FCFCFC (table/color/background) · Aura: {content.background}
+  --int-treetable-row-striped-background: var(--i-table-row-striped-background); // SG: --i-table-row-striped-background (tokens.table.draft) · SG: #f2f2f5 (even rows) · Figma: #F2F2F5 (table/color/intersection) · Aura: —
+  --int-treetable-row-color: var(--i-table-color); // SG: --i-table-color (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-text-color · Figma: #0A1733 (table/color/text) · Aura: {content.color}
+  --int-treetable-row-hover-background: var(--i-table-row-hover-background); // SG: --i-table-row-hover-background (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-hover-background · Aura: {content.hover.background}
+  --int-treetable-row-selected-background: var(--i-table-row-selected-background); // SG: --i-table-row-selected-background (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-selected-background · Aura: {highlight.background}
+  --int-treetable-body-cell-padding: var(--i-table-cell-padding); // SG: --i-table-cell-padding (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-padding-x / -y · Figma: 8px (table/padding/md) · Aura: 0.75rem 1rem
+  --int-treetable-body-cell-height: var(--i-table-cell-height); // SG: --i-table-cell-height (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-height · Figma: 48px · Aura: —
+  --int-treetable-body-cell-font-size: var(--i-table-cell-font-size); // SG: --i-table-cell-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px · Aura: inherit
   --int-treetable-gridline-color: var(--i-color-secondary-200); // knowledgeBase: --i-datatable-body-cell-border-color → neutral-200 · Aura: {treetable.border.color}
-  --int-treetable-transition-duration: var(--i-motion-duration-fast); // SG: 0.3s (sort icon) · Aura: {transition.duration} 0.2s
+  --int-treetable-transition-duration: var(--i-table-motion-duration); // SG: --i-table-motion-duration (tokens.table.draft) · SG: 0.3s (sort icon) · Aura: {transition.duration} 0.2s
 
   // --- focus ---
-  --int-treetable-focus-ring-width: var(--i-border-width-sm); // SG: 1px · Aura: {focus.ring.width}
-  --int-treetable-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color · Aura: {focus.ring.color}
+  --int-treetable-focus-ring-width: var(--i-table-outline-width); // SG: --i-table-outline-width (tokens.table.draft) · SG: 1px · Aura: {focus.ring.width}
+  --int-treetable-focus-ring-color: var(--i-table-outline-color); // SG: --i-table-outline-color (tokens.table.draft) · SG: --i-focus-border-color · Aura: {focus.ring.color}
 
   // --- toggler ---
   --int-treetable-toggler-size: var(--i-sizing-md); // SG: 24px button · Aura: 1.75rem ⚠️
@@ -50,10 +50,10 @@
   --int-treetable-toggle-easing: var(--i-motion-ease-in-out); // knowledgeBase: cubic-bezier(0.4, 0, 0.2, 1) · Aura: —
 
   // --- total row ---
-  --int-treetable-total-border-color: var(--i-color-primary-900); // knowledgeBase: fixedRow border primary-900 · Figma: #0A1733 (table/color/border) · Aura: —
-  --int-treetable-total-border-width: var(--i-border-width-sm); // knowledgeBase: 1px · Figma: 1px (table/border/width/sm) · Aura: —
-  --int-treetable-total-font-size: var(--i-typography-font-size-md); // knowledgeBase: --i-datatable-body-frozen-cell-text-size · Figma: 14px (table/font/size/md) · Aura: —
-  --int-treetable-total-height: var(--i-sizing-600); // knowledgeBase: 48px · Figma: 48px · Aura: —
+  --int-treetable-total-border-color: var(--i-table-total-border-color); // SG: --i-table-total-border-color (tokens.table.draft) · knowledgeBase: fixedRow border primary-900 · Figma: #0A1733 (table/color/border) · Aura: —
+  --int-treetable-total-border-width: var(--i-table-total-border-width); // SG: --i-table-total-border-width (tokens.table.draft) · knowledgeBase: 1px · Figma: 1px (table/border/width/sm) · Aura: —
+  --int-treetable-total-font-size: var(--i-table-total-font-size); // SG: --i-table-total-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-body-frozen-cell-text-size · Figma: 14px (table/font/size/md) · Aura: —
+  --int-treetable-total-height: var(--i-table-cell-height); // SG: --i-table-cell-height (tokens.table.draft) · knowledgeBase: 48px · Figma: 48px · Aura: —
 
   // --- loading ---
   --int-treetable-mask-background: color-mix(in srgb, var(--i-color-secondary-50) 70%, transparent); // SG: — · Aura: {mask.background} rgba(0,0,0,.4) ⚠️ light mask of the Style Guide surface

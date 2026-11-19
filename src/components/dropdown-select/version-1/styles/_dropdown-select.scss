@@ -69,7 +69,7 @@
   &__clear {
     @include int.reset-button;
     display: inline-flex;
-    color: int.field(icon-color);
+    color: int.field(icon-color); // unified: primary-900 (was grey secondary-600), see _shared_/_mixins.scss
     font-size: var(--i-icon-size-xs);
 
     &:hover {
@@ -78,7 +78,7 @@
   }
 
   &__icon {
-    color: var(--i-icon-color-default);
+    color: int.field(icon-color); // unified: same shared control icon token (was --i-icon-color-default, same value)
     font-size: var(--i-icon-size-sm);
     transition: transform var(--i-motion-base);
 
@@ -112,6 +112,11 @@
   }
   &--open &__icon {
     transform: rotate(180deg);
+  }
+  // unified: arrow takes the shared control hover icon token (primary-400, as SG .prSelect:hover .p-select-dropdown .icon);
+  // before it did not change on hover. See _shared_/_mixins.scss.
+  &:not(&--disabled, &--invalid):hover &__icon {
+    color: int.field(icon-hover);
   }
   &--invalid &__trigger {
     border-color: int.field(border-invalid);
