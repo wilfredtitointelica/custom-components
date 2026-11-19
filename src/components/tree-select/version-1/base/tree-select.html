@@ -40,8 +40,15 @@
   </div>
 </div>
 
+<!-- Clear icon (same structure as int-multiselect): the clearicon template replaces the default icon -->
 @if (showClear() && !emptyValue() && !isDisabled()) {
-  <i class="int-tree-select__clear-icon icon icon-cancel" role="button" aria-label="Clear" (click)="clear($event)"></i>
+  <span class="int-tree-select__clear-icon" aria-hidden="true" (click)="clear($event)">
+    @if (clearIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="int-tree-select__clear-glyph icon icon-cancel"></i>
+    }
+  </span>
 }
 
 <div class="int-tree-select__dropdown" aria-hidden="true">

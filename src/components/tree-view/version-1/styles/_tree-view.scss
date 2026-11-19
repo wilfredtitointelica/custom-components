@@ -30,9 +30,6 @@
   --int-tree-view-node-selected-color: var(--i-color-primary-50); // SG: .p-tree-node-selected (no checkbox) · Figma: #EEF2FC (select/color/pressed/text) [State=Pressed]
   --int-tree-view-node-checked-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background) [State=Selected], SG multiselect transparent · SG treeselect secondary-100 ⚠️
   --int-tree-view-node-checked-hover-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (select/color/hover/background) [State=Selected hover] · SG: multiselect .p-focus secondary-100
-  --int-tree-view-checkbox-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (checkbox Hover, row State=Hover / Selected hover) [2354:2484], no SG treeselect value
-  --int-tree-view-checkbox-checked-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
-  --int-tree-view-checkbox-checked-hover-icon-color: var(--i-color-primary-700); // Figma: #1B3E88 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
   --int-tree-view-node-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (select/color/disabled/text) [State=Disabled], no knowledgeBase/SG value
   --int-tree-view-focus-ring-width: var(--i-border-width-sm); // SG: overlay focus-visible outline 1px
   --int-tree-view-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color
@@ -183,16 +180,12 @@
   }
 }
 
-// Figma 2354:2484: hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover).
-// Unchecked: only the border. Checked / indeterminate: light box, dark mark, border as unchecked.
+// Hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover), with the same look
+// as <int-checkbox>: border when unchecked, darker box when checked / indeterminate. No light (Figma #DDE6F8) hover,
+// aligned with the checkbox component and the Style Guide by decision of the team.
 .int-tree-view__node-content--selectable:hover .int-tree-view__checkbox {
-  --int-checkbox-border: var(--int-tree-view-checkbox-hover-border-color); // Figma: checkbox Hover border on row hover (2354:2484)
-
-  &.int-checkbox--checked .int-checkbox__box {
-    border-color: var(--int-tree-view-checkbox-hover-border-color);
-    background: var(--int-tree-view-checkbox-checked-hover-background);
-    color: var(--int-tree-view-checkbox-checked-hover-icon-color);
-  }
+  --int-checkbox-border: var(--int-checkbox-hover-border); // SG: .prCheckbox hover border primary-600 (int-checkbox)
+  --int-checkbox-checked-background: var(--int-checkbox-checked-hover-background); // SG: .prCheckbox checked hover primary-600 (int-checkbox)
 }
 
 /*——————————————————————————————————————————————————————————*\

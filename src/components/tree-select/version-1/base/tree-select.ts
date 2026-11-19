@@ -157,6 +157,8 @@ export class IntTreeSelect implements ControlValueAccessor {
 
   /** Template `value`: reemplaza el texto del disparador; recibe `{ $implicit: value, placeholder }`. */
   protected readonly valueTemplate = contentChild<TemplateRef<{ $implicit: IntTreeSelection; placeholder?: string }>>('value');
+  /** Template `clearicon`: reemplaza el icono de borrar. */
+  protected readonly clearIconTemplate = contentChild<TemplateRef<void>>('clearicon');
 
   protected readonly focusInput = viewChild.required<ElementRef<HTMLInputElement>>('focusInput');
   protected readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
