@@ -70,7 +70,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--i-icon-color-default);
+    color: int.field(icon-color); // unified: shared control icon token (was --i-icon-color-default, same value)
     font-size: var(--i-icon-size-sm);
   }
   &__icon {
@@ -81,7 +81,7 @@
     @include int.reset-button;
     display: inline-flex;
     right: calc(var(--i-spacing-container-md) + var(--i-sizing-sm));
-    color: var(--i-icon-color-secondary);
+    color: int.field(icon-color); // unified: primary-900 (was grey --i-icon-color-secondary), see _shared_/_mixins.scss
     font-size: var(--i-icon-size-xs);
   }
 

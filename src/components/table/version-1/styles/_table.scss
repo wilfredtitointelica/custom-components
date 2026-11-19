@@ -8,47 +8,47 @@
   --NOTE-TABLE: 'int-table ( Custom )';
 
   // --- cell ---
-  --int-table-cell-background: var(--i-color-neutral-50); // knowledgeBase: --i-datatable-cell-background · Figma: #FCFCFC (table/color/background)
-  --int-table-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-table-cell-background: var(--i-table-background); // SG: --i-table-background (tokens.table.draft) · knowledgeBase: --i-datatable-cell-background · Figma: #FCFCFC (table/color/background)
+  --int-table-transition-duration: var(--i-table-motion-duration); // SG: --i-table-motion-duration (tokens.table.draft)
 
   // --- header cell ---
-  --int-table-header-height: var(--i-sizing-800); // SG: .prTable th height 60px, no token · Figma: 64px (column-header) ⚠️
-  --int-table-header-padding: var(--i-spacing-100); // knowledgeBase: --i-datatable-header-cell-padding-x 8px (SG uses it on every side) · Figma: 8px (table/padding/x/md)
-  --int-table-header-border-width: var(--i-border-width-sm); // knowledgeBase: --i-datatable-header-cell-border-width · Figma: 1px (divider/border/sm)
-  --int-table-header-border-color: var(--i-color-neutral-300); // knowledgeBase: --i-datatable-header-cell-border-color · Figma: #9CA3BA (divider/color/accent) ⚠️
-  --int-table-header-color: var(--i-color-primary-900); // knowledgeBase: --i-datatable-header-cell-text-color · Figma: #0A1733 (table/color/text)
-  --int-table-header-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-header-cell-text-size · Figma: 12px (table/font/size/sm)
-  --int-table-header-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: --i-datatable-header-cell-text-weight, also fixedRow bold · Figma: 700 (table/font/title)
+  --int-table-header-height: var(--i-table-header-height); // SG: --i-table-header-height (tokens.table.draft) · Figma: 64px (column-header) ⚠️
+  --int-table-header-padding: var(--i-table-header-padding); // SG: --i-table-header-padding (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-padding-x 8px (SG uses it on every side) · Figma: 8px (table/padding/x/md)
+  --int-table-header-border-width: var(--i-table-header-border-width); // SG: --i-table-header-border-width (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-border-width · Figma: 1px (divider/border/sm)
+  --int-table-header-border-color: var(--i-table-header-border-color); // SG: --i-table-header-border-color (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-border-color · Figma: #9CA3BA (divider/color/accent) ⚠️
+  --int-table-header-color: var(--i-table-color); // SG: --i-table-color (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-color · Figma: #0A1733 (table/color/text)
+  --int-table-header-font-size: var(--i-table-header-font-size); // SG: --i-table-header-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-size · Figma: 12px (table/font/size/sm)
+  --int-table-header-font-weight: var(--i-table-header-font-weight); // SG: --i-table-header-font-weight (tokens.table.draft) · knowledgeBase: --i-datatable-header-cell-text-weight, also fixedRow bold · Figma: 700 (table/font/title)
 
   // --- sort icon ---
-  --int-table-sort-icon-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-sort-icon-size 12px · Figma: 12px (icon/sizing/xs)
-  --int-table-sort-icon-color: var(--i-color-secondary-600); // knowledgeBase: --i-datatable-sort-icon-color · Figma: #9CA3BA (table/color/arrow/default) ⚠️
-  --int-table-sort-icon-hover-color: var(--i-color-primary-400); // SG: —, no knowledgeBase value · Figma: #5D86DF (table/color/arrow/hover) [State=Hover]
-  --int-table-sort-icon-selected-color: var(--i-color-primary-600); // knowledgeBase: --i-datatable-sort-icon-selected-color · Figma: #1B3E88 (table/color/arrow/pressed) [State=Pressed] ⚠️
+  --int-table-sort-icon-size: var(--i-table-sort-icon-size); // SG: --i-table-sort-icon-size (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-size 12px · Figma: 12px (icon/sizing/xs)
+  --int-table-sort-icon-color: var(--i-table-sort-icon-color); // SG: --i-table-sort-icon-color (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-color · Figma: #9CA3BA (table/color/arrow/default) ⚠️
+  --int-table-sort-icon-hover-color: var(--i-table-sort-icon-hover-color); // SG: --i-table-sort-icon-hover-color (tokens.table.draft) · Figma: #5D86DF (table/color/arrow/hover) [State=Hover]
+  --int-table-sort-icon-selected-color: var(--i-table-sort-icon-selected-color); // SG: --i-table-sort-icon-selected-color (tokens.table.draft) · knowledgeBase: --i-datatable-sort-icon-selected-color · Figma: #1B3E88 (table/color/arrow/pressed) [State=Pressed] ⚠️
 
   // --- body cell ---
-  --int-table-body-height: var(--i-sizing-600); // knowledgeBase: --i-datatable-body-cell-height 48px · Figma: 48px (cell)
-  --int-table-body-padding-x: var(--i-spacing-100); // knowledgeBase: --i-datatable-body-cell-padding-x · Figma: 8px (table/padding/x/md)
-  --int-table-body-padding-y: var(--i-spacing-100); // knowledgeBase: --i-datatable-body-cell-padding-y · Figma: 8px (table/padding/y/md)
-  --int-table-body-color: var(--i-color-primary-900); // SG: --i-datatable-body-cell-text-color · Figma: #0A1733 (table/color/text)
-  --int-table-body-font-size: var(--i-typography-font-size-sm); // knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px (table/font/size/sm)
-  --int-table-row-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-datatable-body-cell-hover-background
-  --int-table-row-selected-background: var(--i-color-primary-50); // knowledgeBase: --i-datatable-body-cell-selected-background (row with its checkbox checked)
-  --int-table-striped-odd-background: var(--i-color-neutral-50); // knowledgeBase: zebra (SG #fcfcfc) · Figma: #FCFCFC (table/color/background)
-  --int-table-striped-even-background: var(--i-color-neutral-100); // knowledgeBase: zebra (SG #f2f2f5) · Figma: #F2F2F5 (table/color/intersection)
+  --int-table-body-height: var(--i-table-cell-height); // SG: --i-table-cell-height (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-height 48px · Figma: 48px (cell)
+  --int-table-body-padding-x: var(--i-table-cell-padding); // SG: --i-table-cell-padding (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-padding-x · Figma: 8px (table/padding/x/md)
+  --int-table-body-padding-y: var(--i-table-cell-padding); // SG: --i-table-cell-padding (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-padding-y · Figma: 8px (table/padding/y/md)
+  --int-table-body-color: var(--i-table-color); // SG: --i-table-color (tokens.table.draft) · Figma: #0A1733 (table/color/text)
+  --int-table-body-font-size: var(--i-table-cell-font-size); // SG: --i-table-cell-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-text-size · Figma: 12px (table/font/size/sm)
+  --int-table-row-hover-background: var(--i-table-row-hover-background); // SG: --i-table-row-hover-background (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-hover-background
+  --int-table-row-selected-background: var(--i-table-row-selected-background); // SG: --i-table-row-selected-background (tokens.table.draft) · knowledgeBase: --i-datatable-body-cell-selected-background (row with its checkbox checked)
+  --int-table-striped-odd-background: var(--i-table-row-background); // SG: --i-table-row-background (tokens.table.draft) · knowledgeBase: zebra (SG #fcfcfc) · Figma: #FCFCFC (table/color/background)
+  --int-table-striped-even-background: var(--i-table-row-striped-background); // SG: --i-table-row-striped-background (tokens.table.draft) · knowledgeBase: zebra (SG #f2f2f5) · Figma: #F2F2F5 (table/color/intersection)
 
   // --- frozen row (knowledgeBase fixedRow, Total row) ---
-  --int-table-frozen-border-width: var(--i-border-width-sm); // knowledgeBase: fixedRow border 1px
-  --int-table-frozen-border-color: var(--i-color-primary-900); // knowledgeBase: fixedRow border primary-900
-  --int-table-frozen-font-size: var(--i-typography-font-size-md); // knowledgeBase: --i-datatable-body-frozen-cell-text-size 14px
+  --int-table-frozen-border-width: var(--i-table-total-border-width); // SG: --i-table-total-border-width (tokens.table.draft) · knowledgeBase: fixedRow border 1px
+  --int-table-frozen-border-color: var(--i-table-total-border-color); // SG: --i-table-total-border-color (tokens.table.draft) · knowledgeBase: fixedRow border primary-900
+  --int-table-frozen-font-size: var(--i-table-total-font-size); // SG: --i-table-total-font-size (tokens.table.draft) · knowledgeBase: --i-datatable-body-frozen-cell-text-size 14px
 
   // --- active row (knowledgeBase prTable__body--activeRow: left border of the cell) ---
   --int-table-active-border-width: var(--i-border-width-md); // knowledgeBase: prTable__body--activeRow border 2px
   --int-table-active-border-color: var(--i-border-accent); // knowledgeBase: prTable__body--activeRow --i-border-accent
 
   // --- focus and reorder ---
-  --int-table-focus-ring-width: var(--i-border-width-sm); // SG: outline 1px
-  --int-table-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color
+  --int-table-focus-ring-width: var(--i-table-outline-width); // SG: --i-table-outline-width (tokens.table.draft)
+  --int-table-focus-ring-color: var(--i-table-outline-color); // SG: --i-table-outline-color (tokens.table.draft)
   --int-table-indicator-color: var(--i-color-primary-600); // SG: --i-border-accent, column reorder arrows, no knowledgeBase/Figma value
 }
 

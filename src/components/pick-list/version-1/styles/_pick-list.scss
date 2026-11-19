@@ -39,7 +39,7 @@
   --int-pick-list-filter-gap: var(--i-spacing-container-sm); // knowledgeBase: .prCard --i-card-body-gap 6px
   --int-pick-list-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px (same as the tree-select filter)
   --int-pick-list-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px (same as the tree-select filter)
-  --int-pick-list-filter-icon-color: var(--i-color-secondary-600); // knowledgeBase: .prSelect --i-inputtext-color secondary-600
+  --int-pick-list-filter-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .ptSearch__icon --i-color-primary-900 (same as the tree-select and multiselect filters)
 
   // --- drag and drop ---
   --int-pick-list-placeholder-border-color: var(--i-color-secondary-200); // knowledgeBase: .prCard--version border secondary-200

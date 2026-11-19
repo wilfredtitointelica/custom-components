@@ -32,7 +32,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: int.field(icon-color);
+    color: int.field(icon-color); // unified: primary-900 as knowledgeBase input.md (was grey secondary-600), see _shared_/_mixins.scss
     font-size: var(--i-icon-size-xs);
 
     &:not(:disabled):hover {

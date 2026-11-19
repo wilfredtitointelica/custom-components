@@ -5,8 +5,8 @@
 // small is the knowledge base .prTable--compact.
 :root {
   // --- small ---
-  --int-table-sm-header-height: var(--i-sizing-lg); // knowledgeBase: .prTable--compact th 32px
-  --int-table-sm-body-height: var(--i-sizing-xl); // knowledgeBase: .prTable--compact td 40px
+  --int-table-sm-header-height: var(--i-table-sm-header-height); // SG: --i-table-sm-header-height (tokens.table.draft) · knowledgeBase: .prTable--compact th 32px
+  --int-table-sm-body-height: var(--i-table-sm-cell-height); // SG: --i-table-sm-cell-height (tokens.table.draft) · knowledgeBase: .prTable--compact td 40px
 }
 
 /*——————————————————————————————————————————————————————————*\

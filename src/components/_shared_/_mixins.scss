@@ -38,26 +38,32 @@
 /// Field look shared by InputText, InputNumber, Select, Listbox and DatePicker.
 /// Values are read as `var(--int-field-*, <token>)` and never re-declared on the elements,
 /// so overriding a --int-field-* property on any ancestor restyles every control inside it.
+/// Defaults come from the shared control tokens of the Style Guide (tokens/_tokens.control.draft.scss), so a change
+/// there restyles every field, icon color included (same token as multiselect, tree-select, search and pick-list).
 $field-defaults: (
-  height: var(--i-sizing-lg),
-  padding-y: var(--i-spacing-container-sm),
-  padding-x: var(--i-spacing-container-md),
-  radius: var(--i-border-radius-lg),
-  font-size: var(--i-typography-font-size-md),
-  line-height: var(--i-typography-lineHeight-md),
-  background: var(--i-background-default),
-  color: var(--i-text-color-default),
-  placeholder: var(--i-text-color-disabled),
-  border: var(--i-border-default),
-  border-hover: var(--i-border-hover),
-  border-focus: var(--i-color-primary-900),
-  border-invalid: var(--i-border-error),
-  color-invalid: var(--i-text-color-error),
-  border-success: var(--i-border-success),
-  color-success: var(--i-text-color-success),
-  background-disabled: var(--i-background-disabled),
-  color-disabled: var(--i-text-color-disabled),
-  icon-color: var(--i-icon-color-secondary),
+  height: var(--i-control-height),
+  padding-y: var(--i-control-padding-y),
+  padding-x: var(--i-control-padding-x),
+  radius: var(--i-control-border-radius),
+  font-size: var(--i-control-font-size),
+  line-height: var(--i-control-line-height),
+  background: var(--i-control-background),
+  color: var(--i-control-color),
+  placeholder: var(--i-control-placeholder-color),
+  border: var(--i-control-border-color),
+  border-hover: var(--i-control-hover-border-color),
+  border-focus: var(--i-control-focus-border-color),
+  border-invalid: var(--i-control-invalid-border-color),
+  color-invalid: var(--i-control-invalid-color),
+  border-success: var(--i-control-valid-border-color),
+  color-success: var(--i-control-valid-color),
+  background-disabled: var(--i-control-disabled-background),
+  color-disabled: var(--i-control-disabled-color),
+  // Unified icon color: was --i-icon-color-secondary (secondary-600, grey, no knowledgeBase/Figma source).
+  // Now primary-900 as knowledgeBase input.md (+/- buttons), SG .p-select-clear-icon / .ptSearch__icon and Figma #0A1733.
+  icon-color: var(--i-control-icon-color),
+  // Unified arrow hover color (new): primary-400 as SG .prSelect / .prMultiselect; clear and search icons do not change.
+  icon-hover: var(--i-control-hover-icon-color),
 );
 
 @function field($name) {
@@ -71,16 +77,16 @@ $field-defaults: (
   box-sizing: border-box;
   min-height: field(height);
   padding: field(padding-y) field(padding-x);
-  border: var(--i-border-width-sm) solid field(border);
+  border: var(--i-control-border-width) solid field(border);
   border-radius: field(radius);
   background: field(background);
   color: field(color);
-  font-family: var(--i-text-body-family);
+  font-family: var(--i-control-font-family);
   font-size: field(font-size);
   line-height: field(line-height);
   transition:
-    border-color var(--i-motion-base),
-    background-color var(--i-motion-base);
+    border-color var(--i-control-motion),
+    background-color var(--i-control-motion);
 }
 
 /// States for a field box, as BEM modifiers of $block (`int-input` → `.int-input--invalid`).
@@ -114,16 +120,16 @@ $field-defaults: (
 /// Size modifiers of $block: `--small`, `--large` and `--fluid`.
 @mixin field-sizes($block) {
   &.#{$block}--small {
-    --int-field-height: var(--i-sizing-md);
-    --int-field-padding-y: var(--i-spacing-container-xs);
-    --int-field-font-size: var(--i-typography-font-size-sm);
-    --int-field-line-height: var(--i-typography-lineHeight-sm);
+    --int-field-height: var(--i-control-sm-height);
+    --int-field-padding-y: var(--i-control-sm-padding-y);
+    --int-field-font-size: var(--i-control-sm-font-size);
+    --int-field-line-height: var(--i-control-sm-line-height);
   }
   &.#{$block}--large {
-    --int-field-height: var(--i-sizing-xl);
-    --int-field-padding-y: var(--i-spacing-container-md);
-    --int-field-padding-x: var(--i-spacing-container-lg);
-    --int-field-font-size: var(--i-typography-font-size-lg);
+    --int-field-height: var(--i-control-lg-height);
+    --int-field-padding-y: var(--i-control-lg-padding-y);
+    --int-field-padding-x: var(--i-control-lg-padding-x);
+    --int-field-font-size: var(--i-control-lg-font-size);
   }
   &.#{$block}--fluid {
     width: 100%;

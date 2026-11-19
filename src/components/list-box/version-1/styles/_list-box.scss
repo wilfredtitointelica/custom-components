@@ -49,7 +49,7 @@
     top: 50%;
     right: calc(var(--i-spacing-container-md) * 2);
     transform: translateY(calc(-50% + var(--i-spacing-container-md) / 2));
-    color: int.field(icon-color);
+    color: int.field(icon-color); // unified: primary-900 (was grey secondary-600), see _shared_/_mixins.scss
     font-size: var(--i-icon-size-sm);
   }
 

@@ -6,45 +6,45 @@
   --NOTE-MULTISELECT: 'int-multiselect ( Custom )';
 
   // --- field ---
-  --int-multiselect-height: var(--i-sizing-lg); // knowledgeBase: --i-sizing-lg 32px · Aura: auto
-  --int-multiselect-padding-x: var(--i-spacing-container-md); // SG: .prMultiselect label 8px · Aura: {form.field.padding.x} 0.75rem
-  --int-multiselect-padding-y: var(--i-spacing-container-sm); // SG: .prMultiselect label 6px · Aura: {form.field.padding.y} 0.5rem
-  --int-multiselect-background: var(--i-form-field-background); // knowledgeBase: background form-field · Aura: {form.field.background}
-  --int-multiselect-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 1px
-  --int-multiselect-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
-  --int-multiselect-border-radius: var(--i-border-radius-lg); // knowledgeBase: border-radius lg · Aura: {form.field.border.radius}
-  --int-multiselect-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {form.field.color}
-  --int-multiselect-placeholder-color: var(--i-form-field-placeholder); // SG: --i-form-field-placeholder · Aura: {form.field.placeholder.color}
-  --int-multiselect-font-size: var(--i-form-field-size); // SG: --i-form-field-size 14px · Aura: 1rem
-  --int-multiselect-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (select/font/lineHeight/md) · Aura: normal
-  --int-multiselect-hover-border-color: var(--i-color-primary-400); // SG: .prMultiselect:hover primary-400 · knowledgeBase: hover primary-900 ⚠️ · Aura: {form.field.hover.border.color}
-  --int-multiselect-hover-icon-color: var(--i-color-primary-400); // SG: .prMultiselect:hover .p-multiselect-dropdown .icon primary-400 · Aura: —
+  --int-multiselect-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · knowledgeBase: --i-sizing-lg 32px · Aura: auto
+  --int-multiselect-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) · SG: .prMultiselect label 8px · Aura: {form.field.padding.x} 0.75rem
+  --int-multiselect-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) · SG: .prMultiselect label 6px · Aura: {form.field.padding.y} 0.5rem
+  --int-multiselect-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · knowledgeBase: background form-field · Aura: {form.field.background}
+  --int-multiselect-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · SG: --i-border-width-sm · Aura: 1px
+  --int-multiselect-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · SG: --i-color-secondary-200 · Aura: {form.field.border.color}
+  --int-multiselect-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) · knowledgeBase: border-radius lg · Aura: {form.field.border.radius}
+  --int-multiselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: --i-color-primary-900 · Aura: {form.field.color}
+  --int-multiselect-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: --i-form-field-placeholder · Aura: {form.field.placeholder.color}
+  --int-multiselect-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: --i-form-field-size 14px · Aura: 1rem
+  --int-multiselect-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (select/font/lineHeight/md) · Aura: normal
+  --int-multiselect-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · SG: .prMultiselect:hover primary-400 · knowledgeBase: hover primary-900 ⚠️ · Aura: {form.field.hover.border.color}
+  --int-multiselect-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft) · SG: .prMultiselect:hover .p-multiselect-dropdown .icon primary-400 · Aura: —
   --int-multiselect-focus-border-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color · SG: primary-900 ⚠️ · Aura: {primary.color}
   --int-multiselect-open-border-color: var(--i-color-primary-900); // SG: focus primary-900 (open without hover, as in the app) · knowledgeBase: open secondary-400 ⚠️ · Aura: —
-  --int-multiselect-icon-color: var(--i-color-primary-900); // SG: .p-multiselect-dropdown .icon primary-900 · Aura: {form.field.icon.color}
+  --int-multiselect-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .p-multiselect-dropdown .icon primary-900 · Aura: {form.field.icon.color}
   --int-multiselect-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size} 1rem
   --int-multiselect-clear-icon-size: var(--i-icon-size-xs); // SG: 12px, as in the app clear button · Aura: {icon.size} 1rem ⚠️
-  --int-multiselect-clear-icon-color: var(--i-color-primary-900); // SG: primary-900 · Aura: {form.field.icon.color}
+  --int-multiselect-clear-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: primary-900 · Aura: {form.field.icon.color}
   --int-multiselect-dropdown-width: var(--i-sizing-lg); // SG: 32px, square with the field · Aura: {multiselect.dropdown.width} 2.5rem
-  --int-multiselect-transition-duration: var(--i-motion-duration-fast); // SG: 150ms ⚠️ · Aura: {transition.duration} 0.2s
-  --int-multiselect-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out · Aura: ease
+  --int-multiselect-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · SG: 150ms ⚠️ · Aura: {transition.duration} 0.2s
+  --int-multiselect-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · SG: --i-motion-ease-in-out · Aura: ease
   --int-multiselect-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms · Aura: —
   --int-multiselect-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out · Aura: —
   --int-multiselect-chip-gap: var(--i-spacing-gap-xs); // SG: 4px · Aura: calc({padding.y} / 2)
 
   // --- states ---
-  --int-multiselect-invalid-color: var(--i-color-error-700); // knowledgeBase: error-700 · Aura: {form.field.invalid.border.color}
-  --int-multiselect-success-color: var(--i-color-success-800); // knowledgeBase: .prMultiselect--success success-800 · Aura: —
-  --int-multiselect-disabled-background: var(--i-color-secondary-200); // knowledgeBase: secondary-200 · Aura: {form.field.disabled.background}
-  --int-multiselect-disabled-color: var(--i-text-color-disabled); // SG: --i-button-secondary-disabled-color → --i-text-color-disabled · Aura: {form.field.disabled.color}
+  --int-multiselect-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · knowledgeBase: error-700 · Aura: {form.field.invalid.border.color}
+  --int-multiselect-success-color: var(--i-control-valid-color); // SG: --i-control-valid-color (tokens.control.draft) · knowledgeBase: .prMultiselect--success success-800 · Aura: —
+  --int-multiselect-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · knowledgeBase: secondary-200 · Aura: {form.field.disabled.background}
+  --int-multiselect-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · SG: --i-button-secondary-disabled-color → --i-text-color-disabled · Aura: {form.field.disabled.color}
   --int-multiselect-disabled-icon-color: var(--i-color-secondary-400); // SG: secondary-400 · Aura: —
   --int-multiselect-filled-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as int-password) · Aura: {form.field.filled.background}
 
   // --- sizes ---
-  --int-multiselect-sm-height: var(--i-sizing-md); // SG: 24px (same as int-password) · Aura: {form.field.sm.padding.y}
-  --int-multiselect-sm-font-size: var(--i-typography-font-size-sm); // SG: 12px · Aura: {form.field.sm.font.size}
-  --int-multiselect-lg-height: var(--i-sizing-500); // SG: 40px · Aura: {form.field.lg.padding.y}
-  --int-multiselect-lg-font-size: var(--i-typography-font-size-lg); // SG: 16px · Aura: {form.field.lg.font.size}
+  --int-multiselect-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) · SG: 24px (same as int-password) · Aura: {form.field.sm.padding.y}
+  --int-multiselect-sm-font-size: var(--i-control-sm-font-size); // SG: --i-control-sm-font-size (tokens.control.draft) · SG: 12px · Aura: {form.field.sm.font.size}
+  --int-multiselect-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) · SG: 40px · Aura: {form.field.lg.padding.y}
+  --int-multiselect-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · SG: 16px · Aura: {form.field.lg.font.size}
 
   // --- overlay ---
   --int-multiselect-overlay-offset: var(--i-spacing-gap-xs); // SG: 4px · Aura: overlay gutter
@@ -75,7 +75,7 @@
   --int-multiselect-header-margin-x: var(--i-spacing-50); // SG: 4px · Aura: {list.header.padding}
   --int-multiselect-filter-padding-x: var(--i-spacing-container-md); // SG: 8px · Aura: {form.field.padding.x}
   --int-multiselect-filter-icon-size: var(--i-sizing-2xs); // SG: 12px · Aura: {icon.size}
-  --int-multiselect-filter-icon-color: var(--i-color-primary-900); // SG: .p-multiselect-filter-container .p-icon primary-900 · Aura: {form.field.icon.color}
+  --int-multiselect-filter-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .p-multiselect-filter-container .p-icon primary-900 · Aura: {form.field.icon.color}
 
   // --- scrollbar (list) ---
   --int-multiselect-scrollbar-width: var(--i-scrollbar-width); // SG: 8px · Aura: —

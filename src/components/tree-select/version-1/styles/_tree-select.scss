@@ -9,34 +9,34 @@
 
   // --- trigger ---
   --int-tree-select-width: calc(var(--i-sizing-3xl) * 2 + var(--i-sizing-xl)); // knowledgeBase: example min-width 232px · Figma: 232px (dropdown-input-levels), no exact token (96×2 + 40)
-  --int-tree-select-height: var(--i-sizing-lg); // SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels)
-  --int-tree-select-background: var(--i-color-secondary-50); // SG: .p-treeselect background · Figma: #FCFCFC (input/color/background)
-  --int-tree-select-border-width: var(--i-border-width-sm); // SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
-  --int-tree-select-border-color: var(--i-color-secondary-200); // SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border)
-  --int-tree-select-border-radius: var(--i-border-radius-lg); // SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg)
-  --int-tree-select-hover-border-color: var(--i-color-primary-400); // SG: :hover border
-  --int-tree-select-focus-border-color: var(--i-color-primary-900); // SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border)
-  --int-tree-select-invalid-border-color: var(--i-border-error); // SG: .p-invalid border
-  --int-tree-select-invalid-color: var(--i-text-color-error); // SG: .p-invalid placeholder / icon
-  --int-tree-select-disabled-background: var(--i-color-secondary-200); // Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
-  --int-tree-select-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
-  --int-tree-select-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
-  --int-tree-select-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out (same as int-multiselect)
+  --int-tree-select-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels)
+  --int-tree-select-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · SG: .p-treeselect background · Figma: #FCFCFC (input/color/background)
+  --int-tree-select-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
+  --int-tree-select-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border)
+  --int-tree-select-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) · SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg)
+  --int-tree-select-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · SG: :hover border
+  --int-tree-select-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border)
+  --int-tree-select-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · SG: .p-invalid border
+  --int-tree-select-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · SG: .p-invalid placeholder / icon
+  --int-tree-select-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
+  --int-tree-select-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
+  --int-tree-select-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-tree-select-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · SG: --i-motion-ease-in-out (same as int-multiselect)
   --int-tree-select-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms (same as int-multiselect)
   --int-tree-select-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out (same as int-multiselect)
 
   // --- label ---
-  --int-tree-select-label-padding-y: var(--i-spacing-container-sm); // SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
-  --int-tree-select-label-padding-x: var(--i-spacing-container-md); // SG: .p-treeselect-label padding 8px · Figma: 8px (input/padding/x/md)
-  --int-tree-select-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
-  --int-tree-select-font-size: var(--i-typography-font-size-md); // SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
-  --int-tree-select-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (input/font/lineHeight/md), no SG value
-  --int-tree-select-color: var(--i-color-primary-900); // SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
-  --int-tree-select-placeholder-color: var(--i-form-field-placeholder); // SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
+  --int-tree-select-label-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) · SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
+  --int-tree-select-label-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) · SG: .p-treeselect-label padding 8px · Figma: 8px (input/padding/x/md)
+  --int-tree-select-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
+  --int-tree-select-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
+  --int-tree-select-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (input/font/lineHeight/md), no SG value
+  --int-tree-select-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
+  --int-tree-select-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
 
   // --- icons ---
-  --int-tree-select-icon-color: var(--i-color-primary-900); // SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
-  --int-tree-select-hover-icon-color: var(--int-tree-select-hover-border-color); // Figma Input State=Hover [2572:2449]: the arrow turns blue (#2A52C5, no token) · SG multiselect: hover arrow primary-400, same as the border
+  --int-tree-select-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
+  --int-tree-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft), primary-400 as .prSelect / .prMultiselect hover arrow · Figma: #2A52C5 ⚠️ (Input State=Hover 2572:2449)
   --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
   --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
   --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
