@@ -5,27 +5,26 @@ import { InlineCode } from '../../../core/inline-code/inline-code';
 import { StatusChip } from '../../../core/status-chip/status-chip';
 import { CatalogComponent, ComponentStatus } from '../../../service/catalog.model';
 import { ComponentCatalog } from '../../../service/component-catalog';
-import { CATALOG_ICONS, DEFAULT_ICON, groupComponents } from './catalog-groups';
+import { CatalogArt } from './catalog-art/catalog-art';
+import { groupComponents } from './catalog-groups';
 
 interface CatalogCard {
   readonly component: CatalogComponent;
-  readonly icon: string;
   readonly status: ComponentStatus;
 }
 
 const toCard = (component: CatalogComponent): CatalogCard => ({
   component,
-  icon: CATALOG_ICONS[component.id] ?? DEFAULT_ICON,
   status: component.versions.at(-1)?.status ?? 'pending',
 });
 
 /**
  * /components/catalog: every component (reference implementations excluded) as a card, grouped by
- * purpose (CATALOG_GROUPS). Status is the one of the latest version.
+ * purpose (CATALOG_GROUPS), with its drawing (CatalogArt) as cover. Status is the one of the latest version.
  */
 @Component({
   selector: 'app-catalog-page',
-  imports: [RouterLink, StatusChip, InlineCode],
+  imports: [RouterLink, StatusChip, InlineCode, CatalogArt],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })

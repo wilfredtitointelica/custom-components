@@ -18,15 +18,15 @@
   </div>
 </section>
 
-@for (group of groups; track group.name; let tone = $index) {
-  <section class="doc-catalog-group" [attr.aria-labelledby]="'catalog-group-' + tone">
-    <h2 [id]="'catalog-group-' + tone" class="doc-catalog-group-title">{{ group.name }}</h2>
+@for (group of groups; track group.name; let i = $index) {
+  <section class="doc-catalog-group" [attr.aria-labelledby]="'catalog-group-' + i">
+    <h2 [id]="'catalog-group-' + i" class="doc-catalog-group-title">{{ group.name }}</h2>
     <ul class="doc-catalog-grid">
       @for (card of group.cards; track card.component.id) {
         <li>
-          <a class="doc-catalog-card doc-tone-{{ tone % 3 }}" [routerLink]="card.component.path">
+          <a class="doc-catalog-card" [routerLink]="card.component.path">
             <span class="doc-catalog-preview" aria-hidden="true">
-              <span class="doc-catalog-preview-icon"><i class="pi {{ card.icon }}"></i></span>
+              <app-catalog-art class="doc-catalog-art" [id]="card.component.id" />
             </span>
             <span class="doc-catalog-body">
               <span class="doc-catalog-name">{{ card.component.name }}</span>
