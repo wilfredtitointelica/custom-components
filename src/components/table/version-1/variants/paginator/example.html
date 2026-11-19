@@ -1,0 +1,68 @@
+<!--
+  title: Paginator
+  description: Con `paginator` la tabla pagina las filas en el navegador y al ordenar o filtrar vuelve a la primera página. Formato de Figma, igual que Fee Chart de TreeTable: sin enlaces de página y con "Rows per page" y "Page n of N" en el template `paginatorleft`, que recibe `page` y `pageCount`.
+-->
+<int-table
+  [style]="{ width: '40rem' }"
+  [value]="fees"
+  dataKey="code"
+  paginator
+  [(first)]="first"
+  [(rows)]="rows"
+  [showPageLinks]="false"
+  [showFirstLastIcon]="false"
+>
+  <ng-template #header>
+    <tr>
+      <th class="u-text-left" intSortableColumn="name" width="40%">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Name <int-sort-icon field="name" /></div>
+      </th>
+      <th intSortableColumn="code" width="20%">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Fee Code <int-sort-icon field="code" /></div>
+      </th>
+      <th intSortableColumn="region" width="20%">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Region <int-sort-icon field="region" /></div>
+      </th>
+      <th class="u-text-right" intSortableColumn="amount" width="20%">
+        <div class="u-display-flex u-align-items-center u-justify-content-center u-gap-sm">Amount USD <int-sort-icon field="amount" /></div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-fee>
+    <tr>
+      <td class="u-text-left">{{ fee.name }}</td>
+      <td class="u-text-center">{{ fee.code }}</td>
+      <td class="u-text-center">{{ fee.region }}</td>
+      <td class="u-text-right">{{ fee.amount | number: '1.2-2' }}</td>
+    </tr>
+  </ng-template>
+
+  <!-- Rows per page and page number, next to the arrows (the paginator sits at the end) -->
+  <ng-template #paginatorleft let-state>
+    <div class="u-display-flex u-align-items-center u-gap-lg u-text-md">
+      <div class="u-display-flex u-align-items-center u-gap-lg">
+        <span class="u-text-nowrap" id="table-paginator-rows-label">Rows per page:</span>
+        <int-select
+          ariaLabelledBy="table-paginator-rows-label"
+          [options]="pageSizes"
+          [ngModel]="rows()"
+          (ngModelChange)="selectRowsPerPage($event)"
+        />
+      </div>
+      <div class="u-display-flex u-align-items-center u-gap-sm">
+        <span>Page</span>
+        <int-inputnumber
+          size="small"
+          ariaLabel="Page"
+          [min]="1"
+          [max]="state.pageCount"
+          [useGrouping]="false"
+          [ngModel]="state.page + 1"
+          [style]="{ width: '3rem' }"
+          (ngModelChange)="onPageSelect($event, state.pageCount)"
+        />
+        <span class="u-text-nowrap">of {{ state.pageCount }}</span>
+      </div>
+    </div>
+  </ng-template>
+</int-table>

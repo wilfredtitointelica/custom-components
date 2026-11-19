@@ -12,13 +12,16 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'table',
-  uses: ['search', 'select', 'paginator', 'multiselect', 'checkbox'],
+  requires: ['paginator'],
+  uses: ['search', 'select', 'inputnumber', 'multiselect', 'checkbox'],
   variants: [
     'basic',
     'template',
     'filter',
     'size',
     'sort',
+    'paginator',
+    'lazy-load',
     'scroll',
     'sticky-header',
     'frozen-rows',
