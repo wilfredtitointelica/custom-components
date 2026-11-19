@@ -327,55 +327,47 @@
   }
 </ng-template>
 
-<!-- dep:checkbox provisional · replace with <int-checkbox> when checkbox is done -->
-<!-- Header checkbox: focusable, toggles all. Option checkbox: tabindex -1, the option handles the click -->
+<!-- Header checkbox: focusable, toggles all. Option checkbox: tabindex -1, the option handles the click
+     (onOptionClick prevents the native toggle). -->
 <ng-template #checkbox let-checked="checked" let-partial="partial" let-header="header" let-label="label" let-disabled="disabled">
-  <span
-    class="int-multiselect__checkbox"
-    [class.int-multiselect__checkbox--checked]="checked"
-    [class.int-multiselect__checkbox--partial]="partial"
-    [class.int-multiselect__checkbox--disabled]="disabled || (header && isDisabled())"
-    data-dep="checkbox"
-  >
-    @if (header) {
-      <input
-        type="checkbox"
-        class="int-multiselect__checkbox-input"
-        [checked]="checked"
-        [indeterminate]="partial"
-        [disabled]="isDisabled()"
-        [attr.aria-label]="label"
-        [attr.aria-checked]="partial ? 'mixed' : checked"
-        (change)="onToggleAll($event)"
-        (click)="$event.stopPropagation()"
-      />
-    } @else {
-      <input
-        type="checkbox"
-        class="int-multiselect__checkbox-input"
-        tabindex="-1"
-        [checked]="checked"
-        [disabled]="disabled"
-        [attr.aria-label]="label"
-      />
-    }
-    <span class="int-multiselect__checkbox-box">
-      @if (header ? headerCheckboxIconTemplate() : itemCheckboxIconTemplate(); as template) {
-        <ng-container
-          [ngTemplateOutlet]="template"
-          [ngTemplateOutletContext]="{
-            $implicit: checked,
-            checked,
-            partialSelected: partial,
-            class: 'int-multiselect__checkbox-icon',
-          }"
-        />
-      } @else if (checked) {
-        <i class="int-multiselect__checkbox-icon icon icon-check" aria-hidden="true"></i>
-      } @else if (partial) {
-        <span class="int-multiselect__checkbox-dash" aria-hidden="true"></span>
+  @if (header) {
+    <int-checkbox
+      class="int-multiselect__checkbox"
+      binary
+      [ngModel]="checked"
+      [indeterminate]="partial"
+      [readonly]="readonly()"
+      [disabled]="isDisabled()"
+      [ariaLabel]="label"
+      (onChange)="onToggleAll($event.originalEvent)"
+      (click)="$event.stopPropagation()"
+    >
+      @if (headerCheckboxIconTemplate(); as template) {
+        <ng-template #icon let-iconClass="class">
+          <ng-container
+            [ngTemplateOutlet]="template"
+            [ngTemplateOutletContext]="{ $implicit: checked, checked, partialSelected: partial, class: iconClass }"
+          />
+        </ng-template>
       }
-    </span>
-  </span>
+    </int-checkbox>
+  } @else {
+    <int-checkbox
+      class="int-multiselect__checkbox"
+      binary
+      [ngModel]="checked"
+      [disabled]="disabled"
+      [ariaLabel]="label"
+      [tabindex]="-1"
+    >
+      @if (itemCheckboxIconTemplate(); as template) {
+        <ng-template #icon let-iconClass="class">
+          <ng-container
+            [ngTemplateOutlet]="template"
+            [ngTemplateOutletContext]="{ $implicit: checked, checked, partialSelected: false, class: iconClass }"
+          />
+        </ng-template>
+      }
+    </int-checkbox>
+  }
 </ng-template>
-<!-- /dep:checkbox -->

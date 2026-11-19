@@ -1,15 +1,13 @@
 import {
   afterNextRender, booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, DestroyRef, effect,
   ElementRef, inject, Injectable, Injector, input, OnDestroy, output, signal, TemplateRef, untracked,
-  viewChild, ViewContainerRef, ViewEncapsulation,
+  viewChild, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { IntButton } from '../../../button/version-1/base/button';
+import { IntDialogModal } from '../../../dialog-modal/version-1/base/dialog-modal';
 
 /** Severity of the knowledge base (.prConfirmDialog--default/--warning/--danger/--error/--success). */
 export type IntConfirmSeverity = 'default' | 'warning' | 'danger' | 'error' | 'success';
@@ -88,7 +86,7 @@ let nextId = 0;
   selector: 'int-confirm-dialog-modal',
   templateUrl: './confirm-dialog-modal.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet, CdkTrapFocus, IntButton],
+  imports: [NgTemplateOutlet, IntButton, IntDialogModal],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -133,7 +131,6 @@ export class IntConfirmDialogModal implements OnDestroy {
   /** Template `footer`: reemplaza los botones; recibe `{ $implicit, onAccept, onReject, onCancel }`. */
   protected readonly footerTemplate = contentChild<TemplateRef<IntConfirmTemplateContext>>('footer');
 
-  private readonly dialogTemplate = viewChild.required<TemplateRef<unknown>>('dialog');
   private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
 
   /** Open confirmation, null while closed. */
@@ -196,11 +193,7 @@ export class IntConfirmDialogModal implements OnDestroy {
   }));
 
   private readonly service = inject(IntConfirmationService);
-  private readonly overlay = inject(Overlay);
-  private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly injector = inject(Injector);
-  private overlayRef: OverlayRef | null = null;
-  private keydownSubscription: Subscription | null = null;
   /** Element focused before opening; it gets the focus back on close. */
   private previousFocus: HTMLElement | null = null;
 
@@ -212,16 +205,16 @@ export class IntConfirmDialogModal implements OnDestroy {
         this.active.set(request);
       }
     });
-    inject(DestroyRef).onDestroy(() => {
-      subscription.unsubscribe();
-      this.detach();
-    });
+    inject(DestroyRef).onDestroy(() => subscription.unsubscribe());
 
-    // Attaches the dialog when a confirmation opens and moves the focus, also when confirm() replaces an open one.
+    // int-dialog-modal opens with the confirmation ([visible]); the focus moves on open (onShow) and also when
+    // confirm() replaces an open one. The opener is stored to give it the focus back on close.
     effect(() => {
       if (!this.active()) return;
       untracked(() => {
-        this.attach();
+        if (!this.previousFocus && document.activeElement instanceof HTMLElement) {
+          this.previousFocus = document.activeElement;
+        }
         this.focusDefault();
       });
     });
@@ -256,40 +249,8 @@ export class IntConfirmDialogModal implements OnDestroy {
     this.cancel();
   }
 
-  // TODO(dep:dialog-modal provisional): the CDK overlay (mask, z-index, scroll block, Escape) comes from int-dialog-modal
-  // once it supports role="alertdialog", aria-describedby and a headerless panel (see the marker in the template).
-  private attach(): void {
-    if (this.overlayRef?.hasAttached()) return;
-    this.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    this.overlayRef = this.overlay.create({
-      hasBackdrop: true,
-      backdropClass: 'int-confirm-dialog-modal__mask',
-      panelClass: 'int-confirm-dialog-modal__pane',
-      // Inline, because .cdk-overlay-pane sets max-width: 100%: 440px on desktop, the viewport width on mobile.
-      width: '100%',
-      maxWidth: 'var(--int-confirm-dialog-modal-max-width)',
-      positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
-      scrollStrategy: this.overlay.scrollStrategies.block(),
-    });
-    // Same as PrimeNG: the mask click does not close; Escape cancels.
-    this.keydownSubscription = this.overlayRef.keydownEvents().subscribe((event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        this.cancel();
-      }
-    });
-    this.overlayRef.attach(new TemplatePortal(this.dialogTemplate(), this.viewContainerRef));
-  }
-
-  private detach(): void {
-    this.keydownSubscription?.unsubscribe();
-    this.keydownSubscription = null;
-    this.overlayRef?.dispose();
-    this.overlayRef = null;
-  }
-
   /** Initial focus: accept → reject → close button → panel. */
-  private focusDefault(): void {
+  protected focusDefault(): void {
     afterNextRender(
       () => {
         const panel = this.panelRef()?.nativeElement;
@@ -307,7 +268,6 @@ export class IntConfirmDialogModal implements OnDestroy {
 
   private hide(type: IntConfirmEventType | undefined): void {
     this.active.set(null);
-    this.detach();
     this.previousFocus?.focus();
     this.previousFocus = null;
     this.onHide.emit(type);

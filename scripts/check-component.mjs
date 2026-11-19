@@ -40,6 +40,28 @@ const NATIVE_EVENTS = new Set([
 ]);
 const toPascal = (id) => id.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
 
+/**
+ * Component ids by how a template names them: the tag (`int-tree-select`) and the attribute, lowercased
+ * without dashes (`intInputText` → `inputtext`). The Scan of the documentation page reads both.
+ */
+const COMPONENT_IDS = (() => {
+  const byName = new Map();
+  for (const name of readdirSync(COMPONENTS_DIR)) {
+    if (name.startsWith('_') || !statSync(join(COMPONENTS_DIR, name)).isDirectory()) continue;
+    byName.set(name, name);
+    byName.set(name.replace(/-/g, ''), name);
+  }
+  return byName;
+})();
+
+/** int-* components a template uses as `<int-<id>>` or as an attribute (`<button intButton>`), by id. */
+function intComponentsIn(markup) {
+  return [...markup.matchAll(/<int-([a-z0-9-]+)|[\s[]int([A-Z][A-Za-z0-9]*)\b/g)].flatMap((match) => {
+    const dep = COMPONENT_IDS.get(match[1] ?? match[2].toLowerCase());
+    return dep ? [{ dep, index: match.index }] : [];
+  });
+}
+
 const walk = (dir) =>
   existsSync(dir)
     ? readdirSync(dir).flatMap((name) => {
@@ -213,7 +235,8 @@ function checkVersion(component, version, report, deps) {
           'the base imports core/, service/, variants/ or compositions/ (it is extracted to npm alone)',
         );
       for (const match of source.matchAll(
-        /from\s+['"](?:\.\.\/){3}([\w-]+)\/version-\d+\/base\//g,
+        // base/<id>.ts: ../../../<dep>/; variants|compositions/<slug>/example.ts: ../../../../<dep>/.
+        /from\s+['"](?:\.\.\/){3,4}([\w-]+)\/version-\d+\/base\//g,
       )) {
         const dep = match[1];
         if (inBase(file) && !deps.requires.includes(dep))
@@ -233,6 +256,15 @@ function checkVersion(component, version, report, deps) {
     if (file.endsWith('.html')) {
       const markup = source.replace(/<!--[\s\S]*?-->/g, (block) => block.replace(/[^\n]/g, ' '));
       if (/<p-[a-z]/.test(markup)) report.error(path, 'uses <p-*> PrimeNG components');
+      // Every other int-* an example uses (tag or attribute) is declared, so the Scan of the page marks it.
+      if (inExamples(file))
+        for (const { dep, index } of intComponentsIn(markup)) {
+          if (dep === id || deps.requires.includes(dep) || deps.uses.includes(dep)) continue;
+          report.error(
+            `${path}:${lineOf(markup, index)}`,
+            `uses int-${dep} but "${dep}" is not in requires / uses: the Scan does not mark it`,
+          );
+        }
       const header = source.match(/^\s*<!--([\s\S]*?)-->/)?.[1] ?? '';
       if (inExamples(file) && /\b(title|description):.*primeng/i.test(header))
         report.warn(path, 'the variant title/description mentions PrimeNG: describe the use case');

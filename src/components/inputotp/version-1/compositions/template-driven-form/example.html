@@ -13,9 +13,7 @@
       [(ngModel)]="value"
     />
     @if (otpModel.invalid && (otpModel.touched || exampleForm.submitted)) {
-      <!-- dep:message provisional · replace with <int-message severity="error" size="small" variant="simple"> when message is done -->
-      <span class="u-msg-error" data-dep="message">Passcode is required.</span>
-      <!-- /dep:message -->
+      <int-message severity="error" size="small" variant="simple">Passcode is required.</int-message>
     }
   </div>
   <int-button type="submit" label="Submit" />

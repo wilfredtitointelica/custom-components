@@ -92,7 +92,7 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    grep -h "title:" src/components/*/version-*/base/*.html
    grep -h "sourceName" src/components/*/*.config.ts
    ```
-   Equivalencias habituales: `p-select` → `dropdown-select`, `p-dialog` → `dialog-modal`,
+   Equivalencias habituales: `p-select` → `select`, `p-dialog` → `dialog-modal`,
    `p-inputtext`/`p-textarea` → `inputtext`, `p-inputnumber` → `inputnumber`, `p-inputotp` → `inputotp`,
    `p-checkbox` → `checkbox`, `p-radiobutton` → `radiobutton` (one component each, together in the menu),
    `p-tree` → `tree-view`, `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,

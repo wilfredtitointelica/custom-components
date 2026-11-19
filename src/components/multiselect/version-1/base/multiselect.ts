@@ -23,9 +23,10 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IntAvoidElements, closeWhenOriginHidden, placeAvoiding } from '../../../_shared_';
+import { IntCheckbox } from '../../../checkbox/version-1/base/checkbox';
 import { IntChip } from '../../../chip/version-1/base/chip';
 import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
 import { IntTooltip } from '../../../tooltip/version-2/base/tooltip';
@@ -226,7 +227,7 @@ let nextId = 0;
   templateUrl: './multiselect.html',
   styleUrl: '../styles/_index.scss',
   // CDK virtual scroll replaces PrimeNG's p-scroller for virtualScroll.
-  imports: [NgTemplateOutlet, ScrollingModule, IntChip, IntInputText, IntTooltip],
+  imports: [NgTemplateOutlet, FormsModule, ScrollingModule, IntCheckbox, IntChip, IntInputText, IntTooltip],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

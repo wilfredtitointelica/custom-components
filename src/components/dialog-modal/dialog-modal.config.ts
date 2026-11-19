@@ -15,6 +15,6 @@ export default {
   variants: ['basic', 'confirmation', 'detail', 'sizes', 'alert-headerless'],
   sourceName: 'Dialog / Modal',
   requires: ['button'],
-  uses: ['datepicker', 'dropdown-select', 'inputtext'],
+  uses: ['datepicker', 'select', 'inputtext'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -33,5 +33,6 @@ export default {
   ],
   compositions: ['selected-items-label', 'brands'],
   requires: ['checkbox', 'chip', 'inputtext', 'tooltip'],
+  uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

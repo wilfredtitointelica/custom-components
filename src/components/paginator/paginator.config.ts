@@ -21,6 +21,6 @@ export default {
     'disabled',
     'append-to-body',
   ],
-  requires: ['dropdown-select', 'inputnumber'],
+  requires: ['select', 'inputnumber'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -12,7 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'table',
-  uses: ['search', 'dropdown-select', 'paginator', 'multiselect', 'checkbox'],
+  uses: ['search', 'select', 'paginator', 'multiselect', 'checkbox'],
   variants: [
     'basic',
     'template',

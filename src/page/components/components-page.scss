@@ -26,6 +26,9 @@
   padding: 16px 4px 24px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
+  // Always reserve the scrollbar track: when a group expands and the scrollbar appears, the content
+  // keeps its width instead of jumping left.
+  scrollbar-gutter: stable;
   scrollbar-color: transparent transparent;
   scrollbar-width: thin;
 

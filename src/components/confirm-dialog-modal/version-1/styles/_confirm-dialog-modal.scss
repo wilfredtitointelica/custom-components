@@ -9,17 +9,7 @@
 
   // --- panel ---
   --int-confirm-dialog-modal-max-width: calc(var(--i-sizing-1000) * 4 + var(--i-sizing-500) + var(--i-sizing-200)); // knowledgeBase: max-width 440px · Figma: 440px (overlay Size=Small), no exact token (96×4 + 40 + 16)
-  --int-confirm-dialog-modal-padding: var(--i-spacing-container-2xl); // knowledgeBase: padding 24px · Figma: 24px (overlay/padding/x/2xl)
   --int-confirm-dialog-modal-gap: var(--i-spacing-gap-lg); // knowledgeBase: gap 16px · Figma: 16px (overlay/gap/lg)
-  --int-confirm-dialog-modal-border-radius: var(--i-border-radius-200); // knowledgeBase: 16px · Figma: 16px (overlay/border/radius/2xl)
-  --int-confirm-dialog-modal-color: var(--i-color-secondary-600); // knowledgeBase: color
-  --int-confirm-dialog-modal-background: var(--i-color-secondary-50); // knowledgeBase: background · Figma: #FCFCFC (overlay/color/background)
-  --int-confirm-dialog-modal-shadow: var(--i-shadow-depth-3); // Figma: shadow.300 (knowledgeBase --p-overlay-modal-shadow is a PrimeNG token, not loaded)
-  --int-confirm-dialog-modal-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (overlay/font/fontFamily)
-  --int-confirm-dialog-modal-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
-
-  // --- mask ---
-  --int-confirm-dialog-modal-mask-background: color-mix(in srgb, var(--i-color-secondary-900) 40%, transparent); // SG: --i-color-secondary-900 at 40%, no knowledgeBase/Figma value
 
   // --- content ---
   --int-confirm-dialog-modal-content-gap: var(--i-spacing-gap-lg); // knowledgeBase: __content gap 16px
@@ -50,25 +40,10 @@
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// TODO(dep:dialog-modal provisional): mask and panel box come from int-dialog-modal. The pane width (100% up to
-// --int-confirm-dialog-modal-max-width) is set in the overlay config of the base.
+// Set on the int-dialog-modal panel (styleClass): mask, box, padding, enter animation and focus trap come from
+// int-dialog-modal; here only its width (its own --int-dialog-modal-width hook) and the content.
 .int-confirm-dialog-modal {
-  display: flex;
-  flex-direction: column;
-  gap: var(--int-confirm-dialog-modal-gap);
-  box-sizing: border-box;
-  width: 100%;
-  padding: var(--int-confirm-dialog-modal-padding);
-  font-family: var(--int-confirm-dialog-modal-font-family);
-  color: var(--int-confirm-dialog-modal-color);
-  background: var(--int-confirm-dialog-modal-background);
-  border-radius: var(--int-confirm-dialog-modal-border-radius);
-  box-shadow: var(--int-confirm-dialog-modal-shadow);
-
-  // The panel only takes the focus when it has no button (focusDefault): no ring for a pointer opener.
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
+  --int-dialog-modal-width: var(--int-confirm-dialog-modal-max-width); // knowledgeBase: .prConfirmDialog max-width 440px · Figma: overlay Size=Small
 
   p {
     margin: 0;
@@ -81,8 +56,16 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-confirm-dialog-modal {
-  &__mask {
-    background: var(--int-confirm-dialog-modal-mask-background);
+  // Close row, content and footer, projected into the content of int-dialog-modal.
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirm-dialog-modal-gap);
+
+    // It only takes the focus when there is no button (focusDefault): no ring for a pointer opener.
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
   }
 
   &__close {
@@ -150,21 +133,9 @@
   }
 }
 
-// PrimeNG p-dialog enter: fade + scale(0.7).
-@keyframes int-confirm-dialog-modal-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.7); // Aura: scale(0.7)
-  }
-}
-
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
 \*——————————————————————————————————————————————————————————*/
-
-.int-confirm-dialog-modal--enter {
-  animation: int-confirm-dialog-modal-enter var(--int-confirm-dialog-modal-transition-duration) var(--i-motion-ease-out);
-}
 
 // Severity: colors the title and the icon (not the image).
 .int-confirm-dialog-modal {
@@ -175,12 +146,6 @@
         color: var(--int-confirm-dialog-modal-#{$severity}-color);
       }
     }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .int-confirm-dialog-modal--enter {
-    animation-duration: 0s;
   }
 }
 

@@ -29,7 +29,7 @@
         </div>
       }
 
-      <!-- dep:list-box provisional · int-list-box (done) renders its options internally: no cdkDrag / cdkDropList per option (dragdrop), no option dblclick (transfer) nor metaKey / shift range selection, and it uses aria-activedescendant instead of this roving tabindex. Replace with <int-list-box multiple> when its API covers them -->
+      <!-- dep:list-box provisional · int-list-box (done) already has dragdrop, onDblClick, onDrop and Ctrl/Shift selection, but it does not emit when a drag enters the list (the target list highlight, cdkDropListEntered) and, on a reorder inside one list, it moves the options array in place, which clashes with the reorder of the pick-list (onSourceReorder / onTargetReorder). Replace with <int-list-box multiple dragdrop> when its API covers them -->
       <!-- Multiple selection listbox with one tab stop (roving tabindex), as the p-listbox of p-picklist -->
       <div
         class="int-pick-list__list"

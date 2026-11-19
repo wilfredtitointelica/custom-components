@@ -16,7 +16,7 @@ import {
 const EXCEL_NAMES = [
   'Accordion',
   'Button',
-  'Dropdown / Select',
+  'Select',
   'Input (InputText, Checkbox, RadioButton, Textarea)',
   'FileUpload',
   'DatePicker',

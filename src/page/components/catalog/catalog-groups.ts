@@ -10,7 +10,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   },
   {
     name: 'Selection',
-    ids: ['dropdown-select', 'multiselect', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'datepicker'],
+    ids: ['select', 'multiselect', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'datepicker'],
   },
   { name: 'Navigation', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {

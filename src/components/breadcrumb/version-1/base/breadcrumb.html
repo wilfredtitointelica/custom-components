@@ -29,7 +29,7 @@
         @if (item.items) {
           <!-- int-* extension: collapsed links behind a "…" pill (knowledge base popover trigger) -->
           @let panelId = uid + '-panel-' + i;
-          <!-- dep:popover provisional · replace with <int-popover> when popover is done -->
+          <!-- dep:popover provisional · int-popover (done) fixes role="dialog" on its panel and points the trigger aria-controls / aria-expanded at it; this is a menu button (aria-haspopup="menu", role="menu" + menuitems, arrow keys): replace with <int-popover> when its API takes a menu panel -->
           <li
             class="int-breadcrumb__item int-breadcrumb__item--collapsed"
             [class]="item.styleClass"

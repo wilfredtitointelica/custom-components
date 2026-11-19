@@ -35,7 +35,7 @@ export class StatusPage {
 
   protected readonly rows = this.catalog
     .components.filter((component) => !component.reference)
-    .map((component, index) => {
+    .map((component) => {
       const latest = component.versions.at(-1);
       /** Components it composes (config `requires`): not done = the base uses a provisional. */
       const requires = component.requires.map((id) => {
@@ -51,13 +51,24 @@ export class StatusPage {
         requires,
         /** How many of them are not done yet (trigger label of the popover). */
         requiresPending: requires.filter((required) => required.status !== 'done').length,
-        index: index + 1,
         component,
         latest,
         status: latest?.status ?? ('pending' as ComponentStatus),
         designer: latest?.designer || UNASSIGNED,
       };
-    });
+    })
+    /* Group the rows by designer (order of first appearance in the menu, unassigned last) so the
+     * same name is listed consecutively; within a designer the menu order is kept (stable sort). */
+    .map((row, position, all) => ({
+      row,
+      group:
+        row.designer === UNASSIGNED
+          ? Number.MAX_SAFE_INTEGER
+          : all.findIndex((other) => other.designer === row.designer),
+      position,
+    }))
+    .sort((a, b) => a.group - b.group || a.position - b.position)
+    .map(({ row }, index) => ({ ...row, index: index + 1 }));
 
   protected readonly summary = STATUS_ORDER.map((status) => {
     const count = this.rows.filter((row) => row.status === status).length;

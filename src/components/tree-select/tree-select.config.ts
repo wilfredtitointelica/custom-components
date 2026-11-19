@@ -24,5 +24,6 @@ export default {
     'children-aligned',
   ],
   requires: ['tree-view', 'inputtext'],
+  uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

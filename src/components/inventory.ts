@@ -1,7 +1,7 @@
 import { ComponentDefinition } from '../service/catalog.model';
 import accordion from './accordion/accordion.config';
 import button from './button/button.config';
-import dropdownSelect from './dropdown-select/dropdown-select.config';
+import select from './select/select.config';
 import inputtext from './inputtext/inputtext.config';
 import inputnumber from './inputnumber/inputnumber.config';
 import checkbox from './checkbox/checkbox.config';
@@ -52,7 +52,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   demo, // reference implementation, not in the Excel
   accordion,
   button,
-  dropdownSelect,
+  select,
   inputtext,
   inputnumber,
   inputotp,

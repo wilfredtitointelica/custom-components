@@ -48,9 +48,28 @@ const PROVISIONAL_DEP = /\bdata-dep="([a-z0-9-]+)"/g;
 const INT_TAG = /<int-([a-z0-9-]+)/g;
 
 /**
- * IDs of the int-* components the given examples contain, real (`<int-button>`) or provisional
- * (`data-dep="button"`), read from their example.html of the selected version. `provisional` keeps
- * the ones still waiting for their dependency.
+ * `intButton`, `[intTooltip]`: an int-* component applied as an attribute (`button[intButton]`,
+ * `input[intInputText]`, `[intTooltip]`). Its name is the id without dashes, lowercased ("inputtext").
+ */
+const INT_ATTRIBUTE = /[\s[]int([A-Z][A-Za-z0-9]*)\b/g;
+
+/** Ids an example template uses as a tag (`button`) and as an attribute, normalized (`inputtext`). */
+function intComponentsIn(html: string): Set<string> {
+  return new Set([
+    ...[...html.matchAll(INT_TAG)].map((m) => m[1]),
+    ...[...html.matchAll(INT_ATTRIBUTE)].map((m) => m[1].toLowerCase()),
+  ]);
+}
+
+/** The template uses the component `id`, as a tag (`<int-tree-select>`) or an attribute (`intTreeSelect`). */
+function usesComponent(found: ReadonlySet<string>, id: string): boolean {
+  return found.has(id) || found.has(id.replace(/-/g, ''));
+}
+
+/**
+ * IDs of the int-* components the given examples contain, real (`<int-button>`, `<button intButton>`) or
+ * provisional (`data-dep="button"`), read from their example.html of the selected version. `provisional`
+ * keeps the ones still waiting for their dependency.
  */
 function usedDependencies(
   exampleHtml: Readonly<Record<string, string>> | undefined,
@@ -58,7 +77,7 @@ function usedDependencies(
 ): { all: ReadonlySet<string>; provisional: ReadonlySet<string> } {
   const html = examples.map((example) => exampleHtml?.[example.slug] ?? '').join('\n');
   const provisional = new Set([...html.matchAll(PROVISIONAL_DEP)].map((m) => m[1]));
-  return { all: new Set([...provisional, ...[...html.matchAll(INT_TAG)].map((m) => m[1])]), provisional };
+  return { all: new Set([...provisional, ...intComponentsIn(html)]), provisional };
 }
 
 /** The Angular component exported by an example module (whatever its class name). */
@@ -145,7 +164,7 @@ export class DocPage {
       this.nav.activeVersion()?.exampleHtml,
       compositions ? this.component().compositions : this.component().variants,
     );
-    const uses = declared.filter((id) => used.all.has(id));
+    const uses = declared.filter((id) => usesComponent(used.all, id));
     // Provisionals of the base (dep:<id> provisional in base/ and styles/) count on every tab: the base
     // renders them in every example, even when the dependency itself is already done.
     const baseProvisionals = new Set(this.nav.activeVersion()?.baseProvisionals ?? []);
@@ -188,10 +207,13 @@ export class DocPage {
     };
   });
 
-  /** Resolved dependencies an example uses as a real `<int-*>` (the "Resueltas" line while scanning). */
+  /**
+   * Resolved dependencies an example uses as a real int-* (`<int-button>` or `<button intButton>`): the
+   * "Resueltas" line while scanning.
+   */
   protected resolvedIn(example: DocExample | undefined): string[] {
-    const tags = new Set([...(example?.sources.html ?? '').matchAll(INT_TAG)].map((m) => m[1]));
-    return this.dependencies().resolvedIds.filter((id) => tags.has(id));
+    const found = intComponentsIn(example?.sources.html ?? '');
+    return this.dependencies().resolvedIds.filter((id) => usesComponent(found, id));
   }
 
   /** Types the $implicit of the #sections template (variants or compositions). */
@@ -413,8 +435,20 @@ function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement
 }
 
 /**
- * Inside every preview, marks the first [data-dep] of each pending dependency and the first <int-<id>>
- * of each resolved one. The page's own component is never a dependency, so it is never marked; neither are
+ * Real instances of the int-* `id` inside a preview: its tag (`<int-button>`), the element it is applied
+ * to as an attribute, found by its host class (`<button intButton>` → `.int-button`) or by its host
+ * marker (`[intTooltip]` → `[data-int-tooltip]`, when it adds no class). The element a `<int-<id>>`
+ * renders inside itself (`<int-button>` → `<button class="int-button">`) is the same instance, not another one.
+ */
+function instancesOf(preview: HTMLElement, id: string): HTMLElement[] {
+  return [
+    ...preview.querySelectorAll<HTMLElement>(`int-${id}, .int-${id}, [data-int-${id}]`),
+  ].filter((element) => !element.parentElement?.closest(`int-${id}`));
+}
+
+/**
+ * Inside every preview, marks the first [data-dep] of each pending dependency and the first real
+ * instance (tag or attribute, see instancesOf) of each resolved one. The page's own component is never a dependency, so it is never marked; neither are
  * the provisionals inside another int-* it uses (its own dependencies, e.g. dep:input inside <int-search>):
  * only the ids the page's component declares in requires / uses count.
  */
@@ -431,7 +465,7 @@ function markDependencies(host: HTMLElement, resolved: readonly string[], declar
     }
     for (const [dep, elements] of byDep) markFirst(SCAN_MARK, dep, elements);
     for (const id of resolved) {
-      markFirst(DONE_MARK, id, [...preview.querySelectorAll<HTMLElement>(`int-${id}`)]);
+      markFirst(DONE_MARK, id, instancesOf(preview, id));
     }
   }
 }

@@ -108,6 +108,12 @@ src/components/<id>/version-N/
 
 ## Dependencias entre componentes
 
+Todo `int-*` que use la base o un ejemplo, como etiqueta (`<int-card>`) o como atributo
+(`<button intButton>`, `<input intInputText>`, `[intTooltip]`), se declara en `requires` o `uses` de
+`<id>.config.ts`: así el Scan de la página lo marca, y `check:component` da error si falta. Para que
+`avoidElements` no tape un botón, se pasa una variable de template en un `<div>` que lo envuelve
+(`<div #apply><button intButton …></div>` + `[avoidElements]="apply"`), nunca una clase suelta.
+
 Si el componente usa otro `int-*` que aún no está en `done`, se deja un provisional marcado y se declara
 en `requires` (lo usa la base) o `uses` (solo una variante) de `<id>.config.ts`:
 

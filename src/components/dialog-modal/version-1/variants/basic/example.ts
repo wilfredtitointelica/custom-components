@@ -3,14 +3,14 @@ import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
 import { IntDatePicker } from '../../../../datepicker/version-1/base/datepicker';
-import { IntDropdownSelect } from '../../../../dropdown-select/version-1/base/dropdown-select';
+import { IntSelect } from '../../../../select/version-1/base/select';
 import { IntInputText } from '../../../../inputtext/version-1/base/inputtext';
 import { IntDialogModal } from '../../base/dialog-modal';
 
 @Component({
   selector: 'dialog-modal-basic-example',
   templateUrl: './example.html',
-  imports: [IntDialogModal, IntButton, IntInputText, IntDropdownSelect, IntDatePicker, FormsModule],
+  imports: [IntDialogModal, IntButton, IntInputText, IntSelect, IntDatePicker, FormsModule],
 })
 export class DialogModalBasicExample {
   readonly visible = signal(false);

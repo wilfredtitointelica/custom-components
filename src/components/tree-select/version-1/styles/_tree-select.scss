@@ -36,7 +36,7 @@
 
   // --- icons ---
   --int-tree-select-icon-color: var(--i-color-primary-900); // SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
-  --int-tree-select-hover-icon-color: var(--int-tree-select-hover-border-color); // Figma Input State=Hover [2572:2449]: the arrow turns blue (#2A52C5, no token) · SG multiselect: hover arrow primary-400, same as the border
+  --int-tree-select-hover-icon-color: var(--int-tree-select-hover-border-color); // SG: multiselect hover arrow primary-400, same as the border · Figma: #2A52C5, no token (Input State=Hover 2572:2449)
   --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
   --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
   --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value

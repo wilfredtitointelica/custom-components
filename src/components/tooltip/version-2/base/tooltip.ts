@@ -58,6 +58,8 @@ const OPPOSITE: Record<IntTooltipPosition, IntTooltipPosition> = {
 @Directive({
   selector: '[intTooltip]',
   host: {
+    // Marks the element it is applied to, so the documentation Scan finds it (no class of its own).
+    'data-int-tooltip': '',
     '(mouseenter)': 'trigger("hover", true)',
     '(mouseleave)': 'trigger("hover", false)',
     '(focusin)': 'trigger("focus", true)',

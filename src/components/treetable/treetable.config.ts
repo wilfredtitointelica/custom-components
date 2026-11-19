@@ -39,6 +39,6 @@ export default {
     'checkbox-con-propagacion',
   ],
   requires: ['paginator', 'checkbox', 'badge'],
-  uses: ['button', 'dropdown-select', 'inputnumber', 'inputtext', 'search', 'tooltip'],
+  uses: ['button', 'select', 'inputnumber', 'inputtext', 'search', 'tooltip'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;
