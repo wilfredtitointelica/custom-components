@@ -80,7 +80,7 @@ export class IntDialogModal implements OnDestroy {
   readonly position = input<'center' | 'top'>('center');
   /**
    * int-* extension: ancho del panel con los tamaños del Style Guide: `sm` 400px, `md` 600px, `lg` 800px y `xl`
-   * 1024px. Para otro ancho (p. ej. 440px de una confirmación) usa `--int-dialog-modal-width` con `styleClass`.
+   * 1024px. Para otro ancho (p. ej. 440px de una confirmación) usa `--int-dialog-width` con `styleClass`.
    */
   readonly size = input<IntDialogModalSize | undefined>(undefined);
   /**

@@ -1,18 +1,8 @@
 /*——————————————————————————————————————————————————————————*\
- * TOKENS
-\*——————————————————————————————————————————————————————————*/
-
-// small is the knowledge base .prTable--compact.
-:root {
-  // --- small ---
-  --int-table-sm-header-height: var(--i-table-sm-header-height); // SG: --i-table-sm-header-height (tokens.table.draft) · knowledgeBase: .prTable--compact th 32px
-  --int-table-sm-body-height: var(--i-table-sm-cell-height); // SG: --i-table-sm-cell-height (tokens.table.draft) · knowledgeBase: .prTable--compact td 40px
-}
-
-/*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --small )
 \*——————————————————————————————————————————————————————————*/
 
+// small is the knowledge base .prTable--compact; its tokens live in the :root of _table.scss.
 .int-table--small {
   .int-table__thead > tr > th {
     height: var(--int-table-sm-header-height);

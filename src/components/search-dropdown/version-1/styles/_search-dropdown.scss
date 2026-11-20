@@ -8,50 +8,50 @@
   --NOTE-SEARCH-DROPDOWN: 'int-search-dropdown ( Custom )';
 
   // --- panel ---
-  --int-search-dropdown-panel-offset: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · Figma: 4px (space/050)
-  --int-search-dropdown-panel-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl (popover padding) · Figma: 24px (searchbar/padding/2xl)
-  --int-search-dropdown-panel-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-spacing-gap-sm · Figma: 8px (searchbar/gap/sm)
-  --int-search-dropdown-panel-border-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl · Figma: 16px (searchbar/border/radius/2xl)
-  --int-search-dropdown-panel-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
-  --int-search-dropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
-  --int-search-dropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
-  --int-search-dropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
-  --int-search-dropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
-  --int-search-dropdown-enter-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .12s
-  --int-search-dropdown-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
-  --int-search-dropdown-leave-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .1s
-  --int-search-dropdown-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal · Aura: linear
+  --int-searchdropdown-panel-offset: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · Figma: 4px (space/050)
+  --int-searchdropdown-panel-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl (popover padding) · Figma: 24px (searchbar/padding/2xl)
+  --int-searchdropdown-panel-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-spacing-gap-sm · Figma: 8px (searchbar/gap/sm)
+  --int-searchdropdown-panel-border-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl · Figma: 16px (searchbar/border/radius/2xl)
+  --int-searchdropdown-panel-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
+  --int-searchdropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
+  --int-searchdropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
+  --int-searchdropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
+  --int-searchdropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
+  --int-searchdropdown-enter-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .12s
+  --int-searchdropdown-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
+  --int-searchdropdown-leave-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .1s
+  --int-searchdropdown-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal · Aura: linear
 
   // --- divider (group title and footer) ---
-  --int-search-dropdown-divider-width: var(--i-divider-border-sm); // SG: ptSearchResult --i-divider-color-default 1px · Figma: 1px (divider/border/sm)
-  --int-search-dropdown-divider-color: var(--i-divider-color-default); // SG: --i-divider-color-default · Figma: #d9d9e3 (divider/color/default)
+  --int-searchdropdown-divider-width: var(--i-divider-border-sm); // SG: ptSearchResult --i-divider-color-default 1px · Figma: 1px (divider/border/sm)
+  --int-searchdropdown-divider-color: var(--i-divider-color-default); // SG: --i-divider-color-default · Figma: #d9d9e3 (divider/color/default)
 
   // --- group title ---
-  --int-search-dropdown-group-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Figma: 12px (Subtitle/Subtitle-sm)
-  --int-search-dropdown-group-font-weight: var(--i-typography-font-weight-bold); // SG: ptSearchResult bold · Figma: 700 (page/font/bold)
-  --int-search-dropdown-group-padding-y: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Figma: 4px (space/050)
+  --int-searchdropdown-group-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Figma: 12px (Subtitle/Subtitle-sm)
+  --int-searchdropdown-group-font-weight: var(--i-typography-font-weight-bold); // SG: ptSearchResult bold · Figma: 700 (page/font/bold)
+  --int-searchdropdown-group-padding-y: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Figma: 4px (space/050)
 
   // --- item ---
-  --int-search-dropdown-list-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-searchresult-gap (--i-spacing-gap-sm) between rows, title and groups · Figma: 8px (searchbar/gap/sm)
-  --int-search-dropdown-item-padding: var(--i-spacing-container-sm); // SG: --i-spacing-container-md · Figma: 8px (listItemDetail/padding/md)
-  --int-search-dropdown-item-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (listItemDetail/gap/sm)
-  --int-search-dropdown-item-border-radius: var(--i-border-radius-lg); // SG: ptSearchResult 8px · Figma: 8px (listItemDetail/border/radius/lg)
-  --int-search-dropdown-item-info-gap: var(--i-spacing-gap-xs); // SG: ptSearchResult --i-spacing-gap-xs · Figma: 4px (listItemDetail/gap/xs)
-  --int-search-dropdown-item-focus-background: var(--i-color-secondary-100); // SG: ptSearchResult hover --i-color-secondary-100
-  --int-search-dropdown-item-active-background: var(--i-color-primary-100); // SG: ptSearchResult active --i-color-primary-100
-  --int-search-dropdown-item-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast
-  --int-search-dropdown-item-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out
-  --int-search-dropdown-match-offset: var(--i-spacing-25); // SG: ptSearchResult __nameline underline offset --i-spacing-25
-  --int-search-dropdown-match-thickness: var(--i-border-width-sm); // SG: ptSearchResult __nameline 1px
+  --int-searchdropdown-list-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-searchresult-gap (--i-spacing-gap-sm) between rows, title and groups · Figma: 8px (searchbar/gap/sm)
+  --int-searchdropdown-item-padding: var(--i-spacing-container-sm); // SG: --i-spacing-container-md · Figma: 8px (listItemDetail/padding/md)
+  --int-searchdropdown-item-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Figma: 8px (listItemDetail/gap/sm)
+  --int-searchdropdown-item-border-radius: var(--i-border-radius-lg); // SG: ptSearchResult 8px · Figma: 8px (listItemDetail/border/radius/lg)
+  --int-searchdropdown-item-info-gap: var(--i-spacing-gap-xs); // SG: ptSearchResult --i-spacing-gap-xs · Figma: 4px (listItemDetail/gap/xs)
+  --int-searchdropdown-item-focus-background: var(--i-color-secondary-100); // SG: ptSearchResult hover --i-color-secondary-100
+  --int-searchdropdown-item-active-background: var(--i-color-primary-100); // SG: ptSearchResult active --i-color-primary-100
+  --int-searchdropdown-item-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast
+  --int-searchdropdown-item-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out
+  --int-searchdropdown-match-offset: var(--i-spacing-25); // SG: ptSearchResult __nameline underline offset --i-spacing-25
+  --int-searchdropdown-match-thickness: var(--i-border-width-sm); // SG: ptSearchResult __nameline 1px
 
   // --- empty ---
-  --int-search-dropdown-empty-color: var(--i-color-secondary-400); // SG: ptSearchResult empty --i-color-secondary-400
-  --int-search-dropdown-empty-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl · Figma: centered in the panel
+  --int-searchdropdown-empty-color: var(--i-color-secondary-400); // SG: ptSearchResult empty --i-color-secondary-400
+  --int-searchdropdown-empty-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl · Figma: centered in the panel
 
   // --- skeleton ---
-  --int-search-dropdown-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect)
-  --int-search-dropdown-skeleton-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm
-  --int-search-dropdown-skeleton-duration: var(--i-motion-duration-slow); // SG: --i-motion-duration-slow (pulse, x4)
+  --int-searchdropdown-skeleton-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 (same as .sk-multiselect)
+  --int-searchdropdown-skeleton-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm
+  --int-searchdropdown-skeleton-duration: var(--i-motion-duration-slow); // SG: --i-motion-duration-slow (pulse, x4)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -91,30 +91,30 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: var(--int-search-dropdown-panel-gap);
-    margin-block-start: var(--int-search-dropdown-panel-offset);
-    padding: var(--int-search-dropdown-panel-padding);
-    color: var(--int-search-dropdown-color);
-    font-size: var(--int-search-dropdown-font-size);
-    line-height: var(--int-search-dropdown-line-height);
-    background: var(--int-search-dropdown-panel-background);
-    border-radius: var(--int-search-dropdown-panel-border-radius);
-    box-shadow: var(--int-search-dropdown-panel-shadow);
+    gap: var(--int-searchdropdown-panel-gap);
+    margin-block-start: var(--int-searchdropdown-panel-offset);
+    padding: var(--int-searchdropdown-panel-padding);
+    color: var(--int-searchdropdown-color);
+    font-size: var(--int-searchdropdown-font-size);
+    line-height: var(--int-searchdropdown-line-height);
+    background: var(--int-searchdropdown-panel-background);
+    border-radius: var(--int-searchdropdown-panel-border-radius);
+    box-shadow: var(--int-searchdropdown-panel-shadow);
     cursor: default;
     transform-origin: top;
 
     &--enter {
-      animation: int-search-dropdown-panel-enter var(--int-search-dropdown-enter-duration)
-        var(--int-search-dropdown-enter-easing);
+      animation: int-search-dropdown-panel-enter var(--int-searchdropdown-enter-duration)
+        var(--int-searchdropdown-enter-easing);
     }
 
     &--leave {
-      animation: int-search-dropdown-panel-leave var(--int-search-dropdown-leave-duration)
-        var(--int-search-dropdown-leave-easing) forwards;
+      animation: int-search-dropdown-panel-leave var(--int-searchdropdown-leave-duration)
+        var(--int-searchdropdown-leave-easing) forwards;
     }
 
     &--top {
-      margin-block-start: calc(-1 * var(--int-search-dropdown-panel-offset));
+      margin-block-start: calc(-1 * var(--int-searchdropdown-panel-offset));
       transform-origin: bottom;
     }
   }
@@ -140,7 +140,7 @@
   // Same gap between rows, below a group title and between groups (ptSearchResult).
   &__list,
   &__skeleton {
-    gap: var(--int-search-dropdown-list-gap);
+    gap: var(--int-searchdropdown-list-gap);
   }
 
   &__list {
@@ -156,37 +156,37 @@
   &__group {
     //position: sticky;
     inset-block-start: 0;
-    padding-block: var(--int-search-dropdown-group-padding-y);
-    font-size: var(--int-search-dropdown-group-font-size);
-    font-weight: var(--int-search-dropdown-group-font-weight);
-    background: var(--int-search-dropdown-panel-background);
-    border-block-end: var(--int-search-dropdown-divider-width) solid var(--int-search-dropdown-divider-color);
+    padding-block: var(--int-searchdropdown-group-padding-y);
+    font-size: var(--int-searchdropdown-group-font-size);
+    font-weight: var(--int-searchdropdown-group-font-weight);
+    background: var(--int-searchdropdown-panel-background);
+    border-block-end: var(--int-searchdropdown-divider-width) solid var(--int-searchdropdown-divider-color);
   }
 
   &__item {
     display: flex;
     align-items: center;
-    gap: var(--int-search-dropdown-item-gap);
-    padding: var(--int-search-dropdown-item-padding);
-    border-radius: var(--int-search-dropdown-item-border-radius);
+    gap: var(--int-searchdropdown-item-gap);
+    padding: var(--int-searchdropdown-item-padding);
+    border-radius: var(--int-searchdropdown-item-border-radius);
     cursor: pointer;
-    transition: background var(--int-search-dropdown-item-transition-duration)
-      var(--int-search-dropdown-item-transition-easing);
+    transition: background var(--int-searchdropdown-item-transition-duration)
+      var(--int-searchdropdown-item-transition-easing);
 
     // optionSticky: stays at the bottom of the results while they scroll (SG ptSearchResult__explore), with the
     // panel background so the rows passing under it do not show through. Before --focus, so the focus still wins.
     &--sticky {
       position: sticky;
       inset-block-end: 0;
-      background: var(--int-search-dropdown-panel-background);
+      background: var(--int-searchdropdown-panel-background);
     }
 
     &--focus {
-      background: var(--int-search-dropdown-item-focus-background);
+      background: var(--int-searchdropdown-item-focus-background);
     }
 
     &:active {
-      background: var(--int-search-dropdown-item-active-background);
+      background: var(--int-searchdropdown-item-active-background);
     }
 
     // Row of the itemSkeleton template: the box of an item, without its pointer states.
@@ -214,13 +214,13 @@
   // Typed text inside the default label (ptSearchResult__nameline).
   &__item-match {
     text-decoration: underline;
-    text-decoration-thickness: var(--int-search-dropdown-match-thickness);
-    text-underline-offset: var(--int-search-dropdown-match-offset);
+    text-decoration-thickness: var(--int-searchdropdown-match-thickness);
+    text-underline-offset: var(--int-searchdropdown-match-offset);
   }
 
   &__empty {
-    padding-block: var(--int-search-dropdown-empty-padding);
-    color: var(--int-search-dropdown-empty-color);
+    padding-block: var(--int-searchdropdown-empty-padding);
+    color: var(--int-searchdropdown-empty-color);
     text-align: center;
   }
 
@@ -234,9 +234,9 @@
   &__skeleton-line {
     display: block;
     width: 70%;
-    background: var(--int-search-dropdown-skeleton-background);
-    border-radius: var(--int-search-dropdown-skeleton-radius);
-    animation: int-search-dropdown-pulse calc(var(--int-search-dropdown-skeleton-duration) * 4)
+    background: var(--int-searchdropdown-skeleton-background);
+    border-radius: var(--int-searchdropdown-skeleton-radius);
+    animation: int-search-dropdown-pulse calc(var(--int-searchdropdown-skeleton-duration) * 4)
       var(--i-motion-ease-in-out) infinite;
 
     &--title {
@@ -306,5 +306,5 @@
 .sk-search-dropdown {
   block-size: var(--int-search-height);
   border-radius: var(--int-search-border-radius);
-  background: var(--int-search-dropdown-skeleton-background);
+  background: var(--int-searchdropdown-skeleton-background);
 }

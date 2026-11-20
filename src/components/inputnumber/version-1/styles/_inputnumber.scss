@@ -1,12 +1,53 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
-// The field is an int-inputtext (__field): its look is read from --int-field-* (see _shared_/mixins).
+// The field is an int-inputtext (__field): the host hands it --int-inputnumber-height through
+// --int-inputtext-height. The field box tokens are read by the horizontal layout (the host is the box).
 :root {
   --NOTE-INPUTNUMBER: 'int-inputnumber ( Custom )';
+
+  // --- field ---
+  --int-inputnumber-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) 32px · Aura: auto
+  --int-inputnumber-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {form.field.background}
+  --int-inputnumber-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · was --i-border-width-sm (1px) · Aura: 1px
+  --int-inputnumber-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
+  --int-inputnumber-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
+  --int-inputnumber-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: {transition.duration} 0.2s
+  --int-inputnumber-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: ease
+
+  // --- states ---
+  --int-inputnumber-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · Aura: {form.field.hover.border.color}
+  --int-inputnumber-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · Aura: {form.field.focus.border.color}
+  --int-inputnumber-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
+  --int-inputnumber-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · Aura: —
+  --int-inputnumber-success-border-color: var(--i-control-valid-border-color); // SG: --i-control-valid-border-color (tokens.control.draft) · Aura: —
+  --int-inputnumber-success-color: var(--i-control-valid-color); // SG: --i-control-valid-color (tokens.control.draft) · Aura: —
+  --int-inputnumber-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Aura: {form.field.disabled.background}
+  --int-inputnumber-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Aura: {form.field.disabled.color}
+
+  // --- sizes ---
+  --int-inputnumber-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) · was --i-sizing-md (24px) · Aura: auto
+  --int-inputnumber-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) · was --i-sizing-xl (40px) · Aura: auto
+
+  // --- buttons ---
+  --int-inputnumber-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · knowledgeBase: input.md +/- primary-900 · Aura: {inputnumber.button.color}
+  --int-inputnumber-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs · Aura: {icon.size}
+  --int-inputnumber-button-hover-color: var(--i-icon-color-default); // SG: --i-icon-color-default · Aura: {inputnumber.button.hover.color}
+  --int-inputnumber-button-hover-background: var(--i-background-hover); // SG: --i-background-hover · Aura: {inputnumber.button.hover.background}
+  --int-inputnumber-button-disabled-color: var(--i-icon-color-disabled); // SG: --i-icon-color-disabled · Aura: —
+  --int-inputnumber-horizontal-button-color: var(--i-icon-color-default); // SG: --i-icon-color-default · knowledgeBase: input.md counter +/- primary-900 · Aura: —
+
+  // --- stacked buttons ---
+  --int-inputnumber-stack-inset: var(--i-border-width-sm); // SG: --i-border-width-sm 1px (inside the field border) · Aura: —
+  --int-inputnumber-stack-width: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: {inputnumber.button.width} 2.5rem
+  --int-inputnumber-stack-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px (field corners) · Aura: {form.field.border.radius}
+  --int-inputnumber-stack-gap: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm (space between value and buttons) · Aura: —
+
+  // --- skeleton ---
+  --int-inputnumber-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
+  --int-inputnumber-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
+  --int-inputnumber-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -15,6 +56,7 @@
 
 // <int-inputnumber>: an int-inputtext field (__field) plus optional spin buttons.
 .int-inputnumber {
+  --int-inputtext-height: var(--int-inputnumber-height); // SG: --i-control-height via --int-inputnumber-height (the inner int-inputtext follows the host height)
   position: relative;
   display: inline-flex;
   align-items: stretch;
@@ -32,19 +74,26 @@
   }
 
   &__button {
-    @include int.reset-button;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: int.field(icon-color);
-    font-size: var(--i-icon-size-xs);
+    color: var(--int-inputnumber-icon-color);
+    font-size: var(--int-inputnumber-icon-size);
 
     &:not(:disabled):hover {
-      color: var(--i-icon-color-default);
-      background: var(--i-background-hover);
+      color: var(--int-inputnumber-button-hover-color);
+      background: var(--int-inputnumber-button-hover-background);
     }
     &:disabled {
-      color: var(--i-icon-color-disabled);
+      color: var(--int-inputnumber-button-disabled-color);
       cursor: not-allowed;
       user-select: none;
     }
@@ -53,20 +102,20 @@
   // Stacked chevrons inside the field, right side.
   &__stack {
     position: absolute;
-    top: var(--i-border-width-sm);
-    right: var(--i-border-width-sm);
-    bottom: var(--i-border-width-sm);
+    top: var(--int-inputnumber-stack-inset);
+    right: var(--int-inputnumber-stack-inset);
+    bottom: var(--int-inputnumber-stack-inset);
     display: flex;
     flex-direction: column;
-    width: var(--i-sizing-sm);
+    width: var(--int-inputnumber-stack-width);
 
     .int-inputnumber__button {
       flex: 1 1 50%;
       &:first-child {
-        border-top-right-radius: var(--i-border-radius-lg);
+        border-top-right-radius: var(--int-inputnumber-stack-border-radius);
       }
       &:last-child {
-        border-bottom-right-radius: var(--i-border-radius-lg);
+        border-bottom-right-radius: var(--int-inputnumber-stack-border-radius);
       }
     }
   }
@@ -82,41 +131,63 @@
     width: 100%;
   }
   &--small {
-    --int-field-height: var(--i-sizing-md); // SG: --i-sizing-md
+    --int-inputnumber-height: var(--int-inputnumber-sm-height); // SG: --i-control-sm-height
   }
   &--large {
-    --int-field-height: var(--i-sizing-xl); // SG: --i-sizing-xl
+    --int-inputnumber-height: var(--int-inputnumber-lg-height); // SG: --i-control-lg-height
   }
 
   &--stacked .int-inputnumber__field {
-    padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-sm));
+    padding-right: calc(var(--int-inputnumber-stack-width) + var(--int-inputnumber-stack-gap));
   }
 
   // Horizontal: [- value +] as one field box (Figma counter); the host carries border and states.
   &--horizontal {
     box-sizing: border-box;
-    border: var(--i-border-width-sm) solid int.field(border);
-    border-radius: int.field(radius);
-    background: int.field(background);
-    transition: border-color var(--i-motion-base);
-    @include int.field-states(int-inputnumber, '&:focus-within');
+    border: var(--int-inputnumber-border-width) solid var(--int-inputnumber-border-color);
+    border-radius: var(--int-inputnumber-border-radius);
+    background: var(--int-inputnumber-background);
+    transition: border-color var(--int-inputnumber-transition-duration) var(--int-inputnumber-transition-easing);
+    &:hover:not(.int-inputnumber--disabled):not(:disabled) {
+      border-color: var(--int-inputnumber-hover-border-color);
+    }
+    // The wrapper is not focusable: its focus style is the border on :focus-within, no outline to reset.
+    &:focus-within {
+      border-color: var(--int-inputnumber-focus-border-color);
+    }
+    &.int-inputnumber--success {
+      border-color: var(--int-inputnumber-success-border-color);
+      color: var(--int-inputnumber-success-color);
+    }
+    &.int-inputnumber--invalid {
+      border-color: var(--int-inputnumber-invalid-border-color);
+      color: var(--int-inputnumber-invalid-color);
+    }
+    &:disabled,
+    &.int-inputnumber--disabled {
+      background: var(--int-inputnumber-disabled-background);
+      color: var(--int-inputnumber-disabled-color);
+      border-color: transparent;
+      cursor: not-allowed;
+      user-select: none;
+    }
 
     .int-inputnumber__field {
-      min-height: calc(#{int.field(height)} - 2 * var(--i-border-width-sm));
+      min-height: calc(var(--int-inputnumber-height) - 2 * var(--int-inputnumber-border-width));
       border: 0;
       border-radius: 0;
       background: transparent;
       text-align: center;
     }
     .int-inputnumber__button {
-      width: int.field(height);
-      color: var(--i-icon-color-default);
+      width: var(--int-inputnumber-height);
+      color: var(--int-inputnumber-horizontal-button-color);
 
       &:not(:disabled):hover {
         background: transparent;
       }
       &:disabled {
-        color: var(--i-icon-color-disabled);
+        color: var(--int-inputnumber-button-disabled-color);
       }
     }
 
@@ -133,7 +204,7 @@
 .sk-inputnumber {
   display: inline-block;
   width: 12rem;
-  height: var(--i-sizing-lg);
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  height: var(--int-inputnumber-skeleton-height);
+  border-radius: var(--int-inputnumber-skeleton-border-radius);
+  background: var(--int-inputnumber-skeleton-background);
 }

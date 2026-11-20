@@ -16,6 +16,7 @@
   // --- navigators ---
   --int-carousel-nav-duration: var(--i-motion-duration-base); // knowledgeBase: opacity 0.3s
   --int-carousel-nav-easing: var(--i-motion-ease-in-out); // knowledgeBase: ease
+  --int-carousel-nav-color-transition: var(--i-motion-base); // SG: --i-motion-base (int-button color transition, kept next to opacity / visibility)
 
   // --- indicators ---
   --int-carousel-indicator-list-height: var(--i-sizing-sm); // knowledgeBase: .p-carousel-indicator-list height 20px
@@ -100,8 +101,8 @@
     transition:
       opacity var(--int-carousel-nav-duration) var(--int-carousel-nav-easing),
       visibility var(--int-carousel-nav-duration) var(--int-carousel-nav-easing),
-      background-color var(--i-motion-base),
-      color var(--i-motion-base);
+      background-color var(--int-carousel-nav-color-transition),
+      color var(--int-carousel-nav-color-transition);
   }
 
   // The knowledge base gradient is left out for now.

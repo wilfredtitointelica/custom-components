@@ -23,6 +23,12 @@ const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
 const COMPONENTS_DIR = join(SRC_DIR, 'components');
 const OUTPUT_DIR = join(SRC_DIR, 'generated');
 const EXAMPLES_DIR = join(OUTPUT_DIR, 'examples');
+/**
+ * PID of the watcher in charge. Two watchers (two `ng serve` left open) started with different
+ * versions of extract-api.mjs rewrite doc-registry.ts against each other every second and `ng serve`
+ * rebuilds forever: the newest watcher takes the lock and the older ones stop.
+ */
+const LOCK_FILE = join(SRC_DIR, '..', 'node_modules', '.cache', 'generate-docs-watch.lock');
 
 const VERSION_FOLDER = /^version-(\d+)$/;
 const KEBAB_CASE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -268,7 +274,32 @@ if (!process.argv.includes('--watch')) {
 } else {
   // Watch mode must never die while `ng serve` keeps running, or the page silently stops updating:
   // a file being saved (EBUSY on Windows) or a folder deleted mid-scan only skips this round.
+  mkdirSync(dirname(LOCK_FILE), { recursive: true });
+  writeFileSync(LOCK_FILE, String(process.pid));
+  const ownsLock = () => {
+    try {
+      return readFileSync(LOCK_FILE, 'utf8').trim() === String(process.pid);
+    } catch {
+      return true; // lock deleted by hand: keep going
+    }
+  };
+  let retired = false;
+  let watcher;
+  let interval;
+  let child;
+  const retire = () => {
+    retired = true;
+    console.warn('[docs] a newer docs watcher started (another ng serve): this one stops');
+    clearTimeout(timer);
+    clearInterval(interval);
+    watcher?.close();
+    // Without a child command (ng serve spawns the watcher alone) nothing keeps this process useful.
+    if (!child) process.exit(0);
+  };
+
   const safeGenerate = () => {
+    if (retired) return;
+    if (!ownsLock()) return retire();
     try {
       generate();
     } catch (error) {
@@ -286,8 +317,9 @@ if (!process.argv.includes('--watch')) {
   // fs.watch is fast but can miss events or fail on Windows (atomic saves, deleted folders):
   // restart it on error, and re-scan every second as a safety net (only changed files are written).
   const startWatcher = () => {
+    if (retired) return;
     try {
-      watch(COMPONENTS_DIR, { recursive: true }, schedule).on('error', (error) => {
+      watcher = watch(COMPONENTS_DIR, { recursive: true }, schedule).on('error', (error) => {
         console.warn(`[docs] watcher: ${error.message} (restarting)`);
         setTimeout(startWatcher, 500);
       });
@@ -298,13 +330,16 @@ if (!process.argv.includes('--watch')) {
   };
   safeGenerate();
   startWatcher();
-  setInterval(safeGenerate, 1000);
+  interval = setInterval(safeGenerate, 1000);
+  process.on('exit', () => {
+    if (!retired && ownsLock()) rmSync(LOCK_FILE, { force: true });
+  });
   process.on('uncaughtException', (error) => console.warn(`[docs] ${error.message}`));
 
   const separator = process.argv.indexOf('--');
   if (separator > 0) {
     const [command, ...args] = process.argv.slice(separator + 1);
-    const child = spawn(command, args, { stdio: 'inherit', shell: true });
+    child = spawn(command, args, { stdio: 'inherit', shell: true });
     child.on('exit', (code) => process.exit(code ?? 0));
     // Ctrl+C or closing the terminal stops both processes.
     for (const signal of ['SIGINT', 'SIGTERM']) {

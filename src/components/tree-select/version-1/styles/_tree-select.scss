@@ -8,49 +8,52 @@
   --NOTE-TREE-SELECT: 'int-tree-select ( Custom )';
 
   // --- trigger ---
-  --int-tree-select-width: calc(var(--i-sizing-3xl) * 2 + var(--i-sizing-xl)); // knowledgeBase: example min-width 232px · Figma: 232px (dropdown-input-levels), no exact token (96×2 + 40)
-  --int-tree-select-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels)
-  --int-tree-select-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · SG: .p-treeselect background · Figma: #FCFCFC (input/color/background)
-  --int-tree-select-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
-  --int-tree-select-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border)
-  --int-tree-select-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) · SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg)
-  --int-tree-select-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · SG: :hover border
-  --int-tree-select-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border)
-  --int-tree-select-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · SG: .p-invalid border
-  --int-tree-select-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · SG: .p-invalid placeholder / icon
-  --int-tree-select-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
-  --int-tree-select-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
-  --int-tree-select-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · SG: --i-motion-duration-fast, no knowledgeBase/Figma value
-  --int-tree-select-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · SG: --i-motion-ease-in-out (same as int-multiselect)
-  --int-tree-select-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms (same as int-multiselect)
-  --int-tree-select-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out (same as int-multiselect)
+  --int-treeselect-width: calc(var(--i-sizing-3xl) * 2 + var(--i-sizing-xl)); // knowledgeBase: example min-width 232px · Figma: 232px (dropdown-input-levels), no exact token (96×2 + 40)
+  --int-treeselect-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · SG: .p-treeselect height 32px · Figma: 32px (dropdown-input-levels)
+  --int-treeselect-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · SG: .p-treeselect background · Figma: #FCFCFC (input/color/background)
+  --int-treeselect-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · SG: .p-treeselect border 1px · Figma: 1px (input/border/width/sm)
+  --int-treeselect-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · SG: .p-treeselect border · Figma: #D9D9E3 (input/color/border)
+  --int-treeselect-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) · SG: .p-treeselect radius · Figma: 8px (input/border/radius/lg)
+  --int-treeselect-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · SG: :hover border
+  --int-treeselect-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · SG: .p-focus / .p-treeselect-open border · Figma: #0A1733 (input/color/pressed/border)
+  --int-treeselect-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · SG: .p-invalid border
+  --int-treeselect-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · SG: .p-invalid placeholder / icon
+  --int-treeselect-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Figma: #D9D9E3 (input/color/disabled/background) [2572:2460], no SG value
+  --int-treeselect-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Figma: #9CA3BA (input/color/disabled/text) [2572:2460], no SG value
+  --int-treeselect-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-treeselect-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · SG: --i-motion-ease-in-out (same as int-multiselect)
+  --int-treeselect-arrow-duration: var(--i-motion-duration-base); // knowledgeBase: rotate 0.3s → 300ms (same as int-multiselect)
+  --int-treeselect-arrow-easing: var(--i-motion-ease-equal); // knowledgeBase: ease-in-out (same as int-multiselect)
 
   // --- label ---
-  --int-tree-select-label-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) · SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
-  --int-tree-select-label-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) · SG: .p-treeselect-label padding 8px · Figma: 8px (input/padding/x/md)
-  --int-tree-select-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
-  --int-tree-select-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
-  --int-tree-select-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (input/font/lineHeight/md), no SG value
-  --int-tree-select-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
-  --int-tree-select-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
+  --int-treeselect-label-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) · SG: .p-treeselect-label padding 6px · Figma: 6px (input/padding/y/sm)
+  --int-treeselect-label-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) · SG: .p-treeselect-label padding 8px · Figma: 8px (input/padding/x/md)
+  --int-treeselect-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
+  --int-treeselect-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
+  --int-treeselect-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (input/font/lineHeight/md), no SG value
+  --int-treeselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
+  --int-treeselect-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
 
   // --- icons ---
-  --int-tree-select-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
-  --int-tree-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft), primary-400 as .prSelect / .prMultiselect hover arrow · Figma: #2A52C5 ⚠️ (Input State=Hover 2572:2449)
-  --int-tree-select-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
-  --int-tree-select-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
-  --int-tree-select-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
+  --int-treeselect-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .p-treeselect-dropdown-icon · Figma: #0A1733 (input/color/icon)
+  --int-treeselect-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft), primary-400 as .prSelect / .prMultiselect hover arrow · Figma: #2A52C5 ⚠️ (Input State=Hover 2572:2449)
+  --int-treeselect-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container), no SG value
+  --int-treeselect-clear-icon-size: var(--i-icon-size-xs); // SG: .p-treeselect-clear-icon --i-icon-size-xs · Figma: 12px (icon/sizing/xs)
+  --int-treeselect-icon-gap: var(--i-spacing-gap-xs); // Figma: 4px (space/050), no SG value
 
   // --- panel ---
-  --int-tree-select-panel-background: var(--i-color-secondary-50); // SG: .prTreeselect__overlay background · Figma: #FCFCFC (dropdown/color/background)
-  --int-tree-select-panel-border-radius: var(--i-border-radius-lg); // SG: --i-select-overlay-border-radius · Figma: 8px (dropdown/border/radius/lg)
-  --int-tree-select-panel-padding: var(--i-spacing-container-xs); // Figma: 4px (dropdown/padding/x/xs, dropdown/padding/y/xs), no SG value
-  --int-tree-select-panel-gap: var(--i-spacing-gap-xs); // SG: .p-tree-selectable gap 4px · Figma: 4px (dropdown/gap/xs)
-  --int-tree-select-panel-offset: var(--i-spacing-50); // Figma: 4px between trigger and panel, no SG value
+  --int-treeselect-panel-background: var(--i-color-secondary-50); // SG: .prTreeselect__overlay background · Figma: #FCFCFC (dropdown/color/background)
+  --int-treeselect-panel-border-radius: var(--i-border-radius-lg); // SG: --i-select-overlay-border-radius · Figma: 8px (dropdown/border/radius/lg)
+  --int-treeselect-panel-padding: var(--i-spacing-container-xs); // Figma: 4px (dropdown/padding/x/xs, dropdown/padding/y/xs), no SG value
+  --int-treeselect-panel-gap: var(--i-spacing-gap-xs); // SG: .p-tree-selectable gap 4px · Figma: 4px (dropdown/gap/xs)
+  --int-treeselect-panel-offset: var(--i-spacing-50); // Figma: 4px between trigger and panel, no SG value
+  --int-treeselect-panel-shadow: var(--i-shadow-x-0) var(--i-shadow-y-150) var(--i-shadow-y-200) var(--i-shadow-spread-40) var(--i-shadow-color-200), var(--i-shadow-x-0) var(--i-shadow-y-100) var(--i-shadow-y-100) var(--i-shadow-spread-20) var(--i-shadow-color-100); // SG: .prTreeselect__overlay box-shadow with the base shadow tokens · Figma: shadow.300
+  --int-treeselect-panel-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out (same as int-multiselect), no knowledgeBase/Figma value
+  --int-treeselect-panel-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal (same as int-multiselect), no knowledgeBase/Figma value
 
   // --- filter ---
-  --int-tree-select-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px · Figma: 8px (input/padding/x/md)
-  --int-tree-select-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px · Figma: 12px (icon/sizing/xs)
+  --int-treeselect-filter-padding-x: var(--i-spacing-container-md); // SG: .p-tree-filter-input padding 8px · Figma: 8px (input/padding/x/md)
+  --int-treeselect-filter-icon-size: var(--i-icon-size-xs); // SG: .p-iconfield .p-icon --i-sizing-2xs 12px · Figma: 12px (icon/sizing/xs)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -62,24 +65,24 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--int-tree-select-icon-gap);
+  gap: var(--int-treeselect-icon-gap);
   box-sizing: border-box;
   // Fixed width as the taller, so a long selection ends with an ellipsis; the consumer changes the token.
-  width: var(--int-tree-select-width);
+  width: var(--int-treeselect-width);
   max-width: 100%;
-  height: var(--int-tree-select-height);
-  font-family: var(--int-tree-select-font-family);
-  font-size: var(--int-tree-select-font-size);
-  line-height: var(--int-tree-select-line-height);
-  color: var(--int-tree-select-color);
-  background: var(--int-tree-select-background);
-  border: var(--int-tree-select-border-width) solid var(--int-tree-select-border-color);
-  border-radius: var(--int-tree-select-border-radius);
+  height: var(--int-treeselect-height);
+  font-family: var(--int-treeselect-font-family);
+  font-size: var(--int-treeselect-font-size);
+  line-height: var(--int-treeselect-line-height);
+  color: var(--int-treeselect-color);
+  background: var(--int-treeselect-background);
+  border: var(--int-treeselect-border-width) solid var(--int-treeselect-border-color);
+  border-radius: var(--int-treeselect-border-radius);
   cursor: pointer;
   user-select: none;
   transition:
-    background var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing),
-    border-color var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing);
+    background var(--int-treeselect-transition-duration) var(--int-treeselect-transition-easing),
+    border-color var(--int-treeselect-transition-duration) var(--int-treeselect-transition-easing);
 
   // appendTo="self": the panel is mounted inside the host; it must not inherit the trigger's cursor and selection.
   > .int-overlay-container {
@@ -118,36 +121,36 @@
   // Block of text (not flex), so text-overflow can add the ellipsis (Style Guide .p-treeselect-label > span).
   &__label {
     display: block;
-    padding: var(--int-tree-select-label-padding-y) var(--int-tree-select-label-padding-x);
+    padding: var(--int-treeselect-label-padding-y) var(--int-treeselect-label-padding-x);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 
     &--placeholder {
-      color: var(--int-tree-select-placeholder-color);
+      color: var(--int-treeselect-placeholder-color);
     }
   }
 
   &__clear-icon {
     flex-shrink: 0;
-    font-size: var(--int-tree-select-clear-icon-size);
-    color: var(--int-tree-select-icon-color);
+    font-size: var(--int-treeselect-clear-icon-size);
+    color: var(--int-treeselect-icon-color);
   }
 
   &__dropdown {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    padding-inline-end: var(--int-tree-select-label-padding-x);
+    padding-inline-end: var(--int-treeselect-label-padding-x);
   }
 
   // knowledgeBase: the arrow turns -180deg while the panel is open.
   &__dropdown-icon {
-    font-size: var(--int-tree-select-icon-size);
-    color: var(--int-tree-select-icon-color);
+    font-size: var(--int-treeselect-icon-size);
+    color: var(--int-treeselect-icon-color);
     transition:
-      rotate var(--int-tree-select-arrow-duration) var(--int-tree-select-arrow-easing),
-      color var(--int-tree-select-transition-duration) var(--int-tree-select-transition-easing);
+      rotate var(--int-treeselect-arrow-duration) var(--int-treeselect-arrow-easing),
+      color var(--int-treeselect-transition-duration) var(--int-treeselect-transition-easing);
   }
 
   &--open &__dropdown-icon {
@@ -158,29 +161,26 @@
   &__panel {
     display: flex;
     flex-direction: column;
-    gap: var(--int-tree-select-panel-gap);
+    gap: var(--int-treeselect-panel-gap);
     box-sizing: border-box;
     width: 100%;
-    margin-block: var(--int-tree-select-panel-offset);
-    padding: var(--int-tree-select-panel-padding);
-    font-family: var(--int-tree-select-font-family);
-    background: var(--int-tree-select-panel-background);
-    border: var(--int-tree-select-border-width) solid transparent;
-    border-radius: var(--int-tree-select-panel-border-radius);
-    // SG .prTreeselect__overlay box-shadow, with the base shadow tokens (Figma shadow.300).
-    box-shadow:
-      var(--i-shadow-x-0) var(--i-shadow-y-150) var(--i-shadow-y-200) var(--i-shadow-spread-40) var(--i-shadow-color-200),
-      var(--i-shadow-x-0) var(--i-shadow-y-100) var(--i-shadow-y-100) var(--i-shadow-spread-20) var(--i-shadow-color-100);
+    margin-block: var(--int-treeselect-panel-offset);
+    padding: var(--int-treeselect-panel-padding);
+    font-family: var(--int-treeselect-font-family);
+    background: var(--int-treeselect-panel-background);
+    border: var(--int-treeselect-border-width) solid transparent;
+    border-radius: var(--int-treeselect-panel-border-radius);
+    box-shadow: var(--int-treeselect-panel-shadow);
 
     // Grows from the trigger edge; the CDK switches it to bottom when the panel flips above.
     transform-origin: top;
 
     &--enter {
-      animation: int-tree-select-panel-enter var(--int-tree-select-transition-duration) var(--i-motion-ease-out); // same as int-multiselect
+      animation: int-tree-select-panel-enter var(--int-treeselect-transition-duration) var(--int-treeselect-panel-enter-easing); // same as int-multiselect
     }
 
     &--leave {
-      animation: int-tree-select-panel-leave var(--int-tree-select-transition-duration) var(--i-motion-ease-equal) forwards;
+      animation: int-tree-select-panel-leave var(--int-treeselect-transition-duration) var(--int-treeselect-panel-leave-easing) forwards;
     }
   }
 
@@ -192,15 +192,15 @@
   // The filter is input[intInputText] small fluid: its look comes from int-inputtext. Only the end padding
   // changes (room for the search icon); the wrapper prefix outweighs the int-inputtext field padding.
   &__filter &__filter-input {
-    padding-inline-end: calc(var(--int-tree-select-filter-padding-x) * 2 + var(--int-tree-select-filter-icon-size));
+    padding-inline-end: calc(var(--int-treeselect-filter-padding-x) * 2 + var(--int-treeselect-filter-icon-size));
   }
 
   &__filter-icon {
     position: absolute;
-    inset-inline-end: var(--int-tree-select-filter-padding-x);
+    inset-inline-end: var(--int-treeselect-filter-padding-x);
     top: 50%;
-    font-size: var(--int-tree-select-filter-icon-size);
-    color: var(--int-tree-select-icon-color);
+    font-size: var(--int-treeselect-filter-icon-size);
+    color: var(--int-treeselect-icon-color);
     transform: translateY(-50%);
     pointer-events: none;
   }
@@ -230,36 +230,36 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-tree-select:not(.int-tree-select--disabled):is(.int-tree-select--focus, .int-tree-select--open) {
-  border-color: var(--int-tree-select-focus-border-color);
+  border-color: var(--int-treeselect-focus-border-color);
 }
 
 // SG: hover wins over focus and open. The arrow takes the hover color too, except when invalid (as int-multiselect).
 .int-tree-select:not(.int-tree-select--disabled):hover {
-  border-color: var(--int-tree-select-hover-border-color);
+  border-color: var(--int-treeselect-hover-border-color);
 }
 
 .int-tree-select:not(.int-tree-select--disabled, .int-tree-select--invalid):hover .int-tree-select__dropdown-icon {
-  color: var(--int-tree-select-hover-icon-color);
+  color: var(--int-treeselect-hover-icon-color);
 }
 
 .int-tree-select--invalid {
-  border-color: var(--int-tree-select-invalid-border-color);
+  border-color: var(--int-treeselect-invalid-border-color);
 
   .int-tree-select__label--placeholder,
   .int-tree-select__dropdown-icon {
-    color: var(--int-tree-select-invalid-color);
+    color: var(--int-treeselect-invalid-color);
   }
 }
 
 .int-tree-select--disabled {
-  color: var(--int-tree-select-disabled-color);
-  background: var(--int-tree-select-disabled-background);
-  border-color: var(--int-tree-select-disabled-background);
+  color: var(--int-treeselect-disabled-color);
+  background: var(--int-treeselect-disabled-background);
+  border-color: var(--int-treeselect-disabled-background);
   cursor: default;
 
   .int-tree-select__label--placeholder,
   .int-tree-select__dropdown-icon {
-    color: var(--int-tree-select-disabled-color);
+    color: var(--int-treeselect-disabled-color);
   }
 }
 

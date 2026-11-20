@@ -1,93 +1,187 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
 :root {
   --NOTE-BUTTON: 'int-button ( Custom )';
-}
 
-// Each severity defines its solid colors + an accent used by the outlined/text variants.
-$severities: (
-  primary: (
-    background: var(--i-color-primary-base),
-    color: var(--i-button-primary-color),
-    border: transparent,
-    hover-background: var(--i-button-primary-hover-background),
-    hover-color: var(--i-button-primary-hover-color),
-    active-background: var(--i-button-primary-pressed-background),
-    accent: var(--i-color-primary-700),
-  ),
+  // --- root ---
+  --int-button-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg · Aura: auto (padding-y {form.field.padding.y})
+  --int-button-padding-x: var(--i-button-padding-x-md); // SG: --i-button-padding-x-md · Aura: {form.field.padding.x}
+  --int-button-gap: var(--i-button-gap-xs); // SG: --i-button-gap-xs · Aura: 0.5rem
+  --int-button-border-width: var(--i-button-border-width-sm); // SG: --i-button-border-width-sm · Aura: 1px
+  --int-button-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg · Aura: {form.field.border.radius}
+  --int-button-font-family: var(--i-button-font-fontFamily); // SG: --i-button-font-fontFamily · Aura: inherit
+  --int-button-font-size: var(--i-button-font-size-md); // SG: --i-button-font-size-md · Aura: inherit
+  --int-button-font-weight: var(--i-button-font-weight); // SG: --i-button-font-weight · Aura: 500
+  --int-button-line-height: var(--i-button-font-lineHeight-md); // SG: --i-button-font-lineHeight-md · Aura: inherit
+  --int-button-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm
+  --int-button-transition: var(--i-motion-base); // SG: --i-motion-base · Aura: {form.field.transition.duration}
+
+  // --- current colors (each severity reassigns them to its own tokens) ---
+  --int-button-background: var(--int-button-primary-background); // SG: follows --int-button-primary-background (default severity)
+  --int-button-color: var(--int-button-primary-color); // SG: follows --int-button-primary-color
+  --int-button-border: var(--int-button-primary-border); // SG: follows --int-button-primary-border
+  --int-button-hover-background: var(--int-button-primary-hover-background); // SG: follows --int-button-primary-hover-background
+  --int-button-hover-color: var(--int-button-primary-hover-color); // SG: follows --int-button-primary-hover-color
+  --int-button-hover-border: var(--int-button-primary-border); // SG: no token, follows --int-button-border on the button
+  --int-button-active-background: var(--int-button-primary-active-background); // SG: follows --int-button-primary-active-background
+  --int-button-active-color: var(--int-button-primary-hover-color); // SG: no token, follows --int-button-hover-color on the button
+  --int-button-active-border: var(--int-button-primary-border); // SG: no token, follows --int-button-hover-border on the button
+  --int-button-accent: var(--int-button-primary-accent); // SG: follows --int-button-primary-accent (outlined / text color)
+  --int-button-outline-border: var(--int-button-primary-accent); // SG: no token, follows --int-button-accent on the button (outlined border)
+  // Light fill of the outlined / text variants; severities without one keep blue/100 and blue/200.
+  --int-button-soft-hover-background: var(--i-background-hover); // SG: --i-background-hover
+  --int-button-soft-active-background: var(--i-color-primary-200); // SG: --i-color-primary-200
+
+  // --- primary ---
+  --int-button-primary-background: var(--i-color-primary-base); // SG: --i-color-primary-base · Aura: {primary.color}
+  --int-button-primary-color: var(--i-button-primary-color); // SG: --i-button-primary-color · Aura: {primary.contrast.color}
+  --int-button-primary-border: transparent; // SG: no token, literal transparent · Aura: {primary.color}
+  --int-button-primary-hover-background: var(--i-button-primary-hover-background); // SG: --i-button-primary-hover-background · Aura: {primary.hover.color}
+  --int-button-primary-hover-color: var(--i-button-primary-hover-color); // SG: --i-button-primary-hover-color · Aura: {primary.contrast.color}
+  --int-button-primary-active-background: var(--i-button-primary-pressed-background); // SG: --i-button-primary-pressed-background · Aura: {primary.active.color}
+  --int-button-primary-accent: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {primary.color}
+
+  // --- secondary ---
   // Hover is grey/100 (#F2F2F5) by design: --i-button-secondary-hover-background resolves to blue/100.
   // Text is blue/900 (#0A1733) by design: --i-button-secondary-color resolves to grey/700.
-  secondary: (
-    background: var(--i-button-secondary-background), // Figma: #FCFCFC (button/secondary/background)
-    color: var(--i-color-primary-900), // Figma: #0A1733 (button/secondary/text)
-    border: var(--i-button-secondary-border), // Figma: #D9D9E3 (button/secondary/border)
-    hover-background: var(--i-color-secondary-100), // Figma: #F2F2F5 (button/secondary/hover/background)
-    hover-color: var(--i-button-secondary-hover-color), // Figma: #0A1733 (button/secondary/hover/text)
-    hover-border: var(--i-button-secondary-hover-border), // Figma: #D9D9E3 (button/secondary/hover/border)
-    active-background: var(--i-button-secondary-pressed-background), // Figma: #F2F2F5 (button/secondary/pressed/background)
-    active-color: var(--i-color-primary-900), // Figma: #0A1733 (button/secondary/pressed/text)
-    active-border: var(--i-button-secondary-pressed-border), // Figma: #0A1733 (button/secondary/pressed/border)
-    accent: var(--i-color-primary-900), // Figma: #0A1733 [Type=Tertiary]
-    soft-hover-background: var(--i-color-secondary-100), // Figma: #F2F2F5 [Type=Tertiary, State=Hover]
-    soft-active-background: transparent, // Figma: no fill [Type=Tertiary, State=Pressed]
-  ),
-  success: (
-    background: var(--i-button-primary-success-background),
-    color: var(--i-button-primary-success-color),
-    border: transparent, // Figma: no border [Type=Primary, State=Success]
-    outline-border: var(--i-button-secondary-success-border), // Figma: #126629 (button/secondary/success/border) [Type=Secondary]
-    hover-background: var(--i-color-success-100),
-    hover-color: var(--i-button-primary-success-color),
-    active-background: var(--i-color-success-200),
-    accent: var(--i-color-success-800),
-    // Style Guide .prButton outlined success.
-    soft-hover-background: var(--i-button-secondary-success-background),
-    soft-active-background: var(--i-button-secondary-success-background),
-  ),
-  info: (
-    background: var(--i-background-info),
-    color: var(--i-text-color-default),
-    border: var(--i-border-info),
-    hover-background: var(--i-color-primary-200),
-    hover-color: var(--i-text-color-default),
-    active-background: var(--i-color-primary-300),
-    accent: var(--i-color-primary-700),
-  ),
-  warn: (
-    background: var(--i-background-warning),
-    color: var(--i-color-warning-700),
-    border: var(--i-border-warning),
-    hover-background: var(--i-color-warning-200),
-    hover-color: var(--i-color-warning-700),
-    active-background: var(--i-color-warning-300),
-    accent: var(--i-color-warning-700),
-  ),
-  danger: (
-    background: var(--i-button-primary-error-background),
-    color: var(--i-button-primary-error-color),
-    border: transparent, // Figma: no border [Type=Primary, State=Error]
-    outline-border: var(--i-button-secondary-error-border), // Figma: #960D0D (button/secondary/error/border) [Type=Secondary]
-    hover-background: var(--i-color-error-100),
-    hover-color: var(--i-button-primary-error-color),
-    active-background: var(--i-color-error-200),
-    accent: var(--i-color-error-700),
-    // Style Guide .prButton outlined danger.
-    soft-hover-background: var(--i-color-error-50),
-    soft-active-background: var(--i-color-error-50),
-  ),
-  contrast: (
-    background: var(--i-color-primary-900),
-    color: var(--i-color-primary-50),
-    border: transparent,
-    hover-background: var(--i-color-primary-800),
-    hover-color: var(--i-color-primary-50),
-    active-background: var(--i-color-primary-900),
-    accent: var(--i-color-primary-900),
-  ),
+  --int-button-secondary-background: var(--i-button-secondary-background); // SG: --i-button-secondary-background · Figma: #FCFCFC (button/secondary/background)
+  --int-button-secondary-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0A1733 (button/secondary/text)
+  --int-button-secondary-border: var(--i-button-secondary-border); // SG: --i-button-secondary-border · Figma: #D9D9E3 (button/secondary/border)
+  --int-button-secondary-hover-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Figma: #F2F2F5 (button/secondary/hover/background)
+  --int-button-secondary-hover-color: var(--i-button-secondary-hover-color); // SG: --i-button-secondary-hover-color · Figma: #0A1733 (button/secondary/hover/text)
+  --int-button-secondary-hover-border: var(--i-button-secondary-hover-border); // SG: --i-button-secondary-hover-border · Figma: #D9D9E3 (button/secondary/hover/border)
+  --int-button-secondary-active-background: var(--i-button-secondary-pressed-background); // SG: --i-button-secondary-pressed-background · Figma: #F2F2F5 (button/secondary/pressed/background)
+  --int-button-secondary-active-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0A1733 (button/secondary/pressed/text)
+  --int-button-secondary-active-border: var(--i-button-secondary-pressed-border); // SG: --i-button-secondary-pressed-border · Figma: #0A1733 (button/secondary/pressed/border)
+  --int-button-secondary-accent: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0A1733 [Type=Tertiary]
+  --int-button-secondary-soft-hover-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Figma: #F2F2F5 [Type=Tertiary, State=Hover]
+  --int-button-secondary-soft-active-background: transparent; // SG: no token, literal transparent · Figma: no fill [Type=Tertiary, State=Pressed]
+  --int-button-secondary-disabled-border: var(--i-button-secondary-disabled-border); // SG: --i-button-secondary-disabled-border · Figma: #9CA3BA (button/secondary/disabled/border)
+
+  // --- success ---
+  --int-button-success-background: var(--i-button-primary-success-background); // SG: --i-button-primary-success-background · Aura: {green.500}
+  --int-button-success-color: var(--i-button-primary-success-color); // SG: --i-button-primary-success-color · Aura: #ffffff
+  --int-button-success-border: transparent; // SG: no token, literal transparent · Figma: no border [Type=Primary, State=Success]
+  --int-button-success-outline-border: var(--i-button-secondary-success-border); // SG: --i-button-secondary-success-border · Figma: #126629 (button/secondary/success/border) [Type=Secondary]
+  --int-button-success-hover-background: var(--i-color-success-100); // SG: --i-color-success-100 · Aura: {green.600}
+  --int-button-success-hover-color: var(--i-button-primary-success-color); // SG: --i-button-primary-success-color · Aura: #ffffff
+  --int-button-success-active-background: var(--i-color-success-200); // SG: --i-color-success-200 · Aura: {green.700}
+  --int-button-success-accent: var(--i-color-success-800); // SG: --i-color-success-800 · Aura: {green.500}
+  --int-button-success-soft-hover-background: var(--i-button-secondary-success-background); // SG: --i-button-secondary-success-background (prButton outlined success)
+  --int-button-success-soft-active-background: var(--i-button-secondary-success-background); // SG: --i-button-secondary-success-background (prButton outlined success)
+
+  // --- info ---
+  --int-button-info-background: var(--i-background-info); // SG: --i-background-info · Aura: {sky.500}
+  --int-button-info-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: #ffffff
+  --int-button-info-border: var(--i-border-info); // SG: --i-border-info · Aura: {sky.500}
+  --int-button-info-hover-background: var(--i-color-primary-200); // SG: --i-color-primary-200 · Aura: {sky.600}
+  --int-button-info-hover-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: #ffffff
+  --int-button-info-active-background: var(--i-color-primary-300); // SG: --i-color-primary-300 · Aura: {sky.700}
+  --int-button-info-accent: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {sky.500}
+
+  // --- warn ---
+  --int-button-warn-background: var(--i-background-warning); // SG: --i-background-warning · Aura: {orange.500}
+  --int-button-warn-color: var(--i-color-warning-700); // SG: --i-color-warning-700 · Aura: #ffffff
+  --int-button-warn-border: var(--i-border-warning); // SG: --i-border-warning · Aura: {orange.500}
+  --int-button-warn-hover-background: var(--i-color-warning-200); // SG: --i-color-warning-200 · Aura: {orange.600}
+  --int-button-warn-hover-color: var(--i-color-warning-700); // SG: --i-color-warning-700 · Aura: #ffffff
+  --int-button-warn-active-background: var(--i-color-warning-300); // SG: --i-color-warning-300 · Aura: {orange.700}
+  --int-button-warn-accent: var(--i-color-warning-700); // SG: --i-color-warning-700 · Aura: {orange.500}
+
+  // --- danger ---
+  --int-button-danger-background: var(--i-button-primary-error-background); // SG: --i-button-primary-error-background · Aura: {red.500}
+  --int-button-danger-color: var(--i-button-primary-error-color); // SG: --i-button-primary-error-color · Aura: #ffffff
+  --int-button-danger-border: transparent; // SG: no token, literal transparent · Figma: no border [Type=Primary, State=Error]
+  --int-button-danger-outline-border: var(--i-button-secondary-error-border); // SG: --i-button-secondary-error-border · Figma: #960D0D (button/secondary/error/border) [Type=Secondary]
+  --int-button-danger-hover-background: var(--i-color-error-100); // SG: --i-color-error-100 · Aura: {red.600}
+  --int-button-danger-hover-color: var(--i-button-primary-error-color); // SG: --i-button-primary-error-color · Aura: #ffffff
+  --int-button-danger-active-background: var(--i-color-error-200); // SG: --i-color-error-200 · Aura: {red.700}
+  --int-button-danger-accent: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: {red.500}
+  --int-button-danger-soft-hover-background: var(--i-color-error-50); // SG: --i-color-error-50 (prButton outlined danger)
+  --int-button-danger-soft-active-background: var(--i-color-error-50); // SG: --i-color-error-50 (prButton outlined danger)
+
+  // --- contrast ---
+  --int-button-contrast-background: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.950}
+  --int-button-contrast-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {surface.0}
+  --int-button-contrast-border: transparent; // SG: no token, literal transparent · Aura: {surface.950}
+  --int-button-contrast-hover-background: var(--i-color-primary-800); // SG: --i-color-primary-800 · Aura: {surface.900}
+  --int-button-contrast-hover-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {surface.0}
+  --int-button-contrast-active-background: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.800}
+  --int-button-contrast-accent: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {surface.950}
+
+  // --- disabled ---
+  --int-button-disabled-background: var(--i-button-primary-disabled-background); // SG: --i-button-primary-disabled-background
+  --int-button-disabled-color: var(--i-button-primary-disabled-color); // SG: --i-button-primary-disabled-color
+
+  // --- link ---
+  --int-button-link-color: var(--i-button-hyperlink-color); // SG: --i-button-hyperlink-color · Aura: {primary.color}
+  --int-button-link-hover-color: var(--i-button-hyperlink-hover-color); // SG: --i-button-hyperlink-hover-color · Aura: {primary.color}
+  --int-button-link-danger-color: var(--i-button-hyperlink-error-color); // SG: --i-button-hyperlink-error-color
+  --int-button-link-success-color: var(--i-button-hyperlink-success-color); // SG: --i-button-hyperlink-success-color
+  --int-button-link-font-size: var(--i-button-font-size-sm); // SG: --i-button-font-size-sm (prButton link: 12px at every size)
+
+  // --- sizes ---
+  --int-button-small-height: var(--i-button-sizing-md); // SG: --i-button-sizing-md
+  --int-button-small-padding-x: var(--i-button-padding-x-sm); // SG: --i-button-padding-x-sm · Aura: {form.field.sm.padding.x}
+  --int-button-small-radius: var(--i-button-border-radius-md); // SG: --i-button-border-radius-md
+  --int-button-small-font-size: var(--i-button-font-size-sm); // SG: --i-button-font-size-sm · Aura: {form.field.sm.font.size}
+  --int-button-small-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs
+  --int-button-large-height: var(--i-button-sizing-xl); // SG: --i-button-sizing-xl
+  --int-button-large-padding-x: var(--i-button-padding-x-lg); // SG: --i-button-padding-x-lg · Aura: {form.field.lg.padding.x}
+  --int-button-large-radius: var(--i-button-border-radius-xl); // SG: --i-button-border-radius-xl
+  --int-button-large-font-size: var(--i-button-font-size-lg); // SG: --i-button-font-size-lg · Aura: {form.field.lg.font.size}
+  --int-button-large-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Style Guide .p-button-lg: 16px icon
+  --int-button-rounded-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Aura: 2rem
+
+  // --- text + icon only (bare icon in a 24px box, 16px small, 32px large) ---
+  --int-button-text-icon-only-height: var(--i-button-sizing-md); // SG: --i-button-sizing-md
+  --int-button-text-icon-only-radius: var(--i-button-border-radius-md); // SG: --i-button-border-radius-md
+  --int-button-text-icon-only-padding: var(--i-button-padding-x-xs); // SG: --i-button-padding-x-xs
+  --int-button-text-icon-only-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm
+  --int-button-text-icon-only-color: var(--i-icon-color-default); // SG: --i-icon-color-default
+  // Blue on hover (guardrails.md); the Style Guide's --i-icon-color-secondary-hover is undefined.
+  --int-button-text-icon-only-hover-color: var(--i-color-primary-600); // SG: --i-color-primary-600
+  --int-button-text-icon-only-active-color: var(--i-color-primary-600); // SG: --i-color-primary-600
+  --int-button-text-icon-only-disabled-color: var(--i-icon-color-disabled); // SG: --i-icon-color-disabled
+  --int-button-text-icon-only-small-height: var(--i-button-sizing-xs); // SG: --i-button-sizing-xs
+  --int-button-text-icon-only-small-radius: var(--i-button-border-radius-sm); // SG: --i-button-border-radius-sm
+  --int-button-text-icon-only-small-padding: var(--i-button-padding-x-2xs); // SG: --i-button-padding-x-2xs
+  --int-button-text-icon-only-small-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs
+  --int-button-text-icon-only-large-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg
+  --int-button-text-icon-only-large-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg
+  --int-button-text-icon-only-large-padding: var(--i-button-padding-x-md); // SG: --i-button-padding-x-md
+
+  // --- label on hover (int-* extension) ---
+  --int-button-label-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs
+  --int-button-label-transition-duration: var(--i-motion-duration-base); // SG: --i-motion-duration-base
+  --int-button-label-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out
+
+  // --- icon top / bottom ---
+  --int-button-vertical-padding-y: var(--i-button-padding-y-md); // SG: --i-button-padding-y-md · Aura: {form.field.padding.y}
+
+  // --- skeleton ---
+  --int-button-skeleton-width: 6rem; // SG: no token, fixed placeholder width
+  --int-button-skeleton-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg
+  --int-button-skeleton-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg
+  --int-button-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-button-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-button-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-button-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
+}
+
+// Severity → keys it reassigns from --int-button-<severity>-<key> (declared in :root). The rest keep the
+// follow-defaults of the block (hover-border, active-*, outline-border) or the :root soft fills.
+$severities: (
+  primary: (background, color, border, hover-background, hover-color, active-background, accent),
+  secondary: (background, color, border, hover-background, hover-color, hover-border, active-background, active-color, active-border, accent, soft-hover-background, soft-active-background),
+  success: (background, color, border, outline-border, hover-background, hover-color, active-background, accent, soft-hover-background, soft-active-background),
+  info: (background, color, border, hover-background, hover-color, active-background, accent),
+  warn: (background, color, border, hover-background, hover-color, active-background, accent),
+  danger: (background, color, border, outline-border, hover-background, hover-color, active-background, accent, soft-hover-background, soft-active-background),
+  contrast: (background, color, border, hover-background, hover-color, active-background, accent),
 );
 
 /*——————————————————————————————————————————————————————————*\
@@ -100,43 +194,45 @@ int-button {
 }
 
 // Visual parity with the Style Guide `.prButton` skin, using --i-button-* tokens.
-// Overridable props: --int-button-{height,padding-x,radius,font-size,icon-size} and the severity
-// colors --int-button-{background,color,border,hover-*,active-*,accent}. hover-border and
-// active-{color,border} default to the resting / hover values when a severity doesn't set them.
+// hover-border, active-{color,border} and outline-border follow the resting / hover / accent values of
+// the button itself when a severity doesn't set them (re-declared here so they resolve per button).
 .int-button {
   --int-button-hover-border: var(--int-button-border); // SG: no token, follows --int-button-border
   --int-button-active-color: var(--int-button-hover-color); // SG: no token, follows --int-button-hover-color
   --int-button-active-border: var(--int-button-hover-border); // SG: no token, follows --int-button-hover-border
-  --int-button-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg
-  --int-button-padding-x: var(--i-button-padding-x-md); // SG: --i-button-padding-x-md
-  --int-button-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg
-  --int-button-font-size: var(--i-button-font-size-md); // SG: --i-button-font-size-md
-  --int-button-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm
+  --int-button-outline-border: var(--int-button-accent); // SG: no token, follows --int-button-accent
 
-  @include int.reset-button;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--i-button-gap-xs);
+  gap: var(--int-button-gap);
   box-sizing: border-box;
   min-height: var(--int-button-height);
   padding: 0 var(--int-button-padding-x);
-  border: var(--i-button-border-width-sm) solid var(--int-button-border);
+  border: var(--int-button-border-width) solid var(--int-button-border);
   border-radius: var(--int-button-radius);
   background: var(--int-button-background);
   color: var(--int-button-color);
-  font-family: var(--i-button-font-fontFamily);
+  font-family: var(--int-button-font-family);
   font-size: var(--int-button-font-size);
-  font-weight: var(--i-button-font-weight);
-  line-height: var(--i-button-font-lineHeight-md);
+  font-weight: var(--int-button-font-weight);
+  line-height: var(--int-button-line-height);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
   vertical-align: middle;
   transition:
-    background-color var(--i-motion-base),
-    border-color var(--i-motion-base),
-    color var(--i-motion-base);
+    background-color var(--int-button-transition),
+    border-color var(--int-button-transition),
+    color var(--int-button-transition);
 
   &:not([disabled]):hover {
     background: var(--int-button-hover-background);
@@ -151,12 +247,13 @@ int-button {
     color: var(--int-button-active-color);
   }
   &:focus-visible {
-    @include int.focus-ring;
+    outline: var(--int-button-focus-ring-width) solid var(--int-button-focus-ring-color);
+    outline-offset: var(--int-button-focus-ring-offset);
   }
   &[disabled] {
-    background: var(--i-button-primary-disabled-background);
+    background: var(--int-button-disabled-background);
     border-color: transparent;
-    color: var(--i-button-primary-disabled-color);
+    color: var(--int-button-disabled-color);
     cursor: not-allowed;
     user-select: none;
   }
@@ -178,10 +275,10 @@ int-button {
 
 .int-button {
   // Severities
-  @each $name, $tokens in $severities {
+  @each $name, $keys in $severities {
     &--#{$name} {
-      @each $key, $value in $tokens {
-        --int-button-#{$key}: #{$value};
+      @each $key in $keys {
+        --int-button-#{$key}: var(--int-button-#{$name}-#{$key});
       }
     }
   }
@@ -191,23 +288,23 @@ int-button {
   &--text {
     --int-button-background: transparent; // SG: no token, literal transparent
     --int-button-color: var(--int-button-accent); // SG: no token, follows --int-button-accent
-    // Light fill per severity (soft-*); severities without one keep blue/100 and blue/200.
-    --int-button-hover-background: var(--int-button-soft-hover-background, var(--i-background-hover)); // SG: --i-background-hover
+    // Light fill per severity (soft-*); severities without one keep the :root blue/100 and blue/200.
+    --int-button-hover-background: var(--int-button-soft-hover-background); // SG: no token, follows --int-button-soft-hover-background
     --int-button-hover-color: var(--int-button-accent); // SG: no token, follows --int-button-accent
     --int-button-hover-border: var(--int-button-border); // SG: no token, follows --int-button-border
-    --int-button-active-background: var(--int-button-soft-active-background, var(--i-color-primary-200)); // SG: --i-color-primary-200
+    --int-button-active-background: var(--int-button-soft-active-background); // SG: no token, follows --int-button-soft-active-background
     --int-button-active-color: var(--int-button-accent); // SG: no token, follows --int-button-accent
     --int-button-active-border: var(--int-button-border); // SG: no token, follows --int-button-border
   }
   &--outlined {
-    --int-button-border: var(--int-button-outline-border, var(--int-button-accent)); // SG: no token, follows --int-button-outline-border
+    --int-button-border: var(--int-button-outline-border); // SG: no token, follows --int-button-outline-border
   }
   &--text {
     --int-button-border: transparent; // SG: no token, literal transparent
   }
   // Figma Secondary disabled keeps a border: #9CA3BA (button/secondary/disabled/border).
   &--secondary[disabled]:not(.int-button--text, .int-button--link) {
-    border-color: var(--i-button-secondary-disabled-border);
+    border-color: var(--int-button-secondary-disabled-border);
   }
   &--outlined[disabled],
   &--text[disabled],
@@ -217,9 +314,9 @@ int-button {
   &--link {
     --int-button-background: transparent; // SG: no token, literal transparent
     --int-button-border: transparent; // SG: no token, literal transparent
-    --int-button-color: var(--i-button-hyperlink-color); // SG: --i-button-hyperlink-color
+    --int-button-color: var(--int-button-link-color); // SG: follows --int-button-link-color
     --int-button-hover-background: transparent; // SG: no token, literal transparent
-    --int-button-hover-color: var(--i-button-hyperlink-hover-color); // SG: --i-button-hyperlink-hover-color
+    --int-button-hover-color: var(--int-button-link-hover-color); // SG: follows --int-button-link-hover-color
     --int-button-hover-border: transparent; // SG: no token, literal transparent
     --int-button-active-background: transparent; // SG: no token, literal transparent
     --int-button-active-color: var(--int-button-hover-color); // SG: no token, follows --int-button-hover-color
@@ -227,37 +324,37 @@ int-button {
     text-decoration: underline;
   }
   &--link.int-button--danger {
-    --int-button-color: var(--i-button-hyperlink-error-color); // SG: --i-button-hyperlink-error-color
-    --int-button-hover-color: var(--i-button-hyperlink-error-color); // SG: --i-button-hyperlink-error-color
+    --int-button-color: var(--int-button-link-danger-color); // SG: follows --int-button-link-danger-color
+    --int-button-hover-color: var(--int-button-link-danger-color); // SG: follows --int-button-link-danger-color
   }
   &--link.int-button--success {
-    --int-button-color: var(--i-button-hyperlink-success-color); // SG: --i-button-hyperlink-success-color
-    --int-button-hover-color: var(--i-button-hyperlink-success-color); // SG: --i-button-hyperlink-success-color
+    --int-button-color: var(--int-button-link-success-color); // SG: follows --int-button-link-success-color
+    --int-button-hover-color: var(--int-button-link-success-color); // SG: follows --int-button-link-success-color
   }
 
   // Sizes
   &--small {
-    --int-button-height: var(--i-button-sizing-md); // SG: --i-button-sizing-md
-    --int-button-padding-x: var(--i-button-padding-x-sm); // SG: --i-button-padding-x-sm
-    --int-button-radius: var(--i-button-border-radius-md); // SG: --i-button-border-radius-md
-    --int-button-font-size: var(--i-button-font-size-sm); // SG: --i-button-font-size-sm
-    --int-button-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs
+    --int-button-height: var(--int-button-small-height); // SG: follows --int-button-small-height
+    --int-button-padding-x: var(--int-button-small-padding-x); // SG: follows --int-button-small-padding-x
+    --int-button-radius: var(--int-button-small-radius); // SG: follows --int-button-small-radius
+    --int-button-font-size: var(--int-button-small-font-size); // SG: follows --int-button-small-font-size
+    --int-button-icon-size: var(--int-button-small-icon-size); // SG: follows --int-button-small-icon-size
   }
   &--large {
-    --int-button-height: var(--i-button-sizing-xl); // SG: --i-button-sizing-xl
-    --int-button-padding-x: var(--i-button-padding-x-lg); // SG: --i-button-padding-x-lg
-    --int-button-radius: var(--i-button-border-radius-xl); // SG: --i-button-border-radius-xl
-    --int-button-font-size: var(--i-button-font-size-lg); // SG: --i-button-font-size-lg
-    --int-button-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Style Guide .p-button-lg: 16px icon
+    --int-button-height: var(--int-button-large-height); // SG: follows --int-button-large-height
+    --int-button-padding-x: var(--int-button-large-padding-x); // SG: follows --int-button-large-padding-x
+    --int-button-radius: var(--int-button-large-radius); // SG: follows --int-button-large-radius
+    --int-button-font-size: var(--int-button-large-font-size); // SG: follows --int-button-large-font-size
+    --int-button-icon-size: var(--int-button-large-icon-size); // SG: follows --int-button-large-icon-size
   }
   // Style Guide .prButton link: 12px text at every size (declared after the sizes so it wins).
   &--link {
-    --int-button-font-size: var(--i-button-font-size-sm); // SG: --i-button-font-size-sm
+    --int-button-font-size: var(--int-button-link-font-size); // SG: follows --int-button-link-font-size
   }
 
   // Flags
   &--rounded {
-    --int-button-radius: var(--i-border-radius-full); // SG: --i-border-radius-full
+    --int-button-radius: var(--int-button-rounded-radius); // SG: follows --int-button-rounded-radius
   }
   &--fluid {
     width: 100%;
@@ -268,30 +365,29 @@ int-button {
   }
   // Style Guide .prButton--icon: text + icon only is a bare icon in a 24px box (16px small, 32px large).
   &--text.int-button--icon-only {
-    --int-button-height: var(--i-button-sizing-md); // SG: --i-button-sizing-md
-    --int-button-radius: var(--i-button-border-radius-md); // SG: --i-button-border-radius-md
-    --int-button-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm
-    --int-button-color: var(--i-icon-color-default); // SG: --i-icon-color-default
+    --int-button-height: var(--int-button-text-icon-only-height); // SG: follows --int-button-text-icon-only-height
+    --int-button-radius: var(--int-button-text-icon-only-radius); // SG: follows --int-button-text-icon-only-radius
+    --int-button-icon-size: var(--int-button-text-icon-only-icon-size); // SG: follows --int-button-text-icon-only-icon-size
+    --int-button-color: var(--int-button-text-icon-only-color); // SG: follows --int-button-text-icon-only-color
     --int-button-hover-background: transparent; // SG: no token, literal transparent
-    // Blue on hover (guardrails.md); the Style Guide's --i-icon-color-secondary-hover is undefined.
-    --int-button-hover-color: var(--i-color-primary-600); // SG: --i-color-primary-600
+    --int-button-hover-color: var(--int-button-text-icon-only-hover-color); // SG: follows --int-button-text-icon-only-hover-color
     --int-button-active-background: transparent; // SG: no token, literal transparent
-    --int-button-active-color: var(--i-color-primary-600); // SG: --i-color-primary-600
-    padding: var(--i-button-padding-x-xs);
+    --int-button-active-color: var(--int-button-text-icon-only-active-color); // SG: follows --int-button-text-icon-only-active-color
+    padding: var(--int-button-text-icon-only-padding);
 
     &.int-button--small {
-      --int-button-height: var(--i-button-sizing-xs); // SG: --i-button-sizing-xs
-      --int-button-radius: var(--i-button-border-radius-sm); // SG: --i-button-border-radius-sm
-      --int-button-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs
-      padding: var(--i-button-padding-x-2xs);
+      --int-button-height: var(--int-button-text-icon-only-small-height); // SG: follows --int-button-text-icon-only-small-height
+      --int-button-radius: var(--int-button-text-icon-only-small-radius); // SG: follows --int-button-text-icon-only-small-radius
+      --int-button-icon-size: var(--int-button-text-icon-only-small-icon-size); // SG: follows --int-button-text-icon-only-small-icon-size
+      padding: var(--int-button-text-icon-only-small-padding);
     }
     &.int-button--large {
-      --int-button-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg
-      --int-button-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg
-      padding: var(--i-button-padding-x-md);
+      --int-button-height: var(--int-button-text-icon-only-large-height); // SG: follows --int-button-text-icon-only-large-height
+      --int-button-radius: var(--int-button-text-icon-only-large-radius); // SG: follows --int-button-text-icon-only-large-radius
+      padding: var(--int-button-text-icon-only-large-padding);
     }
     &[disabled] {
-      color: var(--i-icon-color-disabled);
+      color: var(--int-button-text-icon-only-disabled-color);
     }
   }
   // Figma button-help (Style Guide .prButton--help): icon only at rest, the label slides in on hover /
@@ -302,11 +398,11 @@ int-button {
     .int-button__label {
       interpolate-size: allow-keywords;
       overflow: hidden;
-      margin-left: var(--i-spacing-gap-xs);
+      margin-left: var(--int-button-label-gap);
       transition:
-        width var(--i-motion-duration-base) var(--i-motion-ease-in-out),
-        margin-left var(--i-motion-duration-base) var(--i-motion-ease-in-out),
-        opacity var(--i-motion-duration-base) var(--i-motion-ease-in-out);
+        width var(--int-button-label-transition-duration) var(--int-button-label-transition-easing),
+        margin-left var(--int-button-label-transition-duration) var(--int-button-label-transition-easing),
+        opacity var(--int-button-label-transition-duration) var(--int-button-label-transition-easing);
     }
     &:not(:hover, :focus-visible) {
       border-color: transparent;
@@ -334,7 +430,7 @@ int-button {
   &--icon-top,
   &--icon-bottom {
     --int-button-height: auto; // SG: no token, literal auto
-    padding-block: var(--i-button-padding-y-md);
+    padding-block: var(--int-button-vertical-padding-y);
   }
   &--icon-top {
     flex-direction: column;
@@ -350,8 +446,8 @@ int-button {
 
 .sk-button {
   display: inline-block;
-  width: 6rem;
-  height: var(--i-button-sizing-lg);
-  border-radius: var(--i-button-border-radius-lg);
-  background: var(--i-background-disabled);
+  width: var(--int-button-skeleton-width);
+  height: var(--int-button-skeleton-height);
+  border-radius: var(--int-button-skeleton-radius);
+  background: var(--int-button-skeleton-background);
 }

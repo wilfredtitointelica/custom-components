@@ -5,57 +5,57 @@
 // Linear track (Figma toggle-small). The :hover selectors repeat the values to win over the base hover.
 .int-toggle-switch--slider {
   display: flex;
-  width: var(--int-toggle-switch-slider-width);
+  width: var(--int-toggleswitch-slider-width);
 
   .int-toggle-switch__slider,
   &:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:hover) .int-toggle-switch__slider {
-    height: var(--int-toggle-switch-slider-track-height);
+    height: var(--int-toggleswitch-slider-track-height);
     margin-block: auto;
-    background-color: var(--int-toggle-switch-slider-track-color);
-    border-color: var(--int-toggle-switch-slider-track-color);
+    background-color: var(--int-toggleswitch-slider-track-color);
+    border-color: var(--int-toggleswitch-slider-track-color);
   }
 
   &.int-toggle-switch--checked .int-toggle-switch__slider,
   &:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:hover).int-toggle-switch--checked
     .int-toggle-switch__slider {
-    background-color: var(--int-toggle-switch-checked-border-color);
+    background-color: var(--int-toggleswitch-checked-border-color);
   }
 
   &.int-toggle-switch--disabled .int-toggle-switch__slider {
-    background-color: var(--int-toggle-switch-slider-disabled-color);
+    background-color: var(--int-toggleswitch-slider-disabled-color);
   }
 
   .int-toggle-switch__handle {
     inset-inline-start: 0;
-    width: var(--int-toggle-switch-slider-handle-size);
-    height: var(--int-toggle-switch-slider-handle-size);
-    margin-block-start: calc(var(--int-toggle-switch-slider-handle-size) / -2);
+    width: var(--int-toggleswitch-slider-handle-size);
+    height: var(--int-toggleswitch-slider-handle-size);
+    margin-block-start: calc(var(--int-toggleswitch-slider-handle-size) / -2);
   }
 
   .int-toggle-switch__handle,
   &:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:hover) .int-toggle-switch__handle {
-    background-color: var(--int-toggle-switch-slider-handle-background);
-    border: var(--int-toggle-switch-border-width) solid var(--int-toggle-switch-slider-track-color);
+    background-color: var(--int-toggleswitch-slider-handle-background);
+    border: var(--int-toggleswitch-border-width) solid var(--int-toggleswitch-slider-track-color);
   }
 
   &.int-toggle-switch--checked .int-toggle-switch__handle {
-    inset-inline-start: calc(var(--int-toggle-switch-slider-width) - var(--int-toggle-switch-slider-handle-size));
+    inset-inline-start: calc(var(--int-toggleswitch-slider-width) - var(--int-toggleswitch-slider-handle-size));
   }
 
   &.int-toggle-switch--checked .int-toggle-switch__handle,
   &:not(.int-toggle-switch--disabled):has(.int-toggle-switch__input:hover).int-toggle-switch--checked
     .int-toggle-switch__handle {
-    background-color: var(--int-toggle-switch-slider-handle-checked-background);
-    border-color: var(--int-toggle-switch-checked-border-color);
+    background-color: var(--int-toggleswitch-slider-handle-checked-background);
+    border-color: var(--int-toggleswitch-checked-border-color);
   }
 
   &.int-toggle-switch--disabled .int-toggle-switch__handle {
-    background-color: var(--int-toggle-switch-handle-disabled-background);
-    border-color: var(--int-toggle-switch-slider-disabled-color);
+    background-color: var(--int-toggleswitch-handle-disabled-background);
+    border-color: var(--int-toggleswitch-slider-disabled-color);
   }
 
   // Style Guide cascade: on disabled + checked the checked handle background wins.
   &.int-toggle-switch--disabled.int-toggle-switch--checked .int-toggle-switch__handle {
-    background-color: var(--int-toggle-switch-slider-handle-checked-background);
+    background-color: var(--int-toggleswitch-slider-handle-checked-background);
   }
 }

@@ -1,11 +1,35 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// In :root, not on the host: the panel renders in the CDK overlay container.
 :root {
   --NOTE-POPOVER: 'int-popover ( Custom )';
+
+  // --- surface ---
+  --int-popover-background: var(--i-background-default); // SG: --i-background-default · Aura: {overlay.popover.background}
+  --int-popover-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: {overlay.popover.color}
+  --int-popover-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: 1px
+  --int-popover-border-color: var(--i-border-default); // Aura: {overlay.popover.border.color} · knowledgeBase: .prPopover --i-popover-border-color (transparent → modifier --borderless)
+  --int-popover-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px · Aura: {overlay.popover.border.radius}
+  --int-popover-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Aura: {overlay.popover.shadow}
+  --int-popover-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
+  --int-popover-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md 14px · Aura: 1rem
+  --int-popover-padding: var(--i-popover-padding, var(--i-spacing-container-2xl)); // knowledgeBase: .prPopover .p-popover-content padding: var(--i-popover-padding) (24px; not in the base bundle → fallback)
+
+  // --- arrow ---
+  --int-popover-arrow-padding: var(--i-spacing-container-lg); // knowledgeBase: prPopover--tooltipLike · int-*: 12px compact, tooltip-like
+  --int-popover-arrow-color: var(--i-color-primary-900); // knowledgeBase: prPopover--tooltipLike · Figma: #0A1733 (tooltip/color/arrow)
+  --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
+  --int-popover-arrow-left: var(--i-spacing-container-xl); // SG: --i-spacing-container-xl 16px, default; the component sets it in px to point at the trigger
+
+  // --- skeleton ---
+  --int-popover-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
+  --int-popover-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-popover-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-popover-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-popover-focus-ring-offset: calc(var(--i-spacing-25) * -1); // SG: --i-spacing-25 negated, inset ring · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -13,14 +37,15 @@
 \*——————————————————————————————————————————————————————————*/
 
 // The block is the panel rendered in the CDK overlay.
-// Overridable props: --int-popover-{padding,arrow-color,arrow-size}.
 .int-popover {
-  --int-popover-padding: var(--i-popover-padding, var(--i-spacing-container-2xl)); // knowledgeBase: .prPopover .p-popover-content padding: var(--i-popover-padding) (24px; not in the base bundle → fallback)
-  --int-popover-arrow-color: var(--i-color-primary-900); // knowledgeBase: prPopover--tooltipLike · Figma: #0A1733 (tooltip/color/arrow)
-  --int-popover-arrow-size: var(--i-border-width-lg); // knowledgeBase: --i-tooltip-gutter · Figma: 4px (tooltip beak 8×4)
-  --int-popover-border-color: var(--i-border-default); // Aura: {overlay.popover.border.color} · knowledgeBase: .prPopover --i-popover-border-color (transparent → modifier --borderless)
-
-  @include int.overlay-surface;
+  box-sizing: border-box;
+  background: var(--int-popover-background);
+  color: var(--int-popover-color);
+  border: var(--int-popover-border-width) solid var(--int-popover-border-color);
+  border-radius: var(--int-popover-border-radius);
+  box-shadow: var(--int-popover-shadow);
+  font-family: var(--int-popover-font-family);
+  font-size: var(--int-popover-font-size);
   // Flex column: when the CDK caps the pane to the room left in the viewport, the content scrolls instead of
   // spilling out of the panel (the arrow, drawn outside the box, is not clipped).
   display: flex;
@@ -28,10 +53,10 @@
   min-height: 0;
   max-width: min(480px, calc(100vw - 16px));
   padding: var(--int-popover-padding);
-  border-color: var(--int-popover-border-color);
 
   &:focus-visible {
-    @include int.focus-ring(-2px);
+    outline: var(--int-popover-focus-ring-width) solid var(--int-popover-focus-ring-color);
+    outline-offset: var(--int-popover-focus-ring-offset);
   }
   &:focus:not(:focus-visible) {
     outline: none;
@@ -61,14 +86,14 @@
 // Solid beak just outside the border, pointing at the trigger; --int-popover-arrow-left (px from the
 // left edge) is set by the component. Below the trigger it sits on top; --flipped moves it to the bottom.
 .int-popover--arrow {
-  --int-popover-padding: var(--i-spacing-container-lg); // knowledgeBase: prPopover--tooltipLike · int-*: 12px compact, tooltip-like
+  --int-popover-padding: var(--int-popover-arrow-padding); // knowledgeBase: prPopover--tooltipLike · int-*: 12px compact
   position: relative;
 
   &::before {
     content: '';
     position: absolute;
-    bottom: calc(100% + var(--i-border-width-sm));
-    left: var(--int-popover-arrow-left, 16px);
+    bottom: calc(100% + var(--int-popover-border-width));
+    left: var(--int-popover-arrow-left);
     width: 0;
     height: 0;
     border: var(--int-popover-arrow-size) solid transparent;
@@ -78,7 +103,7 @@
   }
 
   &.int-popover--flipped::before {
-    top: calc(100% + var(--i-border-width-sm));
+    top: calc(100% + var(--int-popover-border-width));
     bottom: auto;
     border-top-width: var(--int-popover-arrow-size);
     border-bottom-width: 0;
@@ -95,6 +120,6 @@
   display: block;
   width: 16rem;
   height: 8rem;
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  border-radius: var(--int-popover-skeleton-border-radius);
+  background: var(--int-popover-skeleton-background);
 }

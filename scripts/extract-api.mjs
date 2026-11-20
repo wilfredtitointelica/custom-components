@@ -82,13 +82,18 @@ function localAliases(source) {
   return aliases;
 }
 
-/** Class decorated with @Component (the int-* base). */
+/**
+ * The int-* base: the class decorated with @Component, else the one decorated with @Directive
+ * (attribute bases such as `input[intInputText]` or `[intTooltip]` have no @Component).
+ */
 function componentClass(source) {
-  return source.statements.find(
-    (s) =>
-      ts.isClassDeclaration(s) &&
-      ts.getDecorators?.(s)?.some((d) => /^Component\b/.test(d.expression.getText(source))),
-  );
+  const decorated = (name) =>
+    source.statements.find(
+      (s) =>
+        ts.isClassDeclaration(s) &&
+        ts.getDecorators?.(s)?.some((d) => new RegExp(`^${name}\\b`).test(d.expression.getText(source))),
+    );
+  return decorated('Component') ?? decorated('Directive');
 }
 
 /** inputs, outputs, templates and methods of base/<id>.ts. */

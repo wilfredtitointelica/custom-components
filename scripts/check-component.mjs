@@ -216,6 +216,14 @@ function checkVersion(component, version, report, deps) {
   const styles = files.filter((file) => file.endsWith('.scss'));
   const allStyles = styles.map((file) => readFileSync(file, 'utf8')).join('\n');
   let animates = false;
+  // Own tokens: --int-<id without hyphens>-*, declared in the :root of styles/_<id>.scss (API tab).
+  const tokenId = id.replace(/-/g, '');
+  const mainScss = join(root, 'styles', `_${id}.scss`);
+  const declaredTokens = new Set(
+    existsSync(mainScss) ? extractApi({ ts: '', scss: mainScss }).tokens.map((t) => t.name) : [],
+  );
+  // Prefixes in use: the id without hyphens, plus a shorter one the :root declares (--int-dialog-* of dialog-modal).
+  const tokenPrefixes = new Set([tokenId, ...[...declaredTokens].map((t) => /^--int-([a-z0-9]+)-/.exec(t)?.[1])]);
 
   for (const file of files) {
     const source = readFileSync(file, 'utf8');
@@ -339,6 +347,8 @@ function checkVersion(component, version, report, deps) {
       lines.forEach((text, i) => {
         const at = `${path}:${i + 1}`;
         if (/::ng-deep/.test(text)) report.error(at, '::ng-deep');
+        if (/@(use|import|forward)\s+['"][^'"]*_shared_/.test(text))
+          report.error(at, 'shared SCSS (_shared_): each component writes its own rules with its own --int-* tokens');
         if (/--doc-|\.doc-/.test(text))
           report.error(at, 'documentation token or class (--doc-* / .doc-*)');
         if (/\.p-[a-z]/.test(text)) report.error(at, 'PrimeNG selector .p-*');
@@ -392,9 +402,29 @@ function checkVersion(component, version, report, deps) {
             : TOKEN_EXCEPTIONS.has(value.trim());
         if (!valid && !ORIGIN_COMMENT.test(text))
           report.error(at, `${name}: fixed value ${value.trim()} without origin comment (// SG: · Figma: …): explain why it is not a var(--i-*)`);
-        if (!ORIGIN_COMMENT.test(text))
+        // A modifier pointing a token at another --int-* (`--int-select-height: var(--int-select-sm-height)`)
+        // documents nothing new: the origin is on the :root token it points to.
+        const alias = /^var\(--int-[\w-]+\)$/.test(value.trim());
+        if (!ORIGIN_COMMENT.test(text) && !alias)
           report.warn(at, `${name} without origin comment (// knowledgeBase: · Figma: · Aura:)`);
       });
+      // Own tokens: the rules read --int-<id>-* (declared in the :root of _<id>.scss, so they are listed in
+      // the API tab); only that :root reads the Style Guide (--i-control-* for fields, else the Figma --i-*).
+      const roots = [...code.matchAll(/:root\s*\{[^}]*\}/g)].map((m) => [m.index, m.index + m[0].length]);
+      const inRoot = (index) => roots.some(([start, end]) => index >= start && index < end);
+      for (const match of code.matchAll(/var\((--i-[\w-]+)/g))
+        if (!inRoot(match.index))
+          report.warn(
+            `${path}:${lineOf(code, match.index)}`,
+            `${match[1]} read in a rule: declare a --int-${tokenId}-* token in the :root of _${id}.scss and use it`,
+          );
+      for (const match of code.matchAll(/var\((--int-([a-z0-9]+)-[\w-]+)/g))
+        if (tokenPrefixes.has(match[2]) && !declaredTokens.has(match[1]) && !match[1].endsWith('-'))
+          report.warn(
+            `${path}:${lineOf(code, match.index)}`,
+            `${match[1]} is not declared in the :root of _${id}.scss: it does not appear in the API tab`,
+          );
+
       for (const match of code.matchAll(/var\((--i-[\w-]+)/g)) {
         if (styleGuide && !styleGuide.tokens.has(match[1]))
           report.error(

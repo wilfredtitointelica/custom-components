@@ -477,6 +477,10 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 - No usar clases `.doc-*` ni tokens `--doc-*` en un componente `int-*`: son exclusivos de la
   documentación (`src/styles.scss`, `src/app`, `src/core`, `src/page`). Los tokens visuales de los
   componentes vendrán del design system.
+- Cuando el maquetador escriba el CSS: cada token del componente se declara en este `:root`
+  (`--int-<id>-*: var(--i-*)`, con comentario de origen; controles de formulario sobre `--i-control-*`) y
+  las reglas leen solo `var(--int-<id>-*)`. Sin mixins ni `@use` de `_shared_` (es solo TypeScript). Ver
+  "Estilos y tokens" en `AGENTS.md`.
 
 ### 3.8 `version-1/styles/_chip.outlined.scss` (modificador, solo si se pidió)
 
@@ -491,7 +495,8 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 
 Se entrega vacío, igual que la base. Cuando el maquetador lo complete:
 - Solo lo que **cambia** respecto de la base. No repetir estilos base ni selectores vacíos.
-- No redefinir `:root` ni tokens globales.
+- No redefinir `:root` ni tokens globales: reasignar un token a otro token propio del `:root` de la base
+  (`--int-chip-border: var(--int-chip-outlined-border)`), nunca a `var(--i-*)`.
 - Si el modificador afecta un elemento: `.int-chip--outlined .int-chip__icon { … }`.
 
 ### 3.9 Verificar

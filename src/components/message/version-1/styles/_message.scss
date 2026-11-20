@@ -9,6 +9,9 @@
   --int-message-border-radius: var(--i-border-radius-lg); // Figma: 8px (toast/border/radius/lg), no knowledgeBase/SG value
   --int-message-border-width: var(--i-border-width-sm); // SG: outline 1px · Figma: 1px (toast/border/width/sm)
   --int-message-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-message-enter-duration: var(--i-motion-duration-base); // SG: --i-motion-duration-base, no knowledgeBase/Figma value
+  --int-message-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out, no knowledgeBase/Figma value
+  --int-message-leave-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out, no knowledgeBase/Figma value
 
   // --- content ---
   --int-message-content-padding: var(--i-spacing-container-md); // knowledgeBase: --i-message-content-padding 8px · Figma: 8px (toast/padding/x/md)
@@ -75,11 +78,11 @@
   outline-offset: calc(var(--int-message-border-width) * -1);
 
   &.int-message--enter {
-    animation: int-message-enter var(--i-motion-duration-base) var(--i-motion-ease-out);
+    animation: int-message-enter var(--int-message-enter-duration) var(--int-message-enter-easing);
   }
 
   &.int-message--leave {
-    animation: int-message-leave var(--int-message-transition-duration) var(--i-motion-ease-in-out) forwards;
+    animation: int-message-leave var(--int-message-transition-duration) var(--int-message-leave-easing) forwards;
   }
 }
 

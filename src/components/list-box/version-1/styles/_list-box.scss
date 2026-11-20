@@ -1,33 +1,85 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// In :root, not on the host: a container (the Dropdown-select panel, rendered in the CDK overlay) restyles the
+// options inside it by overriding --int-listbox-option-* on an ancestor.
 :root {
   --NOTE-LIST-BOX: 'int-list-box ( Custom )';
-  --int-list-box-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · space between options (4px)
+
+  // --- field (frame) ---
+  --int-listbox-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {listbox.background} {form.field.background}
+  --int-listbox-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · was --i-border-width-sm (1px) · Aura: 1px
+  --int-listbox-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
+  --int-listbox-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
+  --int-listbox-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Aura: {form.field.color}
+  --int-listbox-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · was --i-text-body-family (same) · Aura: inherit
+  --int-listbox-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
+  --int-listbox-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · Aura: {form.field.focus.border.color}
+  --int-listbox-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
+
+  // --- list ---
+  --int-listbox-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · space between options (4px) · Aura: {list.gap} 2px
+  --int-listbox-list-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs 4px · Aura: {list.padding} 0.25rem
+
+  // --- filter ---
+  --int-listbox-filter-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px · Aura: {list.header.padding}
+  --int-listbox-filter-icon-width: var(--i-sizing-sm); // SG: --i-sizing-sm (room for the search icon) · Aura: —
+  --int-listbox-filter-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
+  --int-listbox-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · was grey secondary-600 · Aura: {form.field.icon.color}
+
+  // --- option ---
+  --int-listbox-option-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm 8px · Aura: 0.5rem
+  --int-listbox-option-padding-y: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm 6px · Aura: {list.option.padding} 0.5rem
+  --int-listbox-option-padding-x: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px · Aura: {list.option.padding} 0.75rem
+  --int-listbox-option-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px · Aura: {list.option.border.radius}
+  --int-listbox-option-background: var(--i-color-secondary-50); // SG: rows grey/50 · Aura: transparent
+  --int-listbox-option-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: {list.option.color}
+  --int-listbox-option-focus-background: var(--i-color-secondary-100); // SG: keyboard focus grey/100 · Aura: {list.option.focus.background}
+  --int-listbox-option-hover-background: var(--i-color-secondary-100); // SG: hover grey/100 · Aura: {list.option.focus.background}
+  --int-listbox-option-selected-background: var(--i-color-primary-700); // SG: selected solid blue/700 · Aura: {list.option.selected.background}
+  --int-listbox-option-selected-color: var(--i-color-primary-50); // SG: selected text blue/50 · Aura: {list.option.selected.color}
+  --int-listbox-option-selected-font-weight: var(--i-typography-font-weight-regular); // SG: --i-typography-font-weight-regular · Aura: normal
+  --int-listbox-option-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Aura: {form.field.disabled.color}
+  --int-listbox-check-color: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {list.option.selected.color}
+
+  // --- empty message ---
+  --int-listbox-empty-padding-y: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm 6px · Aura: {list.option.padding}
+  --int-listbox-empty-padding-x: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px · Aura: {list.option.padding}
+  --int-listbox-empty-color: var(--i-text-color-secondary); // SG: --i-text-color-secondary · Aura: {list.option.color}
+
+  // --- drag and drop ---
+  --int-listbox-drag-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: —
+  --int-listbox-drag-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: —
+  --int-listbox-preview-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Aura: —
+  --int-listbox-placeholder-height: var(--i-sizing-md); // SG: --i-sizing-md, one option row (24px) · Aura: —
+  --int-listbox-placeholder-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: —
+  --int-listbox-placeholder-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: —
+
+  // --- skeleton ---
+  --int-listbox-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
+  --int-listbox-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// Same look as the form fields: border, radius, colors and font come from --int-field-*.
+// Same look as the form fields: border, radius, colors and font come from the --i-control-* tokens.
 .int-list-box {
   display: inline-flex;
   flex-direction: column;
   box-sizing: border-box;
   min-width: 12rem;
-  border: var(--i-border-width-sm) solid int.field(border);
-  border-radius: int.field(radius);
-  background: int.field(background);
-  font-family: var(--i-text-body-family);
-  font-size: int.field(font-size);
-  color: int.field(color);
+  border: var(--int-listbox-border-width) solid var(--int-listbox-border-color);
+  border-radius: var(--int-listbox-border-radius);
+  background: var(--int-listbox-background);
+  font-family: var(--int-listbox-font-family);
+  font-size: var(--int-listbox-font-size);
+  color: var(--int-listbox-color);
 
   &:focus-within:not(.int-list-box--embedded) {
-    border-color: int.field(border-focus);
+    border-color: var(--int-listbox-focus-border-color);
   }
 }
 
@@ -38,27 +90,27 @@
 .int-list-box {
   &__filter {
     position: relative;
-    padding: var(--i-spacing-container-md) var(--i-spacing-container-md) 0;
+    padding: var(--int-listbox-filter-padding) var(--int-listbox-filter-padding) 0;
 
     .int-inputtext {
-      padding-right: calc(var(--i-sizing-sm) + var(--i-spacing-container-md));
+      padding-right: calc(var(--int-listbox-filter-icon-width) + var(--int-listbox-filter-padding));
     }
   }
   &__filter-icon {
     position: absolute;
     top: 50%;
-    right: calc(var(--i-spacing-container-md) * 2);
-    transform: translateY(calc(-50% + var(--i-spacing-container-md) / 2));
-    color: int.field(icon-color); // unified: primary-900 (was grey secondary-600), see _shared_/_mixins.scss
-    font-size: var(--i-icon-size-sm);
+    right: calc(var(--int-listbox-filter-padding) * 2);
+    transform: translateY(calc(-50% + var(--int-listbox-filter-padding) / 2));
+    color: var(--int-listbox-icon-color);
+    font-size: var(--int-listbox-filter-icon-size);
   }
 
   &__list {
     display: flex;
     flex-direction: column;
-    gap: var(--int-list-box-gap);
+    gap: var(--int-listbox-gap);
     margin: 0;
-    padding: var(--i-spacing-container-xs);
+    padding: var(--int-listbox-list-padding);
     list-style: none;
     overflow-y: auto;
 
@@ -69,10 +121,35 @@
   }
 
   &__option {
-    @include int.option(int-list-box__option);
+    display: flex;
+    align-items: center;
+    gap: var(--int-listbox-option-gap);
+    padding: var(--int-listbox-option-padding-y) var(--int-listbox-option-padding-x);
+    border-radius: var(--int-listbox-option-border-radius);
+    background: var(--int-listbox-option-background);
+    color: var(--int-listbox-option-color);
+    cursor: pointer;
+    user-select: none;
+
+    &.int-list-box__option--focused {
+      background: var(--int-listbox-option-focus-background);
+    }
+    &:hover:not(.int-list-box__option--disabled):not(.int-list-box__option--selected) {
+      background: var(--int-listbox-option-hover-background);
+    }
+    &.int-list-box__option--selected {
+      background: var(--int-listbox-option-selected-background);
+      color: var(--int-listbox-option-selected-color);
+      font-weight: var(--int-listbox-option-selected-font-weight);
+    }
+    &.int-list-box__option--disabled {
+      color: var(--int-listbox-option-disabled-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
   }
   &__check {
-    color: var(--i-color-primary-700);
+    color: var(--int-listbox-check-color);
 
     // On the solid selected row the check takes the row's text color.
     .int-list-box__option--selected & {
@@ -85,8 +162,8 @@
   }
 
   &__empty {
-    padding: var(--i-spacing-container-sm) var(--i-spacing-container-md);
-    color: var(--i-text-color-secondary);
+    padding: var(--int-listbox-empty-padding-y) var(--int-listbox-empty-padding-x);
+    color: var(--int-listbox-empty-color);
     cursor: default;
   }
 }
@@ -101,7 +178,7 @@
     width: 100%;
   }
   &--invalid {
-    border-color: int.field(border-invalid);
+    border-color: var(--int-listbox-invalid-border-color);
   }
   // No pointer-events: none, it would hide the not-allowed cursor; selectOption() and handleKeydown()
   // already ignore clicks and keys while disabled.
@@ -115,7 +192,7 @@
     user-select: none;
   }
   &--disabled &__option:hover:not(.int-list-box__option--selected) {
-    background: int.option-token(background);
+    background: var(--int-listbox-option-background);
   }
   // dragdrop: options can be grabbed; the preview (cloned into the body) keeps the option look plus a shadow,
   // the placeholder marks the drop slot and the other options slide to make room.
@@ -123,17 +200,17 @@
     cursor: grab;
   }
   &__list--dragging &__option {
-    transition: transform var(--i-motion-base);
+    transition: transform var(--int-listbox-drag-transition-duration) var(--int-listbox-drag-transition-easing);
   }
   &__option--preview {
     box-sizing: border-box;
-    box-shadow: var(--i-shadow-depth-3);
+    box-shadow: var(--int-listbox-preview-shadow);
     cursor: grabbing;
   }
   &__placeholder {
-    min-height: var(--i-sizing-md); // one option row (24px)
-    border: var(--i-border-width-sm) dashed var(--i-color-secondary-200);
-    border-radius: int.option-token(radius);
+    min-height: var(--int-listbox-placeholder-height); // one option row (24px)
+    border: var(--int-listbox-placeholder-border-width) dashed var(--int-listbox-placeholder-border-color);
+    border-radius: var(--int-listbox-option-border-radius);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -159,6 +236,6 @@
   display: inline-block;
   width: 12rem;
   height: 10rem;
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  border-radius: var(--int-listbox-skeleton-border-radius);
+  background: var(--int-listbox-skeleton-background);
 }

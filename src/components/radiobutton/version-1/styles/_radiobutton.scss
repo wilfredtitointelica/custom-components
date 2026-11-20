@@ -1,5 +1,3 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
@@ -7,12 +5,42 @@
 :root {
   --NOTE-RADIOBUTTON: 'int-radiobutton ( Custom )';
 
-  --int-radiobutton-size: var(--i-sizing-xs); // SG: --i-sizing-xs
-  --int-radiobutton-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200
-  --int-radiobutton-hover-border: var(--i-color-primary-700); // SG: --i-color-primary-700
-  --int-radiobutton-hover-background: var(--i-color-primary-50); // SG: --i-color-primary-50
-  --int-radiobutton-checked: var(--i-color-primary-700); // SG: --i-color-primary-700
-  --int-radiobutton-dot-color: var(--i-color-primary-50); // SG: --i-color-primary-50
+  // --- root ---
+  --int-radiobutton-size: var(--i-sizing-xs); // SG: --i-sizing-xs · Aura: 1.25rem
+  --int-radiobutton-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Aura: 50%
+  --int-radiobutton-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 1px
+  --int-radiobutton-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
+  --int-radiobutton-hover-border: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {form.field.hover.border.color}
+  --int-radiobutton-hover-background: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: —
+  --int-radiobutton-motion: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+
+  // --- dot ---
+  --int-radiobutton-dot-scale: 0.5; // SG: no token · the dot is half of --int-radiobutton-size, so it follows the sizes · Aura: 0.75rem
+  --int-radiobutton-dot-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {primary.contrast.color}
+
+  // --- checked ---
+  --int-radiobutton-checked: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {primary.color}
+
+  // --- sizes ---
+  --int-radiobutton-small-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs · Aura: 1rem
+  --int-radiobutton-large-size: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: 1.5rem
+
+  // --- invalid ---
+  --int-radiobutton-invalid-border: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: {form.field.invalid.border.color}
+  --int-radiobutton-invalid-background: var(--i-color-error-50); // SG: --i-color-error-50 · Aura: —
+  --int-radiobutton-invalid-dot-color: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: —
+
+  // --- disabled ---
+  --int-radiobutton-disabled-border: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.border.color}
+  --int-radiobutton-disabled-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.disabled.background}
+  --int-radiobutton-disabled-dot-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
+
+  // --- skeleton ---
+  --int-radiobutton-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-radiobutton-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-radiobutton-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-radiobutton-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -22,9 +50,6 @@
 // <int-radiobutton>: parity with Style Guide `.prRadioButton`. The native input (__control) covers
 // the visual box (__box + __dot) and receives clicks, focus and arrow keys.
 .int-radiobutton {
-  // Declared on the block (not :root) so it follows the size modifiers.
-  --int-radiobutton-dot-size: calc(var(--int-radiobutton-size) / 2); // SG: no token, follows --int-radiobutton-size
-
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
@@ -61,21 +86,21 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    border: var(--i-border-width-sm) solid var(--int-radiobutton-border);
-    border-radius: var(--i-border-radius-full);
+    border: var(--int-radiobutton-border-width) solid var(--int-radiobutton-border);
+    border-radius: var(--int-radiobutton-radius);
     background: transparent;
     transition:
-      background-color var(--i-motion-base),
-      border-color var(--i-motion-base);
+      background-color var(--int-radiobutton-motion),
+      border-color var(--int-radiobutton-motion);
   }
 
   &__dot {
-    width: var(--int-radiobutton-dot-size);
-    height: var(--int-radiobutton-dot-size);
-    border-radius: var(--i-border-radius-full);
+    width: calc(var(--int-radiobutton-size) * var(--int-radiobutton-dot-scale));
+    height: calc(var(--int-radiobutton-size) * var(--int-radiobutton-dot-scale));
+    border-radius: var(--int-radiobutton-radius);
     background: var(--int-radiobutton-dot-color);
     transform: scale(0);
-    transition: transform var(--i-motion-base);
+    transition: transform var(--int-radiobutton-motion);
   }
 
   &:not(.int-radiobutton--disabled):not(.int-radiobutton--checked):hover .int-radiobutton__box {
@@ -83,7 +108,8 @@
     background: var(--int-radiobutton-hover-background);
   }
   &__control:focus-visible + .int-radiobutton__box {
-    @include int.focus-ring;
+    outline: var(--int-radiobutton-focus-ring-width) solid var(--int-radiobutton-focus-ring-color);
+    outline-offset: var(--int-radiobutton-focus-ring-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -100,10 +126,10 @@
 
 .int-radiobutton {
   &--small {
-    --int-radiobutton-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs
+    --int-radiobutton-size: var(--int-radiobutton-small-size); // SG: --i-sizing-2xs
   }
   &--large {
-    --int-radiobutton-size: var(--i-sizing-sm); // SG: --i-sizing-sm
+    --int-radiobutton-size: var(--int-radiobutton-large-size); // SG: --i-sizing-sm
   }
 
   &--checked .int-radiobutton__box {
@@ -115,19 +141,19 @@
   }
 
   &--invalid .int-radiobutton__box {
-    border-color: var(--i-color-error-700);
-    background: var(--i-color-error-50);
+    border-color: var(--int-radiobutton-invalid-border);
+    background: var(--int-radiobutton-invalid-background);
   }
   &--invalid .int-radiobutton__dot {
-    background: var(--i-color-error-700);
+    background: var(--int-radiobutton-invalid-dot-color);
   }
 
   &--disabled .int-radiobutton__box {
-    border-color: var(--i-color-secondary-400);
-    background: var(--i-color-secondary-200);
+    border-color: var(--int-radiobutton-disabled-border);
+    background: var(--int-radiobutton-disabled-background);
   }
   &--disabled .int-radiobutton__dot {
-    background: var(--i-color-secondary-400);
+    background: var(--int-radiobutton-disabled-dot-color);
   }
 }
 
@@ -139,6 +165,6 @@
   display: inline-block;
   width: var(--int-radiobutton-size);
   height: var(--int-radiobutton-size);
-  border-radius: var(--i-border-radius-full);
-  background: var(--i-background-disabled);
+  border-radius: var(--int-radiobutton-radius);
+  background: var(--int-radiobutton-skeleton-background);
 }

@@ -75,6 +75,26 @@ src/components/<id>/version-N/
   ```scss
   --int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
   ```
+- **Cada componente tiene sus propios tokens** y todos se declaran en el `:root` de `styles/_<id>.scss`
+  (la pestaña API lista solo esos). Solo ese `:root` lee el Style Guide: los campos y controles de
+  formulario consumen `--i-control-*` (`--i-control-sm-*` / `--i-control-lg-*` para los tamaños); el resto,
+  el `--i-*` del Style Guide / Figma. Las reglas (bloque, elementos, `_<id>.<grupo>.scss`) leen **solo**
+  `var(--int-<id>-*)`, nunca `var(--i-*)`. Un modificador reasigna un token a otro token propio declarado en
+  el `:root` (`.int-select--small { --int-select-height: var(--int-select-sm-height) }`), nunca a un `--i-*`
+  ni declara tokens nuevos en el bloque. `check:component` avisa ("read in a rule", "is not declared in the :root").
+- **Sin mixins ni SCSS compartido**: cada componente escribe sus reglas completas (borde de campo, reset de
+  botón, anillo de foco…) con sus tokens. Lo que comparten los componentes lo da el Style Guide (si cambia
+  `--i-control-border-color`, cambian todos los campos), no una capa intermedia. `_shared_/` es solo
+  TypeScript (overlay, `ngModel`, ids, opciones, iconos); `check:component` da error si un SCSS hace
+  `@use`/`@import` de `_shared_`.
+- Anillo de foco: `outline: var(--int-<id>-focus-ring-width) solid var(--int-<id>-focus-ring-color)` +
+  `outline-offset: var(--int-<id>-focus-ring-offset)`, con esos tokens en el `:root` sobre
+  `--i-control-outline-*`; mientras el Style Guide los tenga vacíos (`var()` en `_tokens.control.draft.scss`),
+  sobre `--i-border-width-sm`, `--i-color-primary-600` y `--i-spacing-25` (2px).
+- En el nombre del token el id del componente va junto, sin guiones: `--int-treeselect-width`, no
+  `--int-tree-select-width` (las clases BEM y el selector sí llevan guion: `.int-tree-select__label`).
+  Si el id lleva un sufijo que no aporta, el token lo omite: `dialog-modal` → `--int-dialog-*`,
+  `confirm-dialog-modal` → `--int-confirmdialog-*`.
 - Lo ideal es `var(--i-*)`. Un valor fijo (`auto`, `22px`) es una excepción válida solo **dentro del
   `--int-*`** y con su comentario de origen (`// SG: no token · Figma: 22px`); nunca suelto en las reglas.
   Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay animación, foco con `:focus-visible`.
