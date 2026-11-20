@@ -1,0 +1,97 @@
+<!--
+  title: ListBox
+  description: ListBox muestra una lista de opciones para elegir una o varias.
+  figma:
+-->
+@if (filter()) {
+  <div class="int-listbox__filter">
+    <input
+      #filterInput
+      intInputText
+      intSize="small"
+      fluid
+      type="text"
+      role="searchbox"
+      autocomplete="off"
+      [placeholder]="filterPlaceholder() ?? config.t('searchPlaceholder')"
+      [value]="filterValue()"
+      [disabled]="isDisabled()"
+      [attr.aria-controls]="listId"
+      [attr.aria-activedescendant]="activeDescendant()"
+      (input)="onFilterInput($event)"
+      (keydown)="handleKeydown($event)"
+    />
+    <int-icon class="int-listbox__filter-icon" name="search" />
+  </div>
+}
+<ul
+  class="int-listbox__list"
+  role="listbox"
+  [id]="listId"
+  [style.max-height]="scrollHeight()"
+  [attr.tabindex]="embedded() || isDisabled() ? -1 : 0"
+  [attr.aria-activedescendant]="listFocused() ? activeDescendant() : null"
+  [attr.aria-multiselectable]="multiple() || null"
+  [attr.aria-disabled]="isDisabled() || null"
+  [attr.aria-label]="ariaLabel() ?? null"
+  [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+  [class.int-listbox__list--dragging]="dragging()"
+  cdkDropList
+  [cdkDropListData]="visibleOptions()"
+  [cdkDropListDisabled]="dragDisabled()"
+  (cdkDropListDropped)="onDropped($event)"
+  (keydown)="handleKeydown($event)"
+  (focus)="onListFocus()"
+  (blur)="onListBlur()"
+>
+  @for (option of visibleOptions(); track $index; let i = $index) {
+    @let selected = isSelected(option);
+    <!-- Keyboard is handled on the listbox (aria-activedescendant pattern), not per option. -->
+    <li
+      role="option"
+      class="int-listbox__option"
+      [id]="optionId(i)"
+      [class.int-listbox__option--selected]="selected"
+      [class.int-listbox__option--focused]="focusedIndex() === i && (listFocused() || embedded())"
+      [class.int-listbox__option--disabled]="isDisabledOption(option)"
+      [attr.aria-selected]="selected"
+      [attr.aria-disabled]="isDisabledOption(option) || null"
+      cdkDrag
+      [cdkDragData]="option"
+      [cdkDragDisabled]="dragDisabled() || isDisabledOption(option)"
+      cdkDragPreviewClass="int-listbox__option--preview"
+      (cdkDragStarted)="dragging.set(true)"
+      (cdkDragEnded)="dragging.set(false)"
+      (mousedown)="onOptionMousedown($event)"
+      (mousemove)="focusedIndex.set(i)"
+      (click)="selectOption($event, option, i)"
+      (dblclick)="onOptionDblClick($event, option)"
+    >
+      <!-- Slot where the dragged option will land (dragdrop) -->
+      <div *cdkDragPlaceholder class="int-listbox__placeholder" aria-hidden="true"></div>
+      @if (checkmark()) {
+        <int-icon
+          class="int-listbox__check"
+          name="check"
+          [class.int-listbox__check--hidden]="!selected"
+        />
+      }
+      @if (resolvedItemTemplate(); as tpl) {
+        <ng-container
+          [ngTemplateOutlet]="tpl"
+          [ngTemplateOutletContext]="{ $implicit: option, index: i, selected }"
+        />
+      } @else {
+        <span class="int-listbox__label">{{ label(option) }}</span>
+      }
+    </li>
+  } @empty {
+    <li class="int-listbox__empty" role="option" aria-selected="false" aria-disabled="true">
+      {{
+        filterValue()
+          ? (emptyFilterMessage() ?? config.t('emptyFilterMessage'))
+          : (emptyMessage() ?? config.t('emptyMessage'))
+      }}
+    </li>
+  }
+</ul>

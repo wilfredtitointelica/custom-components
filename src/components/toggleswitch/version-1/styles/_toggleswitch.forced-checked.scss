@@ -1,0 +1,18 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Forced checked
+\*——————————————————————————————————————————————————————————*/
+
+// Knowledge base .prToggleswitch--forcedChecked: forcedChecked sets --disabled too, so it wins over the disabled rules.
+.int-toggleswitch--forced-checked.int-toggleswitch--disabled {
+  .int-toggleswitch__input {
+    cursor: not-allowed;
+  }
+
+  .int-toggleswitch__slider {
+    background-color: var(--int-toggleswitch-checked-border-color);
+  }
+
+  .int-toggleswitch__handle {
+    border-color: var(--int-toggleswitch-checked-border-color);
+  }
+}

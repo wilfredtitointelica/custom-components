@@ -11,7 +11,7 @@ import {
 
 /**
  * Column A of "Listado de componentes a replicar" (rows 2–37), verbatim, without the rows that were dropped:
- * Alertas (it is ConfirmDialog, confirm-dialog-modal) and FileDrop (a variant of FileUpload).
+ * Alertas (it is ConfirmDialog, confirmdialog) and FileDrop (a variant of FileUpload).
  */
 const EXCEL_NAMES = [
   'Accordion',
@@ -51,11 +51,11 @@ const EXCEL_NAMES = [
 ];
 
 /**
- * Components added outside the Excel (chip split from Badge; confirm-dialog-modal from Dialog; pick-list from
+ * Components added outside the Excel (chip split from Badge; confirmdialog from Dialog; picklist from
  * Drag and Drop; inputnumber, checkbox and radiobutton split from Input, which stays as inputtext). Tag is the
  * Excel "Pill".
  */
-const NON_EXCEL_IDS = ['chip', 'confirm-dialog-modal', 'pick-list', 'inputnumber', 'checkbox', 'radiobutton'];
+const NON_EXCEL_IDS = ['chip', 'confirmdialog', 'picklist', 'inputnumber', 'checkbox', 'radiobutton'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();
@@ -131,11 +131,11 @@ describe('Component catalog', () => {
       resolveInventory(
         [
           { id: 'search', name: 'Search', loadRoutes },
-          { id: 'search-dropdown', name: 'Search Dropdown', loadRoutes },
+          { id: 'search-bar', name: 'Search Bar', loadRoutes },
         ],
-        { search: [{ number: 1, folder: 'version-1', examples: ['dropdown'] }] },
+        { search: [{ number: 1, folder: 'version-1', examples: ['bar'] }] },
       ),
-    ).toThrowError(/Duplicated ID "search-dropdown"/);
+    ).toThrowError(/Duplicated ID "search-bar"/);
   });
 
   it('keeps the components it requires, even not created yet, and rejects invalid ones', () => {
@@ -295,10 +295,10 @@ describe('Component catalog', () => {
   });
 
   it('searches by component name only, ignoring case, accents and spaces', () => {
-    expect(catalog.searchByName('file upload').map((c) => c.id)).toEqual(['file-upload']);
+    expect(catalog.searchByName('file upload').map((c) => c.id)).toEqual(['fileupload']);
     expect(catalog.searchByName('TREE').map((c) => c.id)).toEqual([
-      'tree-view',
-      'tree-select',
+      'treeview',
+      'treeselect',
       'treetable',
     ]);
     expect(catalog.searchByName('basic')).toEqual([]); // variant names are not searched

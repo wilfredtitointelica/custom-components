@@ -41,7 +41,10 @@
   box-sizing: border-box;
   background: var(--int-popover-background);
   color: var(--int-popover-color);
-  border: var(--int-popover-border-width) solid var(--int-popover-border-color);
+  // Longhands: a missing width token must not drop the color too (a shorthand fails as a whole).
+  border-width: var(--int-popover-border-width);
+  border-style: solid;
+  border-color: var(--int-popover-border-color);
   border-radius: var(--int-popover-border-radius);
   box-shadow: var(--int-popover-shadow);
   font-family: var(--int-popover-font-family);

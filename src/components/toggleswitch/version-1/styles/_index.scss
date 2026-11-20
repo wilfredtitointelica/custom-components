@@ -1,0 +1,4 @@
+// int-toggleswitch · entry point. Add one `@use 'toggleswitch.<variant>' as toggleswitch-<variant>;` per variant module.
+@use 'toggleswitch';
+@use 'toggleswitch.slider' as toggleswitch-slider;
+@use 'toggleswitch.forced-checked' as toggleswitch-forced-checked;

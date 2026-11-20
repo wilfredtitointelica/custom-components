@@ -1,0 +1,158 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-DIALOG: 'int-dialog ( Custom )';
+
+  // --- root ---
+  --int-dialog-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl (prDialog) · Aura: 0 1.25rem 1.25rem
+  --int-dialog-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl (prDialog) · Aura: {overlay.modal.border.radius}
+  --int-dialog-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 (prDialog) · Aura: {overlay.modal.background}
+  --int-dialog-color: var(--i-color-primary-900); // SG: --i-color-primary-900 (prDialog) · Aura: {overlay.modal.color}
+  --int-dialog-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300 · Aura: {overlay.modal.shadow}
+  --int-dialog-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg · Figma: 16px · Aura: —
+  --int-dialog-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
+  --int-dialog-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Aura: inherit
+  --int-dialog-min-width: 20rem; // SG: no token · minimum width of a dialog without size · Aura: —
+  --int-dialog-viewport-margin: 2rem; // SG: no token · free space kept around the panel in the viewport · Aura: —
+  --int-dialog-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast · Aura: {transition.duration}
+  --int-dialog-transition-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: —
+
+  // --- mask ---
+  --int-dialog-mask-background: var(--i-shadow-color-strong); // SG: --i-shadow-color-strong · Aura: {mask.background}
+
+  // --- header ---
+  --int-dialog-header-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg · Aura: 0.5rem
+  --int-dialog-header-padding-bottom: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg · Aura: 1.25rem
+  --int-dialog-header-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: —
+  --int-dialog-header-border-color: var(--i-color-neutral-200); // SG: --i-color-neutral-200 · Aura: —
+  --int-dialog-title-font-size: var(--i-typography-font-size-lg); // SG: --i-typography-font-size-lg · Figma: 16px (overlay/font/size/lg) · Aura: 1.25rem
+  --int-dialog-title-font-weight: var(--i-typography-font-weight-bold); // SG: --i-typography-font-weight-bold · Aura: 600
+  --int-dialog-title-line-height: var(--i-typography-lineHeight-lg); // SG: --i-typography-lineHeight-lg · Figma: 24px (overlay/font/lineHeight/lg) · Aura: inherit
+
+  // --- footer ---
+  --int-dialog-footer-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg · Figma: 16px · Aura: 0.5rem
+
+  // --- sizes (fixed values: --i-dialog-max-width-* live in the Style Guide components/dialog, not in the
+  // tokens bundle, and no --i-sizing-* reaches these widths) ---
+  --int-dialog-width: auto; // SG: no token · no size: the panel takes the width of its content
+  --int-dialog-width-sm: 400px; // SG: --i-dialog-max-width-sm 400px · Figma: XSmall
+  --int-dialog-width-md: 600px; // SG: --i-dialog-max-width-md 600px · Figma: Medium
+  --int-dialog-width-lg: 800px; // SG: --i-dialog-max-width-lg 800px · Figma: Large
+  --int-dialog-width-xl: 1024px; // SG: --i-dialog-max-width-xl 1024px · Figma: XLarge
+
+  // --- skeleton ---
+  --int-dialog-skeleton-width: 32rem; // SG: no token · placeholder width of the skeleton
+  --int-dialog-skeleton-height: 12rem; // SG: no token · placeholder height of the skeleton
+  --int-dialog-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// Parity with Style Guide `.prDialog` and Figma "Atoms / Overlay". The block is the panel rendered
+// in the CDK overlay.
+.int-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--int-dialog-gap);
+  box-sizing: border-box;
+  // With --int-dialog-width: auto (no size) the declaration is invalid and the width stays auto.
+  width: min(var(--int-dialog-width), calc(100vw - var(--int-dialog-viewport-margin)));
+  min-width: min(var(--int-dialog-min-width), calc(100vw - var(--int-dialog-viewport-margin)));
+  max-width: calc(100vw - var(--int-dialog-viewport-margin));
+  max-height: calc(100vh - var(--int-dialog-viewport-margin));
+  padding: var(--int-dialog-padding);
+  border-radius: var(--int-dialog-radius);
+  background: var(--int-dialog-background);
+  box-shadow: var(--int-dialog-shadow);
+  color: var(--int-dialog-color);
+  font-family: var(--int-dialog-font-family);
+  font-size: var(--int-dialog-font-size);
+  animation: int-dialog-enter var(--int-dialog-transition-duration) var(--int-dialog-transition-easing);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes int-dialog-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+// Backdrop of the CDK overlay (outside the panel).
+.int-dialog__mask {
+  background: var(--int-dialog-mask-background);
+}
+
+.int-dialog {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--int-dialog-header-gap);
+    padding-bottom: var(--int-dialog-header-padding-bottom);
+    border-bottom: var(--int-dialog-header-border-width) solid var(--int-dialog-header-border-color);
+  }
+  &__title {
+    font-size: var(--int-dialog-title-font-size);
+    font-weight: var(--int-dialog-title-font-weight);
+    line-height: var(--int-dialog-title-line-height);
+  }
+  // Text + icon-only int-button: its look comes from the button block.
+  &__close {
+    flex-shrink: 0;
+  }
+  &__content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+  &__footer {
+    display: flex;
+    // Right-aligned, Cancel before the primary action (knowledgeBase dialog.md; Figma centers them).
+    justify-content: flex-end;
+    gap: var(--int-dialog-footer-gap);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+// Sizes: Style Guide .prDialog--sm|md|lg|xl max-width (Figma XSmall / Medium / Large / XLarge), widths in TOKENS.
+.int-dialog {
+  &--sm {
+    --int-dialog-width: var(--int-dialog-width-sm); // SG: .prDialog--sm max-width
+  }
+  &--md {
+    --int-dialog-width: var(--int-dialog-width-md); // SG: .prDialog--md max-width
+  }
+  &--lg {
+    --int-dialog-width: var(--int-dialog-width-lg); // SG: .prDialog--lg max-width
+  }
+  &--xl {
+    --int-dialog-width: var(--int-dialog-width-xl); // SG: .prDialog--xl max-width
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-dialog {
+  display: block;
+  width: var(--int-dialog-skeleton-width);
+  max-width: 100%;
+  height: var(--int-dialog-skeleton-height);
+  border-radius: var(--int-dialog-radius);
+  background: var(--int-dialog-skeleton-background);
+}

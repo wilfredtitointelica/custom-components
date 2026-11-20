@@ -1,0 +1,157 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// .prConfirmDialog (components/confirmdialog) is in the Style Guide bundle base; each token points to the --i-* the
+// knowledge base uses. Its width: 4400px is a typo: the effective width is the max-width 440px.
+:root {
+  --NOTE-CONFIRMDIALOG: 'int-confirmdialog ( Custom )';
+
+  // --- panel ---
+  --int-confirmdialog-max-width: calc(var(--i-sizing-1000) * 4 + var(--i-sizing-500) + var(--i-sizing-200)); // knowledgeBase: max-width 440px · Figma: 440px (overlay Size=Small), no exact token (96×4 + 40 + 16)
+  --int-confirmdialog-gap: var(--i-spacing-gap-lg); // knowledgeBase: gap 16px · Figma: 16px (overlay/gap/lg)
+
+  // --- content ---
+  --int-confirmdialog-content-gap: var(--i-spacing-gap-lg); // knowledgeBase: __content gap 16px
+  --int-confirmdialog-icon-size: var(--i-icon-size-lg); // knowledgeBase: __icon i --i-icon-size-lg (32px)
+  --int-confirmdialog-image-size: calc(var(--i-sizing-600) + var(--i-sizing-150)); // knowledgeBase: __icon img 60px, no exact token (48 + 12)
+  --int-confirmdialog-details-gap: var(--i-spacing-gap-xs); // knowledgeBase: __details gap 4px
+  --int-confirmdialog-title-font-size: var(--i-typography-font-size-xl); // knowledgeBase: 20px
+  --int-confirmdialog-title-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: 700
+  --int-confirmdialog-title-line-height: var(--i-typography-lineHeight-500); // knowledgeBase: 28px
+  --int-confirmdialog-text-font-size: var(--i-typography-font-size-lg); // knowledgeBase: __subtitle / __text 16px
+  --int-confirmdialog-text-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: 400
+  --int-confirmdialog-text-line-height: var(--i-typography-lineHeight-400); // knowledgeBase: 24px
+  --int-confirmdialog-text-color: var(--i-color-primary-900); // knowledgeBase: p color
+
+  // --- footer ---
+  --int-confirmdialog-footer-gap: var(--i-spacing-gap-lg); // knowledgeBase: __footer gap 16px
+  --int-confirmdialog-button-min-width: var(--i-sizing-800); // knowledgeBase: .prButton .p-button min-width 64px
+
+  // --- severity (title + icon) ---
+  --int-confirmdialog-default-color: var(--i-color-primary-900); // knowledgeBase: --default
+  --int-confirmdialog-warning-color: var(--i-color-warning-700); // knowledgeBase: --warning
+  --int-confirmdialog-danger-color: var(--i-color-error-700); // knowledgeBase: --danger
+  --int-confirmdialog-error-color: var(--i-color-error-700); // knowledgeBase: --error
+  --int-confirmdialog-success-color: var(--i-color-success-800); // knowledgeBase: --success
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+// Set on the int-dialog panel (styleClass): mask, box, padding, enter animation and focus trap come from
+// int-dialog; here only its width (its own --int-dialog-width hook) and the content.
+.int-confirmdialog {
+  --int-dialog-width: var(--int-confirmdialog-max-width); // knowledgeBase: .prConfirmDialog max-width 440px · Figma: overlay Size=Small
+
+  p {
+    margin: 0;
+    color: var(--int-confirmdialog-text-color);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-confirmdialog {
+  // Close row, content and footer, projected into the content of int-dialog.
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirmdialog-gap);
+
+    // It only takes the focus when there is no button (focusDefault): no ring for a pointer opener.
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
+  &__close {
+    display: flex;
+    justify-content: end;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirmdialog-content-gap);
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+
+    i {
+      font-size: var(--int-confirmdialog-icon-size);
+    }
+
+    img {
+      width: var(--int-confirmdialog-image-size);
+      height: var(--int-confirmdialog-image-size);
+      object-fit: contain;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-confirmdialog-details-gap);
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--int-confirmdialog-title-font-size);
+    font-weight: var(--int-confirmdialog-title-font-weight);
+    line-height: var(--int-confirmdialog-title-line-height);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__subtitle,
+  &__text {
+    font-size: var(--int-confirmdialog-text-font-size);
+    font-weight: var(--int-confirmdialog-text-font-weight);
+    line-height: var(--int-confirmdialog-text-line-height);
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: var(--int-confirmdialog-footer-gap);
+  }
+
+  // knowledgeBase .prConfirmDialog .prButton .p-button: min-width 64px inside the footer.
+  &__accept-button,
+  &__reject-button {
+    min-width: var(--int-confirmdialog-button-min-width);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+// Severity: colors the title and the icon (not the image).
+.int-confirmdialog {
+  @each $severity in default, warning, danger, error, success {
+    &--#{$severity} {
+      .int-confirmdialog__title,
+      .int-confirmdialog__icon i {
+        color: var(--int-confirmdialog-#{$severity}-color);
+      }
+    }
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-confirmdialog {
+}

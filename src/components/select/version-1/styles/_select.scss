@@ -3,7 +3,7 @@
 \*——————————————————————————————————————————————————————————*/
 
 // In :root, not on the host: the panel renders in the CDK overlay container, outside .int-select.
-// The options of the panel are the embedded int-list-box: variant="text" restyles them through --int-listbox-option-*.
+// The options of the panel are the embedded int-listbox: variant="text" restyles them through --int-listbox-option-*.
 :root {
   --NOTE-SELECT: 'int-select ( Custom )';
 
@@ -289,7 +289,7 @@
     line-height: var(--int-select-text-panel-line-height);
 
     // Values end-aligned under the trigger value (Figma paginator).
-    .int-list-box__option {
+    .int-listbox__option {
       justify-content: flex-end;
     }
   }

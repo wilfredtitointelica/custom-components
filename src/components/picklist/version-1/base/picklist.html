@@ -1,0 +1,127 @@
+<!--
+  title: PickList
+  description: PickList permite mover y reordenar elementos entre dos listas.
+  figma:
+-->
+<!-- cdkDropListGroup connects both lists when dragdrop is on -->
+<div class="int-picklist__lists" cdkDropListGroup>
+  @for (list of lists; track list) {
+    <div class="int-picklist__list-container">
+      @if (list === 'source' ? sourceHeader() : targetHeader(); as header) {
+        <div class="int-picklist__header">{{ header }}</div>
+      }
+
+      <!-- Filter (filterBy): one field per list, as the listbox filter of p-picklist -->
+      @if (showFilter(list)) {
+        <div class="int-picklist__filter">
+          <input
+            intInputText
+            intSize="small"
+            fluid
+            type="text"
+            class="int-picklist__filter-input"
+            [attr.placeholder]="list === 'source' ? sourceFilterPlaceholder() : targetFilterPlaceholder()"
+            [attr.aria-label]="(list === 'source' ? ariaSourceFilterLabel() : ariaTargetFilterLabel()) || 'Search'"
+            [disabled]="disabled()"
+            (input)="onFilterInput($event, list)"
+          />
+          <i class="int-picklist__filter-icon icon icon-search" aria-hidden="true"></i>
+        </div>
+      }
+
+      <!-- dep:listbox provisional · int-listbox (done) already has dragdrop, onDblClick, onDrop and Ctrl/Shift selection, but it does not emit when a drag enters the list (the target list highlight, cdkDropListEntered) and, on a reorder inside one list, it moves the options array in place, which clashes with the reorder of the picklist (onSourceReorder / onTargetReorder). Replace with <int-listbox multiple dragdrop> when its API covers them -->
+      <!-- Multiple selection listbox with one tab stop (roving tabindex), as the p-listbox of p-picklist -->
+      <div
+        class="int-picklist__list"
+        [class.int-picklist__list--dragging]="draggingList() === list"
+        data-dep="listbox"
+        role="listbox"
+        aria-multiselectable="true"
+        [attr.aria-label]="list === 'source' ? sourceHeader() : targetHeader()"
+        [attr.aria-disabled]="disabled() || null"
+        [style.height]="scrollHeight()"
+        cdkDropList
+        [cdkDropListData]="list"
+        [cdkDropListDisabled]="!dragdrop() || disabled()"
+        (cdkDropListEntered)="listEntered(list)"
+        (cdkDropListDropped)="dropped($event)"
+      >
+        @for (item of visibleItems()[list]; track item; let index = $index) {
+          <div
+            class="int-picklist__option"
+            [class.int-picklist__option--selected]="isSelected(item, list)"
+            role="option"
+            [attr.aria-selected]="isSelected(item, list)"
+            [attr.tabindex]="disabled() ? null : focusedIndex()[list] === index ? 0 : -1"
+            cdkDrag
+            [cdkDragData]="item"
+            cdkDragPreviewClass="int-picklist__option--preview"
+            (cdkDragStarted)="dragStarted(list)"
+            (cdkDragEnded)="dragEnded()"
+            (click)="onOptionClick($event, item, list, index)"
+            (dblclick)="onOptionDblClick($event, item, list)"
+            (keydown)="onOptionKeydown($event, item, list, index)"
+          >
+            <!-- Slot where the dragged item will land -->
+            <div *cdkDragPlaceholder class="int-picklist__placeholder"></div>
+            @if (itemTemplate(); as itemTpl) {
+              <ng-container
+                [ngTemplateOutlet]="itemTpl"
+                [ngTemplateOutletContext]="{ $implicit: item, index, selected: isSelected(item, list) }"
+              />
+            } @else {
+              {{ item }}
+            }
+          </div>
+        }
+      </div>
+      <!-- /dep:listbox -->
+    </div>
+
+    <!-- Transfer buttons between both lists, same order and conditions as p-picklist -->
+    @if (list === 'source' && showTransferControls()) {
+      <div class="int-picklist__controls">
+        <button
+          intButton
+          type="button"
+          class="int-picklist__control-button"
+          severity="secondary"
+          icon="icon icon-arrow-right"
+          [disabled]="moveRightDisabled()"
+          [ariaLabel]="rightButtonAriaLabel()"
+          (click)="moveRight()"
+        ></button>
+        <button
+          intButton
+          type="button"
+          class="int-picklist__control-button"
+          severity="secondary"
+          icon="icon icon-arrow-right-double"
+          [disabled]="moveAllRightDisabled()"
+          [ariaLabel]="allRightButtonAriaLabel()"
+          (click)="moveAllRight()"
+        ></button>
+        <button
+          intButton
+          type="button"
+          class="int-picklist__control-button"
+          severity="secondary"
+          icon="icon icon-arrow-left"
+          [disabled]="moveLeftDisabled()"
+          [ariaLabel]="leftButtonAriaLabel()"
+          (click)="moveLeft()"
+        ></button>
+        <button
+          intButton
+          type="button"
+          class="int-picklist__control-button"
+          severity="secondary"
+          icon="icon icon-arrow-left-double"
+          [disabled]="moveAllLeftDisabled()"
+          [ariaLabel]="allLeftButtonAriaLabel()"
+          (click)="moveAllLeft()"
+        ></button>
+      </div>
+    }
+  }
+</div>

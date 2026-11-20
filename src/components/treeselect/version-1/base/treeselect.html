@@ -1,0 +1,117 @@
+<!--
+  title: TreeSelect
+  description: TreeSelect permite elegir valores de una lista jerárquica desplegable.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15195-19617
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/Desing-System-Incontrol?node-id=15195-19620
+-->
+<!-- Hidden combobox: focus, keyboard and ARIA of the trigger, as PrimeNG -->
+<div class="int-treeselect__hidden-accessible">
+  <input
+    #focusInput
+    type="text"
+    role="combobox"
+    readonly
+    [attr.id]="inputId()"
+    [attr.disabled]="isDisabled() ? '' : null"
+    [attr.tabindex]="isDisabled() ? -1 : tabindex()"
+    [attr.aria-controls]="overlayVisible() ? listId() : null"
+    aria-haspopup="tree"
+    [attr.aria-expanded]="overlayVisible()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel() || label() || placeholder()"
+    (focus)="onInputFocus($event)"
+    (blur)="onInputBlur($event)"
+    (keydown)="onKeyDown($event)"
+  />
+</div>
+
+<!-- Label: #value template, the selected labels or the placeholder -->
+<div class="int-treeselect__label-container">
+  <div class="int-treeselect__label" [class.int-treeselect__label--placeholder]="emptyValue()">
+    @if (valueTemplate(); as valueTpl) {
+      <ng-container [ngTemplateOutlet]="valueTpl" [ngTemplateOutletContext]="{ $implicit: value(), placeholder: placeholder() }" />
+    } @else {
+      @if (emptyValue()) {
+        {{ placeholder() }}
+      } @else {
+        {{ label() }}
+      }
+    }
+  </div>
+</div>
+
+<!-- Clear icon (same structure as int-multiselect): the clearicon template replaces the default icon -->
+@if (showClear() && !emptyValue() && !isDisabled()) {
+  <span class="int-treeselect__clear-icon" aria-hidden="true" (click)="clear($event)">
+    @if (clearIconTemplate(); as template) {
+      <ng-container [ngTemplateOutlet]="template" />
+    } @else {
+      <i class="int-treeselect__clear-glyph icon icon-cancel"></i>
+    }
+  </span>
+}
+
+<div class="int-treeselect__dropdown" aria-hidden="true">
+  <i class="int-treeselect__dropdown-icon icon icon-arrow-down"></i>
+</div>
+
+<!-- Panel attached to the body under the trigger (CDK overlay instead of p-overlay) -->
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="host"
+  [cdkConnectedOverlayOpen]="overlayAttached()"
+  [cdkConnectedOverlayPositions]="avoid.positions()"
+  [cdkConnectedOverlayMinWidth]="triggerWidth()"
+  cdkConnectedOverlayTransformOriginOn=".int-treeselect__panel"
+  (attach)="avoid.onAttach()"
+  (overlayOutsideClick)="onOutsideClick($event)"
+  (detach)="onOverlayDetach()"
+>
+  <div
+    #panel
+    class="int-treeselect__panel"
+    [class]="panelStyleClass()"
+    [attr.id]="listId()"
+    [class.int-treeselect__panel--leave]="closing()"
+    animate.enter="int-treeselect__panel--enter"
+    (animationend)="onPanelAnimationEnd($event)"
+    (keydown)="onPanelKeyDown($event)"
+  >
+    @if (filter()) {
+      <div class="int-treeselect__filter">
+        <!-- Filter field: input[intInputText] small, with the search icon over its end padding -->
+        <input
+          intInputText
+          intSize="small"
+          fluid
+          type="text"
+          class="int-treeselect__filter-input"
+          [attr.placeholder]="filterPlaceholder()"
+          [attr.aria-label]="filterPlaceholder() || 'Search'"
+          [value]="filterValue()"
+          (input)="onFilterInput($event)"
+        />
+        <i class="int-treeselect__filter-icon icon icon-search" aria-hidden="true"></i>
+      </div>
+    }
+
+    <div class="int-treeselect__tree-container" [style.max-height]="scrollHeight()">
+      <int-treeview
+        [value]="filteredOptions()"
+        [selectionMode]="selectionMode()"
+        [selection]="value()"
+        (selectionChange)="onSelectionChange($event)"
+        [propagateSelectionUp]="propagateSelectionUp()"
+        [propagateSelectionDown]="propagateSelectionDown()"
+        [emptyMessage]="emptyMessage()"
+        [labelAsToggle]="labelAsToggle()"
+        [childrenAligned]="childrenAligned()"
+        [ariaLabel]="ariaLabel() || placeholder()"
+        (onNodeSelect)="onSelect($event)"
+        (onNodeUnselect)="onNodeUnselect.emit($event)"
+        (onNodeExpand)="onNodeExpand.emit($event)"
+        (onNodeCollapse)="onNodeCollapse.emit($event)"
+      />
+    </div>
+  </div>
+</ng-template>

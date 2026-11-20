@@ -91,10 +91,9 @@ src/components/<id>/version-N/
   `outline-offset: var(--int-<id>-focus-ring-offset)`, con esos tokens en el `:root` sobre
   `--i-control-outline-*`; mientras el Style Guide los tenga vacíos (`var()` en `_tokens.control.draft.scss`),
   sobre `--i-border-width-sm`, `--i-color-primary-600` y `--i-spacing-25` (2px).
-- En el nombre del token el id del componente va junto, sin guiones: `--int-treeselect-width`, no
-  `--int-tree-select-width` (las clases BEM y el selector sí llevan guion: `.int-tree-select__label`).
-  Si el id lleva un sufijo que no aporta, el token lo omite: `dialog-modal` → `--int-dialog-*`,
-  `confirm-dialog-modal` → `--int-confirmdialog-*`.
+- El id del componente va junto, sin guiones, como en PrimeNG: carpeta `treeselect/`, ruta
+  `/components/treeselect`, `<int-treeselect>`, `.int-treeselect__label`, `--int-treeselect-width`
+  (no `tree-select`).
 - Lo ideal es `var(--i-*)`. Un valor fijo (`auto`, `22px`) es una excepción válida solo **dentro del
   `--int-*`** y con su comentario de origen (`// SG: no token · Figma: 22px`); nunca suelto en las reglas.
   Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay animación, foco con `:focus-visible`.

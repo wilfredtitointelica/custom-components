@@ -61,7 +61,7 @@ function intComponentsIn(html: string): Set<string> {
   ]);
 }
 
-/** The template uses the component `id`, as a tag (`<int-tree-select>`) or an attribute (`intTreeSelect`). */
+/** The template uses the component `id`, as a tag (`<int-treeselect>`) or an attribute (`intTreeselect`). */
 function usesComponent(found: ReadonlySet<string>, id: string): boolean {
   return found.has(id) || found.has(id.replace(/-/g, ''));
 }

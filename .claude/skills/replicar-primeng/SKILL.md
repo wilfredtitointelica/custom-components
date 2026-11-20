@@ -92,11 +92,11 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    grep -h "title:" src/components/*/version-*/base/*.html
    grep -h "sourceName" src/components/*/*.config.ts
    ```
-   Equivalencias habituales: `p-select` → `select`, `p-dialog` → `dialog-modal`,
+   Equivalencias habituales: `p-select` → `select`, `p-dialog` → `dialog`,
    `p-inputtext`/`p-textarea` → `inputtext`, `p-inputnumber` → `inputnumber`, `p-inputotp` → `inputotp`,
    `p-checkbox` → `checkbox`, `p-radiobutton` → `radiobutton` (one component each, together in the menu),
-   `p-tree` → `tree-view`, `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,
-   `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-progressbar` → `progressbar`,
+   `p-tree` → `treeview`, `p-toggleswitch` → `toggleswitch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,
+   `p-fileupload` → `fileupload`, `p-listbox` → `listbox`, `p-progressbar` → `progressbar`,
    `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`, `p-chip` → `chip`.
 2. Pregunta, en un solo mensaje:
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
@@ -597,10 +597,9 @@ Reglas:
 - `_<id>.scss`: la plantilla de `crear-componente` 3.7 (TOKENS, BLOCK, ELEMENTS, MODIFIERS, SKELETON)
   **rellena**:
   - **TOKENS** (`:root`): `--NOTE-<ID>` + un token por cada `dt('<id>.…')` del CSS de PrimeNG, con
-    nombre `--int-<id>-<parte>` (`--int-chip-padding-x`). En el token el `<id>` va **junto, sin
-    guiones** (`tree-select` → `--int-treeselect-width`, `toggle-switch` → `--int-toggleswitch-*`),
-    así el nombre del componente no se confunde con la parte; clases y selector siguen con guion
-    (`.int-tree-select__label`).
+    nombre `--int-<id>-<parte>` (`--int-chip-padding-x`). El `<id>` va **junto, sin guiones**, como
+    el componente de PrimeNG (`treeselect` → `<int-treeselect>`, `.int-treeselect__label`,
+    `--int-treeselect-width`), así el nombre del componente no se confunde con la parte.
     > 🎯 **Regla de tokens: `--int-<id>-*: var(--i-*)`.** Los tokens (color, spacing, sizing,
     > border-radius, border-width, tipografía, sombra, opacidad, motion, etc.) se consumen **siempre**
     > del Intelica Style Guide. Lo ideal es que cada `--int-*` sea un alias de un `--i-*`, y se

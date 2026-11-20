@@ -41,7 +41,7 @@ const NATIVE_EVENTS = new Set([
 const toPascal = (id) => id.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
 
 /**
- * Component ids by how a template names them: the tag (`int-tree-select`) and the attribute, lowercased
+ * Component ids by how a template names them: the tag (`int-treeselect`) and the attribute, lowercased
  * without dashes (`intInputText` → `inputtext`). The Scan of the documentation page reads both.
  */
 const COMPONENT_IDS = (() => {
@@ -222,7 +222,7 @@ function checkVersion(component, version, report, deps) {
   const declaredTokens = new Set(
     existsSync(mainScss) ? extractApi({ ts: '', scss: mainScss }).tokens.map((t) => t.name) : [],
   );
-  // Prefixes in use: the id without hyphens, plus a shorter one the :root declares (--int-dialog-* of dialog-modal).
+  // Prefixes in use: the id without hyphens, plus a shorter one the :root may declare.
   const tokenPrefixes = new Set([tokenId, ...[...declaredTokens].map((t) => /^--int-([a-z0-9]+)-/.exec(t)?.[1])]);
 
   for (const file of files) {

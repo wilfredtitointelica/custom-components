@@ -1,0 +1,4 @@
+// int-treeview · entry point. Add one `@use 'treeview.<variant>' as treeview-<variant>;` per variant module.
+@use 'treeview';
+@use 'treeview.label-as-toggle' as treeview-label-as-toggle;
+@use 'treeview.children-aligned' as treeview-children-aligned;

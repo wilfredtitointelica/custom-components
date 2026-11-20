@@ -1,0 +1,23 @@
+<!--
+  title: Dropzone
+  description: Con `dropzone` se oculta la cabecera y se muestra la zona de arrastre de File Sharing, con enlace para elegir, texto de ayuda (`hint`) y requisitos armados desde `accept`, `maxFileSize` y `fileLimit`. La app dispara la subida con `upload()`.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <int-fileupload
+    #fu
+    dropzone
+    [style]="{ width: '32rem', maxWidth: '100%' }"
+    multiple
+    accept=".csv,.xlsx"
+    [maxFileSize]="5 * 1024 * 1024"
+    [fileLimit]="3"
+    hint="Files are processed in the order they were added."
+    (onSelect)="queued.set($event.currentFiles.length)"
+    (onRemove)="queued.set(fu.files().length)"
+    (uploadHandler)="upload($event); fu.clear(); queued.set(0)"
+  />
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <button intButton type="button" label="Process files" [disabled]="!queued()" (click)="fu.upload()"></button>
+    <p class="u-m-0 u-text-sm">Uploaded: {{ uploaded().join(', ') || '—' }}</p>
+  </div>
+</div>

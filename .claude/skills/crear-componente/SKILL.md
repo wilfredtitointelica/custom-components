@@ -132,7 +132,7 @@ nombre pedido (sin distinguir mayúsculas). En ese caso **no se crea nada** y se
 Si no existe, pregunta en **un solo mensaje** lo que no se haya dado:
 
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
-   kebab-case (`chip`, `tree-select`); confírmalo si no es obvio. Nunca `skills` ni `status`
+   minúsculas y sin guiones, como el componente de PrimeNG (`chip`, `treeselect`, `toggleswitch`); confírmalo si no es obvio. Nunca `skills` ni `status`
    (reservados por las páginas de Reference).
 2. **Descripción** del componente: **una sola frase breve** (≈ 80 caracteres como máximo, para que se vea
    en una línea bajo el título), en español, que diga qué es o para qué sirve: "Chip representa una
@@ -191,7 +191,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
 export default {
-  id: 'chip',                         // kebab-case, estable: carpeta, ruta y nombre técnico
+  id: 'chip',                         // minúsculas sin guiones (treeselect), estable: carpeta, ruta y nombre técnico
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;
 ```
