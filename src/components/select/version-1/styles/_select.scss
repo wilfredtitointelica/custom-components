@@ -103,7 +103,11 @@
   &__trigger {
     box-sizing: border-box;
     min-height: var(--int-select-height);
-    padding: var(--int-select-padding-y) var(--int-select-padding-x);
+    // Figma draws the stroke INSIDE the frame: the DS padding is measured from the outer edge, so the border takes 1px
+    // of it. Tokens keep the DS values; the box is exactly 24 / 32 / 40 (padding + line-height + border).
+    padding:
+      calc(var(--int-select-padding-y) - var(--int-select-border-width))
+      calc(var(--int-select-padding-x) - var(--int-select-border-width));
     border: var(--int-select-border-width) solid var(--int-select-border-color);
     border-radius: var(--int-select-border-radius);
     background: var(--int-select-background);
@@ -221,8 +225,8 @@
   &.int-select--large {
     --int-select-height: var(--int-select-lg-height);
     --int-select-padding-y: var(--int-select-lg-padding-y);
-    --int-select-padding-x: var(--int-select-lg-padding-x);
     --int-select-font-size: var(--int-select-lg-font-size);
+    --int-select-line-height: var(--int-select-lg-line-height);
   }
   &.int-select--fluid {
     width: 100%;
@@ -237,7 +241,7 @@
   &--open &__icon {
     transform: rotate(180deg);
   }
-  // The arrow takes the shared control hover icon color (primary-400, as SG .prSelect:hover .p-select-dropdown .icon).
+  // The arrow turns #2A52C5 on hover (Figma Input State=Hover); the clear icon does not change.
   &:not(&--disabled, &--invalid):hover &__icon {
     color: var(--int-select-hover-icon-color);
   }

@@ -14,7 +14,7 @@
   --int-searchdropdown-panel-border-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl · Figma: 16px (searchbar/border/radius/2xl)
   --int-searchdropdown-panel-background: var(--int-control-overlay-background); // _tokens_: --int-control-overlay-background · SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
   --int-searchdropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
-  --int-searchdropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
+  --int-searchdropdown-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft), primary-900 · Figma: #0a1733 (searchbar/color/text)
   --int-searchdropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
   --int-searchdropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
   --int-searchdropdown-enter-duration: var(--int-control-overlay-enter-duration); // _tokens_: --int-control-overlay-enter-duration · SG: 150ms · Aura: .12s

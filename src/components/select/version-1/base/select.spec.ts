@@ -27,6 +27,37 @@ class Host {
 }
 
 
+/** Style Guide control tokens (tokens.control.draft) in px: Karma does not load the Style Guide bundle. */
+const DS_CONTROL_TOKENS: Record<string, string> = {
+  '--i-control-border-width': '1px',
+  '--i-control-border-color': '#9ca3ba', // without it the `border` shorthand is invalid and the field has no border
+  '--i-control-padding-x': '8px',
+  '--i-control-padding-y': '6px',
+  '--i-control-height': '32px',
+  '--i-control-font-size': '14px',
+  '--i-control-line-height': '20px',
+  '--i-control-sm-height': '24px',
+  '--i-control-sm-padding-y': '4px',
+  '--i-control-sm-font-size': '12px',
+  '--i-control-sm-line-height': '16px',
+  '--i-control-lg-height': '40px',
+  '--i-control-lg-padding-y': '8px',
+  '--i-control-lg-font-size': '16px',
+  '--i-typography-lineHeight-lg': '24px',
+};
+
+@Component({
+  imports: [IntSelect],
+  template: `
+    <int-select size="small" [options]="options" placeholder="Small" />
+    <int-select [options]="options" placeholder="Regular" />
+    <int-select size="large" [options]="options" placeholder="Large" />
+  `,
+})
+class SizesHost {
+  options = ['Lima', 'Bogotá'];
+}
+
 /** Panels mount in the component's own overlay container (appendTo), not in the root one. */
 function overlayOf(fixture: ComponentFixture<unknown>): HTMLElement {
   return fixture.debugElement.query(By.directive(IntSelect)).injector.get(OverlayContainer).getContainerElement();
@@ -283,5 +314,20 @@ describe('IntSelect variant="text"', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.control.value).toBe(50);
     expect(host.querySelector('[role="combobox"]')?.textContent).toContain('50');
+  });
+});
+
+describe('IntSelect heights (Figma stroke inside: 24 / 32 / 40)', () => {
+  const root = document.documentElement.style;
+  beforeEach(() => Object.entries(DS_CONTROL_TOKENS).forEach(([name, value]) => root.setProperty(name, value)));
+  afterEach(() => Object.keys(DS_CONTROL_TOKENS).forEach((name) => root.removeProperty(name)));
+
+  it('renders the small, regular and large trigger at the DS height, border included', () => {
+    const fixture = TestBed.createComponent(SizesHost);
+    fixture.detectChanges();
+    const heights = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.int-select__trigger')).map(
+      (trigger) => trigger.getBoundingClientRect().height,
+    );
+    expect(heights).toEqual([24, 32, 40]);
   });
 });
