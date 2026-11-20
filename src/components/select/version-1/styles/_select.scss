@@ -1,18 +1,93 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// In :root, not on the host: the panel renders in the CDK overlay container, outside .int-select.
+// The options of the panel are the embedded int-listbox: variant="text" restyles them through --int-listbox-option-*.
 :root {
   --NOTE-SELECT: 'int-select ( Custom )';
+
+  // --- field ---
+  --int-select-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · knowledgeBase: .prSelect 32px · Aura: auto
+  --int-select-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) 8px · Aura: {form.field.padding.x} 0.75rem
+  --int-select-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) 6px · Aura: {form.field.padding.y} 0.5rem
+  --int-select-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm 8px (label, clear and arrow) · Aura: —
+  --int-select-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {form.field.background}
+  --int-select-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) 1px · Aura: 1px
+  --int-select-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
+  --int-select-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
+  --int-select-color: var(--i-text-color-default); // SG: --i-text-color-default (primary-900 #0A1733, Figma input/color/pressed/text; --i-control-color draft = grey neutral-700) · Aura: {form.field.color}
+  --int-select-placeholder-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled (secondary-400 #9CA3BA, same as --i-control-placeholder-color but stable token) · Aura: {form.field.placeholder.color}
+  --int-select-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · Aura: inherit
+  --int-select-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
+  --int-select-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) 20px · Aura: normal
+  --int-select-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · Aura: {transition.duration} 0.2s
+  --int-select-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · Aura: ease
+
+  // --- icons ---
+  --int-select-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · was --i-icon-color-default (same value) · Aura: {form.field.icon.color}
+  --int-select-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
+  --int-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft) · SG: .prSelect:hover .p-select-dropdown .icon primary-400 · Aura: —
+  --int-select-arrow-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: —
+  --int-select-arrow-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: —
+  --int-select-clear-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs 12px · Aura: {icon.size}
+  --int-select-clear-hover-color: var(--i-icon-color-default); // SG: --i-icon-color-default · Aura: —
+
+  // --- states ---
+  --int-select-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · Aura: {form.field.hover.border.color}
+  --int-select-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) primary-900 (also open) · Aura: {form.field.focus.border.color}
+  --int-select-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
+  --int-select-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Aura: {form.field.disabled.background}
+  --int-select-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft), text and arrow (Figma) · Aura: {form.field.disabled.color}
+
+  // --- sizes ---
+  --int-select-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) 24px · Aura: auto
+  --int-select-sm-padding-y: var(--i-control-sm-padding-y); // SG: --i-control-sm-padding-y (tokens.control.draft) 4px · Aura: {form.field.sm.padding.y}
+  --int-select-sm-font-size: var(--i-control-sm-font-size); // SG: --i-control-sm-font-size (tokens.control.draft) 12px · Aura: {form.field.sm.font.size}
+  --int-select-sm-line-height: var(--i-control-sm-line-height); // SG: --i-control-sm-line-height (tokens.control.draft) · Aura: normal
+  --int-select-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) 40px · Aura: auto
+  --int-select-lg-padding-y: var(--i-control-lg-padding-y); // SG: --i-control-lg-padding-y (tokens.control.draft) 8px · Aura: {form.field.lg.padding.y}
+  --int-select-lg-padding-x: var(--i-control-lg-padding-x); // SG: --i-control-lg-padding-x (tokens.control.draft) 12px · Aura: {form.field.lg.padding.x}
+  --int-select-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · Aura: {form.field.lg.font.size}
+
+  // --- panel ---
+  --int-select-panel-background: var(--i-color-secondary-50); // Figma: grey/50 panel · Aura: {overlay.select.background}
+  --int-select-panel-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: {overlay.select.color}
+  --int-select-panel-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: 1px
+  --int-select-panel-border-color: var(--i-border-default); // SG: --i-border-default · Aura: {overlay.select.border.color}
+  --int-select-panel-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px · Aura: {overlay.select.border.radius}
+  --int-select-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Aura: {overlay.select.shadow}
+  --int-select-panel-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
+  --int-select-panel-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md 14px · Aura: 1rem
+
+  // --- variant text (paginator rows per page) ---
+  --int-select-text-gap: var(--i-spacing-gap-sm); // Figma: 8px between value and arrow (paginator)
+  --int-select-text-border-radius: var(--i-border-radius-sm); // Figma: 4px (focus ring corners)
+  --int-select-text-label-min-width: var(--i-sizing-lg); // Figma: 32px value width (paginator)
+  --int-select-text-panel-border-color: var(--i-color-secondary-600); // Figma: #636B8C (pagination/color/border)
+  --int-select-text-panel-font-size: var(--i-typography-font-size-md); // Figma: 14px (paginator)
+  --int-select-text-panel-line-height: var(--i-sizing-250); // Figma: 20px rows
+  --int-select-text-list-gap: var(--i-spacing-gap-none); // Figma: rows without gap (paginator list)
+  --int-select-text-option-padding-y: 0; // Figma: 0 (pagination/padding/y)
+  --int-select-text-option-padding-x: var(--i-spacing-container-xs); // Figma: 4px (pagination/padding/x/xs)
+  --int-select-text-option-border-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm)
+  --int-select-text-option-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
+
+  // --- skeleton ---
+  --int-select-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
+  --int-select-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
+  --int-select-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-select-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-select-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-select-focus-ring-offset: 0; // SG: no token, ring drawn on the edge (inside a panel) · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// The trigger uses the shared field look (--int-field-*); the panel uses the overlay surface.
+// The trigger uses the shared field look (field-box); the panel uses the overlay surface.
 .int-select {
   display: inline-flex;
   min-width: 10rem;
@@ -25,20 +100,35 @@
 
 .int-select {
   &__trigger {
-    @include int.field-box;
+    box-sizing: border-box;
+    min-height: var(--int-select-height);
+    padding: var(--int-select-padding-y) var(--int-select-padding-x);
+    border: var(--int-select-border-width) solid var(--int-select-border-color);
+    border-radius: var(--int-select-border-radius);
+    background: var(--int-select-background);
+    color: var(--int-select-color);
+    font-family: var(--int-select-font-family);
+    font-size: var(--int-select-font-size);
+    line-height: var(--int-select-line-height);
+    transition:
+      border-color var(--int-select-transition-duration) var(--int-select-transition-easing),
+      background-color var(--int-select-transition-duration) var(--int-select-transition-easing);
     display: flex;
     align-items: center;
-    gap: var(--i-spacing-gap-sm);
+    gap: var(--int-select-gap);
     width: 100%;
     cursor: pointer;
     user-select: none;
     outline: none;
 
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
     &:hover {
-      border-color: int.field(border-hover);
+      border-color: var(--int-select-hover-border-color);
     }
     &:focus-visible {
-      border-color: int.field(border-focus);
+      border-color: var(--int-select-focus-border-color);
     }
   }
 
@@ -50,7 +140,7 @@
     white-space: nowrap;
 
     &--placeholder {
-      color: int.field(placeholder);
+      color: var(--int-select-placeholder-color);
     }
   }
 
@@ -58,7 +148,7 @@
   &__value {
     display: flex;
     align-items: center;
-    gap: var(--i-spacing-gap-sm);
+    gap: var(--int-select-gap);
     min-width: 0;
 
     > * {
@@ -67,20 +157,27 @@
   }
 
   &__clear {
-    @include int.reset-button;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
     display: inline-flex;
-    color: int.field(icon-color); // unified: primary-900 (was grey secondary-600), see _shared_/_mixins.scss
-    font-size: var(--i-icon-size-xs);
+    color: var(--int-select-icon-color);
+    font-size: var(--int-select-clear-icon-size);
 
     &:hover {
-      color: var(--i-icon-color-default);
+      color: var(--int-select-clear-hover-color);
     }
   }
 
   &__icon {
-    color: int.field(icon-color); // unified: same shared control icon token (was --i-icon-color-default, same value)
-    font-size: var(--i-icon-size-sm);
-    transition: transform var(--i-motion-base);
+    color: var(--int-select-icon-color);
+    font-size: var(--int-select-icon-size);
+    transition: transform var(--int-select-arrow-transition-duration) var(--int-select-arrow-transition-easing);
 
     @media (prefers-reduced-motion: reduce) {
       transition: none;
@@ -90,10 +187,16 @@
   // Rendered in the CDK overlay container, outside the host.
   // Grey/50 panel; option colors (hover, focus, selected) come from the embedded List-box.
   &__panel {
-    @include int.overlay-surface;
+    box-sizing: border-box;
+    background: var(--int-select-panel-background);
+    color: var(--int-select-panel-color);
+    border: var(--int-select-panel-border-width) solid var(--int-select-panel-border-color);
+    border-radius: var(--int-select-panel-border-radius);
+    box-shadow: var(--int-select-panel-shadow);
+    font-family: var(--int-select-panel-font-family);
+    font-size: var(--int-select-panel-font-size);
     width: 100%;
     overflow: hidden;
-    background: var(--i-color-secondary-50);
   }
 }
 
@@ -102,35 +205,48 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-select {
-  @include int.field-sizes(int-select);
+  &.int-select--small {
+    --int-select-height: var(--int-select-sm-height);
+    --int-select-padding-y: var(--int-select-sm-padding-y);
+    --int-select-font-size: var(--int-select-sm-font-size);
+    --int-select-line-height: var(--int-select-sm-line-height);
+  }
+  &.int-select--large {
+    --int-select-height: var(--int-select-lg-height);
+    --int-select-padding-y: var(--int-select-lg-padding-y);
+    --int-select-padding-x: var(--int-select-lg-padding-x);
+    --int-select-font-size: var(--int-select-lg-font-size);
+  }
+  &.int-select--fluid {
+    width: 100%;
+  }
 
   &--fluid {
     display: flex;
   }
   &--open &__trigger {
-    border-color: int.field(border-focus);
+    border-color: var(--int-select-focus-border-color);
   }
   &--open &__icon {
     transform: rotate(180deg);
   }
-  // unified: arrow takes the shared control hover icon token (primary-400, as SG .prSelect:hover .p-select-dropdown .icon);
-  // before it did not change on hover. See _shared_/_mixins.scss.
+  // The arrow takes the shared control hover icon color (primary-400, as SG .prSelect:hover .p-select-dropdown .icon).
   &:not(&--disabled, &--invalid):hover &__icon {
-    color: int.field(icon-hover);
+    color: var(--int-select-hover-icon-color);
   }
   &--invalid &__trigger {
-    border-color: int.field(border-invalid);
+    border-color: var(--int-select-invalid-border-color);
   }
   &--disabled &__trigger {
-    background: int.field(background-disabled);
-    color: int.field(color-disabled);
+    background: var(--int-select-disabled-background);
+    color: var(--int-select-disabled-color);
     border-color: transparent;
     cursor: not-allowed;
     user-select: none;
   }
   // Same grey as the disabled text (Figma).
   &--disabled &__icon {
-    color: int.field(color-disabled);
+    color: var(--int-select-disabled-color);
   }
   // int-* extension variant="text": value + arrow only, no box (Figma paginator rows per page "10 ^").
   &--text {
@@ -139,20 +255,21 @@
   &--text &__trigger,
   &--text.int-select--open &__trigger,
   &--text.int-select--disabled &__trigger {
-    gap: var(--i-spacing-gap-sm); // Figma: 8px between value and arrow (paginator)
+    gap: var(--int-select-text-gap);
     min-height: 0;
     padding: 0;
     border: 0;
-    border-radius: var(--i-border-radius-sm); // Figma: 4px (focus ring corners)
+    border-radius: var(--int-select-text-border-radius);
     background: transparent;
 
     &:focus-visible {
-      @include int.focus-ring(0);
+      outline: var(--int-select-focus-ring-width) solid var(--int-select-focus-ring-color);
+      outline-offset: var(--int-select-focus-ring-offset);
     }
   }
   &--text &__label {
     flex: 0 0 auto;
-    min-width: var(--i-sizing-lg); // Figma: 32px value width (paginator)
+    min-width: var(--int-select-text-label-min-width);
     text-align: end;
   }
   &--text &__icon {
@@ -160,18 +277,19 @@
   }
   // Compact list: 4px inner padding, 20px end-aligned rows, 1px secondary-600 border (Figma paginator).
   &__panel--text {
-    --int-option-padding: 0 var(--i-spacing-container-xs); // Figma: 0 4px (pagination/padding/x/xs)
-    --int-option-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm)
-    --int-option-background-hover: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
-    --int-option-background-focused: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
-    --int-list-box-gap: var(--i-spacing-gap-none); // Figma: rows without gap (paginator list)
+    --int-listbox-option-padding-y: var(--int-select-text-option-padding-y); // Figma: 0 (pagination/padding/y)
+    --int-listbox-option-padding-x: var(--int-select-text-option-padding-x); // Figma: 4px (pagination/padding/x/xs)
+    --int-listbox-option-border-radius: var(--int-select-text-option-border-radius); // Figma: 4px (pagination/border/radius/sm)
+    --int-listbox-option-hover-background: var(--int-select-text-option-hover-background); // Figma: #DDE6F8 (pagination/color/hover/background)
+    --int-listbox-option-focus-background: var(--int-select-text-option-hover-background); // Figma: #DDE6F8 (pagination/color/hover/background)
+    --int-listbox-gap: var(--int-select-text-list-gap); // Figma: rows without gap (paginator list)
+    --int-select-panel-border-color: var(--int-select-text-panel-border-color); // Figma: #636B8C (pagination/color/border)
+    --int-select-panel-font-size: var(--int-select-text-panel-font-size); // Figma: 14px (paginator)
     min-width: 0;
-    line-height: var(--i-sizing-250); // Figma: 20px rows
-    border-color: var(--i-color-secondary-600); // Figma: #636B8C (pagination/color/border)
-    font-size: var(--i-typography-font-size-md);
+    line-height: var(--int-select-text-panel-line-height);
 
     // Values end-aligned under the trigger value (Figma paginator).
-    .int-list-box__option {
+    .int-listbox__option {
       justify-content: flex-end;
     }
   }
@@ -184,7 +302,7 @@
 .sk-select {
   display: inline-block;
   width: 10rem;
-  height: var(--i-sizing-lg);
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  height: var(--int-select-skeleton-height);
+  border-radius: var(--int-select-skeleton-border-radius);
+  background: var(--int-select-skeleton-background);
 }

@@ -50,6 +50,13 @@
   --int-table-focus-ring-width: var(--i-table-outline-width); // SG: --i-table-outline-width (tokens.table.draft)
   --int-table-focus-ring-color: var(--i-table-outline-color); // SG: --i-table-outline-color (tokens.table.draft)
   --int-table-indicator-color: var(--i-color-primary-600); // SG: --i-border-accent, column reorder arrows, no knowledgeBase/Figma value
+
+  // --- size small (knowledgeBase .prTable--compact) ---
+  --int-table-sm-header-height: var(--i-table-sm-header-height); // SG: --i-table-sm-header-height (tokens.table.draft) · knowledgeBase: .prTable--compact th 32px
+  --int-table-sm-body-height: var(--i-table-sm-cell-height); // SG: --i-table-sm-cell-height (tokens.table.draft) · knowledgeBase: .prTable--compact td 40px
+
+  // --- sticky header (stickyTop sets it inline on the host and wins) ---
+  --int-table-sticky-top: var(--i-dashboard-layout-header-height, 0); // knowledgeBase: .prTable--stickyHeader top = --i-dashboard-layout-header-height (SG: declared in :root, layouts/_dashboard)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -174,6 +181,15 @@
     &--up {
       translate: 0 -100%;
     }
+  }
+
+  // --- paginator: always at the end, as the table paginator of the projects (same as int-treetable) ---
+  & &__paginator {
+    justify-content: flex-end;
+    padding-block: var(--int-table-body-padding-y);
+  }
+  &__paginator > .int-paginator__content-start {
+    margin-inline-end: 0;
   }
 }
 

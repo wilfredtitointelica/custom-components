@@ -5,7 +5,7 @@
 <div class="u-display-flex u-flex-column u-align-items-center u-gap-sm">
   <button intButton label="Columns" icon="icon icon-list" severity="secondary" (click)="op.toggle($event)"></button>
   <int-popover #op ariaLabel="Visible columns">
-    <int-list-box [options]="columns" [(ngModel)]="visibleColumns" multiple checkmark ariaLabel="Columns" />
+    <int-listbox [options]="columns" [(ngModel)]="visibleColumns" multiple checkmark ariaLabel="Columns" />
   </int-popover>
   <p class="u-m-0 u-text-sm">Visible: {{ visibleColumns.join(', ') || '—' }}</p>
 </div>

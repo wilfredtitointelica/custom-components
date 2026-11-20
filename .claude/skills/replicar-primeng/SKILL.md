@@ -92,11 +92,11 @@ componente `int-*` del proyecto** se escribe la réplica, aunque el usuario solo
    grep -h "title:" src/components/*/version-*/base/*.html
    grep -h "sourceName" src/components/*/*.config.ts
    ```
-   Equivalencias habituales: `p-select` → `select`, `p-dialog` → `dialog-modal`,
+   Equivalencias habituales: `p-select` → `select`, `p-dialog` → `dialog`,
    `p-inputtext`/`p-textarea` → `inputtext`, `p-inputnumber` → `inputnumber`, `p-inputotp` → `inputotp`,
    `p-checkbox` → `checkbox`, `p-radiobutton` → `radiobutton` (one component each, together in the menu),
-   `p-tree` → `tree-view`, `p-toggleswitch` → `toggle-switch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,
-   `p-fileupload` → `file-upload`, `p-listbox` → `list-box`, `p-progressbar` → `progressbar`,
+   `p-tree` → `treeview`, `p-toggleswitch` → `toggleswitch`, `p-tabs` → `tabs`, `p-datepicker` → `datepicker`,
+   `p-fileupload` → `fileupload`, `p-listbox` → `listbox`, `p-progressbar` → `progressbar`,
    `p-badge`/`p-overlaybadge` → `badge`, `p-tag` → `tag`, `p-chip` → `chip`.
 2. Pregunta, en un solo mensaje:
    - **"¿En qué componente replico `p-<nombre>`?"**, con el candidato sugerido y la versión (por
@@ -597,7 +597,9 @@ Reglas:
 - `_<id>.scss`: la plantilla de `crear-componente` 3.7 (TOKENS, BLOCK, ELEMENTS, MODIFIERS, SKELETON)
   **rellena**:
   - **TOKENS** (`:root`): `--NOTE-<ID>` + un token por cada `dt('<id>.…')` del CSS de PrimeNG, con
-    nombre `--int-<id>-<parte>` (`--int-chip-padding-x`).
+    nombre `--int-<id>-<parte>` (`--int-chip-padding-x`). El `<id>` va **junto, sin guiones**, como
+    el componente de PrimeNG (`treeselect` → `<int-treeselect>`, `.int-treeselect__label`,
+    `--int-treeselect-width`), así el nombre del componente no se confunde con la parte.
     > 🎯 **Regla de tokens: `--int-<id>-*: var(--i-*)`.** Los tokens (color, spacing, sizing,
     > border-radius, border-width, tipografía, sombra, opacidad, motion, etc.) se consumen **siempre**
     > del Intelica Style Guide. Lo ideal es que cada `--int-*` sea un alias de un `--i-*`, y se
@@ -625,10 +627,16 @@ Reglas:
       iniciales de animación, además, `opacity` 0/1 y `scale()` (3.6), siempre fuera de los `--int-*`.
     - Ver la traducción en el mapa (sección 3). Así se personaliza por variables CSS sin una segunda
       arquitectura de tokens: el `--int-*` es el punto de ajuste del componente y el `--i-*` la fuente.
+    - **Todos** los tokens del componente van en este `:root` (también los de tamaños, severidades,
+      estados y skeleton): es lo único que lista la pestaña API. Campos y controles de formulario
+      (input, select, listbox, datepicker…) consumen `--i-control-*` (`--i-control-sm-*` / `--i-control-lg-*`).
   - **BLOCK / ELEMENTS**: las reglas de `@primeuix/styles` traducidas a BEM (`&__label`), usando solo
-    `var(--int-<id>-…)`. Mantener propiedades lógicas (`padding-inline`, `margin-inline-start`) como PrimeNG.
+    `var(--int-<id>-…)`, **nunca `var(--i-*)`**. Mantener propiedades lógicas (`padding-inline`, `margin-inline-start`) como PrimeNG.
+  - **Sin mixins ni SCSS compartido** (`@use '…/_shared_/…'` da error en `check:component`): el borde de
+    campo, el reset de botón, la superficie de un overlay o el anillo de foco se escriben completos en el
+    componente con sus tokens. Lo común lo da el Style Guide, no una capa intermedia.
   - Estados (`:hover`, `:focus-visible`, `:disabled`, `[aria-disabled]`) en el módulo base. El foco
-    visible con `:focus-visible` y tokens `--i-control-outline-*` (3.7).
+    visible con `:focus-visible` y tokens `--int-<id>-focus-ring-*` (3.7).
   - **Todo `disabled`** (clase `--disabled`, `:disabled`, `[aria-disabled="true"]`): `cursor: not-allowed`
     y `user-select: none`, y su regla gana sobre `:hover`/`:active` (sin cambio de borde ni fondo).
     **Sin `pointer-events: none`** (ocultaría el cursor): la base ignora clic y teclado en el handler
@@ -639,7 +647,9 @@ Reglas:
     que los de PrimeNG.
   - **SKELETON** `.sk-<id>`: forma básica (mismas dimensiones, fondo neutro) o vacío si no aplica.
 - `_<id>.<grupo>.scss` (uno por **grupo** de modificadores reales: `severity`, `size`, `removable`…):
-  solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. También un grupo por
+  solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. Un modificador reasigna tokens
+  a otros tokens propios del `:root` (`.int-button--danger { --int-button-background: var(--int-button-danger-background) }`),
+  nunca a `var(--i-*)`. También un grupo por
   **formato de contenido** de una variante (`_card.data.scss` → `.int-card--data &__<elem>`), pero solo
   con estados visuales u otra cosa no estructural que ningún helper cubre (3.5); la estructura va con helpers.
 - **Sin reglas repetidas entre módulos**: si varios formatos necesitan lo mismo (mini, option y version

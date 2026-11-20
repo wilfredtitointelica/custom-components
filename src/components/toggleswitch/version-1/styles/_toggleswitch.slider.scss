@@ -1,0 +1,61 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Slider
+\*——————————————————————————————————————————————————————————*/
+
+// Linear track (Figma toggle-small). The :hover selectors repeat the values to win over the base hover.
+.int-toggleswitch--slider {
+  display: flex;
+  width: var(--int-toggleswitch-slider-width);
+
+  .int-toggleswitch__slider,
+  &:not(.int-toggleswitch--disabled):has(.int-toggleswitch__input:hover) .int-toggleswitch__slider {
+    height: var(--int-toggleswitch-slider-track-height);
+    margin-block: auto;
+    background-color: var(--int-toggleswitch-slider-track-color);
+    border-color: var(--int-toggleswitch-slider-track-color);
+  }
+
+  &.int-toggleswitch--checked .int-toggleswitch__slider,
+  &:not(.int-toggleswitch--disabled):has(.int-toggleswitch__input:hover).int-toggleswitch--checked
+    .int-toggleswitch__slider {
+    background-color: var(--int-toggleswitch-checked-border-color);
+  }
+
+  &.int-toggleswitch--disabled .int-toggleswitch__slider {
+    background-color: var(--int-toggleswitch-slider-disabled-color);
+  }
+
+  .int-toggleswitch__handle {
+    inset-inline-start: 0;
+    width: var(--int-toggleswitch-slider-handle-size);
+    height: var(--int-toggleswitch-slider-handle-size);
+    margin-block-start: calc(var(--int-toggleswitch-slider-handle-size) / -2);
+  }
+
+  .int-toggleswitch__handle,
+  &:not(.int-toggleswitch--disabled):has(.int-toggleswitch__input:hover) .int-toggleswitch__handle {
+    background-color: var(--int-toggleswitch-slider-handle-background);
+    border: var(--int-toggleswitch-border-width) solid var(--int-toggleswitch-slider-track-color);
+  }
+
+  &.int-toggleswitch--checked .int-toggleswitch__handle {
+    inset-inline-start: calc(var(--int-toggleswitch-slider-width) - var(--int-toggleswitch-slider-handle-size));
+  }
+
+  &.int-toggleswitch--checked .int-toggleswitch__handle,
+  &:not(.int-toggleswitch--disabled):has(.int-toggleswitch__input:hover).int-toggleswitch--checked
+    .int-toggleswitch__handle {
+    background-color: var(--int-toggleswitch-slider-handle-checked-background);
+    border-color: var(--int-toggleswitch-checked-border-color);
+  }
+
+  &.int-toggleswitch--disabled .int-toggleswitch__handle {
+    background-color: var(--int-toggleswitch-handle-disabled-background);
+    border-color: var(--int-toggleswitch-slider-disabled-color);
+  }
+
+  // Style Guide cascade: on disabled + checked the checked handle background wins.
+  &.int-toggleswitch--disabled.int-toggleswitch--checked .int-toggleswitch__handle {
+    background-color: var(--int-toggleswitch-slider-handle-checked-background);
+  }
+}

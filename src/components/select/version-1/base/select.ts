@@ -39,10 +39,10 @@ import {
   valueEquals,
 } from '../../../_shared_';
 import {
-  IntListBox,
-  IntListBoxChangeEvent,
-  IntListBoxItemContext,
-} from '../../../list-box/version-1/base/list-box';
+  IntListbox,
+  IntListboxChangeEvent,
+  IntListboxItemContext,
+} from '../../../listbox/version-1/base/listbox';
 
 export interface IntSelectChangeEvent {
   originalEvent: Event;
@@ -51,7 +51,7 @@ export interface IntSelectChangeEvent {
 
 /**
  * <int-select> · version 1. Single-value dropdown; API mirrors PrimeNG v20 Select
- * (ported from @intelica/ui `int-select`). The option list is an embedded IntListBox in a CDK
+ * (ported from @intelica/ui `int-select`). The option list is an embedded IntListbox in a CDK
  * overlay, so filtering, templates and keyboard behaviour are shared with List-box.
  * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the panel.
  * int-* extensions: `placement` (open upwards), `baseZIndex` and `variant="text"` (bare "10 ^" trigger whose list
@@ -63,7 +63,7 @@ export interface IntSelectChangeEvent {
  */
 @Component({
   selector: 'int-select',
-  imports: [CdkConnectedOverlay, CdkOverlayOrigin, NgTemplateOutlet, IntIcon, IntListBox],
+  imports: [CdkConnectedOverlay, CdkOverlayOrigin, NgTemplateOutlet, IntIcon, IntListbox],
   providers: [provideValueAccessor(() => IntSelect), provideIntOverlayContainer()],
   templateUrl: './select.html',
   styleUrl: '../styles/_index.scss',
@@ -187,7 +187,7 @@ export class IntSelect extends IntBaseControl<unknown> {
   });
   protected readonly open = signal(false);
   protected readonly triggerWidth = signal(0);
-  protected readonly listBox = viewChild(IntListBox);
+  protected readonly listBox = viewChild(IntListbox);
   private readonly trigger = viewChild.required<ElementRef<HTMLElement>>('trigger');
   private readonly overlayDir = viewChild(CdkConnectedOverlay);
   protected readonly avoid = avoidOverlayElements({
@@ -198,7 +198,7 @@ export class IntSelect extends IntBaseControl<unknown> {
   });
 
   /** Plantilla `#item`: contenido de cada opción de la lista. */
-  protected readonly itemTemplate = contentChild<TemplateRef<IntListBoxItemContext>>('item');
+  protected readonly itemTemplate = contentChild<TemplateRef<IntListboxItemContext>>('item');
   /** Plantilla `#selectedItem`: contenido del disparador con la opción elegida. */
   protected readonly selectedItemTemplate = contentChild<TemplateRef<{ $implicit: unknown }>>('selectedItem');
 
@@ -245,7 +245,7 @@ export class IntSelect extends IntBaseControl<unknown> {
       autoZIndex: this.autoZIndex,
       baseZIndex: this.baseZIndex,
     });
-    // Keep the embedded list-box in sync and focus the selected option whenever the panel opens.
+    // Keep the embedded listbox in sync and focus the selected option whenever the panel opens.
     effect(() => {
       const listBox = this.listBox();
       if (!listBox) return;
@@ -293,7 +293,7 @@ export class IntSelect extends IntBaseControl<unknown> {
     this.onClear.emit();
   }
 
-  protected onListBoxChange(event: IntListBoxChangeEvent): void {
+  protected onListboxChange(event: IntListboxChangeEvent): void {
     this.updateValue(event.value);
     this.onChange.emit(event);
     this.close();

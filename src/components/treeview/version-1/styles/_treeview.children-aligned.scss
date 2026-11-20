@@ -1,0 +1,8 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Children aligned
+\*——————————————————————————————————————————————————————————*/
+
+// Style Guide .prTreeselect--childrenAligned: children without indentation.
+.int-treeview--children-aligned .int-treeview__node-children {
+  padding-inline-start: 0;
+}

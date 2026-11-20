@@ -1,32 +1,73 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
 :root {
   --NOTE-TABS: 'int-tabs ( Custom )';
+
+  // --- root ---
+  --int-tabs-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
+  --int-tabs-transition: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+
+  // --- tab ---
+  --int-tabs-tab-color: var(--i-color-grey-400); // knowledgeBase: --i-tabs-tab-color
+  --int-tabs-tab-background: var(--i-color-secondary-50); // knowledgeBase: --i-tabs-tab-background / --i-tabs-tabpanels-background
+  --int-tabs-tab-border-width: var(--i-border-width-sm); // knowledgeBase: --i-tabs-tab-border (1px)
+  --int-tabs-tab-border: var(--i-color-secondary-200); // knowledgeBase: --i-tabs-tab-border (1px secondary-200)
+  --int-tabs-tab-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg (top corners) · Aura: —
+  --int-tabs-tab-padding: var(--i-spacing-container-lg) var(--i-spacing-container-2xl); // knowledgeBase: --i-tabs-tab-padding
+  --int-tabs-tab-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Aura: inherit
+  --int-tabs-tab-line-height: 1.2; // SG: no token (.prTabs line-height 1.2) · Aura: —
+  --int-tabs-tab-hover-color: var(--i-color-primary-900); // knowledgeBase: --i-tabs-tab-hover-color
+  --int-tabs-tab-hover-background: var(--i-color-secondary-100); // knowledgeBase: --i-tabs-tab-hover-background
+
+  // --- active tab ---
+  --int-tabs-tab-active-border-width: var(--i-border-width-md); // knowledgeBase: --i-tabs-tab-active-border (2px)
+  --int-tabs-tab-active-border: var(--i-color-tertiary-500); // knowledgeBase: --i-tabs-tab-active-border (2px tertiary-500)
+  --int-tabs-tab-active-font-weight: var(--i-typography-font-weight-bold); // SG: bold · Aura: —
+
+  // --- disabled tab ---
+  --int-tabs-tab-disabled-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: —
+  --int-tabs-tab-disabled-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: —
+  --int-tabs-tab-disabled-border-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: —
+
+  // --- panels ---
+  --int-tabs-panels-padding: var(--i-spacing-gap-lg) var(--i-spacing-gap-sm); // knowledgeBase: --i-tabs-tabpanels-padding
+  --int-tabs-panels-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Aura: {text.color}
+
+  // --- vertical (int-* extension: advanced filters of Fee Library) ---
+  --int-tabs-vertical-list-width: calc(var(--i-sizing-1000) * 2.5); // knowledgeBase: .prTabVertical .p-tablist max-width 200px · design screenshot ~240px (no sizing token)
+  --int-tabs-vertical-gap: var(--i-spacing-gap-lg); // knowledgeBase: .prTabVertical.p-tabs gap 16px
+  --int-tabs-vertical-list-gap: var(--i-spacing-gap-sm); // knowledgeBase: .prTabVertical .p-tablist-tab-list gap 8px
+  --int-tabs-vertical-divider: var(--i-line); // knowledgeBase: u-divider-vertical between p-tablist and p-tabpanels (1px solid grey-200)
+  --int-tabs-vertical-tab-padding: var(--i-spacing-container-md) var(--i-spacing-container-xl); // knowledgeBase: prButton (secondary) padding 8px 16px
+  --int-tabs-vertical-tab-border-radius: var(--i-border-radius-lg); // knowledgeBase: prButton border radius
+  --int-tabs-vertical-tab-background: transparent; // knowledgeBase: prButton (text) background
+  --int-tabs-vertical-tab-color: var(--i-color-primary-900); // knowledgeBase: .prTabVertical active label primary-900
+  --int-tabs-vertical-tab-hover-background: var(--i-color-secondary-100); // knowledgeBase: .prTabVertical hover secondary-100
+  --int-tabs-vertical-tab-active-background: var(--i-color-primary-100); // knowledgeBase: .prTabVertical .p-tab-active button primary-100
+  --int-tabs-vertical-tab-active-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: .prTabVertical .p-tab-active (regular)
+  --int-tabs-vertical-panels-background: transparent; // knowledgeBase: .prTabVertical p-tabpanels (page background shows through)
+
+  // --- skeleton ---
+  --int-tabs-skeleton-height: 8rem; // SG: no token · Aura: —
+  --int-tabs-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg
+  --int-tabs-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-tabs-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-tabs-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-tabs-tab-focus-ring-offset: calc(var(--i-spacing-25) * -1); // SG: --i-spacing-25 negated, inset ring · Aura: {focus.ring.offset} 2px
+  --int-tabs-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// Parity with Style Guide `.prTabs` (orange active border = tertiary-500). Overridable props:
-// --int-tabs-{tab-color,tab-background,tab-border,tab-hover-color,tab-hover-background,
-// tab-active-border,tab-padding,panels-padding}.
+// Parity with Style Guide `.prTabs` (orange active border = tertiary-500).
 .int-tabs {
-  --int-tabs-tab-color: var(--i-color-grey-400); // knowledgeBase: --i-tabs-tab-color
-  --int-tabs-tab-background: var(--i-color-secondary-50); // knowledgeBase: --i-tabs-tab-background / --i-tabs-tabpanels-background
-  --int-tabs-tab-border: var(--i-color-secondary-200); // knowledgeBase: --i-tabs-tab-border (1px secondary-200)
-  --int-tabs-tab-hover-color: var(--i-color-primary-900); // knowledgeBase: --i-tabs-tab-hover-color
-  --int-tabs-tab-hover-background: var(--i-color-secondary-100); // knowledgeBase: --i-tabs-tab-hover-background
-  --int-tabs-tab-active-border: var(--i-color-tertiary-500); // knowledgeBase: --i-tabs-tab-active-border (2px tertiary-500)
-  --int-tabs-tab-padding: var(--i-spacing-container-lg) var(--i-spacing-container-2xl); // knowledgeBase: --i-tabs-tab-padding
-  --int-tabs-panels-padding: var(--i-spacing-gap-lg) var(--i-spacing-gap-sm); // knowledgeBase: --i-tabs-tabpanels-padding
-
   display: block;
-  font-family: var(--i-text-body-family);
+  font-family: var(--int-tabs-font-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -43,26 +84,27 @@
   &__tab {
     flex: 1 0 auto;
     padding: var(--int-tabs-tab-padding);
-    border-bottom: var(--i-border-width-sm) solid var(--int-tabs-tab-border);
-    border-radius: var(--i-border-radius-lg) var(--i-border-radius-lg) 0 0;
+    border-bottom: var(--int-tabs-tab-border-width) solid var(--int-tabs-tab-border);
+    border-radius: var(--int-tabs-tab-border-radius) var(--int-tabs-tab-border-radius) 0 0;
     background: var(--int-tabs-tab-background);
     color: var(--int-tabs-tab-color);
-    font-size: var(--i-typography-font-size-md);
-    line-height: 1.2;
+    font-size: var(--int-tabs-tab-font-size);
+    line-height: var(--int-tabs-tab-line-height);
     text-align: center;
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
     transition:
-      color var(--i-motion-base),
-      background-color var(--i-motion-base);
+      color var(--int-tabs-transition),
+      background-color var(--int-tabs-transition);
 
     &:not(.int-tabs__tab--active):not(.int-tabs__tab--disabled):hover {
       color: var(--int-tabs-tab-hover-color);
       background: var(--int-tabs-tab-hover-background);
     }
     &:focus-visible {
-      @include int.focus-ring(-2px);
+      outline: var(--int-tabs-focus-ring-width) solid var(--int-tabs-focus-ring-color);
+      outline-offset: var(--int-tabs-tab-focus-ring-offset);
     }
     @media (prefers-reduced-motion: reduce) {
       transition: none;
@@ -73,14 +115,15 @@
     display: block;
     padding: var(--int-tabs-panels-padding);
     background: var(--int-tabs-tab-background);
-    color: var(--i-color-primary-900);
+    color: var(--int-tabs-panels-color);
   }
 
   &__panel {
     display: block;
 
     &:focus-visible {
-      @include int.focus-ring;
+      outline: var(--int-tabs-focus-ring-width) solid var(--int-tabs-focus-ring-color);
+      outline-offset: var(--int-tabs-focus-ring-offset);
     }
     &[hidden] {
       display: none;
@@ -94,14 +137,14 @@
 
 .int-tabs {
   &__tab--active {
-    border-bottom: var(--i-border-width-md) solid var(--int-tabs-tab-active-border);
+    border-bottom: var(--int-tabs-tab-active-border-width) solid var(--int-tabs-tab-active-border);
     color: var(--int-tabs-tab-hover-color);
-    font-weight: var(--i-typography-font-weight-bold);
+    font-weight: var(--int-tabs-tab-active-font-weight);
   }
   &__tab--disabled {
-    color: var(--i-color-secondary-400);
-    background: var(--i-color-secondary-200);
-    border-bottom-color: var(--i-color-secondary-400);
+    color: var(--int-tabs-tab-disabled-color);
+    background: var(--int-tabs-tab-disabled-background);
+    border-bottom-color: var(--int-tabs-tab-disabled-border-color);
     cursor: not-allowed;
     user-select: none;
   }
@@ -113,7 +156,7 @@
 
 .sk-tabs {
   display: block;
-  height: 8rem;
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  height: var(--int-tabs-skeleton-height);
+  border-radius: var(--int-tabs-skeleton-border-radius);
+  background: var(--int-tabs-skeleton-background);
 }

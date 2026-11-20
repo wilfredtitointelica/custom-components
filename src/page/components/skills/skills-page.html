@@ -1144,6 +1144,64 @@ src/components/chip/version-1/
 		y sus reglas leen esos alias. Si un valor de PrimeNG no tiene token equivalente, la skill usa el más cercano y lo informa, o te pregunta; nunca escribe un valor fijo.
 	</p>
 	<app-token-diagram />
+
+	<h3 class="doc-skill-subtitle">Cada componente con sus propios tokens</h3>
+	<ul class="doc-skill-list">
+		<li>
+			Todos los tokens del componente (también tamaños, severidades, estados, foco y skeleton) se declaran en el
+			<code>:root</code>
+			de
+			<code>styles/_&lt;id&gt;.scss</code>
+			: es lo único que lista la pestaña
+			<strong>API</strong>
+			.
+		</li>
+		<li>
+			Solo ese
+			<code>:root</code>
+			lee el Style Guide: los campos y controles de formulario consumen
+			<code>--i-control-*</code>
+			; el resto, el
+			<code>--i-*</code>
+			del Style Guide / Figma.
+		</li>
+		<li>
+			Las reglas leen solo
+			<code>var(--int-&lt;id&gt;-*)</code>
+			. Un modificador reasigna un token a otro token propio, nunca a un
+			<code>--i-*</code>
+			.
+		</li>
+		<li>
+			Sin mixins ni SCSS compartido: el borde de un campo, el reset de un botón o el anillo de foco se escriben en el componente. Lo común lo da el Style Guide;
+			<code>_shared_/</code>
+			es solo TypeScript.
+		</li>
+	</ul>
+	<pre class="doc-skill-code">:root {{ '{' }}
+  --int-select-border-color: <span class="doc-skill-code-sg">var(--i-control-border-color)</span>; <span class="doc-skill-code-comment">// SG: --i-control-border-color</span>
+  --int-select-sm-height: <span class="doc-skill-code-sg">var(--i-control-sm-height)</span>;       <span class="doc-skill-code-comment">// SG: --i-control-sm-height 24px</span>
+  --int-select-focus-ring-color: <span class="doc-skill-code-sg">var(--i-color-primary-600)</span>; <span class="doc-skill-code-comment">// SG: --i-color-primary-600</span>
+{{ '}' }}
+
+.int-select__trigger {{ '{' }}
+  border: var(--int-select-border-width) solid var(--int-select-border-color);
+{{ '}' }}
+
+.int-select--small {{ '{' }}
+  --int-select-height: var(--int-select-sm-height); <span class="doc-skill-code-comment">// otro token propio, no un --i-*</span>
+{{ '}' }}</pre>
+	<p class="doc-skill-note">
+		<i class="icon icon-resources" aria-hidden="true"></i>
+		<code>npm run check:component</code>
+		avisa si una regla lee un
+		<code>--i-*</code>
+		o usa un token que no está en el
+		<code>:root</code>
+		, y da error si un SCSS importa
+		<code>_shared_</code>
+		.
+	</p>
 </section>
 
 <hr class="doc-skill-divider" />
@@ -1249,7 +1307,7 @@ Quita      imports de PrimeNG, clases .pr*, valores fijos, mocks en la base</pre
 .chip &#123; gap: 4px; background: #eef2f6; &#125;
 
 <span class="doc-skill-code-muted">// después</span>
---int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
+--int-chip-gap: var(--i-spacing-gap-xs); <span class="doc-skill-code-comment">// knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem</span>
 .int-chip &#123; gap: var(--int-chip-gap); &#125;</pre>
 		</li>
 		<li>
@@ -1674,9 +1732,9 @@ requires: ['checkbox'],</pre>
 src/components/button/version-1/base/button.ts
 
 export class IntButton &#123;
-  /** Implementation status, shown on the documentation page: pending → in-progress → done. */
+  <span class="doc-skill-code-comment">/** Implementation status, shown on the documentation page: pending → in-progress → done. */</span>
   static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
-  /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
+  <span class="doc-skill-code-comment">/** Designer in charge of this version, shown on the documentation page and in Reference → Status. */</span>
   static readonly designer = 'Yony León';
   …
 &#125;</pre

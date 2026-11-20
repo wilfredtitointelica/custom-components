@@ -132,7 +132,7 @@ nombre pedido (sin distinguir mayúsculas). En ese caso **no se crea nada** y se
 Si no existe, pregunta en **un solo mensaje** lo que no se haya dado:
 
 1. **Título** del componente: el nombre visible (`Chip`, `Dropdown / Select`). El `id` se deriva en
-   kebab-case (`chip`, `tree-select`); confírmalo si no es obvio. Nunca `skills` ni `status`
+   minúsculas y sin guiones, como el componente de PrimeNG (`chip`, `treeselect`, `toggleswitch`); confírmalo si no es obvio. Nunca `skills` ni `status`
    (reservados por las páginas de Reference).
 2. **Descripción** del componente: **una sola frase breve** (≈ 80 caracteres como máximo, para que se vea
    en una línea bajo el título), en español, que diga qué es o para qué sirve: "Chip representa una
@@ -191,7 +191,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  * - hiddenVersions (optional): version numbers left out of the version picker ([1]); folders stay.
  */
 export default {
-  id: 'chip',                         // kebab-case, estable: carpeta, ruta y nombre técnico
+  id: 'chip',                         // minúsculas sin guiones (treeselect), estable: carpeta, ruta y nombre técnico
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;
 ```
@@ -477,6 +477,10 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 - No usar clases `.doc-*` ni tokens `--doc-*` en un componente `int-*`: son exclusivos de la
   documentación (`src/styles.scss`, `src/app`, `src/core`, `src/page`). Los tokens visuales de los
   componentes vendrán del design system.
+- Cuando el maquetador escriba el CSS: cada token del componente se declara en este `:root`
+  (`--int-<id>-*: var(--i-*)`, con comentario de origen; controles de formulario sobre `--i-control-*`) y
+  las reglas leen solo `var(--int-<id>-*)`. Sin mixins ni `@use` de `_shared_` (es solo TypeScript). Ver
+  "Estilos y tokens" en `AGENTS.md`.
 
 ### 3.8 `version-1/styles/_chip.outlined.scss` (modificador, solo si se pidió)
 
@@ -491,7 +495,8 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 
 Se entrega vacío, igual que la base. Cuando el maquetador lo complete:
 - Solo lo que **cambia** respecto de la base. No repetir estilos base ni selectores vacíos.
-- No redefinir `:root` ni tokens globales.
+- No redefinir `:root` ni tokens globales: reasignar un token a otro token propio del `:root` de la base
+  (`--int-chip-border: var(--int-chip-outlined-border)`), nunca a `var(--i-*)`.
 - Si el modificador afecta un elemento: `.int-chip--outlined .int-chip__icon { … }`.
 
 ### 3.9 Verificar

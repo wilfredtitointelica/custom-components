@@ -1,0 +1,101 @@
+<!--
+  title: ConfirmDialog (Alert)
+  description: ConfirmDialog pide al usuario confirmar una acción.
+  figma: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=15758-21049
+  figma-frame: https://www.figma.com/design/zwN4YDfH6dTua4nG6bRzaM/?node-id=13146-53859
+-->
+<!-- int-dialog: overlay, mask, scroll block, focus trap and Escape. Without header: the confirmation lays out
+     its own close button, content and footer. Escape cancels (visibleChange false); accept / reject close it. -->
+<int-dialog
+  role="alertdialog"
+  [showHeader]="false"
+  [focusOnShow]="false"
+  [styleClass]="classes()"
+  [ariaLabelledBy]="labelledBy() ?? undefined"
+  [ariaLabel]="ariaLabel() ?? undefined"
+  [ariaDescribedBy]="describedBy() ?? undefined"
+  [visible]="!!active()"
+  (visibleChange)="$event || cancel()"
+  (onShow)="focusDefault()"
+>
+  @if (active(); as confirmation) {
+    <!-- tabindex: focus fallback when there is no button (focusDefault) -->
+    <div #panel class="int-confirmdialog__body" tabindex="-1">
+      @if (resolved().closable) {
+        <div class="int-confirmdialog__close">
+          <button
+            intButton
+            type="button"
+            class="int-confirmdialog__close-button"
+            severity="secondary"
+            variant="text"
+            icon="icon icon-cancel"
+            [ariaLabel]="resolved().closeAriaLabel"
+            (click)="cancel()"
+          ></button>
+        </div>
+      }
+
+      <div class="int-confirmdialog__content">
+        @if (iconTemplate(); as iconTpl) {
+          <div class="int-confirmdialog__icon">
+            <ng-container [ngTemplateOutlet]="iconTpl" [ngTemplateOutletContext]="context()" />
+          </div>
+        } @else if (confirmation.image) {
+          <div class="int-confirmdialog__icon">
+            <img [src]="confirmation.image" [alt]="confirmation.imageAlt ?? ''" />
+          </div>
+        } @else if (resolvedIcon(); as icon) {
+          <div class="int-confirmdialog__icon">
+            <i [class]="icon" aria-hidden="true"></i>
+          </div>
+        }
+
+        @if (messageTemplate(); as messageTpl) {
+          <ng-container [ngTemplateOutlet]="messageTpl" [ngTemplateOutletContext]="context()" />
+        } @else {
+          <div class="int-confirmdialog__details">
+            @if (resolved().header; as header) {
+              <h2 class="int-confirmdialog__title" [id]="titleId">{{ header }}</h2>
+            }
+            @if (resolved().message; as message) {
+              <p class="int-confirmdialog__subtitle" [id]="subtitleId">{{ message }}</p>
+            }
+            @if (confirmation.detail; as detail) {
+              <p class="int-confirmdialog__text" [id]="textId">{{ detail }}</p>
+            }
+          </div>
+        }
+      </div>
+
+      @if (footerTemplate(); as footerTpl) {
+        <div class="int-confirmdialog__footer">
+          <ng-container [ngTemplateOutlet]="footerTpl" [ngTemplateOutletContext]="context()" />
+        </div>
+      } @else if (resolved().acceptVisible || resolved().rejectVisible) {
+        <!-- Accept goes first in the DOM: row-reverse shows it on the right and Tab reaches it first -->
+        <div class="int-confirmdialog__footer">
+          @if (resolved().acceptVisible) {
+            <button
+              intButton
+              type="button"
+              class="int-confirmdialog__accept-button"
+              [label]="resolved().acceptLabel"
+              (click)="accept()"
+            ></button>
+          }
+          @if (resolved().rejectVisible) {
+            <button
+              intButton
+              type="button"
+              class="int-confirmdialog__reject-button"
+              severity="secondary"
+              [label]="resolved().rejectLabel"
+              (click)="reject()"
+            ></button>
+          }
+        </div>
+      }
+    </div>
+  }
+</int-dialog>

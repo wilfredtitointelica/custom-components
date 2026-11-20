@@ -22,7 +22,7 @@ export default {
     'text',
     'append-to',
   ],
-  requires: ['list-box'],
+  requires: ['listbox'],
   uses: ['button'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

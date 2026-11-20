@@ -104,12 +104,22 @@ Cada fila se implementa igual (misma tecla, misma condición, mismo `preventDefa
 - **Búsqueda por tecleo** (*typeahead*): si PrimeNG la tiene (`searchValue` + timeout en select,
   listbox, tree), se replica con el mismo intervalo.
 - **Scroll del activo**: la opción enfocada por teclado se mantiene visible (`scrollIntoView({ block: 'nearest' })`).
-- **Foco visible**: `:focus-visible` (nunca `:focus` solo) con anillo por tokens:
+- **Foco visible**: `:focus-visible` (nunca `:focus` solo) con anillo por tokens del `:root` del componente
+  (sin mixin: la regla se escribe en el componente):
   ```scss
-  --int-<id>-focus-ring-width: var(--i-control-outline-width);
-  --int-<id>-focus-ring-color: var(--i-control-outline-color);
-  --int-<id>-focus-ring-offset: var(--i-control-outline-offset);
+  // :root: --i-control-outline-* when the Style Guide defines them (today empty `var()` in
+  // _tokens.control.draft.scss); meanwhile the values they stand for:
+  --int-<id>-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-<id>-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-<id>-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
+
+  // rule
+  &:focus-visible {
+    outline: var(--int-<id>-focus-ring-width) solid var(--int-<id>-focus-ring-color);
+    outline-offset: var(--int-<id>-focus-ring-offset);
+  }
   ```
+  Un anillo hacia adentro (pestañas, cabeceras) usa otro token de offset (`0`, `calc(var(--i-spacing-25) * -1)`).
   Nunca `outline: none` sin reemplazo.
 - **ARIA ligada al teclado**: `aria-expanded`, `aria-controls`, `aria-haspopup`, `aria-selected`,
   `aria-checked`, `aria-activedescendant`, `aria-posinset`/`aria-setsize` y los `aria-live` (toast,

@@ -23,7 +23,7 @@ a preguntar; lo que falte se pregunta **en un solo mensaje**.
 
 1. **Componente**: id o nombre visible → `id`. Si no existe:
    > No se puede renombrar: el componente **<nombre>** no existe.
-2. **Nuevo id**: kebab-case (`Slider Range` → `slider-range`). Si ya existe otro componente con ese
+2. **Nuevo id**: minúsculas y sin guiones, como PrimeNG (`Slider Range` → `sliderrange`, `Tree Select` → `treeselect`). Si ya existe otro componente con ese
    id, no se hace nada y se avisa.
 3. **Título**: pregunta si el título visible también cambia (sugiere uno derivado del id nuevo:
    `slidering` → `Slidering`). Si sí, se pasa `--title`; se actualiza en la cabecera de **todas** las

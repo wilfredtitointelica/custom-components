@@ -10,6 +10,7 @@
   --int-stepper-gap: var(--i-spacing-gap-lg); // SG: --i-stepper-gap 16px
   --int-stepper-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (step/font/fontFamily)
   --int-stepper-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-stepper-panel-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out, no knowledgeBase/Figma value
 
   // --- step list ---
   --int-stepper-list-gap: var(--i-spacing-gap-sm); // SG: --i-stepper-steplist-gap 8px · Figma: 8px (space/100)
@@ -51,6 +52,7 @@
   // --- panels ---
   --int-stepper-panels-padding: var(--i-spacing-container-xl); // SG: --i-stepper-steppanels-padding 16px
   --int-stepper-panels-font-size: var(--i-typography-font-size-lg); // SG: --i-stepper-steppanels-font-size 16px
+  --int-stepper-panels-border-width: var(--i-border-width-sm); // SG: steppanels border 1px
   --int-stepper-panels-border-color: var(--i-color-neutral-200); // SG: --i-stepper-steppanels-border-color
   --int-stepper-panels-border-radius: var(--i-border-radius-2xl); // SG: --i-stepper-steppanels-border-radius 16px
   --int-stepper-panel-content-gap: var(--i-spacing-gap-lg); // SG: .p-steppanel-content gap 16px
@@ -183,7 +185,7 @@
     display: block;
     padding: var(--int-stepper-panels-padding);
     font-size: var(--int-stepper-panels-font-size);
-    border: var(--i-border-width-sm) solid var(--int-stepper-panels-border-color);
+    border: var(--int-stepper-panels-border-width) solid var(--int-stepper-panels-border-color);
     border-radius: var(--int-stepper-panels-border-radius);
   }
 
@@ -198,7 +200,7 @@
     gap: var(--int-stepper-panel-content-gap);
 
     &--enter {
-      animation: int-stepper-panel-enter var(--int-stepper-transition-duration) var(--i-motion-ease-out);
+      animation: int-stepper-panel-enter var(--int-stepper-transition-duration) var(--int-stepper-panel-enter-easing);
     }
   }
 

@@ -74,7 +74,7 @@
     [class]="panelStyleClass() ?? ''"
     [class.int-select__panel--text]="variant() === 'text'"
   >
-    <int-list-box
+    <int-listbox
       embedded
       [options]="listOptions()"
       [optionLabel]="optionLabel()"
@@ -88,7 +88,7 @@
       [emptyFilterMessage]="emptyFilterMessage()"
       [scrollHeight]="scrollHeight()"
       [itemTemplate]="itemTemplate()"
-      (onChange)="onListBoxChange($event)"
+      (onChange)="onListboxChange($event)"
     />
   </div>
 </ng-template>

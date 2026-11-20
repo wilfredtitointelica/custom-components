@@ -1,32 +1,69 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
 :root {
   --NOTE-ACCORDION: 'int-accordion ( Custom )';
+
+  // --- root ---
+  --int-accordion-background: var(--i-color-neutral-50); // knowledgeBase: --i-accordion-header-background / content-background (Neutral 50)
+  --int-accordion-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
+  --int-accordion-padding: var(--i-spacing-container-xl); // knowledgeBase: .prAccordion header/content padding (int-*: container-xl spacing)
+
+  // --- panel ---
+  --int-accordion-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 0 0 1px 0
+  --int-accordion-border-color: var(--i-color-neutral-400); // knowledgeBase: --i-accordion-panel-border-color (Neutral 400)
+
+  // --- header ---
+  --int-accordion-header-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm · Aura: —
+  --int-accordion-header-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-header-color (Neutral 700)
+  --int-accordion-header-hover-color: var(--i-color-neutral-800); // knowledgeBase: --i-accordion-header-hover-color (Neutral 800)
+  --int-accordion-header-active-color: var(--i-color-primary-700); // knowledgeBase: --i-accordion-header-active-color (blue/700)
+  --int-accordion-header-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Aura: —
+  --int-accordion-header-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Aura: inherit
+  --int-accordion-header-font-weight: var(--i-typography-font-weight-bold); // SG: bold · Aura: 600
+  --int-accordion-title-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · Aura: —
+
+  // --- icons ---
+  --int-accordion-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Aura: —
+  --int-accordion-status-icon-success-color: var(--i-icon-color-success); // SG: alerts .success-icon (green/800 #126629) · Aura: —
+  --int-accordion-status-icon-error-color: var(--i-icon-color-error); // SG: alerts .error-icon (red/700 #960D0D) · Aura: —
+  --int-accordion-transition: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+
+  // --- content ---
+  --int-accordion-content-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-content-color (Neutral 700)
+  --int-accordion-content-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md · Aura: inherit
+  --int-accordion-content-max-height: none; // SG: no token (int-* extension: scrolls the content, like PrimeNG scrollHeight) · Aura: —
+
+  // --- card (int-* extension: Style Guide alerts .borderWrapper) ---
+  --int-accordion-card-gap: var(--i-spacing-gap-sm); // knowledgeBase: alerts .borderWrapper · Aura: —
+  --int-accordion-card-padding: var(--i-spacing-container-lg); // knowledgeBase: alerts .borderWrapper padding
+  --int-accordion-card-header-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper title (primary-900 by design, no hover/active change)
+  --int-accordion-card-background: transparent; // knowledgeBase: alerts .borderWrapper (page background shows through)
+  --int-accordion-card-panel-border-width: var(--i-border-width-sm); // knowledgeBase: alerts .borderWrapper · Aura: —
+  --int-accordion-card-panel-border-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper (#0A1733 by design instead of its secondary-300)
+  --int-accordion-card-panel-border-radius: var(--i-border-radius-xl); // knowledgeBase: alerts .borderWrapper · Aura: —
+  --int-accordion-card-panel-background: var(--i-color-secondary-50); // knowledgeBase: alerts .borderWrapper · Aura: —
+
+  // --- skeleton ---
+  --int-accordion-skeleton-height: 9rem; // SG: no token · Aura: —
+  --int-accordion-skeleton-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md
+  --int-accordion-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- focus ring ---
+  --int-accordion-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-accordion-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-accordion-focus-ring-offset: -3px; // SG: no token, inset ring inside the header · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// Parity with Style Guide `.prAccordion`. Overridable props: --int-accordion-{border-color,
-// header-color,header-hover-color,header-active-color,background,content-color,padding} and
-// --int-accordion-content-max-height (int-* extension: scrolls the content, like PrimeNG scrollHeight).
+// Parity with Style Guide `.prAccordion`.
 .int-accordion {
-  --int-accordion-border-color: var(--i-color-neutral-400); // knowledgeBase: --i-accordion-panel-border-color (Neutral 400)
-  --int-accordion-header-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-header-color (Neutral 700)
-  --int-accordion-header-hover-color: var(--i-color-neutral-800); // knowledgeBase: --i-accordion-header-hover-color (Neutral 800)
-  --int-accordion-header-active-color: var(--i-color-primary-700); // knowledgeBase: --i-accordion-header-active-color (blue/700)
-  --int-accordion-background: var(--i-color-neutral-50); // knowledgeBase: --i-accordion-header-background / content-background (Neutral 50)
-  --int-accordion-content-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-content-color (Neutral 700)
-  --int-accordion-padding: var(--i-spacing-container-xl); // knowledgeBase: .prAccordion header/content padding (int-*: container-xl spacing)
-
   display: block;
   background: var(--int-accordion-background);
-  font-family: var(--i-text-body-family);
+  font-family: var(--int-accordion-font-family);
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -36,30 +73,38 @@
 .int-accordion {
   &__panel {
     display: block;
-    border-bottom: var(--i-border-width-sm) solid var(--int-accordion-border-color);
+    border-bottom: var(--int-accordion-border-width) solid var(--int-accordion-border-color);
   }
 
   &__trigger {
-    @include int.reset-button;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--i-spacing-gap-sm);
+    gap: var(--int-accordion-header-gap);
     width: 100%;
     padding: var(--int-accordion-padding) 0;
     color: var(--int-accordion-header-color);
-    font-size: var(--i-typography-font-size-md);
-    font-weight: var(--i-typography-font-weight-bold);
+    font-size: var(--int-accordion-header-font-size);
+    font-weight: var(--int-accordion-header-font-weight);
     text-align: left;
 
     &:hover:not(:disabled) {
       color: var(--int-accordion-header-hover-color);
     }
     &:focus-visible {
-      @include int.focus-ring(-3px);
+      outline: var(--int-accordion-focus-ring-width) solid var(--int-accordion-focus-ring-color);
+      outline-offset: var(--int-accordion-focus-ring-offset);
     }
     &:disabled {
-      color: var(--i-text-color-disabled);
+      color: var(--int-accordion-header-disabled-color);
       cursor: not-allowed;
       user-select: none;
     }
@@ -69,40 +114,40 @@
   &__title {
     display: inline-flex;
     align-items: center;
-    gap: var(--i-spacing-gap-xs);
+    gap: var(--int-accordion-title-gap);
   }
 
   // Status icon projected in the header (Style Guide alerts .success-icon / .error-icon). Uses the icon
   // tokens: .u-color-success is --i-color-success-base = green/400 (#64E386), not the icon green.
   &__status-icon {
-    font-size: var(--i-icon-size-sm);
+    font-size: var(--int-accordion-icon-size);
 
     &--success {
-      color: var(--i-icon-color-success); // green/800 #126629
+      color: var(--int-accordion-status-icon-success-color);
     }
     &--error {
-      color: var(--i-icon-color-error); // red/700 #960D0D
+      color: var(--int-accordion-status-icon-error-color);
     }
   }
 
   &__toggle-icon {
-    font-size: var(--i-icon-size-sm);
-    transition: transform var(--i-motion-base);
+    font-size: var(--int-accordion-icon-size);
+    transition: transform var(--int-accordion-transition);
   }
 
   // Height animation without measuring: grid rows 0fr → 1fr.
   &__content {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows var(--i-motion-base);
+    transition: grid-template-rows var(--int-accordion-transition);
     color: var(--int-accordion-content-color);
-    font-size: var(--i-typography-font-size-md);
+    font-size: var(--int-accordion-content-font-size);
   }
   &__content-inner {
     overflow: hidden;
   }
   &__content-body {
-    max-height: var(--int-accordion-content-max-height, none);
+    max-height: var(--int-accordion-content-max-height);
     overflow: auto;
     padding-bottom: var(--int-accordion-padding);
   }
@@ -134,21 +179,21 @@
 // Card (int-* extension): each panel is a bordered card (Style Guide alerts .borderWrapper, but with a
 // primary-900 border by design instead of its secondary-300).
 .int-accordion--card {
-  --int-accordion-padding: var(--i-spacing-container-lg); // knowledgeBase: alerts .borderWrapper padding
-  --int-accordion-header-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper title (primary-900 by design)
-  --int-accordion-header-hover-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper (no hover change)
-  --int-accordion-header-active-color: var(--i-color-primary-900); // knowledgeBase: alerts .borderWrapper (no active change)
-  --int-accordion-background: transparent; // knowledgeBase: alerts .borderWrapper (page background shows through)
+  --int-accordion-padding: var(--int-accordion-card-padding); // knowledgeBase: alerts .borderWrapper padding
+  --int-accordion-header-color: var(--int-accordion-card-header-color); // knowledgeBase: alerts .borderWrapper title
+  --int-accordion-header-hover-color: var(--int-accordion-card-header-color); // knowledgeBase: alerts .borderWrapper (no hover change)
+  --int-accordion-header-active-color: var(--int-accordion-card-header-color); // knowledgeBase: alerts .borderWrapper (no active change)
+  --int-accordion-background: var(--int-accordion-card-background); // knowledgeBase: alerts .borderWrapper (page background shows through)
 
   display: flex;
   flex-direction: column;
-  gap: var(--i-spacing-gap-sm);
+  gap: var(--int-accordion-card-gap);
 
   > .int-accordion__panel {
     padding-inline: var(--int-accordion-padding);
-    border: var(--i-border-width-sm) solid var(--i-color-primary-900); // #0A1733
-    border-radius: var(--i-border-radius-xl);
-    background: var(--i-color-secondary-50);
+    border: var(--int-accordion-card-panel-border-width) solid var(--int-accordion-card-panel-border-color);
+    border-radius: var(--int-accordion-card-panel-border-radius);
+    background: var(--int-accordion-card-panel-background);
   }
 }
 
@@ -158,7 +203,7 @@
 
 .sk-accordion {
   display: block;
-  height: 9rem;
-  border-radius: var(--i-border-radius-md);
-  background: var(--i-background-disabled);
+  height: var(--int-accordion-skeleton-height);
+  border-radius: var(--int-accordion-skeleton-border-radius);
+  background: var(--int-accordion-skeleton-background);
 }

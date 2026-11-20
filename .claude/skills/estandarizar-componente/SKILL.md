@@ -154,6 +154,12 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
    va al comentario: va a la tabla de cambios. Literales → token más cercano si se ve igual, y la diferencia al informe; si
    el más cercano cambia lo que se ve, se conserva como valor fijo en el `--int-*` con su comentario de
    origen (excepción de `replicar-primeng` 3.3).
+   Todos los tokens van al `:root` de `_<id>.scss` (los declarados en el bloque `.int-<id>` o en un
+   `:root` de `_<id>.<grupo>.scss` se mueven ahí, si no la pestaña API no los muestra); cada `var(--i-*)`
+   leído en una regla pasa a un token propio (controles de formulario → `--i-control-*`), y un modificador
+   reasigna solo a tokens `--int-<id>-*`. Un `@include` de mixin o `@use` de SCSS compartido se expande en
+   el componente con sus tokens. Hecho cuando `check:component` no da avisos "read in a rule" ni
+   "is not declared in the :root".
    Un `overflow` en el bloque `.int-<id>` (o `u-overflow-*` sobre el `<int-*>` de una variante) se mueve
    al `__elemento` que necesita el recorte: el bloque no recorta, para no cortar overlays abiertos dentro.
 5. **Cabecera**: si hay link de Figma, `figma:` y `figma-frame:` (1.5).

@@ -1,13 +1,52 @@
-@use '../../../_shared_/mixins' as int;
-
 /*——————————————————————————————————————————————————————————*\
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
-// The field look is read from --int-field-* (see _shared_/mixins): overriding one on any ancestor
-// restyles every field inside it (InputText, InputNumber, the filters of select, list-box…).
+// Every rule reads these tokens; only this :root reads the Style Guide (--i-control-*). A container restyles
+// the int-inputtext fields inside it by overriding these tokens (int-inputnumber sets --int-inputtext-height).
 :root {
   --NOTE-INPUTTEXT: 'int-inputtext ( Custom )';
+
+  // --- field ---
+  --int-inputtext-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · knowledgeBase: .prInputText 32px · Aura: auto
+  --int-inputtext-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) 8px · Aura: {form.field.padding.x} 0.75rem
+  --int-inputtext-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) 6px · Aura: {form.field.padding.y} 0.5rem
+  --int-inputtext-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {form.field.background}
+  --int-inputtext-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) 1px · Aura: 1px
+  --int-inputtext-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
+  --int-inputtext-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
+  --int-inputtext-color: var(--i-text-color-default); // SG: --i-text-color-default (primary-900 #0A1733, Figma input/color/pressed/text; --i-control-color draft = grey neutral-700) · Aura: {form.field.color}
+  --int-inputtext-placeholder-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled (secondary-400 #9CA3BA, same as --i-control-placeholder-color but stable token) · Aura: {form.field.placeholder.color}
+  --int-inputtext-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · Aura: inherit
+  --int-inputtext-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
+  --int-inputtext-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) 20px · Aura: normal
+  --int-inputtext-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · Aura: {transition.duration} 0.2s
+  --int-inputtext-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · Aura: ease
+
+  // --- states ---
+  --int-inputtext-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · Aura: {form.field.hover.border.color}
+  --int-inputtext-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) primary-900 · Aura: {form.field.focus.border.color}
+  --int-inputtext-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
+  --int-inputtext-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · Aura: {form.field.invalid.placeholder.color}
+  --int-inputtext-success-border-color: var(--i-control-valid-border-color); // SG: --i-control-valid-border-color (tokens.control.draft) · Aura: —
+  --int-inputtext-success-color: var(--i-control-valid-color); // SG: --i-control-valid-color (tokens.control.draft) · Aura: —
+  --int-inputtext-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Aura: {form.field.disabled.background}
+  --int-inputtext-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Aura: {form.field.disabled.color}
+
+  // --- sizes ---
+  --int-inputtext-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) 24px · Aura: auto
+  --int-inputtext-sm-padding-y: var(--i-control-sm-padding-y); // SG: --i-control-sm-padding-y (tokens.control.draft) 4px · Aura: {form.field.sm.padding.y}
+  --int-inputtext-sm-font-size: var(--i-control-sm-font-size); // SG: --i-control-sm-font-size (tokens.control.draft) 12px · Aura: {form.field.sm.font.size}
+  --int-inputtext-sm-line-height: var(--i-control-sm-line-height); // SG: --i-control-sm-line-height (tokens.control.draft) · Aura: normal
+  --int-inputtext-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) 40px · Aura: auto
+  --int-inputtext-lg-padding-y: var(--i-control-lg-padding-y); // SG: --i-control-lg-padding-y (tokens.control.draft) 8px · Aura: {form.field.lg.padding.y}
+  --int-inputtext-lg-padding-x: var(--i-control-lg-padding-x); // SG: --i-control-lg-padding-x (tokens.control.draft) 12px · Aura: {form.field.lg.padding.x}
+  --int-inputtext-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · Aura: {form.field.lg.font.size}
+
+  // --- skeleton ---
+  --int-inputtext-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
+  --int-inputtext-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
+  --int-inputtext-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -17,14 +56,30 @@
 // input[intInputText] / textarea[intInputText]: parity with Style Guide `.prInputText`
 // (32px, radius 8, grey border, blue-900 focus).
 .int-inputtext:is(input, textarea) {
-  @include int.field-box;
+  box-sizing: border-box;
+  min-height: var(--int-inputtext-height);
+  padding: var(--int-inputtext-padding-y) var(--int-inputtext-padding-x);
+  border: var(--int-inputtext-border-width) solid var(--int-inputtext-border-color);
+  border-radius: var(--int-inputtext-border-radius);
+  background: var(--int-inputtext-background);
+  color: var(--int-inputtext-color);
+  font-family: var(--int-inputtext-font-family);
+  font-size: var(--int-inputtext-font-size);
+  line-height: var(--int-inputtext-line-height);
+  transition:
+    border-color var(--int-inputtext-transition-duration) var(--int-inputtext-transition-easing),
+    background-color var(--int-inputtext-transition-duration) var(--int-inputtext-transition-easing);
   margin: 0;
   appearance: none;
   outline: none;
 
   &::placeholder {
-    color: int.field(placeholder);
+    color: var(--int-inputtext-placeholder-color);
     opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
@@ -38,14 +93,50 @@
 
 .int-inputtext:is(input, textarea) {
   // Mouse and keyboard focus share the focus border (Style Guide field), so :focus-visible is explicit.
-  @include int.field-states(int-inputtext, '&:focus, &:focus-visible');
-  @include int.field-sizes(int-inputtext);
+  &:hover:not(.int-inputtext--disabled):not(:disabled) {
+    border-color: var(--int-inputtext-hover-border-color);
+  }
+  &:focus, &:focus-visible {
+    outline: none;
+    border-color: var(--int-inputtext-focus-border-color);
+  }
+  &.int-inputtext--success {
+    border-color: var(--int-inputtext-success-border-color);
+    color: var(--int-inputtext-success-color);
+  }
+  &.int-inputtext--invalid {
+    border-color: var(--int-inputtext-invalid-border-color);
+    color: var(--int-inputtext-invalid-color);
+  }
+  &:disabled,
+  &.int-inputtext--disabled {
+    background: var(--int-inputtext-disabled-background);
+    color: var(--int-inputtext-disabled-color);
+    border-color: transparent;
+    cursor: not-allowed;
+    user-select: none;
+  }
+  &.int-inputtext--small {
+    --int-inputtext-height: var(--int-inputtext-sm-height);
+    --int-inputtext-padding-y: var(--int-inputtext-sm-padding-y);
+    --int-inputtext-font-size: var(--int-inputtext-sm-font-size);
+    --int-inputtext-line-height: var(--int-inputtext-sm-line-height);
+  }
+  &.int-inputtext--large {
+    --int-inputtext-height: var(--int-inputtext-lg-height);
+    --int-inputtext-padding-y: var(--int-inputtext-lg-padding-y);
+    --int-inputtext-padding-x: var(--int-inputtext-lg-padding-x);
+    --int-inputtext-font-size: var(--int-inputtext-lg-font-size);
+  }
+  &.int-inputtext--fluid {
+    width: 100%;
+  }
 
   &.int-inputtext--invalid::placeholder {
-    color: int.field(color-invalid);
+    color: var(--int-inputtext-invalid-color);
   }
   &.int-inputtext--success::placeholder {
-    color: int.field(color-success);
+    color: var(--int-inputtext-success-color);
   }
 }
 
@@ -56,7 +147,7 @@
 .sk-inputtext {
   display: inline-block;
   width: 12rem;
-  height: var(--i-sizing-lg);
-  border-radius: var(--i-border-radius-lg);
-  background: var(--i-background-disabled);
+  height: var(--int-inputtext-skeleton-height);
+  border-radius: var(--int-inputtext-skeleton-border-radius);
+  background: var(--int-inputtext-skeleton-background);
 }

@@ -3,19 +3,19 @@
  * is not listed here goes to the "Other" group at the end, so a new component always shows up.
  */
 export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: readonly string[] }[] = [
-  { name: 'Actions', ids: ['button', 'file-upload', 'drag-and-drop'] },
+  { name: 'Actions', ids: ['button', 'fileupload', 'draganddrop'] },
   {
     name: 'Inputs',
-    ids: ['inputtext', 'inputnumber', 'inputotp', 'checkbox', 'radiobutton', 'password', 'search', 'search-dropdown'],
+    ids: ['inputtext', 'inputnumber', 'inputotp', 'checkbox', 'radiobutton', 'password', 'search', 'searchdropdown'],
   },
   {
     name: 'Selection',
-    ids: ['select', 'multiselect', 'tree-select', 'list-box', 'toggle-switch', 'slider', 'datepicker'],
+    ids: ['select', 'multiselect', 'treeselect', 'listbox', 'toggleswitch', 'slider', 'datepicker'],
   },
   { name: 'Navigation', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
     name: 'Data & Containers',
-    ids: ['card', 'accordion', 'dialog-modal', 'confirm-dialog-modal', 'carousel', 'table', 'treetable', 'tree-view', 'pick-list', 'timeline'],
+    ids: ['card', 'accordion', 'dialog', 'confirmdialog', 'carousel', 'table', 'treetable', 'treeview', 'picklist', 'timeline'],
   },
   {
     name: 'Feedback',

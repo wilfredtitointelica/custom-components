@@ -1,0 +1,211 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+// The knowledge base has no .prTree case and _tree.scss is empty: the rows follow the tree of the Style Guide
+// _treeselect.scss (not in the bundle base, so each token points to the base token it resolves to) and Figma
+// Atoms ↳ Select where the Style Guide sets nothing.
+:root {
+  --NOTE-TREEVIEW: 'int-treeview ( Custom )';
+
+  // --- root ---
+  --int-treeview-font-family: var(--i-typography-font-family-base); // SG: body font (base/_typography) · Figma: Lato (select/font/fontFamily)
+  --int-treeview-font-size: var(--i-typography-font-size-md); // SG: .p-tree-node-content font-size 14px · Figma: 14px (select/font/size/md)
+  --int-treeview-line-height: var(--i-typography-lineHeight-md); // Figma: 20px (select/font/lineHeight/md), no knowledgeBase/SG value
+  --int-treeview-color: var(--i-color-primary-900); // SG: .p-tree-node-content color · Figma: #0A1733 (select/color/text)
+  --int-treeview-gap: var(--i-spacing-gap-xs); // SG: .p-tree-node gap 4px · Figma: 4px (select/gap/xs)
+  --int-treeview-indent: var(--i-spacing-container-xl); // Figma: 16px (select/padding/x/xl) level indent, no knowledgeBase/SG value
+  --int-treeview-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
+  --int-treeview-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-ease-in-out (same as int-multiselect)
+  --int-treeview-node-transition-duration: var(--i-motion-duration-base); // SG: 300ms, soft hover fade (same as int-multiselect option)
+
+  // --- row ---
+  --int-treeview-node-padding-y: var(--i-spacing-container-xs); // SG: .p-tree-node-content padding 4px · Figma: 6px (select/padding/y/sm) ⚠️
+  --int-treeview-node-padding-x: var(--i-spacing-container-sm); // SG: .p-tree-node-content padding 6px · Figma: 8px (select/padding/x/md) ⚠️
+  --int-treeview-node-gap: var(--i-spacing-gap-sm); // Figma: 8px (select/gap/sm), no knowledgeBase/SG value
+  --int-treeview-node-radius: var(--i-border-radius-lg); // Figma: 8px (select/border/radius/lg), no knowledgeBase/SG value
+  --int-treeview-node-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background), no knowledgeBase/SG value
+  --int-treeview-node-hover-background: var(--i-color-secondary-100); // SG: overlay .p-tree-node-content:hover · Figma: #F2F2F5 (select/color/hover/background) [State=Hover]
+  --int-treeview-node-selected-background: var(--i-color-primary-700); // SG: .p-tree-node-selected (no checkbox) · Figma: #1B3E88 (select/color/pressed/background) [State=Pressed]
+  --int-treeview-node-selected-color: var(--i-color-primary-50); // SG: .p-tree-node-selected (no checkbox) · Figma: #EEF2FC (select/color/pressed/text) [State=Pressed]
+  --int-treeview-node-checked-background: var(--i-color-secondary-50); // Figma: #FCFCFC (select/color/background) [State=Selected], SG multiselect transparent · SG treeselect secondary-100 ⚠️
+  --int-treeview-node-checked-hover-background: var(--i-color-secondary-100); // Figma: #F2F2F5 (select/color/hover/background) [State=Selected hover] · SG: multiselect .p-focus secondary-100
+  --int-treeview-checkbox-hover-border-color: var(--i-color-primary-600); // Figma: #2351B3 (checkbox Hover, row State=Hover / Selected hover) [2354:2484], no SG treeselect value
+  --int-treeview-checkbox-checked-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
+  --int-treeview-checkbox-checked-hover-icon-color: var(--i-color-primary-700); // Figma: #1B3E88 (checkbox Checked/Indeterminate Hover) [2354:2484], no SG treeselect value
+  --int-treeview-node-disabled-color: var(--i-color-secondary-400); // Figma: #9CA3BA (select/color/disabled/text) [State=Disabled], no knowledgeBase/SG value
+  --int-treeview-focus-ring-width: var(--i-border-width-sm); // SG: overlay focus-visible outline 1px
+  --int-treeview-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color
+
+  // --- toggle ---
+  --int-treeview-toggle-size: var(--i-spacing-container-xl); // SG: .p-tree-node-toggle-button 16px · Figma: 16px (icon-container)
+  --int-treeview-toggle-icon-size: var(--i-icon-size-sm); // Figma: 16px (icon-container)
+
+  // --- empty message ---
+  --int-treeview-empty-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs, no knowledgeBase/Figma value
+
+  // --- filter ---
+  --int-treeview-filter-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm, no knowledgeBase/Figma value
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+.int-treeview {
+  display: block;
+  font-family: var(--int-treeview-font-family);
+  font-size: var(--int-treeview-font-size);
+  line-height: var(--int-treeview-line-height);
+  color: var(--int-treeview-color);
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-treeview {
+  &__root,
+  &__node-children {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-treeview-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__node-children {
+    padding-inline-start: var(--int-treeview-indent);
+  }
+
+  &__node {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-treeview-gap);
+    outline: none;
+
+    &:focus-visible > .int-treeview__node-content {
+      outline: var(--int-treeview-focus-ring-width) solid var(--int-treeview-focus-ring-color);
+      outline-offset: calc(var(--int-treeview-focus-ring-width) * -1);
+    }
+  }
+
+  &__node-content {
+    display: flex;
+    align-items: center;
+    gap: var(--int-treeview-node-gap);
+    padding: var(--int-treeview-node-padding-y) var(--int-treeview-node-padding-x);
+    background: var(--int-treeview-node-background);
+    border-radius: var(--int-treeview-node-radius);
+    transition:
+      background var(--int-treeview-node-transition-duration) var(--int-treeview-transition-easing),
+      color var(--int-treeview-node-transition-duration) var(--int-treeview-transition-easing);
+
+    &--selectable {
+      cursor: pointer;
+
+      &:not(.int-treeview__node-content--selected):hover {
+        background: var(--int-treeview-node-hover-background);
+      }
+    }
+
+    &--selected {
+      color: var(--int-treeview-node-selected-color);
+      background: var(--int-treeview-node-selected-background);
+    }
+
+    &--disabled {
+      color: var(--int-treeview-node-disabled-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  &__toggle-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--int-treeview-toggle-size);
+    height: var(--int-treeview-toggle-size);
+    padding: 0;
+    color: inherit;
+    background: transparent;
+    border: 0 none;
+    cursor: pointer;
+  }
+
+  &__toggle-icon {
+    font-size: var(--int-treeview-toggle-icon-size);
+    transition: rotate var(--int-treeview-transition-duration) var(--int-treeview-transition-easing);
+  }
+
+  // A leaf keeps the space of the toggle, so labels stay aligned (PrimeNG .p-tree-node-leaf).
+  &__node--leaf > .int-treeview__node-content > .int-treeview__toggle-button {
+    visibility: hidden;
+  }
+
+  &__node[aria-expanded='true'] > .int-treeview__node-content .int-treeview__toggle-icon {
+    rotate: 90deg;
+  }
+
+  // <int-checkbox> keeps its own look; the row only keeps it from shrinking.
+  &__checkbox {
+    flex-shrink: 0;
+  }
+
+  &__node-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__empty-message {
+    padding: var(--int-treeview-empty-padding);
+  }
+
+  &__filter {
+    margin-block-end: var(--int-treeview-filter-gap);
+  }
+}
+
+// Checkbox mode (Figma Selected / Selected hover, Style Guide multiselect): a checked row keeps the text color and
+// the row background, and takes the hover background under the pointer.
+.int-treeview:has(.int-treeview__checkbox) .int-treeview__node-content--selected {
+  color: var(--int-treeview-color);
+  background: var(--int-treeview-node-checked-background);
+
+  &.int-treeview__node-content--selectable:hover {
+    background: var(--int-treeview-node-checked-hover-background);
+  }
+}
+
+// Hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover), with the same look
+// as <int-checkbox>: border when unchecked, darker box when checked / indeterminate. No light (Figma #DDE6F8) hover,
+// aligned with the checkbox component and the Style Guide by decision of the team.
+.int-treeview__node-content--selectable:hover .int-treeview__checkbox {
+  --int-checkbox-border: var(--int-treeview-checkbox-hover-border-color); // Figma: checkbox Hover border on row hover (2354:2484)
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+// Label as toggle and children aligned live in _treeview.label-as-toggle and _treeview.children-aligned.
+
+@media (prefers-reduced-motion: reduce) {
+  .int-treeview__node-content,
+  .int-treeview__toggle-icon {
+    transition-duration: 0s;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+\*——————————————————————————————————————————————————————————*/
+
+.sk-treeview {
+}

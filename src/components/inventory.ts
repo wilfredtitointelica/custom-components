@@ -6,23 +6,23 @@ import inputtext from './inputtext/inputtext.config';
 import inputnumber from './inputnumber/inputnumber.config';
 import checkbox from './checkbox/checkbox.config';
 import radiobutton from './radiobutton/radiobutton.config';
-import fileUpload from './file-upload/file-upload.config';
+import fileupload from './fileupload/fileupload.config';
 import datepicker from './datepicker/datepicker.config';
-import listBox from './list-box/list-box.config';
-import dialogModal from './dialog-modal/dialog-modal.config';
-import confirmDialogModal from './confirm-dialog-modal/confirm-dialog-modal.config';
+import listbox from './listbox/listbox.config';
+import dialog from './dialog/dialog.config';
+import confirmdialog from './confirmdialog/confirmdialog.config';
 import tabs from './tabs/tabs.config';
 import tooltip from './tooltip/tooltip.config';
 import tag from './tag/tag.config';
 import popover from './popover/popover.config';
-import toggleSwitch from './toggle-switch/toggle-switch.config';
+import toggleswitch from './toggleswitch/toggleswitch.config';
 import slider from './slider/slider.config';
-import treeView from './tree-view/tree-view.config';
+import treeview from './treeview/treeview.config';
 import search from './search/search.config';
 import stepper from './stepper/stepper.config';
-import treeSelect from './tree-select/tree-select.config';
-import dragAndDrop from './drag-and-drop/drag-and-drop.config';
-import pickList from './pick-list/pick-list.config';
+import treeselect from './treeselect/treeselect.config';
+import draganddrop from './draganddrop/draganddrop.config';
+import picklist from './picklist/picklist.config';
 import table from './table/table.config';
 import carousel from './carousel/carousel.config';
 import message from './message/message.config';
@@ -33,7 +33,7 @@ import treetable from './treetable/treetable.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
 import chip from './chip/chip.config';
-import searchDropdown from './search-dropdown/search-dropdown.config';
+import searchdropdown from './searchdropdown/searchdropdown.config';
 import breadcrumb from './breadcrumb/breadcrumb.config';
 import paginator from './paginator/paginator.config';
 import inputotp from './inputotp/inputotp.config';
@@ -58,23 +58,23 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   inputotp,
   checkbox,
   radiobutton,
-  fileUpload,
+  fileupload,
   datepicker,
-  listBox,
-  dialogModal,
+  listbox,
+  dialog,
   tabs,
   tooltip,
   tag,
   popover,
-  confirmDialogModal,
-  toggleSwitch,
+  confirmdialog,
+  toggleswitch,
   slider,
-  treeView,
+  treeview,
   search,
   stepper,
-  treeSelect,
-  dragAndDrop,
-  pickList,
+  treeselect,
+  draganddrop,
+  picklist,
   table,
   carousel,
   message,
@@ -85,7 +85,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   card,
   badge,
   chip,
-  searchDropdown,
+  searchdropdown,
   breadcrumb,
   paginator,
   password,

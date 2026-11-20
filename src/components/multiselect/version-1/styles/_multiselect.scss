@@ -150,7 +150,9 @@
     align-self: center;
     min-inline-size: 0;
     padding-block: var(--int-multiselect-padding-y);
-    padding-inline: var(--int-multiselect-padding-x) var(--int-multiselect-padding-y);
+    // unified: 8px on both sides, as SG .p-multiselect-label / .p-treeselect-label and PrimeNG (padding.y padding.x);
+    // the end side was padding-y (6px), so text to ✕ was 10px instead of 12px as int-treeselect.
+    padding-inline: var(--int-multiselect-padding-x);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

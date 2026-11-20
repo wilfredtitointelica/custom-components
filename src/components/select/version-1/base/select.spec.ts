@@ -91,11 +91,11 @@ describe('IntSelect', () => {
     const { fixture, trigger, overlay } = setup();
     trigger.click();
     fixture.detectChanges();
-    expect(overlay.querySelector('.int-list-box__filter')).toBeNull();
+    expect(overlay.querySelector('.int-listbox__filter')).toBeNull();
 
     fixture.componentInstance.threshold = 2;
     fixture.detectChanges();
-    expect(overlay.querySelector('.int-list-box__filter')).not.toBeNull();
+    expect(overlay.querySelector('.int-listbox__filter')).not.toBeNull();
   });
 });
 

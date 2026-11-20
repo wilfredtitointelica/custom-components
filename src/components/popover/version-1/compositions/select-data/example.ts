@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { IntButton } from '../../../../button/version-1/base/button';
-import { IntListBox } from '../../../../list-box/version-1/base/list-box';
+import { IntListbox } from '../../../../listbox/version-1/base/listbox';
 import { IntPopover } from '../../base/popover';
 
 interface Member {
@@ -14,7 +14,7 @@ interface Member {
 @Component({
   selector: 'popover-select-data-example',
   templateUrl: './example.html',
-  imports: [IntPopover, IntButton, IntListBox, FormsModule],
+  imports: [IntPopover, IntButton, IntListbox, FormsModule],
 })
 export class PopoverSelectDataExample {
   readonly members: Member[] = [

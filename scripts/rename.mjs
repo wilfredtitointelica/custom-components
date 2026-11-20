@@ -104,6 +104,8 @@ if (kind === 'component') {
   // Every form of the ID inside the component folder. Plain words (an <input> in an example, the
   // title in a comment) are left alone: only names derived from the ID are matched.
   const rules = [
+    // Tokens join the ID without hyphens: --int-tree-select-* is --int-treeselect-*.
+    [new RegExp(`--int-${escape(oldId.replaceAll('-', ''))}(?=-)`, 'g'), `--int-${newId.replaceAll('-', '')}`],
     [new RegExp(`(?<=\\b(?:int|sk)-)${id}(?![a-z0-9])`, 'g'), newId], // int-slider, sk-slider, int-slider__x
     [new RegExp(`\\bapp-${id}-page\\b`, 'g'), `app-${newId}-page`], // page selector
     [new RegExp(`(['"\`])${id}-([a-z0-9-]+-example)\\1`, 'g'), `$1${newId}-$2$1`], // example selectors

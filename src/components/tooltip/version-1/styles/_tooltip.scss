@@ -2,8 +2,30 @@
  * TOKENS
 \*——————————————————————————————————————————————————————————*/
 
+// Same names and values as version-2 (both versions can be loaded in the docs).
 :root {
   --NOTE-TOOLTIP: 'int-tooltip ( Custom )';
+
+  // --- root ---
+  --int-tooltip-background: var(--i-color-secondary-50); // Figma: #FCFCFC (tooltip/color/background)
+  --int-tooltip-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/text)
+  --int-tooltip-border-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (tooltip/color/border)
+  --int-tooltip-border-width: var(--i-border-width-sm); // Figma: 1px (tooltip/border/width/sm)
+  --int-tooltip-border-radius: var(--i-border-radius-md); // Figma: 6px (tooltip/border/radius/md)
+  --int-tooltip-padding: var(--i-spacing-container-md); // Figma: 8px (tooltip/padding/x/md, tooltip/padding/y/md)
+  --int-tooltip-shadow: var(--i-shadow-depth-2); // Figma: shadow.200
+  --int-tooltip-max-width: var(--i-tooltip-max-width, 360px); // knowledgeBase: --i-tooltip-max-width (Style Guide components bundle, not in base → fallback)
+  --int-tooltip-font-family: var(--i-text-body-family); // Figma: Lato (tooltip/font/fontFamily)
+
+  // --- text ---
+  --int-tooltip-text-font-size: var(--i-typography-font-size-sm); // Figma: 12px (tooltip/font/size/sm)
+  --int-tooltip-text-line-height: var(--i-typography-lineHeight-sm); // Figma: 16px (tooltip/font/lineHeight/sm)
+
+  // --- skeleton ---
+  --int-tooltip-skeleton-width: 8rem; // SG: no token · Aura: —
+  --int-tooltip-skeleton-height: var(--i-sizing-md); // SG: --i-sizing-md
+  --int-tooltip-skeleton-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md
+  --int-tooltip-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -11,25 +33,19 @@
 \*——————————————————————————————————————————————————————————*/
 
 // Parity with Style Guide `.prTooltip`. <int-tooltip> is the bubble in the CDK overlay.
-// Overridable props: --int-tooltip-{background,color,border-color,max-width}.
 .int-tooltip {
-  --int-tooltip-background: var(--i-color-secondary-50); // Figma: #FCFCFC (tooltip/color/background)
-  --int-tooltip-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/text)
-  --int-tooltip-border-color: var(--i-color-secondary-200); // Figma: #D9D9E3 (tooltip/color/border)
-  --int-tooltip-max-width: var(--i-tooltip-max-width, 360px); // knowledgeBase: --i-tooltip-max-width (Style Guide components bundle, not in base → fallback)
-
   display: block;
   box-sizing: border-box;
   max-width: var(--int-tooltip-max-width);
-  padding: var(--i-spacing-container-md);
-  border: var(--i-border-width-sm) solid var(--int-tooltip-border-color);
-  border-radius: var(--i-border-radius-md);
+  padding: var(--int-tooltip-padding);
+  border: var(--int-tooltip-border-width) solid var(--int-tooltip-border-color);
+  border-radius: var(--int-tooltip-border-radius);
   background: var(--int-tooltip-background);
-  box-shadow: var(--i-shadow-depth-2);
+  box-shadow: var(--int-tooltip-shadow);
   color: var(--int-tooltip-color);
-  font-family: var(--i-text-body-family);
-  font-size: var(--i-typography-font-size-sm);
-  line-height: var(--i-typography-lineHeight-sm);
+  font-family: var(--int-tooltip-font-family);
+  font-size: var(--int-tooltip-text-font-size);
+  line-height: var(--int-tooltip-text-line-height);
   overflow-wrap: break-word;
   pointer-events: none;
 }
@@ -48,8 +64,8 @@
 
 .sk-tooltip {
   display: inline-block;
-  width: 8rem;
-  height: var(--i-sizing-md);
-  border-radius: var(--i-border-radius-md);
-  background: var(--i-background-disabled);
+  width: var(--int-tooltip-skeleton-width);
+  height: var(--int-tooltip-skeleton-height);
+  border-radius: var(--int-tooltip-skeleton-border-radius);
+  background: var(--int-tooltip-skeleton-background);
 }

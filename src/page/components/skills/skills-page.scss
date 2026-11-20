@@ -279,9 +279,20 @@ code {
   color: var(--doc-code-ink);
 }
 
-/* Files the maquetador does not touch (outside version-N/). */
+/* A code block right after a list needs air (the list has no bottom margin). */
+.doc-skill-list + .doc-skill-code {
+  margin-top: 16px;
+}
+
+/* Inside a code block: where the value comes from (Style Guide, green like its chip) and comments (muted). */
+.doc-skill-code-sg {
+  color: var(--doc-success-on-dark);
+}
+
+/* Comments and files the maquetador does not touch (outside version-N/): same muted tone. */
+.doc-skill-code-comment,
 .doc-skill-code-muted {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* Block (not flex): text and <code> must flow inline; the icon sits in the left padding. */

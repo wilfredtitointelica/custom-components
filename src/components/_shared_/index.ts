@@ -3,7 +3,6 @@
  * overlay positions and option helpers (ported from @intelica/ui/core).
  * Not a catalog entry (no version-N/ folder). Must not import from the documentation app
  * (`core/`, `service/`, `variants/`), so it can be extracted to npm together with the bases.
- * SCSS building blocks: `@use '../../../_shared_/mixins' as int;`.
  */
 export * from './types';
 export * from './id';
