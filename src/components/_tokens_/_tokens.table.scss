@@ -1,17 +1,16 @@
 /*——————————————————————————————————————————————————————————————————————————————————————————————————*\
- * TOKENS TABLE ( tablas de datos )  ·  --int-table-*  ( PENDIENTE )
+ * TOKENS TABLE ( tablas de datos )  ·  --int-table-*
 
  ! Qué es
    Los valores que tienen en común las tablas int-*: la cabecera, el icono de orden, la celda, la fila
    ( rayada, hover, seleccionada ) y la fila de totales. Si cambias un token aquí, cambian todas las
    tablas que lo leen.
 
- ! Estado: pendiente
+ ! Origen
    Parte del _tokens.table.draft.scss del Style Guide, renombrado a --int-table-* para que un cambio
    aquí nunca toque producción ( los --i-table-* del Style Guide quedan como están ).
-   Los componentes todavía no leen estos tokens. Cuando se conecten, seguirá el modelo de
-   _tokens.control.scss: cada componente apunta su propio token a uno de estos con el comentario
-   "_tokens_:" ( ej. en _table.scss: --int-datatable-cell-background → var(--int-table-background) )
+   int-table e int-treetable ya los leen: cada componente apunta su propio token a uno de estos con el
+   comentario "_tokens_:" ( ej. en _table.scss: --int-datatable-cell-background → var(--int-table-background) )
    y sus reglas leen solo --int-datatable-* / --int-treetable-*.
 
  ! Cómo se usa

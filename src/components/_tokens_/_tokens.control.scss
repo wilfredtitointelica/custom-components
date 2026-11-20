@@ -68,9 +68,9 @@
 	--int-control-border-radius: var(--i-border-radius-lg);                           // 8px
 
 	// --- campo: texto ---
-	// usado por: inputtext, select, multiselect, treeselect, listbox ( salvo que se indique )
+	// usado por: inputtext, select, multiselect, treeselect, listbox, password, inputotp, searchdropdown ( salvo que se indique )
 
-	--int-control-color: var(--i-color-neutral-700);                     // #4F5470
+	--int-control-color: var(--i-color-primary-900);                     // #0A1733 · Figma input/color/pressed/text
 	--int-control-font-family: var(--i-text-body-family);                // no multiselect
 	--int-control-font-size: var(--i-text-body-size-md);                 // 14px
 	--int-control-line-height: var(--i-typography-lineHeight-md);        // 20px · no listbox
