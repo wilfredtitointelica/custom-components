@@ -188,12 +188,6 @@
 // aligned with the checkbox component and the Style Guide by decision of the team.
 .int-tree-view__node-content--selectable:hover .int-tree-view__checkbox {
   --int-checkbox-border: var(--int-treeview-checkbox-hover-border-color); // Figma: checkbox Hover border on row hover (2354:2484)
-
-  &.int-checkbox--checked .int-checkbox__box {
-    border-color: var(--int-treeview-checkbox-hover-border-color);
-    background: var(--int-treeview-checkbox-checked-hover-background);
-    color: var(--int-treeview-checkbox-checked-hover-icon-color);
-  }
 }
 
 /*——————————————————————————————————————————————————————————*\
