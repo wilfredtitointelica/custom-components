@@ -4,7 +4,7 @@
 
 // int-table--sticky-header (stickyHeader, int-* extension): the header, and the frozen rows below it (Total row),
 // stick below the dashboard header while the page scrolls. knowledgeBase: .prTable--stickyHeader
-// --int-table-sticky-top lives in the :root of _table.scss; stickyTop sets it inline on the host and wins.
+// --int-datatable-sticky-top lives in the :root of _table.scss; stickyTop sets it inline on the host and wins.
 .int-table--sticky-header {
   // The container must not scroll, or the header would stick to it instead of the page (knowledgeBase).
   .int-table__table-container {
@@ -13,18 +13,18 @@
 
   .int-table__thead {
     position: sticky;
-    inset-block-start: var(--int-table-sticky-top);
+    inset-block-start: var(--int-datatable-sticky-top);
     z-index: 2;
   }
 
   // Total row: right below the header.
   .int-table__tbody--frozen {
     position: sticky;
-    inset-block-start: calc(var(--int-table-sticky-top) + var(--int-table-header-height));
+    inset-block-start: calc(var(--int-datatable-sticky-top) + var(--int-datatable-header-height));
     z-index: 1;
   }
 
   &.int-table--small .int-table__tbody--frozen {
-    inset-block-start: calc(var(--int-table-sticky-top) + var(--int-table-sm-header-height));
+    inset-block-start: calc(var(--int-datatable-sticky-top) + var(--int-datatable-sm-header-height));
   }
 }

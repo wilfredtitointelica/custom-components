@@ -1,0 +1,71 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS TABLE ( type data )
+ ! Common tokens for tables:
+ 	p-table           ->    prTable              GABRIELA     ( int-table )
+ 	p-treetable       ->    prTable              GABRIELA     ( int-treetable )
+\*——————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————*\
+ * BASE
+\*——————————————————————————————————————————————————————————*/
+
+:root { --NOTE-TABLE: 'Custom Table Tokens';
+
+	// --- properties ---
+
+	--i-table-background: var(--i-color-neutral-50); // #FCFCFC
+	--i-table-color: var(--i-color-primary-900); // #0A1733
+	--i-table-outline-width: var(--i-border-width-sm); // 1px
+	--i-table-outline-color: var(--i-focus-border-color);
+	--i-table-motion-duration: var(--i-motion-duration-fast); // 150ms
+
+	// --- modifiers / variants ---
+
+	--i-table-sm-header-height: var(--i-sizing-lg); // 32px ( prTable--compact )
+	--i-table-sm-cell-height: var(--i-sizing-xl); // 40px ( prTable--compact )
+
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS
+\*——————————————————————————————————————————————————————————*/
+
+:root { --NOTE-TABLE-ELEMENTS: 'Custom Table Elements Tokens';
+
+	// --- header ( th ) ---
+
+	--i-table-header-height: var(--i-sizing-800); // 64px
+	--i-table-header-padding: var(--i-spacing-100); // 8px
+	--i-table-header-gap: var(--i-spacing-gap-sm); // 8px
+	--i-table-header-border-width: var(--i-border-width-sm); // 1px
+	--i-table-header-border-color: var(--i-color-neutral-300);
+	--i-table-header-font-size: var(--i-typography-font-size-sm); // 12px
+	--i-table-header-font-weight: var(--i-typography-font-weight-bold); // 700
+
+	// --- sort icon ---
+
+	--i-table-sort-icon-size: var(--i-typography-font-size-sm); // 12px
+	--i-table-sort-icon-color: var(--i-color-secondary-600);
+	--i-table-sort-icon-hover-color: var(--i-color-primary-400);
+	--i-table-sort-icon-selected-color: var(--i-color-primary-600);
+
+	// --- cell ( td ) ---
+
+	--i-table-cell-height: var(--i-sizing-600); // 48px
+	--i-table-cell-padding: var(--i-spacing-100); // 8px
+	--i-table-cell-font-size: var(--i-typography-font-size-sm); // 12px
+
+	// --- row ---
+
+	--i-table-row-background: var(--i-color-neutral-50); // odd rows
+	--i-table-row-striped-background: var(--i-color-neutral-100); // even rows
+	--i-table-row-hover-background: var(--i-color-primary-100);
+	--i-table-row-selected-background: var(--i-color-primary-50);
+
+	// --- total row ( fixedRow ) ---
+
+	--i-table-total-border-width: var(--i-border-width-sm); // 1px
+	--i-table-total-border-color: var(--i-color-primary-900);
+	--i-table-total-font-size: var(--i-typography-font-size-md); // 14px
+
+}

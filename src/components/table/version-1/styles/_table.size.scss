@@ -5,11 +5,11 @@
 // small is the knowledge base .prTable--compact; its tokens live in the :root of _table.scss.
 .int-table--small {
   .int-table__thead > tr > th {
-    height: var(--int-table-sm-header-height);
+    height: var(--int-datatable-sm-header-height);
   }
 
   .int-table__tbody > tr > td {
-    height: var(--int-table-sm-body-height);
+    height: var(--int-datatable-sm-body-height);
     line-height: 1;
   }
 }

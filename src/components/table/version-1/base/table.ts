@@ -155,7 +155,7 @@ function reorderIndex(element: HTMLElement): number {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Same root as PrimeNG: p-table puts its root classes on the host element.
-  host: { '[class]': 'classes()', '[style.--int-table-sticky-top]': 'stickyTop()' },
+  host: { '[class]': 'classes()', '[style.--int-datatable-sticky-top]': 'stickyTop()' },
 })
 export class IntTable implements OnInit {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
