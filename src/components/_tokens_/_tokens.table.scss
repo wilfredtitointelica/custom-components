@@ -1,71 +1,115 @@
-/*——————————————————————————————————————————————————————————*\
- * TOKENS TABLE ( type data )
- ! Common tokens for tables:
- 	p-table           ->    prTable              GABRIELA     ( int-table )
- 	p-treetable       ->    prTable              GABRIELA     ( int-treetable )
-\*——————————————————————————————————————————————————————————*/
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * TOKENS TABLE ( tablas de datos )  ·  --int-table-*  ( PENDIENTE )
 
-/*——————————————————————————————————————————————————————————*\
- * BASE
-\*——————————————————————————————————————————————————————————*/
+ ! Qué es
+   Los valores que tienen en común las tablas int-*: la cabecera, el icono de orden, la celda, la fila
+   ( rayada, hover, seleccionada ) y la fila de totales. Si cambias un token aquí, cambian todas las
+   tablas que lo leen.
+
+ ! Estado: pendiente
+   Parte del _tokens.table.draft.scss del Style Guide, renombrado a --int-table-* para que un cambio
+   aquí nunca toque producción ( los --i-table-* del Style Guide quedan como están ).
+   Los componentes todavía no leen estos tokens. Cuando se conecten, seguirá el modelo de
+   _tokens.control.scss: cada componente apunta su propio token a uno de estos con el comentario
+   "_tokens_:" ( ej. en _table.scss: --int-datatable-cell-background → var(--int-table-background) )
+   y sus reglas leen solo --int-datatable-* / --int-treetable-*.
+
+ ! Cómo se usa
+   - Se carga UNA sola vez desde los estilos globales ( src/styles.scss → @use './components/_tokens_' ).
+     Un proyecto que copie int-table o int-treetable también copia esta carpeta y la carga una vez.
+   - Un componente nunca lee estos tokens en sus reglas: solo su :root.
+
+ ! Qué entra aquí
+   Un rol ( color de la cabecera, fondo de la fila en hover… ) entra solo si DOS O MÁS componentes le
+   dan el mismo valor. Un valor que usa un solo componente se queda en ese componente.
+   Cada token indica "usado por:" ( los int-* que lo leen hoy ). ⚠️ marca una diferencia con Figma
+   pendiente de decidir.
+
+ ! Componentes ( int-*  ·  PrimeNG  ·  base de conocimientos  ·  diseño )
+ 	int-table             p-table                    .prTable           GABRIELA
+ 	int-treetable         p-treetable                .prTable           GABRIELA
+
+ ! Contenido
+   BASE        tabla · anillo de foco · transición · tamaño sm
+   ELEMENTOS   cabecera ( th ) · icono de orden · celda ( td ) · fila · fila de totales
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * BASE  ·  la tabla
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 :root { --NOTE-TABLE: 'Custom Table Tokens';
 
-	// --- properties ---
+	// --- tabla: fondo y texto ---
+	// usado por: table, treetable
 
-	--i-table-background: var(--i-color-neutral-50); // #FCFCFC
-	--i-table-color: var(--i-color-primary-900); // #0A1733
-	--i-table-outline-width: var(--i-border-width-sm); // 1px
-	--i-table-outline-color: var(--i-focus-border-color);
-	--i-table-motion-duration: var(--i-motion-duration-fast); // 150ms
+	--int-table-background: var(--i-color-neutral-50);                     // #FCFCFC
+	--int-table-color: var(--i-color-primary-900);                         // #0A1733
 
-	// --- modifiers / variants ---
+	// --- anillo de foco ( foco con teclado, :focus-visible ) ---
+	// usado por: table, treetable
 
-	--i-table-sm-header-height: var(--i-sizing-lg); // 32px ( prTable--compact )
-	--i-table-sm-cell-height: var(--i-sizing-xl); // 40px ( prTable--compact )
+	--int-table-outline-width: var(--i-border-width-sm);                   // 1px
+	--int-table-outline-color: var(--i-focus-border-color);                // primary-600
+
+	// --- transición ( hover y selección de fila ) ---
+	// usado por: table, treetable
+
+	--int-table-motion-duration: var(--i-motion-duration-fast);            // 150ms
+
+	// --- tamaño: small ( size="small" ) ---
+	// usado por: table
+
+	--int-table-sm-header-height: var(--i-sizing-lg);                      // 32px · knowledgeBase: .prTable--compact
+	--int-table-sm-cell-height: var(--i-sizing-xl);                        // 40px · knowledgeBase: .prTable--compact
 
 }
 
-/*——————————————————————————————————————————————————————————*\
- * ELEMENTS
-\*——————————————————————————————————————————————————————————*/
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * ELEMENTOS  ·  las partes de la tabla
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 :root { --NOTE-TABLE-ELEMENTS: 'Custom Table Elements Tokens';
 
-	// --- header ( th ) ---
+	// --- cabecera ( th ) ---
+	// usado por: table, treetable ( salvo que se indique )
 
-	--i-table-header-height: var(--i-sizing-800); // 64px
-	--i-table-header-padding: var(--i-spacing-100); // 8px
-	--i-table-header-gap: var(--i-spacing-gap-sm); // 8px
-	--i-table-header-border-width: var(--i-border-width-sm); // 1px
-	--i-table-header-border-color: var(--i-color-neutral-300);
-	--i-table-header-font-size: var(--i-typography-font-size-sm); // 12px
-	--i-table-header-font-weight: var(--i-typography-font-weight-bold); // 700
+	--int-table-header-height: var(--i-sizing-800);                        // 64px ( Figma column-header ⚠️ )
+	--int-table-header-padding: var(--i-spacing-100);                      // 8px en los cuatro lados
+	--int-table-header-gap: var(--i-spacing-gap-sm);                       // 8px entre texto e icono de orden · treetable
+	--int-table-header-border-width: var(--i-border-width-sm);             // 1px
+	--int-table-header-border-color: var(--i-color-neutral-300);
+	--int-table-header-font-size: var(--i-typography-font-size-sm);        // 12px
+	--int-table-header-font-weight: var(--i-typography-font-weight-bold);  // 700
 
-	// --- sort icon ---
+	// --- icono de orden ( columna ordenable, sortable ) ---
+	// usado por: table, treetable ( salvo que se indique )
 
-	--i-table-sort-icon-size: var(--i-typography-font-size-sm); // 12px
-	--i-table-sort-icon-color: var(--i-color-secondary-600);
-	--i-table-sort-icon-hover-color: var(--i-color-primary-400);
-	--i-table-sort-icon-selected-color: var(--i-color-primary-600);
+	--int-table-sort-icon-size: var(--i-typography-font-size-sm);          // 12px
+	--int-table-sort-icon-color: var(--i-color-secondary-600);             // sin ordenar
+	--int-table-sort-icon-hover-color: var(--i-color-primary-400);         // hover · table
+	--int-table-sort-icon-selected-color: var(--i-color-primary-600);      // columna ordenada
 
-	// --- cell ( td ) ---
+	// --- celda ( td ) ---
+	// usado por: table, treetable
 
-	--i-table-cell-height: var(--i-sizing-600); // 48px
-	--i-table-cell-padding: var(--i-spacing-100); // 8px
-	--i-table-cell-font-size: var(--i-typography-font-size-sm); // 12px
+	--int-table-cell-height: var(--i-sizing-600);                          // 48px
+	--int-table-cell-padding: var(--i-spacing-100);                        // 8px
+	--int-table-cell-font-size: var(--i-typography-font-size-sm);          // 12px
 
-	// --- row ---
+	// --- fila ( stripedRows, rowHover, selección ) ---
+	// usado por: table, treetable
 
-	--i-table-row-background: var(--i-color-neutral-50); // odd rows
-	--i-table-row-striped-background: var(--i-color-neutral-100); // even rows
-	--i-table-row-hover-background: var(--i-color-primary-100);
-	--i-table-row-selected-background: var(--i-color-primary-50);
+	--int-table-row-background: var(--i-color-neutral-50);                 // filas impares
+	--int-table-row-striped-background: var(--i-color-neutral-100);        // filas pares ( stripedRows )
+	--int-table-row-hover-background: var(--i-color-primary-100);          // rowHover
+	--int-table-row-selected-background: var(--i-color-primary-50);        // fila seleccionada
 
-	// --- total row ( fixedRow ) ---
+	// --- fila de totales ( fila fija al final ) ---
+	// usado por: table, treetable
 
-	--i-table-total-border-width: var(--i-border-width-sm); // 1px
-	--i-table-total-border-color: var(--i-color-primary-900);
-	--i-table-total-font-size: var(--i-typography-font-size-md); // 14px
+	--int-table-total-border-width: var(--i-border-width-sm);              // 1px
+	--int-table-total-border-color: var(--i-color-primary-900);
+	--int-table-total-font-size: var(--i-typography-font-size-md);         // 14px
 
 }
