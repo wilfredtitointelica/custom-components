@@ -40,8 +40,8 @@
   --int-inputtext-sm-line-height: var(--i-control-sm-line-height); // SG: --i-control-sm-line-height (tokens.control.draft) · Aura: normal
   --int-inputtext-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) 40px · Aura: auto
   --int-inputtext-lg-padding-y: var(--i-control-lg-padding-y); // SG: --i-control-lg-padding-y (tokens.control.draft) 8px · Aura: {form.field.lg.padding.y}
-  --int-inputtext-lg-padding-x: var(--i-control-lg-padding-x); // SG: --i-control-lg-padding-x (tokens.control.draft) 12px · Aura: {form.field.lg.padding.x}
   --int-inputtext-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · Aura: {form.field.lg.font.size}
+  --int-inputtext-lg-line-height: var(--i-typography-lineHeight-lg); // SG: --i-typography-lineHeight-lg 24px (large field 40 = 8 + 24 + 8, border inside) · Aura: normal
 
   // --- skeleton ---
   --int-inputtext-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
@@ -58,7 +58,11 @@
 .int-inputtext:is(input, textarea) {
   box-sizing: border-box;
   min-height: var(--int-inputtext-height);
-  padding: var(--int-inputtext-padding-y) var(--int-inputtext-padding-x);
+  // Figma draws the stroke INSIDE the frame: the DS padding is measured from the outer edge, so the border takes 1px
+  // of it. Tokens keep the DS values; the box is exactly 24 / 32 / 40 (padding + line-height + border).
+  padding:
+    calc(var(--int-inputtext-padding-y) - var(--int-inputtext-border-width))
+    calc(var(--int-inputtext-padding-x) - var(--int-inputtext-border-width));
   border: var(--int-inputtext-border-width) solid var(--int-inputtext-border-color);
   border-radius: var(--int-inputtext-border-radius);
   background: var(--int-inputtext-background);
@@ -125,8 +129,8 @@
   &.int-inputtext--large {
     --int-inputtext-height: var(--int-inputtext-lg-height);
     --int-inputtext-padding-y: var(--int-inputtext-lg-padding-y);
-    --int-inputtext-padding-x: var(--int-inputtext-lg-padding-x);
     --int-inputtext-font-size: var(--int-inputtext-lg-font-size);
+    --int-inputtext-line-height: var(--int-inputtext-lg-line-height);
   }
   &.int-inputtext--fluid {
     width: 100%;

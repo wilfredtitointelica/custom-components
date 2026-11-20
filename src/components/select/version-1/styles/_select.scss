@@ -27,7 +27,7 @@
   // --- icons ---
   --int-select-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · was --i-icon-color-default (same value) · Aura: {form.field.icon.color}
   --int-select-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
-  --int-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft) · SG: .prSelect:hover .p-select-dropdown .icon primary-400 · Aura: —
+  --int-select-hover-icon-color: var(--i-form-field-icon-hover); // SG: --i-form-field-icon-hover #2A52C5 (tokens.form-field) · Figma: Input State=Hover icon #2A52C5 (--i-control-hover-icon-color draft = primary-400 #5D86DF ⚠️) · Aura: —
   --int-select-arrow-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: —
   --int-select-arrow-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: —
   --int-select-clear-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs 12px · Aura: {icon.size}
@@ -47,8 +47,8 @@
   --int-select-sm-line-height: var(--i-control-sm-line-height); // SG: --i-control-sm-line-height (tokens.control.draft) · Aura: normal
   --int-select-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) 40px · Aura: auto
   --int-select-lg-padding-y: var(--i-control-lg-padding-y); // SG: --i-control-lg-padding-y (tokens.control.draft) 8px · Aura: {form.field.lg.padding.y}
-  --int-select-lg-padding-x: var(--i-control-lg-padding-x); // SG: --i-control-lg-padding-x (tokens.control.draft) 12px · Aura: {form.field.lg.padding.x}
   --int-select-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · Aura: {form.field.lg.font.size}
+  --int-select-lg-line-height: var(--i-typography-lineHeight-lg); // SG: --i-typography-lineHeight-lg 24px (large field 40 = 8 + 24 + 8, border inside) · Aura: normal
 
   // --- panel ---
   --int-select-panel-background: var(--i-color-secondary-50); // Figma: grey/50 panel · Aura: {overlay.select.background}
@@ -102,7 +102,11 @@
   &__trigger {
     box-sizing: border-box;
     min-height: var(--int-select-height);
-    padding: var(--int-select-padding-y) var(--int-select-padding-x);
+    // Figma draws the stroke INSIDE the frame: the DS padding is measured from the outer edge, so the border takes 1px
+    // of it. Tokens keep the DS values; the box is exactly 24 / 32 / 40 (padding + line-height + border).
+    padding:
+      calc(var(--int-select-padding-y) - var(--int-select-border-width))
+      calc(var(--int-select-padding-x) - var(--int-select-border-width));
     border: var(--int-select-border-width) solid var(--int-select-border-color);
     border-radius: var(--int-select-border-radius);
     background: var(--int-select-background);
@@ -214,8 +218,8 @@
   &.int-select--large {
     --int-select-height: var(--int-select-lg-height);
     --int-select-padding-y: var(--int-select-lg-padding-y);
-    --int-select-padding-x: var(--int-select-lg-padding-x);
     --int-select-font-size: var(--int-select-lg-font-size);
+    --int-select-line-height: var(--int-select-lg-line-height);
   }
   &.int-select--fluid {
     width: 100%;
@@ -230,7 +234,7 @@
   &--open &__icon {
     transform: rotate(180deg);
   }
-  // The arrow takes the shared control hover icon color (primary-400, as SG .prSelect:hover .p-select-dropdown .icon).
+  // The arrow turns #2A52C5 on hover (Figma Input State=Hover); the clear icon does not change.
   &:not(&--disabled, &--invalid):hover &__icon {
     color: var(--int-select-hover-icon-color);
   }
