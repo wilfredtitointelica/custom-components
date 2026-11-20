@@ -67,8 +67,6 @@
   position: relative;
   // No align-items, as PrimeNG .p-treeselect and int-multiselect: label, ✕ and arrow box take the full height.
   display: inline-flex;
-  align-items: center;
-  gap: var(--int-treeselect-icon-gap);
   box-sizing: border-box;
   // Fixed width as the taller, so a long selection ends with an ellipsis; the consumer changes the token.
   width: var(--int-treeselect-width);
@@ -138,17 +136,28 @@
     }
   }
 
-  &__clear-icon {
-    flex-shrink: 0;
-    font-size: var(--int-treeselect-clear-icon-size);
-    color: var(--int-treeselect-icon-color);
-  }
-
+  // Same structure as int-multiselect: ✕ and arrow are full-height boxes with the icon centered.
+  &__clear-icon,
   &__dropdown {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    padding-inline-end: var(--int-treeselect-label-padding-x);
+    justify-content: center;
+  }
+
+  // 4px on each side of the ✕: 12px from the text (8px label padding + 4px) and 12px to the arrow (4px + 8px of the 32px box).
+  &__clear-icon {
+    padding-inline: var(--int-treeselect-icon-gap);
+    cursor: pointer;
+  }
+
+  // Wins over the 16px and color of the Style Guide .icon class.
+  &__clear-icon &__clear-glyph {
+    color: var(--int-treeselect-clear-icon-color);
+    font-size: var(--int-treeselect-clear-icon-size);
+  }
+
+  &__dropdown {
     inline-size: var(--int-treeselect-dropdown-width);
   }
 
