@@ -17,6 +17,7 @@ import {
   signal,
   untracked,
   viewChild,
+  Injector,
 } from '@angular/core';
 
 import {
@@ -31,6 +32,7 @@ import {
   IntFieldAccessor,
   IntIcon,
   connectOverlayContainer,
+  intRepositionScrollStrategy,
   provideIntOverlayContainer,
   getOptionLabel,
   getOptionValue,
@@ -190,6 +192,8 @@ export class IntSelect extends IntBaseControl<unknown> {
   protected readonly listBox = viewChild(IntListbox);
   private readonly trigger = viewChild.required<ElementRef<HTMLElement>>('trigger');
   private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  /** Repositions the panel on any scroll, also inside a container (appendTo="body"); it stays open. */
+  protected readonly scrollStrategy = intRepositionScrollStrategy(inject(Injector));
   protected readonly avoid = avoidOverlayElements({
     avoid: this.avoidElements,
     positions: this.basePositions,

@@ -4,7 +4,6 @@ import {
   OverlayRef,
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
-  createRepositionScrollStrategy,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
@@ -30,6 +29,7 @@ import {
   IntAppendTo,
   closeWhenOriginHidden,
   connectOverlayContainer,
+  intRepositionScrollStrategy,
   provideIntOverlayContainer,
   uniqueId,
 } from '../../../_shared_';
@@ -171,7 +171,7 @@ export class IntPopover implements OnDestroy {
     // Created from this component's injector, so it uses its IntOverlayContainer (appendTo).
     this.overlayRef = createOverlayRef(this.injector, {
       positionStrategy: strategy,
-      scrollStrategy: createRepositionScrollStrategy(this.injector),
+      scrollStrategy: intRepositionScrollStrategy(this.injector),
     });
     if (this.arrow()) {
       // Emitted after the CDK applied the position (push included), so the rects are final.

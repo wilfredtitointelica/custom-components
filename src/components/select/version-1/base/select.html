@@ -60,6 +60,7 @@
 <ng-template
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
   [cdkConnectedOverlayOpen]="open()"
   [cdkConnectedOverlayPositions]="avoid.positions()"
   [cdkConnectedOverlayMinWidth]="variant() === 'text' ? 0 : triggerWidth()"

@@ -1,6 +1,6 @@
 <!--
   title: Append To Body
-  description: Con `appendTo` en `body` el panel no lo recorta ni le agrega scroll un contenedor con `overflow`; a la izquierda el mismo caso sin `appendTo`, donde el panel queda cortado. Montado fuera, su `z-index` es 1000 (el de los overlays) o el que indique `baseZIndex` (aquí `9`, debajo del encabezado fijo de la página, que está en 10) y con `autoZIndex` en `false` se define con `panelStyleClass`.
+  description: Con `appendTo` en `body` el panel no lo recorta ni le agrega scroll un contenedor con `overflow`, y sigue al campo cuando la página hace scroll; a la izquierda el mismo caso sin `appendTo`, donde el panel queda cortado. Montado fuera, su `z-index` es 1000 (el de los overlays) o el que indique `baseZIndex` (aquí `9`, debajo del encabezado fijo de la página, que está en 10) y con `autoZIndex` en `false` se define con `panelStyleClass`.
 -->
 <div class="u-display-flex u-flex-wrap u-gap-lg">
   <!-- Without appendTo: the panel stays inside the container and is cut at its edge -->

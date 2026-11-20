@@ -1,6 +1,6 @@
 import {
   booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, forwardRef, input,
-  numberAttribute, output, signal, TemplateRef, viewChild, ViewEncapsulation,
+  numberAttribute, output, signal, TemplateRef, viewChild, ViewEncapsulation, Injector, inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -13,6 +13,7 @@ import {
   avoidOverlayElements,
   closeWhenOriginHidden,
   connectOverlayContainer,
+  intRepositionScrollStrategy,
   provideIntOverlayContainer,
 } from '../../../_shared_';
 import { IntInputText } from '../../../inputtext/version-1/base/inputtext';
@@ -164,6 +165,8 @@ export class IntTreeselect implements ControlValueAccessor {
   protected readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
   private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  /** Repositions the panel on any scroll, also inside a container (appendTo="body"); it stays open. */
+  protected readonly scrollStrategy = intRepositionScrollStrategy(inject(Injector));
   protected readonly avoid = avoidOverlayElements({
     avoid: this.avoidElements,
     positions: () => PANEL_POSITIONS,
