@@ -12,7 +12,7 @@
   --int-listbox-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · was --i-border-width-sm (1px) · Aura: 1px
   --int-listbox-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
   --int-listbox-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
-  --int-listbox-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Aura: {form.field.color}
+  --int-listbox-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · primary-900 (#0A1733) · Aura: {form.field.color}
   --int-listbox-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · was --i-text-body-family (same) · Aura: inherit
   --int-listbox-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
   --int-listbox-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · Aura: {form.field.focus.border.color}
