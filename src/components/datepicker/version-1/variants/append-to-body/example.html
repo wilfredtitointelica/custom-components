@@ -1,0 +1,25 @@
+<!--
+  title: Append To Body
+  description: Con `appendTo` en `body` el calendario no lo recorta ni le agrega scroll un contenedor con `overflow`, y sigue al campo cuando la página hace scroll; a la izquierda el mismo caso sin `appendTo` (`self`), donde el calendario queda cortado. Montado fuera, su `z-index` es 1000 (el de los overlays) o el que indique `baseZIndex` (aquí `9`, debajo del encabezado fijo de la página, que está en 10).
+-->
+<div class="u-display-flex u-flex-wrap u-gap-lg">
+  <!-- Without appendTo: the calendar stays inside the container and is cut at its edge -->
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-text-sm u-color-grey-500">Sin appendTo</span>
+    <div class="u-display-flex u-flex-column u-gap-md u-overflow-hidden u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
+      <int-datepicker showIcon [style]="{ width: '20rem' }" [(ngModel)]="dateClipped" />
+      <span class="u-text-sm u-color-grey-500">Contenedor con overflow hidden</span>
+      <span class="u-text-sm u-color-grey-500">El calendario se corta aquí</span>
+    </div>
+  </div>
+
+  <!-- appendTo="body": the calendar lives in the body, so it is not cut -->
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <span class="u-text-sm u-color-grey-500">appendTo="body"</span>
+    <div class="u-display-flex u-flex-column u-gap-md u-overflow-hidden u-p-5 u-bt-1 u-be-1 u-bm-1 u-bs-1 u-radius-lg">
+      <int-datepicker appendTo="body" [baseZIndex]="9" showIcon [style]="{ width: '20rem' }" [(ngModel)]="date" />
+      <span class="u-text-sm u-color-grey-500">Contenedor con overflow hidden</span>
+      <span class="u-text-sm u-color-grey-500">El calendario pasa por encima del borde</span>
+    </div>
+  </div>
+</div>

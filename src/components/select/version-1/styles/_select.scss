@@ -16,8 +16,8 @@
   --int-select-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) 1px · Aura: 1px
   --int-select-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
   --int-select-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
-  --int-select-color: var(--i-text-color-default); // SG: --i-text-color-default (primary-900 #0A1733, Figma input/color/pressed/text; --i-control-color draft = grey neutral-700) · Aura: {form.field.color}
-  --int-select-placeholder-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled (secondary-400 #9CA3BA, same as --i-control-placeholder-color but stable token) · Aura: {form.field.placeholder.color}
+  --int-select-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Figma: #0A1733 (input/color/pressed/text) · Aura: {form.field.color}
+  --int-select-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · Aura: {form.field.placeholder.color}
   --int-select-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · Aura: inherit
   --int-select-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
   --int-select-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) 20px · Aura: normal

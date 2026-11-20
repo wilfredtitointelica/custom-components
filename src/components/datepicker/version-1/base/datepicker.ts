@@ -30,6 +30,7 @@ import {
   IntConfig,
   IntIcon,
   connectOverlayContainer,
+  intRepositionScrollStrategy,
   provideIntOverlayContainer,
   provideValueAccessor,
   uniqueId,
@@ -179,6 +180,8 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
 
   protected readonly config = inject(IntConfig);
   private readonly overlayDir = viewChild(CdkConnectedOverlay);
+  /** Repositions the panel on any scroll, also inside a container (appendTo="body"); it stays open. */
+  protected readonly scrollStrategy = intRepositionScrollStrategy(inject(Injector));
   private readonly overlayOrigin = viewChild(CdkOverlayOrigin);
   protected readonly avoid = avoidOverlayElements({
     avoid: this.avoidElements,

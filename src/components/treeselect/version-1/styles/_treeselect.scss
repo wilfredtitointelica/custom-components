@@ -31,7 +31,7 @@
   --int-treeselect-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · SG: body font (base/_typography) · Figma: Lato (input/font/fontFamily)
   --int-treeselect-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: .p-treeselect-label font-size 14px · Figma: 14px (input/font/size/md)
   --int-treeselect-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (input/font/lineHeight/md), no SG value
-  --int-treeselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
+  --int-treeselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Figma: #0A1733 (input/color/pressed/text) · SG: .p-treeselect-label color · Figma: #0A1733 (input/color/pressed/text)
   --int-treeselect-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: .p-placeholder color · Figma: #9CA3BA (input/color/text)
 
   // --- icons ---
@@ -67,8 +67,6 @@
   position: relative;
   // No align-items, as PrimeNG .p-treeselect and int-multiselect: label, ✕ and arrow box take the full height.
   display: inline-flex;
-  align-items: center;
-  gap: var(--int-treeselect-icon-gap);
   box-sizing: border-box;
   // Fixed width as the taller, so a long selection ends with an ellipsis; the consumer changes the token.
   width: var(--int-treeselect-width);
@@ -138,17 +136,28 @@
     }
   }
 
-  &__clear-icon {
-    flex-shrink: 0;
-    font-size: var(--int-treeselect-clear-icon-size);
-    color: var(--int-treeselect-icon-color);
-  }
-
+  // Same structure as int-multiselect: ✕ and arrow are full-height boxes with the icon centered.
+  &__clear-icon,
   &__dropdown {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    padding-inline-end: var(--int-treeselect-label-padding-x);
+    justify-content: center;
+  }
+
+  // 4px on each side of the ✕: 12px from the text (8px label padding + 4px) and 12px to the arrow (4px + 8px of the 32px box).
+  &__clear-icon {
+    padding-inline: var(--int-treeselect-icon-gap);
+    cursor: pointer;
+  }
+
+  // Wins over the 16px and color of the Style Guide .icon class.
+  &__clear-icon &__clear-glyph {
+    color: var(--int-treeselect-clear-icon-color);
+    font-size: var(--int-treeselect-clear-icon-size);
+  }
+
+  &__dropdown {
     inline-size: var(--int-treeselect-dropdown-width);
   }
 

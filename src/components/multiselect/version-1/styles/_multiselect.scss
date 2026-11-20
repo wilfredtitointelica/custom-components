@@ -13,7 +13,7 @@
   --int-multiselect-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · SG: --i-border-width-sm · Aura: 1px
   --int-multiselect-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · SG: --i-color-secondary-200 · Aura: {form.field.border.color}
   --int-multiselect-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) · knowledgeBase: border-radius lg · Aura: {form.field.border.radius}
-  --int-multiselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · SG: --i-color-primary-900 · Aura: {form.field.color}
+  --int-multiselect-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Figma: #0A1733 (input/color/pressed/text) · SG: --i-color-primary-900 · Aura: {form.field.color}
   --int-multiselect-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · SG: --i-form-field-placeholder · Aura: {form.field.placeholder.color}
   --int-multiselect-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) · SG: --i-form-field-size 14px · Aura: 1rem
   --int-multiselect-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) · Figma: 20px (select/font/lineHeight/md) · Aura: normal
