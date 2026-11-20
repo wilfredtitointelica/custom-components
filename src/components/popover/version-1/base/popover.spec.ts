@@ -5,6 +5,9 @@ import { By } from '@angular/platform-browser';
 
 import { IntPopover } from './popover';
 
+/** Lets the CDK position the panel (timers run even when the test window is in the background, unlike frames). */
+const settle = () => new Promise((resolve) => setTimeout(resolve, 30));
+
 @Component({
   imports: [IntPopover],
   template: `
@@ -21,6 +24,26 @@ class Host {
 function overlayOf(fixture: ComponentFixture<unknown>): HTMLElement {
   return fixture.debugElement.query(By.directive(IntPopover)).injector.get(OverlayContainer).getContainerElement();
 }
+describe('IntPopover appendTo="self"', () => {
+  it('shows the panel with its size next to the trigger (flexible dimensions in the inline container)', async () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    trigger.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await settle();
+    const panel = overlayOf(fixture).querySelector<HTMLElement>('.int-popover')!;
+    const rect = panel.getBoundingClientRect();
+    expect(rect.height).toBeGreaterThan(10);
+    expect(rect.width).toBeGreaterThan(10);
+    // Below the trigger, or above it when the page left no room below: either way next to it.
+    const anchor = trigger.getBoundingClientRect();
+    const gap = Math.min(Math.abs(rect.top - anchor.bottom), Math.abs(anchor.top - rect.bottom));
+    expect(gap).toBeLessThan(24);
+  });
+});
+
 describe('IntPopover', () => {
   it('toggles content anchored to the trigger and closes on Escape', () => {
     const fixture = TestBed.createComponent(Host);

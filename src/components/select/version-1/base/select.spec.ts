@@ -6,6 +6,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { IntSelect } from './select';
 
+/** Lets the CDK position the panel (timers run even when the test window is in the background, unlike frames). */
+const settle = () => new Promise((resolve) => setTimeout(resolve, 30));
+
 @Component({
   imports: [IntSelect, ReactiveFormsModule],
   template: `
@@ -109,8 +112,32 @@ describe('IntSelect', () => {
 })
 class AppendToHost {}
 
+@Component({
+  imports: [IntSelect],
+  template: `
+    <div class="scroller" [style]="{ height: '200px', overflow: 'auto' }">
+      <div [style]="{ height: '800px', paddingTop: '60px' }">
+        <int-select [options]="['A', 'B', 'C']" />
+      </div>
+    </div>
+  `,
+})
+class ScrollHost {}
+
+@Component({
+  imports: [IntSelect],
+  template: `
+    <div [style]="{ position: 'fixed', left: '20px', bottom: '8px' }">
+      <int-select [options]="options" />
+    </div>
+  `,
+})
+class BottomHost {
+  options = ['A', 'B', 'C', 'D', 'E'];
+}
+
 describe('IntSelect appendTo', () => {
-  function openSelect(fixture: ComponentFixture<AppendToHost>, selector: string): HTMLElement {
+  function openSelect(fixture: ComponentFixture<unknown>, selector: string): HTMLElement {
     const host: HTMLElement = fixture.nativeElement.querySelector(selector);
     host.querySelector<HTMLElement>('[role="combobox"]')!.click();
     fixture.detectChanges();
@@ -136,6 +163,56 @@ describe('IntSelect appendTo', () => {
     expect(container).not.toBeNull();
     expect(container.style.zIndex).toBe('1200');
     expect(container.querySelectorAll('[role="option"]').length).toBe(2);
+  });
+
+  it('keeps an appendTo="self" panel attached to the field while a container scrolls (no reposition lag)', async () => {
+    const fixture = TestBed.createComponent(ScrollHost);
+    fixture.detectChanges();
+    const host = openSelect(fixture, 'int-select');
+    await fixture.whenStable();
+    await settle();
+    const trigger = host.querySelector<HTMLElement>('[role="combobox"]')!;
+    const panel = host.querySelector<HTMLElement>('.int-select__panel')!;
+    const gap = () => panel.getBoundingClientRect().top - trigger.getBoundingClientRect().bottom;
+    const before = gap();
+    // Not collapsed by the 0×0 inline container: full height, as wide as the field.
+    expect(panel.getBoundingClientRect().height).toBeGreaterThan(60);
+    expect(panel.getBoundingClientRect().width).toBeGreaterThanOrEqual(trigger.getBoundingClientRect().width - 1);
+    expect(Math.round(before)).toBeGreaterThanOrEqual(0);
+
+    // Scroll without waiting for the scroll event: a fixed panel would stay behind until the CDK repositions it.
+    fixture.nativeElement.querySelector('.scroller').scrollTop = 30;
+    expect(Math.round(gap())).toBe(Math.round(before));
+    expect(host.querySelector<HTMLElement>('.int-overlay-container')!.style.position).toBe('absolute');
+
+    // Then the CDK repositions on the scroll event: the panel must not jump.
+    const scroller: HTMLElement = fixture.nativeElement.querySelector('.scroller');
+    scroller.scrollTop = 60;
+    scroller.dispatchEvent(new Event('scroll'));
+    await settle();
+    expect(Math.round(gap())).toBe(Math.round(before));
+  });
+
+  it('opens an appendTo="self" panel above the field when there is no room below, anchored to it', async () => {
+    const fixture = TestBed.createComponent(BottomHost);
+    fixture.detectChanges();
+    const host = openSelect(fixture, 'int-select');
+    await fixture.whenStable();
+    await settle();
+    const trigger = host.querySelector<HTMLElement>('[role="combobox"]')!;
+    const panel = host.querySelector<HTMLElement>('.int-select__panel')!;
+    const gap = () => trigger.getBoundingClientRect().top - panel.getBoundingClientRect().bottom;
+    expect(panel.getBoundingClientRect().height).toBeGreaterThan(60);
+    const before = gap();
+    expect(before).toBeGreaterThanOrEqual(0);
+    expect(before).toBeLessThan(16);
+
+    // Fewer options: the panel shrinks towards the field (its bottom edge stays in place).
+    fixture.componentInstance.options = ['A'];
+    fixture.detectChanges();
+    await settle();
+    await settle();
+    expect(Math.round(gap())).toBe(Math.round(before));
   });
 
   it('mounts the panel in a given element and leaves the z-index to CSS without autoZIndex', () => {

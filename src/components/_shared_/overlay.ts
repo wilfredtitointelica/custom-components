@@ -42,31 +42,195 @@ export const INT_OVERLAY_Z_INDEX = 1000;
  * CDK overlay container owned by one component (`providers: [provideIntOverlayContainer()]`), so its panels can
  * be mounted in the body, inside the component or in any element (`appendTo`) with their own z-index.
  * The CDK resolves the container from the component injector (CdkConnectedOverlay, createOverlayRef).
- * The container keeps the CDK styles (`position: fixed` over the viewport): an ancestor with
- * `transform`/`filter` becomes its containing block and the panel is misplaced, as with any fixed element.
+ *
+ * - `body` / an element: the container keeps the CDK styles (`position: fixed` over the viewport) and the
+ *   CDK repositions the panel on scroll. An ancestor with `transform`/`filter` becomes its containing block
+ *   and the panel is misplaced, as with any fixed element.
+ * - `self` (inline): the container is a 0×0 `position: absolute` box inside the component, so the panel
+ *   scrolls with its trigger natively (PrimeNG's relativePosition, like int-multiselect), with no lag behind
+ *   the field while scrolling. The CDK still computes the position in viewport coordinates:
+ *   - right before each computation (it reads getContainerElement()) the container is translated back to
+ *     the viewport origin, so `top`/`left` stay exact; between computations it moves with the component;
+ *   - the CDK assumes a viewport-sized container (its box is `width/height: 100%`, the pane `max-*: 100%`,
+ *     and `bottom`/`right` are measured from the viewport edges). A viewport-sized box inside the page would
+ *     enlarge the scroll area, so what the CDK writes is normalized instead (normalize()): the box stays 0×0,
+ *     the pane is capped by the viewport (`100vw`/`100vh`, `max-content` width), and `bottom`/`right` become
+ *     `top`/`left` anchored to that edge, kept when the panel resizes (a panel opened above still grows upwards).
  */
 @Injectable()
 export class IntOverlayContainer extends OverlayContainer {
   private target: HTMLElement | null = null;
   private zIndex: number | null = null;
+  private inline = false;
+  /** Current translate of an inline container (px). */
+  private offset = { x: 0, y: 0 };
 
-  /** Mounts the container in `target` (moving it if it already exists) with `zIndex` (null = CSS). */
-  attach(target: HTMLElement, zIndex: number | null): void {
+  /**
+   * Mounts the container in `target` (moving it if it already exists) with `zIndex` (null = CSS).
+   * `inline` = appendTo="self": the container scrolls with the component (see the class comment).
+   */
+  attach(target: HTMLElement, zIndex: number | null, inline = false): void {
+    this.releaseTarget();
     this.target = target;
     this.zIndex = zIndex;
+    this.inline = inline;
+    // The component becomes the containing block of the inline container, so it scrolls with any
+    // scrolling ancestor (a static component would leave it attached to the page). Only when static.
+    if (inline && this._document.defaultView?.getComputedStyle(target).position === 'static') {
+      target.style.position = 'relative';
+      this.positioned = target;
+    }
     const el = this._containerElement;
     if (!el) return;
     if (el.parentElement !== target) target.appendChild(el);
-    el.style.zIndex = zIndex == null ? '' : String(zIndex);
+    this.applyStyles(el);
+  }
+
+  override ngOnDestroy(): void {
+    this.releaseTarget();
+    this.mutations?.disconnect();
+    this.resizes?.disconnect();
+    super.ngOnDestroy();
+  }
+
+  /** CDK style writes inside an inline container (normalized before paint, see the class comment). */
+  private mutations?: MutationObserver;
+  /** Panes anchored by their bottom / right edge, re-placed when their size changes. */
+  private resizes?: ResizeObserver;
+  /** Edge a pane (or a flexible bounding box) is anchored to, in container coordinates. */
+  private readonly anchors = new WeakMap<HTMLElement, IntOverlayAnchor>();
+  /** Bounding boxes of overlays with fixed dimensions (viewport-sized for the CDK, 0×0 here). */
+  private readonly fixedBoxes = new WeakSet<HTMLElement>();
+
+  /** Rewrites the CDK styles of an inline container for a 0×0 box (see the class comment). */
+  private normalize(): void {
+    const el = this._containerElement;
+    if (!el || !this.inline) return;
+    const root = this._document.documentElement;
+    // Same viewport size the CDK uses for `bottom` / `right`.
+    const width = root.clientWidth;
+    const height = root.clientHeight;
+    for (const box of Array.from(el.children) as HTMLElement[]) {
+      if (!box.classList.contains('cdk-overlay-connected-position-bounding-box')) continue;
+      const pane = box.querySelector<HTMLElement>(':scope > .cdk-overlay-pane');
+      // The CDK writes 100% on every position; between positions the box keeps the 0 written here.
+      if (box.style.width === '100%' || box.style.height === '100%') this.fixedBoxes.add(box);
+      if (this.fixedBoxes.has(box)) {
+        // Fixed dimensions: the box is the whole viewport and the pane is placed in it with top/bottom/left/right.
+        box.style.width = '0';
+        box.style.height = '0';
+        if (!pane) continue;
+        if (!pane.style.width) pane.style.width = 'max-content';
+        pane.style.maxWidth ||= '100vw';
+        pane.style.maxHeight ||= '100vh';
+        this.anchor(pane, width, height);
+      } else {
+        // Flexible dimensions: the box has its own size and holds the pane; only its edges are rebased.
+        this.anchor(box, width, height);
+      }
+    }
+    this.mutations?.takeRecords();
+  }
+
+  /**
+   * Turns the `bottom` / `right` the CDK wrote into an anchor, then places the element from it. Any other
+   * mutation (the panel content changed: filter, expanded node) keeps the anchor and only re-places it.
+   * A `top` / `left` different from the one written here is a new CDK position anchored by that edge.
+   */
+  private anchor(target: HTMLElement, width: number, height: number): void {
+    const style = target.style;
+    const anchor = this.anchors.get(target) ?? {};
+    if (style.bottom) anchor.bottom = height - parseFloat(style.bottom);
+    else if (style.top !== anchor.top) anchor.bottom = undefined;
+    if (style.right) anchor.right = width - parseFloat(style.right);
+    else if (style.left !== anchor.left) anchor.right = undefined;
+    style.bottom = '';
+    style.right = '';
+    this.anchors.set(target, anchor);
+    this.place(target);
+    this.resizes?.observe(target);
+  }
+
+  private place(target: HTMLElement): void {
+    const anchor = this.anchors.get(target);
+    if (!anchor) return;
+    if (anchor.bottom !== undefined) {
+      target.style.top = `${anchor.bottom - target.offsetHeight}px`;
+      anchor.top = target.style.top;
+    }
+    if (anchor.right !== undefined) {
+      target.style.left = `${anchor.right - target.offsetWidth}px`;
+      anchor.left = target.style.left;
+    }
+  }
+
+  /** Element given `position: relative` for an inline container (restored when that changes). */
+  private positioned: HTMLElement | null = null;
+
+  private releaseTarget(): void {
+    if (this.positioned) this.positioned.style.position = '';
+    this.positioned = null;
+  }
+
+  override getContainerElement(): HTMLElement {
+    const el = super.getContainerElement();
+    if (this.inline) this.alignToViewport(el);
+    return el;
   }
 
   protected override _createContainer(): void {
     const el = this._document.createElement('div');
     el.classList.add('cdk-overlay-container', 'int-overlay-container');
-    if (this.zIndex != null) el.style.zIndex = String(this.zIndex);
     (this.target ?? this._document.body).appendChild(el);
     this._containerElement = el;
+    this.applyStyles(el);
+    const view = this._document.defaultView;
+    if (view?.MutationObserver) {
+      this.mutations = new view.MutationObserver(() => this.normalize());
+      this.mutations.observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ['style'] });
+    }
+    if (view?.ResizeObserver) {
+      this.resizes = new view.ResizeObserver((entries) => {
+        if (!this.inline) return;
+        for (const entry of entries) this.place(entry.target as HTMLElement);
+        this.mutations?.takeRecords();
+      });
+    }
   }
+
+  private applyStyles(el: HTMLElement): void {
+    el.style.zIndex = this.zIndex == null ? '' : String(this.zIndex);
+    el.classList.toggle('int-overlay-container--inline', this.inline);
+    // Inline: a 0×0 absolute box inside the component; the panel overflows it (visible).
+    el.style.position = this.inline ? 'absolute' : '';
+    el.style.width = this.inline ? '0' : '';
+    el.style.height = this.inline ? '0' : '';
+    if (!this.inline) {
+      el.style.transform = '';
+      this.offset = { x: 0, y: 0 };
+    }
+  }
+
+  /** Translates the inline container so its top-left corner sits at the viewport origin (0, 0). */
+  private alignToViewport(el: HTMLElement): void {
+    const rect = el.getBoundingClientRect();
+    const x = this.offset.x - rect.left;
+    const y = this.offset.y - rect.top;
+    if (x === this.offset.x && y === this.offset.y) return;
+    this.offset = { x, y };
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  }
+}
+
+/**
+ * Edge an inline pane is anchored to (container coordinates) and the top / left last written from it,
+ * to tell a new CDK position from a re-placement.
+ */
+interface IntOverlayAnchor {
+  bottom?: number;
+  right?: number;
+  top?: string;
+  left?: string;
 }
 
 /** Component-level providers of IntOverlayContainer, also as the CDK's OverlayContainer token. */
@@ -94,7 +258,11 @@ export function connectOverlayContainer(config: {
       : !appendTo || appendTo === 'body' ? document.body
       : appendTo instanceof ElementRef ? appendTo.nativeElement
       : appendTo;
-    container.attach(target, config.autoZIndex() ? config.baseZIndex() || INT_OVERLAY_Z_INDEX : null);
+    container.attach(
+      target,
+      config.autoZIndex() ? config.baseZIndex() || INT_OVERLAY_Z_INDEX : null,
+      appendTo === 'self',
+    );
   });
 }
 
