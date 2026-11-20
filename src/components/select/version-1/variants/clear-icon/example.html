@@ -1,0 +1,12 @@
+<!--
+  title: Clear Icon
+  description: Con `showClear` aparece un icono para borrar el valor cuando hay uno (emite `onClear`).
+-->
+<int-select
+  optionLabel="name"
+  placeholder="Select a City"
+  [options]="cities"
+  [showClear]="true"
+  [style]="{ width: '20rem' }"
+  [(ngModel)]="selected"
+/>

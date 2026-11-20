@@ -152,8 +152,8 @@
         @if (filterTemplate(); as template) {
           <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ options: filterOptions }" />
         } @else {
-          <!-- Select all (int-* extension: label and indeterminate state, as the knowledge base asks) -->
-          @if (showToggleAll() && !selectionLimit()) {
+          <!-- Select all (int-* extension: label and indeterminate state, as the knowledge base asks; hidden when no option matches) -->
+          @if (showToggleAll() && !selectionLimit() && !isEmpty()) {
             <label class="int-multiselect__toggle-all">
               <ng-container
                 [ngTemplateOutlet]="checkbox"
@@ -178,6 +178,7 @@
                 intInputText
                 intSize="small"
                 fluid
+                filter
                 class="int-multiselect__filter"
                 type="text"
                 role="searchbox"

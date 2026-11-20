@@ -76,21 +76,26 @@ src/components/<id>/version-N/
   --int-chip-gap: var(--i-spacing-gap-xs); // knowledgeBase: --i-spacing-gap-xs · Figma: 4px (spacing/gap/xs) · Aura: 0.5rem
   ```
 - **Cada componente tiene sus propios tokens** y todos se declaran en el `:root` de `styles/_<id>.scss`
-  (la pestaña API lista solo esos). Solo ese `:root` lee el Style Guide: los campos y controles de
-  formulario consumen `--i-control-*` (`--i-control-sm-*` / `--i-control-lg-*` para los tamaños); el resto,
-  el `--i-*` del Style Guide / Figma. Las reglas (bloque, elementos, `_<id>.<grupo>.scss`) leen **solo**
+  (la pestaña API lista solo esos). Solo ese `:root` lee tokens de afuera: los campos y controles de
+  formulario consumen los tokens comunes `--int-control-*` de `src/components/_tokens_/_tokens.control.scss`
+  (`--int-control-sm-*` / `--int-control-lg-*` para los tamaños; comentario `// _tokens_: --int-control-…`); el resto,
+  el `--i-*` del Style Guide / Figma. Nunca `--i-control-*` del Style Guide (es un borrador: cambiarlo
+  afectaría producción). Las reglas (bloque, elementos, `_<id>.<grupo>.scss`) leen **solo**
   `var(--int-<id>-*)`, nunca `var(--i-*)`. Un modificador reasigna un token a otro token propio declarado en
   el `:root` (`.int-select--small { --int-select-height: var(--int-select-sm-height) }`), nunca a un `--i-*`
   ni declara tokens nuevos en el bloque. `check:component` avisa ("read in a rule", "is not declared in the :root").
 - **Sin mixins ni SCSS compartido**: cada componente escribe sus reglas completas (borde de campo, reset de
-  botón, anillo de foco…) con sus tokens. Lo que comparten los componentes lo da el Style Guide (si cambia
-  `--i-control-border-color`, cambian todos los campos), no una capa intermedia. `_shared_/` es solo
+  botón, anillo de foco…) con sus tokens. Lo que comparten los componentes son **valores**, no reglas: el
+  Style Guide (`--i-*`) y los tokens comunes de `src/components/_tokens_/` (si cambia
+  `--int-control-border-color`, cambian todos los campos). Un rol entra a `_tokens_/` solo si dos o más
+  componentes le dan el mismo valor; si es de uno solo, queda en el componente. `_tokens_/` se carga una
+  vez en los estilos globales (`src/styles.scss`; un proyecto que copie componentes de formulario también
+  la copia y la carga); ningún componente hace `@use` de ella. `_shared_/` es solo
   TypeScript (overlay, `ngModel`, ids, opciones, iconos); `check:component` da error si un SCSS hace
   `@use`/`@import` de `_shared_`.
 - Anillo de foco: `outline: var(--int-<id>-focus-ring-width) solid var(--int-<id>-focus-ring-color)` +
   `outline-offset: var(--int-<id>-focus-ring-offset)`, con esos tokens en el `:root` sobre
-  `--i-control-outline-*`; mientras el Style Guide los tenga vacíos (`var()` en `_tokens.control.draft.scss`),
-  sobre `--i-border-width-sm`, `--i-color-primary-600` y `--i-spacing-25` (2px).
+  `--int-control-outline-width` / `-color` / `-offset` de `_tokens_/` (1px, primary-600, 2px).
 - El id del componente va junto, sin guiones, como en PrimeNG: carpeta `treeselect/`, ruta
   `/components/treeselect`, `<int-treeselect>`, `.int-treeselect__label`, `--int-treeselect-width`
   (no `tree-select`).

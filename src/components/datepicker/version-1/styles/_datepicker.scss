@@ -7,16 +7,16 @@
   --NOTE-DATEPICKER: 'int-datepicker ( PrimeNG v20 p-datepicker )';
 
   // --- input icons ---
-  --int-datepicker-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) primary-900 · Aura: {form.field.icon.color}
-  --int-datepicker-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
-  --int-datepicker-clear-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs 12px · Aura: {icon.size}
+  --int-datepicker-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color primary-900 · Aura: {form.field.icon.color}
+  --int-datepicker-icon-size: var(--int-control-icon-size); // _tokens_: --int-control-icon-size · SG: --i-icon-size-sm 16px · Aura: {icon.size}
+  --int-datepicker-clear-icon-size: var(--int-control-clear-size); // _tokens_: --int-control-clear-size · SG: --i-icon-size-xs 12px · Aura: {icon.size}
   --int-datepicker-icon-width: var(--i-sizing-sm); // SG: --i-sizing-sm (room for each icon in the field) · Aura: —
   --int-datepicker-icon-offset: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px (field padding-x) · Aura: {form.field.padding.x}
 
   // --- panel ---
-  --int-datepicker-panel-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
-  --int-datepicker-panel-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md 14px · Aura: 1rem
-  --int-datepicker-panel-background: var(--i-color-secondary-50); // SG: .prDatapicker · Figma: #FCFCFC (datepicker/color/background)
+  --int-datepicker-panel-font-family: var(--int-control-overlay-font-family); // _tokens_: --int-control-overlay-font-family · SG: --i-text-body-family · Aura: inherit
+  --int-datepicker-panel-font-size: var(--int-control-overlay-font-size); // _tokens_: --int-control-overlay-font-size · SG: --i-typography-font-size-md 14px · Aura: 1rem
+  --int-datepicker-panel-background: var(--int-control-overlay-background); // _tokens_: --int-control-overlay-background · SG: .prDatapicker · Figma: #FCFCFC (datepicker/color/background)
   --int-datepicker-panel-radius: var(--i-border-radius-2xl); // SG: .prDatapicker .p-datepicker-panel
   --int-datepicker-panel-shadow: var(--i-shadow-depth-3); // SG: .prDatapicker .p-datepicker-panel (same two layers)
   --int-datepicker-panel-padding: var(--i-spacing-container-xl); // SG: .prDatapicker · Figma: 16px
@@ -46,10 +46,10 @@
   --int-datepicker-cell-border-radius: var(--i-border-radius-full); // SG: --i-border-radius-full (pills, round days) · Aura: {datepicker.date.border.radius} 50%
 
   // --- cell states ---
-  --int-datepicker-hover-background: var(--i-color-secondary-100); // SG: .p-datepicker-day:hover · Figma: #F2F2F5 (datepicker/color/hover/background)
+  --int-datepicker-hover-background: var(--int-control-option-hover-background); // _tokens_: --int-control-option-hover-background · SG: .p-datepicker-day:hover · Figma: #F2F2F5 (datepicker/color/hover/background)
   --int-datepicker-hover-color: var(--i-color-primary-700); // SG: .p-datepicker-year:hover · Figma: #1B3E88 (datepicker/color/hover/text)
-  --int-datepicker-selected-background: var(--i-color-primary-700); // SG: .p-datepicker-day-selected · Figma: #1B3E88 (datepicker/color/pressed/background)
-  --int-datepicker-selected-color: var(--i-color-primary-50); // Figma: #EEF2FC (datepicker/color/pressed/text)
+  --int-datepicker-selected-background: var(--int-control-option-selected-background); // _tokens_: --int-control-option-selected-background · SG: .p-datepicker-day-selected · Figma: #1B3E88 (datepicker/color/pressed/background)
+  --int-datepicker-selected-color: var(--int-control-option-selected-color); // _tokens_: --int-control-option-selected-color · Figma: #EEF2FC (datepicker/color/pressed/text)
   --int-datepicker-range-background: var(--i-color-secondary-100); // SG: .prDatapicker--dropdown · Figma: #F2F2F5 (Hover state between the ends)
   --int-datepicker-range-color: var(--i-color-primary-700); // Figma: #1B3E88
   --int-datepicker-today-border: var(--i-color-primary-900); // SG: .p-datepicker-today · Figma: #0A1733 (datepicker/color/border)
@@ -60,12 +60,12 @@
   --int-datepicker-footer-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg (Today / Clear) · Aura: {datepicker.buttonbar.gap}
 
   // --- skeleton ---
-  --int-datepicker-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
-  --int-datepicker-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
-  --int-datepicker-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-datepicker-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
+  --int-datepicker-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
+  --int-datepicker-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
-  --int-datepicker-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
-  --int-datepicker-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-datepicker-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-datepicker-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
   --int-datepicker-focus-ring-offset: 0; // SG: no token, ring drawn on the edge (inside a panel) · Aura: {focus.ring.offset} 2px
 }
 
@@ -124,6 +124,11 @@
     display: inline-flex;
     right: calc(var(--int-datepicker-icon-offset) + var(--int-datepicker-icon-width));
     color: var(--int-datepicker-icon-color);
+    font-size: var(--int-datepicker-clear-icon-size);
+  }
+
+  // Same ✕ as int-multiselect: 12px, wins over a font size of the Style Guide icon classes.
+  &__clear &__clear-glyph {
     font-size: var(--int-datepicker-clear-icon-size);
   }
 

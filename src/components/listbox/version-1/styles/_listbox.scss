@@ -8,39 +8,39 @@
   --NOTE-LISTBOX: 'int-listbox ( Custom )';
 
   // --- field (frame) ---
-  --int-listbox-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {listbox.background} {form.field.background}
-  --int-listbox-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · was --i-border-width-sm (1px) · Aura: 1px
-  --int-listbox-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
-  --int-listbox-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
-  --int-listbox-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Aura: {form.field.color}
-  --int-listbox-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · was --i-text-body-family (same) · Aura: inherit
-  --int-listbox-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
-  --int-listbox-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · Aura: {form.field.focus.border.color}
-  --int-listbox-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
+  --int-listbox-background: var(--int-control-background); // _tokens_: --int-control-background · Aura: {listbox.background} {form.field.background}
+  --int-listbox-border-width: var(--int-control-border-width); // _tokens_: --int-control-border-width · was --i-border-width-sm (1px) · Aura: 1px
+  --int-listbox-border-color: var(--int-control-border-color); // _tokens_: --int-control-border-color · Aura: {form.field.border.color}
+  --int-listbox-border-radius: var(--int-control-border-radius); // _tokens_: --int-control-border-radius 8px · Aura: {form.field.border.radius}
+  --int-listbox-color: var(--int-control-color); // _tokens_: --int-control-color · Aura: {form.field.color}
+  --int-listbox-font-family: var(--int-control-font-family); // _tokens_: --int-control-font-family · was --i-text-body-family (same) · Aura: inherit
+  --int-listbox-font-size: var(--int-control-font-size); // _tokens_: --int-control-font-size 14px · Aura: 1rem
+  --int-listbox-focus-border-color: var(--int-control-focus-border-color); // _tokens_: --int-control-focus-border-color · Aura: {form.field.focus.border.color}
+  --int-listbox-invalid-border-color: var(--int-control-invalid-border-color); // _tokens_: --int-control-invalid-border-color · Aura: {form.field.invalid.border.color}
 
   // --- list ---
   --int-listbox-gap: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · space between options (4px) · Aura: {list.gap} 2px
-  --int-listbox-list-padding: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs 4px · Aura: {list.padding} 0.25rem
+  --int-listbox-list-padding: var(--int-control-list-padding); // _tokens_: --int-control-list-padding · SG: --i-spacing-container-xs 4px · Aura: {list.padding} 0.25rem
 
   // --- filter ---
   --int-listbox-filter-padding: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px · Aura: {list.header.padding}
-  --int-listbox-filter-icon-width: var(--i-sizing-sm); // SG: --i-sizing-sm (room for the search icon) · Aura: —
-  --int-listbox-filter-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
-  --int-listbox-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · was grey secondary-600 · Aura: {form.field.icon.color}
+  --int-listbox-filter-padding-x: var(--int-control-filter-padding-x); // _tokens_: --int-control-filter-padding-x · SG: 8px, same as int-multiselect filter · Aura: {form.field.padding.x}
+  --int-listbox-filter-icon-size: var(--int-control-filter-icon-size); // _tokens_: --int-control-filter-icon-size · SG: 12px, same as int-multiselect filter · Aura: {icon.size}
+  --int-listbox-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color · was grey secondary-600 · Aura: {form.field.icon.color}
 
   // --- option ---
-  --int-listbox-option-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm 8px · Aura: 0.5rem
-  --int-listbox-option-padding-y: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm 6px · Aura: {list.option.padding} 0.5rem
-  --int-listbox-option-padding-x: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px · Aura: {list.option.padding} 0.75rem
+  --int-listbox-option-gap: var(--int-control-option-gap); // _tokens_: --int-control-option-gap · SG: --i-spacing-gap-sm 8px · Aura: 0.5rem
+  --int-listbox-option-padding-y: var(--int-control-option-padding-y); // _tokens_: --int-control-option-padding-y · SG: --i-spacing-container-sm 6px · Aura: {list.option.padding} 0.5rem
+  --int-listbox-option-padding-x: var(--int-control-option-padding-x); // _tokens_: --int-control-option-padding-x · SG: --i-spacing-container-md 8px · Aura: {list.option.padding} 0.75rem
   --int-listbox-option-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px · Aura: {list.option.border.radius}
   --int-listbox-option-background: var(--i-color-secondary-50); // SG: rows grey/50 · Aura: transparent
   --int-listbox-option-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: {list.option.color}
-  --int-listbox-option-focus-background: var(--i-color-secondary-100); // SG: keyboard focus grey/100 · Aura: {list.option.focus.background}
-  --int-listbox-option-hover-background: var(--i-color-secondary-100); // SG: hover grey/100 · Aura: {list.option.focus.background}
-  --int-listbox-option-selected-background: var(--i-color-primary-700); // SG: selected solid blue/700 · Aura: {list.option.selected.background}
-  --int-listbox-option-selected-color: var(--i-color-primary-50); // SG: selected text blue/50 · Aura: {list.option.selected.color}
+  --int-listbox-option-focus-background: var(--int-control-option-hover-background); // _tokens_: --int-control-option-hover-background · SG: keyboard focus grey/100 · Aura: {list.option.focus.background}
+  --int-listbox-option-hover-background: var(--int-control-option-hover-background); // _tokens_: --int-control-option-hover-background · SG: hover grey/100 · Aura: {list.option.focus.background}
+  --int-listbox-option-selected-background: var(--int-control-option-selected-background); // _tokens_: --int-control-option-selected-background · SG: selected solid blue/700 · Aura: {list.option.selected.background}
+  --int-listbox-option-selected-color: var(--int-control-option-selected-color); // _tokens_: --int-control-option-selected-color · SG: selected text blue/50 · Aura: {list.option.selected.color}
   --int-listbox-option-selected-font-weight: var(--i-typography-font-weight-regular); // SG: --i-typography-font-weight-regular · Aura: normal
-  --int-listbox-option-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Aura: {form.field.disabled.color}
+  --int-listbox-option-disabled-color: var(--int-control-option-disabled-color); // _tokens_: --int-control-option-disabled-color · SG: --i-text-color-disabled · Aura: {form.field.disabled.color}
   --int-listbox-check-color: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {list.option.selected.color}
 
   // --- empty message ---
@@ -57,15 +57,15 @@
   --int-listbox-placeholder-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: —
 
   // --- skeleton ---
-  --int-listbox-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
-  --int-listbox-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-listbox-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
+  --int-listbox-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
 \*——————————————————————————————————————————————————————————*/
 
-// Same look as the form fields: border, radius, colors and font come from the --i-control-* tokens.
+// Same look as the form fields: border, radius, colors and font come from the --int-control-* tokens.
 .int-listbox {
   display: inline-flex;
   flex-direction: column;
@@ -88,20 +88,27 @@
 \*——————————————————————————————————————————————————————————*/
 
 .int-listbox {
+  // Same filter as int-multiselect: the input fills the row and the 12px search icon sits over its end padding.
   &__filter {
+    display: flex;
     position: relative;
-    padding: var(--int-listbox-filter-padding) var(--int-listbox-filter-padding) 0;
+    align-items: center;
+    margin: var(--int-listbox-filter-padding) var(--int-listbox-filter-padding) 0;
 
     .int-inputtext {
-      padding-right: calc(var(--int-listbox-filter-icon-width) + var(--int-listbox-filter-padding));
+      padding-inline-end: calc(var(--int-listbox-filter-padding-x) * 2 + var(--int-listbox-filter-icon-size));
     }
   }
   &__filter-icon {
+    display: flex;
     position: absolute;
-    top: 50%;
-    right: calc(var(--int-listbox-filter-padding) * 2);
-    transform: translateY(calc(-50% + var(--int-listbox-filter-padding) / 2));
+    inset-inline-end: var(--int-listbox-filter-padding-x);
     color: var(--int-listbox-icon-color);
+    font-size: var(--int-listbox-filter-icon-size);
+    pointer-events: none;
+  }
+  // Wins over the 16px of the Style Guide .icon class.
+  &__filter-icon &__search-icon {
     font-size: var(--int-listbox-filter-icon-size);
   }
 

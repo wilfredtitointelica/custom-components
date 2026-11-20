@@ -17,7 +17,7 @@
   --int-slider-range-background: var(--i-color-primary-600); // SG: --i-color-primary-600, no knowledgeBase/Figma value
 
   // --- handle ---
-  --int-slider-handle-size: var(--i-sizing-sm); // SG: --i-sizing-sm, no knowledgeBase/Figma value
+  --int-slider-handle-size: var(--int-control-handle-size); // _tokens_: --int-control-handle-size · SG: --i-sizing-sm, no knowledgeBase/Figma value
   --int-slider-handle-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
   --int-slider-handle-hover-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200, no knowledgeBase/Figma value
   --int-slider-handle-content-size: var(--i-sizing-xs); // SG: --i-sizing-xs, no knowledgeBase/Figma value
@@ -26,9 +26,9 @@
   --int-slider-handle-content-shadow: var(--i-shadow-depth-1); // SG: --i-shadow-depth-1, no knowledgeBase/Figma value
 
   // --- focus ---
-  --int-slider-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm, no knowledgeBase/Figma value
-  --int-slider-focus-ring-color: var(--i-focus-border-color); // SG: --i-focus-border-color, no knowledgeBase/Figma value
-  --int-slider-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25, no knowledgeBase/Figma value
+  --int-slider-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm, no knowledgeBase/Figma value
+  --int-slider-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-focus-border-color, no knowledgeBase/Figma value
+  --int-slider-focus-ring-offset: var(--int-control-outline-offset); // _tokens_: --int-control-outline-offset · SG: --i-spacing-25, no knowledgeBase/Figma value
 
   // --- states and motion ---
   --int-slider-disabled-opacity: var(--i-opacity-semi); // SG: --i-opacity-semi, no knowledgeBase/Figma value

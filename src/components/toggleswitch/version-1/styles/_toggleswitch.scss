@@ -19,12 +19,12 @@
   --int-toggleswitch-checked-hover-background: var(--i-color-primary-100); // knowledgeBase: --i-toggleswitch-hover-background · Figma: #DDE6F8 (toggle/active/hover/background) [Type=Active, State=Hover]
   --int-toggleswitch-disabled-background: var(--i-color-neutral-200); // knowledgeBase: --i-toggleswitch-disabled-background · Figma: #D9D9E3 (toggle/inactive/disabled/background) [State=Disabled]
   --int-toggleswitch-invalid-border-color: var(--i-border-error); // SG: --i-checkbox-invalid-border-color
-  --int-toggleswitch-focus-ring-width: var(--i-border-width-sm); // knowledgeBase: outline 1px
-  --int-toggleswitch-focus-ring-color: var(--i-focus-border-color); // knowledgeBase: --i-focus-border-color
+  --int-toggleswitch-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · knowledgeBase: outline 1px
+  --int-toggleswitch-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · knowledgeBase: --i-focus-border-color
   --int-toggleswitch-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast, no knowledgeBase/Figma value
 
   // --- handle ---
-  --int-toggleswitch-handle-size: var(--i-sizing-sm); // knowledgeBase: --i-toggleswitch-handle-size 20px · Figma: 20px (toggle/sizing/sm)
+  --int-toggleswitch-handle-size: var(--int-control-handle-size); // _tokens_: --int-control-handle-size · knowledgeBase: --i-toggleswitch-handle-size 20px · Figma: 20px (toggle/sizing/sm)
   --int-toggleswitch-handle-border-radius: var(--i-border-radius-full); // SG: --i-toggleswitch-handle-border-radius · Figma: 1000px (toggle/border/radius/full)
   --int-toggleswitch-handle-background: var(--i-color-secondary-400); // knowledgeBase: handle secondary-400 · Figma: #9CA3BA (toggle/inactive/ellipse)
   --int-toggleswitch-handle-checked-background: var(--i-color-primary-900); // knowledgeBase: --i-toggleswitch-checked-handle-color · Figma: #0A1733 (toggle/active/ellipse) [Type=Active]

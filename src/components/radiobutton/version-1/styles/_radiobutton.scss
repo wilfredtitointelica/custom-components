@@ -6,28 +6,28 @@
   --NOTE-RADIOBUTTON: 'int-radiobutton ( Custom )';
 
   // --- root ---
-  --int-radiobutton-size: var(--i-sizing-xs); // SG: --i-sizing-xs · Aura: 1.25rem
+  --int-radiobutton-size: var(--int-control-check-size); // _tokens_: --int-control-check-size · SG: --i-sizing-xs · Aura: 1.25rem
   --int-radiobutton-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Aura: 50%
   --int-radiobutton-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 1px
-  --int-radiobutton-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
+  --int-radiobutton-border: var(--int-control-check-border-color); // _tokens_: --int-control-check-border-color · SG: --i-color-secondary-200 · Aura: {form.field.border.color}
   --int-radiobutton-hover-border: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {form.field.hover.border.color}
   --int-radiobutton-hover-background: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: —
-  --int-radiobutton-motion: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+  --int-radiobutton-motion: var(--int-control-check-motion); // _tokens_: --int-control-check-motion · SG: --i-motion-base · Aura: {transition.duration}
 
   // --- dot ---
   --int-radiobutton-dot-scale: 0.5; // SG: no token · the dot is half of --int-radiobutton-size, so it follows the sizes · Aura: 0.75rem
-  --int-radiobutton-dot-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {primary.contrast.color}
+  --int-radiobutton-dot-color: var(--int-control-checked-color); // _tokens_: --int-control-checked-color · SG: --i-color-primary-50 · Aura: {primary.contrast.color}
 
   // --- checked ---
-  --int-radiobutton-checked: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {primary.color}
+  --int-radiobutton-checked: var(--int-control-checked-background); // _tokens_: --int-control-checked-background · SG: --i-color-primary-700 · Aura: {primary.color}
 
   // --- sizes ---
-  --int-radiobutton-small-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs · Aura: 1rem
-  --int-radiobutton-large-size: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: 1.5rem
+  --int-radiobutton-small-size: var(--int-control-check-sm-size); // _tokens_: --int-control-check-sm-size · SG: --i-sizing-2xs · Aura: 1rem
+  --int-radiobutton-large-size: var(--int-control-check-lg-size); // _tokens_: --int-control-check-lg-size · SG: --i-sizing-sm · Aura: 1.5rem
 
   // --- invalid ---
   --int-radiobutton-invalid-border: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: {form.field.invalid.border.color}
-  --int-radiobutton-invalid-background: var(--i-color-error-50); // SG: --i-color-error-50 · Aura: —
+  --int-radiobutton-invalid-background: var(--int-control-invalid-background); // _tokens_: --int-control-invalid-background · SG: --i-color-error-50 · Aura: —
   --int-radiobutton-invalid-dot-color: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: —
 
   // --- disabled ---
@@ -36,11 +36,11 @@
   --int-radiobutton-disabled-dot-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
 
   // --- skeleton ---
-  --int-radiobutton-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-radiobutton-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
-  --int-radiobutton-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
-  --int-radiobutton-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
-  --int-radiobutton-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
+  --int-radiobutton-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-radiobutton-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-radiobutton-focus-ring-offset: var(--int-control-outline-offset); // _tokens_: --int-control-outline-offset · SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\

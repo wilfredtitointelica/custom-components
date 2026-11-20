@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use '@angular/cdk' as cdk;
+// Common tokens of the int-* components (--int-control-* …), loaded once: src/components/_tokens_/.
+// Projects that copy int-* form components also load this folder once in their global styles.
+@use './components/_tokens_';
 // Incontrol icon font and brand marks of /icon-lab come from the Intelica Style Guide bundle
 // (fallback: page/icon-lab/icon-lab-fallback.scss). The documentation uses them as `icon icon-*`.
 

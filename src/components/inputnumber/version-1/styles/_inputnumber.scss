@@ -8,30 +8,30 @@
   --NOTE-INPUTNUMBER: 'int-inputnumber ( Custom )';
 
   // --- field ---
-  --int-inputnumber-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) 32px · Aura: auto
-  --int-inputnumber-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {form.field.background}
-  --int-inputnumber-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) · was --i-border-width-sm (1px) · Aura: 1px
-  --int-inputnumber-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
-  --int-inputnumber-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
+  --int-inputnumber-height: var(--int-control-height); // _tokens_: --int-control-height 32px · Aura: auto
+  --int-inputnumber-background: var(--int-control-background); // _tokens_: --int-control-background · Aura: {form.field.background}
+  --int-inputnumber-border-width: var(--int-control-border-width); // _tokens_: --int-control-border-width · was --i-border-width-sm (1px) · Aura: 1px
+  --int-inputnumber-border-color: var(--int-control-border-color); // _tokens_: --int-control-border-color · Aura: {form.field.border.color}
+  --int-inputnumber-border-radius: var(--int-control-border-radius); // _tokens_: --int-control-border-radius 8px · Aura: {form.field.border.radius}
   --int-inputnumber-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: {transition.duration} 0.2s
   --int-inputnumber-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: ease
 
   // --- states ---
-  --int-inputnumber-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · Aura: {form.field.hover.border.color}
-  --int-inputnumber-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) · Aura: {form.field.focus.border.color}
-  --int-inputnumber-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
-  --int-inputnumber-invalid-color: var(--i-control-invalid-color); // SG: --i-control-invalid-color (tokens.control.draft) · Aura: —
-  --int-inputnumber-success-border-color: var(--i-control-valid-border-color); // SG: --i-control-valid-border-color (tokens.control.draft) · Aura: —
-  --int-inputnumber-success-color: var(--i-control-valid-color); // SG: --i-control-valid-color (tokens.control.draft) · Aura: —
-  --int-inputnumber-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Aura: {form.field.disabled.background}
-  --int-inputnumber-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft) · Aura: {form.field.disabled.color}
+  --int-inputnumber-hover-border-color: var(--int-control-hover-border-color); // _tokens_: --int-control-hover-border-color · Aura: {form.field.hover.border.color}
+  --int-inputnumber-focus-border-color: var(--int-control-focus-border-color); // _tokens_: --int-control-focus-border-color · Aura: {form.field.focus.border.color}
+  --int-inputnumber-invalid-border-color: var(--int-control-invalid-border-color); // _tokens_: --int-control-invalid-border-color · Aura: {form.field.invalid.border.color}
+  --int-inputnumber-invalid-color: var(--int-control-invalid-color); // _tokens_: --int-control-invalid-color · Aura: —
+  --int-inputnumber-success-border-color: var(--int-control-valid-border-color); // _tokens_: --int-control-valid-border-color · Aura: —
+  --int-inputnumber-success-color: var(--int-control-valid-color); // _tokens_: --int-control-valid-color · Aura: —
+  --int-inputnumber-disabled-background: var(--int-control-disabled-background); // _tokens_: --int-control-disabled-background · Aura: {form.field.disabled.background}
+  --int-inputnumber-disabled-color: var(--int-control-disabled-color); // _tokens_: --int-control-disabled-color · Aura: {form.field.disabled.color}
 
   // --- sizes ---
-  --int-inputnumber-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) · was --i-sizing-md (24px) · Aura: auto
-  --int-inputnumber-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) · was --i-sizing-xl (40px) · Aura: auto
+  --int-inputnumber-sm-height: var(--int-control-sm-height); // _tokens_: --int-control-sm-height · was --i-sizing-md (24px) · Aura: auto
+  --int-inputnumber-lg-height: var(--int-control-lg-height); // _tokens_: --int-control-lg-height · was --i-sizing-xl (40px) · Aura: auto
 
   // --- buttons ---
-  --int-inputnumber-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · knowledgeBase: input.md +/- primary-900 · Aura: {inputnumber.button.color}
+  --int-inputnumber-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color · knowledgeBase: input.md +/- primary-900 · Aura: {inputnumber.button.color}
   --int-inputnumber-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs · Aura: {icon.size}
   --int-inputnumber-button-hover-color: var(--i-icon-color-default); // SG: --i-icon-color-default · Aura: {inputnumber.button.hover.color}
   --int-inputnumber-button-hover-background: var(--i-background-hover); // SG: --i-background-hover · Aura: {inputnumber.button.hover.background}
@@ -45,9 +45,9 @@
   --int-inputnumber-stack-gap: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm (space between value and buttons) · Aura: —
 
   // --- skeleton ---
-  --int-inputnumber-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
-  --int-inputnumber-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
-  --int-inputnumber-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-inputnumber-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
+  --int-inputnumber-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
+  --int-inputnumber-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -56,7 +56,7 @@
 
 // <int-inputnumber>: an int-inputtext field (__field) plus optional spin buttons.
 .int-inputnumber {
-  --int-inputtext-height: var(--int-inputnumber-height); // SG: --i-control-height via --int-inputnumber-height (the inner int-inputtext follows the host height)
+  --int-inputtext-height: var(--int-inputnumber-height); // SG: --int-control-height via --int-inputnumber-height (the inner int-inputtext follows the host height)
   position: relative;
   display: inline-flex;
   align-items: stretch;
@@ -131,10 +131,10 @@
     width: 100%;
   }
   &--small {
-    --int-inputnumber-height: var(--int-inputnumber-sm-height); // SG: --i-control-sm-height
+    --int-inputnumber-height: var(--int-inputnumber-sm-height); // SG: --int-control-sm-height
   }
   &--large {
-    --int-inputnumber-height: var(--int-inputnumber-lg-height); // SG: --i-control-lg-height
+    --int-inputnumber-height: var(--int-inputnumber-lg-height); // SG: --int-control-lg-height
   }
 
   &--stacked .int-inputnumber__field {

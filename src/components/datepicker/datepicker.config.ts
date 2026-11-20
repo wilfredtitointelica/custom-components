@@ -14,6 +14,7 @@ export default {
   id: 'datepicker',
   variants: [
     'basic',
+    'clear-icon',
     'range-with-min-max',
     'month-picker',
     'year-picker',

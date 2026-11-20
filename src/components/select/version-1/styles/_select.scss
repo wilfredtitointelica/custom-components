@@ -8,57 +8,58 @@
   --NOTE-SELECT: 'int-select ( Custom )';
 
   // --- field ---
-  --int-select-height: var(--i-control-height); // SG: --i-control-height (tokens.control.draft) · knowledgeBase: .prSelect 32px · Aura: auto
-  --int-select-padding-x: var(--i-control-padding-x); // SG: --i-control-padding-x (tokens.control.draft) 8px · Aura: {form.field.padding.x} 0.75rem
-  --int-select-padding-y: var(--i-control-padding-y); // SG: --i-control-padding-y (tokens.control.draft) 6px · Aura: {form.field.padding.y} 0.5rem
+  --int-select-height: var(--int-control-height); // _tokens_: --int-control-height · knowledgeBase: .prSelect 32px · Aura: auto
+  --int-select-padding-x: var(--int-control-padding-x); // _tokens_: --int-control-padding-x 8px · Aura: {form.field.padding.x} 0.75rem
+  --int-select-padding-y: var(--int-control-padding-y); // _tokens_: --int-control-padding-y 6px · Aura: {form.field.padding.y} 0.5rem
   --int-select-gap: var(--i-spacing-gap-sm); // SG: --i-spacing-gap-sm 8px (label, clear and arrow) · Aura: —
-  --int-select-background: var(--i-control-background); // SG: --i-control-background (tokens.control.draft) · Aura: {form.field.background}
-  --int-select-border-width: var(--i-control-border-width); // SG: --i-control-border-width (tokens.control.draft) 1px · Aura: 1px
-  --int-select-border-color: var(--i-control-border-color); // SG: --i-control-border-color (tokens.control.draft) · Aura: {form.field.border.color}
-  --int-select-border-radius: var(--i-control-border-radius); // SG: --i-control-border-radius (tokens.control.draft) 8px · Aura: {form.field.border.radius}
-  --int-select-color: var(--i-control-color); // SG: --i-control-color (tokens.control.draft) · Aura: {form.field.color}
-  --int-select-placeholder-color: var(--i-control-placeholder-color); // SG: --i-control-placeholder-color (tokens.control.draft) · Aura: {form.field.placeholder.color}
-  --int-select-font-family: var(--i-control-font-family); // SG: --i-control-font-family (tokens.control.draft) · Aura: inherit
-  --int-select-font-size: var(--i-control-font-size); // SG: --i-control-font-size (tokens.control.draft) 14px · Aura: 1rem
-  --int-select-line-height: var(--i-control-line-height); // SG: --i-control-line-height (tokens.control.draft) 20px · Aura: normal
-  --int-select-transition-duration: var(--i-control-motion-duration); // SG: --i-control-motion-duration (tokens.control.draft) · Aura: {transition.duration} 0.2s
-  --int-select-transition-easing: var(--i-control-motion-easing); // SG: --i-control-motion-easing (tokens.control.draft) · Aura: ease
+  --int-select-background: var(--int-control-background); // _tokens_: --int-control-background · Aura: {form.field.background}
+  --int-select-border-width: var(--int-control-border-width); // _tokens_: --int-control-border-width 1px · Aura: 1px
+  --int-select-border-color: var(--int-control-border-color); // _tokens_: --int-control-border-color · Aura: {form.field.border.color}
+  --int-select-border-radius: var(--int-control-border-radius); // _tokens_: --int-control-border-radius 8px · Aura: {form.field.border.radius}
+  --int-select-color: var(--int-control-color); // _tokens_: --int-control-color · Aura: {form.field.color}
+  --int-select-placeholder-color: var(--int-control-placeholder-color); // _tokens_: --int-control-placeholder-color · Aura: {form.field.placeholder.color}
+  --int-select-font-family: var(--int-control-font-family); // _tokens_: --int-control-font-family · Aura: inherit
+  --int-select-font-size: var(--int-control-font-size); // _tokens_: --int-control-font-size 14px · Aura: 1rem
+  --int-select-line-height: var(--int-control-line-height); // _tokens_: --int-control-line-height 20px · Aura: normal
+  --int-select-transition-duration: var(--int-control-motion-duration); // _tokens_: --int-control-motion-duration · Aura: {transition.duration} 0.2s
+  --int-select-transition-easing: var(--int-control-motion-easing); // _tokens_: --int-control-motion-easing · Aura: ease
 
   // --- icons ---
-  --int-select-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · was --i-icon-color-default (same value) · Aura: {form.field.icon.color}
-  --int-select-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm 16px · Aura: {icon.size}
-  --int-select-hover-icon-color: var(--i-control-hover-icon-color); // SG: --i-control-hover-icon-color (tokens.control.draft) · SG: .prSelect:hover .p-select-dropdown .icon primary-400 · Aura: —
+  --int-select-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color · was --i-icon-color-default (same value) · Aura: {form.field.icon.color}
+  --int-select-icon-size: var(--int-control-icon-size); // _tokens_: --int-control-icon-size · SG: --i-icon-size-sm 16px · Aura: {icon.size}
+  --int-select-hover-icon-color: var(--int-control-hover-icon-color); // _tokens_: --int-control-hover-icon-color · SG: .prSelect:hover .p-select-dropdown .icon primary-400 · Aura: —
   --int-select-arrow-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: —
   --int-select-arrow-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: —
-  --int-select-clear-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs 12px · Aura: {icon.size}
+  --int-select-clear-icon-size: var(--int-control-clear-size); // _tokens_: --int-control-clear-size · SG: --i-icon-size-xs 12px · Aura: {icon.size}
+  --int-select-clear-padding-x: var(--i-spacing-gap-xs); // SG: 4px, same as int-multiselect: 12px from the text and to the arrow (with the 8px gap) · Aura: —
   --int-select-clear-hover-color: var(--i-icon-color-default); // SG: --i-icon-color-default · Aura: —
 
   // --- states ---
-  --int-select-hover-border-color: var(--i-control-hover-border-color); // SG: --i-control-hover-border-color (tokens.control.draft) · Aura: {form.field.hover.border.color}
-  --int-select-focus-border-color: var(--i-control-focus-border-color); // SG: --i-control-focus-border-color (tokens.control.draft) primary-900 (also open) · Aura: {form.field.focus.border.color}
-  --int-select-invalid-border-color: var(--i-control-invalid-border-color); // SG: --i-control-invalid-border-color (tokens.control.draft) · Aura: {form.field.invalid.border.color}
-  --int-select-disabled-background: var(--i-control-disabled-background); // SG: --i-control-disabled-background (tokens.control.draft) · Aura: {form.field.disabled.background}
-  --int-select-disabled-color: var(--i-control-disabled-color); // SG: --i-control-disabled-color (tokens.control.draft), text and arrow (Figma) · Aura: {form.field.disabled.color}
+  --int-select-hover-border-color: var(--int-control-hover-border-color); // _tokens_: --int-control-hover-border-color · Aura: {form.field.hover.border.color}
+  --int-select-focus-border-color: var(--int-control-focus-border-color); // _tokens_: --int-control-focus-border-color primary-900 (also open) · Aura: {form.field.focus.border.color}
+  --int-select-invalid-border-color: var(--int-control-invalid-border-color); // _tokens_: --int-control-invalid-border-color · Aura: {form.field.invalid.border.color}
+  --int-select-disabled-background: var(--int-control-disabled-background); // _tokens_: --int-control-disabled-background · Aura: {form.field.disabled.background}
+  --int-select-disabled-color: var(--int-control-disabled-color); // _tokens_: --int-control-disabled-color, text and arrow (Figma) · Aura: {form.field.disabled.color}
 
   // --- sizes ---
-  --int-select-sm-height: var(--i-control-sm-height); // SG: --i-control-sm-height (tokens.control.draft) 24px · Aura: auto
-  --int-select-sm-padding-y: var(--i-control-sm-padding-y); // SG: --i-control-sm-padding-y (tokens.control.draft) 4px · Aura: {form.field.sm.padding.y}
-  --int-select-sm-font-size: var(--i-control-sm-font-size); // SG: --i-control-sm-font-size (tokens.control.draft) 12px · Aura: {form.field.sm.font.size}
-  --int-select-sm-line-height: var(--i-control-sm-line-height); // SG: --i-control-sm-line-height (tokens.control.draft) · Aura: normal
-  --int-select-lg-height: var(--i-control-lg-height); // SG: --i-control-lg-height (tokens.control.draft) 40px · Aura: auto
-  --int-select-lg-padding-y: var(--i-control-lg-padding-y); // SG: --i-control-lg-padding-y (tokens.control.draft) 8px · Aura: {form.field.lg.padding.y}
-  --int-select-lg-padding-x: var(--i-control-lg-padding-x); // SG: --i-control-lg-padding-x (tokens.control.draft) 12px · Aura: {form.field.lg.padding.x}
-  --int-select-lg-font-size: var(--i-control-lg-font-size); // SG: --i-control-lg-font-size (tokens.control.draft) · Aura: {form.field.lg.font.size}
+  --int-select-sm-height: var(--int-control-sm-height); // _tokens_: --int-control-sm-height 24px · Aura: auto
+  --int-select-sm-padding-y: var(--int-control-sm-padding-y); // _tokens_: --int-control-sm-padding-y 4px · Aura: {form.field.sm.padding.y}
+  --int-select-sm-font-size: var(--int-control-sm-font-size); // _tokens_: --int-control-sm-font-size 12px · Aura: {form.field.sm.font.size}
+  --int-select-sm-line-height: var(--int-control-sm-line-height); // _tokens_: --int-control-sm-line-height · Aura: normal
+  --int-select-lg-height: var(--int-control-lg-height); // _tokens_: --int-control-lg-height 40px · Aura: auto
+  --int-select-lg-padding-y: var(--int-control-lg-padding-y); // _tokens_: --int-control-lg-padding-y 8px · Aura: {form.field.lg.padding.y}
+  --int-select-lg-padding-x: var(--int-control-lg-padding-x); // _tokens_: --int-control-lg-padding-x 12px · Aura: {form.field.lg.padding.x}
+  --int-select-lg-font-size: var(--int-control-lg-font-size); // _tokens_: --int-control-lg-font-size · Aura: {form.field.lg.font.size}
 
   // --- panel ---
-  --int-select-panel-background: var(--i-color-secondary-50); // Figma: grey/50 panel · Aura: {overlay.select.background}
-  --int-select-panel-color: var(--i-text-color-default); // SG: --i-text-color-default · Aura: {overlay.select.color}
+  --int-select-panel-background: var(--int-control-overlay-background); // _tokens_: --int-control-overlay-background · Figma: grey/50 panel · Aura: {overlay.select.background}
+  --int-select-panel-color: var(--int-control-overlay-color); // _tokens_: --int-control-overlay-color · SG: --i-text-color-default · Aura: {overlay.select.color}
   --int-select-panel-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: 1px
-  --int-select-panel-border-color: var(--i-border-default); // SG: --i-border-default · Aura: {overlay.select.border.color}
-  --int-select-panel-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px · Aura: {overlay.select.border.radius}
-  --int-select-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Aura: {overlay.select.shadow}
-  --int-select-panel-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
-  --int-select-panel-font-size: var(--i-typography-font-size-md); // SG: --i-typography-font-size-md 14px · Aura: 1rem
+  --int-select-panel-border-color: var(--int-control-overlay-border-color); // _tokens_: --int-control-overlay-border-color · SG: --i-border-default · Aura: {overlay.select.border.color}
+  --int-select-panel-border-radius: var(--int-control-overlay-border-radius); // _tokens_: --int-control-overlay-border-radius · SG: --i-border-radius-lg 8px · Aura: {overlay.select.border.radius}
+  --int-select-panel-shadow: var(--int-control-overlay-shadow); // _tokens_: --int-control-overlay-shadow · SG: same as int-treeselect (.prTreeselect__overlay box-shadow with the base shadow tokens) · Figma: shadow.300 · Aura: {overlay.select.shadow}
+  --int-select-panel-font-family: var(--int-control-overlay-font-family); // _tokens_: --int-control-overlay-font-family · SG: --i-text-body-family · Aura: inherit
+  --int-select-panel-font-size: var(--int-control-overlay-font-size); // _tokens_: --int-control-overlay-font-size · SG: --i-typography-font-size-md 14px · Aura: 1rem
 
   // --- variant text (paginator rows per page) ---
   --int-select-text-gap: var(--i-spacing-gap-sm); // Figma: 8px between value and arrow (paginator)
@@ -74,12 +75,12 @@
   --int-select-text-option-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
 
   // --- skeleton ---
-  --int-select-skeleton-height: var(--i-sizing-lg); // SG: --i-sizing-lg 32px
-  --int-select-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px
-  --int-select-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-select-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
+  --int-select-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
+  --int-select-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
-  --int-select-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
-  --int-select-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-select-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-select-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
   --int-select-focus-ring-offset: 0; // SG: no token, ring drawn on the edge (inside a panel) · Aura: {focus.ring.offset} 2px
 }
 
@@ -166,12 +167,18 @@
     color: inherit;
     cursor: pointer;
     display: inline-flex;
+    padding-inline: var(--int-select-clear-padding-x);
     color: var(--int-select-icon-color);
     font-size: var(--int-select-clear-icon-size);
 
     &:hover {
       color: var(--int-select-clear-hover-color);
     }
+  }
+
+  // Same ✕ as int-multiselect: 12px, wins over a font size of the Style Guide icon classes.
+  &__clear &__clear-glyph {
+    font-size: var(--int-select-clear-icon-size);
   }
 
   &__icon {

@@ -107,11 +107,10 @@ Cada fila se implementa igual (misma tecla, misma condición, mismo `preventDefa
 - **Foco visible**: `:focus-visible` (nunca `:focus` solo) con anillo por tokens del `:root` del componente
   (sin mixin: la regla se escribe en el componente):
   ```scss
-  // :root: --i-control-outline-* when the Style Guide defines them (today empty `var()` in
-  // _tokens.control.draft.scss); meanwhile the values they stand for:
-  --int-<id>-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
-  --int-<id>-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
-  --int-<id>-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
+  // :root: the common focus ring of src/components/_tokens_/_tokens.control.scss
+  --int-<id>-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-<id>-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-focus-border-color primary-600 · Aura: {focus.ring.color}
+  --int-<id>-focus-ring-offset: var(--int-control-outline-offset); // _tokens_: --int-control-outline-offset · SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
 
   // rule
   &:focus-visible {

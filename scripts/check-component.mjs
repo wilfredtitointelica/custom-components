@@ -23,7 +23,7 @@ const STYLE_GUIDE =
 
 /** Values a --int-* token may hold without a var(--i-*): they are not design tokens (SKILL.md 3.3). */
 const TOKEN_EXCEPTIONS = new Set(['0', '50%', 'currentColor', 'inherit', 'transparent']);
-const ORIGIN_COMMENT = /\/\/.*\b(knowledgeBase|SG|Figma|Aura):/;
+const ORIGIN_COMMENT = /\/\/.*\b(_tokens_|knowledgeBase|SG|Figma|Aura):/;
 const LITERAL_DURATION = /\b([1-9]\d*|0?\.\d+)m?s\b/;
 
 function fail(message) {
@@ -95,6 +95,19 @@ const styleGuide = (() => {
   }
   return { tokens, helpers };
 })();
+
+/** Common tokens of this repo (src/components/_tokens_/): --int-control-* … read by the :root of the components. */
+const COMMON_TOKENS_DIR = join(COMPONENTS_DIR, '_tokens_');
+const commonTokens = (() => {
+  const tokens = new Set();
+  if (!existsSync(COMMON_TOKENS_DIR)) return tokens;
+  for (const file of readdirSync(COMMON_TOKENS_DIR).filter((name) => name.endsWith('.scss')))
+    for (const match of readFileSync(join(COMMON_TOKENS_DIR, file), 'utf8').matchAll(/^\s*(--int-[\w-]+)\s*:/gm))
+      tokens.add(match[1]);
+  return tokens;
+})();
+/** Prefixes of the common tokens (`control` of --int-control-*): not a component, declared in _tokens_/. */
+const COMMON_PREFIXES = new Set([...commonTokens].map((token) => /^--int-([a-z0-9]+)-/.exec(token)?.[1]));
 
 const readList = (config, key) =>
   [
@@ -409,7 +422,8 @@ function checkVersion(component, version, report, deps) {
           report.warn(at, `${name} without origin comment (// knowledgeBase: · Figma: · Aura:)`);
       });
       // Own tokens: the rules read --int-<id>-* (declared in the :root of _<id>.scss, so they are listed in
-      // the API tab); only that :root reads the Style Guide (--i-control-* for fields, else the Figma --i-*).
+      // the API tab); only that :root reads the common tokens of _tokens_/ (--int-control-* for fields) and the
+      // Style Guide (the Figma --i-*).
       const roots = [...code.matchAll(/:root\s*\{[^}]*\}/g)].map((m) => [m.index, m.index + m[0].length]);
       const inRoot = (index) => roots.some(([start, end]) => index >= start && index < end);
       for (const match of code.matchAll(/var\((--i-[\w-]+)/g))
@@ -418,6 +432,14 @@ function checkVersion(component, version, report, deps) {
             `${path}:${lineOf(code, match.index)}`,
             `${match[1]} read in a rule: declare a --int-${tokenId}-* token in the :root of _${id}.scss and use it`,
           );
+      for (const match of code.matchAll(/var\((--int-([a-z0-9]+)-[\w-]+)/g)) {
+        if (!COMMON_PREFIXES.has(match[2]) || match[2] === tokenId) continue;
+        const at = `${path}:${lineOf(code, match.index)}`;
+        if (!commonTokens.has(match[1]))
+          report.error(at, `${match[1]} does not exist in src/components/_tokens_/`);
+        else if (!inRoot(match.index))
+          report.warn(at, `${match[1]} read in a rule: declare a --int-${tokenId}-* token in the :root of _${id}.scss and use it`);
+      }
       for (const match of code.matchAll(/var\((--int-([a-z0-9]+)-[\w-]+)/g))
         if (tokenPrefixes.has(match[2]) && !declaredTokens.has(match[1]) && !match[1].endsWith('-'))
           report.warn(

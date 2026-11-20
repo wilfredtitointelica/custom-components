@@ -15,6 +15,7 @@ export default {
   variants: [
     'basic',
     'filter-clear-checkmark',
+    'clear-icon',
     'templates',
     'reactive-forms-validation',
     'sizes-fluid',

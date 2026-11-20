@@ -6,42 +6,42 @@
   --NOTE-CHECKBOX: 'int-checkbox ( Custom )';
 
   // --- root ---
-  --int-checkbox-size: var(--i-sizing-xs); // SG: --i-sizing-xs · Aura: 1.25rem
+  --int-checkbox-size: var(--int-control-check-size); // _tokens_: --int-control-check-size · SG: --i-sizing-xs · Aura: 1.25rem
   --int-checkbox-icon-size: var(--i-icon-size-xs); // SG: --i-icon-size-xs · Aura: 0.875rem
   --int-checkbox-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm · Aura: {border.radius.sm}
   --int-checkbox-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 1px
   --int-checkbox-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Aura: {form.field.background}
-  --int-checkbox-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
+  --int-checkbox-border: var(--int-control-check-border-color); // _tokens_: --int-control-check-border-color · SG: --i-color-secondary-200 · Aura: {form.field.border.color}
   --int-checkbox-hover-border: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {form.field.hover.border.color}
-  --int-checkbox-icon-color: var(--i-color-primary-50); // SG: --i-color-primary-50 · Aura: {primary.contrast.color}
-  --int-checkbox-motion: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+  --int-checkbox-icon-color: var(--int-control-checked-color); // _tokens_: --int-control-checked-color · SG: --i-color-primary-50 · Aura: {primary.contrast.color}
+  --int-checkbox-motion: var(--int-control-check-motion); // _tokens_: --int-control-check-motion · SG: --i-motion-base · Aura: {transition.duration}
 
   // --- checked ---
-  --int-checkbox-checked-background: var(--i-color-primary-700); // SG: --i-color-primary-700 · Aura: {primary.color}
+  --int-checkbox-checked-background: var(--int-control-checked-background); // _tokens_: --int-control-checked-background · SG: --i-color-primary-700 · Aura: {primary.color}
   --int-checkbox-checked-hover-background: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {primary.hover.color}
 
   // --- sizes ---
-  --int-checkbox-small-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs · Aura: 1rem
+  --int-checkbox-small-size: var(--int-control-check-sm-size); // _tokens_: --int-control-check-sm-size · SG: --i-sizing-2xs · Aura: 1rem
   --int-checkbox-small-icon-size: var(--i-sizing-2xs); // SG: --i-sizing-2xs · Aura: 0.75rem
-  --int-checkbox-large-size: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: 1.5rem
+  --int-checkbox-large-size: var(--int-control-check-lg-size); // _tokens_: --int-control-check-lg-size · SG: --i-sizing-sm · Aura: 1.5rem
   --int-checkbox-large-icon-size: var(--i-icon-size-sm); // SG: --i-icon-size-sm · Aura: 1rem
 
   // --- invalid ---
   --int-checkbox-invalid-border: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: {form.field.invalid.border.color}
-  --int-checkbox-invalid-background: var(--i-color-error-50); // SG: --i-color-error-50 · Aura: —
+  --int-checkbox-invalid-background: var(--int-control-invalid-background); // _tokens_: --int-control-invalid-background · SG: --i-color-error-50 · Aura: —
   --int-checkbox-invalid-icon-color: var(--i-color-error-700); // SG: --i-color-error-700 · Aura: —
 
   // --- disabled ---
   --int-checkbox-disabled-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
   --int-checkbox-disabled-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.disabled.background}
-  --int-checkbox-disabled-icon-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
+  --int-checkbox-disabled-icon-color: var(--int-control-disabled-icon-color); // _tokens_: --int-control-disabled-icon-color · SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
 
   // --- skeleton ---
-  --int-checkbox-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  --int-checkbox-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
-  --int-checkbox-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
-  --int-checkbox-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
-  --int-checkbox-focus-ring-offset: var(--i-spacing-25); // SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
+  --int-checkbox-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
+  --int-checkbox-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
+  --int-checkbox-focus-ring-offset: var(--int-control-outline-offset); // _tokens_: --int-control-outline-offset · SG: --i-spacing-25 2px · Aura: {focus.ring.offset} 2px
 }
 
 /*——————————————————————————————————————————————————————————*\

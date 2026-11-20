@@ -4,12 +4,14 @@
   figma:
 -->
 @if (filter()) {
+  <!-- Filter field: input[intInputText] small, with the search icon over its end padding (same as int-multiselect) -->
   <div class="int-listbox__filter">
     <input
       #filterInput
       intInputText
       intSize="small"
       fluid
+      [filter]="embedded()"
       type="text"
       role="searchbox"
       autocomplete="off"
@@ -21,7 +23,9 @@
       (input)="onFilterInput($event)"
       (keydown)="handleKeydown($event)"
     />
-    <int-icon class="int-listbox__filter-icon" name="search" />
+    <span class="int-listbox__filter-icon" aria-hidden="true">
+      <int-icon class="int-listbox__search-icon" name="search" />
+    </span>
   </div>
 }
 <ul

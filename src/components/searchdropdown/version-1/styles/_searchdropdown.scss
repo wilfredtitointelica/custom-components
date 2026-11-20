@@ -8,27 +8,27 @@
   --NOTE-SEARCHDROPDOWN: 'int-searchdropdown ( Custom )';
 
   // --- panel ---
-  --int-searchdropdown-panel-offset: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs · Figma: 4px (space/050)
+  --int-searchdropdown-panel-offset: var(--int-control-overlay-offset); // _tokens_: --int-control-overlay-offset · SG: --i-spacing-gap-xs · Figma: 4px (space/050)
   --int-searchdropdown-panel-padding: var(--i-spacing-container-2xl); // SG: --i-spacing-container-2xl (popover padding) · Figma: 24px (searchbar/padding/2xl)
   --int-searchdropdown-panel-gap: var(--i-spacing-gap-sm); // SG: ptSearchResult --i-spacing-gap-sm · Figma: 8px (searchbar/gap/sm)
   --int-searchdropdown-panel-border-radius: var(--i-border-radius-2xl); // SG: --i-border-radius-2xl · Figma: 16px (searchbar/border/radius/2xl)
-  --int-searchdropdown-panel-background: var(--i-color-secondary-50); // SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
+  --int-searchdropdown-panel-background: var(--int-control-overlay-background); // _tokens_: --int-control-overlay-background · SG: --i-color-secondary-50 · Figma: #fcfcfc (searchbar/color/background)
   --int-searchdropdown-panel-shadow: var(--i-shadow-depth-3); // SG: --i-shadow-depth-3 · Figma: shadow.300
   --int-searchdropdown-color: var(--i-color-primary-900); // SG: --i-color-primary-900 · Figma: #0a1733 (searchbar/color/text)
   --int-searchdropdown-font-size: var(--i-text-body-size-sm); // SG: --i-text-body-size-sm (u-text-sm) · Figma: 12px (listItemDetail/font/size/sm), same in every size of the field
   --int-searchdropdown-line-height: var(--i-typography-lineHeight-sm); // SG: --i-typography-lineHeight-sm · 16px for the 12px text
-  --int-searchdropdown-enter-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .12s
-  --int-searchdropdown-enter-easing: var(--i-motion-ease-out); // SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
-  --int-searchdropdown-leave-duration: var(--i-motion-duration-fast); // SG: 150ms · Aura: .1s
-  --int-searchdropdown-leave-easing: var(--i-motion-ease-equal); // SG: --i-motion-ease-equal · Aura: linear
+  --int-searchdropdown-enter-duration: var(--int-control-overlay-enter-duration); // _tokens_: --int-control-overlay-enter-duration · SG: 150ms · Aura: .12s
+  --int-searchdropdown-enter-easing: var(--int-control-overlay-enter-easing); // _tokens_: --int-control-overlay-enter-easing · SG: --i-motion-ease-out · Aura: cubic-bezier(0, 0, 0.2, 1)
+  --int-searchdropdown-leave-duration: var(--int-control-overlay-leave-duration); // _tokens_: --int-control-overlay-leave-duration · SG: 150ms · Aura: .1s
+  --int-searchdropdown-leave-easing: var(--int-control-overlay-leave-easing); // _tokens_: --int-control-overlay-leave-easing · SG: --i-motion-ease-equal · Aura: linear
 
   // --- divider (group title and footer) ---
   --int-searchdropdown-divider-width: var(--i-divider-border-sm); // SG: ptSearchResult --i-divider-color-default 1px · Figma: 1px (divider/border/sm)
   --int-searchdropdown-divider-color: var(--i-divider-color-default); // SG: --i-divider-color-default · Figma: #d9d9e3 (divider/color/default)
 
   // --- group title ---
-  --int-searchdropdown-group-font-size: var(--i-typography-font-size-sm); // SG: --i-typography-font-size-sm · Figma: 12px (Subtitle/Subtitle-sm)
-  --int-searchdropdown-group-font-weight: var(--i-typography-font-weight-bold); // SG: ptSearchResult bold · Figma: 700 (page/font/bold)
+  --int-searchdropdown-group-font-size: var(--int-control-option-group-font-size); // _tokens_: --int-control-option-group-font-size · SG: --i-typography-font-size-sm · Figma: 12px (Subtitle/Subtitle-sm)
+  --int-searchdropdown-group-font-weight: var(--int-control-option-group-font-weight); // _tokens_: --int-control-option-group-font-weight · SG: ptSearchResult bold · Figma: 700 (page/font/bold)
   --int-searchdropdown-group-padding-y: var(--i-spacing-container-xs); // SG: --i-spacing-container-xs · Figma: 4px (space/050)
 
   // --- item ---

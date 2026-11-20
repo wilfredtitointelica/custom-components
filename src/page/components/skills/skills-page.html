@@ -1159,8 +1159,10 @@ src/components/chip/version-1/
 		<li>
 			Solo ese
 			<code>:root</code>
-			lee el Style Guide: los campos y controles de formulario consumen
-			<code>--i-control-*</code>
+			lee tokens de afuera: los campos y controles de formulario consumen los comunes
+			<code>--int-control-*</code>
+			de
+			<code>src/components/_tokens_/</code>
 			; el resto, el
 			<code>--i-*</code>
 			del Style Guide / Figma.
@@ -1173,14 +1175,14 @@ src/components/chip/version-1/
 			.
 		</li>
 		<li>
-			Sin mixins ni SCSS compartido: el borde de un campo, el reset de un botón o el anillo de foco se escriben en el componente. Lo común lo da el Style Guide;
+			Sin mixins ni SCSS compartido: el borde de un campo, el reset de un botón o el anillo de foco se escriben en el componente. Lo común son valores: el Style Guide y los tokens comunes de <code>_tokens_/</code>;
 			<code>_shared_/</code>
 			es solo TypeScript.
 		</li>
 	</ul>
 	<pre class="doc-skill-code">:root {{ '{' }}
-  --int-select-border-color: <span class="doc-skill-code-sg">var(--i-control-border-color)</span>; <span class="doc-skill-code-comment">// SG: --i-control-border-color</span>
-  --int-select-sm-height: <span class="doc-skill-code-sg">var(--i-control-sm-height)</span>;       <span class="doc-skill-code-comment">// SG: --i-control-sm-height 24px</span>
+  --int-select-border-color: <span class="doc-skill-code-sg">var(--int-control-border-color)</span>; <span class="doc-skill-code-comment">// _tokens_: --int-control-border-color</span>
+  --int-select-sm-height: <span class="doc-skill-code-sg">var(--int-control-sm-height)</span>;       <span class="doc-skill-code-comment">// _tokens_: --int-control-sm-height 24px</span>
   --int-select-focus-ring-color: <span class="doc-skill-code-sg">var(--i-color-primary-600)</span>; <span class="doc-skill-code-comment">// SG: --i-color-primary-600</span>
 {{ '}' }}
 

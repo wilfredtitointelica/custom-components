@@ -28,6 +28,7 @@ import { IntInputTextStyles } from './inputtext-styles';
     '[class.int-inputtext--small]': 'intSize() === "small"',
     '[class.int-inputtext--large]': 'intSize() === "large"',
     '[class.int-inputtext--fluid]': 'fluid()',
+    '[class.int-inputtext--filter]': 'filter()',
     '[class.int-inputtext--invalid]': 'isInvalid()',
     '[class.int-inputtext--success]': 'success() && !isInvalid()',
     '[attr.aria-invalid]': 'isInvalid() || null',
@@ -45,6 +46,11 @@ export class IntInputText implements DoCheck {
   readonly invalid = input(false, { transform: booleanAttribute });
   /** Ocupa todo el ancho de su contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: campo de búsqueda dentro del panel desplegable de otro componente (`int-multiselect`,
+   * `int-treeselect`, `int-select`). Solo cambia el color del borde en reposo; hover y foco no cambian.
+   */
+  readonly filter = input(false, { transform: booleanAttribute });
   /**
    * int-* extension: estado de éxito (borde y texto verdes).
    * Si el control también es inválido, gana el estado inválido.

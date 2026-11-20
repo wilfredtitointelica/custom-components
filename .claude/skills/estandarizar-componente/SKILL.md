@@ -156,7 +156,7 @@ Aplica la **fase 3 de `replicar-primeng`** sobre el código existente, conservan
    origen (excepción de `replicar-primeng` 3.3).
    Todos los tokens van al `:root` de `_<id>.scss` (los declarados en el bloque `.int-<id>` o en un
    `:root` de `_<id>.<grupo>.scss` se mueven ahí, si no la pestaña API no los muestra); cada `var(--i-*)`
-   leído en una regla pasa a un token propio (controles de formulario → `--i-control-*`), y un modificador
+   leído en una regla pasa a un token propio (controles de formulario → `--int-control-*` de `src/components/_tokens_/`), y un modificador
    reasigna solo a tokens `--int-<id>-*`. Un `@include` de mixin o `@use` de SCSS compartido se expande en
    el componente con sus tokens. Hecho cuando `check:component` no da avisos "read in a rule" ni
    "is not declared in the :root".

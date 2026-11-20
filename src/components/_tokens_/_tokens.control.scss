@@ -1,0 +1,269 @@
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * TOKENS CONTROL ( controles de formulario )  ·  --int-control-*
+
+ ! Qué es
+   Los valores que tienen en común los componentes int-* de formulario: el borde del campo, el anillo de
+   foco, el panel de un desplegable, el skeleton… Si cambias un token aquí, cambian todos los componentes
+   que lo leen.
+
+ ! Cómo se usa
+   - Se carga UNA sola vez desde los estilos globales ( src/styles.scss → @use './components/_tokens_' ).
+     Un proyecto que copie un componente int-* de formulario también copia esta carpeta y la carga una vez.
+   - Un componente nunca lee estos tokens en sus reglas: su :root apunta su propio token a uno de estos,
+       --int-select-border-color: var(--int-control-border-color); // _tokens_: --int-control-border-color
+     y sus reglas leen solo --int-select-*. La pestaña API marca esos tokens con "_tokens_".
+   - `check:component` da error si un componente lee un --int-control-* que no está declarado aquí.
+
+ ! Qué entra aquí
+   Un rol ( color de borde, sombra del panel… ) entra solo si DOS O MÁS componentes le dan el mismo valor.
+   Un valor que usa un solo componente se queda en ese componente ( --int-<id>-* ).
+   Cada token indica "usado por:" ( los int-* que lo leen hoy ). ⚠️ marca un componente que conserva su
+   propio valor a propósito, hasta decidir cuál gana.
+
+ ! Por qué --int-control-* y no --i-control-* ( Style Guide )
+   Parte del _tokens.control.draft.scss del Style Guide, renombrado a --int-control-* para que un cambio
+   aquí nunca toque producción ( los --i-control-* del Style Guide quedan como están ).
+   Los valores siguen viniendo del Style Guide: cada token apunta a un token base --i-*.
+
+ ! Componentes ( int-*  ·  PrimeNG  ·  base de conocimientos )
+ 	int-inputtext         pInputText / pTextarea     .prInputText / .prTextarea
+ 	int-inputnumber       p-inputnumber              .prInputnumber
+ 	int-inputotp          p-inputotp                 .prInputotp
+ 	int-password          p-password                 .prPassword
+ 	int-search            p-iconfield                .prIconfield / .ptSearch
+ 	int-searchdropdown    p-autocomplete             —
+ 	int-select            p-select                   .prSelect
+ 	int-multiselect       p-multiselect              .prMultiselect
+ 	int-treeselect        p-treeselect               .prTreeselect
+ 	int-listbox           p-listbox                  — ( panel de int-select )
+ 	int-datepicker        p-datepicker               .prDatapicker
+ 	int-checkbox          p-checkbox                 .prCheckbox
+ 	int-radiobutton       p-radiobutton              .prRadioButton
+ 	int-toggleswitch      p-toggleswitch             .prToggleswitch
+ 	int-slider            p-slider                   .prSlider
+ 	int-picklist          p-picklist                 — ( solo el color del icono de búsqueda )
+
+ ! Contenido
+   BASE        campo · tamaño sm / lg · anillo de foco · transición · estados · skeleton
+   ELEMENTOS   placeholder · icono · flecha del desplegable · overlay ( panel ) · buscador · lista / opción ·
+               check ( checkbox, radio ) · perilla ( toggleswitch, slider ) · limpiar ( ✕ )
+   RESERVADOS  tokens del borrador del Style Guide que ningún componente lee todavía
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * BASE  ·  el campo ( input, disparador de select / multiselect / treeselect / datepicker )
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+:root { --NOTE-CONTROL: 'Custom Control Tokens';
+
+	// --- campo: caja ---
+	// usado por: inputtext, inputnumber, select, multiselect, treeselect, listbox ( salvo que se indique )
+
+	--int-control-height: var(--i-sizing-lg);                                         // 32px · no listbox
+	--int-control-padding-y: var(--i-spacing-container-sm);                           // 6px · inputtext, select, multiselect, treeselect
+	--int-control-padding-x: var(--i-spacing-container-md);                           // 8px · inputtext, select, multiselect, treeselect
+	--int-control-background: var(--i-panel-background, var(--i-background-default)); // #FCFCFC · respaldo si no está cargado el bundle de panel
+	--int-control-border-width: var(--i-border-width-sm);                             // 1px
+	--int-control-border-color: var(--i-color-neutral-400);                           // #9CA3BA ( password usa secondary-200 ⚠️ )
+	--int-control-border-radius: var(--i-border-radius-lg);                           // 8px
+
+	// --- campo: texto ---
+	// usado por: inputtext, select, multiselect, treeselect, listbox ( salvo que se indique )
+
+	--int-control-color: var(--i-color-neutral-700);                     // #4F5470
+	--int-control-font-family: var(--i-text-body-family);                // no multiselect
+	--int-control-font-size: var(--i-text-body-size-md);                 // 14px
+	--int-control-line-height: var(--i-typography-lineHeight-md);        // 20px · no listbox
+
+	// --- tamaño: small ( size="small" ) ---
+	// usado por: inputtext, inputnumber, select, multiselect ( salvo que se indique )
+
+	--int-control-sm-height: var(--i-sizing-md);                         // 24px
+	--int-control-sm-padding-y: var(--i-spacing-container-xs);           // 4px · inputtext, select
+	--int-control-sm-font-size: var(--i-typography-font-size-sm);        // 12px · no inputnumber
+	--int-control-sm-line-height: var(--i-typography-lineHeight-sm);     // inputtext, select
+
+	// --- tamaño: large ( size="large" ) ---
+	// usado por: inputtext, inputnumber, select, multiselect ( salvo que se indique )
+
+	--int-control-lg-height: var(--i-sizing-xl);                         // 40px
+	--int-control-lg-padding-y: var(--i-spacing-container-md);           // 8px · inputtext, select
+	--int-control-lg-padding-x: var(--i-spacing-container-lg);           // 12px · inputtext, select
+	--int-control-lg-font-size: var(--i-typography-font-size-lg);        // no inputnumber
+
+	// --- anillo de foco ( foco con teclado, :focus-visible ) ---
+	// usado por: checkbox, radiobutton, slider, toggleswitch, select, datepicker ( salvo que se indique )
+
+	--int-control-outline-width: var(--i-border-width-sm);               // 1px
+	--int-control-outline-color: var(--i-focus-border-color);            // primary-600
+	--int-control-outline-offset: var(--i-spacing-25);                   // 2px · checkbox, radiobutton, slider ( select y datepicker mantienen 0 ⚠️ )
+
+	// --- transición ( cambio de borde y fondo del campo ) ---
+	// usado por: inputtext, select, multiselect, treeselect
+	// ⚠️ inputnumber, inputotp, password, slider y toggleswitch mantienen --i-motion-duration-fast ( 150ms )
+
+	--int-control-motion-duration: var(--i-motion-duration-base);        // 300ms
+	--int-control-motion-easing: var(--i-motion-ease-in-out);
+
+	// --- estado: hover / foco ---
+
+	--int-control-hover-border-color: var(--i-border-hover);             // primary-400 · inputtext, inputnumber, select, multiselect, treeselect
+	--int-control-focus-border-color: var(--i-color-primary-900);        // inputtext, inputnumber, select, treeselect, listbox
+
+	// --- estado: relleno ( variant="filled" ) ---
+
+	--int-control-filled-background: var(--i-color-secondary-100);       // inputotp, multiselect, password
+
+	// --- estado: válido ( success ) ---
+
+	--int-control-valid-border-color: var(--i-border-success);           // success-800 · inputtext, inputnumber
+	--int-control-valid-color: var(--i-text-color-success);              // success-800 · inputtext, inputnumber, multiselect
+
+	// --- estado: inválido ---
+
+	--int-control-invalid-border-color: var(--i-border-error);           // error-700 · inputtext, inputnumber, select, treeselect, listbox
+	--int-control-invalid-color: var(--i-text-color-error);              // error-700 · inputtext, inputnumber, multiselect, treeselect
+	--int-control-invalid-background: var(--i-color-error-50);           // checkbox, radiobutton
+
+	// --- estado: deshabilitado ---
+
+	--int-control-disabled-background: var(--i-background-disabled);     // secondary-200 · inputtext, inputnumber, select, multiselect, treeselect
+	--int-control-disabled-color: var(--i-text-color-disabled);          // secondary-400 · inputtext, inputnumber, select, multiselect, treeselect
+	--int-control-disabled-icon-color: var(--i-text-color-disabled);     // secondary-400 · checkbox, multiselect
+
+	// --- estado: marcado ( caja del checkbox, círculo del radiobutton ) ---
+
+	--int-control-checked-background: var(--i-color-primary-700);        // checkbox, radiobutton
+	--int-control-checked-color: var(--i-color-primary-50);              // check / punto · checkbox, radiobutton
+
+	// --- skeleton ( marcador mientras carga ) ---
+
+	--int-control-skeleton-background: var(--i-background-disabled);     // secondary-200 · inputtext, inputnumber, select, listbox, datepicker, checkbox, radiobutton
+	                                                                     // ⚠️ inputotp, multiselect, password, search, searchdropdown mantienen secondary-100
+	--int-control-skeleton-height: var(--int-control-height);            // 32px · inputtext, inputnumber, select, datepicker
+	--int-control-skeleton-border-radius: var(--int-control-border-radius); // 8px · inputtext, inputnumber, select, listbox, datepicker
+
+}
+
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * ELEMENTOS  ·  las partes alrededor y dentro del campo
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+:root { --NOTE-CONTROL-ELEMENTS: 'Custom Control Elements Tokens';
+
+	// --- placeholder ---
+
+	--int-control-placeholder-color: var(--i-text-color-disabled);       // secondary-400 · inputtext, select, multiselect, treeselect
+
+	// --- icono ( flecha, limpiar, búsqueda, +/- ) ---
+
+	--int-control-icon-color: var(--i-icon-color-default);               // primary-900 · select, multiselect, treeselect, listbox, datepicker, inputnumber, search, picklist
+	--int-control-hover-icon-color: var(--i-color-primary-400);          // flecha en hover · select, multiselect, treeselect ( Figma muestra primary-600 ⚠️ )
+	--int-control-icon-size: var(--i-icon-size-sm);                      // 16px · select, multiselect, treeselect, datepicker, password, search
+
+	// --- desplegable ( caja de la flecha al final del campo ) ---
+	// usado por: multiselect, treeselect
+
+	--int-control-dropdown-width: var(--i-sizing-lg);                    // 32px
+	--int-control-dropdown-motion-duration: var(--i-motion-duration-base); // giro de la flecha al abrir
+	--int-control-dropdown-motion-easing: var(--i-motion-ease-equal);
+
+	// --- overlay ( el panel que se abre debajo del campo ) ---
+
+	--int-control-overlay-background: var(--i-color-secondary-50);       // select, multiselect, treeselect, datepicker, searchdropdown
+	--int-control-overlay-color: var(--i-text-color-default);            // primary-900 · select, password
+	--int-control-overlay-font-family: var(--i-text-body-family);        // select, datepicker
+	--int-control-overlay-font-size: var(--i-typography-font-size-md);   // 14px · select, datepicker
+	--int-control-overlay-border-color: var(--i-border-default);         // secondary-200 · select, password ( multiselect: transparent ⚠️ )
+	--int-control-overlay-border-radius: var(--i-border-radius-lg);      // 8px · select, multiselect, treeselect
+	--int-control-overlay-offset: var(--i-spacing-gap-xs);               // 4px entre el campo y el panel · multiselect, treeselect, password, searchdropdown
+
+	// Figma shadow.300 · select, multiselect, treeselect
+	// ⚠️ datepicker y searchdropdown mantienen --i-shadow-depth-3, password mantiene --i-shadow-depth-2
+	--int-control-overlay-shadow:
+		var(--i-shadow-x-0) var(--i-shadow-y-150) var(--i-shadow-y-200) var(--i-shadow-spread-40) var(--i-shadow-color-200),
+		var(--i-shadow-x-0) var(--i-shadow-y-100) var(--i-shadow-y-100) var(--i-shadow-spread-20) var(--i-shadow-color-100);
+
+	// animación al abrir / cerrar · multiselect, password, searchdropdown ( los easing también treeselect )
+	--int-control-overlay-enter-duration: var(--i-motion-duration-fast); // 150ms
+	--int-control-overlay-enter-easing: var(--i-motion-ease-out);
+	--int-control-overlay-leave-duration: var(--i-motion-duration-fast); // 150ms
+	--int-control-overlay-leave-easing: var(--i-motion-ease-equal);
+
+	// --- buscador ( campo de búsqueda dentro del overlay ) ---
+
+	--int-control-filter-border-color: var(--i-border-default);          // secondary-200 · inputtext [filter] → dentro de select ( listbox ), multiselect, treeselect
+	--int-control-filter-padding-x: var(--i-spacing-container-md);       // 8px · listbox, multiselect, treeselect
+	--int-control-filter-icon-size: var(--i-sizing-2xs);                 // 12px · listbox, multiselect, treeselect
+
+	// --- lista / opción ( filas del overlay ) ---
+	// usado por: listbox, multiselect ( salvo que se indique )
+
+	--int-control-list-padding: var(--i-spacing-container-xs);           // 4px
+	--int-control-option-gap: var(--i-spacing-gap-sm);                   // 8px entre checkbox / icono y texto
+	--int-control-option-padding-y: var(--i-spacing-container-sm);       // 6px
+	--int-control-option-padding-x: var(--i-spacing-container-md);       // 8px
+	--int-control-option-hover-background: var(--i-color-secondary-100); // hover / foco con teclado · también datepicker
+	--int-control-option-selected-background: var(--i-color-primary-700); // listbox, datepicker
+	--int-control-option-selected-color: var(--i-color-primary-50);      // listbox, datepicker
+	--int-control-option-disabled-color: var(--i-text-color-disabled);   // secondary-400
+	--int-control-option-group-font-size: var(--i-typography-font-size-sm); // 12px · multiselect, searchdropdown
+	--int-control-option-group-font-weight: var(--i-typography-font-weight-bold); // multiselect, searchdropdown
+
+	// --- check ( caja del checkbox, círculo del radiobutton ) ---
+	// usado por: checkbox, radiobutton
+
+	--int-control-check-size: var(--i-sizing-xs);                        // 16px
+	--int-control-check-sm-size: var(--i-sizing-2xs);                    // 12px · size="small"
+	--int-control-check-lg-size: var(--i-sizing-sm);                     // 20px · size="large"
+	--int-control-check-border-color: var(--i-border-default);           // secondary-200
+	--int-control-check-motion: var(--i-motion-base);                    // 150ms ease-in-out
+
+	// --- perilla ( de toggleswitch y slider ) ---
+
+	--int-control-handle-size: var(--i-sizing-sm);                       // 20px · slider, toggleswitch
+
+	// --- limpiar ( la ✕ que borra el valor, showClear ) ---
+
+	--int-control-clear-size: var(--i-icon-size-xs);                     // 12px · select, multiselect, treeselect, datepicker
+	--int-control-clear-color: var(--int-control-icon-color);            // multiselect, treeselect ( select y datepicker llegan al mismo valor por su color de icono )
+
+}
+
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * RESERVADOS  ·  vienen del borrador del Style Guide, ningún componente los lee todavía
+   Se mantienen para que los nombres sigan alineados con --i-control-* ; un token sube a su grupo
+   cuando un componente empieza a usarlo.
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+:root { --NOTE-CONTROL-RESERVED: 'Custom Control Reserved Tokens';
+
+	// --- atajos ---
+
+	--int-control-gap: 6px;                                              // borrador SG: sin token
+	--int-control-padding: var(--int-control-padding-y) var(--int-control-padding-x); // 6px 8px
+	--int-control-border: var(--int-control-border-width) solid var(--int-control-border-color);
+	--int-control-motion: var(--int-control-motion-duration) var(--int-control-motion-easing);
+
+	// --- orden de las partes dentro del campo ( texto · limpiar · divisor · addon ) ---
+
+	--int-control-text-order: 1;
+	--int-control-clear-order: 2;
+	--int-control-divider-order: 3;
+	--int-control-addon-order: 4;
+
+	// --- divisor ( línea entre el valor y un addon ) ---
+
+	--int-control-divider-height: var(--i-sizing-xs);
+	--int-control-divider-border: 1px solid var(--i-color-primary-base);
+
+	// --- addon ( decorativo o funcional, al final del campo ) ---
+
+	--int-control-addon-width: auto;
+	--int-control-addon-padding: 0 var(--i-spacing-container-md) 0 6px;
+
+	// --- aún sin definir en el borrador ---
+	// --int-control-font-weight · --int-control-active-* · --int-control-indeterminate-* ·
+	// --int-control-read-only-* · --int-control-counter-* ( textarea )
+
+}

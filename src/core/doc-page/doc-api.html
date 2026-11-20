@@ -232,10 +232,12 @@
     >
       <h2 class="doc-api-title" id="doc-api-tokens">CSS tokens</h2>
       <p class="doc-api-hint">
-        Declarados en el <code>:root</code> de <code>styles/_{{ componentId() }}.scss</code>, cada
-        uno apunta a un token <code>--i-*</code> del Style Guide. Sobrescribir uno cambia el estilo
-        de todos los <code>{{ tag }}</code
-        >.
+        Declarados en el <code>:root</code> de <code>styles/_{{ componentId() }}.scss</code>. Cada
+        uno apunta a un token común de este repo (<code>--int-control-*</code>, en
+        <code>src/components/_tokens_/</code>, <span class="doc-api-origin doc-is-common">verde</span>)
+        o a un token <code>--i-*</code> del Style Guide (<span class="doc-api-origin doc-is-sg">azul</span>);
+        el chip dice el archivo y su tooltip, la ruta. Sobrescribir uno cambia el estilo de todos los
+        <code>{{ tag }}</code>; cambiar un token común cambia todos los componentes que lo usan.
       </p>
       <div class="doc-api-wrap">
         <table class="doc-api-table">
@@ -264,13 +266,66 @@
                     }
                     <code class="doc-api-type">{{ token.value }}</code>
                   </td>
-                  <td class="doc-api-source">{{ token.source ?? '—' }}</td>
+                  <td class="doc-api-source">
+                    @for (part of token.parts; track $index) {
+                      <span class="doc-api-source-part">
+                        @switch (part.kind) {
+                          @case ('label') {
+                            <span
+                              class="doc-api-source-label"
+                              tabindex="0"
+                              aria-describedby="doc-api-tip"
+                              (mouseenter)="showTip($event, part.tip)"
+                              (focus)="showTip($event, part.tip)"
+                              (mouseleave)="hideTip()"
+                              (blur)="hideTip()"
+                              >{{ part.label }}:</span
+                            >
+                          }
+                          @case ('text') {}
+                          @default {
+                            <span
+                              class="doc-api-origin"
+                              [class]="'doc-is-' + part.kind"
+                              tabindex="0"
+                              aria-describedby="doc-api-tip"
+                              (mouseenter)="showTip($event, part.tip)"
+                              (focus)="showTip($event, part.tip)"
+                              (mouseleave)="hideTip()"
+                              (blur)="hideTip()"
+                              >{{ part.label }}</span
+                            >
+                          }
+                        }
+                        {{ part.text }}
+                      </span>
+                    } @empty {
+                      —
+                    }
+                  </td>
                 </tr>
               }
             </tbody>
           }
         </table>
       </div>
+      @if (tip(); as tip) {
+        <div
+          id="doc-api-tip"
+          role="tooltip"
+          class="doc-api-tip"
+          [style.top.px]="tip.top"
+          [style.left.px]="tip.left"
+        >
+          <strong class="doc-api-tip-heading">{{ tip.heading }}</strong>
+          @if (tip.path) {
+            <span class="doc-api-tip-row"><span class="doc-api-tip-key">Ruta</span><code>{{ tip.path }}</code></span>
+          }
+          @if (tip.token) {
+            <span class="doc-api-tip-row"><span class="doc-api-tip-key">Token</span><code>{{ tip.token }}</code></span>
+          }
+        </div>
+      }
     </section>
   }
 }

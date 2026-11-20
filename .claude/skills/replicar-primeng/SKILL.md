@@ -629,7 +629,7 @@ Reglas:
       arquitectura de tokens: el `--int-*` es el punto de ajuste del componente y el `--i-*` la fuente.
     - **Todos** los tokens del componente van en este `:root` (también los de tamaños, severidades,
       estados y skeleton): es lo único que lista la pestaña API. Campos y controles de formulario
-      (input, select, listbox, datepicker…) consumen `--i-control-*` (`--i-control-sm-*` / `--i-control-lg-*`).
+      (input, select, listbox, datepicker…) consumen los comunes `--int-control-*` de `src/components/_tokens_/_tokens.control.scss` (`--int-control-sm-*` / `--int-control-lg-*`), nunca `--i-control-*` del Style Guide.
   - **BLOCK / ELEMENTS**: las reglas de `@primeuix/styles` traducidas a BEM (`&__label`), usando solo
     `var(--int-<id>-…)`, **nunca `var(--i-*)`**. Mantener propiedades lógicas (`padding-inline`, `margin-inline-start`) como PrimeNG.
   - **Sin mixins ni SCSS compartido** (`@use '…/_shared_/…'` da error en `check:component`): el borde de
@@ -785,7 +785,7 @@ Todo lo que PrimeNG permite con teclado se permite igual; detalle en
 - **Foco**: vuelve al trigger al cerrar un overlay; modales con `cdkTrapFocus`, foco inicial como
   PrimeNG y restaurado al cerrar; `Escape` cierra donde PrimeNG lo hace; la opción activa se mantiene
   visible (`scrollIntoView({ block: 'nearest' })`).
-- **Foco visible**: `:focus-visible` con `--i-control-outline-*`; nunca `outline: none` sin reemplazo.
+- **Foco visible**: `:focus-visible` con `--int-control-outline-*` (`_tokens_/`); nunca `outline: none` sin reemplazo.
 - **ARIA ligada al teclado** (`aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`,
   `aria-live`…) e inputs `ariaLabel`/`ariaLabelledBy` con los mismos nombres que PrimeNG.
 - Búsqueda por tecleo (*typeahead*) si PrimeNG la tiene, con el mismo intervalo.

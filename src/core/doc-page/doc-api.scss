@@ -211,4 +211,101 @@
     background: var(--doc-accent-container);
     color: var(--doc-on-accent-container);
   }
+
+  // Token that reads a common token of src/components/_tokens_/ (--int-control-* …).
+  &.doc-is-common {
+    background: var(--doc-success-container);
+    color: var(--doc-on-success-container);
+  }
+
+  // Token that reads a --i-* of the Style Guide.
+  &.doc-is-sg {
+    background: var(--doc-primary-container);
+    color: var(--doc-on-primary-container);
+  }
+}
+
+// Origin column: one piece per `label: text` of the comment, wrapping between pieces, not inside a chip.
+.doc-api-source-part {
+  display: inline-block;
+  margin: 2px 12px 2px 0;
+
+  .doc-api-origin {
+    margin: 0 4px 0 0;
+    cursor: help;
+  }
+}
+
+.doc-api-source-label {
+  font-weight: 700;
+  cursor: help;
+}
+
+.doc-api-source-label,
+.doc-api-source-part .doc-api-origin {
+  &:focus-visible {
+    outline: 2px solid var(--doc-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Origin tooltip: fixed to the viewport (the table scrolls and would clip it), same look as the
+   Style Guide button tooltip. */
+.doc-api-tip {
+  position: fixed;
+  z-index: 40;
+  display: grid;
+  gap: 6px;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 10px 12px;
+  border-radius: var(--doc-radius-sm);
+  background: var(--doc-code-bg);
+  color: var(--doc-code-ink);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+  font-family: var(--doc-font-sans);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  pointer-events: none;
+  animation: doc-api-tip-in 0.15s var(--doc-ease-emphasized);
+
+  code {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 0.12);
+    font-family: var(--doc-font-mono);
+    font-size: 0.6875rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+.doc-api-tip-heading {
+  font-weight: 600;
+}
+
+.doc-api-tip-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.doc-api-tip-key {
+  opacity: 0.65;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@keyframes doc-api-tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-api-tip {
+    animation: none;
+  }
 }

@@ -12,8 +12,8 @@
   --int-search-disabled-color: var(--i-text-color-disabled); // knowledgeBase: .prInputtext disabled color · Figma: #9ca3ba (input/color/disabled/text)
 
   // --- icon (knowledgeBase .prIconfield) ---
-  --int-search-icon-size: var(--i-icon-size-sm); // knowledgeBase: .prIconfield --i-icon-size-sm · Figma: 16px (Icon resizer)
-  --int-search-icon-color: var(--i-control-icon-color); // SG: --i-control-icon-color (tokens.control.draft) · SG: .ptSearch__icon --i-color-primary-900 · knowledgeBase: search-default, no hover effect · Figma: #0A1733 (input/color/icon, every state)
+  --int-search-icon-size: var(--int-control-icon-size); // _tokens_: --int-control-icon-size · knowledgeBase: .prIconfield --i-icon-size-sm · Figma: 16px (Icon resizer)
+  --int-search-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color · SG: .ptSearch__icon --i-color-primary-900 · knowledgeBase: search-default, no hover effect · Figma: #0A1733 (input/color/icon, every state)
   --int-search-icon-inset-start: var(--i-iconfield-icon-inset-start); // knowledgeBase: --i-iconfield-icon-inset-start 6px
   --int-search-icon-inset-end: var(--i-iconfield-icon-inset-end); // knowledgeBase: --i-iconfield-icon-inset-end 8px · Figma: 8px (input/padding/x/md)
   --int-search-icon-padding-inline: var(--i-iconfield-padding-inline); // knowledgeBase: --i-iconfield-padding-inline

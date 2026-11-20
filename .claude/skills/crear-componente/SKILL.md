@@ -478,7 +478,7 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
   documentación (`src/styles.scss`, `src/app`, `src/core`, `src/page`). Los tokens visuales de los
   componentes vendrán del design system.
 - Cuando el maquetador escriba el CSS: cada token del componente se declara en este `:root`
-  (`--int-<id>-*: var(--i-*)`, con comentario de origen; controles de formulario sobre `--i-control-*`) y
+  (`--int-<id>-*: var(--i-*)`, con comentario de origen; controles de formulario sobre los comunes `--int-control-*` de `src/components/_tokens_/`) y
   las reglas leen solo `var(--int-<id>-*)`. Sin mixins ni `@use` de `_shared_` (es solo TypeScript). Ver
   "Estilos y tokens" en `AGENTS.md`.
 

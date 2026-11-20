@@ -35,7 +35,7 @@
   --int-inputotp-input-lg-line-height: var(--i-typography-lineHeight-xl); // SG: 28px · Aura: normal
 
   // --- filled variant ---
-  --int-inputotp-filled-background: var(--i-color-secondary-100); // SG: --i-color-secondary-100 · Aura: {form.field.filled.background} {surface.50}
+  --int-inputotp-filled-background: var(--int-control-filled-background); // _tokens_: --int-control-filled-background · SG: --i-color-secondary-100 · Aura: {form.field.filled.background} {surface.50}
 
   // --- underlined variant (int-* extension) ---
   --int-inputotp-underlined-border-width: var(--i-border-width-md); // SG: --i-border-width-md (2px) · Aura: — (PrimeNG Template demo: bottom line only)
