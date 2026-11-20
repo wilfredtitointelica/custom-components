@@ -1,8 +1,12 @@
 import {
   booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, DestroyRef, Directive, ElementRef, inject, input,
-  linkedSignal, numberAttribute, output, signal, TemplateRef, ViewEncapsulation,
+  linkedSignal, numberAttribute, OnInit, output, signal, TemplateRef, ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+
+import {
+  IntPaginator, IntPaginatorAppendTo, IntPaginatorPageChangeEvent, IntPaginatorRowsPerPageOption, IntPaginatorTemplateContext,
+} from '../../../paginator/version-1/base/paginator';
 
 /** Size of the table: small is the compact table of the knowledge base (PrimeNG Table size). */
 export type IntTableSize = 'small';
@@ -41,6 +45,21 @@ export interface IntTableFilterMetadata {
 export interface IntTableFilterEvent {
   filters: { global?: IntTableFilterMetadata };
   filteredValue: unknown[];
+}
+
+/** Payload of onPage, same shape as PrimeNG TablePageEvent. */
+export interface IntTablePageEvent {
+  first: number;
+  rows: number;
+}
+
+/** Payload of onLazyLoad, same shape as PrimeNG TableLazyLoadEvent (single sort and global filter). */
+export interface IntTableLazyLoadEvent {
+  first: number;
+  rows: number;
+  sortField: string | null;
+  sortOrder: number;
+  globalFilter: string | null;
 }
 
 /** Context of the #header and #emptymessage templates. */
@@ -123,21 +142,22 @@ function reorderIndex(element: HTMLElement): number {
  * DataTable displays data in tabular format. Scope: what the knowledge base documents or the projects use (caption,
  * empty message, global filter of the caption search, single sort, compact size, scroll, striped rows and the Total frozen row) plus the column reorder of
  * Figma. Left out because no project uses them: dynamic columns, gridlines, row selection and expansion, column resize,
- * loading, footer and summary. The paginator goes below the table (int-paginator), the checkbox column is cell content
- * and loading data is shown with a skeleton of the table, as the knowledge base does.
+ * loading, footer and summary. Pagination (int-paginator, same API as int-treetable) pages the rows in the browser or,
+ * with lazy, asks the consumer for each page; the checkbox column is cell content and loading data is shown with a
+ * skeleton of the table, as the knowledge base does.
  */
 @Component({
   selector: 'int-table',
   templateUrl: './table.html',
   styleUrl: '../styles/_index.scss',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, IntPaginator],
   // Global styles scoped by the int- BEM block, so .sk-* skeletons and modifiers work from any view.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Same root as PrimeNG: p-table puts its root classes on the host element.
   host: { '[class]': 'classes()', '[style.--int-table-sticky-top]': 'stickyTop()' },
 })
-export class IntTable {
+export class IntTable implements OnInit {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
   static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
@@ -212,8 +232,79 @@ export class IntTable {
   /** Idioma con el que se pasa a minúsculas el texto al comparar (por ejemplo `tr`). */
   readonly filterLocale = input<string>();
 
+  /** Activa la paginación de las filas. */
+  readonly paginator = input(false, { transform: booleanAttribute });
+  /** Cantidad de filas por página. */
+  readonly rows = input(0, { transform: numberAttribute });
+  /** Índice de la primera fila que se muestra. */
+  readonly first = input(0, { transform: numberAttribute });
+  /** Total de filas; con `lazy` lo indica quien usa la tabla, sin `lazy` se calcula de los datos. */
+  readonly totalRecords = input(0, { transform: numberAttribute });
+  /** Los datos se cargan fuera del componente: la tabla no pagina, ordena ni filtra y emite `onLazyLoad`. */
+  readonly lazy = input(false, { transform: booleanAttribute });
+  /**
+   * Emite `onLazyLoad` al iniciar cuando `lazy` está activo.
+   * @defaultValue true
+   */
+  readonly lazyLoadOnInit = input(true, { transform: booleanAttribute });
+  /**
+   * Vuelve a la primera página al ordenar.
+   * @defaultValue true
+   */
+  readonly resetPageOnSort = input(true, { transform: booleanAttribute });
+  /**
+   * Cantidad de enlaces de página del paginador.
+   * @defaultValue 5
+   */
+  readonly pageLinks = input(5, { transform: numberAttribute });
+  /** Opciones del selector de filas por página del paginador. */
+  readonly rowsPerPageOptions = input<readonly IntPaginatorRowsPerPageOption[]>();
+  /**
+   * Muestra el paginador aunque haya una sola página.
+   * @defaultValue true
+   */
+  readonly alwaysShowPaginator = input(true, { transform: booleanAttribute });
+  /**
+   * Posición del paginador: `top`, `bottom` o `both`.
+   * @defaultValue 'bottom'
+   */
+  readonly paginatorPosition = input<'top' | 'bottom' | 'both'>('bottom');
+  /** Clase de estilo del paginador. */
+  readonly paginatorStyleClass = input<string>();
+  /**
+   * Dónde se inserta la lista del selector del paginador: `self`, `body` o un elemento.
+   * @defaultValue 'self'
+   */
+  readonly paginatorDropdownAppendTo = input<IntPaginatorAppendTo>('self');
+  /** Texto del reporte de página: `{currentPage}`, `{totalPages}`, `{rows}`, `{first}`, `{last}` y `{totalRecords}`. */
+  readonly currentPageReportTemplate = input('{currentPage} of {totalPages}');
+  /** Muestra el reporte de página actual. */
+  readonly showCurrentPageReport = input(false, { transform: booleanAttribute });
+  /** Muestra un selector para saltar a cualquier página. */
+  readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
+  /**
+   * Muestra los botones de primera y última página.
+   * @defaultValue true
+   */
+  readonly showFirstLastIcon = input(true, { transform: booleanAttribute });
+  /**
+   * Muestra los enlaces de página.
+   * @defaultValue true
+   */
+  readonly showPageLinks = input(true, { transform: booleanAttribute });
+  /** Locale con el que el paginador formatea los números. */
+  readonly paginatorLocale = input<string>();
+
   /** Se emite al filtrar, con el filtro aplicado y las filas que quedan. */
   readonly onFilter = output<IntTableFilterEvent>();
+  /** Se emite al cambiar de página, con `first` y `rows`. */
+  readonly onPage = output<IntTablePageEvent>();
+  /** Se emite cuando cambia la primera fila (al paginar, ordenar o filtrar); permite `[(first)]`. */
+  readonly firstChange = output<number>();
+  /** Se emite cuando cambian las filas por página; permite `[(rows)]`. */
+  readonly rowsChange = output<number>();
+  /** Con `lazy`, se emite al iniciar, paginar, ordenar o filtrar, con lo que debe cargar quien usa la tabla. */
+  readonly onLazyLoad = output<IntTableLazyLoadEvent>();
   /** Se emite al ordenar una columna, con el campo y el orden. */
   readonly onSort = output<IntTableSortMeta>();
   /** Con `customSort`, se emite para que quien usa la tabla ordene `data`. */
@@ -233,6 +324,10 @@ export class IntTable {
   protected readonly emptyMessageTemplate = contentChild<TemplateRef<IntTableColumnsContext>>('emptymessage');
   /** Template `sorticon`: reemplaza el ícono de orden; recibe el orden (`0`, `1` o `-1`). */
   readonly sortIconTemplate = contentChild<TemplateRef<IntTableSortIconContext>>('sorticon');
+  /** Template `paginatorleft`: contenido a la izquierda del paginador. */
+  protected readonly paginatorLeftTemplate = contentChild<TemplateRef<IntPaginatorTemplateContext>>('paginatorleft');
+  /** Template `paginatorright`: contenido a la derecha del paginador. */
+  protected readonly paginatorRightTemplate = contentChild<TemplateRef<IntPaginatorTemplateContext>>('paginatorright');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
@@ -240,23 +335,43 @@ export class IntTable {
   readonly activeSortField = linkedSignal(() => this.sortField());
   readonly activeSortOrder = linkedSignal(() => this.sortOrder());
 
+  /** Current page, started by first / rows and changed by the paginator, the sort and the filter. */
+  protected readonly currentFirst = linkedSignal(() => this.first());
+  protected readonly currentRows = linkedSignal(() => this.rows());
+
   /** Rows on screen: a sorted copy of value (PrimeNG sorts value in place). customSort sets it after sortFunction. */
-  protected readonly processedData = linkedSignal(() => this.sortRows([...(this.value() ?? [])]));
+  protected readonly processedData = linkedSignal(() =>
+    this.lazy() ? [...(this.value() ?? [])] : this.sortRows([...(this.value() ?? [])]),
+  );
 
   /** Global filter applied by filterGlobal(), after filterDelay. */
   private readonly globalFilter = signal<IntTableFilterMetadata | null>(null);
   private filterTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /** Rows on screen: the sorted rows that match the global filter. */
+  /** Sorted rows that match the global filter (with lazy, value as it comes: the consumer filters). */
   protected readonly filteredData = computed(() => {
     const filter = this.globalFilter();
     const rows = this.processedData();
-    if (!filter) return rows;
+    if (!filter || this.lazy()) return rows;
     const fields = this.globalFilterFields() ?? this.columnFields();
     return rows.filter((row) =>
       fields.some((field) => matches(filter.matchMode, resolveField(row, field), filter.value, this.filterLocale())),
     );
   });
+
+  /** Rows of the current page: a slice of filteredData, or all of it without paginator or with lazy (value is the page). */
+  protected readonly pageData = computed(() => {
+    const rows = this.filteredData();
+    if (!this.paginator() || this.lazy()) return rows;
+    const first = this.currentFirst();
+    return rows.slice(first, first + this.currentRows());
+  });
+
+  /** Total rows the paginator counts: totalRecords with lazy, the filtered rows otherwise. */
+  protected readonly currentTotalRecords = computed(() => (this.lazy() ? this.totalRecords() : this.filteredData().length));
+
+  /** rowIndex of the first row on screen, as PrimeNG: the index in the whole data, not in the page. */
+  protected readonly rowOffset = computed(() => (this.paginator() ? this.currentFirst() : 0));
 
   /** Columns in their current order: a copy of columns, reordered by dragging the headers. */
   protected readonly orderedColumns = linkedSignal(() => [...(this.columns() ?? [])]);
@@ -288,6 +403,10 @@ export class IntTable {
     inject(DestroyRef).onDestroy(() => clearTimeout(this.filterTimeout));
   }
 
+  ngOnInit(): void {
+    if (this.lazy() && this.lazyLoadOnInit()) this.onLazyLoad.emit(this.lazyLoadMetadata());
+  }
+
   /** Filtra las filas que contienen el texto en alguno de los campos de `globalFilterFields` (o de `columns`). */
   filterGlobal(value: unknown, matchMode: IntTableFilterMatchMode = 'contains'): void {
     clearTimeout(this.filterTimeout);
@@ -295,8 +414,29 @@ export class IntTable {
     this.filterTimeout = setTimeout(() => {
       const filter = text ? { value: text, matchMode } : null;
       this.globalFilter.set(filter);
+      // As PrimeNG _filter(): a new filter goes back to the first page.
+      this.setFirst(0);
+      if (this.lazy()) this.onLazyLoad.emit(this.lazyLoadMetadata());
       this.onFilter.emit({ filters: filter ? { global: filter } : {}, filteredValue: this.filteredData() });
     }, this.filterDelay());
+  }
+
+  /** Called by int-paginator: moves to the page and, with lazy, asks the consumer for its rows. */
+  protected onPageChange(event: IntPaginatorPageChangeEvent): void {
+    this.setFirst(event.first);
+    if (event.rows !== this.currentRows()) {
+      this.currentRows.set(event.rows);
+      this.rowsChange.emit(event.rows);
+    }
+    if (this.lazy()) this.onLazyLoad.emit(this.lazyLoadMetadata());
+    this.onPage.emit({ first: event.first, rows: event.rows });
+  }
+
+  /** Moves the page and emits firstChange, as PrimeNG, so [(first)] follows the resets of sort and filter. */
+  private setFirst(first: number): void {
+    if (first === this.currentFirst()) return;
+    this.currentFirst.set(first);
+    this.firstChange.emit(first);
   }
 
   /** True when the field is the one the table is sorted by. */
@@ -314,7 +454,9 @@ export class IntTable {
     const order = this.activeSortField() === field ? this.activeSortOrder() * -1 : this.defaultSortOrder();
     this.activeSortField.set(field);
     this.activeSortOrder.set(order);
-    if (this.customSort()) {
+    if (this.resetPageOnSort()) this.setFirst(0);
+    if (this.lazy()) this.onLazyLoad.emit(this.lazyLoadMetadata());
+    else if (this.customSort()) {
       const data = [...(this.value() ?? [])];
       this.sortFunction.emit({ data, mode: 'single', field, order });
       this.processedData.set(data);
@@ -332,6 +474,17 @@ export class IntTable {
     return (this.columns() ?? [])
       .map((column) => (column && typeof column === 'object' ? (column as { field?: unknown }).field : undefined))
       .filter((field): field is string => typeof field === 'string');
+  }
+
+  /** State the consumer loads with lazy: page, sort and global filter. */
+  private lazyLoadMetadata(): IntTableLazyLoadEvent {
+    return {
+      first: this.currentFirst(),
+      rows: this.currentRows(),
+      sortField: this.activeSortField() ?? null,
+      sortOrder: this.activeSortOrder(),
+      globalFilter: this.globalFilter()?.value ?? null,
+    };
   }
 
   private sortRows(rows: unknown[]): unknown[] {

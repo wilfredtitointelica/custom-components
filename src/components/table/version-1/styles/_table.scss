@@ -182,6 +182,15 @@
       translate: 0 -100%;
     }
   }
+
+  // --- paginator: always at the end, as the table paginator of the projects (same as int-treetable) ---
+  & &__paginator {
+    justify-content: flex-end;
+    padding-block: var(--int-table-body-padding-y);
+  }
+  &__paginator > .int-paginator__content-start {
+    margin-inline-end: 0;
+  }
 }
 
 /*——————————————————————————————————————————————————————————*\

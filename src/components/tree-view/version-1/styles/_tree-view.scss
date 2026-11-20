@@ -183,8 +183,9 @@
   }
 }
 
-// Figma 2354:2484: hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover).
-// Unchecked: only the border. Checked / indeterminate: light box, dark mark, border as unchecked.
+// Hovering the row puts its checkbox in Hover (the checkbox is inert, so it never gets :hover), with the same look
+// as <int-checkbox>: border when unchecked, darker box when checked / indeterminate. No light (Figma #DDE6F8) hover,
+// aligned with the checkbox component and the Style Guide by decision of the team.
 .int-tree-view__node-content--selectable:hover .int-tree-view__checkbox {
   --int-checkbox-border: var(--int-treeview-checkbox-hover-border-color); // Figma: checkbox Hover border on row hover (2354:2484)
 

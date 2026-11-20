@@ -11,6 +11,10 @@
   </div>
 }
 
+@if (paginator() && paginatorPosition() !== 'bottom') {
+  <ng-container *ngTemplateOutlet="paginatorTemplate; context: { position: 'top' }" />
+}
+
 <!-- Table container (p-datatable-table-container): scrolls when the table is wider or taller than its space -->
 <div class="int-table__table-container" [style.max-height]="containerMaxHeight()">
   <table
@@ -41,21 +45,49 @@
 
     <tbody role="rowgroup" class="int-table__tbody">
       @if (bodyTemplate(); as bodyTemplate) {
-        @for (row of filteredData(); track trackRow($index, row); let rowIndex = $index) {
+        <!-- Rows of the current page; rowIndex counts from the first row of the data, as PrimeNG -->
+        @for (row of pageData(); track trackRow($index, row); let index = $index) {
           <ng-container
             *ngTemplateOutlet="
               bodyTemplate;
-              context: { $implicit: row, rowIndex, columns: orderedColumns(), editing: false, frozen: false }
+              context: { $implicit: row, rowIndex: rowOffset() + index, columns: orderedColumns(), editing: false, frozen: false }
             "
           />
         }
       }
-      @if (!filteredData().length && emptyMessageTemplate(); as emptyMessageTemplate) {
+      @if (!pageData().length && emptyMessageTemplate(); as emptyMessageTemplate) {
         <ng-container *ngTemplateOutlet="emptyMessageTemplate; context: { $implicit: orderedColumns() }" />
       }
     </tbody>
   </table>
 </div>
+
+@if (paginator() && paginatorPosition() !== 'top') {
+  <ng-container *ngTemplateOutlet="paginatorTemplate; context: { position: 'bottom' }" />
+}
+
+<!-- Paginator (p-datatable-paginator-top / -bottom): int-paginator, same inputs as int-treetable -->
+<ng-template #paginatorTemplate let-position="position">
+  <int-paginator
+    [class]="'int-table__paginator int-table__paginator--' + position + ' ' + (paginatorStyleClass() ?? '')"
+    [rows]="currentRows()"
+    [first]="currentFirst()"
+    [totalRecords]="currentTotalRecords()"
+    [pageLinkSize]="pageLinks()"
+    [alwaysShow]="alwaysShowPaginator()"
+    [rowsPerPageOptions]="rowsPerPageOptions()"
+    [templateLeft]="paginatorLeftTemplate()"
+    [templateRight]="paginatorRightTemplate()"
+    [appendTo]="paginatorDropdownAppendTo()"
+    [currentPageReportTemplate]="currentPageReportTemplate()"
+    [showFirstLastIcon]="showFirstLastIcon()"
+    [showCurrentPageReport]="showCurrentPageReport()"
+    [showJumpToPageDropdown]="showJumpToPageDropdown()"
+    [showPageLinks]="showPageLinks()"
+    [locale]="paginatorLocale()"
+    (onPageChange)="onPageChange($event)"
+  />
+</ng-template>
 
 <!-- Column reorder arrows (p-datatable-row-reorder-indicator-up/down): above and below the edge of the drop -->
 @if (reorderIndicator(); as indicator) {
