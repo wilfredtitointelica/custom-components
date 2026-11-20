@@ -48,8 +48,12 @@ $field-defaults: (
   font-size: var(--i-control-font-size),
   line-height: var(--i-control-line-height),
   background: var(--i-control-background),
-  color: var(--i-control-color),
-  placeholder: var(--i-control-placeholder-color),
+  // Entered text = primary-900 (#0A1733) as Figma input/color/pressed/text. Not --i-control-color: the Style Guide
+  // draft still points it to neutral-700 (#4F5470, grey).
+  color: var(--i-text-color-default),
+  // Placeholder = secondary-400 (#9CA3BA), same value as --i-control-placeholder-color but read from the stable token,
+  // not the draft. Invalid/success placeholders stay red/green (knowledgeBase input.md, SG .p-invalid::placeholder).
+  placeholder: var(--i-text-color-disabled),
   border: var(--i-control-border-color),
   border-hover: var(--i-control-hover-border-color),
   border-focus: var(--i-control-focus-border-color),
