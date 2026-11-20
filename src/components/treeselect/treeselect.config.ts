@@ -22,6 +22,8 @@ export default {
     'invalid',
     'label-as-toggle',
     'children-aligned',
+    'append-to-body',
+    'avoid-elements',
   ],
   requires: ['treeview', 'inputtext'],
   uses: ['button'],

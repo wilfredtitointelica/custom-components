@@ -1,9 +1,17 @@
-import { CdkConnectedOverlay, ConnectedPosition, FlexibleConnectedPositionStrategy, OverlayContainer } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  ConnectedPosition,
+  FlexibleConnectedPositionStrategy,
+  OverlayContainer,
+  OverlayRef,
+  ScrollStrategy,
+} from '@angular/cdk/overlay';
 import {
   DOCUMENT,
   ElementRef,
   Injectable,
   Injector,
+  NgZone,
   Provider,
   Signal,
   afterNextRender,
@@ -75,10 +83,17 @@ export class IntOverlayContainer extends OverlayContainer {
     this.zIndex = zIndex;
     this.inline = inline;
     // The component becomes the containing block of the inline container, so it scrolls with any
-    // scrolling ancestor (a static component would leave it attached to the page). Only when static.
-    if (inline && this._document.defaultView?.getComputedStyle(target).position === 'static') {
-      target.style.position = 'relative';
-      this.positioned = target;
+    // scrolling ancestor and a container with `overflow` clips it (a static component would leave it
+    // attached to the page). Only when static. A host without a box (`display: contents`, int-popover)
+    // cannot be one: its first ancestor with a box is used instead.
+    const view = this._document.defaultView;
+    if (inline && view) {
+      let box: HTMLElement | null = target;
+      while (box && view.getComputedStyle(box).display === 'contents') box = box.parentElement;
+      if (box && view.getComputedStyle(box).position === 'static') {
+        box.style.position = 'relative';
+        this.positioned = box;
+      }
     }
     const el = this._containerElement;
     if (!el) return;
@@ -266,6 +281,63 @@ export function connectOverlayContainer(config: {
   });
 }
 
+/**
+ * Keeps an open panel attached to its trigger while anything scrolls (the panel stays open; PrimeNG's
+ * p-overlay closes it instead). Needed by appendTo="body" / an element, where the panel is `position: fixed`
+ * and does not move with the page by itself.
+ *
+ * The CDK's RepositionScrollStrategy only hears the window scroll (and cdkScrollable containers), so a page
+ * that scrolls inside a div (as this documentation) left the panel behind; it also waits 20 ms (auditTime).
+ * This one listens to every scroll in the capture phase and repositions in the same event. Scrolling the
+ * panel's own list does not reposition. Viewport resizes are handled by the CDK position strategy.
+ */
+export class IntRepositionScrollStrategy implements ScrollStrategy {
+  private overlayRef?: OverlayRef;
+  private cleanup?: () => void;
+
+  constructor(
+    private readonly document: Document,
+    private readonly zone: NgZone,
+  ) {}
+
+  attach(overlayRef: OverlayRef): void {
+    this.overlayRef = overlayRef;
+  }
+
+  enable(): void {
+    const view = this.document.defaultView;
+    if (this.cleanup || !view) return;
+    const onScroll = (event: Event): void => {
+      const ref = this.overlayRef;
+      if (!ref?.hasAttached()) return;
+      if (event.target instanceof Node && ref.overlayElement.contains(event.target)) return;
+      ref.updatePosition();
+    };
+    const options: AddEventListenerOptions = { capture: true, passive: true };
+    // Outside Angular: a scroll must not run change detection.
+    this.zone.runOutsideAngular(() => view.addEventListener('scroll', onScroll, options));
+    this.cleanup = () => view.removeEventListener('scroll', onScroll, options);
+  }
+
+  disable(): void {
+    this.cleanup?.();
+    this.cleanup = undefined;
+  }
+
+  detach(): void {
+    this.disable();
+    this.overlayRef = undefined;
+  }
+}
+
+/**
+ * Scroll strategy of the int-* overlays (`[cdkConnectedOverlayScrollStrategy]` or the `scrollStrategy` of
+ * createOverlayRef): one instance per overlay.
+ */
+export function intRepositionScrollStrategy(injector: Injector): IntRepositionScrollStrategy {
+  return new IntRepositionScrollStrategy(injector.get(DOCUMENT), injector.get(NgZone));
+}
+
 export type IntPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 const PLACEMENTS: Record<IntPlacement, ConnectedPosition> = {
@@ -297,10 +369,21 @@ export function placementPositions(placement: IntPlacement): ConnectedPosition[]
 export function isOriginHidden(origin: HTMLElement, panel: HTMLElement | null | undefined, document: Document): boolean {
   const rect = origin.getBoundingClientRect();
   const { width, height } = viewportSize(document);
-  const left = Math.max(rect.left, 0);
-  const right = Math.min(rect.right, width);
-  const top = Math.max(rect.top, 0);
-  const bottom = Math.min(rect.bottom, height);
+  let left = Math.max(rect.left, 0);
+  let right = Math.min(rect.right, width);
+  let top = Math.max(rect.top, 0);
+  let bottom = Math.min(rect.bottom, height);
+  // Visible part: also cut by every ancestor that clips (a scroll container), not only by the viewport.
+  const view = document.defaultView;
+  for (let el = origin.parentElement; view && el && el !== document.body; el = el.parentElement) {
+    const style = view.getComputedStyle(el);
+    if (style.display === 'contents' || (style.overflowX === 'visible' && style.overflowY === 'visible')) continue;
+    const box = el.getBoundingClientRect();
+    left = Math.max(left, box.left);
+    right = Math.min(right, box.right);
+    top = Math.max(top, box.top);
+    bottom = Math.min(bottom, box.bottom);
+  }
   if (right <= left || bottom <= top) return true;
   const hit = document.elementFromPoint((left + right) / 2, (top + bottom) / 2);
   if (!hit) return false;

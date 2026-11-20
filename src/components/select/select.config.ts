@@ -20,7 +20,7 @@ export default {
     'sizes-fluid',
     'placement',
     'text',
-    'append-to',
+    'append-to-body',
   ],
   requires: ['listbox'],
   uses: ['button'],

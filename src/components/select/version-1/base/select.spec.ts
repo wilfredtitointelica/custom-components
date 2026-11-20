@@ -127,6 +127,18 @@ class ScrollHost {}
 @Component({
   imports: [IntSelect],
   template: `
+    <div class="scroller" [style]="{ height: '200px', overflow: 'auto' }">
+      <div [style]="{ height: '800px', paddingTop: '60px' }">
+        <int-select appendTo="body" [options]="['A', 'B', 'C']" />
+      </div>
+    </div>
+  `,
+})
+class BodyScrollHost {}
+
+@Component({
+  imports: [IntSelect],
+  template: `
     <div [style]="{ position: 'fixed', left: '20px', bottom: '8px' }">
       <int-select [options]="options" />
     </div>
@@ -213,6 +225,26 @@ describe('IntSelect appendTo', () => {
     await settle();
     await settle();
     expect(Math.round(gap())).toBe(Math.round(before));
+  });
+
+  it('repositions an appendTo="body" panel when an inner container scrolls, without closing it', async () => {
+    const fixture = TestBed.createComponent(BodyScrollHost);
+    fixture.detectChanges();
+    const host = openSelect(fixture, 'int-select');
+    await fixture.whenStable();
+    await settle();
+    const trigger = host.querySelector<HTMLElement>('[role="combobox"]')!;
+    const panel = document.querySelector<HTMLElement>('body > .int-overlay-container .int-select__panel')!;
+    expect(panel).not.toBeNull();
+    const gap = () => Math.round(panel.getBoundingClientRect().top - trigger.getBoundingClientRect().bottom);
+    const before = gap();
+
+    // The page scrolls inside a div (not the window), as the documentation page: the CDK alone does not see it.
+    const scroller: HTMLElement = fixture.nativeElement.querySelector('.scroller');
+    scroller.scrollTop = 20;
+    scroller.dispatchEvent(new Event('scroll'));
+    expect(gap()).toBe(before);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
   });
 
   it('mounts the panel in a given element and leaves the z-index to CSS without autoZIndex', () => {

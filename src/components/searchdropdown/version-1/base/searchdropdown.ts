@@ -13,6 +13,7 @@ import {
   inject,
   input,
   linkedSignal,
+  NgZone,
   numberAttribute,
   output,
   signal,
@@ -23,7 +24,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { IntAvoidElements, placeAvoiding } from '../../../_shared_';
+import { IntAvoidElements, closeWhenOriginHidden, placeAvoiding } from '../../../_shared_';
 import { IntSearch, IntSearchEvent, IntSearchSize } from '../../../search/version-1/base/search';
 
 /** Aura: zIndex.overlay, the level of an overlay moved out of the component (no Style Guide token). */
@@ -296,6 +297,7 @@ export class IntSearchdropdown implements ControlValueAccessor {
   protected readonly itemSkeletonTemplate = contentChild<TemplateRef<IntSearchdropdownItemSkeletonContext>>('itemSkeleton');
 
   private readonly document = inject(DOCUMENT);
+  private readonly zone = inject(NgZone);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly searchRef = viewChild.required(IntSearch);
   private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
@@ -415,9 +417,10 @@ export class IntSearchdropdown implements ControlValueAccessor {
       this.alignOverlay();
     });
 
-    // Only while the panel is open: outside click closes it, and so does a scroll of the page or of a container
-    // (PrimeNG's ConnectedOverlayScrollHandler), so the panel never floats over a sticky header or another
-    // area; the scroll of its own results does not count. Resize keeps an appended panel aligned.
+    // Only while the panel is open: outside click closes it. A scroll of the page or of a container keeps it
+    // open and attached to the field (int-* extension: PrimeNG's ConnectedOverlayScrollHandler closes it, as
+    // the other int-* overlays it is repositioned instead); the scroll of its own results does not count.
+    // Resize keeps it aligned too. Out of the zone: a scroll must not run change detection.
     effect((onCleanup) => {
       if (!this.panelVisible()) return;
       const view = this.document.defaultView;
@@ -425,17 +428,29 @@ export class IntSearchdropdown implements ControlValueAccessor {
       const outsideScroll = (event: Event) => {
         const panel = this.panelRef()?.nativeElement;
         if (panel && event.target instanceof Node && panel.contains(event.target)) return;
-        this.hide();
+        this.alignOverlay();
       };
       const realign = () => this.alignOverlay();
+      const options: AddEventListenerOptions = { capture: true, passive: true };
       this.document.addEventListener('click', outsideClick);
-      view?.addEventListener('scroll', outsideScroll, true);
-      view?.addEventListener('resize', realign);
+      this.zone.runOutsideAngular(() => {
+        view?.addEventListener('scroll', outsideScroll, options);
+        view?.addEventListener('resize', realign);
+      });
       onCleanup(() => {
         this.document.removeEventListener('click', outsideClick);
-        view?.removeEventListener('scroll', outsideScroll, true);
+        view?.removeEventListener('scroll', outsideScroll, options);
         view?.removeEventListener('resize', realign);
       });
+    });
+
+    // Closes when a scroll leaves the field out of sight (under a fixed header, out of the viewport), so the
+    // panel never floats over another area; same as the other int-* overlays.
+    closeWhenOriginHidden({
+      open: this.panelVisible,
+      origin: () => this.host.nativeElement,
+      panel: () => this.panelRef()?.nativeElement,
+      close: () => this.hide(),
     });
 
     inject(DestroyRef).onDestroy(() => clearTimeout(this.searchTimeout));
