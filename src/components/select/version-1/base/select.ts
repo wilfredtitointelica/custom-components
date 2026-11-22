@@ -55,7 +55,7 @@ export interface IntSelectChangeEvent {
  * <int-select> · version 1. Single-value dropdown; API mirrors PrimeNG v20 Select
  * (ported from @intelica/ui `int-select`). The option list is an embedded IntListbox in a CDK
  * overlay, so filtering, templates and keyboard behaviour are shared with List-box.
- * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the panel.
+ * `appendTo` defaults to `self` like PrimeNG: inside a dialog or a container with `overflow` use `appendTo="body"`.
  * int-* extensions: `placement` (open upwards), `baseZIndex` and `variant="text"` (bare "10 ^" trigger whose list
  * leaves out the selected option, as the paginator's rows per page in Figma).
  *

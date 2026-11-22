@@ -1,0 +1,14 @@
+<!--
+  title: Padded
+  description: Con `padded` el encabezado y el contenido se separan 8px de los bordes del panel; la línea divisoria mantiene todo el ancho. Es opcional: por defecto el texto va alineado al borde.
+-->
+<int-accordion padded [(value)]="active">
+  <int-accordion-panel value="fees">
+    <int-accordion-header>Scheme fees</int-accordion-header>
+    <int-accordion-content>Assessment, processing and cross-border fees charged by the networks.</int-accordion-content>
+  </int-accordion-panel>
+  <int-accordion-panel value="interchange">
+    <int-accordion-header>Interchange</int-accordion-header>
+    <int-accordion-content>Interchange rates paid between acquirer and issuer.</int-accordion-content>
+  </int-accordion-panel>
+</int-accordion>

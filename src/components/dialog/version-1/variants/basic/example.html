@@ -1,6 +1,6 @@
 <!--
   title: Basic
-  description: Diálogo con formulario - [(visible)] lo abre y cierra, size="md" fija el ancho (600px) y #footer define las acciones.
+  description: Diálogo con formulario - [(visible)] lo abre y cierra, size="md" fija el ancho (600px) y #footer define las acciones. El select y el datepicker usan `appendTo="body"` para que el diálogo no recorte su panel.
 -->
 <button intButton label="Set alert" icon="icon icon-notification" (click)="visible.set(true)"></button>
 <int-dialog header="Set alert" [(visible)]="visible" size="md">
@@ -11,11 +11,11 @@
     </div>
     <div class="u-display-flex u-flex-column u-gap-xs">
       <label for="dm-alert-brand">Brand</label>
-      <int-select inputId="dm-alert-brand" fluid [options]="brands" optionLabel="name" optionValue="code" [(ngModel)]="brand" placeholder="Select" />
+      <int-select inputId="dm-alert-brand" appendTo="body" fluid [options]="brands" optionLabel="name" optionValue="code" [(ngModel)]="brand" placeholder="Select" />
     </div>
     <div class="u-display-flex u-flex-column u-gap-xs">
       <label for="dm-alert-date">Effective date</label>
-      <int-datepicker inputId="dm-alert-date" fluid [(ngModel)]="date" dateFormat="dd/mm/yy" showIcon />
+      <int-datepicker inputId="dm-alert-date" appendTo="body" fluid [(ngModel)]="date" dateFormat="dd M, yy" placeholder="dd mm, yyyy" showIcon />
     </div>
   </div>
   <ng-template #footer>

@@ -6,7 +6,13 @@
 @if (inline()) {
   <ng-container [ngTemplateOutlet]="panelTpl" />
 } @else {
-  <div class="int-datepicker__input-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+  <div
+    class="int-datepicker__input-wrapper"
+    [class.int-datepicker__input-wrapper--icon]="showIcon()"
+    [class.int-datepicker__input-wrapper--clear]="clearVisible()"
+    cdkOverlayOrigin
+    #origin="cdkOverlayOrigin"
+  >
     <input
       #inputEl
       intInputText
@@ -30,7 +36,7 @@
       (keydown)="onInputKeydown($event)"
       (blur)="!open() && markAsTouched()"
     />
-    @if (showClear() && hasValue() && !isDisabled()) {
+    @if (clearVisible()) {
       <button
         type="button"
         class="int-datepicker__clear"

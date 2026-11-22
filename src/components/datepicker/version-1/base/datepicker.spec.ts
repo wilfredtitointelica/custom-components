@@ -173,6 +173,21 @@ class MonthsHost {
   maxDate = new Date();
 }
 
+describe('IntDatePicker · input icons', () => {
+  it('marks the wrapper with the icons shown, so the ✕ alone sits at the field edge', () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const wrapper: HTMLElement = fixture.nativeElement.querySelector('.int-datepicker__input-wrapper');
+    expect(wrapper.classList).toContain('int-datepicker__input-wrapper--clear');
+    expect(wrapper.classList).not.toContain('int-datepicker__input-wrapper--icon');
+
+    fixture.componentInstance.control.setValue(null);
+    fixture.detectChanges();
+    expect(wrapper.classList).not.toContain('int-datepicker__input-wrapper--clear');
+    expect(fixture.nativeElement.querySelector('.int-datepicker__clear')).toBeNull();
+  });
+});
+
 describe('IntDatePicker · numberOfMonths and footer', () => {
   it('shows two months, with the next arrow only on the last one and hidden at maxDate', () => {
     const fixture = TestBed.createComponent(MonthsHost);

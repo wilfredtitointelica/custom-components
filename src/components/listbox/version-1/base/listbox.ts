@@ -348,8 +348,16 @@ export class IntListbox extends IntBaseControl<unknown> {
   private scrollToFocused(): void {
     afterNextRender(
       () => {
+        // Scroll only the list, never its ancestors: scrollIntoView also scrolled the page when the panel was
+        // still being placed (placement="top"), and that page scroll closed the select (closeWhenOriginHidden).
         const id = this.activeDescendant();
-        if (id) this.el.nativeElement.querySelector(`#${id}`)?.scrollIntoView?.({ block: 'nearest' });
+        const list = this.el.nativeElement.querySelector<HTMLElement>('.int-listbox__list');
+        const option = id ? list?.querySelector<HTMLElement>(`#${id}`) : null;
+        if (!list || !option) return;
+        const listBox = list.getBoundingClientRect();
+        const optionBox = option.getBoundingClientRect();
+        if (optionBox.top < listBox.top) list.scrollTop -= listBox.top - optionBox.top;
+        else if (optionBox.bottom > listBox.bottom) list.scrollTop += optionBox.bottom - listBox.bottom;
       },
       { injector: this.injector },
     );

@@ -9,6 +9,8 @@
   --int-accordion-background: var(--i-color-neutral-50); // knowledgeBase: --i-accordion-header-background / content-background (Neutral 50)
   --int-accordion-font-family: var(--i-text-body-family); // SG: --i-text-body-family · Aura: inherit
   --int-accordion-padding: var(--i-spacing-container-xl); // knowledgeBase: .prAccordion header/content padding (int-*: container-xl spacing)
+  --int-accordion-padding-x: 0; // knowledgeBase: .prAccordion (header and content flush with the panel line) · Aura: {accordion.header.padding} 1.125rem
+  --int-accordion-padded-padding-x: var(--i-spacing-container-md); // SG: --i-spacing-container-md 8px (int-* extension `padded`: header and content inset) · Aura: —
 
   // --- panel ---
   --int-accordion-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm · Aura: 0 0 1px 0
@@ -90,7 +92,7 @@
     justify-content: space-between;
     gap: var(--int-accordion-header-gap);
     width: 100%;
-    padding: var(--int-accordion-padding) 0;
+    padding: var(--int-accordion-padding) var(--int-accordion-padding-x);
     color: var(--int-accordion-header-color);
     font-size: var(--int-accordion-header-font-size);
     font-weight: var(--int-accordion-header-font-weight);
@@ -149,7 +151,7 @@
   &__content-body {
     max-height: var(--int-accordion-content-max-height);
     overflow: auto;
-    padding-bottom: var(--int-accordion-padding);
+    padding: 0 var(--int-accordion-padding-x) var(--int-accordion-padding);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -176,6 +178,11 @@
   }
 }
 
+// Padded (int-* extension): header and content inset from the panel edges; the separator line keeps the full width.
+.int-accordion--padded {
+  --int-accordion-padding-x: var(--int-accordion-padded-padding-x);
+}
+
 // Card (int-* extension): each panel is a bordered card (Style Guide alerts .borderWrapper, but with a
 // primary-900 border by design instead of its secondary-300).
 .int-accordion--card {
@@ -184,6 +191,7 @@
   --int-accordion-header-hover-color: var(--int-accordion-card-header-color); // knowledgeBase: alerts .borderWrapper (no hover change)
   --int-accordion-header-active-color: var(--int-accordion-card-header-color); // knowledgeBase: alerts .borderWrapper (no active change)
   --int-accordion-background: var(--int-accordion-card-background); // knowledgeBase: alerts .borderWrapper (page background shows through)
+  --int-accordion-padding-x: 0; // knowledgeBase: alerts .borderWrapper (the card panel already has padding-inline: no double inset with `padded`)
 
   display: flex;
   flex-direction: column;

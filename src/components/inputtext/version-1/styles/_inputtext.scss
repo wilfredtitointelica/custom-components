@@ -41,7 +41,7 @@
   --int-inputtext-sm-line-height: var(--int-control-sm-line-height); // _tokens_: --int-control-sm-line-height · Aura: normal
   --int-inputtext-lg-height: var(--int-control-lg-height); // _tokens_: --int-control-lg-height 40px · Aura: auto
   --int-inputtext-lg-padding-y: var(--int-control-lg-padding-y); // _tokens_: --int-control-lg-padding-y 8px · Aura: {form.field.lg.padding.y}
-  --int-inputtext-lg-padding-x: var(--int-control-lg-padding-x); // _tokens_: --int-control-lg-padding-x 12px · Aura: {form.field.lg.padding.x}
+  --int-inputtext-lg-line-height: var(--int-control-lg-line-height); // _tokens_: --int-control-lg-line-height · SG: --i-typography-lineHeight-lg 24px (large field 40 = 8 + 24 + 8, border inside) · Aura: normal
   --int-inputtext-lg-font-size: var(--int-control-lg-font-size); // _tokens_: --int-control-lg-font-size · Aura: {form.field.lg.font.size}
 
   // --- skeleton ---

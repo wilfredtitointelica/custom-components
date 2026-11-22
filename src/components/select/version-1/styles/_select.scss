@@ -27,7 +27,7 @@
   // --- icons ---
   --int-select-icon-color: var(--int-control-icon-color); // _tokens_: --int-control-icon-color · was --i-icon-color-default (same value) · Aura: {form.field.icon.color}
   --int-select-icon-size: var(--int-control-icon-size); // _tokens_: --int-control-icon-size · SG: --i-icon-size-sm 16px · Aura: {icon.size}
-  --int-select-hover-icon-color: var(--int-control-hover-icon-color); // _tokens_: --int-control-hover-icon-color · SG: .prSelect:hover .p-select-dropdown .icon primary-400 · Aura: —
+  --int-select-hover-icon-color: var(--i-form-field-icon-hover); // SG: --i-form-field-icon-hover #2A52C5 (tokens.form-field) · Figma: Input State=Hover icon #2A52C5 · keeps its own value instead of _tokens_ --int-control-hover-icon-color primary-400 (user, 2026-11-20) · Aura: —
   --int-select-arrow-transition-duration: var(--i-motion-duration-fast); // SG: --i-motion-base (duration-fast) · Aura: —
   --int-select-arrow-transition-easing: var(--i-motion-ease-in-out); // SG: --i-motion-base (ease-in-out) · Aura: —
   --int-select-clear-icon-size: var(--int-control-clear-size); // _tokens_: --int-control-clear-size · SG: --i-icon-size-xs 12px · Aura: {icon.size}
@@ -48,7 +48,7 @@
   --int-select-sm-line-height: var(--int-control-sm-line-height); // _tokens_: --int-control-sm-line-height · Aura: normal
   --int-select-lg-height: var(--int-control-lg-height); // _tokens_: --int-control-lg-height 40px · Aura: auto
   --int-select-lg-padding-y: var(--int-control-lg-padding-y); // _tokens_: --int-control-lg-padding-y 8px · Aura: {form.field.lg.padding.y}
-  --int-select-lg-padding-x: var(--int-control-lg-padding-x); // _tokens_: --int-control-lg-padding-x 12px · Aura: {form.field.lg.padding.x}
+  --int-select-lg-line-height: var(--int-control-lg-line-height); // _tokens_: --int-control-lg-line-height · SG: --i-typography-lineHeight-lg 24px (large field 40 = 8 + 24 + 8, border inside) · Aura: normal
   --int-select-lg-font-size: var(--int-control-lg-font-size); // _tokens_: --int-control-lg-font-size · Aura: {form.field.lg.font.size}
 
   // --- panel ---

@@ -75,7 +75,7 @@ interface MonthView {
  * PrimeNG v20 DatePicker (ported from @intelica/ui `int-datepicker`). Range values are `[start, end]`;
  * month view yields the first day of the chosen month. Not supported yet: time picker, typed input.
  * Deviation: days of other months are left blank (Style Guide `.prDatapicker`; PrimeNG shows them).
- * Deviation: `appendTo` defaults to `body` (PrimeNG: `self`), so no dialog or table clips the popup.
+ * `appendTo` defaults to `self` like PrimeNG: inside a dialog or a container with `overflow` use `appendTo="body"`.
  * int-* extension: `baseZIndex`.
  *
  * @example
@@ -241,6 +241,8 @@ export class IntDatePicker extends IntBaseControl<IntDatePickerValue> {
     return fmt(v);
   });
   protected readonly hasValue = computed(() => this.modelValue() != null);
+  /** The ✕ is shown: `showClear`, a value and not disabled. */
+  protected readonly clearVisible = computed(() => this.showClear() && this.hasValue() && !this.isDisabled());
 
   protected readonly longMonths = computed(() => monthNames(this.locale(), 'long'));
   protected readonly shortMonths = computed(() => monthNames(this.locale(), 'short'));
