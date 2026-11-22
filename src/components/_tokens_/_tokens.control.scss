@@ -88,7 +88,8 @@
 
 	--int-control-lg-height: var(--i-sizing-xl);                         // 40px
 	--int-control-lg-padding-y: var(--i-spacing-container-md);           // 8px · inputtext, select
-	--int-control-lg-padding-x: var(--i-spacing-container-lg);           // 12px · inputtext, select
+	--int-control-lg-padding-x: var(--i-spacing-container-lg);           // 12px · reservado: ningún componente lo lee ( large mantiene 8px, Figma )
+	--int-control-lg-line-height: var(--i-typography-lineHeight-lg);     // 24px · inputtext, select ( 40 = 8 + 24 + 8, borde dentro )
 	--int-control-lg-font-size: var(--i-typography-font-size-lg);        // no inputnumber
 
 	// --- anillo de foco ( foco con teclado, :focus-visible ) ---
@@ -158,7 +159,7 @@
 	// --- icono ( flecha, limpiar, búsqueda, +/- ) ---
 
 	--int-control-icon-color: var(--i-icon-color-default);               // primary-900 · select, multiselect, treeselect, listbox, datepicker, inputnumber, search, picklist
-	--int-control-hover-icon-color: var(--i-color-primary-400);          // flecha en hover · select, multiselect, treeselect ( Figma muestra primary-600 ⚠️ )
+	--int-control-hover-icon-color: var(--i-color-primary-400);          // flecha en hover · multiselect, treeselect ( select mantiene --i-form-field-icon-hover #2A52C5 ⚠️ · Figma muestra primary-600 ⚠️ )
 	--int-control-icon-size: var(--i-icon-size-sm);                      // 16px · select, multiselect, treeselect, datepicker, password, search
 
 	// --- desplegable ( caja de la flecha al final del campo ) ---

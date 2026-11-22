@@ -32,7 +32,11 @@ export type IntAccordionValue = string | number;
   selector: 'int-accordion',
   templateUrl: './accordion.html',
   styleUrl: '../styles/_index.scss',
-  host: { class: 'int-accordion', '[class.int-accordion--card]': 'variant() === "card"' },
+  host: {
+    class: 'int-accordion',
+    '[class.int-accordion--card]': 'variant() === "card"',
+    '[class.int-accordion--padded]': 'padded()',
+  },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -54,6 +58,13 @@ export class IntAccordion {
    * (Style Guide alerts `.borderWrapper`, "Alert sent" accordion). Default: panels separated by lines.
    */
   readonly variant = input<'card' | undefined>(undefined);
+  /**
+   * int-* extension: separa el encabezado y el contenido 8px de los bordes del panel (la línea divisoria
+   * mantiene todo el ancho). Útil cuando el acordeón va sobre un fondo de otro color. Sin efecto con
+   * `variant="card"`, que ya tiene su propio margen interno.
+   * @defaultValue false
+   */
+  readonly padded = input(false, { transform: booleanAttribute });
 
   /** Se emite al abrir un panel, con su `value`. */
   readonly onOpen = output<IntAccordionValue>();

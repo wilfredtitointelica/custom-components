@@ -1,7 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { IntListbox } from './listbox';
@@ -173,5 +173,42 @@ describe('IntListbox metaKeySelection, range, dblclick and dragdrop', () => {
     expect(options().map((o) => o.textContent?.trim())).toEqual(['B', 'C', 'A', 'D']);
     expect(host.fees).toEqual(['B', 'C', 'A', 'D']);
     expect(host.drops).toBe(1);
+  });
+});
+
+@Component({
+  imports: [IntListbox, FormsModule],
+  template: `
+    <div style="height: 3000px"></div>
+    <int-listbox [options]="items" [(ngModel)]="value" scrollHeight="80px" />
+  `,
+})
+class ScrollHost {
+  items = Array.from({ length: 40 }, (_, i) => `Item ${i}`);
+  value = 'Item 35';
+}
+
+describe('IntListbox scroll to the selected option', () => {
+  afterEach(() => window.scrollTo(0, 0));
+
+  it('scrolls only the list, never the page (a page scroll closed int-select with placement="top")', async () => {
+    const fixture = TestBed.createComponent(ScrollHost);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    window.scrollTo(0, 0);
+    const listbox = fixture.debugElement.query(By.directive(IntListbox)).componentInstance as IntListbox;
+    listbox.activateSelected();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const list: HTMLElement = fixture.nativeElement.querySelector('.int-listbox__list');
+    const selected: HTMLElement = fixture.nativeElement.querySelector('[aria-selected="true"]');
+    const listBox = list.getBoundingClientRect();
+    const optionBox = selected.getBoundingClientRect();
+    expect(list.scrollTop).toBeGreaterThan(0);
+    expect(optionBox.top).toBeGreaterThanOrEqual(listBox.top - 1);
+    expect(optionBox.bottom).toBeLessThanOrEqual(listBox.bottom + 1);
+    expect(window.scrollY).toBe(0);
+    fixture.nativeElement.remove();
   });
 });

@@ -27,22 +27,23 @@ class Host {
 }
 
 
-/** Style Guide control tokens (tokens.control.draft) in px: Karma does not load the Style Guide bundle. */
+/** Common control tokens (_tokens_/_tokens.control.scss) in px: Karma does not load the Style Guide bundle they point to. */
 const DS_CONTROL_TOKENS: Record<string, string> = {
-  '--i-control-border-width': '1px',
-  '--i-control-border-color': '#9ca3ba', // without it the `border` shorthand is invalid and the field has no border
-  '--i-control-padding-x': '8px',
-  '--i-control-padding-y': '6px',
-  '--i-control-height': '32px',
-  '--i-control-font-size': '14px',
-  '--i-control-line-height': '20px',
-  '--i-control-sm-height': '24px',
-  '--i-control-sm-padding-y': '4px',
-  '--i-control-sm-font-size': '12px',
-  '--i-control-sm-line-height': '16px',
-  '--i-control-lg-height': '40px',
-  '--i-control-lg-padding-y': '8px',
-  '--i-control-lg-font-size': '16px',
+  '--int-control-border-width': '1px',
+  '--int-control-border-color': '#9ca3ba', // without it the `border` shorthand is invalid and the field has no border
+  '--int-control-padding-x': '8px',
+  '--int-control-padding-y': '6px',
+  '--int-control-height': '32px',
+  '--int-control-font-size': '14px',
+  '--int-control-line-height': '20px',
+  '--int-control-sm-height': '24px',
+  '--int-control-sm-padding-y': '4px',
+  '--int-control-sm-font-size': '12px',
+  '--int-control-sm-line-height': '16px',
+  '--int-control-lg-height': '40px',
+  '--int-control-lg-padding-y': '8px',
+  '--int-control-lg-font-size': '16px',
+  '--int-control-lg-line-height': '24px',
   '--i-typography-lineHeight-lg': '24px',
 };
 

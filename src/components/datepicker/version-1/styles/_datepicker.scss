@@ -98,6 +98,13 @@
     flex: 1 1 auto;
     min-width: 0;
     cursor: pointer;
+  }
+  // Room only for the icons that are shown (calendar, ✕ or both), so the ✕ alone sits at the field edge.
+  &__input-wrapper--icon &__input,
+  &__input-wrapper--clear &__input {
+    padding-right: calc(var(--int-datepicker-icon-width) + var(--int-datepicker-icon-offset));
+  }
+  &__input-wrapper--icon#{&}__input-wrapper--clear &__input {
     padding-right: calc(var(--int-datepicker-icon-width) * 2 + var(--int-datepicker-icon-offset));
   }
   &__icon,
@@ -122,9 +129,14 @@
     color: inherit;
     cursor: pointer;
     display: inline-flex;
-    right: calc(var(--int-datepicker-icon-offset) + var(--int-datepicker-icon-width));
+    right: var(--int-datepicker-icon-offset);
     color: var(--int-datepicker-icon-color);
     font-size: var(--int-datepicker-clear-icon-size);
+  }
+
+  // Beside the calendar icon when both are shown.
+  &__input-wrapper--icon &__clear {
+    right: calc(var(--int-datepicker-icon-offset) + var(--int-datepicker-icon-width));
   }
 
   // Same ✕ as int-multiselect: 12px, wins over a font size of the Style Guide icon classes.

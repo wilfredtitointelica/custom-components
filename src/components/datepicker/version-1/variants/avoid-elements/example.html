@@ -3,7 +3,7 @@
   description: Con `avoidElements` el calendario no tapa los elementos indicados (selector CSS, variable de template de un elemento HTML o una lista). Al abrirse prueba debajo, arriba y a los lados del campo, y usa la primera posición que cabe en pantalla sin taparlos. Aquí no tapa el botón "Apply Filters".
 -->
 <div class="u-display-flex u-flex-column u-gap-md">
-  <int-datepicker [style]="{ width: '20rem' }" selectionMode="range" [avoidElements]="applyFilters" [(ngModel)]="range" />
+  <int-datepicker [style]="{ width: '20rem' }" selectionMode="range" dateFormat="dd M, yy" placeholder="dd mm, yyyy - dd mm, yyyy" [avoidElements]="applyFilters" [(ngModel)]="range" />
   <div class="u-display-flex u-justify-content-end">
     <div #applyFilters><button intButton label="Apply Filters"></button></div>
   </div>
