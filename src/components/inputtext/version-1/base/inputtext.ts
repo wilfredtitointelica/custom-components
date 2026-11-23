@@ -47,8 +47,8 @@ export class IntInputText implements DoCheck {
   /** Ocupa todo el ancho de su contenedor. */
   readonly fluid = input(false, { transform: booleanAttribute });
   /**
-   * int-* extension: campo de búsqueda dentro del panel desplegable de otro componente (`int-multiselect`,
-   * `int-treeselect`, `int-select`). Solo cambia el color del borde en reposo; hover y foco no cambian.
+   * int-* extension: campo de búsqueda dentro del panel de otro componente (`int-multiselect`,
+   * `int-treeselect`, `int-select`, `int-picklist`). Cambian el color del borde en reposo y el radio; hover y foco no cambian.
    */
   readonly filter = input(false, { transform: booleanAttribute });
   /**

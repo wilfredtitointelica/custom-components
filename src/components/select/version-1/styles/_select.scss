@@ -64,7 +64,6 @@
   // --- variant text (paginator rows per page) ---
   --int-select-text-gap: var(--i-spacing-gap-sm); // Figma: 8px between value and arrow (paginator)
   --int-select-text-border-radius: var(--i-border-radius-sm); // Figma: 4px (focus ring corners)
-  --int-select-text-label-min-width: var(--i-sizing-lg); // Figma: 32px value width (paginator)
   --int-select-text-panel-border-color: var(--i-color-secondary-600); // Figma: #636B8C (pagination/color/border)
   --int-select-text-panel-font-size: var(--i-typography-font-size-md); // Figma: 14px (paginator)
   --int-select-text-panel-line-height: var(--i-sizing-250); // Figma: 20px rows
@@ -278,10 +277,9 @@
       outline-offset: var(--int-select-focus-ring-offset);
     }
   }
+  // The value takes only its own width: next to the arrow and to the text before it (paginator "Rows per page 10 ^").
   &--text &__label {
     flex: 0 0 auto;
-    min-width: var(--int-select-text-label-min-width);
-    text-align: end;
   }
   &--text &__icon {
     color: currentColor;

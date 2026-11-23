@@ -1,10 +1,10 @@
 <!--
   title: Table paginator
-  description: Paginador al pie de una tabla, alineado a la derecha sobre fondo claro: en `templateLeft` el selector de filas por página y el campo "Page n of N", y después las flechas `previous` y `next` con `icon-arrow-*`. Se arma con `showPageLinks`, `showFirstLastIcon` y `showCurrentPageReport` en `false`.
+  description: Paginador al pie de una tabla, alineado a la derecha: en `templateLeft` el selector de filas por página (`int-select` con `variant="text"`) y el campo "Page n of N" (`int-inputnumber`), y después las flechas de página anterior y siguiente. Se arma con `showPageLinks`, `showFirstLastIcon`, `showCurrentPageReport` y `showJumpToPageInput` en `false`.
 -->
 
-<!-- Table paginator: closes the panel of the table, aligned to the end on a light bar -->
-<div class="u-display-flex u-justify-content-end u-px-3 u-py-3 u-background-white">
+<!-- Table paginator: closes the panel of the table, aligned to the end -->
+<div class="u-display-flex u-justify-content-end">
 	<int-paginator
 		[showJumpToPageInput]="false"
 		[showCurrentPageReport]="false"
@@ -15,20 +15,19 @@
 		[first]="(currentPage() - 1) * rowsPerPage()"
 		[templateLeft]="tableTemplateLeft"
 		(onPageChange)="onPageChange($event)"
-	>
-		<ng-template #previouspagelinkicon><i class="icon icon-arrow-left icon--sm" aria-hidden="true"></i></ng-template>
-		<ng-template #nextpagelinkicon><i class="icon icon-arrow-right icon--sm" aria-hidden="true"></i></ng-template>
-	</int-paginator>
+	/>
 </div>
 
 <!-- Rows per page and page number: inside templateLeft, not the built-in controls -->
 <ng-template #tableTemplateLeft>
-	<div class="u-display-flex u-align-items-center u-gap-lg u-text-md">
+	<div class="u-display-flex u-align-items-center u-gap-lg">
 		<!-- Rows per page -->
 		<div class="u-display-flex u-align-items-center u-gap-lg">
-			<span class="u-text-nowrap" id="table-paginator-rows-label">Rows per page:</span>
+			<span class="u-text-nowrap" id="table-paginator-rows-label">Rows per page</span>
 
 			<int-select
+				variant="text"
+				placement="top"
 				ariaLabelledBy="table-paginator-rows-label"
 				[options]="pageSizes"
 				[ngModel]="rowsPerPage()"
@@ -40,13 +39,11 @@
 		<div class="u-display-flex u-align-items-center u-gap-sm">
 			<span>Page</span>
 			<int-inputnumber
-				size="small"
 				ariaLabel="Page"
 				[min]="1"
 				[max]="totalPages()"
 				[useGrouping]="false"
 				[ngModel]="currentPage()"
-				[style]="{ width: '3rem' }"
 				(ngModelChange)="onPageSelect($event)"
 			/>
 			<span class="u-text-nowrap">of {{ totalPages() }}</span>

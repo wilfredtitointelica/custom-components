@@ -41,7 +41,7 @@
  	int-radiobutton       p-radiobutton              .prRadioButton
  	int-toggleswitch      p-toggleswitch             .prToggleswitch
  	int-slider            p-slider                   .prSlider
- 	int-picklist          p-picklist                 — ( solo el color del icono de búsqueda )
+ 	int-picklist          p-picklist                 — ( color del icono y buscador [filter] )
 
  ! Contenido
    BASE        campo · tamaño sm / lg · anillo de foco · transición · estados · skeleton
@@ -193,7 +193,8 @@
 
 	// --- buscador ( campo de búsqueda dentro del overlay ) ---
 
-	--int-control-filter-border-color: var(--i-border-default);          // secondary-200 · inputtext [filter] → dentro de select ( listbox ), multiselect, treeselect
+	--int-control-filter-border-color: var(--i-border-default);          // secondary-200 · inputtext [filter] → dentro de select ( listbox ), multiselect, treeselect, picklist
+	--int-control-filter-border-radius: var(--i-border-radius-md);       // 6px · inputtext [filter] → dentro de select ( listbox ), multiselect, treeselect, picklist ( el campo del componente sigue en 8px )
 	--int-control-filter-padding-x: var(--i-spacing-container-md);       // 8px · listbox, multiselect, treeselect
 	--int-control-filter-icon-size: var(--i-sizing-2xs);                 // 12px · listbox, multiselect, treeselect
 

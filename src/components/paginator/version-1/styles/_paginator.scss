@@ -37,6 +37,14 @@
   // --- jump to page input (int-inputnumber: width and margin) ---
   --int-paginator-jtp-input-width: var(--i-sizing-xl); // Figma: 40px · Aura: jumpToPageInput.maxWidth 2.5rem
   --int-paginator-jtp-input-margin-x: var(--i-spacing-container-xs); // knowledgeBase: 4px · Aura: —
+  --int-paginator-jtp-input-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: .p-paginator-jtp-input bold · Aura: —
+  --int-paginator-jtp-input-font-size: var(--i-typography-font-size-md); // knowledgeBase: .p-paginator-jtp-input 14px · Aura: inherit
+  --int-paginator-jtp-input-min-height: var(--i-sizing-md); // SG: no height; the box is 28px (padding + 20px line-height) · Aura: auto
+  --int-paginator-jtp-input-padding-y: var(--i-spacing-container-xs); // 4px from the outer edge (border inside): 28px box as in production · SG: padding-block 2px + 1px border ⚠️ 26px · Aura: {form.field.padding.y}
+  --int-paginator-jtp-input-padding-x: var(--i-border-width-sm); // SG: padding-inline 0 (int-inputtext measures padding from the outer edge, so 1px = the border) · Aura: {form.field.padding.x}
+  --int-paginator-jtp-input-color: var(--i-color-primary-900); // SG: .p-paginator-jtp-input primary-900 · Aura: {form.field.color}
+  --int-paginator-jtp-input-border-color: var(--i-color-secondary-600); // SG: .p-paginator-jtp-input secondary-600 · Aura: {form.field.border.color}
+  --int-paginator-jtp-input-background: var(--i-color-secondary-50); // SG: .p-paginator-jtp-input secondary-50 · Aura: {form.field.background}
   --int-paginator-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Figma: #9CA3BA (pagination/color/disabled/text) · Aura: {disabled.opacity}
 
 
@@ -158,14 +166,28 @@
     color: var(--int-paginator-nav-button-selected-color);
   }
 
-  // Jump to page: only its size and place in the row (Aura: jumpToPageInput.maxWidth).
+  // Jump to page: its place in the row (Aura: jumpToPageInput.maxWidth).
   &__jtp-input {
     display: inline-flex;
     margin-inline: var(--int-paginator-jtp-input-margin-x);
+  }
 
-    .int-inputnumber {
-      inline-size: var(--int-paginator-jtp-input-width);
-    }
+  // Page field: the built-in jump to page and the one placed in templateLeft / templateRight
+  // (knowledgeBase: .ptTablePaginator styles the embedded field). Narrow 28px box, centered bold 14px number.
+  .int-inputnumber {
+    --int-inputnumber-height: var(--int-paginator-jtp-input-min-height);
+    --int-inputtext-padding-y: var(--int-paginator-jtp-input-padding-y);
+    --int-inputtext-padding-x: var(--int-paginator-jtp-input-padding-x);
+    --int-inputtext-font-size: var(--int-paginator-jtp-input-font-size);
+    --int-inputtext-color: var(--int-paginator-jtp-input-color);
+    --int-inputtext-border-color: var(--int-paginator-jtp-input-border-color);
+    --int-inputtext-background: var(--int-paginator-jtp-input-background);
+    inline-size: var(--int-paginator-jtp-input-width);
+  }
+
+  .int-inputnumber__field {
+    font-weight: var(--int-paginator-jtp-input-font-weight);
+    text-align: center;
   }
 
   // Ripple ink (PrimeNG .p-ink): grows from the press point and fades out.

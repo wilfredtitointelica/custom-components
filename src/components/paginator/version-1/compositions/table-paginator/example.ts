@@ -13,7 +13,7 @@ const PAGE_SIZES: readonly number[] = [10, 20, 50, 100];
   imports: [FormsModule, IntPaginator, IntSelect, IntInputNumber],
 })
 export class PaginatorTablePaginatorExample {
-  readonly totalRecords = 50;
+  readonly totalRecords = 360;
   readonly pageSizes = PAGE_SIZES;
   readonly rowsPerPage = signal(10);
   readonly currentPage = signal(1);

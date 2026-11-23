@@ -32,7 +32,8 @@
   --int-inputtext-success-color: var(--int-control-valid-color); // _tokens_: --int-control-valid-color · Aura: —
   --int-inputtext-disabled-background: var(--int-control-disabled-background); // _tokens_: --int-control-disabled-background · Aura: {form.field.disabled.background}
   --int-inputtext-disabled-color: var(--int-control-disabled-color); // _tokens_: --int-control-disabled-color · Aura: {form.field.disabled.color}
-  --int-inputtext-filter-border-color: var(--int-control-filter-border-color); // _tokens_: --int-control-filter-border-color · SG: --i-color-secondary-200 · filter field inside the panel of another component (multiselect, treeselect, select) · Aura: {form.field.border.color}
+  --int-inputtext-filter-border-color: var(--int-control-filter-border-color); // _tokens_: --int-control-filter-border-color · SG: --i-color-secondary-200 · filter field inside the panel of another component (multiselect, treeselect, select, picklist) · Aura: {form.field.border.color}
+  --int-inputtext-filter-border-radius: var(--int-control-filter-border-radius); // _tokens_: --int-control-filter-border-radius · SG: --i-border-radius-md 6px · filter field inside the panel of another component (multiselect, treeselect, select, picklist) · Aura: {form.field.border.radius}
 
   // --- sizes ---
   --int-inputtext-sm-height: var(--int-control-sm-height); // _tokens_: --int-control-sm-height 24px · Aura: auto
@@ -136,10 +137,11 @@
   &.int-inputtext--fluid {
     width: 100%;
   }
-  // int-* extension: filter field inside the overlay panel of another component; only the resting border changes,
+  // int-* extension: filter field inside the overlay panel of another component; only the resting border color and radius change,
   // hover and focus keep the field colors.
   &.int-inputtext--filter {
     --int-inputtext-border-color: var(--int-inputtext-filter-border-color);
+    --int-inputtext-border-radius: var(--int-inputtext-filter-border-radius);
   }
 
   &.int-inputtext--invalid::placeholder {
