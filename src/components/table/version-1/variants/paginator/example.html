@@ -39,10 +39,12 @@
 
   <!-- Rows per page and page number, next to the arrows (the paginator sits at the end) -->
   <ng-template #paginatorleft let-state>
-    <div class="u-display-flex u-align-items-center u-gap-lg u-text-md">
+    <div class="u-display-flex u-align-items-center u-gap-lg">
       <div class="u-display-flex u-align-items-center u-gap-lg">
-        <span class="u-text-nowrap" id="table-paginator-rows-label">Rows per page:</span>
+        <span class="u-text-nowrap" id="table-paginator-rows-label">Rows per page</span>
         <int-select
+          variant="text"
+          placement="top"
           ariaLabelledBy="table-paginator-rows-label"
           [options]="pageSizes"
           [ngModel]="rows()"
@@ -52,13 +54,11 @@
       <div class="u-display-flex u-align-items-center u-gap-sm">
         <span>Page</span>
         <int-inputnumber
-          size="small"
           ariaLabel="Page"
           [min]="1"
           [max]="state.pageCount"
           [useGrouping]="false"
           [ngModel]="state.page + 1"
-          [style]="{ width: '3rem' }"
           (ngModelChange)="onPageSelect($event, state.pageCount)"
         />
         <span class="u-text-nowrap">of {{ state.pageCount }}</span>
