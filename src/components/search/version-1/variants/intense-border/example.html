@@ -1,0 +1,22 @@
+<!--
+  title: Intense Border
+  description: Con `intenseBorder` el borde del campo se intensifica, para el buscador principal de la vista (p. ej. el del header); sin la propiedad queda el borde normal, el del buscador de una tabla. Sin valor usa el borde intenso por defecto; con un valor propio, hexadecimal o `var(--i-color-…)`, usa ese color.
+-->
+<div class="u-display-flex u-flex-column u-gap-lg">
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <label for="search-border-default" class="u-text-sm">Default</label>
+    <int-search inputId="search-border-default" placeholder="Search by Fee Code" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <label for="search-border-intense" class="u-text-sm">intenseBorder</label>
+    <int-search intenseBorder inputId="search-border-intense" placeholder="Search fees, reports & dashboards" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <label for="search-border-hex" class="u-text-sm">intenseBorder="#0a1733"</label>
+    <int-search intenseBorder="#0a1733" inputId="search-border-hex" placeholder="Search" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-xs">
+    <label for="search-border-var" class="u-text-sm">intenseBorder="var(--i-border-hover)"</label>
+    <int-search intenseBorder="var(--i-border-hover)" inputId="search-border-var" placeholder="Search" [style]="{ width: '20rem' }" />
+  </div>
+</div>

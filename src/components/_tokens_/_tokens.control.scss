@@ -64,7 +64,8 @@
 	--int-control-padding-x: var(--i-spacing-container-md);                           // 8px · inputtext, select, multiselect, treeselect
 	--int-control-background: var(--i-panel-background, var(--i-background-default)); // #FCFCFC · respaldo si no está cargado el bundle de panel
 	--int-control-border-width: var(--i-border-width-sm);                             // 1px
-	--int-control-border-color: var(--i-color-neutral-400);                           // #9CA3BA ( password usa secondary-200 ⚠️ )
+	--int-control-border-color: var(--i-color-neutral-200);                           // #9CA3BA ( password usa secondary-200 ⚠️ )
+	--int-control-border-color-intense: var(--i-color-neutral-400);                   // #9ca3ba · énfasis del borde ( input intenseBorder de cada campo: campo principal de la vista, p. ej. el buscador del header ) · search, searchdropdown · SG: search-default --i-search-border-color ( comentado )
 	--int-control-border-radius: var(--i-border-radius-lg);                           // 8px
 
 	// --- campo: texto ---
@@ -205,7 +206,7 @@
 	--int-control-option-gap: var(--i-spacing-gap-sm);                   // 8px entre checkbox / icono y texto
 	--int-control-option-padding-y: var(--i-spacing-container-sm);       // 6px
 	--int-control-option-padding-x: var(--i-spacing-container-md);       // 8px
-	--int-control-option-hover-background: var(--i-color-secondary-100); // hover / foco con teclado · también datepicker
+	--int-control-option-hover-background: var(--i-color-secondary-100); // hover / foco con teclado  · también datepicker
 	--int-control-option-selected-background: var(--i-color-primary-700); // listbox, datepicker
 	--int-control-option-selected-color: var(--i-color-primary-50);      // listbox, datepicker
 	--int-control-option-disabled-color: var(--i-text-color-disabled);   // secondary-400

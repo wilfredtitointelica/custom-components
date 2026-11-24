@@ -241,6 +241,14 @@ export class IntSearchdropdown implements ControlValueAccessor {
   /** Deshabilita el campo. */
   readonly disabled = input(false, { transform: booleanAttribute });
   /**
+   * int-* extension: intensifica el borde del campo, para el buscador principal de la vista (p. ej. el del header).
+   * Sin valor (`intenseBorder`) usa el borde intenso por defecto; con un valor propio (hexadecimal como `#0a1733` o
+   * `var(--i-color-…)`) usa ese color. Sin la propiedad queda el borde normal, el del buscador de una tabla.
+   * Hover, foco, `invalid` y `disabled` siguen con sus colores.
+   * @defaultValue false
+   */
+  readonly intenseBorder = input<boolean | string>(false);
+  /**
    * Muestra el botón para limpiar el texto cuando el campo tiene valor.
    * @defaultValue true
    */

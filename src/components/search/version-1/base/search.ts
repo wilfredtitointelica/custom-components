@@ -32,7 +32,7 @@ let nextId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => IntSearch), multi: true }],
   // Same root as PrimeNG: p-iconfield puts its root classes on the host element.
-  host: { '[class]': 'classes()' },
+  host: { '[class]': 'classes()', '[style.--int-search-border-color-intense]': 'intenseBorderColor()' },
 })
 export class IntSearch implements ControlValueAccessor {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
@@ -67,6 +67,14 @@ export class IntSearch implements ControlValueAccessor {
   readonly invalid = input(false, { transform: booleanAttribute });
   /** Deshabilita el campo. */
   readonly disabled = input(false, { transform: booleanAttribute });
+  /**
+   * int-* extension: intensifica el borde del campo, para el buscador principal de la vista (p. ej. el del header).
+   * Sin valor (`intenseBorder`) usa el borde intenso por defecto; con un valor propio (hexadecimal como `#0a1733` o
+   * `var(--i-color-…)`) usa ese color. Sin la propiedad queda el borde normal, el del buscador de una tabla.
+   * Hover, foco, `invalid` y `disabled` siguen con sus colores.
+   * @defaultValue false
+   */
+  readonly intenseBorder = input<boolean | string>(false);
   /** int-* extension: si es `true`, muestra el botón para limpiar el texto cuando el campo tiene valor. */
   readonly showClear = input(false, { transform: booleanAttribute });
   /**
@@ -118,11 +126,25 @@ export class IntSearch implements ControlValueAccessor {
   /** The clear button needs text to remove, same condition as showClear in PrimeNG fields ($filled). */
   protected readonly clearVisible = computed(() => this.showClear() && !!this.value() && !this.isDisabled());
 
+  /** intenseBorder on: as a bare attribute (''), true or a color; off: false, 'false' or not set. */
+  protected readonly hasIntenseBorder = computed(() => {
+    const value = this.intenseBorder();
+    return value === true || (typeof value === 'string' && value !== 'false');
+  });
+  /** Own color of intenseBorder (hex or var()); null keeps the default intense token of the :root. */
+  protected readonly intenseBorderColor = computed(() => {
+    const value = this.intenseBorder();
+    return typeof value === 'string' && value.trim() !== '' && value !== 'true' && value !== 'false'
+      ? value.trim()
+      : null;
+  });
+
   protected readonly classes = computed(() => {
     const classes = ['int-search'];
     const size = this.size();
     if (size) classes.push(`int-search--${size}`);
     if (this.fluid()) classes.push('int-search--fluid');
+    if (this.hasIntenseBorder()) classes.push('int-search--intense-border');
     if (this.clearVisible()) classes.push('int-search--clearable');
     if (this.invalid()) classes.push('int-search--invalid');
     if (this.isDisabled()) classes.push('int-search--disabled');
