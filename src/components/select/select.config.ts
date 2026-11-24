@@ -24,6 +24,6 @@ export default {
     'append-to-body',
   ],
   requires: ['listbox'],
-  uses: ['button'],
+  uses: ['button', 'skeleton'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

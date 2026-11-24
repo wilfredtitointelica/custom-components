@@ -32,7 +32,7 @@ src/components/<id>/version-N/
   base/<id>.ts       clase Int<Id>, selector int-<id>; primeras líneas: static status y static designer
   base/<id>.html     cabecera <!-- title / description / figma --> + marcado BEM
   styles/_index.scss solo @use
-  styles/_<id>.scss  TOKENS (:root) · BLOCK · ELEMENTS · MODIFIERS · SKELETON
+  styles/_<id>.scss  TOKENS (:root) · BLOCK · ELEMENTS · MODIFIERS · SKELETON (reglas .int-skeleton-mask.int-<id> para [intSkeleton], sin anchos ni altos)
   styles/_<id>.<grupo>.scss  un módulo por grupo de modificadores
   variants/<slug>/example.ts + example.html       (variants/basic/ siempre) → tab Variants
   compositions/<slug>/example.ts + example.html   (opcional) → tab Compositions

@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'checkbox',
+  uses: ['button', 'skeleton'],
   variants: ['basic', 'group', 'validation', 'sizes-states', 'icon-template'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

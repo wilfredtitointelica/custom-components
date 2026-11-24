@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'datepicker',
+  uses: ['skeleton'],
   variants: [
     'basic',
     'clear-icon',

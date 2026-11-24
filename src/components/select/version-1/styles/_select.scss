@@ -72,11 +72,6 @@
   --int-select-text-option-padding-x: var(--i-spacing-container-xs); // Figma: 4px (pagination/padding/x/xs)
   --int-select-text-option-border-radius: var(--i-border-radius-sm); // Figma: 4px (pagination/border/radius/sm)
   --int-select-text-option-hover-background: var(--i-color-primary-100); // Figma: #DDE6F8 (pagination/color/hover/background)
-
-  // --- skeleton ---
-  --int-select-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
-  --int-select-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
-  --int-select-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
   --int-select-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-select-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -307,12 +302,14 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The host is the bone; it takes the radius of the trigger.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-select {
-  display: inline-block;
-  width: 10rem;
-  height: var(--int-select-skeleton-height);
-  border-radius: var(--int-select-skeleton-border-radius);
-  background: var(--int-select-skeleton-background);
+.int-skeleton-mask.int-select {
+  border-radius: var(--int-select-border-radius);
+
+  &.int-select--text {
+    border-radius: var(--int-select-text-border-radius);
+  }
 }

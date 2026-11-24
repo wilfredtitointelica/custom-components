@@ -1,0 +1,129 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-SKELETON: 'int-skeleton ( Custom )';
+
+  // --- root ---
+  --int-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled (secondary-200) · Aura: {surface.200}
+  --int-skeleton-wave-color: var(--i-color-secondary-100); // SG: --i-color-secondary-50 (#FCFCFC shine over secondary-200 #D9D9E3) · Aura: rgba(255,255,255,0.4)
+  --int-skeleton-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md · Aura: {content.border.radius} 6px
+  --int-skeleton-circle-border-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Aura: 50%
+  --int-skeleton-animation-duration: calc(var(--i-motion-duration-slow) * 2.4); // SG: --i-motion-duration-slow × 2.4 = 1.2s · Aura: 1.2s
+  --int-skeleton-animation-easing: linear; // SG: no token (constant speed, no rest: the shine never stops) · Aura: linear (animation default ease, p-skeleton overrides nothing)
+
+  // --- paint shared by the block and the [intSkeleton] mask ---
+  // Same geometry as PrimeNG's ::after (a soft shine as wide as the element, translateX -100% → 100%): the shine is
+  // the middle third of a background three times wider than the element, with soft edges, and the animation slides
+  // it across without pause. Components that move the mask paint to an inner element read these tokens.
+  // ⚠ Paint ONLY with background-image + background-size, never the `background` shorthand: an !important shorthand
+  // also pins background-position, animations cannot override !important, and the shine stops (looks static).
+  --int-skeleton-paint: linear-gradient(90deg, var(--int-skeleton-background) 33.33%, var(--int-skeleton-wave-color) 50%, var(--int-skeleton-background) 66.67%); // SG: no token, built from --int-skeleton-background + --int-skeleton-wave-color · Aura: linear-gradient(90deg, transparent, {skeleton.animation.background}, transparent)
+  --int-skeleton-paint-size: 300% 100%; // SG: no token (the shine is the middle third of a background 3× wider) · Aura: ::after width 100%
+  --int-skeleton-animation: int-skeleton-wave var(--int-skeleton-animation-duration) var(--int-skeleton-animation-easing) infinite; // SG: no token · Aura: p-skeleton-animation 1.2s infinite
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --int-skeleton-animation: none; // SG: no token, reduced motion
+  }
+}
+
+// Continuous sweep, like PrimeNG: at 100% the shine sits just left of the element, at 0% just right of it, so it
+// travels left → right (RTL reverses it).
+@keyframes int-skeleton-wave {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+.int-skeleton {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--int-skeleton-border-radius);
+  background-image: var(--int-skeleton-paint);
+  background-size: var(--int-skeleton-paint-size);
+  animation: var(--int-skeleton-animation);
+
+  &:dir(rtl) {
+    animation-direction: reverse;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-skeleton {
+  &--circle {
+    border-radius: var(--int-skeleton-circle-border-radius);
+  }
+
+  &--animation-none {
+    animation: none;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+ * .int-skeleton-mask: added by the [intSkeleton] directive to any element (usually an int-* component).
+ * The element keeps its own box (size, padding, radius come from the component), only its look changes.
+ * !important: the mask must win over every state rule of the masked component (--invalid, --checked,
+ * :hover…) without listing them; the component's SKELETON section can still move the paint, with a more
+ * specific selector (.int-skeleton-mask .int-<id>__x).
+\*——————————————————————————————————————————————————————————*/
+
+// Default radius with no specificity: a plain element (a <label>, a <span>) gets the skeleton radius, and any
+// component that sets its own radius on the host keeps it.
+:where(.int-skeleton-mask) {
+  border-radius: var(--int-skeleton-border-radius);
+}
+
+.int-skeleton-mask {
+  cursor: progress;
+  user-select: none;
+
+  // Hide the content: text, placeholders, icon fonts, borders, shadows, inner backgrounds.
+  &,
+  & * {
+    border-color: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: transparent !important;
+    outline-color: transparent !important;
+    caret-color: transparent !important;
+  }
+
+  & ::placeholder,
+  &::placeholder {
+    color: transparent !important;
+  }
+
+  & :is(img, svg, canvas, video) {
+    visibility: hidden;
+  }
+
+  // Paint: by default the element itself is the bone.
+  & {
+    background-image: var(--int-skeleton-paint) !important;
+    background-size: var(--int-skeleton-paint-size) !important;
+    animation: var(--int-skeleton-animation);
+  }
+
+  &:dir(rtl) {
+    animation-direction: reverse;
+  }
+}

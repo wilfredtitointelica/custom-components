@@ -1,0 +1,19 @@
+<!--
+  title: Basic
+  description: Cada bloque toma el ancho y el alto que se le indiquen con `width` y `height`; por defecto ocupa todo el ancho y 1rem de alto. Se combinan para dibujar la forma del contenido que está cargando.
+-->
+<div class="u-display-flex u-flex-column u-gap-sm">
+  <div class="u-display-flex u-align-items-center u-gap-sm">
+    <int-skeleton shape="circle" size="4rem" />
+    <div class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+      <int-skeleton width="10rem" />
+      <int-skeleton width="5rem" />
+      <int-skeleton height=".5rem" />
+    </div>
+  </div>
+  <int-skeleton height="150px" />
+  <div class="u-display-flex u-justify-content-between">
+    <int-skeleton width="4rem" height="2rem" />
+    <int-skeleton width="4rem" height="2rem" />
+  </div>
+</div>

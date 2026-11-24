@@ -49,10 +49,12 @@
   --int-accordion-card-panel-border-radius: var(--i-border-radius-xl); // knowledgeBase: alerts .borderWrapper · Aura: —
   --int-accordion-card-panel-background: var(--i-color-secondary-50); // knowledgeBase: alerts .borderWrapper · Aura: —
 
-  // --- skeleton ---
-  --int-accordion-skeleton-height: 9rem; // SG: no token · Aura: —
-  --int-accordion-skeleton-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md
-  --int-accordion-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-accordion-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-accordion-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-accordion-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
+  --int-accordion-skeleton-border-radius: var(--int-skeleton-border-radius); // int-skeleton: --int-skeleton-border-radius (bones without a radius of their own)
+
   // --- focus ring ---
   --int-accordion-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-accordion-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -210,11 +212,40 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The panel lines stay; the title (as long as its text), the toggle arrow (the
+ * int-icon box, its svg hidden by the mask: same size and place as the real arrow) and the open content are
+ * bones, so the shape still reads as an accordion.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-accordion {
-  display: block;
-  height: var(--int-accordion-skeleton-height);
-  border-radius: var(--int-accordion-skeleton-border-radius);
-  background: var(--int-accordion-skeleton-background);
+.int-skeleton-mask.int-accordion {
+  background-image: none !important;
+  background-color: transparent !important;
+  animation: none;
+
+  .int-accordion__panel {
+    border-color: var(--int-accordion-border-color) !important;
+  }
+
+  &.int-accordion--card .int-accordion__panel {
+    border-color: var(--int-accordion-card-panel-border-color) !important;
+    background-color: var(--int-accordion-card-panel-background) !important;
+  }
+
+  .int-accordion__title,
+  .int-accordion__toggle-icon,
+  .int-accordion__content-body {
+    background-image: var(--int-accordion-skeleton-paint) !important;
+    background-size: var(--int-accordion-skeleton-paint-size) !important;
+    animation: var(--int-accordion-skeleton-animation);
+    border-radius: var(--int-accordion-skeleton-border-radius);
+  }
+
+  // Status header: the icon is a glyph inside the title, so the title bar is cut with a mask into a round bone
+  // (the icon, --int-accordion-icon-size) + the gap + the text bar. One paint, so the shine stays continuous.
+  .int-accordion__title:has(> .int-accordion__status-icon:first-child) {
+    mask-image:
+      radial-gradient(circle calc(var(--int-accordion-icon-size) / 2) at calc(var(--int-accordion-icon-size) / 2) 50%, #000 calc(100% - 0.5px), transparent 100%),
+      linear-gradient(90deg, transparent calc(var(--int-accordion-icon-size) + var(--int-accordion-title-gap)), #000 0);
+  }
 }

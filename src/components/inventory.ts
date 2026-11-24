@@ -39,6 +39,7 @@ import paginator from './paginator/paginator.config';
 import inputotp from './inputotp/inputotp.config';
 import password from './password/password.config';
 import progressbar from './progressbar/progressbar.config';
+import skeleton from './skeleton/skeleton.config';
 import demo from './_demo_/demo.config';
 
 /**
@@ -90,4 +91,5 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   paginator,
   password,
   progressbar,
+  skeleton,
 ];

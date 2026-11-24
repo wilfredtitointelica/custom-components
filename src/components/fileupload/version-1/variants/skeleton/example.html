@@ -1,0 +1,12 @@
+<!--
+  title: Skeleton
+  description: Con `[intSkeleton]` el modo avanzado mantiene su marco, y sus botones y el área de archivos se convierten en bloques del tamaño real. La zona de arrastre (`dropzone`) y el modo `basic` también conservan su forma.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div>
+    <button intButton [label]="loading() ? 'Show content' : 'Show skeleton'" variant="outlined" size="small" (click)="loading.set(!loading())"></button>
+  </div>
+  <int-fileupload accept=".csv,.xlsx" chooseIcon="icon icon-add" uploadIcon="icon icon-upload" [intSkeleton]="loading()" />
+  <int-fileupload dropzone accept=".csv,.xlsx" hint="One file per region" [intSkeleton]="loading()" />
+  <int-fileupload mode="basic" chooseLabel="Choose" [intSkeleton]="loading()" />
+</div>

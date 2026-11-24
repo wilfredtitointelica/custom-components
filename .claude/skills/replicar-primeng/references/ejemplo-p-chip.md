@@ -209,7 +209,7 @@ export class IntChip {
 //           &__remove-icon (+ :focus-visible con el focus ring)
 // MODIFIERS: &--disabled { opacity; user-select: none; cursor: not-allowed } (sin pointer-events: none;
 //            remove() ignora el clic si está disabled)
-// SKELETON: .sk-chip con alto 32px, ancho fijo y radio del chip
+// SKELETON: el host es la caja con su radio → nada que agregar ([intSkeleton] la pinta con su tamaño real)
 ```
 
 ## Fase 3 · Variantes

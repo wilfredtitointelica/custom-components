@@ -19,7 +19,7 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   },
   {
     name: 'Feedback',
-    ids: ['message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar'],
+    ids: ['message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar', 'skeleton'],
   },
 ];
 

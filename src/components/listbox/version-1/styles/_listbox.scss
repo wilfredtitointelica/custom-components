@@ -56,9 +56,10 @@
   --int-listbox-placeholder-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: —
   --int-listbox-placeholder-border-color: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: —
 
-  // --- skeleton ---
-  --int-listbox-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
-  --int-listbox-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-listbox-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-listbox-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-listbox-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -237,12 +238,20 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The frame stays (border and background); each option and the filter are bones.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-listbox {
-  display: inline-block;
-  width: 12rem;
-  height: 10rem;
-  border-radius: var(--int-listbox-skeleton-border-radius);
-  background: var(--int-listbox-skeleton-background);
+.int-skeleton-mask.int-listbox {
+  border-color: var(--int-listbox-border-color) !important;
+  background: var(--int-listbox-background) !important;
+  animation: none;
+}
+
+.int-skeleton-mask .int-listbox__option,
+.int-skeleton-mask .int-listbox__filter {
+  background-image: var(--int-listbox-skeleton-paint) !important;
+  background-size: var(--int-listbox-skeleton-paint-size) !important;
+  animation: var(--int-listbox-skeleton-animation);
+  border-radius: var(--int-listbox-option-border-radius);
 }

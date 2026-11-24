@@ -1,0 +1,20 @@
+<!--
+  title: Component
+  description: La directiva `intSkeleton` muestra el propio componente como skeleton mientras su valor es `true`. Conserva el tamaño real del componente (`size`, `fluid`, `[style]`), así que no hay que repetir anchos ni altos, y no recibe foco ni clics mientras carga.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div>
+    <button intButton [label]="loading() ? 'Show content' : 'Show skeleton'" variant="outlined" (click)="loading.set(!loading())"></button>
+  </div>
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <button intButton label="Small" size="small" [intSkeleton]="loading()"></button>
+    <button intButton label="Save" [intSkeleton]="loading()"></button>
+    <button intButton label="Large" size="large" [intSkeleton]="loading()"></button>
+    <button intButton icon="icon icon-download" ariaLabel="Download" [intSkeleton]="loading()"></button>
+  </div>
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-sm">
+    <input intInputText placeholder="Name" [intSkeleton]="loading()" />
+    <int-checkbox binary [intSkeleton]="loading()" />
+  </div>
+  <int-select [options]="regions" optionLabel="name" placeholder="Select a region" fluid [intSkeleton]="loading()" />
+</div>

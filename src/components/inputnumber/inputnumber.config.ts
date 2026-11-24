@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'inputnumber',
+  uses: ['button', 'skeleton'],
   variants: ['basic', 'currency', 'prefix-suffix', 'buttons', 'states'],
   requires: ['inputtext'],
   loadRoutes: () => import('./routes'),

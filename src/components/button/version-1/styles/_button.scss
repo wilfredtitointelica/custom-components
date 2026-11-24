@@ -161,11 +161,11 @@
   // --- icon top / bottom ---
   --int-button-vertical-padding-y: var(--i-button-padding-y-md); // SG: --i-button-padding-y-md · Aura: {form.field.padding.y}
 
-  // --- skeleton ---
-  --int-button-skeleton-width: 6rem; // SG: no token, fixed placeholder width
-  --int-button-skeleton-height: var(--i-button-sizing-lg); // SG: --i-button-sizing-lg
-  --int-button-skeleton-radius: var(--i-button-border-radius-lg); // SG: --i-button-border-radius-lg
-  --int-button-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-button-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-button-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-button-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
+
   // --- focus ring ---
   --int-button-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-button-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -442,12 +442,13 @@ int-button {
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. button[intButton] is its own bone; <int-button> is display: contents,
+ * so its native button carries the paint.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-button {
-  display: inline-block;
-  width: var(--int-button-skeleton-width);
-  height: var(--int-button-skeleton-height);
-  border-radius: var(--int-button-skeleton-radius);
-  background: var(--int-button-skeleton-background);
+int-button.int-skeleton-mask > .int-button {
+  background-image: var(--int-button-skeleton-paint) !important;
+  background-size: var(--int-button-skeleton-paint-size) !important;
+  animation: var(--int-button-skeleton-animation);
 }

@@ -1,0 +1,16 @@
+<!--
+  title: List
+  description: Lista de elementos mientras carga: se repite la misma fila tantas veces como elementos se esperan, para que la página no salte al llegar los datos.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  @for (row of rows; track $index) {
+    <div class="u-display-flex u-align-items-center u-gap-sm">
+      <int-skeleton shape="circle" size="2.5rem" />
+      <div class="u-display-flex u-flex-column u-gap-xs u-flex-grow-1">
+        <int-skeleton width="60%" />
+        <int-skeleton width="40%" height=".75rem" />
+      </div>
+      <int-skeleton width="6rem" height="1.5rem" borderRadius="1000px" />
+    </div>
+  }
+</div>

@@ -645,7 +645,10 @@ Reglas:
     `@media (prefers-reduced-motion: reduce)` en el módulo base (3.6).
   - Modificadores de la base de conocimientos (Intelica.knowledgeBase, `.pr<Nombre>--minimal` → `.int-<id>--minimal`): un módulo por grupo, igual
     que los de PrimeNG.
-  - **SKELETON** `.sk-<id>`: forma básica (mismas dimensiones, fondo neutro) o vacío si no aplica.
+  - **SKELETON**: el skeleton es el componente real con `[intSkeleton]` (componente `skeleton`). Si el host no es
+    la caja visible, reglas `.int-skeleton-mask.int-<id>` que le dan el radio del componente o pintan los elementos
+    internos con `--int-<id>-skeleton-paint` / `-animation` (alias de `--int-skeleton-*`). Nunca anchos ni altos
+    fijos. Solo el comentario si el host ya es la caja. Variante **Skeleton** con un botón que alterna contenido ↔ skeleton.
 - `_<id>.<grupo>.scss` (uno por **grupo** de modificadores reales: `severity`, `size`, `removable`…):
   solo lo que cambia respecto de la base; `.int-<id>--<valor>`; sin `:root`. Un modificador reasigna tokens
   a otros tokens propios del `:root` (`.int-button--danger { --int-button-background: var(--int-button-danger-background) }`),

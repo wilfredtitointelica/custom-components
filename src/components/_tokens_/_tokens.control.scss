@@ -139,11 +139,14 @@
 	--int-control-checked-color: var(--i-color-primary-50);              // check / punto · checkbox, radiobutton
 
 	// --- skeleton ( marcador mientras carga ) ---
+	// RESERVADOS: ningún componente los lee. Desde 2026-11-24 el skeleton es la directiva [intSkeleton] de int-skeleton
+	// sobre el componente real (toma su tamaño y radio); color y onda salen de --int-skeleton-* ( skeleton/_skeleton.scss ).
+	// inputtext, inputnumber, select, listbox, datepicker, checkbox y radiobutton ya no los usan.
 
-	--int-control-skeleton-background: var(--i-background-disabled);     // secondary-200 · inputtext, inputnumber, select, listbox, datepicker, checkbox, radiobutton
+	--int-control-skeleton-background: var(--i-background-disabled);     // secondary-200 · reservado
 	                                                                     // ⚠️ inputotp, multiselect, password, search, searchdropdown mantienen secondary-100
-	--int-control-skeleton-height: var(--int-control-height);            // 32px · inputtext, inputnumber, select, datepicker
-	--int-control-skeleton-border-radius: var(--int-control-border-radius); // 8px · inputtext, inputnumber, select, listbox, datepicker
+	--int-control-skeleton-height: var(--int-control-height);            // 32px · reservado
+	--int-control-skeleton-border-radius: var(--int-control-border-radius); // 8px · reservado
 
 }
 

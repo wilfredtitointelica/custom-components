@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'fileupload',
+  uses: ['skeleton'],
   requires: ['button', 'tag'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

@@ -49,10 +49,12 @@
   --int-tabs-vertical-tab-active-font-weight: var(--i-typography-font-weight-regular); // knowledgeBase: .prTabVertical .p-tab-active (regular)
   --int-tabs-vertical-panels-background: transparent; // knowledgeBase: .prTabVertical p-tabpanels (page background shows through)
 
-  // --- skeleton ---
-  --int-tabs-skeleton-height: 8rem; // SG: no token · Aura: —
-  --int-tabs-skeleton-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg
-  --int-tabs-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-tabs-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-tabs-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-tabs-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
+  --int-tabs-skeleton-border-radius: var(--int-skeleton-border-radius); // int-skeleton: --int-skeleton-border-radius (bones without a radius of their own)
+
   // --- focus ring ---
   --int-tabs-focus-ring-width: var(--i-border-width-sm); // SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-tabs-focus-ring-color: var(--i-color-primary-600); // SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -152,11 +154,26 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The line under the tabs stays; each tab and the open panel are bones.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-tabs {
-  display: block;
-  height: var(--int-tabs-skeleton-height);
-  border-radius: var(--int-tabs-skeleton-border-radius);
-  background: var(--int-tabs-skeleton-background);
+.int-skeleton-mask.int-tabs {
+  background-image: none !important;
+  background-color: transparent !important;
+  animation: none;
+
+  .int-tabs__tab {
+    border-bottom-color: var(--int-tabs-tab-border) !important;
+  }
+
+  .int-tabs__tab,
+  .int-tabs__panel {
+    background-image: var(--int-tabs-skeleton-paint) !important;
+    background-size: var(--int-tabs-skeleton-paint-size) !important;
+    animation: var(--int-tabs-skeleton-animation);
+    border-radius: var(--int-tabs-skeleton-border-radius);
+    // Only the content box: each tab is a bar as long as its label and the line under it stays visible.
+    background-clip: content-box !important;
+  }
 }

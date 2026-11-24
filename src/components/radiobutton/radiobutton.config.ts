@@ -12,6 +12,7 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'radiobutton',
+  uses: ['button', 'skeleton'],
   variants: ['basic', 'reactive-forms', 'sizes-states'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

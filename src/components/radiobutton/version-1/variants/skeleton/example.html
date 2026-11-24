@@ -1,0 +1,17 @@
+<!--
+  title: Skeleton
+  description: Con `[intSkeleton]` el radio se muestra como skeleton: un círculo con su tamaño real. La etiqueta también lleva `[intSkeleton]` y se convierte en una barra del largo de su texto.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div>
+    <button intButton [label]="loading() ? 'Show content' : 'Show skeleton'" variant="outlined" size="small" (click)="loading.set(!loading())"></button>
+  </div>
+  <div class="u-display-flex u-flex-wrap u-align-items-center u-gap-lg">
+    @for (type of feeTypes; track type.code) {
+      <div class="u-display-flex u-align-items-center u-gap-xs">
+        <int-radiobutton name="sk-rb" [inputId]="'sk-rb-' + type.code" [value]="type.code" [intSkeleton]="loading()" />
+        <label [for]="'sk-rb-' + type.code" [intSkeleton]="loading()">{{ type.label }}</label>
+      </div>
+    }
+  </div>
+</div>

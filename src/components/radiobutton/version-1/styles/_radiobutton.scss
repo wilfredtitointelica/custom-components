@@ -34,9 +34,6 @@
   --int-radiobutton-disabled-border: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.border.color}
   --int-radiobutton-disabled-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.disabled.background}
   --int-radiobutton-disabled-dot-color: var(--i-color-secondary-400); // SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
-
-  // --- skeleton ---
-  --int-radiobutton-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
   --int-radiobutton-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-radiobutton-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -159,12 +156,10 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The host is the circle: it only takes its radius.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-radiobutton {
-  display: inline-block;
-  width: var(--int-radiobutton-size);
-  height: var(--int-radiobutton-size);
+.int-skeleton-mask.int-radiobutton {
   border-radius: var(--int-radiobutton-radius);
-  background: var(--int-radiobutton-skeleton-background);
 }

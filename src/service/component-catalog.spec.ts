@@ -55,7 +55,7 @@ const EXCEL_NAMES = [
  * Drag and Drop; inputnumber, checkbox and radiobutton split from Input, which stays as inputtext). Tag is the
  * Excel "Pill".
  */
-const NON_EXCEL_IDS = ['chip', 'confirmdialog', 'picklist', 'inputnumber', 'checkbox', 'radiobutton'];
+const NON_EXCEL_IDS = ['chip', 'confirmdialog', 'picklist', 'inputnumber', 'checkbox', 'radiobutton', 'skeleton'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();

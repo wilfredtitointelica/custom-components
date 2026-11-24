@@ -43,11 +43,6 @@
   --int-inputnumber-stack-width: var(--i-sizing-sm); // SG: --i-sizing-sm · Aura: {inputnumber.button.width} 2.5rem
   --int-inputnumber-stack-border-radius: var(--i-border-radius-lg); // SG: --i-border-radius-lg 8px (field corners) · Aura: {form.field.border.radius}
   --int-inputnumber-stack-gap: var(--i-spacing-container-sm); // SG: --i-spacing-container-sm (space between value and buttons) · Aura: —
-
-  // --- skeleton ---
-  --int-inputnumber-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
-  --int-inputnumber-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
-  --int-inputnumber-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -199,12 +194,10 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The host is the bone; it takes the radius of the field.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-inputnumber {
-  display: inline-block;
-  width: 12rem;
-  height: var(--int-inputnumber-skeleton-height);
-  border-radius: var(--int-inputnumber-skeleton-border-radius);
-  background: var(--int-inputnumber-skeleton-background);
+.int-skeleton-mask.int-inputnumber {
+  border-radius: var(--int-inputnumber-border-radius);
 }

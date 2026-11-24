@@ -24,6 +24,7 @@
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
+    "endOfLine": "auto",
     "overrides": [
       {
         "files": "*.html",
@@ -63,6 +64,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "3.10.1",
     "typescript": "~5.9.2"
   },
   "description": "Catálogo y documentación de los componentes `int-*` (Angular 20 + SCSS + BEM).",

@@ -35,9 +35,6 @@
   --int-checkbox-disabled-border: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.border.color}
   --int-checkbox-disabled-background: var(--i-color-secondary-200); // SG: --i-color-secondary-200 · Aura: {form.field.disabled.background}
   --int-checkbox-disabled-icon-color: var(--int-control-disabled-icon-color); // _tokens_: --int-control-disabled-icon-color · SG: --i-color-secondary-400 · Aura: {form.field.disabled.color}
-
-  // --- skeleton ---
-  --int-checkbox-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
   // --- focus ring ---
   --int-checkbox-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-checkbox-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -150,12 +147,10 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The host is the box: it only takes the radius of the box.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-checkbox {
-  display: inline-block;
-  width: var(--int-checkbox-size);
-  height: var(--int-checkbox-size);
+.int-skeleton-mask.int-checkbox {
   border-radius: var(--int-checkbox-radius);
-  background: var(--int-checkbox-skeleton-background);
 }

@@ -44,11 +44,6 @@
   --int-inputtext-lg-padding-y: var(--int-control-lg-padding-y); // _tokens_: --int-control-lg-padding-y 8px · Aura: {form.field.lg.padding.y}
   --int-inputtext-lg-line-height: var(--int-control-lg-line-height); // _tokens_: --int-control-lg-line-height · SG: --i-typography-lineHeight-lg 24px (large field 40 = 8 + 24 + 8, border inside) · Aura: normal
   --int-inputtext-lg-font-size: var(--int-control-lg-font-size); // _tokens_: --int-control-lg-font-size · Aura: {form.field.lg.font.size}
-
-  // --- skeleton ---
-  --int-inputtext-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
-  --int-inputtext-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
-  --int-inputtext-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -154,12 +149,6 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. input[intInputText] / textarea is its own bone (box and radius): nothing to add.
 \*——————————————————————————————————————————————————————————*/
-
-.sk-inputtext {
-  display: inline-block;
-  width: 12rem;
-  height: var(--int-inputtext-skeleton-height);
-  border-radius: var(--int-inputtext-skeleton-border-radius);
-  background: var(--int-inputtext-skeleton-background);
-}

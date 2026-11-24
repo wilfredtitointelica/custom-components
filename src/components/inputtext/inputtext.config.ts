@@ -14,6 +14,6 @@ export default {
   id: 'inputtext',
   variants: ['basic', 'sizes', 'validation', 'helper-text', 'disabled', 'fluid', 'textarea'],
   sourceName: 'Input (InputText, Checkbox, RadioButton, Textarea)',
-  uses: ['message'],
+  uses: ['message', 'button', 'skeleton'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

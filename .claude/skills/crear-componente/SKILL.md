@@ -40,7 +40,7 @@ Referencia completa: `src/components/_demo_/` (2 versiones, base, ejemplos y est
 | Nombres públicos | Prefijo `int-` + kebab-case: `<int-button>`, `.int-button`. Nunca camelCase, PascalCase ni snake_case en selectores o clases. |
 | Clase TypeScript | `Int` + PascalCase del id (`IntButton`). Ejemplos: `<Id><Slug>Example` (`ButtonSeverityExample`). |
 | BEM | Bloque `.int-button` · elemento `.int-button__icon` · modificador `.int-button--text`. Sin clases sueltas como `.icon`, `.active`, `.primary`. |
-| Skeleton | `.sk-<id>` (ej. `.sk-button`), en la sección SKELETON del módulo base. |
+| Skeleton | No se dibuja un segundo componente: la directiva `[intSkeleton]` (componente `skeleton`) muestra el componente **real** como skeleton, con su tamaño. La sección SKELETON del módulo base solo lleva, si hacen falta, reglas `.int-skeleton-mask.int-<id>` que le dan al host el radio del componente o mueven la pintura a un elemento interno (tokens propios, nunca anchos ni altos fijos). Ver `src/components/select` o `listbox`. |
 | Nombres de carpeta | Ejemplos en kebab-case (`icons-border/`); versiones `version-<número>`. Lo demás se ignora con un aviso en consola. |
 | Documentación | Las variantes **son las carpetas** `variants/<slug>/` que existen: cada una es una entrada del menú y una sección de la página, detectadas solas (HTML + TS). `basic` va primero y el resto en orden alfabético. No hay secciones sin carpeta. |
 | Config | `<id>.config.ts` es **opcional** y solo sirve para ordenar u ocultar carpetas existentes. Un nombre en `variants` sin carpeta no se muestra. |
@@ -464,10 +464,8 @@ Cuando exista un módulo de modificador (3.8), se agrega su línea:
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: rules .int-skeleton-mask.int-chip only if needed.
 \*——————————————————————————————————————————————————————————*/
-
-.sk-chip {
-}
 ```
 
 - El archivo se entrega **exactamente así**: sin propiedades CSS dentro de los selectores.
@@ -590,7 +588,7 @@ componente no se crea un input `width`/`height`: las variantes usan `[style]` so
 ## 7. Checklist de aceptación
 
 - [ ] Selector y clases con `int-` + kebab-case.
-- [ ] BEM: bloque, `__elemento`, `--modificador`; skeleton `.sk-<id>`.
+- [ ] BEM: bloque, `__elemento`, `--modificador`; skeleton con `[intSkeleton]` (reglas `.int-skeleton-mask.int-<id>` solo si hacen falta).
 - [ ] `version-N/` solo con `base/`, `variants/`, `styles/` y (opcional) `compositions/`.
 - [ ] Cada ejemplo en su carpeta: un input, estado o slot → `variants/`; un caso de uso armado con la
       API + helpers → `compositions/`. Ningún input que solo exista para un caso de contenido.

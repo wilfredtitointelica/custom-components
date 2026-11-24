@@ -59,10 +59,11 @@
   --int-datepicker-footer-border: var(--i-color-secondary-200); // SG: .footerDatapicker
   --int-datepicker-footer-gap: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg (Today / Clear) · Aura: {datepicker.buttonbar.gap}
 
-  // --- skeleton ---
-  --int-datepicker-skeleton-height: var(--int-control-skeleton-height); // _tokens_: --int-control-skeleton-height · SG: --i-sizing-lg 32px
-  --int-datepicker-skeleton-border-radius: var(--int-control-skeleton-border-radius); // _tokens_: --int-control-skeleton-border-radius · SG: --i-border-radius-lg 8px
-  --int-datepicker-skeleton-background: var(--int-control-skeleton-background); // _tokens_: --int-control-skeleton-background · SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-datepicker-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-datepicker-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-datepicker-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
+
   // --- focus ring ---
   --int-datepicker-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width · SG: --i-border-width-sm 1px · Aura: {focus.ring.width} 1px
   --int-datepicker-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color · SG: --i-color-primary-600 · Aura: {focus.ring.color}
@@ -334,12 +335,27 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The field is the inner input (its own radius); inline, the whole calendar
+ * is the bone with the radius of the panel.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-datepicker {
-  display: inline-block;
-  width: 12rem;
-  height: var(--int-datepicker-skeleton-height);
-  border-radius: var(--int-datepicker-skeleton-border-radius);
-  background: var(--int-datepicker-skeleton-background);
+.int-skeleton-mask.int-datepicker:not(.int-datepicker--inline) {
+  background-image: none !important;
+  background-color: transparent !important;
+  animation: none;
+}
+
+.int-skeleton-mask .int-datepicker__input {
+  background-image: var(--int-datepicker-skeleton-paint) !important;
+  background-size: var(--int-datepicker-skeleton-paint-size) !important;
+  animation: var(--int-datepicker-skeleton-animation);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.int-skeleton-mask.int-datepicker--inline {
+  border-radius: var(--int-datepicker-panel-radius);
 }

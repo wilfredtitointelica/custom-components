@@ -13,6 +13,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
 export default {
   id: 'tabs',
   sourceName: 'Tabs (V1 / V2)',
-  uses: ['select', 'inputnumber'],
+  uses: ['select', 'inputnumber', 'button', 'skeleton'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;

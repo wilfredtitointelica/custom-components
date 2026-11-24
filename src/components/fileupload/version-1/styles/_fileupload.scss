@@ -63,9 +63,10 @@
   --int-fileupload-disabled-color: var(--i-text-color-disabled); // SG: --i-text-color-disabled · Aura: {form.field.disabled.color}
   --int-fileupload-disabled-border-color: var(--i-border-default); // SG: --i-border-default (dropzone border) · Aura: —
 
-  // --- skeleton ---
-  --int-fileupload-skeleton-height: 10rem; // SG: no token · placeholder height of the skeleton
-  --int-fileupload-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
+  // --- skeleton ( [intSkeleton] mask ) ---
+  --int-fileupload-skeleton-paint: var(--int-skeleton-paint); // int-skeleton: --int-skeleton-paint (background + wave of [intSkeleton])
+  --int-fileupload-skeleton-paint-size: var(--int-skeleton-paint-size); // int-skeleton: --int-skeleton-paint-size (the shine is the middle third)
+  --int-fileupload-skeleton-animation: var(--int-skeleton-animation); // int-skeleton: --int-skeleton-animation (none with reduced motion)
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -264,11 +265,29 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: size, padding and radius are its own, so nothing
+ * here has a width or height. The frame of the advanced mode stays; its buttons and the content area
+ * (drop zone, files) are bones.
 \*——————————————————————————————————————————————————————————*/
 
-.sk-fileupload {
-  display: block;
-  height: var(--int-fileupload-skeleton-height);
-  border-radius: var(--int-fileupload-border-radius);
-  background: var(--int-fileupload-skeleton-background);
+.int-skeleton-mask.int-fileupload {
+  background-image: none !important;
+  background-color: transparent !important;
+  animation: none;
+
+  &.int-fileupload--advanced {
+    border-color: var(--int-fileupload-border) !important;
+    background: var(--int-fileupload-background) !important;
+  }
+
+  .int-fileupload__header {
+    border-bottom-color: var(--int-fileupload-border) !important;
+  }
+
+  .int-button,
+  .int-fileupload__content {
+    background-image: var(--int-fileupload-skeleton-paint) !important;
+    background-size: var(--int-fileupload-skeleton-paint-size) !important;
+    animation: var(--int-fileupload-skeleton-animation);
+  }
 }

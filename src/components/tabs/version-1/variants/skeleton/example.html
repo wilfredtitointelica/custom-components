@@ -1,0 +1,21 @@
+<!--
+  title: Skeleton
+  description: Con `[intSkeleton]` las pestañas mantienen la línea inferior; cada pestaña se convierte en una barra del largo de su etiqueta y el panel abierto en un bloque de su alto real.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div>
+    <button intButton [label]="loading() ? 'Show content' : 'Show skeleton'" variant="outlined" size="small" (click)="loading.set(!loading())"></button>
+  </div>
+  <int-tabs value="summary" [intSkeleton]="loading()">
+    <int-tablist>
+      <int-tab value="summary">Summary</int-tab>
+      <int-tab value="detail">Fee detail</int-tab>
+      <int-tab value="history">History</int-tab>
+    </int-tablist>
+    <int-tabpanels>
+      <int-tabpanel value="summary">KPIs and totals for the selected period.</int-tabpanel>
+      <int-tabpanel value="detail">Fee-by-fee breakdown.</int-tabpanel>
+      <int-tabpanel value="history">Changes over time.</int-tabpanel>
+    </int-tabpanels>
+  </int-tabs>
+</div>

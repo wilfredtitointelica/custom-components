@@ -1,0 +1,13 @@
+<!--
+  title: Skeleton
+  description: Con `[intSkeleton]` la lista mantiene su borde y su fondo, y cada opción (y el buscador, con `filter`) se convierte en una barra del alto real de la fila.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <div>
+    <button intButton [label]="loading() ? 'Show content' : 'Show skeleton'" variant="outlined" size="small" (click)="loading.set(!loading())"></button>
+  </div>
+  <div class="u-display-flex u-flex-wrap u-gap-md">
+    <int-listbox [options]="regions" optionLabel="name" ariaLabel="Region" [intSkeleton]="loading()" />
+    <int-listbox [options]="regions" optionLabel="name" filter ariaLabel="Region with filter" [intSkeleton]="loading()" />
+  </div>
+</div>

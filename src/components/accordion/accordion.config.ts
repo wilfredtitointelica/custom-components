@@ -12,6 +12,6 @@ import { ComponentDefinition } from '../../service/catalog.model';
  */
 export default {
   id: 'accordion',
-  uses: ['table'],
+  uses: ['table', 'button', 'skeleton'],
   loadRoutes: () => import('./routes'),
 } satisfies ComponentDefinition;
