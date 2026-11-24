@@ -31,6 +31,8 @@
   --int-accordion-status-icon-success-color: var(--i-icon-color-success); // SG: alerts .success-icon (green/800 #126629) · Aura: —
   --int-accordion-status-icon-error-color: var(--i-icon-color-error); // SG: alerts .error-icon (red/700 #960D0D) · Aura: —
   --int-accordion-transition: var(--i-motion-base); // SG: --i-motion-base · Aura: {transition.duration}
+  --int-accordion-icon-transition-duration: var(--int-control-dropdown-motion-duration); // _tokens_: --int-control-dropdown-motion-duration 300ms (same arrow as int-select, int-multiselect, int-treeselect) · Aura: {transition.duration} 0.2s
+  --int-accordion-icon-transition-easing: var(--int-control-dropdown-motion-easing); // _tokens_: --int-control-dropdown-motion-easing ease-in-out · Aura: ease
 
   // --- content ---
   --int-accordion-content-color: var(--i-color-neutral-700); // knowledgeBase: --i-accordion-content-color (Neutral 700)
@@ -134,7 +136,8 @@
 
   &__toggle-icon {
     font-size: var(--int-accordion-icon-size);
-    transition: transform var(--int-accordion-transition);
+    // The arrow turns -180deg (counter-clockwise) while the panel is open, as int-select.
+    transition: rotate var(--int-accordion-icon-transition-duration) var(--int-accordion-icon-transition-easing);
   }
 
   // Height animation without measuring: grid rows 0fr → 1fr.
@@ -171,7 +174,7 @@
     color: var(--int-accordion-header-active-color);
   }
   > .int-accordion__header .int-accordion__toggle-icon {
-    transform: rotate(180deg);
+    rotate: -180deg;
   }
   > .int-accordion__content {
     grid-template-rows: 1fr;

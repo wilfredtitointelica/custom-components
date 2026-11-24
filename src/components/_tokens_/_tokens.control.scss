@@ -166,7 +166,7 @@
 	// usado por: multiselect, treeselect
 
 	--int-control-dropdown-width: var(--i-sizing-lg);                    // 32px
-	--int-control-dropdown-motion-duration: var(--i-motion-duration-base); // giro de la flecha al abrir
+	--int-control-dropdown-motion-duration: var(--i-motion-duration-base); // giro de la flecha al abrir ( -180deg ) · multiselect, treeselect, select, accordion
 	--int-control-dropdown-motion-easing: var(--i-motion-ease-equal);
 
 	// --- overlay ( el panel que se abre debajo del campo ) ---
