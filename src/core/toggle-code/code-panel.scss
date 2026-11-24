@@ -252,6 +252,11 @@
   color: #2c73cd;
 }
 
+// Attribute directives (`intButton`, `[intTooltip]`) and their inputs / outputs on the same tag.
+.doc-code-directive {
+  color: #ff7eb6;
+}
+
 .doc-code-ng,
 .doc-code-name {
   font-weight: 700;
@@ -301,6 +306,7 @@
 .doc-code-plain
   :is(
     .doc-code-int,
+    .doc-code-directive,
     .doc-code-ng,
     .doc-code-flow,
     .doc-code-dep,

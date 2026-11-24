@@ -101,4 +101,28 @@ describe('IntTooltip (version 2) tooltipOnTruncate', () => {
     fixture.detectChanges();
     expect(container.querySelector('[role="tooltip"]')?.textContent).toContain('A very long fee name');
   }));
+
+  it('shows when the text is cut by less than 1px (rounded scrollWidth equals clientWidth)', fakeAsync(() => {
+    const fixture = TestBed.createComponent(SubPixelTruncateHost);
+    fixture.detectChanges();
+    const container = TestBed.inject(OverlayContainer).getContainerElement();
+    const span: HTMLElement = fixture.nativeElement.querySelector('span');
+
+    // Shrink the box 0.4px below the real text width: the ellipsis shows, scrollWidth/clientWidth round equal.
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    span.style.width = `${range.getBoundingClientRect().width - 0.4}px`;
+
+    span.dispatchEvent(new Event('mouseenter'));
+    tick();
+    fixture.detectChanges();
+    expect(container.querySelector('[role="tooltip"]')?.textContent).toContain('Visa ISA Fee');
+  }));
 });
+
+@Component({
+  imports: [IntTooltip],
+  template: `<span tooltipOnTruncate intTooltip="Visa ISA Fee">Visa ISA Fee</span>`,
+  styles: `span { display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }`,
+})
+class SubPixelTruncateHost {}

@@ -292,12 +292,17 @@ function checkVersion(component, version, report, deps) {
       // The page shows the header: name the int-* API or the u-* helpers, never a Style Guide class.
       if (/\bpr[A-Z]\w*/.test(header))
         report.warn(path, 'the header names a Style Guide class (.pr*): describe it with the int-* API or u-* helpers');
-      // Sizing a component goes as PrimeNG ([style]="{ width: '25rem' }" on <int-*>); content uses u-* helpers.
-      const contentMarkup = markup.replace(/<int-[a-z-]+\b[^>]*>/g, (tag) =>
-        tag.replace(/\s\[style\]="[^"]*"/, ''),
+      // Sizing a component goes as PrimeNG ([style]="{ width: '25rem' }" on <int-*>, or on the element that
+      // carries an int* directive: <input intInputText>, <button intButton>); content uses u-* helpers.
+      const contentMarkup = markup.replace(
+        /<int-[a-z-]+\b[^>]*>|<[a-zA-Z][\w-]*(?:[^>"']|"[^"]*"|'[^']*')*?[\s[(*]int[A-Z]\w*[\])]*[\s=>/](?:[^>"']|"[^"]*"|'[^']*')*>/g,
+        (tag) => tag.replace(/\s\[style\]="[^"]*"/, ''),
       );
       if (inExamples(file) && /\sstyle="|\[style(\.|\]=)/.test(contentMarkup))
-        report.error(path, 'inline style in a variant: use u-* helpers ([style] only on <int-*> to size it)');
+        report.error(
+          path,
+          'inline style in a variant: use u-* helpers ([style] only on <int-*> or an int* directive host to size it)',
+        );
       if (/animate\.(enter|leave)/.test(markup)) animates = true;
       // State and a11y belong to the component (an input + host bindings), not to whoever uses it.
       if (inExamples(file))

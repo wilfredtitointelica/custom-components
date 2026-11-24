@@ -7,6 +7,10 @@
 :root {
   --NOTE-SEARCH: 'int-search ( Custom )';
 
+  // --- field border (intenseBorder, int-* extension: the main search of a view, e.g. the header one, is darker) ---
+  --int-search-border-color: var(--int-control-border-color); // _tokens_: --int-control-border-color · knowledgeBase: table search border · Figma: #9CA3BA (input/color/border)
+  --int-search-border-color-intense: var(--int-control-border-color-intense); // _tokens_: --int-control-border-color-intense · SG: search-default --i-search-border-color (--i-border-info, commented) · a custom value of intenseBorder overrides it on the host
+
   // --- field state colors of the end buttons (the field look comes from input[intInputText]) ---
   --int-search-invalid-color: var(--i-text-color-error); // knowledgeBase: .prIconfield invalid --i-text-color-error
   --int-search-disabled-color: var(--i-text-color-disabled); // knowledgeBase: .prInputtext disabled color · Figma: #9ca3ba (input/color/disabled/text)
@@ -47,6 +51,8 @@
   // Room for the search icon at the end of input[intInputText] (as .p-iconfield .p-inputtext). The block
   // prefix outweighs the int-inputtext field padding; only the end padding changes, the look stays int-inputtext.
   & &__input {
+    // Only the rest state: the hover, focus, invalid and disabled rules of int-inputtext still win.
+    --int-inputtext-border-color: var(--int-search-border-color);
     padding-inline-end: var(--int-search-icon-padding-inline);
   }
 
@@ -93,6 +99,11 @@
   // .p-inputtext-fluid: full width also as a flex item of a toolbar.
   &--fluid {
     width: 100%;
+  }
+
+  // Main search of a view: darker rest border (default token or the custom color of intenseBorder).
+  &--intense-border {
+    --int-search-border-color: var(--int-search-border-color-intense);
   }
 
   // Room for the divider and the clear button besides the search icon.

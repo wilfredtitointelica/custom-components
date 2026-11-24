@@ -103,8 +103,10 @@ src/components/<id>/version-N/
   `--int-*`** y con su comentario de origen (`// SG: no token · Figma: 22px`); nunca suelto en las reglas.
   Duraciones con `--i-motion-*`, `prefers-reduced-motion` si hay animación, foco con `:focus-visible`.
 - Contenido dentro de los templates de las variantes y composiciones: helpers `.u-*`, nunca `style` inline. Única
-  excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`
-  (sin crear inputs `width`/`height` en la base para eso).
+  excepción: el tamaño del propio componente, como PrimeNG: `<int-card [style]="{ width: '25rem' }">`, o
+  sobre el elemento de una directiva (`<input intInputText [style]="{ width: '20rem' }" />`)
+  (sin crear inputs `width`/`height` en la base para eso). Los campos de formulario de los ejemplos
+  van a `20rem`, salvo las variantes `fluid`.
 - La etiqueta `<int-*>` no lleva helpers `u-*`: su lugar en el layout del padre va en un `<div>`
   envoltorio (`<div class="u-display-flex u-flex-grow-1 u-flex-basis-0"><int-card …>`), que el
   componente llena (`.int-<id>:only-child { flex-grow: 1 }`).
