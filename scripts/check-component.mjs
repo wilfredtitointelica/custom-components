@@ -425,6 +425,10 @@ function checkVersion(component, version, report, deps) {
         const alias = /^var\(--int-[\w-]+\)$/.test(value.trim());
         if (!ORIGIN_COMMENT.test(text) && !alias)
           report.warn(at, `${name} without origin comment (// knowledgeBase: · Figma: · Aura:)`);
+        // Skeleton: a fixed size drifts from the real component (size, fluid, [style.width]…). [intSkeleton]
+        // masks the real component, so the skeleton takes its size from it (skeleton/version-1/base/skeleton-mask.ts).
+        if (/-skeleton-(min-|max-)?(width|height|size)$/.test(name) && !/^--int-skeleton-/.test(name))
+          report.warn(at, `${name}: fixed-size skeleton token, it drifts from the component: mask the real component with [intSkeleton] and drop the token`);
       });
       // Own tokens: the rules read --int-<id>-* (declared in the :root of _<id>.scss, so they are listed in
       // the API tab); only that :root reads the common tokens of _tokens_/ (--int-control-* for fields) and the

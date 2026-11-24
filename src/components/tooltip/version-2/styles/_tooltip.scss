@@ -33,12 +33,6 @@
   --int-tooltip-arrow-color: var(--i-color-primary-900); // Figma: #0A1733 (tooltip/color/arrow)
   --int-tooltip-arrow-size: var(--i-border-width-lg); // Figma: 4px (beak 8×4, loose value)
   --int-tooltip-arrow-inset: var(--i-spacing-container-lg); // Figma: 12px (space/150) [Indicator=corners]
-
-  // --- skeleton ---
-  --int-tooltip-skeleton-width: 8rem; // SG: no token · Aura: —
-  --int-tooltip-skeleton-height: var(--i-sizing-md); // SG: --i-sizing-md
-  --int-tooltip-skeleton-border-radius: var(--i-border-radius-md); // SG: --i-border-radius-md
-  --int-tooltip-skeleton-background: var(--i-background-disabled); // SG: --i-background-disabled
 }
 
 /*——————————————————————————————————————————————————————————*\
@@ -168,12 +162,5 @@
 
 /*——————————————————————————————————————————————————————————*\
  * SKELETON
+ * Overlay: it only appears on hover/focus, so it has no skeleton. Mask the trigger with [intSkeleton] instead.
 \*——————————————————————————————————————————————————————————*/
-
-.sk-tooltip {
-  display: inline-block;
-  width: var(--int-tooltip-skeleton-width);
-  height: var(--int-tooltip-skeleton-height);
-  border-radius: var(--int-tooltip-skeleton-border-radius);
-  background: var(--int-tooltip-skeleton-background);
-}
