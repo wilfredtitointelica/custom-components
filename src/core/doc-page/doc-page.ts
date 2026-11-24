@@ -406,6 +406,11 @@ const DONE_MARK = 'data-dep-done';
 /** Set on a marked element that already has its own position (fixed, absolute…), so the scan keeps it. */
 const POSITIONED_MARK = 'data-dep-positioned';
 /**
+ * Set on a marked element that clips its own content (a label truncated with an ellipsis): it stays static
+ * and the label is anchored to it from outside, so its overflow does not cut the label.
+ */
+const CLIPPED_MARK = 'data-dep-clipped';
+/**
  * Outline without label ("scan" | "done") on the other elements of the dependency in its first table
  * row: a button repeated per row shows up once, in the first row, instead of in every row.
  */
@@ -427,7 +432,9 @@ function markFirst(attribute: string, dep: string, [first, ...rest]: HTMLElement
   if (first.getAttribute(attribute) !== label) {
     // Read before marking: once marked, the scan rule would make a static element relative.
     if (!first.hasAttribute(SCAN_MARK) && !first.hasAttribute(DONE_MARK)) {
-      first.toggleAttribute(POSITIONED_MARK, getComputedStyle(first).position !== 'static');
+      const style = getComputedStyle(first);
+      first.toggleAttribute(POSITIONED_MARK, style.position !== 'static');
+      first.toggleAttribute(CLIPPED_MARK, style.overflowX !== 'visible' || style.overflowY !== 'visible');
     }
     first.setAttribute(attribute, label);
   }
@@ -475,6 +482,7 @@ function clearDependencyMarks(host: HTMLElement): void {
     element.removeAttribute(SCAN_MARK);
     element.removeAttribute(DONE_MARK);
     element.removeAttribute(POSITIONED_MARK);
+    element.removeAttribute(CLIPPED_MARK);
     element.removeAttribute(ROW_MARK);
   }
 }

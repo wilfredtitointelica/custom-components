@@ -4,13 +4,13 @@
 -->
 <div class="u-display-flex u-flex-wrap u-gap-sm">
   <div class="u-display-flex u-flex-column u-gap-xs">
-    <input intInputText invalid value="Text here" aria-label="Error" aria-describedby="inputtext-helper-error" />
+    <input intInputText value="Text here" aria-label="Error" aria-describedby="inputtext-helper-error" invalid [style]="{ width: '20rem' }" />
     <div class="u-display-flex u-justify-content-end">
       <int-message id="inputtext-helper-error" severity="error" variant="simple" size="small">Helper text</int-message>
     </div>
   </div>
   <div class="u-display-flex u-flex-column u-gap-xs">
-    <input intInputText success value="Text here" aria-label="Success" aria-describedby="inputtext-helper-success" />
+    <input intInputText value="Text here" aria-label="Success" aria-describedby="inputtext-helper-success" success [style]="{ width: '20rem' }" />
     <div class="u-display-flex u-justify-content-end">
       <int-message id="inputtext-helper-success" severity="success" variant="simple" size="small">Helper text</int-message>
     </div>

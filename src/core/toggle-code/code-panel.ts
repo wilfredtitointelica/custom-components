@@ -16,9 +16,10 @@ import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 
 import { CODE_LANGUAGES, CodeLanguage, DocExampleCode } from '../../service/catalog.model';
 import { ClipCodeSource, ClipboardHistory } from '../../service/clipboard-history';
+import { findComponent } from '../../service/component-catalog';
 import { CodeVisibility } from '../../service/code-visibility';
 
-type CodePartKind = 'int' | 'ng' | 'flow' | 'dep' | 'import' | 'interface' | 'decorator' | 'class' | 'method' | 'comment';
+type CodePartKind = 'int' | 'directive' | 'ng' | 'flow' | 'dep' | 'import' | 'interface' | 'decorator' | 'class' | 'method' | 'comment';
 type CodePart = { text: string; kind: CodePartKind | null; name: boolean };
 /** Lines (0-based) from where a block opens to where it closes; `kind` colors its guide. */
 type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
@@ -142,6 +143,9 @@ type FoldBlock = { start: number; end: number; kind: CodePartKind | null };
           <ul class="doc-code-legend" aria-label="Color legend">
             @if (kinds().has('int')) {
               <li><span class="doc-code-swatch doc-code-int"></span><code class="doc-code-int">int-*</code> Component</li>
+            }
+            @if (kinds().has('directive')) {
+              <li><span class="doc-code-swatch doc-code-directive"></span><code class="doc-code-directive">int*</code> Directive</li>
             }
             @if (kinds().has('ng')) {
               <li><span class="doc-code-swatch doc-code-ng"></span><code class="doc-code-ng">ng-*</code> Angular template</li>
@@ -352,8 +356,68 @@ export class CodePanel {
 /** Angular control flow blocks: `@if (…) {`, `} @else {`, `@for (…) {`, `@switch`, `@defer`… */
 const FLOW_BLOCK = '@(?:if|else|for|empty|switch|case|default|defer|placeholder|loading|error)\\b';
 
+/** Attribute directive of the library: `intButton`, `[intTooltip]`… (`int` + PascalCase). */
+const DIRECTIVE_ATTR = /^int[A-Z][\w$]*$/;
+
+/** One attribute of a tag (leading spaces · name · `="value"`); the tag name has no spaces before it. */
+const TAG_ATTRIBUTE = /(\s+)([^\s=>"'/]+)(\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>"']+))?/g;
+
+/** Name of a binding without its syntax: `[(value)]` → value, `(onClick)` → onClick, `*intX` → intX. */
+const bareName = (attribute: string) => attribute.replace(/^[[(*]+|[\])]+$/g, '');
+
+const directiveSelectors = (tag: string) =>
+  [...tag.matchAll(TAG_ATTRIBUTE)].map((match) => bareName(match[2])).filter((name) => DIRECTIVE_ATTR.test(name));
+
+const membersCache = new Map<string, ReadonlySet<string>>();
+
 /**
- * HTML tab: <int-*> tags, <ng-*> tags, the "dep:" comments that wrap a provisional, the other
+ * Inputs and outputs of an attribute directive, from the API of its latest version (generated
+ * registry): `intButton` → component `button`. Unknown directive → none (only its selector stands out).
+ */
+function directiveMembers(selector: string): ReadonlySet<string> {
+  let members = membersCache.get(selector);
+  if (!members) {
+    const api = findComponent(selector.slice(3).toLowerCase())?.versions.at(-1)?.api;
+    members = new Set([...(api?.inputs ?? []), ...(api?.outputs ?? [])].map((member) => member.name));
+    membersCache.set(selector, members);
+  }
+  return members;
+}
+
+/**
+ * Attributes of a tag (what follows `<button`) split so the directive selectors (bold) and the inputs /
+ * outputs of those directives stand out; null when the tag has no directive.
+ */
+function directiveParts(rest: string, kind: CodePartKind | null): CodePart[] | null {
+  const selectors = directiveSelectors(rest);
+  if (!selectors.length) {
+    return null;
+  }
+  const related = new Set(selectors.flatMap((selector) => [...directiveMembers(selector)]));
+  const parts: CodePart[] = [];
+  let last = 0;
+  for (const match of rest.matchAll(TAG_ATTRIBUTE)) {
+    const [whole, space, name, value] = match;
+    const bare = bareName(name);
+    const selector = DIRECTIVE_ATTR.test(bare);
+    if (!selector && !related.has(bare)) {
+      continue;
+    }
+    const start = match.index + space.length;
+    parts.push(
+      { text: rest.slice(last, start), kind, name: false },
+      { text: name, kind: 'directive', name: selector },
+      { text: value ?? '', kind: 'directive', name: false },
+    );
+    last = match.index + whole.length;
+  }
+  parts.push({ text: rest.slice(last), kind, name: false });
+  return parts;
+}
+
+/**
+ * HTML tab: <int-*> tags, attribute directives (`intButton`, `[intTooltip]`) with their inputs and
+ * outputs, <ng-*> tags, the "dep:" comments that wrap a provisional, the other
  * comments (dimmed) and the control flow (`@for (…) {` and its closing `}`). Other tags and
  * {{ interpolations }} are skipped whole so a brace inside them does not close a block.
  */
@@ -381,7 +445,7 @@ function htmlParts(source: string): CodePart[] {
       found = [
         { text: open, kind, name: false },
         { text: name, kind, name: true },
-        { text: rest, kind, name: false },
+        ...(directiveParts(rest, kind) ?? [{ text: rest, kind, name: false }]),
       ];
     } else if (keyword) {
       flow++;
@@ -392,6 +456,14 @@ function htmlParts(source: string): CodePart[] {
     } else if (token === '}' && flow) {
       flow--;
       found = [{ text: token, kind: 'flow', name: false }];
+    } else if (/^<[a-zA-Z]/.test(token)) {
+      // Other tags: only the ones with a directive are split (`<button` keeps the base color).
+      const at = token.search(/[\s>/]/);
+      const directive = directiveParts(token.slice(at), null);
+      if (!directive) {
+        continue;
+      }
+      found = [{ text: token.slice(0, at), kind: null, name: false }, ...directive];
     } else {
       continue;
     }
@@ -651,14 +723,20 @@ const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'i
 /**
  * HTML blocks: elements from the opening tag to the closing one (or a tag that spans lines),
  * Angular control flow (@if / @for … { }), "dep:" pairs and comments. Guide color: int-* / ng-* /
- * control flow / dep like their highlight; any other element goes neutral.
+ * directive / control flow / dep like their highlight; any other element goes neutral.
  */
 function htmlBlocks(source: string): FoldBlock[] {
   const lineOf = lineIndex(source);
-  const tagKind = (name: string): CodePartKind | null =>
-    name.startsWith('int-') ? 'int' : name.startsWith('ng-') ? 'ng' : null;
+  const tagKind = (name: string, token: string): CodePartKind | null =>
+    name.startsWith('int-')
+      ? 'int'
+      : name.startsWith('ng-')
+        ? 'ng'
+        : directiveSelectors(token).length
+          ? 'directive'
+          : null;
   const blocks: FoldBlock[] = [];
-  const tags: { name: string; line: number }[] = [];
+  const tags: { name: string; line: number; kind: CodePartKind | null }[] = [];
   const braces: number[] = [];
   const deps: number[] = [];
   const tokens = new RegExp(
@@ -688,14 +766,14 @@ function htmlBlocks(source: string): FoldBlock[] {
     } else if (name && closeTag) {
       const at = tags.map((tag) => tag.name).lastIndexOf(name);
       if (at >= 0) {
-        blocks.push({ start: tags[at].line, end, kind: tagKind(name) });
+        blocks.push({ start: tags[at].line, end, kind: tags[at].kind });
         tags.length = at;
       }
     } else if (name) {
       if (selfClose || VOID_TAGS.has(name.toLowerCase())) {
-        blocks.push({ start: line, end, kind: tagKind(name) });
+        blocks.push({ start: line, end, kind: tagKind(name, token) });
       } else {
-        tags.push({ name, line });
+        tags.push({ name, line, kind: tagKind(name, token) });
       }
     } else if (token.startsWith('@')) {
       braces.push(line);

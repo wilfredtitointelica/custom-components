@@ -295,8 +295,22 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
 
 // Only static elements become the label's containing block: a fixed or absolute one (int-toast, an
 // overlay) keeps its own position. DocPage flags those with data-dep-positioned before marking them.
-.doc-is-scanning .doc-preview :is([data-dep-scan], [data-dep-done]):not([data-dep-positioned]) {
+.doc-is-scanning .doc-preview :is([data-dep-scan], [data-dep-done]):not([data-dep-positioned], [data-dep-clipped]) {
   position: relative;
+}
+
+// An element that clips its own content (overflow hidden of a label truncated with an ellipsis) would cut a
+// label inside it. DocPage flags it with data-dep-clipped: it stays static, so the label's containing block
+// is outside it (its overflow no longer cuts it), and anchor positioning pins the label to its corner.
+.doc-is-scanning .doc-preview :is([data-dep-scan], [data-dep-done])[data-dep-clipped] {
+  anchor-name: --doc-scan-target;
+  anchor-scope: --doc-scan-target;
+
+  &::after {
+    position-anchor: --doc-scan-target;
+    top: anchor(top);
+    right: anchor(right);
+  }
 }
 
 .doc-is-scanning .doc-preview [data-dep-scan] {

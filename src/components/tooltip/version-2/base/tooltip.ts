@@ -180,7 +180,21 @@ export class IntTooltip implements OnDestroy {
   /** The host content overflows its box: cut by an ellipsis (width) or a line clamp (height). */
   private isTruncated(): boolean {
     const el = this.host.nativeElement;
-    return el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
+    if (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight) return true;
+    // scrollWidth / clientWidth are rounded integers: a text that overflows by less than 1px
+    // (80.4px of text in an 80px box) already shows the ellipsis but reads as 80 > 80 = false.
+    // Compare the real (sub-pixel) text width, which overflow: hidden does not clip, with the content box.
+    const range = el.ownerDocument.createRange();
+    range.selectNodeContents(el);
+    const textWidth = range.getBoundingClientRect().width;
+    const style = getComputedStyle(el);
+    const contentWidth =
+      el.getBoundingClientRect().width -
+      parseFloat(style.paddingLeft) -
+      parseFloat(style.paddingRight) -
+      parseFloat(style.borderLeftWidth) -
+      parseFloat(style.borderRightWidth);
+    return textWidth - contentWidth > 0.01;
   }
 
   private scheduleShow(): void {
