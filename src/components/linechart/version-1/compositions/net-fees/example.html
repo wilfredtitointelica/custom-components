@@ -1,0 +1,37 @@
+<!--
+  title: Net Fees
+  description: Panel del dashboard con `int-card`: título, periodo, `int-linechart` con `openLast` y `valuePrefix`, un template `tooltip` con el desglose del mes (Gross, Adjustments, Exclusions, Not allocated, Net Expenses) en un `int-litetable` con `fullFirstColumn`, y un pie con texto y botón `View Details`.
+-->
+<int-card>
+  <div class="u-display-flex u-flex-column u-gap-lg">
+    <div class="u-display-flex u-flex-column">
+      <span id="net-fees-title" class="u-text-lg u-bold">Net Fees by Brand</span>
+      <span class="u-text-md">Nov, 2025 - Nov, 2026</span>
+    </div>
+    <int-linechart
+      openLast
+      valuePrefix="EUR"
+      ariaLabelledBy="net-fees-title"
+      [data]="data"
+      [style]="{ height: '18rem' }"
+    >
+      <ng-template #tooltip let-point>
+        <div class="u-display-flex u-flex-column u-text-sm">
+          <span class="u-bold">{{ point.meta.period }}</span>
+          <int-litetable
+            fullFirstColumn
+            [value]="rows(point.meta)"
+            [columns]="columns"
+            [style]="{ width: '12rem' }"
+          />
+        </div>
+      </ng-template>
+    </int-linechart>
+    <div class="u-display-flex u-align-items-center u-gap-sm u-pt-5 u-bt-1">
+      <span class="u-flex-grow-1 u-text-md"
+        >For further insights into fee trend expenses, please refer to the detailed view</span
+      >
+      <button intButton severity="secondary" class="u-text-nowrap">View Details</button>
+    </div>
+  </div>
+</int-card>

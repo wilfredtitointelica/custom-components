@@ -12,3 +12,4 @@ export * from './base-control';
 export * from './icon';
 export * from './overlay';
 export * from './style-loader';
+export * from './chart-theme';

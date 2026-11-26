@@ -196,6 +196,16 @@ html.doc-html:has(.doc-code-dialog[open], .doc-sg-dialog[open]) {
   color: revert;
 }
 
+/*
+ * Example host (the <x-example> component rendered in .doc-preview): never wider than the preview column
+ * (doc-page.scss: grid-template-columns minmax(0, 1fr)), so an example with a fixed width and
+ * maxWidth: '100%' shrinks with the screen. Global: the host is created dynamically, outside the
+ * encapsulation of doc-page.scss. :where() keeps it overridable (host class u-full-width).
+ */
+:where(.doc-preview) > :where(*) {
+  max-width: 100%;
+}
+
 :where(.doc-body) :where(hr):not(.doc-preview *) {
   border: revert;
 }

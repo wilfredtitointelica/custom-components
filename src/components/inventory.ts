@@ -30,6 +30,7 @@ import multiselect from './multiselect/multiselect.config';
 import timeline from './timeline/timeline.config';
 import toast from './toast/toast.config';
 import treetable from './treetable/treetable.config';
+import litetable from './litetable/litetable.config';
 import card from './card/card.config';
 import badge from './badge/badge.config';
 import chip from './chip/chip.config';
@@ -40,6 +41,7 @@ import inputotp from './inputotp/inputotp.config';
 import password from './password/password.config';
 import progressbar from './progressbar/progressbar.config';
 import skeleton from './skeleton/skeleton.config';
+import linechart from './linechart/linechart.config';
 import demo from './_demo_/demo.config';
 
 /**
@@ -83,6 +85,7 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   timeline,
   toast,
   treetable,
+  litetable,
   card,
   badge,
   chip,
@@ -92,4 +95,5 @@ export const COMPONENT_INVENTORY: readonly ComponentDefinition[] = [
   password,
   progressbar,
   skeleton,
+  linechart,
 ];

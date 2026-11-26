@@ -53,9 +53,9 @@ const EXCEL_NAMES = [
 /**
  * Components added outside the Excel (chip split from Badge; confirmdialog from Dialog; picklist from
  * Drag and Drop; inputnumber, checkbox and radiobutton split from Input, which stays as inputtext). Tag is the
- * Excel "Pill".
+ * Excel "Pill". Charts (linechart…) are a new category, not in the Excel.
  */
-const NON_EXCEL_IDS = ['chip', 'confirmdialog', 'picklist', 'inputnumber', 'checkbox', 'radiobutton', 'skeleton'];
+const NON_EXCEL_IDS = ['chip', 'confirmdialog', 'picklist', 'inputnumber', 'checkbox', 'radiobutton', 'skeleton', 'linechart'];
 
 describe('Component catalog', () => {
   const catalog = new ComponentCatalog();

@@ -1,0 +1,12 @@
+<!--
+  title: Cell Padding
+  description: `cellPadding` da espacio interno a cada celda (como `cellpadding`) con `small`, `medium` o `large`. Con `showGridlines` se ve que las celdas siguen juntas y el texto se aleja de su borde.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  @for (size of sizes; track size) {
+    <div class="u-display-flex u-flex-column u-gap-sm">
+      <span class="u-text-sm u-bold">{{ size }}</span>
+      <int-litetable showGridlines [cellPadding]="size" [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+    </div>
+  }
+</div>

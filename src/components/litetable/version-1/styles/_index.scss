@@ -1,0 +1,7 @@
+// int-litetable · entry point.
+@use 'litetable';
+@use 'litetable.full-first-column' as litetable-full-first-column;
+@use 'litetable.cell-spacing' as litetable-cell-spacing;
+@use 'litetable.cell-padding' as litetable-cell-padding;
+@use 'litetable.gridlines' as litetable-gridlines;
+@use 'litetable.cell-background' as litetable-cell-background;

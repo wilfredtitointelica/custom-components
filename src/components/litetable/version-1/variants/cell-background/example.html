@@ -1,0 +1,23 @@
+<!--
+  title: Cell Background
+  description: `cellBackground` pinta el fondo de todas las celdas. Solo el atributo usa el blanco del Style Guide; con un valor usa ese color, en hexadecimal (`#fff4e5`) o como `var()` de un token.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">cellBackground</span>
+    <int-litetable cellBackground [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">cellBackground="#fff4e5"</span>
+    <int-litetable cellBackground="#fff4e5" [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">cellBackground="var(--i-background-subtle)"</span>
+    <int-litetable
+      cellBackground="var(--i-background-subtle)"
+      [value]="rows"
+      [columns]="columns"
+      [style]="{ width: '20rem' }"
+    />
+  </div>
+</div>

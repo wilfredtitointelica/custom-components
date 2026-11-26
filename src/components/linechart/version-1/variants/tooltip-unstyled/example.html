@@ -1,0 +1,24 @@
+<!--
+  title: Tooltip Unstyled
+  description: Con `tooltipUnstyled` el componente no pone la caja: el template `tooltip` trae su propio diseño.
+-->
+<int-linechart
+  tooltipUnstyled
+  valuePrefix="EUR"
+  ariaLabel="Net fees by brand"
+  [data]="data"
+  [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+>
+  <ng-template #tooltip let-point>
+    <div
+      class="u-display-flex u-flex-column u-gap-sm u-p-3 u-radius-lg u-shadow-md u-background-white"
+    >
+      <div class="u-display-flex u-flex-column">
+        <span class="u-text-xs u-color-grey-500">{{ point.label }}</span>
+        <span class="u-text-md u-bold">{{ point.dataset }}</span>
+      </div>
+      <span class="u-text-2xl u-bold u-color-primary">{{ point.formattedValue }}</span>
+      <span class="u-text-xs u-color-grey-500">Gross {{ format(point.meta.gross) }}</span>
+    </div>
+  </ng-template>
+</int-linechart>

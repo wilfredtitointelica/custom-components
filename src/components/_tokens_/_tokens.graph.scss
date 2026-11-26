@@ -1,0 +1,113 @@
+/*——————————————————————————————————————————————————————————————————————————————————————————————————*\
+ * TOKENS GRAPH ( gráficos ECharts )  ·  --int-graph-*
+
+ ! Qué es
+   Los valores que tienen en común los gráficos int-* ( ECharts, render SVG ): colores de marca y paleta,
+   tipografía y tamaños de ejes, grilla, líneas, puntos, barras, leyenda y tooltip. Si cambias un token
+   aquí, cambian todos los gráficos que lo leen.
+
+ ! Por qué existe
+   En los proyectos ( y en la base de conocimientos, Diseño/components/graph.md ) el estilo de un gráfico
+   se escribe en crudo dentro del EChartsOption del TS ( '#0a1733', 'Lato', fontSize: 10, borderRadius: 8 ).
+   Aquí se centraliza: cada gráfico apunta su :root a estos tokens y la base los lee en runtime con
+   getComputedStyle ( src/components/_shared_/chart-theme.ts ) para armar el EChartsOption. El TS no
+   tiene colores, fuentes ni tamaños.
+
+ ! Cómo se usa
+   - Se carga UNA sola vez desde los estilos globales ( src/styles.scss → @use './components/_tokens_' ).
+     Un proyecto que copie un gráfico int-* también copia esta carpeta y la carga una vez.
+   - Un componente nunca lee estos tokens en sus reglas: su :root apunta su propio token a uno de estos,
+       --int-linechart-axis-label-color: var(--int-graph-axis-label-color); // _tokens_: --int-graph-axis-label-color
+     y sus reglas ( y el TS ) leen solo --int-linechart-*.
+   - Medidas en px o rem: el helper las convierte a número para ECharts.
+
+ ! Qué entra aquí
+   Un rol entra solo si DOS O MÁS gráficos le dan el mismo valor ( los cuatro gráficos comparten marca,
+   paleta, ejes y tooltip ). Un valor de un solo gráfico se queda en ese componente ( --int-<id>-* ).
+
+ ! Componentes ( int-*  ·  base de conocimientos  ·  diseño )
+ 	int-linechart         graph.md ( líneas )                        CHRISTIAN
+ 	int-barchart          graph.md Bar Chart                         ( pendiente )
+ 	int-gaugechart        graph.md .ptGaugeGraph / .ghGauge          ( pendiente )
+ 	int-areachart         graph.md Area Chart + markLine "Today"     ( pendiente )
+
+ ! Contenido
+   TIPOGRAFÍA · EJES Y GRILLA · MARCAS · PALETA · SERIES · LEYENDA · TOOLTIP
+\*——————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+:root { --NOTE-GRAPH: 'Custom Graph Tokens';
+
+	/*——— TIPOGRAFÍA ———*/
+
+	--int-graph-font-family: var(--i-text-body-family);                          // Lato · Ref: textStyle.fontFamily 'Lato, sans-serif'
+	--int-graph-font-size-xs: var(--i-typography-font-size-xs);                  // 10px · Figma: --chart/font/size/xs ( etiquetas del eje X, leyenda del área )
+	--int-graph-font-size-sm: var(--i-typography-font-size-sm);                  // 12px · Figma: --page/font/size/sm ( eje Y, leyenda, tooltip )
+	--int-graph-font-weight-regular: var(--i-typography-font-weight-regular);    // 400 · prefijo de moneda del eje Y
+	--int-graph-font-weight-bold: var(--i-typography-font-weight-bold);          // 700 · valor del eje Y ( Ref: 900 → SG no tiene black )
+
+	/*——— EJES Y GRILLA ———*/
+
+	--int-graph-axis-label-color: var(--i-color-blue-900);                       // #0A1733 · Ref: Color.blue
+	--int-graph-axis-label-muted-color: var(--i-color-grey-600);                 // #636B8C · knowledgeBase: rich usd #636b8d ( prefijo "USD" / "EUR" )
+	--int-graph-axis-prefix-gap: var(--i-spacing-50);                           // 4px · prefijo ( EUR ) ↔ valor del eje Y
+	--int-graph-grid-line-color: #E6E8F0;                                        // ⚠️ SG: no token · más próximo: var(--i-color-grey-100) #F2F2F5
+	--int-graph-grid-line-width: var(--i-border-width-sm);                       // 1px
+	--int-graph-plot-padding: var(--i-spacing-container-md);                     // 8px · margen del área del gráfico ( grid con containLabel ) · Ref: grid top/right 10
+
+	/*——— MARCAS ( base · soft para áreas y fondos · strong para hover / énfasis ) ———*/
+
+	--int-graph-color-mastercard: var(--i-color-orange-mastercard-400);          // #FEA239 · Ref: Color.mastercard
+	--int-graph-color-mastercard-soft: var(--i-color-orange-mastercard-100);     // #FFF0D4
+	--int-graph-color-mastercard-strong: var(--i-color-orange-mastercard-600);   // #ED6A09
+	--int-graph-color-visa: var(--i-color-blue-visa-500);                        // #738FE1 · Ref: Color.visa
+	--int-graph-color-visa-soft: var(--i-color-blue-visa-100);                   // #E3EEFC
+	--int-graph-color-visa-strong: var(--i-color-blue-visa-700);                 // #485ABA
+	--int-graph-color-amex: var(--i-color-green-amex-400);                       // #91BE82 · Ref: Color.amex
+	--int-graph-color-amex-soft: var(--i-color-green-amex-100);                  // #E9F3E5
+	--int-graph-color-amex-strong: var(--i-color-green-amex-600);                // #4C7D3C
+
+	/*——— PALETA ( series sin marca, en este orden ) ———*/
+
+	--int-graph-color-1: var(--i-color-blue-visa-500);                           // #738FE1 · Figma: --chart/color/primary #7490e2 · knowledgeBase: --card/color/graph/1
+	--int-graph-color-2: var(--i-color-teal-500);                                // #5CB39D · knowledgeBase: --card/color/graph/2 ( forecast )
+	--int-graph-color-3: var(--i-color-orange-mastercard-400);                   // #FEA239
+	--int-graph-color-4: var(--i-color-green-amex-400);                          // #91BE82
+	--int-graph-color-5: var(--i-color-grey-500);                                // #7D85A6
+	--int-graph-color-6: var(--i-color-blue-visa-800);                           // #3D4C96
+	--int-graph-color-neutral: var(--i-color-grey-600);                          // #636B8C · barras de una sola serie ( Expense Evolution )
+
+	/*——— SERIES ———*/
+
+	--int-graph-line-width: var(--i-border-width-sm);                            // 1px · Ref: lineStyle.width 1 ( knowledgeBase área: 2px ⚠️ )
+	--int-graph-point-size: 10px;                                                // SG: no token ( spacing 8 / 12 ) · Ref: symbolSize 10 · Figma: 10px
+	--int-graph-point-open-background: var(--i-background-default);              // #FCFCFC · Ref: último punto #FFFFFF con borde del color de la serie
+	--int-graph-point-open-border-width: var(--i-spacing-25);                    // 2px · Ref: borderWidth 2
+	--int-graph-bar-radius: var(--i-border-radius-lg);                           // 8px · Figma: --chart/border/radius/lg
+	--int-graph-motion-duration: var(--i-motion-duration-base);                  // 300ms · una serie que se oculta desde la leyenda se desvanece en este tiempo
+
+	/*——— LEYENDA ( HTML, debajo del SVG ) ———*/
+
+	--int-graph-legend-margin: var(--i-spacing-gap-sm);                          // 8px · gráfico ↔ leyenda
+	--int-graph-legend-gap: var(--i-spacing-400);                              // 32px · Ref: itemGap 30
+	--int-graph-legend-item-gap: var(--i-spacing-50);                            // 4px · marcador ↔ texto
+	--int-graph-legend-marker-size: 10px;                                        // SG: no token · Ref: itemWidth / itemHeight 10
+	--int-graph-legend-off-opacity: 0.4;                                         // SG: no token · serie apagada ( ECharts usa gris #ccc )
+
+	/*——— TOOLTIP ( HTML, template del consumidor dentro de la caja ) ———*/
+
+	--int-graph-tooltip-background: var(--i-background-default);                 // #FCFCFC · knowledgeBase: backgroundColor #fcfcfc
+	--int-graph-tooltip-border-color: var(--i-border-default);                   // secondary-200 · knowledgeBase: borderColor #d8dae4
+	--int-graph-tooltip-border-width: var(--i-border-width-sm);                  // 1px
+	--int-graph-tooltip-border-radius: var(--i-border-radius-md);                // 6px · knowledgeBase: borderRadius 6
+	--int-graph-tooltip-shadow: var(--i-shadow-depth-2);                         // Ref: 0 2px 4px -2px / 0 4px 6px -2px rgba(36,38,51,.05)
+	--int-graph-tooltip-padding: var(--i-spacing-container-md);                  // 8px · knowledgeBase: padding 8
+	--int-graph-tooltip-gap: var(--i-spacing-50);                                // 4px · cabecera ↔ filas
+	--int-graph-tooltip-color: var(--i-color-blue-900);                          // #0A1733
+	--int-graph-tooltip-offset: var(--i-spacing-200);                            // 16px · Ref: 20px sobre el punto
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	:root {
+		--int-graph-motion-duration: 0ms;                                        // SG: no token · sin animación
+	}
+}

@@ -1,0 +1,14 @@
+<!--
+  title: Events
+  description: `onDataSelect` se emite al hacer clic en un punto con su serie, índice, valor y `meta`.
+-->
+<div class="u-display-flex u-flex-column u-gap-md">
+  <int-linechart
+    valuePrefix="EUR"
+    ariaLabel="Net fees by brand"
+    [data]="data"
+    [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+    (onDataSelect)="onDataSelect($event)"
+  />
+  <span class="u-text-md" aria-live="polite">{{ selected() }}</span>
+</div>

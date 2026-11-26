@@ -1,0 +1,19 @@
+<!--
+  title: Legend Template
+  description: El template `legend` personaliza el contenido de cada ítem de la leyenda; el botón, el teclado y el estado los pone el componente.
+-->
+<int-linechart
+  ariaLabel="Net fees by brand"
+  [data]="data"
+  [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+>
+  <ng-template #legend let-item>
+    <i
+      class="icon icon--sm"
+      [class.icon-view]="item.visible"
+      [class.icon-view-off]="!item.visible"
+      aria-hidden="true"
+    ></i>
+    <span class="u-text-sm u-bold">{{ item.label }}</span>
+  </ng-template>
+</int-linechart>

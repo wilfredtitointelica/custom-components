@@ -1,0 +1,57 @@
+<!--
+  title: LiteTable
+  description: LiteTable alinea texto plano en filas y columnas, sin bordes ni acciones.
+  figma:
+-->
+<table
+  class="int-litetable__table"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="ariaLabelledBy() || null"
+>
+  @if (headerTemplate(); as header) {
+    <thead class="int-litetable__head">
+      <ng-container [ngTemplateOutlet]="header" />
+    </thead>
+  } @else if (hasColumnHeader()) {
+    <thead class="int-litetable__head">
+      <tr>
+        @for (column of cols(); track $index) {
+          <th
+            class="int-litetable__cell"
+            scope="col"
+            [class.int-litetable__cell--center]="column.align === 'center'"
+            [class.int-litetable__cell--right]="column.align === 'right'"
+          >
+            {{ column.header }}
+          </th>
+        }
+      </tr>
+    </thead>
+  }
+  <tbody class="int-litetable__body">
+    @if (bodyTemplate(); as body) {
+      @for (row of rows(); track $index) {
+        <ng-container [ngTemplateOutlet]="body" [ngTemplateOutletContext]="{ $implicit: row, rowIndex: $index }" />
+      }
+    } @else {
+      @for (row of rows(); track $index) {
+        <tr>
+          @for (column of cols(); track $index) {
+            <td
+              class="int-litetable__cell"
+              [class.int-litetable__cell--center]="column.align === 'center'"
+              [class.int-litetable__cell--right]="column.align === 'right'"
+            >
+              {{ field(row, column.field) }}
+            </td>
+          }
+        </tr>
+      }
+    }
+  </tbody>
+  @if (footerTemplate(); as footer) {
+    <tfoot class="int-litetable__foot">
+      <ng-container [ngTemplateOutlet]="footer" />
+    </tfoot>
+  }
+</table>

@@ -15,12 +15,13 @@ export const CATALOG_GROUPS: readonly { readonly name: string; readonly ids: rea
   { name: 'Navigation', ids: ['breadcrumb', 'tabs', 'paginator', 'stepper'] },
   {
     name: 'Data & Containers',
-    ids: ['card', 'accordion', 'dialog', 'confirmdialog', 'carousel', 'table', 'treetable', 'treeview', 'picklist', 'timeline'],
+    ids: ['card', 'accordion', 'dialog', 'confirmdialog', 'carousel', 'table', 'treetable', 'litetable', 'treeview', 'picklist', 'timeline'],
   },
   {
     name: 'Feedback',
     ids: ['message', 'toast', 'tooltip', 'popover', 'badge', 'chip', 'tag', 'progressbar', 'skeleton'],
   },
+  { name: 'Charts', ids: ['linechart'] },
 ];
 
 export const OTHER_GROUP = 'Other';

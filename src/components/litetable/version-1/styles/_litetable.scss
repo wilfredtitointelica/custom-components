@@ -1,0 +1,98 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-LITETABLE: 'int-litetable ( Custom )';
+
+  // --- block ---
+  --int-litetable-width: fit-content; // SG: no token · as wide as its content, like the display: table of the pattern; [style] width replaces it
+  --int-litetable-table-width: 100%; // SG: no token · the <table> fills the host
+  --int-litetable-border-collapse: collapse; // knowledgeBase: .ptTableLite separate + border-spacing 0 · collapse = same layout, single gridline between cells
+  --int-litetable-border-collapse-separate: separate; // SG: no token · border-spacing only applies with separate
+  --int-litetable-cell-spacing: 0; // knowledgeBase: patterns/table-lite .ptTableLite · border-spacing: 0cqi (no space between cells)
+  --int-litetable-cell-spacing-small: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs (4px)
+  --int-litetable-cell-spacing-medium: var(--i-spacing-gap-md); // SG: --i-spacing-gap-md (12px)
+  --int-litetable-cell-spacing-large: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg (16px)
+
+  // --- cells ---
+  --int-litetable-cell-padding: 0; // knowledgeBase: .ptTableLite__cell · no padding
+  --int-litetable-cell-padding-small: var(--i-spacing-gap-xs); // SG: --i-spacing-gap-xs (4px)
+  --int-litetable-cell-padding-medium: var(--i-spacing-gap-md); // SG: --i-spacing-gap-md (12px)
+  --int-litetable-cell-padding-large: var(--i-spacing-gap-lg); // SG: --i-spacing-gap-lg (16px)
+  --int-litetable-head-font-weight: var(--i-typography-font-weight-bold); // knowledgeBase: .ptTableLite__head · font-weight: bold
+  --int-litetable-cell-font-weight: var(--i-typography-font-weight-regular); // SG: --i-typography-font-weight-regular
+
+  // --- showGridlines ---
+  --int-litetable-gridlines-border-width: var(--i-border-width-sm); // SG: --i-border-width-sm (1px)
+  --int-litetable-gridlines-border-color: var(--i-border-default); // SG: --i-border-default (secondary-200) · showGridlines="<color>" replaces it on the host
+
+  // --- cellBackground ---
+  --int-litetable-cell-background: transparent; // knowledgeBase: .ptTableLite · no background (SG: no token)
+  --int-litetable-cell-background-color: var(--i-background-default); // SG: --i-background-default (#fcfcfc, u-background-white) · cellBackground="<color>" replaces it on the host
+
+  // --- fullFirstColumn ---
+  --int-litetable-full-first-column-width: 100%; // knowledgeBase: .ptTableLite--fullFirstColumn · width: 100% (SG: no token)
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+ * knowledgeBase: patterns/table-lite .ptTableLite · table model, columns align on their own. A native <table>
+ * (the pattern uses divs with display: table) so cells can merge with colspan / rowspan.
+ * No font size or color: it takes the ones of its container (tooltip, popover, card).
+\*——————————————————————————————————————————————————————————*/
+
+.int-litetable {
+  display: block;
+  width: var(--int-litetable-width);
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-litetable {
+  &__table {
+    width: var(--int-litetable-table-width);
+    border-collapse: var(--int-litetable-border-collapse);
+    border-spacing: var(--int-litetable-cell-spacing);
+  }
+
+  &__head {
+    font-weight: var(--int-litetable-head-font-weight);
+  }
+
+  &__body {
+    font-weight: var(--int-litetable-cell-font-weight);
+  }
+
+  // th / td: the browser styles of th (bold, centered) and td (1px padding) are reset to the group's.
+  &__cell {
+    padding: var(--int-litetable-cell-padding);
+    // Inherited from the table (cellBackground) or set on the cell itself ([intLitetableCellBackground]).
+    background: var(--int-litetable-cell-background);
+    font-weight: inherit;
+    text-align: start;
+    vertical-align: middle;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-litetable {
+  // Alignment of a column (columns[].align).
+  &__cell--center {
+    text-align: center;
+  }
+
+  &__cell--right {
+    text-align: end;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: rules .int-skeleton-mask.int-litetable only if needed.
+\*——————————————————————————————————————————————————————————*/

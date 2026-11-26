@@ -1,0 +1,26 @@
+<!--
+  title: Colspan
+  description: Un `td` con `colspan` abarca varias columnas. La fila de total va en el template `footer`, que se dibuja una sola vez después de las filas.
+-->
+<int-litetable showGridlines cellPadding="small" [value]="rows" [style]="{ width: '20rem' }">
+  <ng-template #header>
+    <tr>
+      <th>Category</th>
+      <th class="u-text-right">Transactions</th>
+      <th class="u-text-right">Total</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td>{{ row.category }}</td>
+      <td class="u-text-right">{{ row.transactions }}</td>
+      <td class="u-text-right">{{ row.total }}</td>
+    </tr>
+  </ng-template>
+  <ng-template #footer>
+    <tr>
+      <td colspan="2" class="u-bold">Total</td>
+      <td class="u-text-right u-bold">60K</td>
+    </tr>
+  </ng-template>
+</int-litetable>

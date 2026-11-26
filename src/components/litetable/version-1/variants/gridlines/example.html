@@ -1,0 +1,23 @@
+<!--
+  title: Gridlines
+  description: `showGridlines` dibuja un borde en cada celda. Solo el atributo usa el color de borde del Style Guide; con un valor usa ese color, en hexadecimal (`#f59e0b`) o como `var()` de un token.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">showGridlines</span>
+    <int-litetable showGridlines [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">showGridlines="#f59e0b"</span>
+    <int-litetable showGridlines="#f59e0b" [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <span class="u-text-sm u-bold">showGridlines="var(--i-border-accent)"</span>
+    <int-litetable
+      showGridlines="var(--i-border-accent)"
+      [value]="rows"
+      [columns]="columns"
+      [style]="{ width: '20rem' }"
+    />
+  </div>
+</div>

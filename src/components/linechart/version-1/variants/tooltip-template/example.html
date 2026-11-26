@@ -1,0 +1,36 @@
+<!--
+  title: Tooltip Template
+  description: El template `tooltip` arma el contenido del tooltip con helpers `u-*` dentro de la caja del componente; recibe el punto con su `meta`.
+-->
+<int-linechart
+  valuePrefix="EUR"
+  ariaLabel="Net fees by brand"
+  [data]="data"
+  [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+>
+  <ng-template #tooltip let-point>
+    <div class="u-display-flex u-flex-column u-gap-xs">
+      <span class="u-text-sm u-bold">{{ point.dataset }} · {{ point.label }}</span>
+      <div class="u-display-flex u-justify-content-between u-gap-lg">
+        <span class="u-text-sm">Gross</span>
+        <span class="u-text-sm">{{ format(point.meta.gross) }}</span>
+      </div>
+      <div class="u-display-flex u-justify-content-between u-gap-lg">
+        <span class="u-text-sm">Adjustments</span>
+        <span class="u-text-sm">{{ format(point.meta.adjustments) }}</span>
+      </div>
+      <div class="u-display-flex u-justify-content-between u-gap-lg">
+        <span class="u-text-sm">Exclusions</span>
+        <span class="u-text-sm">{{ format(point.meta.exclusions) }}</span>
+      </div>
+      <div class="u-display-flex u-justify-content-between u-gap-lg">
+        <span class="u-text-sm">Not allocated</span>
+        <span class="u-text-sm">{{ format(point.meta.notAllocated) }}</span>
+      </div>
+      <div class="u-display-flex u-justify-content-between u-gap-lg u-bt-1 u-pt-1">
+        <span class="u-text-sm u-bold">Net expenses</span>
+        <span class="u-text-sm u-bold">{{ point.formattedValue }}</span>
+      </div>
+    </div>
+  </ng-template>
+</int-linechart>

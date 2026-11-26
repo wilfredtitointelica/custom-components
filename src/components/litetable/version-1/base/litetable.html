@@ -1,0 +1,77 @@
+<!--
+  title: LiteTable
+  description: LiteTable alinea texto plano en filas y columnas, sin bordes ni acciones.
+  figma:
+-->
+<table
+  class="int-litetable__table"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="ariaLabelledBy() || null"
+>
+  @if (groupCells().length || headerCells().length) {
+    <thead class="int-litetable__head">
+      @if (groupCells().length) {
+        <tr class="int-litetable__row">
+          @for (cell of groupCells(); track $index) {
+            <th
+              class="int-litetable__cell"
+              [class.int-litetable__cell--first]="$first && cell.colspan === 1"
+              [class.int-litetable__cell--center]="cell.group.align === 'center'"
+              [class.int-litetable__cell--right]="cell.group.align === 'right'"
+              [attr.colspan]="cell.colspan > 1 ? cell.colspan : null"
+              [attr.rowspan]="cell.rowspan > 1 ? cell.rowspan : null"
+              [attr.scope]="cell.colspan > 1 ? 'colgroup' : 'col'"
+            >
+              {{ cell.group.header }}
+            </th>
+          }
+        </tr>
+      }
+      @if (headerCells().length) {
+        <tr class="int-litetable__row">
+          @for (cell of headerCells(); track cell.index) {
+            <th
+              class="int-litetable__cell"
+              [class.int-litetable__cell--first]="cell.index === 0 && cell.colspan === 1"
+              [class.int-litetable__cell--center]="cell.column.align === 'center'"
+              [class.int-litetable__cell--right]="cell.column.align === 'right'"
+              scope="col"
+            >
+              {{ cell.column.header }}
+            </th>
+          }
+        </tr>
+      }
+    </thead>
+  }
+  <tbody class="int-litetable__body">
+    @for (line of bodyRows(); track $index; let rowIndex = $index) {
+      <tr class="int-litetable__row">
+        @for (cell of line.cells; track cell.index) {
+          <td
+            class="int-litetable__cell"
+            [class.int-litetable__cell--first]="cell.index === 0 && cell.colspan === 1"
+            [class.int-litetable__cell--center]="cell.column.align === 'center'"
+            [class.int-litetable__cell--right]="cell.column.align === 'right'"
+            [attr.colspan]="cell.colspan > 1 ? cell.colspan : null"
+            [attr.rowspan]="cell.rowspan > 1 ? cell.rowspan : null"
+          >
+            @if (cellTemplate(); as template) {
+              <ng-container
+                [ngTemplateOutlet]="template"
+                [ngTemplateOutletContext]="{
+                  $implicit: cellValue(line.row, cell.column),
+                  row: line.row,
+                  column: cell.column,
+                  rowIndex,
+                }"
+              />
+            } @else {
+              {{ cellValue(line.row, cell.column) }}
+            }
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

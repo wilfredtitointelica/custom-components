@@ -1,0 +1,9 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Full First Column
+ * knowledgeBase: patterns/table-lite .ptTableLite--fullFirstColumn · tooltips with label/value pairs.
+ * The first column cells carry __cell--first (the pattern uses :first-child, which a rowspan would break).
+\*——————————————————————————————————————————————————————————*/
+
+.int-litetable--full-first-column .int-litetable__cell--first {
+  width: var(--int-litetable-full-first-column-width);
+}

@@ -1,0 +1,13 @@
+<!--
+  title: Template
+  description: El template `cell` personaliza el contenido de cada celda del cuerpo; recibe el valor, la fila, la columna y el índice de la fila.
+-->
+<int-litetable fullFirstColumn [value]="rows" [columns]="columns" [style]="{ width: '20rem' }">
+  <ng-template #cell let-value let-column="column">
+    @if (column.field === 'amount') {
+      <span class="u-bold">EUR {{ value | number }}</span>
+    } @else {
+      {{ value }}
+    }
+  </ng-template>
+</int-litetable>

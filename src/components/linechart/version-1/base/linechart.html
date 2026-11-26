@@ -1,0 +1,63 @@
+<!--
+  title: Line Chart
+  description: Gráfico de líneas que compara la evolución de una o más series en el tiempo.
+  figma:
+-->
+<!-- ECharts paints axes, grid, lines and points here (SVG renderer). -->
+<div
+  #plot
+  class="int-linechart__plot"
+  role="img"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+></div>
+
+<!-- Legend in HTML: one toggle button per series; the last visible series cannot be turned off. -->
+@if (legendItems().length) {
+  <div class="int-linechart__legend" role="group">
+    @for (item of legendItems(); track item.index) {
+      <button
+        type="button"
+        class="int-linechart__legend-item"
+        [class.int-linechart__legend-item--off]="!item.visible"
+        [style.--int-linechart-legend-marker-color]="item.color"
+        [attr.aria-pressed]="item.visible"
+        (click)="toggleDataset(item.index)"
+      >
+        <ng-container
+          [ngTemplateOutlet]="legendTemplate() ?? defaultLegend"
+          [ngTemplateOutletContext]="{ $implicit: item }"
+        />
+      </button>
+    }
+  </div>
+}
+
+<ng-template #defaultLegend let-item>
+  <span class="int-linechart__legend-marker"></span>
+  <span>{{ item.label }}</span>
+</ng-template>
+
+<!-- Tooltip box: rendered as a detached view; the ECharts formatter returns its element. -->
+<ng-template #tooltipBox let-point>
+  <div class="int-linechart__tooltip" [class.int-linechart__tooltip--unstyled]="tooltipUnstyled()">
+    @if (point) {
+      <ng-container
+        [ngTemplateOutlet]="tooltipTemplate() ?? defaultTooltip"
+        [ngTemplateOutletContext]="{ $implicit: point }"
+      />
+    }
+  </div>
+</ng-template>
+
+<ng-template #defaultTooltip let-point>
+  <span class="int-linechart__tooltip-header">{{ point.label }}</span>
+  <span
+    class="int-linechart__tooltip-row"
+    [style.--int-linechart-legend-marker-color]="point.color"
+  >
+    <span class="int-linechart__tooltip-marker"></span>
+    <span>{{ point.dataset }}</span>
+    <span class="int-linechart__tooltip-value">{{ point.formattedValue }}</span>
+  </span>
+</ng-template>

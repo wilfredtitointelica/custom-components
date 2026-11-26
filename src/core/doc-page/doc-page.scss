@@ -485,6 +485,9 @@
 
 .doc-preview {
   display: grid;
+  // One column as wide as the preview (never wider than it): an example with a fixed width and
+  // maxWidth: '100%' (e.g. a chart at 40rem) shrinks with the screen instead of overflowing.
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-height: 200px;
   padding: 56px 48px;
@@ -492,6 +495,8 @@
   background: var(--doc-surface-low);
   // The examples render with the Style Guide font (Lato), not the documentation one.
   font-family: var(--doc-font-component);
+  // The example host is capped at the column in src/styles.scss (.doc-preview > *): it is created
+  // dynamically, so this encapsulated stylesheet cannot reach it.
 }
 
 /* Active variant: a thin rail in the left gutter, outside the preview so it never competes with the example */

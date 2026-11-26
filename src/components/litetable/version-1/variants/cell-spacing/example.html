@@ -1,0 +1,12 @@
+<!--
+  title: Cell Spacing
+  description: `cellSpacing` separa las celdas (como `cellspacing`) con `small`, `medium` o `large`; el espacio también queda en el borde exterior de la tabla. Con `showGridlines` se ve el hueco entre las celdas.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  @for (size of sizes; track size) {
+    <div class="u-display-flex u-flex-column u-gap-sm">
+      <span class="u-text-sm u-bold">{{ size }}</span>
+      <int-litetable showGridlines [cellSpacing]="size" [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+    </div>
+  }
+</div>

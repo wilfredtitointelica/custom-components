@@ -1,0 +1,25 @@
+<!--
+  title: Formatter
+  description: `valuePrefix` agrega la moneda en peso regular y `valueFormatter` define el formato del valor en el eje Y y en el tooltip.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <p class="u-m-0 u-text-md u-bold">Prefix ( compact by default )</p>
+    <int-linechart
+      valuePrefix="EUR"
+      ariaLabel="Net fees in EUR"
+      [data]="data"
+      [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+    />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <p class="u-m-0 u-text-md u-bold">Prefix + custom formatter</p>
+    <int-linechart
+      valuePrefix="USD"
+      ariaLabel="Net fees in USD"
+      [data]="data"
+      [valueFormatter]="millions"
+      [style]="{ width: '40rem', maxWidth: '100%', height: '20rem' }"
+    />
+  </div>
+</div>

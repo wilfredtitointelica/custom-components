@@ -1,0 +1,22 @@
+<!--
+  title: Colors
+  description: Cada dataset toma un color de la paleta por nombre: marcas (`mastercard`, `visa`, `amex`), categóricos (`1`…`6`) o `neutral`. Sin `color` se asigna la paleta en orden. Los valores salen de los tokens `--int-graph-*`.
+-->
+<div class="u-display-flex u-flex-column u-gap-xl">
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <p class="u-m-0 u-text-md u-bold">Brands</p>
+    <int-linechart
+      ariaLabel="Brands"
+      [data]="brands"
+      [style]="{ width: '40rem', maxWidth: '100%', height: '16rem' }"
+    />
+  </div>
+  <div class="u-display-flex u-flex-column u-gap-sm">
+    <p class="u-m-0 u-text-md u-bold">Palette</p>
+    <int-linechart
+      ariaLabel="Palette"
+      [data]="palette"
+      [style]="{ width: '40rem', maxWidth: '100%', height: '16rem' }"
+    />
+  </div>
+</div>

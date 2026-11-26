@@ -1,0 +1,206 @@
+/*——————————————————————————————————————————————————————————*\
+ * TOKENS
+ * The SVG of ECharts cannot read CSS: the base reads these tokens with getComputedStyle
+ * (_shared_/chart-theme.ts) and builds the ECharts option with them. Change a chart color, font or size
+ * here (one chart) or in _tokens_/_tokens.graph.scss (every chart).
+\*——————————————————————————————————————————————————————————*/
+
+:root {
+  --NOTE-LINECHART: 'int-linechart ( Custom )';
+
+  // --- block ---
+  --int-linechart-min-height: 240px; // SG: no token · Ref: graph-line.html minHeight 240px
+  --int-linechart-font-family: var(--int-graph-font-family); // _tokens_: --int-graph-font-family
+  --int-linechart-font-size: var(--int-graph-font-size-sm); // _tokens_: --int-graph-font-size-sm 12px
+
+  // --- plot (ECharts, SVG) ---
+  --int-linechart-plot-padding: var(--int-graph-plot-padding); // _tokens_: --int-graph-plot-padding
+  --int-linechart-axis-label-color: var(--int-graph-axis-label-color); // _tokens_: --int-graph-axis-label-color
+  --int-linechart-axis-prefix-color: var(--int-graph-axis-label-color); // _tokens_: --int-graph-axis-label-color · Ref: "EUR" same color, regular weight
+  --int-linechart-axis-prefix-weight: var(--int-graph-font-weight-regular); // _tokens_: --int-graph-font-weight-regular
+  --int-linechart-axis-value-weight: var(--int-graph-font-weight-bold); // _tokens_: --int-graph-font-weight-bold
+  --int-linechart-axis-prefix-gap: var(--int-graph-axis-prefix-gap); // _tokens_: --int-graph-axis-prefix-gap · Ref: "EUR 500K"
+  --int-linechart-grid-line-color: var(--int-graph-grid-line-color); // _tokens_: --int-graph-grid-line-color
+  --int-linechart-grid-line-width: var(--int-graph-grid-line-width); // _tokens_: --int-graph-grid-line-width
+  --int-linechart-line-width: var(--int-graph-line-width); // _tokens_: --int-graph-line-width
+  --int-linechart-point-size: var(--int-graph-point-size); // _tokens_: --int-graph-point-size
+  --int-linechart-point-open-background: var(--int-graph-point-open-background); // _tokens_: --int-graph-point-open-background
+  --int-linechart-point-open-border-width: var(--int-graph-point-open-border-width); // _tokens_: --int-graph-point-open-border-width
+
+  // --- series colors (dataset color: 'mastercard' | 'visa' | 'amex' | 'neutral' | '1'…'6') ---
+  --int-linechart-color-mastercard: var(--int-graph-color-mastercard); // _tokens_: --int-graph-color-mastercard
+  --int-linechart-color-visa: var(--int-graph-color-visa); // _tokens_: --int-graph-color-visa
+  --int-linechart-color-amex: var(--int-graph-color-amex); // _tokens_: --int-graph-color-amex
+  --int-linechart-color-neutral: var(--int-graph-color-neutral); // _tokens_: --int-graph-color-neutral
+  --int-linechart-color-1: var(--int-graph-color-1); // _tokens_: --int-graph-color-1
+  --int-linechart-color-2: var(--int-graph-color-2); // _tokens_: --int-graph-color-2
+  --int-linechart-color-3: var(--int-graph-color-3); // _tokens_: --int-graph-color-3
+  --int-linechart-color-4: var(--int-graph-color-4); // _tokens_: --int-graph-color-4
+  --int-linechart-color-5: var(--int-graph-color-5); // _tokens_: --int-graph-color-5
+  --int-linechart-color-6: var(--int-graph-color-6); // _tokens_: --int-graph-color-6
+
+  // --- legend (HTML) ---
+  --int-linechart-legend-margin: var(--int-graph-legend-margin); // _tokens_: --int-graph-legend-margin
+  --int-linechart-legend-gap: var(--int-graph-legend-gap); // _tokens_: --int-graph-legend-gap · Ref: itemGap 30
+  --int-linechart-legend-item-gap: var(--int-graph-legend-item-gap); // _tokens_: --int-graph-legend-item-gap
+  --int-linechart-legend-color: var(--int-graph-axis-label-color); // _tokens_: --int-graph-axis-label-color · Ref: legend textStyle Color.blue
+  --int-linechart-legend-marker-size: var(--int-graph-legend-marker-size); // _tokens_: --int-graph-legend-marker-size
+  --int-linechart-legend-marker-color: var(--int-linechart-color-1); // SG: no token · the base sets it per item with the series color
+  --int-linechart-legend-off-opacity: var(--int-graph-legend-off-opacity); // _tokens_: --int-graph-legend-off-opacity
+  --int-linechart-marker-border-radius: var(--i-border-radius-full); // SG: --i-border-radius-full · Ref: legend icon circle
+  --int-linechart-legend-border-radius: var(--i-border-radius-sm); // SG: --i-border-radius-sm · focus ring shape of an item
+  --int-linechart-motion-duration: var(--i-motion-duration-fast); // SG: --i-motion-duration-fast 150ms
+  --int-linechart-fade-duration: var(--int-graph-motion-duration); // _tokens_: --int-graph-motion-duration 300ms · fade out of a series hidden from the legend
+  --int-linechart-focus-ring-width: var(--int-control-outline-width); // _tokens_: --int-control-outline-width 1px
+  --int-linechart-focus-ring-color: var(--int-control-outline-color); // _tokens_: --int-control-outline-color primary-600
+  --int-linechart-focus-ring-offset: var(--int-control-outline-offset); // _tokens_: --int-control-outline-offset 2px
+
+  // --- tooltip (HTML) ---
+  --int-linechart-tooltip-background: var(--int-graph-tooltip-background); // _tokens_: --int-graph-tooltip-background
+  --int-linechart-tooltip-border-color: var(--int-graph-tooltip-border-color); // _tokens_: --int-graph-tooltip-border-color
+  --int-linechart-tooltip-border-width: var(--int-graph-tooltip-border-width); // _tokens_: --int-graph-tooltip-border-width
+  --int-linechart-tooltip-border-radius: var(--int-graph-tooltip-border-radius); // _tokens_: --int-graph-tooltip-border-radius
+  --int-linechart-tooltip-shadow: var(--int-graph-tooltip-shadow); // _tokens_: --int-graph-tooltip-shadow
+  --int-linechart-tooltip-padding: var(--int-graph-tooltip-padding); // _tokens_: --int-graph-tooltip-padding
+  --int-linechart-tooltip-gap: var(--int-graph-tooltip-gap); // _tokens_: --int-graph-tooltip-gap
+  --int-linechart-tooltip-color: var(--int-graph-tooltip-color); // _tokens_: --int-graph-tooltip-color
+  --int-linechart-tooltip-header-weight: var(--int-graph-font-weight-bold); // _tokens_: --int-graph-font-weight-bold
+  --int-linechart-tooltip-offset: var(--int-graph-tooltip-offset); // _tokens_: --int-graph-tooltip-offset · Ref: 20px over the point
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * BLOCK ( block )
+\*——————————————————————————————————————————————————————————*/
+
+.int-linechart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--int-linechart-legend-margin);
+  min-width: 0;
+  min-height: var(--int-linechart-min-height);
+  font-family: var(--int-linechart-font-family);
+  font-size: var(--int-linechart-font-size);
+
+  &:only-child {
+    flex-grow: 1;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * ELEMENTS ( __element )
+\*——————————————————————————————————————————————————————————*/
+
+.int-linechart {
+  // ECharts SVG: fills what the legend leaves. Size containment: the SVG never sizes its container (no
+  // resize loop); the chart takes the width of its parent or of [style].
+  &__plot {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    contain: size;
+  }
+
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--int-linechart-legend-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--int-linechart-legend-item-gap);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--int-linechart-legend-border-radius);
+    background: none;
+    color: var(--int-linechart-legend-color);
+    font: inherit;
+    cursor: pointer;
+    transition: opacity var(--int-linechart-motion-duration);
+
+    &:focus-visible {
+      outline: var(--int-linechart-focus-ring-width) solid var(--int-linechart-focus-ring-color);
+      outline-offset: var(--int-linechart-focus-ring-offset);
+    }
+  }
+
+  &__legend-marker,
+  &__tooltip-marker {
+    flex: none;
+    width: var(--int-linechart-legend-marker-size);
+    height: var(--int-linechart-legend-marker-size);
+    border-radius: var(--int-linechart-marker-border-radius);
+    background: var(--int-linechart-legend-marker-color);
+  }
+
+  // Tooltip box: ECharts moves this element into its own (transparent) tooltip layer.
+  &__tooltip {
+    display: flex;
+    flex-direction: column;
+    gap: var(--int-linechart-tooltip-gap);
+    padding: var(--int-linechart-tooltip-padding);
+    border: var(--int-linechart-tooltip-border-width) solid
+      var(--int-linechart-tooltip-border-color);
+    border-radius: var(--int-linechart-tooltip-border-radius);
+    background: var(--int-linechart-tooltip-background);
+    box-shadow: var(--int-linechart-tooltip-shadow);
+    color: var(--int-linechart-tooltip-color);
+    font-family: var(--int-linechart-font-family);
+    font-size: var(--int-linechart-font-size);
+    white-space: nowrap;
+  }
+
+  &__tooltip-header {
+    font-weight: var(--int-linechart-tooltip-header-weight);
+  }
+
+  &__tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: var(--int-linechart-legend-item-gap);
+  }
+
+  &__tooltip-value {
+    margin-inline-start: auto;
+    padding-inline-start: var(--int-linechart-tooltip-gap);
+    font-weight: var(--int-linechart-tooltip-header-weight);
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier )
+\*——————————————————————————————————————————————————————————*/
+
+.int-linechart {
+  // Series turned off from the legend.
+  &__legend-item--off {
+    opacity: var(--int-linechart-legend-off-opacity);
+  }
+
+  // tooltipUnstyled: the box keeps only its layout; the template brings its own look.
+  &__tooltip--unstyled {
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-linechart__legend-item {
+    transition: none;
+  }
+}
+
+/*——————————————————————————————————————————————————————————*\
+ * SKELETON
+ * [intSkeleton] (int-skeleton) masks the real component: the mask already hides the SVG and the legend
+ * text, the host keeps its size. No extra rules needed.
+\*——————————————————————————————————————————————————————————*/

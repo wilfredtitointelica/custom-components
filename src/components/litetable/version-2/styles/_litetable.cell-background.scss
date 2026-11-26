@@ -1,0 +1,9 @@
+/*——————————————————————————————————————————————————————————*\
+ * MODIFIERS ( --modifier ) · Cell Background
+ * cellBackground input: every cell paints --int-litetable-cell-background-color (white of the Style Guide, or
+ * the color given to the input); cellSpacing shows what is behind.
+\*——————————————————————————————————————————————————————————*/
+
+.int-litetable--cell-background {
+  --int-litetable-cell-background: var(--int-litetable-cell-background-color);
+}
