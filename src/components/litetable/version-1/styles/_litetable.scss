@@ -37,9 +37,9 @@
 
 /*——————————————————————————————————————————————————————————*\
  * BLOCK ( block )
- * knowledgeBase: patterns/table-lite .ptTableLite · table model, columns align on their own. A native <table>
- * (the pattern uses divs with display: table) so cells can merge with colspan / rowspan.
- * No font size or color: it takes the ones of its container (tooltip, popover, card).
+ * knowledgeBase: patterns/table-lite .ptTableLite · table model, columns align on their own. The component owns a
+ * native <table> (the pattern uses divs with display: table), so the cells of the templates merge with colspan /
+ * rowspan. No font size or color: it takes the ones of its container (tooltip, popover, card).
 \*——————————————————————————————————————————————————————————*/
 
 .int-litetable {
@@ -49,6 +49,9 @@
 
 /*——————————————————————————————————————————————————————————*\
  * ELEMENTS ( __element )
+ * The #header, #body and #footer templates write tr / th / td without classes: the rules reach them from the
+ * table sections, only as direct children (a table nested in a cell keeps its own styles).
+ * Alignment of a cell: u-text-center / u-text-right on its th or td.
 \*——————————————————————————————————————————————————————————*/
 
 .int-litetable {
@@ -62,14 +65,17 @@
     font-weight: var(--int-litetable-head-font-weight);
   }
 
-  &__body {
+  &__body,
+  &__foot {
     font-weight: var(--int-litetable-cell-font-weight);
   }
 
-  // th / td: the browser styles of th (bold, centered) and td (1px padding) are reset to the group's.
-  &__cell {
+  // th / td: the browser styles of th (bold, centered) and td (1px padding) are reset to the section's.
+  &__head > tr > :is(th, td),
+  &__body > tr > :is(th, td),
+  &__foot > tr > :is(th, td) {
     padding: var(--int-litetable-cell-padding);
-    // Inherited from the table (cellBackground) or set on the cell itself ([intLitetableCellBackground]).
+    // Inherited from the table (cellBackground) or set on the cell itself (td[intLitetableCellBackground]).
     background: var(--int-litetable-cell-background);
     font-weight: inherit;
     text-align: start;
@@ -79,15 +85,17 @@
 
 /*——————————————————————————————————————————————————————————*\
  * MODIFIERS ( --modifier )
+ * One module per input: _litetable.<modifier>.scss.
 \*——————————————————————————————————————————————————————————*/
 
-.int-litetable {
-  // Alignment of a column (columns[].align).
-  &__cell--center {
+// Alignment of a column built from data (columns[].align). From the table, so it beats the cell reset above;
+// in the templates the cells use u-text-center / u-text-right instead.
+.int-litetable__table .int-litetable__cell {
+  &--center {
     text-align: center;
   }
 
-  &__cell--right {
+  &--right {
     text-align: end;
   }
 }

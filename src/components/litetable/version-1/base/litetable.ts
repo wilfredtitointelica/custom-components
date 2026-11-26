@@ -5,11 +5,7 @@ import {
   Component,
   computed,
   contentChild,
-  DestroyRef,
   Directive,
-  effect,
-  ElementRef,
-  inject,
   input,
   TemplateRef,
   ViewEncapsulation,
@@ -18,10 +14,7 @@ import {
 /** Horizontal alignment of the cells of a column (head and body); left when omitted. */
 export type IntLitetableAlign = 'left' | 'center' | 'right';
 
-/** Space scale of cellSpacing and cellPadding: small 4px · medium 12px · large 16px (none when omitted). */
-export type IntLitetableSpacing = 'small' | 'medium' | 'large';
-
-/** Column of the table: field of the row it shows, optional head text and alignment. */
+/** Column of the table built from data: field of the row it shows, optional head text and alignment. */
 export interface IntLitetableColumn {
   /** Field of each row shown in the column (name or dot path: `meta.total`). */
   readonly field: string;
@@ -31,60 +24,20 @@ export interface IntLitetableColumn {
   readonly align?: IntLitetableAlign;
 }
 
-/** Cell of the head row above `columns`: it can cover several columns (colspan) or both head rows (rowspan). */
-export interface IntLitetableColumnGroup {
-  /** Text of the group cell. */
-  readonly header?: string;
-  /** Columns it covers; 1 when omitted. */
-  readonly colspan?: number;
-  /** 2 to also cover the head row of `columns` (a column without group, as "Category"); 1 when omitted. */
-  readonly rowspan?: number;
-  /** Alignment of the group cell; left when omitted. */
-  readonly align?: IntLitetableAlign;
-}
+/** Space scale of cellSpacing and cellPadding: small 4px · medium 12px · large 16px (none when omitted). */
+export type IntLitetableSpacing = 'small' | 'medium' | 'large';
 
-/** Merge of a body cell, given in the `spans` field of the row by column field. */
-export interface IntLitetableCellSpan {
-  /** Columns the cell covers to the right; 1 when omitted. */
-  readonly colspan?: number;
-  /** Rows the cell covers downwards; 1 when omitted. */
-  readonly rowspan?: number;
-}
-
-/** Row of `value`: its fields plus, optionally, `spans` with the merges of its cells by column field. */
-export interface IntLitetableRow {
-  readonly spans?: Readonly<Record<string, IntLitetableCellSpan>>;
-  readonly [field: string]: unknown;
-}
-
-/** Rendered cell: the column it starts on, its index and its merge. */
-interface LitetableCell {
-  readonly column: IntLitetableColumn;
-  readonly index: number;
-  readonly colspan: number;
-  readonly rowspan: number;
-}
-
-/** Context of the #cell template. */
-export interface IntLitetableCellContext {
-  /** Value of the field of the column in the row. */
-  readonly $implicit: unknown;
-  readonly row: object;
-  readonly column: IntLitetableColumn;
+/** Context of the #body template, as PrimeNG Table: the row (`let-row`) and its index (`let-rowIndex="rowIndex"`). */
+export interface IntLitetableBodyContext<T = unknown> {
+  readonly $implicit: T;
   readonly rowIndex: number;
 }
 
 /** Reads a field by name or dot path, as int-table (PrimeNG ObjectUtils.resolveFieldData). */
-function resolveField(row: object, field: string): unknown {
+function resolveField(row: unknown, field: string): unknown {
   return field
     .split('.')
     .reduce<unknown>((value, key) => (value == null ? undefined : (value as Record<string, unknown>)[key]), row);
-}
-
-/** Whole number between min and max (a span from the data can be anything). */
-function clampSpan(value: number | undefined, max: number): number {
-  const span = Math.floor(Number(value) || 1);
-  return Math.min(Math.max(span, 1), Math.max(max, 1));
 }
 
 /**
@@ -96,11 +49,18 @@ function colorAttribute(value: boolean | string | null | undefined): boolean | s
   return typeof value === 'string' && value !== 'false' ? value : false;
 }
 
+/** The color of a colorAttribute input, or null to keep the default token. */
+function colorOf(value: boolean | string): string | null {
+  return typeof value === 'string' ? value : null;
+}
+
 /**
- * <int-litetable> · version 1. int-* extension: it has no PrimeNG equivalent (knowledge base pattern table-lite).
- * Aligns plain text in rows and columns: no borders, background, sorting, paging or selection. Meant for chart
- * tooltips, popovers and quick summaries. A native <table> inside (the pattern uses divs with display: table),
- * because only native cells merge with colspan / rowspan.
+ * <int-litetable> · version 1. The simplest form of PrimeNG p-table: the component owns the <table>, <thead>,
+ * <tbody> and <tfoot> (and their styles), and the consumer writes the rows in the #header, #body and #footer
+ * templates with native tr / th / td, so cells merge with colspan / rowspan. Without templates, `columns` builds
+ * the head and body rows from the data.
+ * int-* extension: it has no PrimeNG equivalent of its own (knowledge base pattern table-lite): plain text,
+ * no borders, background, sorting, paging or selection. Meant for tooltips, popovers and quick summaries.
  */
 @Component({
   selector: 'int-litetable',
@@ -129,31 +89,21 @@ function colorAttribute(value: boolean | string | null | undefined): boolean | s
 })
 export class IntLitetable {
   /** Implementation status, shown on the documentation page: pending → in-progress → done. */
-  static readonly status: 'pending' | 'in-progress' | 'done' = 'in-progress';
+  static readonly status: 'pending' | 'in-progress' | 'done' = 'done';
   /** Designer in charge of this version, shown on the documentation page and in Reference → Status. */
   static readonly designer = 'Christian Abanto';
 
   // JSDoc of the public API in Spanish: it is the Descripción column of the API tab of the page.
+  /** Filas de la tabla: el template `body` se repite una vez por fila. */
+  readonly value = input<readonly unknown[] | null | undefined>([]);
   /**
-   * int-* extension: filas que muestra la tabla; cada columna lee su `field` de cada fila. Una fila puede traer
-   * `spans` para combinar celdas: `spans: { category: { colspan: 2 } }` (la celda abarca columnas a la derecha)
-   * o `spans: { brand: { rowspan: 2 } }` (abarca filas hacia abajo). Las celdas cubiertas no se dibujan.
-   */
-  readonly value = input<readonly object[] | null | undefined>([]);
-  /**
-   * int-* extension: columnas de la tabla (`field`, `header` y `align`). La fila de cabecera se muestra si al
-   * menos una columna tiene `header`.
+   * int-* extension: columnas para armar la tabla solo con datos, sin templates: `field` (nombre o ruta con
+   * puntos), `header` y `align` (`left`, `center`, `right`). Los templates `header` y `body`, si están, la reemplazan.
    */
   readonly columns = input<readonly IntLitetableColumn[] | null | undefined>([]);
   /**
-   * int-* extension: fila de cabecera agrupada, encima de la de `columns`. Cada grupo (`header`, `colspan`,
-   * `rowspan`, `align`) abarca `colspan` columnas; con `rowspan: 2` ocupa también la fila de `columns`, para una
-   * columna sin grupo.
-   */
-  readonly columnGroups = input<readonly IntLitetableColumnGroup[] | null | undefined>([]);
-  /**
    * int-* extension: la primera columna ocupa todo el ancho disponible y lleva las demás al borde derecho.
-   * Pensado para tooltips y popovers con pares etiqueta/valor.
+   * Pensado para tooltips y popovers con pares etiqueta/valor. Toma la primera celda de cada fila.
    */
   readonly fullFirstColumn = input(false, { transform: booleanAttribute });
   /**
@@ -167,7 +117,7 @@ export class IntLitetable {
   /**
    * int-* extension: pinta el fondo de todas las celdas. Solo el atributo (`cellBackground`) usa el blanco del
    * Style Guide; con un valor usa ese color (`cellBackground="#fde8e8"` o `cellBackground="var(--i-background-subtle)"`).
-   * Una celda puede tener su propio color con `intLitetableCellBackground` en el template `cell`. El espacio de
+   * Una celda puede tener su propio color con `intLitetableCellBackground` en su `td`. El espacio de
    * `cellSpacing` deja ver el fondo de atrás.
    */
   readonly cellBackground = input<boolean | string, boolean | string | null | undefined>(false, {
@@ -183,117 +133,40 @@ export class IntLitetable {
    * `medium` o `large`. Sin él, las celdas no tienen padding.
    */
   readonly cellPadding = input<IntLitetableSpacing>();
-  /** int-* extension: etiqueta accesible de la tabla (`aria-label`). */
+  /** Etiqueta accesible de la tabla (`aria-label`). */
   readonly ariaLabel = input<string>();
-  /** int-* extension: id del elemento que etiqueta la tabla (`aria-labelledby`), p. ej. el título del tooltip. */
+  /** Id del elemento que etiqueta la tabla (`aria-labelledby`), p. ej. el título del tooltip. */
   readonly ariaLabelledBy = input<string>();
 
+  /** Filas de la cabecera (`thead`): uno o más `tr` con sus `th`; `colspan` y `rowspan` agrupan columnas. */
+  readonly headerTemplate = contentChild<TemplateRef<void>>('header');
   /**
-   * int-* extension: contenido de cada celda del cuerpo, con el valor (`let-value`), la fila (`let-row="row"`),
-   * la columna (`let-column="column"`) y su índice (`let-rowIndex="rowIndex"`). Sin él, la celda muestra el valor como texto.
+   * Fila del cuerpo (`tbody`), una vez por cada elemento de `value`, con la fila (`let-row`) y su índice
+   * (`let-rowIndex="rowIndex"`). Puede tener más de un `tr` (por ejemplo, con `rowspan`).
    */
-  readonly cellTemplate = contentChild<TemplateRef<IntLitetableCellContext>>('cell');
+  readonly bodyTemplate = contentChild<TemplateRef<IntLitetableBodyContext>>('body');
+  /** Filas del pie (`tfoot`), como una fila de total. */
+  readonly footerTemplate = contentChild<TemplateRef<void>>('footer');
 
+  protected readonly rows = computed(() => this.value() ?? []);
   protected readonly cols = computed(() => this.columns() ?? []);
-  protected readonly groups = computed(() => this.columnGroups() ?? []);
-
-  /** Head cells of `columns`, without the ones a group with rowspan already covers. */
-  protected readonly headerCells = computed<LitetableCell[]>(() => {
-    const cols = this.cols();
-    if (!cols.some((column) => !!column.header)) return [];
-    const covered = new Set<number>();
-    let position = 0;
-    for (const group of this.groups()) {
-      const colspan = clampSpan(group.colspan, cols.length - position);
-      if (clampSpan(group.rowspan, 2) > 1) {
-        for (let i = position; i < position + colspan; i++) covered.add(i);
-      }
-      position += colspan;
-    }
-    return cols
-      .map((column, index) => ({ column, index, colspan: 1, rowspan: 1 }))
-      .filter((cell) => !covered.has(cell.index));
-  });
-
-  /** Group cells with their merge already limited to the columns that exist. */
-  protected readonly groupCells = computed(() => {
-    const total = this.cols().length;
-    const twoRows = this.headerCells().length > 0;
-    let position = 0;
-    return this.groups().map((group) => {
-      const colspan = clampSpan(group.colspan, total - position);
-      position += colspan;
-      return { group, colspan, rowspan: twoRows ? clampSpan(group.rowspan, 2) : 1 };
-    });
-  });
-
-  /**
-   * Body rows with the cells to draw: a cell with colspan / rowspan (row.spans) covers its neighbours to the
-   * right and below, and the covered positions are skipped, as a native table expects.
-   */
-  protected readonly bodyRows = computed(() => {
-    const rows = this.value() ?? [];
-    const cols = this.cols();
-    const covered = new Set<string>();
-    return rows.map((row, rowIndex) => {
-      const spans = (row as IntLitetableRow).spans;
-      const cells: LitetableCell[] = [];
-      cols.forEach((column, index) => {
-        if (covered.has(`${rowIndex}:${index}`)) return;
-        const span = spans?.[column.field];
-        const colspan = clampSpan(span?.colspan, cols.length - index);
-        const rowspan = clampSpan(span?.rowspan, rows.length - rowIndex);
-        for (let r = rowIndex; r < rowIndex + rowspan; r++) {
-          for (let c = index; c < index + colspan; c++) covered.add(`${r}:${c}`);
-        }
-        cells.push({ column, index, colspan, rowspan });
-      });
-      return { row, cells };
-    });
-  });
-  /** Color given to showGridlines; null keeps the default token. */
-  protected readonly gridlinesColor = computed(() => {
-    const value = this.showGridlines();
-    return typeof value === 'string' ? value : null;
-  });
-  /** Color given to cellBackground; null keeps the default token. */
-  protected readonly cellBackgroundColor = computed(() => {
-    const value = this.cellBackground();
-    return typeof value === 'string' ? value : null;
-  });
-
-  protected cellValue(row: object, column: IntLitetableColumn): unknown {
-    return resolveField(row, column.field);
-  }
+  protected readonly hasColumnHeader = computed(() => this.cols().some((column) => column.header));
+  protected readonly field = resolveField;
+  protected readonly gridlinesColor = computed(() => colorOf(this.showGridlines()));
+  protected readonly cellBackgroundColor = computed(() => colorOf(this.cellBackground()));
 }
 
 /**
- * [intLitetableCellBackground] · paints the background of the int-litetable cell that contains it. It goes on an
- * element of the #cell template, so one cell gets its own color over the cellBackground of the table.
+ * td[intLitetableCellBackground] · paints one cell of an int-litetable over the cellBackground of the table.
  */
-@Directive({ selector: '[intLitetableCellBackground]' })
+@Directive({
+  selector: 'td[intLitetableCellBackground], th[intLitetableCellBackground]',
+  host: { '[style.--int-litetable-cell-background]': 'intLitetableCellBackground() || null' },
+})
 export class IntLitetableCellBackground {
   /**
-   * int-* extension: color de fondo de la celda que contiene el elemento (`#fde8e8`, `var(--i-background-warning)`).
-   * Va dentro del template `cell`; sin valor, la celda vuelve al fondo de la tabla.
+   * int-* extension: color de fondo de la celda (`#fde8e8`, `var(--i-background-warning)`). Va en un `td` o `th`
+   * de los templates; sin valor, la celda vuelve al fondo de la tabla.
    */
   readonly intLitetableCellBackground = input<string | null | undefined>();
-
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-
-  constructor() {
-    // The template content is a child of .int-litetable__cell: the color goes on the cell as its own token.
-    effect(() => {
-      const cell = this.host.nativeElement.closest<HTMLElement>('.int-litetable__cell');
-      const color = this.intLitetableCellBackground();
-      if (!cell) return;
-      if (color) cell.style.setProperty('--int-litetable-cell-background', color);
-      else cell.style.removeProperty('--int-litetable-cell-background');
-    });
-    inject(DestroyRef).onDestroy(() =>
-      this.host.nativeElement
-        .closest<HTMLElement>('.int-litetable__cell')
-        ?.style.removeProperty('--int-litetable-cell-background'),
-    );
-  }
 }

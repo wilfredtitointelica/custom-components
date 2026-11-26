@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IntLitetable, IntLitetableColumn, IntLitetableRow } from '../../base/litetable';
+import { IntLitetable } from '../../base/litetable';
 
 @Component({
   selector: 'litetable-colspan-example',
@@ -8,16 +8,9 @@ import { IntLitetable, IntLitetableColumn, IntLitetableRow } from '../../base/li
   imports: [IntLitetable],
 })
 export class LitetableColspanExample {
-  readonly columns: IntLitetableColumn[] = [
-    { field: 'category', header: 'Category' },
-    { field: 'transactions', header: 'Transactions', align: 'right' },
-    { field: 'total', header: 'Total', align: 'right' },
-  ];
-
-  readonly rows: IntLitetableRow[] = [
+  readonly rows = [
     { category: 'Issuer', transactions: '1,240', total: '20K' },
     { category: 'Acquirer', transactions: '980', total: '25K' },
     { category: 'Network', transactions: '310', total: '15K' },
-    { category: 'Total', total: '60K', spans: { category: { colspan: 2 } } },
   ];
 }

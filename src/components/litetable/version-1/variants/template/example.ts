@@ -1,23 +1,16 @@
-import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { IntLitetable, IntLitetableColumn } from '../../base/litetable';
+import { IntLitetable } from '../../base/litetable';
 
 @Component({
   selector: 'litetable-template-example',
   templateUrl: './example.html',
-  imports: [IntLitetable, DecimalPipe],
+  imports: [IntLitetable],
 })
 export class LitetableTemplateExample {
-  readonly columns: IntLitetableColumn[] = [
-    { field: 'label', header: 'Nov, 2026' },
-    { field: 'amount' },
-  ];
-
   readonly rows = [
-    { label: 'Gross', amount: 1_857_210 },
-    { label: 'Adjustments', amount: 2_790 },
-    { label: 'Exclusions', amount: 0 },
-    { label: 'Net Expenses', amount: 1_860_000 },
+    { category: 'Issuer', transactions: '1,240', total: '20K' },
+    { category: 'Acquirer', transactions: '980', total: '25K' },
+    { category: 'Network', transactions: '310', total: '15K' },
   ];
 }

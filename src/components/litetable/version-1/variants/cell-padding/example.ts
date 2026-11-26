@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IntLitetable, IntLitetableColumn, IntLitetableSpacing } from '../../base/litetable';
+import { IntLitetable, IntLitetableSpacing } from '../../base/litetable';
 
 @Component({
   selector: 'litetable-cell-padding-example',
@@ -10,14 +10,9 @@ import { IntLitetable, IntLitetableColumn, IntLitetableSpacing } from '../../bas
 export class LitetableCellPaddingExample {
   readonly sizes: IntLitetableSpacing[] = ['small', 'medium', 'large'];
 
-  readonly columns: IntLitetableColumn[] = [
-    { field: 'category', header: 'Category' },
-    { field: 'total', header: 'Total' },
-  ];
-
   readonly rows = [
-    { category: 'Issuer', total: '20K' },
-    { category: 'Acquirer', total: '25K' },
-    { category: 'Network', total: '15K' },
+    { category: 'Issuer', transactions: '1,240', total: '20K' },
+    { category: 'Acquirer', transactions: '980', total: '25K' },
+    { category: 'Network', transactions: '310', total: '15K' },
   ];
 }

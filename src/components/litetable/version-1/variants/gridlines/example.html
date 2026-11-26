@@ -5,19 +5,59 @@
 <div class="u-display-flex u-flex-column u-gap-xl">
   <div class="u-display-flex u-flex-column u-gap-sm">
     <span class="u-text-sm u-bold">showGridlines</span>
-    <int-litetable showGridlines [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+    <int-litetable showGridlines [value]="rows" [style]="{ width: '20rem' }">
+      <ng-template #header>
+        <tr>
+          <th>Category</th>
+          <th>Transactions</th>
+          <th>Total</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.category }}</td>
+          <td>{{ row.transactions }}</td>
+          <td>{{ row.total }}</td>
+        </tr>
+      </ng-template>
+    </int-litetable>
   </div>
   <div class="u-display-flex u-flex-column u-gap-sm">
     <span class="u-text-sm u-bold">showGridlines="#f59e0b"</span>
-    <int-litetable showGridlines="#f59e0b" [value]="rows" [columns]="columns" [style]="{ width: '20rem' }" />
+    <int-litetable showGridlines="#f59e0b" [value]="rows" [style]="{ width: '20rem' }">
+      <ng-template #header>
+        <tr>
+          <th>Category</th>
+          <th>Transactions</th>
+          <th>Total</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.category }}</td>
+          <td>{{ row.transactions }}</td>
+          <td>{{ row.total }}</td>
+        </tr>
+      </ng-template>
+    </int-litetable>
   </div>
   <div class="u-display-flex u-flex-column u-gap-sm">
     <span class="u-text-sm u-bold">showGridlines="var(--i-border-accent)"</span>
-    <int-litetable
-      showGridlines="var(--i-border-accent)"
-      [value]="rows"
-      [columns]="columns"
-      [style]="{ width: '20rem' }"
-    />
+    <int-litetable showGridlines="var(--i-border-accent)" [value]="rows" [style]="{ width: '20rem' }">
+      <ng-template #header>
+        <tr>
+          <th>Category</th>
+          <th>Transactions</th>
+          <th>Total</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.category }}</td>
+          <td>{{ row.transactions }}</td>
+          <td>{{ row.total }}</td>
+        </tr>
+      </ng-template>
+    </int-litetable>
   </div>
 </div>

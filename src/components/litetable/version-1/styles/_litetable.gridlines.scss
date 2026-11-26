@@ -3,6 +3,6 @@
  * showGridlines input: a border on each cell (PrimeNG Table showGridlines).
 \*——————————————————————————————————————————————————————————*/
 
-.int-litetable--gridlines .int-litetable__cell {
+.int-litetable--gridlines .int-litetable__table > * > tr > :is(th, td) {
   border: var(--int-litetable-gridlines-border-width) solid var(--int-litetable-gridlines-border-color);
 }

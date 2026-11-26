@@ -1,13 +1,20 @@
 <!--
   title: Template
-  description: El template `cell` personaliza el contenido de cada celda del cuerpo; recibe el valor, la fila, la columna y el índice de la fila.
+  description: Para controlar el marcado de las celdas: `value` con las filas, el template `header` con los `th` y el template `body` con el `tr` de cada fila; el componente arma la tabla.
 -->
-<int-litetable fullFirstColumn [value]="rows" [columns]="columns" [style]="{ width: '20rem' }">
-  <ng-template #cell let-value let-column="column">
-    @if (column.field === 'amount') {
-      <span class="u-bold">EUR {{ value | number }}</span>
-    } @else {
-      {{ value }}
-    }
+<int-litetable [value]="rows" [style]="{ width: '20rem' }">
+  <ng-template #header>
+    <tr>
+      <th>Category</th>
+      <th>Transactions</th>
+      <th>Total</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td>{{ row.category }}</td>
+      <td>{{ row.transactions }}</td>
+      <td>{{ row.total }}</td>
+    </tr>
   </ng-template>
 </int-litetable>

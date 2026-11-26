@@ -1,13 +1,22 @@
 <!--
   title: Single Cell Background
-  description: Una celda tiene su propio color con `intLitetableCellBackground` en un elemento del template `cell`; las demás conservan el `cellBackground` de la tabla.
+  description: Una celda tiene su propio color con `intLitetableCellBackground` en su `td` o `th` (hex o `var()`); las demás conservan el `cellBackground` de la tabla.
 -->
-<int-litetable cellBackground [value]="rows" [columns]="columns" [style]="{ width: '20rem' }">
-  <ng-template #cell let-value let-row="row" let-column="column">
-    @if (row.category === 'Acquirer' && column.field === 'total') {
-      <span intLitetableCellBackground="var(--i-background-warning)">{{ value }}</span>
-    } @else {
-      {{ value }}
-    }
+<int-litetable cellBackground [value]="rows" [style]="{ width: '20rem' }">
+  <ng-template #header>
+    <tr>
+      <th>Category</th>
+      <th>Transactions</th>
+      <th>Total</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td>{{ row.category }}</td>
+      <td>{{ row.transactions }}</td>
+      <td [intLitetableCellBackground]="row.category === 'Acquirer' ? 'var(--i-background-warning)' : null">
+        {{ row.total }}
+      </td>
+    </tr>
   </ng-template>
 </int-litetable>

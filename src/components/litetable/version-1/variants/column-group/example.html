@@ -1,5 +1,28 @@
 <!--
   title: Column Group
-  description: `columnGroups` agrega una fila de cabecera encima de la de `columns`: cada grupo abarca `colspan` columnas, y con `rowspan: 2` una columna sin grupo ocupa las dos filas de cabecera.
+  description: El template `header` puede tener varias filas: un `th` con `colspan` abarca varias columnas y uno con `rowspan="2"` ocupa las dos filas de la cabecera.
 -->
-<int-litetable showGridlines cellPadding="small" [value]="rows" [columns]="columns" [columnGroups]="columnGroups" [style]="{ width: '24rem' }" />
+<int-litetable showGridlines cellPadding="small" [value]="rows" [style]="{ width: '24rem' }">
+  <ng-template #header>
+    <tr>
+      <th rowspan="2">Brand</th>
+      <th colspan="2" class="u-text-center">Q1 2026</th>
+      <th colspan="2" class="u-text-center">Q2 2026</th>
+    </tr>
+    <tr>
+      <th class="u-text-right">Issuer</th>
+      <th class="u-text-right">Acquirer</th>
+      <th class="u-text-right">Issuer</th>
+      <th class="u-text-right">Acquirer</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td>{{ row.brand }}</td>
+      <td class="u-text-right">{{ row.q1Issuer }}</td>
+      <td class="u-text-right">{{ row.q1Acquirer }}</td>
+      <td class="u-text-right">{{ row.q2Issuer }}</td>
+      <td class="u-text-right">{{ row.q2Acquirer }}</td>
+    </tr>
+  </ng-template>
+</int-litetable>

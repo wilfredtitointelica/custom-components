@@ -10,8 +10,8 @@ import { IntLitetable, IntLitetableColumn } from '../../base/litetable';
 export class LitetableBasicExample {
   readonly columns: IntLitetableColumn[] = [
     { field: 'category', header: 'Category' },
-    { field: 'transactions', header: 'Transactions' },
-    { field: 'total', header: 'Total' },
+    { field: 'transactions', header: 'Transactions', align: 'right' },
+    { field: 'total', header: 'Total', align: 'right' },
   ];
 
   readonly rows = [
